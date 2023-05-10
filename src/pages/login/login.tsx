@@ -11,9 +11,8 @@ const InitDataValues = {
   email: '',
   password: '',
 };
-const login = () => {
+const Login = () => {
   const navigate = useNavigate();
-  const myRef = useRef(null);
   const [data, setData] = useState<UserLogin>(InitDataValues);
 
   const debounceRef = useRef<NodeJS.Timeout>();
@@ -26,30 +25,25 @@ const login = () => {
       password,
     };
     try {
-      console.log(body);
       const response = await axios.post(
         // 'http://172.16.10.207:8081/api/v1/auth/login',
         'http://127.0.0.1:8081/api/v1/auth/login',
         body
       );
-
       localStorage.setItem('token', response.data.token);
-
       navigate('/home');
-      // Aquí puedes manejar la respuesta del servidor
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        console.log(error.response?.data); // Aquí puedes manejar el error en caso de que algo haya fallado
+        console.log(error.response?.data);
       }
     }
   };
   useEffect(() => {
     const token = localStorage.getItem('token');
-    const isFocused = myRef.current;
-    if (!!isFocused && token == 'true') {
+    if (token) {
       navigate('/home');
     }
-  }, [myRef]);
+  }, [navigate]);
 
   const handleLogin = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -63,9 +57,9 @@ const login = () => {
   };
 
   return (
-    <div ref={myRef} className="main">
-      <div className="container-login">
-        <div className="login-image">
+    <div className="main">
+      <div className="container-L">
+        <div className="L-image">
           <img
             src={loginImg}
             alt=""
@@ -110,4 +104,4 @@ const login = () => {
   );
 };
 
-export default login;
+export default Login;

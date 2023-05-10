@@ -64,7 +64,7 @@ const login = () => {
 
   return (
     <div ref={myRef} className="main">
-      <div className="container">
+      <div className="container-login">
         <div className="login-image">
           <img
             src={loginImg}

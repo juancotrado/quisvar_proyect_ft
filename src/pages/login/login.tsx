@@ -3,8 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../../utils/images/quisvar_logo.png';
 import loginImg from '../../utils/images/image_example.png';
 import './login.css';
-// import { Alert } from '../../components';
-import axios, { AxiosError } from 'axios';
+import axios from 'axios';
 
 import { UserLogin } from '../../interfaces/intefaces';
 
@@ -33,7 +32,10 @@ const login = () => {
         'http://127.0.0.1:8081/api/v1/auth/login',
         body
       );
-      console.log(response.data);
+
+      localStorage.setItem('token', response.data.token);
+
+      navigate('/home');
       // Aquí puedes manejar la respuesta del servidor
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -53,21 +55,11 @@ const login = () => {
     const { name, value } = e.target;
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
-      console.log({
-        ...data,
-        [name]: value,
-      });
       setData({
         ...data,
         [name]: value,
       });
     }, 200);
-  };
-  const handleEnter = () => {
-    console.log(debounceRef.current);
-
-    // localStorage.setItem('token', 'true');
-    // navigate('/home');
   };
 
   return (
@@ -108,12 +100,11 @@ const login = () => {
               className="input-field"
               placeholder="Contraseña"
             />
-            <button type="submit" className="btn-login" onClick={handleEnter}>
+            <button type="submit" className="btn-login">
               INGRESAR
             </button>
           </form>
         </div>
-        {/* <button onClick={handleEnter}>login</button> */}
       </div>
     </div>
   );

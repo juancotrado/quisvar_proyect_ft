@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../../utils/images/quisvar_logo.png';
 import loginImg from '../../utils/images/image_example.png';
 import './login.css';
+import { Alert } from '../../components';
+import axios from 'axios';
 
 type Props = {};
 
@@ -11,9 +13,22 @@ const login = (props: Props) => {
   const myRef = useRef(null);
   const [data, setData] = useState({});
   const debounceRef = useRef<NodeJS.Timeout>();
-  const sendForm = (e: FormEvent<HTMLFormElement>) => {
+  const sendForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log('Formulario enviado');
+    let send = {
+      email: data.username,
+      password: data.password,
+    };
+    try {
+      console.log(send);
+      const response = await axios.post(
+        'http://172.16.10.207:8081/api/v1/auth/login',
+        send
+      );
+      console.log(response.data); // Aquí puedes manejar la respuesta del servidor
+    } catch (error) {
+      console.error(error); // Aquí puedes manejar el error en caso de que algo haya fallado
+    }
   };
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -25,7 +40,6 @@ const login = (props: Props) => {
 
   const handleLogin = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    console.log(debounceRef.current);
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       console.log({
@@ -39,8 +53,10 @@ const login = (props: Props) => {
     }, 1000);
   };
   const handleEnter = () => {
-    localStorage.setItem('token', 'true');
-    navigate('/home');
+    console.log(debounceRef.current);
+
+    // localStorage.setItem('token', 'true');
+    // navigate('/home');
   };
 
   return (

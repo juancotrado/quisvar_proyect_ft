@@ -3,31 +3,42 @@ import { useNavigate } from 'react-router-dom';
 import logo from '../../utils/images/quisvar_logo.png';
 import loginImg from '../../utils/images/image_example.png';
 import './login.css';
-import { Alert } from '../../components';
-import axios from 'axios';
+// import { Alert } from '../../components';
+import axios, { AxiosError } from 'axios';
 
-type Props = {};
+import { UserLogin } from '../../interfaces/intefaces';
 
-const login = (props: Props) => {
+const InitDataValues = {
+  email: '',
+  password: '',
+};
+const login = () => {
   const navigate = useNavigate();
   const myRef = useRef(null);
-  const [data, setData] = useState({});
+  const [data, setData] = useState<UserLogin>(InitDataValues);
+
   const debounceRef = useRef<NodeJS.Timeout>();
+
   const sendForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    let send = {
-      email: data.username,
-      password: data.password,
+    const { email, password } = data;
+    const body = {
+      email,
+      password,
     };
     try {
-      console.log(send);
+      console.log(body);
       const response = await axios.post(
-        'http://172.16.10.207:8081/api/v1/auth/login',
-        send
+        // 'http://172.16.10.207:8081/api/v1/auth/login',
+        'http://127.0.0.1:8081/api/v1/auth/login',
+        body
       );
-      console.log(response.data); // Aquí puedes manejar la respuesta del servidor
+      console.log(response.data);
+      // Aquí puedes manejar la respuesta del servidor
     } catch (error) {
-      console.error(error); // Aquí puedes manejar el error en caso de que algo haya fallado
+      if (axios.isAxiosError(error)) {
+        console.log(error.response?.data); // Aquí puedes manejar el error en caso de que algo haya fallado
+      }
     }
   };
   useEffect(() => {
@@ -50,7 +61,7 @@ const login = (props: Props) => {
         ...data,
         [name]: value,
       });
-    }, 1000);
+    }, 200);
   };
   const handleEnter = () => {
     console.log(debounceRef.current);
@@ -83,7 +94,7 @@ const login = (props: Props) => {
             <input
               type="text"
               onChange={handleLogin}
-              name="username"
+              name="email"
               className="input-field"
               placeholder="Usuario"
             />

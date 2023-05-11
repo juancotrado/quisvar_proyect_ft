@@ -26,9 +26,12 @@ header {
   text-decoration: none;
   display: inline-block;
 }
-.items-list li a {
+/* .items-list li a {
   color: white;
   font-size: var(--size-input);
+} */
+.item-nav {
+  color: red;
 }
 .nav-container {
   width: 100%;

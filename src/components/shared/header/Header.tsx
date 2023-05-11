@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import './header.css';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 const items = [
   { title: 'Inicio', link: '/home' },
@@ -69,9 +69,17 @@ const Header = () => {
       <ul className="items-list">
         {items.map((item, id) => (
           <li key={id}>
-            <a href={item.link} className="item-text">
+            <NavLink
+              to={item.link}
+              className={({ isActive }) =>
+                isActive ? 'item-nav' : 'item-nav-false'
+              }
+            >
               {item.title}
-            </a>
+            </NavLink>
+            {/* <a href={item.link} className="item-text">
+              {item.title}
+            </a> */}
           </li>
         ))}
       </ul>

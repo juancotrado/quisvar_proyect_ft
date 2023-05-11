@@ -2,6 +2,18 @@
   --color-primary: #0e9cd8;
   --color-secondary: #001b69;
   --color-tertiary: #203881;
+  --color-quaternay: #1040c1;
+  --color-unresolved: #ff3b3b;
+  --color-process: #ffd140;
+  --color-done: #57d9a3;
+  --color-menu: #f5f5f5;
+  --size-title: 3.75rem;
+  --size-subtitle: 1.125rem;
+  --size-button: 2rem;
+  --size-input: 1.5rem;
+  --size-paragraph: 0.875rem;
+  --radius-button: 12px;
+  --radius-input: 8px;
 }
 
 html {

@@ -1,6 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Dashboard, Home, Login, NotFound } from '../pages';
-import { ProtectedRoute } from '../components/protectedRoute/ProtectedRoute';
+import { ProtectedRoute } from '../components/ProtectedRoute/ProtectedRoute';
 
 const Navigation = () => {
   return (

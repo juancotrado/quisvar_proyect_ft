@@ -4,7 +4,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 const items = [
   { title: 'Inicio', link: '/home' },
   { title: 'Tareas', link: '/dashboard' },
-  { title: 'Areas', link: '/task' },
+  { title: 'Areas', link: '/tasks' },
 ];
 const icons = [
   { name: '/svg/bell.svg', link: '/dashboard' },

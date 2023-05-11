@@ -1,5 +1,5 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
-import { Dashboard, Home, Login, NotFound } from '../pages';
+import { Dashboard, Home, Login, NotFound, Task } from '../pages';
 import { ProtectedRoute } from '../components/ProtectedRoute/ProtectedRoute';
 
 const Navigation = () => {
@@ -12,6 +12,7 @@ const Navigation = () => {
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/tasks" element={<Task />} />
           </Route>
           <Route path="/*" element={<NotFound />} />
         </Routes>

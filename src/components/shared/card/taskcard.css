@@ -1,0 +1,40 @@
+.task-class {
+  /* background-color: var(--color-process); */
+  background-color: var(--color-primary);
+  border-radius: var(--radius-button);
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.task-header-card {
+  background-color: var(--color-secondary);
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  color: #fff;
+  border-radius: var(--radius-button) var(--radius-button) 0 0;
+  text-align: right;
+}
+
+.icon-card {
+  background-color: aqua;
+  position: absolute;
+  top: 1.8rem;
+  left: 1rem;
+  border-radius: var(--radius-input);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.task-unresolved {
+  background-color: var(--color-unresolved);
+}
+.task-process {
+  background-color: var(--color-process);
+}
+.task-done {
+  background-color: var(--color-done);
+}

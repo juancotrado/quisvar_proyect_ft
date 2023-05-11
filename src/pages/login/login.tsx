@@ -1,7 +1,5 @@
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import logo from '../../utils/images/quisvar_logo.png';
-import loginImg from '../../utils/images/image_example.png';
 import './login.css';
 import axios from 'axios';
 
@@ -57,48 +55,47 @@ const Login = () => {
   };
 
   return (
-    <div className="main">
-      <div className="container-L">
-        <div className="L-image">
-          <img
-            src={loginImg}
-            alt=""
-            style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-          />
+    <div className="login">
+      <figure className="login-figure">
+        <img alt="" src="/img/image_example.png" className="login-figure-img" />
+        <div className="login-contain-logo">
+          <img src="/img/quisvar_logo2.png" alt="" />
         </div>
-        <div className="login-form">
-          <form onSubmit={sendForm} className="form-data">
-            <img
-              src={logo}
-              alt=""
-              className="logo"
-              style={{ width: '100%', objectFit: 'cover' }}
-            />
-            <label htmlFor="" className="label-text">
-              Usuario
+      </figure>
+      <div className="login-form">
+        <form onSubmit={sendForm} className="form">
+          <img src="/img/quisvar_logo2.png" alt="" />
+          <div className="form-group">
+            <label htmlFor="email" className="login-label">
+              USUARIO
             </label>
             <input
               type="text"
+              id="email"
               onChange={handleLogin}
               name="email"
-              className="input-field"
-              placeholder="Usuario"
+              className="login-input"
+              placeholder="Email"
             />
-            <label htmlFor="" className="label-text">
-              Contraseña
+          </div>
+          <div className="form-group">
+            <label htmlFor="password" className="login-label">
+              CONTRASEÑA
             </label>
             <input
               type="password"
+              id="password"
               onChange={handleLogin}
               name="password"
-              className="input-field"
+              className="login-input"
               placeholder="Contraseña"
             />
-            <button type="submit" className="btn-login">
-              INGRESAR
-            </button>
-          </form>
-        </div>
+          </div>
+
+          <button type="submit" className="login-btn">
+            INGRESAR
+          </button>
+        </form>
       </div>
     </div>
   );

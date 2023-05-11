@@ -6,11 +6,13 @@
   --color-unresolved: #ff3b3b;
   --color-process: #ffd140;
   --color-done: #57d9a3;
-  --color-menu: #f5f5f5;
+  --color-menu: #f7f7f7;
   --size-title: 3.75rem;
   --size-subtitle: 1.125rem;
   --size-button: 2rem;
-  --size-input: 1.5rem;
+  --size-input: 1.3rem;
+  --size-label: 1.5rem;
+  --size-button: 1.5rem;
   --size-paragraph: 0.875rem;
   --radius-button: 12px;
   --radius-input: 8px;
@@ -54,6 +56,7 @@ input {
   font-family: inherit;
   border: none;
   background-color: #fff;
+  outline: transparent;
 }
 .container {
   width: 90%;

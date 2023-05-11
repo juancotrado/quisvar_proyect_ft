@@ -68,7 +68,7 @@ const Header = () => {
       </figure>
       <ul className="items-list">
         {items.map((item, id) => (
-          <li className="item" key={id}>
+          <li key={id}>
             <a href={item.link} className="item-text">
               {item.title}
             </a>
@@ -79,12 +79,12 @@ const Header = () => {
         className="input__search"
         type="text"
         placeholder="Search"
-        value=""
+        // value=""
       ></input>
       <ul className="icons-list">
         {icons.map((icon, id) => (
           <li key={id} onClick={handleLogout}>
-            <img src={icon.name} alt="" className="icon" />
+            <img src={icon.name} alt={icon.name} className="icon" />
           </li>
         ))}
       </ul>

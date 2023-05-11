@@ -1,6 +1,6 @@
 import './home.css';
 // interface HomePageProps {};
-const name = 'Diego';
+const name = localStorage.getItem('name');
 const home = () => {
   return (
     <div className="container-home">

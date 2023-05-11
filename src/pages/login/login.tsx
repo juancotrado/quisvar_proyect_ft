@@ -28,7 +28,9 @@ const Login = () => {
         'http://127.0.0.1:8081/api/v1/auth/login',
         body
       );
+      console.log(response);
       localStorage.setItem('token', response.data.token);
+      localStorage.setItem('name', response.data.profile.firstName);
       navigate('/home');
     } catch (error) {
       if (axios.isAxiosError(error)) {

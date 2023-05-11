@@ -26,12 +26,15 @@ header {
   text-decoration: none;
   display: inline-block;
 }
-/* .items-list li a {
+.item-nav-active {
   color: white;
-  font-size: var(--size-input);
-} */
-.item-nav {
-  color: red;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: var(--color-nav-active);
+}
+.item-nav-inactive {
+  color: white;
+  padding: 10px;
 }
 .nav-container {
   width: 100%;
@@ -50,13 +53,9 @@ header {
   width: 2rem;
   height: 2rem;
 }
-
 .item:hover {
   background-color: #27419a;
   color: white;
   border-radius: 10px;
   transition: background-color 0.5s ease;
-}
-.item-text:clicked {
-  color: red;
 }

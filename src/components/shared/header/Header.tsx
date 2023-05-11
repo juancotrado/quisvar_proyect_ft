@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import './header.css';
 import { NavLink, useNavigate } from 'react-router-dom';
 
@@ -21,45 +20,6 @@ const Header = () => {
     localStorage.removeItem('token');
     navigate('login');
   };
-  useEffect(() => {
-    const links = document.querySelectorAll(
-      '.item-text'
-    ) as NodeListOf<HTMLAnchorElement>;
-
-    links.forEach(link => {
-      if (link.href === window.location.href) {
-        link.classList.add('active');
-      }
-
-      const handleClick = (event: MouseEvent) => {
-        event.preventDefault();
-        link.classList.add('clicked');
-        window.location.href = link.href;
-      };
-
-      const handleMouseOver = () => {
-        if (!link.classList.contains('clicked')) {
-          link.classList.add('active');
-        }
-      };
-
-      const handleMouseOut = () => {
-        if (!link.classList.contains('clicked')) {
-          link.classList.remove('active');
-        }
-      };
-
-      link.addEventListener('click', handleClick);
-      link.addEventListener('mouseover', handleMouseOver);
-      link.addEventListener('mouseout', handleMouseOut);
-
-      return () => {
-        link.removeEventListener('click', handleClick);
-        link.removeEventListener('mouseover', handleMouseOver);
-        link.removeEventListener('mouseout', handleMouseOut);
-      };
-    });
-  }, []);
 
   return (
     <header className="nav-container">
@@ -72,14 +32,11 @@ const Header = () => {
             <NavLink
               to={item.link}
               className={({ isActive }) =>
-                isActive ? 'item-nav' : 'item-nav-false'
+                isActive ? 'item-nav-active' : 'item-nav-inactive'
               }
             >
               {item.title}
             </NavLink>
-            {/* <a href={item.link} className="item-text">
-              {item.title}
-            </a> */}
           </li>
         ))}
       </ul>

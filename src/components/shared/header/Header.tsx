@@ -44,7 +44,7 @@ const Header = () => {
       <input
         className="input__search"
         type="text"
-        placeholder="Search"
+        placeholder="Buscar"
         // value=""
       ></input>
       <ul className="icons-list">

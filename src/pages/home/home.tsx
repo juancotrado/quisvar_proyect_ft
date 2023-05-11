@@ -1,12 +1,20 @@
+import { useEffect, useState } from 'react';
 import './home.css';
 // interface HomePageProps {};
-const name = localStorage.getItem('name');
+
 const home = () => {
+  const [firstName, setFirstName] = useState('');
+  useEffect(() => {
+    const name = localStorage.getItem('name') || 'unknow';
+    setFirstName(name);
+  }, []);
+
   return (
     <div className="container-home">
       <div className="title-content">
-        <h1 className="h1-left text-color-1">Bienvenido</h1>
-        <h1 className="h1-right text-color-2">{name}</h1>
+        <h1>
+          BIENVENIDO <span>{firstName}</span>
+        </h1>
       </div>
       <p className="paragraph">
         ¡Bienvenido a nuestro sistema de asignación de tareas! Aquí podrás

@@ -24,6 +24,7 @@ const Task = () => {
           <TaskCard data={data} />
           <TaskCard data={data} />
           <TaskCard data={data} />
+          <TaskCard data={data} />
         </div>
         <div className="container-task container-process">
           <h3>Haciendo</h3>

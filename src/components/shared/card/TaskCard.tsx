@@ -1,6 +1,6 @@
-import icon_unresolved from '../../../../public/svg/task_unresolved.svg';
-import icon_process from '../../../../public/svg/task_process.svg';
-import icon_done from '../../../../public/svg/task_done.svg';
+import icon_unresolved from '/svg/task_unresolved.svg';
+import icon_process from '/svg/task_process.svg';
+import icon_done from '/svg/task_done.svg';
 import './taskcard.css';
 
 export type taskData = {

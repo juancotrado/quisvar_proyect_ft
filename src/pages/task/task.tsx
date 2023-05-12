@@ -1,6 +1,6 @@
 // import React from 'react';
 import './task.css';
-import list_icon from '../../../public/svg/task_list.svg';
+import list_icon from '/svg/task_list.svg';
 import TaskCard, { taskData } from '../../components/shared/card/TaskCard';
 const Task = () => {
   const data: taskData = {

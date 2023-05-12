@@ -4,6 +4,7 @@ import './login.css';
 import axios from 'axios';
 
 import { UserLogin } from '../../interfaces/intefaces';
+import { axiosInstance } from '../../services/axiosInstance';
 
 const InitDataValues = {
   email: '',
@@ -23,11 +24,7 @@ const Login = () => {
       password,
     };
     try {
-      const response = await axios.post(
-        'http://172.16.10.207:8081/api/v1/auth/login',
-        //'http://localhost:8081/api/v1/auth/login',
-        body
-      );
+      const response = await axiosInstance.post('/auth/login', body);
       console.log(response);
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('name', response.data.profile.firstName);

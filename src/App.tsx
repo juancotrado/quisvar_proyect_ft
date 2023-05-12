@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import Navigation from './routes/Navigation';
 import Loader from './components/shared/loader/Loader';
-import axiosInstance from './services/axiosInstance';
 import { SnackbarUtilitiesConfigurator } from './utils/SnackbarManager';
+import { axiosInterceptor } from './services/axiosInstance';
 
 function App() {
   const [isLoader, setisLoader] = useState(false);
@@ -11,7 +11,7 @@ function App() {
     setisLoader(value);
   };
   useEffect(() => {
-    axiosInstance(handleLoader);
+    axiosInterceptor(handleLoader);
   }, []);
   return (
     <>

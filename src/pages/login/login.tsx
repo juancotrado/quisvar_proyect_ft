@@ -24,8 +24,8 @@ const Login = () => {
     };
     try {
       const response = await axios.post(
-        // 'http://172.16.10.207:8081/api/v1/auth/login',
-        'http://127.0.0.1:8081/api/v1/auth/login',
+        'http://172.16.10.207:8081/api/v1/auth/login',
+        //'http://localhost:8081/api/v1/auth/login',
         body
       );
       console.log(response);
@@ -69,7 +69,7 @@ const Login = () => {
           <img src="/img/quisvar_logo2.png" alt="" />
           <div className="form-group">
             <label htmlFor="email" className="login-label">
-              USUARIO
+              CORREO
             </label>
             <input
               type="text"

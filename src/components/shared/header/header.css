@@ -8,12 +8,14 @@
 header {
   display: flex;
   align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
   background-color: var(--color-tertiary);
-  width: 100%;
 }
 
 .header__figure {
-  width: 5rem;
+  width: var(--brand-size);
 }
 .items-list {
   width: 30%;
@@ -25,6 +27,7 @@ header {
   padding: 0.5rem;
   text-decoration: none;
   display: inline-block;
+  font-size: var(--size-subtitle);
 }
 .item-nav-active {
   color: white;
@@ -38,7 +41,6 @@ header {
 }
 .nav-container {
   width: 100%;
-  height: 100%;
   display: flex;
   justify-content: space-around;
   align-items: center;

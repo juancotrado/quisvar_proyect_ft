@@ -1,0 +1,62 @@
+.container-list {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: calc(100vh - var(--brand-size));
+  padding: 1rem 1.5rem;
+
+  gap: 1rem;
+}
+.title-list {
+  padding: 0.2rem 1rem;
+  border-radius: var(--radius-button);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #fff;
+  box-shadow: 0px 1.5px 4px rgba(0, 0, 0, 0.2);
+  color: var(--color-tertiary);
+}
+.title-list h2 {
+  font-size: var(--size-label);
+  text-transform: uppercase;
+  font-weight: 600;
+}
+.task-icon {
+  width: 3.2rem;
+  height: 3.2rem;
+}
+
+section {
+  display: flex;
+  border-radius: var(--radius-button);
+  flex-grow: 1;
+  width: 100%;
+  gap: 2rem;
+}
+
+.container-task {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: var(--radius-input);
+  box-shadow: 0px 1.5px 4px rgba(0, 0, 0, 0.2);
+  width: 33%;
+}
+.container-task h3 {
+  text-transform: uppercase;
+  padding-left: 0.5rem;
+  font-size: var(--size-input);
+}
+
+.container-unresolved {
+  border-top: 0.6rem var(--color-unresolved) solid;
+}
+.container-process {
+  border-top: 0.6rem var(--color-process) solid;
+}
+.container-done {
+  border-top: 0.6rem var(--color-done) solid;
+}

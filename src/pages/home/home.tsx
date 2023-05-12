@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import './home.css';
 // interface HomePageProps {};
 
-const home = () => {
+const Home = () => {
   const [firstName, setFirstName] = useState('');
   useEffect(() => {
     const name = localStorage.getItem('name') || 'unknow';
@@ -30,4 +30,4 @@ const home = () => {
   );
 };
 
-export default home;
+export default Home;

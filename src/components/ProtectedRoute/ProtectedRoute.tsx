@@ -5,7 +5,7 @@ export const ProtectedRoute = () => {
   const isLogged = localStorage.getItem('token');
   if (isLogged) {
     return (
-      <div>
+      <div style={{ height: '100vh', backgroundColor: '#f7f7f7' }}>
         <Header />
         <Outlet />
       </div>

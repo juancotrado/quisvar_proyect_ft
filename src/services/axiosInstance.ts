@@ -9,7 +9,7 @@ const axiosInstance = (cb: (value: boolean) => void) => {
       return req;
     },
     err => {
-      cb(true);
+      cb(false);
 
       return Promise.reject(err);
     }
@@ -23,6 +23,12 @@ const axiosInstance = (cb: (value: boolean) => void) => {
     },
     err => {
       cb(false);
+      if (!err.response) {
+        console.log('err en axios sin respose:', err.message);
+        return;
+      }
+      // console.log('err en axios con response:', err.response);
+      console.log('err en axios con response:');
       return Promise.reject(err);
     }
   );

@@ -1,37 +1,36 @@
-.container-home {
-  width: 100%;
-  flex: 1;
-  min-height: calc(100vh - var(--brand-size));
+.home {
   display: flex;
+  min-height: calc(100vh - var(--header-height));
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: F7F7F0;
-  gap: 25px;
+  background-color: var(--color-menu);
+  gap: 3rem;
 }
-/* .btn{
 
-} */
-.btn-section {
-  width: 50%;
-  display: flex;
-  gap: 48px;
-}
-.title-content {
-  display: flex;
-  gap: 10px;
+.home-title {
   text-transform: uppercase;
-  font-size: var(--size-title);
+  font-size: 3.5rem;
   color: var(--color-tertiary);
+  font-weight: 800;
+}
+.title-content-span {
+  color: var(--color-primary);
 }
 .paragraph {
   width: 70%;
   text-align: center;
-  font-size: var(--size-button);
+  font-size: var(--size-label);
   color: var(--color-secondary);
 }
+.btn-section {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 48px;
+}
 .home-btn {
-  width: 100%;
+  min-width: 25rem;
   height: 3.5rem;
   font-size: var(--size-button);
   font-weight: 600;
@@ -39,12 +38,7 @@
   transition: background-color 0.5s ease;
   border-radius: var(--radius-button);
 }
-.title-content h1 {
-  font-weight: 800;
-}
-.title-content h1 span {
-  color: var(--color-primary);
-}
+
 .btn-color-1 {
   border: 2px solid var(--color-tertiary);
   color: var(--color-tertiary);

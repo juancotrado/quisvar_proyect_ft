@@ -15,7 +15,7 @@
   --size-paragraph: 0.875rem;
   --radius-button: 12px;
   --radius-input: 8px;
-  --brand-size: 5rem;
+  --header-height: 6.5rem;
 }
 
 html {
@@ -61,5 +61,14 @@ input {
 .container {
   width: 90%;
   max-width: 1380px;
-  margin: auto;
+  margin-left: auto;
+  margin-right: auto;
+}
+.main-title {
+  color: var(--color-secondary);
+  font-size: var(--size-title);
+  font-weight: 800;
+}
+.main-title-span {
+  color: var(--color-primary);
 }

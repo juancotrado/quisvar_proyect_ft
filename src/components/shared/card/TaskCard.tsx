@@ -2,37 +2,88 @@ import icon_unresolved from '/svg/task_unresolved.svg';
 import icon_process from '/svg/task_process.svg';
 import icon_done from '/svg/task_done.svg';
 import './taskcard.css';
+import { TaskType } from '../../../types/types';
+import { axiosInstance } from '../../../services/axiosInstance';
 
-export type taskData = {
-  id: number;
-  title: string;
-  area: string;
-  description?: string;
-  status: 'UNRESOLVED' | 'PROCESS' | 'DONE';
-};
-interface TaskCard {
-  data: taskData;
+interface TaskCardProps {
+  task: TaskType;
+  getTasks: () => void;
+}
+interface BodyStatus {
+  status: string;
 }
 
-const TaskCard = ({ data }: TaskCard) => {
+const TaskCard = ({ task, getTasks }: TaskCardProps) => {
+  const handleNext = () => {
+    const { status } = task;
+    const statusBody = {
+      UNRESOLVED: {
+        status: 'PROCESS',
+      },
+      PROCESS: {
+        status: 'DONE',
+      },
+    };
+    const body = statusBody[status as keyof typeof statusBody];
+    changeStatus(body);
+  };
+  const handlePrevius = () => {
+    const { status } = task;
+    console.log(status);
+    const statusBody = {
+      DONE: {
+        status: 'PROCESS',
+      },
+      PROCESS: {
+        status: 'UNRESOLVED',
+      },
+    };
+    const body = statusBody[status as keyof typeof statusBody];
+    changeStatus(body);
+  };
+
+  const changeStatus = (body: BodyStatus) => {
+    axiosInstance
+      .patch(`/tasks/status/${task.id}`, body)
+      .then(res => {
+        console.log(res.data);
+        getTasks();
+      })
+      .catch(err => console.log(err));
+  };
   return (
     <div className="task-class">
-      <div className="task-header-card">{data.area} </div>
-      <span className={`icon-card task-${data.status.toLowerCase()}`}>
+      <div className="task-header-card">Unknow </div>
+      <span className={`icon-card task-${task.status}`}>
         <img
           src={
-            data.status === 'DONE'
+            task.status === 'DONE'
               ? icon_done
-              : data.status === 'PROCESS'
+              : task.status === 'PROCESS'
               ? icon_process
               : icon_unresolved
           }
-          alt={data.status}
+          alt={task.status}
         />
       </span>
+      {/* //tasks/status/id */}
+      {/* {tasks && <TaskCard task={tasks} />} */}
       <div className="task-content">
-        <h2>{data.title} </h2>
-        <p>{data.description}</p>
+        <h2>{task.name} </h2>
+        <p>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Numquam
+          cupiditate, ex quam rerum in aspernatur commodi impedit enim illum
+          corrupti, distinctio sed eveniet excepturi assumenda unde? Sed enim
+          consequuntur adipisci?
+        </p>
+        <div className="buttons">
+          {(task.status == 'DONE' || task.status == 'PROCESS') && (
+            <button onClick={handlePrevius}>Previus</button>
+          )}
+          {(task.status === 'UNRESOLVED' || task.status == 'PROCESS') && (
+            <button onClick={handleNext}>Next</button>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -3,8 +3,8 @@ import { NavLink, useNavigate } from 'react-router-dom';
 
 const items = [
   { title: 'Inicio', link: '/home' },
-  { title: 'Tareas', link: '/dashboard' },
-  { title: 'Areas', link: '/tasks' },
+  { title: 'Tareas', link: '/tareas' },
+  { title: 'Areas', link: '/areas' },
 ];
 const icons = [
   { name: '/svg/bell.svg', link: '/dashboard' },
@@ -23,37 +23,39 @@ const Header = () => {
   };
 
   return (
-    <header className="nav-container">
-      <figure className="header__figure">
-        <img src="/img/quisvar_logo.png" alt="" />
-      </figure>
-      <ul className="items-list">
-        {items.map((item, id) => (
-          <li key={id}>
-            <NavLink
-              to={item.link}
-              className={({ isActive }) =>
-                isActive ? 'item-nav-active' : 'item-nav-inactive'
-              }
-            >
-              {item.title}
-            </NavLink>
-          </li>
-        ))}
-      </ul>
-      <input
-        className="input__search"
-        type="text"
-        placeholder="Buscar"
-        // value=""
-      ></input>
-      <ul className="icons-list">
-        {icons.map((icon, id) => (
-          <li key={id} onClick={handleLogout}>
-            <img src={icon.name} alt={icon.name} className="icon" />
-          </li>
-        ))}
-      </ul>
+    <header className="header">
+      <nav className="nav-container container">
+        <figure className="header-figure">
+          <img src="/img/quisvar_logo.png" alt="logo QuisVar" />
+        </figure>
+        <ul className="items-list">
+          {items.map((item, id) => (
+            <li key={id}>
+              <NavLink
+                to={item.link}
+                className={({ isActive }) =>
+                  isActive ? 'item-nav-active' : 'item-nav-inactive'
+                }
+              >
+                {item.title}
+              </NavLink>
+            </li>
+          ))}
+        </ul>
+        <input
+          className="input-search"
+          type="text"
+          placeholder="Buscar"
+          // value=""
+        ></input>
+        <ul className="icons-list">
+          {icons.map((icon, id) => (
+            <li key={id} onClick={handleLogout}>
+              <img src={icon.name} alt={icon.name} className="icon" />
+            </li>
+          ))}
+        </ul>
+      </nav>
     </header>
   );
 };

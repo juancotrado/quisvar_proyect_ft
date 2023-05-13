@@ -1,8 +1,8 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { Dashboard, Home, Login, NotFound, Task } from '../pages';
-import { ProtectedRoute } from '../components/protectedRoute/ProtectedRoute';
 import WorkArea from '../pages/workArea/WorkArea';
 import Projects from '../pages/projects/Projects';
+import { ProtectedRoute } from '../components';
 
 const Navigation = () => {
   return (
@@ -14,7 +14,7 @@ const Navigation = () => {
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/tareas" element={<Task />} />
+            <Route path="/tareas/:id" element={<Task />} />
             <Route path="/proyectos/:id" element={<Projects />} />
             <Route path="/areas" element={<WorkArea />} />
           </Route>

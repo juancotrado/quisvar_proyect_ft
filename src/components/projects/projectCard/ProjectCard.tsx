@@ -1,6 +1,11 @@
+import { useNavigate } from 'react-router-dom';
 import './projectCard.css';
 
 const ProjectCard = ({ project }: any) => {
+  const navigate = useNavigate();
+  const handleNext = () => {
+    navigate(`/tareas/${project.id}`);
+  };
   return (
     <div className="project-card">
       <figure className="project-card-figure">
@@ -22,7 +27,9 @@ const ProjectCard = ({ project }: any) => {
         </p>
         <div className="project-card-footer">
           <p className="project-card-task">TOTAL DE TAREAS: 1</p>
-          <p className="project-card-show">VER MAS</p>
+          <p className="project-card-show" onClick={handleNext}>
+            VER MAS
+          </p>
         </div>
       </div>
     </div>

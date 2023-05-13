@@ -2,8 +2,7 @@
   --color-primary: #0e9cd8;
   --color-secondary: #001b69;
   --color-tertiary: #203881;
-  --color-quaternay: #1040c1;
-  --color-nav-active: #27419a;
+  --color-quaternay: #27419a;
   --color-unresolved: #ff3b3b;
   --color-process: #ffd140;
   --color-done: #57d9a3;
@@ -17,7 +16,6 @@
   --radius-button: 12px;
   --radius-input: 8px;
   --brand-size: 5rem;
-  --size-labelNotFound: 5.5rem;
 }
 
 html {

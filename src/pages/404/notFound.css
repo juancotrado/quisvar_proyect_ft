@@ -2,45 +2,37 @@
   width: 100%;
   height: 100vh;
   display: flex;
-  justify-content: center;
+  flex-direction: row-reverse;
   align-items: center;
-  background-color: var(--color-nav-active);
+  background-color: var(--color-quaternay);
 }
 .notFound-figure {
-  position: relative;
-  height: 100%;
-  flex: 1.5;
+  flex: 1;
+  height: 80%;
 }
 .notFound-figure-img {
-  position: absolute;
-  top: 2rem;
-  right: 6rem;
-  width: 40%;
-  height: 95%;
-  object-fit: cover;
+  height: 100%;
+  object-fit: contain;
 }
 .notFound-contain-logo {
   position: absolute;
   top: 3rem;
-  width: 25rem;
+  width: 20rem;
   left: 2rem;
-  bottom: 2rem;
-  width: 20%;
-  height: 40%;
 }
-.label-group {
-  position: absolute;
-  left: 3rem;
-  height: 15rem;
-  display: grid;
-  width: 50%;
-}
-.notFound-label {
+.notFound-group {
+  flex: 1;
   display: flex;
-  justify-content: center;
-  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+.notFound-title {
   color: var(--color-menu);
-  font-size: var(--size-labelNotFound);
+  font-size: 6rem;
+}
+.notFound-span {
+  display: block;
 }
 .notFound-paragraph {
   width: 100%;
@@ -49,13 +41,10 @@
   color: var(--color-menu);
 }
 .notFound-btn {
-  display: flex;
-  justify-content: right;
-  width: 6.35rem;
-  height: 2rem;
-  border-radius: 8px;
+  cursor: pointer;
+  background-color: var(--color-quaternay);
   font-size: var(--size-button);
   font-weight: bold;
-  border: 2px solid white;
   color: var(--color-menu);
+  text-decoration: underline;
 }

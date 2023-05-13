@@ -33,7 +33,7 @@ header {
   color: white;
   border-radius: 10px;
   padding: 10px;
-  background-color: var(--color-nav-active);
+  background-color: var(--color-quaternay);
 }
 .item-nav-inactive {
   color: white;

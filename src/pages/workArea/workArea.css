@@ -1,0 +1,19 @@
+.area {
+  margin-top: 3rem;
+}
+.area-title {
+  color: var(--color-secondary);
+  font-size: var(--size-title);
+  font-weight: 800;
+}
+.area-title-span {
+  color: var(--color-primary);
+}
+.area-card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 3rem;
+}

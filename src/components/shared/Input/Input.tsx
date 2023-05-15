@@ -16,7 +16,7 @@ const InputText = ({ label, ...props }: InputTextProps) => {
       <div className="input-option">
         <input {...props} className="input-area" />
         {props.type == 'password' ? (
-          <img src={Eye} alt={Eye} className="icon" />
+          <img src={Eye} alt={Eye} className="input-icon" />
         ) : null}
       </div>
     </div>

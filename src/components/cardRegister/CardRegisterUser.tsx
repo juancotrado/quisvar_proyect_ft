@@ -1,7 +1,14 @@
 import Input from '../../components/shared/Input/Input';
+import { motion } from 'framer-motion';
 import './CardRegisterUser.css';
+import { useState } from 'react';
 
 const CardRegisterUser = () => {
+  const [selectedValue, setSelectedValue] = useState('');
+
+  const handleSelectChange = (event: any) => {
+    setSelectedValue(event.target.value);
+  };
   return (
     <div className="card-register-user">
       <h1>REGISTRO DE NUEVO USUARIO</h1>
@@ -14,10 +21,26 @@ const CardRegisterUser = () => {
       <div className="col">
         <Input placeholder="N°" label="DNI" />
         <Input placeholder="Celular" label="Celular" />
-        <Input placeholder="--Seleccione--" label="Área" />
+        <div className="select-area">
+          <label htmlFor="email" className="input-label">
+            Area
+          </label>
+          <select
+            value={selectedValue}
+            onChange={handleSelectChange}
+            className="input-select"
+          >
+            <option>Seleccione</option>
+            <option value="option1">Option 1</option>
+            <option value="option2">Option 2</option>
+            <option value="option3">Option 3</option>
+          </select>
+        </div>
       </div>
       <div className="btn-build">
-        <button className="btn">CREAR</button>
+        <motion.button className="btn" whileTap={{ scale: 0.9 }}>
+          CREAR
+        </motion.button>
       </div>
     </div>
   );

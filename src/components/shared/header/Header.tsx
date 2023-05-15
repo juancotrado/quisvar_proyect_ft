@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import './header.css';
 import { NavLink, useNavigate } from 'react-router-dom';
 
@@ -50,8 +51,15 @@ const Header = () => {
         ></input>
         <ul className="icons-list">
           {icons.map((icon, id) => (
-            <li key={id} onClick={handleLogout}>
-              <img src={icon.name} alt={icon.name} className="icon" />
+            <li key={id}>
+              <motion.img
+                whileHover={{ scale: 1.1 }}
+                whileTap={{ scale: 0.9 }}
+                onClick={handleLogout}
+                src={icon.name}
+                alt={icon.name}
+                className="icon"
+              />
             </li>
           ))}
         </ul>

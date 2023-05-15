@@ -5,6 +5,8 @@ import Input from './shared/Input/Input';
 import { ProtectedRoute } from './ProtectedRoute/ProtectedRoute';
 import CardRegisterTask from './cardRegisterTask/CardRegisterTask';
 import CardRegisterProject from './cardRegisterProject/CardRegisterProject';
+import Select from './shared/select/Select';
+import TextArea from './shared/textArea/TextArea';
 
 export {
   Alert,
@@ -14,4 +16,6 @@ export {
   ProtectedRoute,
   CardRegisterTask,
   CardRegisterProject,
+  Select,
+  TextArea,
 };

@@ -1,0 +1,20 @@
+.input-container {
+  display: grid;
+  gap: 1rem;
+  width: 100%;
+}
+.input-label {
+  width: 100%;
+  height: 25px;
+  color: #203881;
+  font-size: var(--size-label);
+  font-family: 'Montserrat', sans-serif;
+}
+.input-select {
+  height: 3.5rem;
+  width: 100%;
+  border: 1px solid var(--color-secondary);
+  border-radius: 5px;
+  padding: 0.5rem;
+  font-size: var(--size-input);
+}

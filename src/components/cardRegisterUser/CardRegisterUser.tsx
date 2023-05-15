@@ -1,14 +1,15 @@
 import Input from '../shared/Input/Input';
 import { motion } from 'framer-motion';
 import './CardRegisterUser.css';
-import { useState } from 'react';
+import { Select } from '..';
 
 const CardRegisterUser = () => {
-  const [selectedValue, setSelectedValue] = useState('');
-
-  const handleSelectChange = (event: any) => {
-    setSelectedValue(event.target.value);
-  };
+  const data1 = [
+    //endpoint data answer
+    { name: 'Salud' },
+    { name: 'Saneamiento' },
+    { name: 'Carreteras' },
+  ];
   return (
     <div className="card-register-user">
       <h1>REGISTRO DE NUEVO USUARIO</h1>
@@ -21,21 +22,7 @@ const CardRegisterUser = () => {
       <div className="col">
         <Input placeholder="N°" label="DNI" />
         <Input placeholder="Celular" label="Celular" />
-        <div className="select-area">
-          <label htmlFor="email" className="input-label">
-            Area
-          </label>
-          <select
-            value={selectedValue}
-            onChange={handleSelectChange}
-            className="input-select"
-          >
-            <option>Seleccione</option>
-            <option value="option1">Option 1</option>
-            <option value="option2">Option 2</option>
-            <option value="option3">Option 3</option>
-          </select>
-        </div>
+        <Select label="Area" data={data1} />
       </div>
       <div className="btn-build">
         <motion.button className="btn" whileTap={{ scale: 0.9 }}>

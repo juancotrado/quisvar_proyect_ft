@@ -1,9 +1,10 @@
 import Alert from './shared/alert/Alert';
 import Header from './shared/header/Header';
-import CardRegisterUser from './cardRegister/CardRegisterUser';
+import CardRegisterUser from './cardRegisterUser/CardRegisterUser';
 import Input from './shared/Input/Input';
 import { ProtectedRoute } from './ProtectedRoute/ProtectedRoute';
-import CardRegisterTask from './cardTaskRegister/CardRegisterTask';
+import CardRegisterTask from './cardRegisterTask/CardRegisterTask';
+import CardRegisterProject from './cardRegisterProject/CardRegisterProject';
 
 export {
   Alert,
@@ -12,4 +13,5 @@ export {
   Input,
   ProtectedRoute,
   CardRegisterTask,
+  CardRegisterProject,
 };

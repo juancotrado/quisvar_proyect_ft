@@ -17,8 +17,8 @@ const ProjectCard = ({ project }: any) => {
           <p className="project-card-date">Fecha Limite: {project.untilDate}</p>
         </div>
         <h4 className="project-card-cordinator">
-          COORDINADOR: {project.Users.profile.firstName}{' '}
-          {project.Users.profile.lastName}
+          COORDINADOR: {project.moderator.profile.firstName}{' '}
+          {project.moderator.profile.lastName}
         </h4>
         <p className="project-card-description">
           {project.description

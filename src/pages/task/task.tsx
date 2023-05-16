@@ -13,25 +13,35 @@ const socket = io('http://localhost:8081');
 
 const Task = () => {
   const [tasks, setTasks] = useState<TaskType[] | null>(null);
+  const [idProject, setIdProject] = useState('example');
   const { id } = useParams();
 
   useEffect(() => {
     if (!tasks) {
       getTasks();
     }
-    const reciveData = (value: any) => setTasks(value);
-    socket.on('tasks', reciveData);
-    return () => {
-      socket.off('tasks', reciveData);
+
+    const reciveData = (value: any) => {
+      console.log('projectName', value.id);
+      console.log('projectName2', idProject);
+
+      if (value.id == idProject) {
+        setTasks(value.tasks);
+      }
     };
-  }, []);
+    socket.on('data', reciveData);
+    return () => {
+      socket.off('data', reciveData);
+    };
+  }, [tasks]);
 
   const getTasks = () => {
     axiosInstance
       .get(`/projects/${id}`)
       .then(res => {
         setTasks(res.data.tasks);
-        socket.emit('tasks', res.data.tasks);
+        setIdProject(res.data.id);
+        socket.emit('data', { tasks: res.data.tasks, id: res.data.id });
       })
       .catch(err => console.log(err));
   };

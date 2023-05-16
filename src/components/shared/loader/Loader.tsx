@@ -1,13 +1,26 @@
+import { useEffect, useRef, useState } from 'react';
 import './loader.css';
+import { loader$ } from '../../../services/sharingSubject';
+import { Subscription } from 'rxjs';
 
-interface LoaderProps {
-  isLoading: boolean;
-}
+const Loader = () => {
+  const [isLoader, setIsLoader] = useState<boolean>(false);
 
-const Loader = ({ isLoading }: LoaderProps) => {
+  const handleLoaderRef = useRef<Subscription>(new Subscription());
+
+  useEffect(() => {
+    handleLoaderRef.current = loader$.getSubject.subscribe((value: boolean) =>
+      setIsLoader(value)
+    );
+
+    return () => {
+      handleLoaderRef.current.unsubscribe();
+    };
+  }, []);
+
   return (
     <>
-      {isLoading && (
+      {isLoader && (
         <div className="loading">
           <span className="loader"></span>
         </div>

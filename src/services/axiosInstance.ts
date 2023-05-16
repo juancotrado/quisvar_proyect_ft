@@ -1,7 +1,9 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { SnackbarUtilities } from '../utils/SnackbarManager';
+import { Subject } from 'rxjs';
 
 const API_BASE_URL = 'http://127.0.0.1:8081/api/v1';
+export const isLoader$ = new Subject<boolean>();
 
 export const axiosInstance: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -16,20 +18,21 @@ const setAuthorizationHeader = (config: AxiosRequestConfig) => {
   }
 };
 
-export const axiosInterceptor = (cb: (value: boolean) => void) => {
+export const axiosInterceptor = () => {
   axiosInstance.interceptors.request.use(req => {
-    cb(true);
+    isLoader$.next(true);
     setAuthorizationHeader(req);
     return req;
   });
   axiosInstance.interceptors.response.use(
     res => {
-      cb(false);
+      isLoader$.next(false);
+
       return res;
     },
     err => {
-      cb(false);
       if (!err.response) {
+        isLoader$.next(false);
         SnackbarUtilities.error(err.message);
         return Promise.reject(err);
       }

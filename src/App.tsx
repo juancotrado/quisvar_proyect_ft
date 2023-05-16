@@ -1,18 +1,16 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Navigation from './routes/Navigation';
 import Loader from './components/shared/loader/Loader';
 import { SnackbarUtilitiesConfigurator } from './utils/SnackbarManager';
-import { axiosInterceptor } from './services/axiosInstance';
+import { isLoader$ } from './services/axiosInstance';
 
 function App() {
   const [isLoader, setisLoader] = useState(false);
 
-  const handleLoader = (value: boolean) => {
-    setisLoader(value);
-  };
-  useEffect(() => {
-    axiosInterceptor(handleLoader);
-  }, []);
+  isLoader$.subscribe({
+    next: value => setisLoader(value),
+  });
+
   return (
     <>
       <SnackbarUtilitiesConfigurator />

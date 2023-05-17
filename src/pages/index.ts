@@ -1,5 +1,5 @@
-import Login from './login/index';
-import Home from './home/index';
+import Login from './login/login';
+import Home from './home/home';
 import Dashboard from './dashboard/index';
 import NotFound from './404/NotFound';
 import Task from './task/task';

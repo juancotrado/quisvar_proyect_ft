@@ -42,7 +42,7 @@ select:focus {
   border-radius: 5px;
   background-color: white;
 }
-.col {
+.col-input {
   display: flex;
   justify-content: space-between;
   gap: 2rem;

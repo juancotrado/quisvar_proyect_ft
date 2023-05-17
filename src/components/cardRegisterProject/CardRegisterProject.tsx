@@ -20,11 +20,11 @@ const CardRegisterProject = () => {
     <div className="card-register-user">
       <h1>REGISTRO DE PROYECTOS</h1>
       <Input label="Nombre del Proyeto" placeholder="Nombre" />
-      <div className="col">
+      <div className="col-input">
         <Select label="Coordinador" data={data2} />
         <Select label="Area de trabajo" data={data1} />
       </div>
-      <div className="col">
+      <div className="col-input">
         <Input label="Fecha Inicio" type="date" />
         <Input label="Fecha Limite" type="date" />
       </div>

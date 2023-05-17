@@ -9,7 +9,7 @@ import { TaskType } from '../../types/types';
 
 import io from 'socket.io-client';
 
-const socket = io('http://localhost:8081');
+const socket = io('http://localhost:8082');
 
 const Task = () => {
   const [tasks, setTasks] = useState<TaskType[] | null>(null);
@@ -50,7 +50,6 @@ const Task = () => {
   return (
     <div className="container-list">
       <div className="title-list">
-        <img className="task-icon" src={list_icon} alt="task-list" />
         <h2>Lista de tareas</h2>
       </div>
       <section>

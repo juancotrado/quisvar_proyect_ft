@@ -1,0 +1,21 @@
+.btn-main {
+    display: flex;
+    gap: 1rem;
+    margin: auto;
+    align-items: center;
+    border: 2px solid var(--color-primary);
+    border-radius: var(--radius-button);
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: var(--size-button);
+}
+
+.btn-main img {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.btn-delete {
+    border: 2px solid var(--color-unresolved);
+}

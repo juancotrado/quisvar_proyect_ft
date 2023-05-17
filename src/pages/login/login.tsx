@@ -28,6 +28,8 @@ const Login = () => {
       const personalData = {
         id: response.data.id,
         name: response.data.profile.firstName,
+        lastName: response.data.profile.lastName,
+        role: response.data.role,
       };
       localStorage.setItem('token', response.data.token);
       localStorage.setItem('personalData', JSON.stringify(personalData));

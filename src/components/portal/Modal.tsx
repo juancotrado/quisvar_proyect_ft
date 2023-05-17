@@ -26,10 +26,11 @@ const dropIn = {
 interface ModalProps {
   children: React.ReactNode;
   isOpen?: boolean;
+  size?: number;
   onChangeStatus?: () => void;
 }
 
-const Modal = ({ children, isOpen, onChangeStatus }: ModalProps) => {
+const Modal = ({ children, isOpen, size, onChangeStatus }: ModalProps) => {
   if (!isOpen) return null;
   return (
     <Portal wrapperId="modal">
@@ -39,7 +40,7 @@ const Modal = ({ children, isOpen, onChangeStatus }: ModalProps) => {
         className="modal-main"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        exit={{ opacity: 0, transition: { delay: 2} }}
+        exit={{ opacity: 0, transition: { delay: 2 } }}
       >
         <motion.div
           className={`modal-children`}
@@ -47,6 +48,7 @@ const Modal = ({ children, isOpen, onChangeStatus }: ModalProps) => {
           variants={dropIn}
           initial="hidden"
           animate="visible"
+          style={{ minWidth: `${size ? size : 100}%` }}
           exit="leave"
         >
           {children}

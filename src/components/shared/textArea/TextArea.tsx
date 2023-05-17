@@ -12,7 +12,7 @@ const TextArea = ({ label, ...props }: TextAreaProps) => {
           {label}
         </label>
       )}
-      <textarea {...props} className="text-area" />
+      <textarea {...props} rows={5} placeholder='Opcional...'/>
     </div>
   );
 };

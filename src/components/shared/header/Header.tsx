@@ -31,7 +31,7 @@ const Header = () => {
 
   const items = [
     { title: 'Inicio', link: '/home' },
-    { title: 'Tareas', link: '/tareas' },
+    { title: 'Tareas', link: '/mis-tareas' },
     { title: 'Areas', link: '/areas' },
   ];
 

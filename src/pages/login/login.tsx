@@ -25,9 +25,12 @@ const Login = () => {
     };
     try {
       const response = await axiosInstance.post('/auth/login', body);
-      console.log(response);
+      const personalData = {
+        id: response.data.id,
+        name: response.data.profile.firstName,
+      };
       localStorage.setItem('token', response.data.token);
-      localStorage.setItem('name', response.data.profile.firstName);
+      localStorage.setItem('personalData', JSON.stringify(personalData));
       navigate('/home');
     } catch (error) {
       if (axios.isAxiosError(error)) {

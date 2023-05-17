@@ -2,22 +2,28 @@ import { useEffect, useState } from 'react';
 import './home.css';
 import { useNavigate } from 'react-router-dom';
 // interface HomePageProps {};
-
+const initValues = {
+  name: 'unknown',
+  id: null,
+};
 const Home = () => {
-  const [firstName, setFirstName] = useState('');
+  const [personalData, setPersonalData] = useState(initValues);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const name = localStorage.getItem('name') || 'unknow';
-    setFirstName(name);
+    const personalData = localStorage.getItem('personalData') || null;
+    if (!personalData) return;
+    setPersonalData(JSON.parse(personalData));
   }, []);
 
-  const handleNavigate = () => navigate('/areas');
+  const handleNavigateToAreas = () => navigate('/areas');
+  const handleNavigateMyWorks = () => navigate('/mis-tareas');
   return (
     <div className="home">
       <h1 className="home-title">
-        BIENVENIDO <span className="title-content-span">{firstName}</span>
+        BIENVENIDO{' '}
+        <span className="title-content-span">{personalData.name}</span>
       </h1>
       <p className="paragraph">
         ¡Bienvenido a nuestro sistema de asignación de tareas! Aquí podrás
@@ -26,8 +32,16 @@ const Home = () => {
         nuestra plataforma.
       </p>
       <div className="btn-section">
-        <button className="home-btn btn-color-1">Tus tareas</button>
-        <button className="home-btn btn-color-2" onClick={handleNavigate}>
+        <button
+          className="home-btn btn-color-1"
+          onClick={handleNavigateMyWorks}
+        >
+          Tus tareas
+        </button>
+        <button
+          className="home-btn btn-color-2"
+          onClick={handleNavigateToAreas}
+        >
           Áreas
         </button>
       </div>

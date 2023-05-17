@@ -30,7 +30,7 @@ const NotFound = () => {
         />
       </div>
       <div className="notFound-contain-logo">
-        <img src="/img/quisvar_logo2.png" alt="logo" />
+        <img src="/img/quisvar_logo.png" alt="logo" />
       </div>
     </div>
   );

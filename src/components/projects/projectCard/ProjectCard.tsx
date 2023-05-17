@@ -1,11 +1,37 @@
 import { useNavigate } from 'react-router-dom';
 import './projectCard.css';
+import useRole from '../../../hooks/useRole';
 
-const ProjectCard = ({ project }: any) => {
+export type ProjectType = {
+  id: number;
+  description?: string;
+  name: string;
+  price: number;
+  status: boolean;
+  startDate: Date;
+  untilDate: Date;
+  moderator: {
+    profile: {
+      firstName: string;
+      lastName: string;
+      phone?: null;
+      userId: string;
+    };
+  };
+};
+
+interface ProjectCardProps {
+  project: ProjectType;
+}
+
+const ProjectCard = ({ project }: ProjectCardProps) => {
   const navigate = useNavigate();
+  const { role } = useRole();
+
   const handleNext = () => {
     navigate(`/tareas/${project.id}`);
   };
+
   return (
     <div className="project-card">
       <figure className="project-card-figure">
@@ -14,7 +40,7 @@ const ProjectCard = ({ project }: any) => {
       <div className="project-card-main">
         <div className="projec-card-header">
           <h3 className="project-card-subtitle">{project.name}</h3>
-          <p className="project-card-date">Fecha Limite: {project.untilDate}</p>
+          {/* <p className="project-card-date">Fecha Limite: {project.untilDate}</p> */}
         </div>
         <h4 className="project-card-cordinator">
           COORDINADOR: {project.moderator.profile.firstName}{' '}

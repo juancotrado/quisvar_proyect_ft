@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import './areaCard.css';
-import { useEffect, useState } from 'react';
+import useRole from '../../../hooks/useRole';
 
 interface AreaCardProps {
   name: string;
@@ -10,18 +10,10 @@ interface AreaCardProps {
 }
 const AreaCard = ({ name, id, total, onClick }: AreaCardProps) => {
   const navigate = useNavigate();
-  const [role, setRole] = useState('EMPLOYEE');
-
+  const { role } = useRole();
   const handleNext = () => {
     navigate(`/proyectos/${id}`);
   };
-
-  useEffect(() => {
-    const userInfo = localStorage.getItem('personalData');
-    if (typeof userInfo !== 'string') return;
-    const _user = JSON.parse(userInfo);
-    setRole(_user.role);
-  }, []);
 
   return (
     <div className="area-card" onClick={handleNext}>

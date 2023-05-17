@@ -4,6 +4,7 @@ import './workArea.css';
 import { axiosInstance } from '../../services/axiosInstance';
 import { CardRegisterArea } from '../../components';
 import Button from '../../components/shared/button/Button';
+import useRole from '../../hooks/useRole';
 
 interface Areas {
   id: number;
@@ -15,17 +16,9 @@ const WorkArea = () => {
   const [areas, setAreas] = useState<Areas[] | null>(null);
   const [isOpen, setIsOpen] = useState(false);
   const [areaData, setAreaData] = useState<Areas | null>(null);
-  const [role, setRole] = useState('EMPLOYEE');
-
+  const { role } = useRole();
   useEffect(() => {
     getAreas();
-  }, []);
-
-  useEffect(() => {
-    const userInfo = localStorage.getItem('personalData');
-    if (typeof userInfo !== 'string') return;
-    const _user = JSON.parse(userInfo);
-    setRole(_user.role);
   }, []);
 
   const getAreas = async () => {

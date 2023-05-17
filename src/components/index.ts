@@ -8,16 +8,18 @@ import CardRegisterTask from './cardRegisterTask/CardRegisterTask';
 import CardRegisterProject from './cardRegisterProject/CardRegisterProject';
 import Select from './shared/select/Select';
 import TextArea from './shared/textArea/TextArea';
+import CardEditUser from './cardEditProfile/CardEditProfile';
 
 export {
   Alert,
   Header,
-  CardRegisterUser,
   Input,
   ProtectedRoute,
+  CardRegisterUser,
   CardRegisterArea,
   CardRegisterTask,
   CardRegisterProject,
+  CardEditUser,
   Select,
   TextArea,
 };

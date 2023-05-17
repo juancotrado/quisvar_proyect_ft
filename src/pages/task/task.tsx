@@ -6,47 +6,44 @@ import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
 import { TaskType } from '../../types/types';
-
-import io from 'socket.io-client';
-
-const socket = io('http://localhost:8081');
+import useSocket from '../../hooks/useSocket';
 
 const Task = () => {
   const [tasks, setTasks] = useState<TaskType[] | null>(null);
-  const [idProject, setIdProject] = useState('example');
+  const socket = useSocket();
   const { id } = useParams();
 
   useEffect(() => {
-    if (!tasks) {
-      getTasks();
-    }
-
-    const reciveData = (value: any) => {
-      console.log('projectName', value.id);
-      console.log('projectName2', idProject);
-
-      if (value.id == idProject) {
-        setTasks(value.tasks);
-      }
-    };
-    socket.on('data', reciveData);
-    return () => {
-      socket.off('data', reciveData);
-    };
-  }, [tasks]);
-
-  const getTasks = () => {
     axiosInstance
       .get(`/projects/${id}`)
       .then(res => {
         setTasks(res.data.tasks);
-        setIdProject(res.data.id);
-        socket.emit('data', { tasks: res.data.tasks, id: res.data.id });
+        socket.emit('data', res.data.tasks);
       })
       .catch(err => console.log(err));
+
+    return () => {
+      socket.disconnect();
+    };
+  }, [id, socket]);
+
+  useEffect(() => {
+    socket.on('data', (tasksSocket: TaskType[]) => {
+      if (tasks && tasksSocket[0].projectId === tasks[0].projectId) {
+        setTasks(tasksSocket);
+      }
+    });
+  }, [socket, tasks]);
+
+  const editTasks = (id: number, status: string) => {
+    if (!tasks) return;
+    const newTasks = tasks?.map(task =>
+      task.id == id ? { ...task, status } : task
+    );
+    socket.emit('update-status', { id, body: { status } });
+    socket.emit('data', newTasks);
+    setTasks(newTasks);
   };
-  // const handleReload = () => setNeedReload(true);
-  // console.log(needReload);
   return (
     <div className="container-list">
       <div className="title-list">
@@ -59,25 +56,36 @@ const Task = () => {
           {tasks &&
             tasks
               .filter(({ status }) => status === 'UNRESOLVED')
-              .map(task => <TaskCard task={task} getTasks={getTasks} />)}
+              .map(task => (
+                <TaskCard key={task.id} task={task} editTasks={editTasks} />
+              ))}
         </div>
         <div className="container-task container-process">
           <h3>Haciendo</h3>
           {tasks &&
             tasks
               .filter(({ status }) => status === 'PROCESS')
-              .map(task => <TaskCard task={task} getTasks={getTasks} />)}
+              .map(task => (
+                <TaskCard key={task.id} task={task} editTasks={editTasks} />
+              ))}
         </div>
         <div className="container-task container-done">
           <h3>Hecho</h3>
           {tasks &&
             tasks
               .filter(({ status }) => status === 'DONE')
-              .map(task => <TaskCard task={task} getTasks={getTasks} />)}
+              .map(task => (
+                <TaskCard key={task.id} task={task} editTasks={editTasks} />
+              ))}
 
           {/* {tasks && <TaskCard task={tasks} />} */}
         </div>
       </section>
+      {/* <div className="tasks-online-container">
+        <h4 className="task-online-number">
+          Usuarios Conectados: {userOnline}
+        </h4>
+      </div> */}
     </div>
   );
 };

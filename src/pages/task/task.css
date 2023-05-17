@@ -60,3 +60,7 @@ section {
 .container-done {
   border-top: 0.6rem var(--color-done) solid;
 }
+.tasks-online-container {
+  position: fixed;
+  bottom: 0;
+}

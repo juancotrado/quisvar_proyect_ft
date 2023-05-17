@@ -7,13 +7,13 @@ import { axiosInstance } from '../../../services/axiosInstance';
 
 interface TaskCardProps {
   task: TaskType;
-  getTasks: () => void;
+  editTasks: (id: number, status: string) => void;
 }
 interface BodyStatus {
   status: string;
 }
 
-const TaskCard = ({ task, getTasks }: TaskCardProps) => {
+const TaskCard = ({ task, editTasks }: TaskCardProps) => {
   const handleNext = () => {
     const { status } = task;
     const statusBody = {
@@ -25,7 +25,7 @@ const TaskCard = ({ task, getTasks }: TaskCardProps) => {
       },
     };
     const body = statusBody[status as keyof typeof statusBody];
-    changeStatus(body);
+    editTasks(task.id, body.status);
   };
   const handlePrevius = () => {
     const { status } = task;
@@ -39,18 +39,9 @@ const TaskCard = ({ task, getTasks }: TaskCardProps) => {
       },
     };
     const body = statusBody[status as keyof typeof statusBody];
-    changeStatus(body);
+    editTasks(task.id, body.status);
   };
 
-  const changeStatus = (body: BodyStatus) => {
-    axiosInstance
-      .patch(`/tasks/status/${task.id}`, body)
-      .then(res => {
-        console.log(res.data);
-        getTasks();
-      })
-      .catch(err => console.log(err));
-  };
   return (
     <div className="task-class">
       <div className="task-header-card">Unknow </div>

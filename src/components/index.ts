@@ -9,6 +9,8 @@ import CardRegisterProject from './cardRegisterProject/CardRegisterProject';
 import Select from './shared/select/Select';
 import TextArea from './shared/textArea/TextArea';
 import CardEditUser from './cardEditProfile/CardEditProfile';
+import UserDetail from './userDetail/UserDetail';
+import Menu from './shared/menu/Menu';
 
 export {
   Alert,
@@ -22,4 +24,6 @@ export {
   CardEditUser,
   Select,
   TextArea,
+  UserDetail,
+  Menu,
 };

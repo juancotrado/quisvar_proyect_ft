@@ -4,11 +4,13 @@ import Modal from '../portal/Modal';
 import Button from '../shared/button/Button';
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
+import ButtonDelete from '../shared/button/ButtonDelete';
 
 interface CardRegisterAreaProps {
   isOpen: boolean;
   onChangeStatus: () => void;
-  dataWorkArea?: WorkArea;
+  onSave?: () => void;
+  dataWorkArea?: WorkArea | null;
 }
 
 type WorkArea = {
@@ -27,6 +29,7 @@ const CardRegisterArea = ({
   isOpen,
   onChangeStatus,
   dataWorkArea,
+  onSave,
 }: CardRegisterAreaProps) => {
   const [data, setData] = useState<WorkArea>(InitialValues);
   const debounceRef = useRef<NodeJS.Timeout>();
@@ -40,16 +43,15 @@ const CardRegisterArea = ({
   const sendForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (dataWorkArea) {
-      console.log('put');
+      axiosInstance
+        .put(`/workareas/${data.id}`, data)
+        .then(successfulShipment)
+        .catch(err => console.log(err.message));
     } else {
-      console.log('post');
-      // axiosInstance
-      //   .post('/workareas', data)
-      //   .then(() => {
-      //     onChangeStatus();
-      //     setData(InitialValues);
-      //   })
-      //   .catch(err => console.log(err.message));
+      axiosInstance
+        .post(`/workareas`, data)
+        .then(successfulShipment)
+        .catch(err => console.log(err.message));
     }
   };
 
@@ -63,17 +65,24 @@ const CardRegisterArea = ({
     }, 250);
   };
 
+  const successfulShipment = () => {
+    onSave?.();
+    onChangeStatus();
+    setData(InitialValues);
+  };
+
+  const closeFunctions = () => {
+    onChangeStatus();
+    setData(InitialValues);
+  };
+
   return (
-    <Modal
-      isOpen={isOpen}
-      onChangeStatus={() => {
-        onChangeStatus();
-        setData(InitialValues);
-      }}
-      size={50}
-    >
+    <Modal isOpen={isOpen} onChangeStatus={closeFunctions} size={50}>
       <form onSubmit={sendForm} className="card-register-area">
-        <h1>REGISTRAR AREA</h1>
+        <span className="close-icon" onClick={closeFunctions}>
+          <img src="/svg/close.svg" alt="pencil" />
+        </span>
+        <h1>{dataWorkArea ? 'ACTUALIZAR AREA' : 'REGISTRAR AREA'}</h1>
         <div className="col">
           <Input
             defaultValue={data.name}
@@ -90,12 +99,24 @@ const CardRegisterArea = ({
             onChange={handleArea}
             placeholder="Opcional"
           />
-          <Button
-            text="CREAR"
-            className="btn-area"
-            whileTap={{ scale: 0.9 }}
-            type="submit"
-          />
+          <div className="btn-contain">
+            <Button
+              text={dataWorkArea ? 'ACTUALIZAR' : 'CREAR'}
+              className="btn-area"
+              whileTap={{ scale: 0.9 }}
+              type="submit"
+            />
+            {dataWorkArea && (
+              <ButtonDelete
+                text={'ELIMINAR'}
+                className="btn-area btn-delete"
+                whileTap={{ scale: 0.9 }}
+                url={`/workareas/${data.id}`}
+                type="button"
+                onSave={successfulShipment}
+              />
+            )}
+          </div>
         </div>
       </form>
     </Modal>

@@ -1,7 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
-import axios from 'axios';
 
 import { UserLogin } from '../../interfaces/intefaces';
 import { axiosInstance } from '../../services/axiosInstance';
@@ -28,6 +27,8 @@ const Login = () => {
       const personalData = {
         id: res.data.id,
         name: res.data.profile.firstName,
+        lastName: res.data.profile.lastName,
+        role: res.data.role,
       };
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('personalData', JSON.stringify(personalData));

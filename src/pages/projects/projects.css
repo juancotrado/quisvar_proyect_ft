@@ -1,6 +1,11 @@
 .project {
   margin-top: 3rem;
 }
+.project-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 .project-card-container {
   /* /* display: flex;
   flex-wrap: wrap;

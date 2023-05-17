@@ -4,6 +4,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
 import { toggle$ } from '../../../services/sharingSubject';
+import { Menu } from '../..';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -23,9 +24,14 @@ const Header = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleList = () => {
+    setIsOpen(false);
+    navigate('lista-de-usuarios');
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('name');
+    localStorage.removeItem('personalData');
     navigate('login');
   };
 
@@ -45,6 +51,14 @@ const Header = () => {
     { name: '/svg/icon.svg', link: '/dashboard', action: handleLogout },
     { name: '/svg/Profile Avatar.svg', link: '/dashboard', action: toggleMenu },
   ];
+
+  const menu = [
+    { name: 'Perfil', action: () => {} },
+    { name: 'Lista', action: handleList },
+    { name: 'Option 3', action: () => {} },
+    { name: 'Salir', action: handleLogout },
+  ];
+
   return (
     <header className="header">
       <nav className="nav-container container">
@@ -85,46 +99,7 @@ const Header = () => {
             </li>
           ))}
         </ul>
-        {isOpen && (
-          <motion.ul
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.5 }}
-            className="header-toggle"
-          >
-            <motion.li
-              whileTap={{ scale: 0.9 }}
-              onClick={() => console.log('hola')}
-              style={{ cursor: 'pointer', userSelect: 'none' }}
-            >
-              {' '}
-              &#127814; Perfil
-            </motion.li>
-            <li
-              onClick={() => console.log('hola')}
-              style={{ cursor: 'pointer' }}
-            >
-              {' '}
-              &#127814; Opcion 2
-            </li>
-            <li
-              onClick={() => console.log('hola')}
-              style={{ cursor: 'pointer' }}
-            >
-              {' '}
-              &#127814; Option 3
-            </li>
-            <motion.li
-              whileTap={{ scale: 0.9 }}
-              onClick={() => handleLogout()}
-              style={{ cursor: 'pointer', userSelect: 'none' }}
-            >
-              {' '}
-              &#127814; Salir
-            </motion.li>
-          </motion.ul>
-        )}
+        {isOpen && <Menu data={menu} />}
       </nav>
     </header>
   );

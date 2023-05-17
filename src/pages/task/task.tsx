@@ -1,6 +1,5 @@
 // import React from 'react';
 import './task.css';
-import list_icon from '/svg/task_list.svg';
 import TaskCard from '../../components/shared/card/TaskCard';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
@@ -47,7 +46,6 @@ const Task = () => {
   return (
     <div className="container-list">
       <div className="title-list">
-        <img className="task-icon" src={list_icon} alt="task-list" />
         <h2>Lista de tareas</h2>
       </div>
       <section>

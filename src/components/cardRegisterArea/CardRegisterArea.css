@@ -15,18 +15,32 @@
   gap: 1rem;
 }
 
+.close-icon {
+  position: absolute;
+  top: 2rem;
+  right: 2rem;
+  width: 1.3rem;
+  border-radius: 50%;
+}
+
+.btn-contain {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}
+
 .btn-area {
-  min-width: 50%;
-  margin: auto;
-  padding: 0.5rem 0;
-  border-radius: var(--radius-button);
-  font-size: var(--size-button);
-  font-weight: bold;
-  background-color: var(--color-primary);
-  color: white;
-  cursor: pointer;
+  max-width: 50%;
+  color: var(--color-primary);
+  border-color: var(--color-primary);
   transition: background-color 0.5s ease;
   /* margin-top: calc(1rem + 25px); */
+}
+
+.btn-delete {
+  border-color: var(--color-unresolved);
+  color: #fff;
+  background-color: var(--color-unresolved);
 }
 
 .btn:hover {

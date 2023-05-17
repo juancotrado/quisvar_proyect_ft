@@ -8,20 +8,22 @@ const UserDetail = ({ user, index }: any) => {
       <td className="user-info">
         <div className="name-container">
           <img src="/svg/Profile Avatar.svg" alt="" className="icon" />
-          <h1 className="list-name">{user.name}</h1>
+          <h1 className="list-name">
+            {user.profile.firstName + ' ' + user.profile.lastName}
+          </h1>
         </div>
-        <span>{user.name}@gmail.com</span>
+        <span>{user.email}</span>
       </td>
-      <td>{user.area}</td>
+      <td>{user.workAreaId}</td>
       <td
         className={`list-status ${
           user.status ? 'user-active' : 'user-inactive'
         }`}
       >
-        {user.status}
+        {user.status ? 'Activo' : 'Inactivo'}
       </td>
-      <td>{user.dni}</td>
-      <td>{user.phone}</td>
+      <td>{user.profile.dni}</td>
+      <td>{user.profile.phone}</td>
       <td>&#9997; &#10060;</td>
     </tr>
   );

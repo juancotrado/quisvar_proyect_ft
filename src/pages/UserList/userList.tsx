@@ -1,56 +1,23 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './userList.css';
 import { UserDetail } from '../../components';
 import { motion } from 'framer-motion';
+import { axiosInstance } from '../../services/axiosInstance';
 
 const UserList = () => {
-  const [users, setUsers] = useState([
-    {
-      name: 'Diego',
-      area: 'GERENCIA',
-      status: 'ACTIVO',
-      dni: '01010101',
-      phone: '987654321',
-    },
-    {
-      name: 'Diego',
-      area: 'GERENCIA',
-      status: 'ACTIVO',
-      dni: '01010101',
-      phone: '987654321',
-    },
-    {
-      name: 'Diego',
-      area: 'GERENCIA',
-      status: 'ACTIVO',
-      dni: '01010101',
-      phone: '987654321',
-    },
-    {
-      name: 'Diego',
-      area: 'GERENCIA',
-      status: 'ACTIVO',
-      dni: '01010101',
-      phone: '987654321',
-    },
-    {
-      name: 'Diego',
-      area: 'GERENCIA',
-      status: 'ACTIVO',
-      dni: '01010101',
-      phone: '987654321',
-    },
-  ]);
+  const [users, setUsers] = useState([]);
+  useEffect(() => {
+    axiosInstance
+      .get('/users')
+      .then(res => {
+        console.log(res.data);
+        setUsers(res.data);
+      })
+      .catch(err => console.log(err));
+  }, []);
 
   const addUser = () => {
-    const newUser = {
-      name: 'Nuevo Usuario',
-      area: 'Área',
-      status: 'ACTIVO',
-      dni: '12345678',
-      phone: '123456789',
-    };
-    setUsers([...users, newUser]);
+    console.log('Agregado');
   };
   console.log(users);
 

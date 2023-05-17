@@ -23,20 +23,16 @@ const Login = () => {
       email,
       password,
     };
-    try {
-      const response = await axiosInstance.post('/auth/login', body);
+
+    axiosInstance.post('/auth/login', body).then(res => {
       const personalData = {
-        id: response.data.id,
-        name: response.data.profile.firstName,
+        id: res.data.id,
+        name: res.data.profile.firstName,
       };
-      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('token', res.data.token);
       localStorage.setItem('personalData', JSON.stringify(personalData));
       navigate('/home');
-    } catch (error) {
-      if (axios.isAxiosError(error)) {
-        console.log(error.response?.data);
-      }
-    }
+    });
   };
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -53,9 +49,10 @@ const Login = () => {
         ...data,
         [name]: value,
       });
-    }, 200);
+    }, 190);
   };
 
+  console.log(data);
   return (
     <div className="login">
       <figure className="login-figure">

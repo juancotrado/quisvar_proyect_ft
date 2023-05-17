@@ -4,16 +4,20 @@ import { InputHTMLAttributes } from 'react';
 
 interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
+  col?: boolean;
 }
 const InputText = ({ label, ...props }: InputTextProps) => {
   return (
-    <div className="input-container">
+    <div className={`${props.col ? 'input-col' : 'input-container'}`}>
       {label && (
-        <label htmlFor="email" className="input-label">
+        <label
+          htmlFor="email"
+          className={`${props.col ? 'input-label-col' : 'input-label'}`}
+        >
           {label}
         </label>
       )}
-      <div className="input-option">
+      <div className={`${props.col ? 'input-option-col' : 'input-option'}`}>
         <input {...props} className="input-area" />
         {props.type == 'password' ? (
           <img src={Eye} alt={Eye} className="input-icon" />

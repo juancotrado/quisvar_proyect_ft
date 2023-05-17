@@ -23,6 +23,11 @@ const Header = () => {
     setIsOpen(!isOpen);
   };
 
+  const handleList = () => {
+    setIsOpen(false);
+    navigate('lista-de-usuarios');
+  };
+
   const handleLogout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('personalData');
@@ -99,15 +104,16 @@ const Header = () => {
               style={{ cursor: 'pointer', userSelect: 'none' }}
             >
               {' '}
-              &#127814; Perfil
+              &#127814; Perfilz
             </motion.li>
-            <li
-              onClick={() => console.log('hola')}
-              style={{ cursor: 'pointer' }}
+            <motion.li
+              whileTap={{ scale: 0.9 }}
+              onClick={() => handleList()}
+              style={{ cursor: 'pointer', userSelect: 'none' }}
             >
               {' '}
-              &#127814; Opcion 2
-            </li>
+              &#127814; Lista
+            </motion.li>
             <li
               onClick={() => console.log('hola')}
               style={{ cursor: 'pointer' }}

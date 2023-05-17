@@ -20,7 +20,7 @@ const CardRegisterTask = () => {
       <h1>REGISTRO DE TAREAS</h1>
       <Input label="Nombre de la tarea" placeholder="Nombre" />
       <Select label="Proyecto" data={data1} />
-      <div className="col">
+      <div className="col-input">
         <Select label="Area" data={data2} />
         <Input label="Precio" placeholder="S/ 00.00" type="number" />
       </div>

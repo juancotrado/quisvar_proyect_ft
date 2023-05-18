@@ -25,11 +25,9 @@
   width: 100%;
 }
 .btn-add {
-  padding: 0.5rem;
   color: var(--color-primary);
-  font-weight: 800;
-  border: 2px solid var(--color-primary);
-  border-radius: var(--radius-button);
+  box-shadow: 0px 1.5px 4px rgba(0, 0, 0, 0.2);
+  /* background-color: var(--color-menu); */
 }
 .icon {
   width: 2rem;

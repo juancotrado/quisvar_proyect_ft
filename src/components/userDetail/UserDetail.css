@@ -28,3 +28,7 @@ td {
 .user-inactive {
   color: var(--color-unresolved);
 }
+.edit-btn {
+  display: flex;
+  gap: 1rem;
+}

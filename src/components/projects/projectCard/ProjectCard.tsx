@@ -3,6 +3,7 @@ import './projectCard.css';
 import useRole from '../../../hooks/useRole';
 import ButtonDelete from '../../shared/button/ButtonDelete';
 import Button from '../../shared/button/Button';
+import { _date } from '../../../utils/formatDate';
 
 export type ProjectType = {
   id: number;
@@ -16,17 +17,19 @@ export type ProjectType = {
     profile: {
       firstName: string;
       lastName: string;
-      phone?: null;
-      userId: string;
+      phone?: string;
+      userId: number;
     };
   };
 };
 
 interface ProjectCardProps {
+  onClick?: () => void;
   project: ProjectType;
+  onSave?: () => void;
 }
 
-const ProjectCard = ({ project }: ProjectCardProps) => {
+const ProjectCard = ({ project, onClick, onSave }: ProjectCardProps) => {
   const navigate = useNavigate();
   const { role } = useRole();
   const handleNext = () => {
@@ -42,18 +45,21 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
         <div className="projec-card-header">
           <h3 className="project-card-subtitle">{project.name}</h3>
           <div className="project-card-option">
-            <p className="project-card-date">Fecha Limite: 25/25/2022</p>
+            <p className="project-card-date">{`Fecha Límite: ${_date(
+              project.untilDate
+            )}`}</p>
             {role !== 'EMPLOYEE' && (
               <>
                 <ButtonDelete
                   icon="trash"
                   url={`/projects/${project.id}`}
                   className="project-delete-icon"
+                  onSave={onSave}
                 />
                 <Button
                   icon="pencil"
                   className="project-edit-icon"
-                  onClick={() => console.log('awas')}
+                  onClick={onClick}
                 />
               </>
             )}

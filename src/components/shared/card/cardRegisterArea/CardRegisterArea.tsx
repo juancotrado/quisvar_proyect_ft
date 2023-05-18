@@ -1,11 +1,12 @@
+import { Input, TextArea } from '../../..';
+import { axiosInstance } from '../../../../services/axiosInstance';
+import { isOpenModal$ } from '../../../../services/sharingSubject';
+import Modal from '../../../portal/Modal';
+import Button from '../../button/Button';
+import ButtonDelete from '../../button/ButtonDelete';
 import './CardRegisterArea.css';
-import { Input, TextArea } from '..';
-import Modal from '../portal/Modal';
-import Button from '../shared/button/Button';
+
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
-import { axiosInstance } from '../../services/axiosInstance';
-import ButtonDelete from '../shared/button/ButtonDelete';
-import { isOpenModal$ } from '../../services/sharingSubject';
 
 interface CardRegisterAreaProps {
   onSave?: () => void;
@@ -37,15 +38,9 @@ const CardRegisterArea = ({ dataWorkArea, onSave }: CardRegisterAreaProps) => {
   const sendForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (dataWorkArea) {
-      axiosInstance
-        .put(`/workareas/${data.id}`, data)
-        .then(successfulShipment)
-        .catch(err => console.log(err.message));
+      axiosInstance.put(`/workareas/${data.id}`, data).then(successfulShipment);
     } else {
-      axiosInstance
-        .post(`/workareas`, data)
-        .then(successfulShipment)
-        .catch(err => console.log(err.message));
+      axiosInstance.post(`/workareas`, data).then(successfulShipment);
     }
   };
 

@@ -1,17 +1,19 @@
 import './Select.css';
-import { InputHTMLAttributes, useState } from 'react';
+import { SelectHTMLAttributes } from 'react';
 
-interface SelectOptionsProps extends InputHTMLAttributes<HTMLSelectElement> {
+interface SelectOptionsProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
-  data: any;
-  onchange?: Function;
+  data: { [key: string]: string | number }[];
+  itemKey: string;
+  textField: string;
 }
-const SelectOptions = ({ label, ...props }: SelectOptionsProps) => {
-  const [selectedValue, setSelectedValue] = useState('');
-
-  const handleSelectChange = (event: any) => {
-    setSelectedValue(event.target.value);
-  };
+const SelectOptions = ({
+  label,
+  itemKey,
+  textField,
+  data,
+  ...props
+}: SelectOptionsProps) => {
   return (
     <div className="input-container">
       {label && (
@@ -19,16 +21,11 @@ const SelectOptions = ({ label, ...props }: SelectOptionsProps) => {
           {label}
         </label>
       )}
-      <select
-        {...props}
-        value={selectedValue}
-        onChange={handleSelectChange}
-        className="input-select"
-      >
+      <select className="input-select" {...props}>
         <option>Seleccione</option>
-        {props.data.map((element: any, index: number) => (
-          <option key={index} value={`option${index}`}>
-            {element.name}
+        {data.map(element => (
+          <option key={element[itemKey]} value={element[itemKey]}>
+            {element[textField]}
           </option>
         ))}
       </select>

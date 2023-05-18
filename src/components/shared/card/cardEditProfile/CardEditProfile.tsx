@@ -1,4 +1,4 @@
-import Input from '../shared/Input/Input';
+import Input from '../../Input/Input';
 import { motion } from 'framer-motion';
 import './CardEditProfile.css';
 

@@ -1,14 +1,13 @@
-import Input from '../shared/Input/Input';
 import { motion } from 'framer-motion';
 import './CardRegisterUser.css';
-import { Select } from '..';
+import { Input, Select } from '../../..';
 
 const CardRegisterUser = () => {
   const data1 = [
     //endpoint data answer
-    { name: 'Salud' },
-    { name: 'Saneamiento' },
-    { name: 'Carreteras' },
+    { id: 1, name: 'Salud' },
+    { id: 2, name: 'Saneamiento' },
+    { id: 3, name: 'Carreteras' },
   ];
   return (
     <div className="card-register-user">
@@ -22,7 +21,7 @@ const CardRegisterUser = () => {
       <div className="col-input">
         <Input placeholder="N°" label="DNI" />
         <Input placeholder="Celular" label="Celular" />
-        <Select label="Area" data={data1} />
+        <Select label="Area" data={data1} itemKey="id" textField="name" />
       </div>
       <div className="btn-build">
         <motion.button className="btn" whileTap={{ scale: 0.9 }}>

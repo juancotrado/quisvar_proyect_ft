@@ -4,27 +4,9 @@ import './modal.css';
 import { isOpenModal$ } from '../../services/sharingSubject';
 import { useEffect, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
+import { dropIn } from '../../animations/animations';
 
-const dropIn = {
-  hidden: {
-    y: '-100vh',
-    opacity: 0,
-  },
-  visible: {
-    y: '0',
-    opacity: 1,
-    transition: {
-      duration: 0.2,
-      type: 'spring',
-      damping: 30,
-      stiffness: 300,
-    },
-  },
-  leave: {
-    opacity: 0,
-    y: '-100vh',
-  },
-};
+
 
 interface ModalProps {
   children: React.ReactNode;
@@ -61,8 +43,8 @@ const Modal = ({ children, size }: ModalProps) => {
           variants={dropIn}
           initial="hidden"
           animate="visible"
-          style={{ minWidth: `${size ? size : 100}%` }}
           exit="leave"
+          style={{ minWidth: `${size ? size : 100}%` }}
         >
           {children}
         </motion.div>

@@ -1,6 +1,9 @@
 import { motion } from 'framer-motion';
 import Portal from './Portal';
 import './modal.css';
+import { isOpenModal$ } from '../../services/sharingSubject';
+import { useEffect, useRef, useState } from 'react';
+import { Subscription } from 'rxjs';
 
 const dropIn = {
   hidden: {
@@ -25,17 +28,27 @@ const dropIn = {
 
 interface ModalProps {
   children: React.ReactNode;
-  isOpen?: boolean;
   size?: number;
-  onChangeStatus?: () => void;
 }
+const Modal = ({ children, size }: ModalProps) => {
+  const [isOpen, setIsOpen] = useState(false);
 
-const Modal = ({ children, isOpen, size, onChangeStatus }: ModalProps) => {
+  const handleIsOpen = useRef<Subscription>(new Subscription());
+
+  useEffect(() => {
+    handleIsOpen.current = isOpenModal$.getSubject.subscribe(value =>
+      setIsOpen(value)
+    );
+    return () => {
+      handleIsOpen.current.unsubscribe();
+    };
+  }, []);
+
   if (!isOpen) return null;
   return (
     <Portal wrapperId="modal">
       <motion.div
-        onClick={onChangeStatus}
+        onClick={() => setIsOpen(false)}
         role="dialog"
         className="modal-main"
         initial={{ opacity: 0 }}

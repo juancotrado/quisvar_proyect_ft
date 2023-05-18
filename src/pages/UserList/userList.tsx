@@ -1,11 +1,23 @@
 import { useEffect, useState } from 'react';
 import './userList.css';
-import { UserDetail } from '../../components';
-import { motion } from 'framer-motion';
+import { CardRegisterUser, UserDetail } from '../../components';
+import Button from '../../components/shared/button/Button';
 import { axiosInstance } from '../../services/axiosInstance';
-
+import { isOpenModal$ } from '../../services/sharingSubject';
+interface Users {
+  id: number;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  dni: string;
+  phone: string;
+  workAreaId: number;
+  status: boolean;
+}
 const UserList = () => {
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState<Users[] | null>(null);
+  const [usersData, setUsersData] = useState<Users | null>(null);
   useEffect(() => {
     axiosInstance
       .get('/users')
@@ -17,22 +29,29 @@ const UserList = () => {
   }, []);
 
   const addUser = () => {
-    console.log('Agregado');
+    isOpenModal$.setSubject = true;
+    setUsersData(null);
+  };
+  const editUser = (value: Users) => {
+    isOpenModal$.setSubject = true;
+    // console.log(value);
+
+    setUsersData(value);
   };
   console.log(users);
-
   return (
     <div className="content-list">
       <div className="user-list">
         <div className="list-title">
           <h1>LISTA DE USUARIOS</h1>
-          <motion.button
-            whileTap={{ scale: 0.9 }}
-            className="btn-add"
-            onClick={addUser}
-          >
-            &#10133; Agregar
-          </motion.button>
+          <div>
+            <Button
+              text="Agregar"
+              icon="plus"
+              className="btn-add"
+              onClick={addUser}
+            />
+          </div>
         </div>
         <table>
           <thead>
@@ -47,12 +66,25 @@ const UserList = () => {
             </tr>
           </thead>
           <tbody>
-            {users.map((value, index) => (
-              <UserDetail key={index} user={value} index={index} />
-            ))}
+            {users &&
+              users.map((value, index) => (
+                <UserDetail
+                  key={index}
+                  user={value}
+                  index={index}
+                  onClick={() => editUser(value)}
+                />
+              ))}
           </tbody>
         </table>
       </div>
+      <CardRegisterUser
+        dataRegisterUser={usersData}
+        onSave={() => {
+          // getAreas();
+          setUsersData(null);
+        }}
+      />
     </div>
   );
 };

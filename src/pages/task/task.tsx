@@ -4,11 +4,12 @@ import TaskCard from '../../components/shared/card/TaskCard';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
-import { TaskType } from '../../types/types';
+import { TaskCreateType, TaskType } from '../../types/types';
 import useSocket from '../../hooks/useSocket';
 import ModalFormTask from '../../components/tasks/modalFormTask/ModalFormTask';
 import useRole from '../../hooks/useRole';
 import Button from '../../components/shared/button/Button';
+import { isOpenModal$ } from '../../services/sharingSubject';
 
 const Task = () => {
   const [tasks, setTasks] = useState<TaskType[] | null>(null);
@@ -38,6 +39,13 @@ const Task = () => {
     });
   }, [socket, tasks]);
 
+  useEffect(() => {
+    socket.on('add-task', newTask => {
+      if (!tasks) return;
+      setTasks([...tasks, newTask]);
+    });
+  }, [socket, tasks]);
+
   const editTasks = (id: number, status: string) => {
     if (!tasks) return;
     const newTasks = tasks?.map(task =>
@@ -46,6 +54,15 @@ const Task = () => {
     socket.emit('update-status', { id, body: { status } });
     socket.emit('data', newTasks);
     setTasks(newTasks);
+  };
+
+  const addNewTask = () => {
+    isOpenModal$.setSubject = true;
+    // setAreaData(null);
+  };
+
+  const createTask = (task: TaskCreateType) => {
+    socket.emit('create-task', task);
   };
   return (
     <div className="tasks container">
@@ -58,9 +75,7 @@ const Task = () => {
             text="Agregar"
             icon="plus"
             className="btn-add"
-            onClick={() => {
-              console.log('add');
-            }}
+            onClick={addNewTask}
           />
         )}
       </div>
@@ -101,7 +116,7 @@ const Task = () => {
           Usuarios Conectados: {userOnline}
         </h4>
       </div> */}
-      <ModalFormTask />
+      <ModalFormTask createTask={createTask} />
     </div>
   );
 };

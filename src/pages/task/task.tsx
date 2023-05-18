@@ -9,9 +9,11 @@ import useSocket from '../../hooks/useSocket';
 import ModalFormTask from '../../components/tasks/modalFormTask/ModalFormTask';
 import useRole from '../../hooks/useRole';
 import Button from '../../components/shared/button/Button';
+import { isOpenModal$ } from '../../services/sharingSubject';
 
 const Task = () => {
   const [tasks, setTasks] = useState<TaskType[] | null>(null);
+  const [getTaskData, setGetTaskData] = useState<TaskType | null>(null);
   const socket = useSocket();
   const { id } = useParams();
   const { role } = useRole();
@@ -38,7 +40,23 @@ const Task = () => {
     });
   }, [socket, tasks]);
 
-  const editTasks = (id: number, status: string) => {
+  useEffect(() => {
+    socket.on('add-task', newTask => {
+      if (!tasks) return;
+      setTasks([...tasks, newTask]);
+    });
+  }, [socket, tasks]);
+  useEffect(() => {
+    socket.on('update-task', updateTask => {
+      if (!tasks) return;
+      const newTasks = tasks?.map(task =>
+        task.id == updateTask.id ? updateTask : task
+      );
+      setTasks(newTasks);
+    });
+  }, [socket, tasks]);
+
+  const editTaskStatus = (id: number, status: string) => {
     if (!tasks) return;
     const newTasks = tasks?.map(task =>
       task.id == id ? { ...task, status } : task
@@ -47,6 +65,26 @@ const Task = () => {
     socket.emit('data', newTasks);
     setTasks(newTasks);
   };
+
+  const addNewTask = () => {
+    clearDataInModal();
+    isOpenModal$.setSubject = true;
+  };
+
+  const createTask = (task: TaskType) => {
+    socket.emit('create-task', task);
+    clearDataInModal();
+  };
+  const editTask = (task: TaskType) => {
+    socket.emit('edit-task', task);
+    clearDataInModal();
+  };
+
+  const clearDataInModal = () => setGetTaskData(null);
+
+  const handleGetTaskData = (getTask: TaskType) => setGetTaskData(getTask);
+
+  console.log(getTaskData);
   return (
     <div className="tasks container">
       <div className="tasks-head">
@@ -58,9 +96,7 @@ const Task = () => {
             text="Agregar"
             icon="plus"
             className="btn-add"
-            onClick={() => {
-              console.log('add');
-            }}
+            onClick={addNewTask}
           />
         )}
       </div>
@@ -72,7 +108,12 @@ const Task = () => {
             tasks
               .filter(({ status }) => status === 'UNRESOLVED')
               .map(task => (
-                <TaskCard key={task.id} task={task} editTasks={editTasks} />
+                <TaskCard
+                  key={task.id}
+                  task={task}
+                  editTaskStatus={editTaskStatus}
+                  handleGetTaskData={handleGetTaskData}
+                />
               ))}
         </div>
         <div className="container-task container-process">
@@ -81,7 +122,12 @@ const Task = () => {
             tasks
               .filter(({ status }) => status === 'PROCESS')
               .map(task => (
-                <TaskCard key={task.id} task={task} editTasks={editTasks} />
+                <TaskCard
+                  key={task.id}
+                  task={task}
+                  editTaskStatus={editTaskStatus}
+                  handleGetTaskData={handleGetTaskData}
+                />
               ))}
         </div>
         <div className="container-task container-done">
@@ -90,7 +136,12 @@ const Task = () => {
             tasks
               .filter(({ status }) => status === 'DONE')
               .map(task => (
-                <TaskCard key={task.id} task={task} editTasks={editTasks} />
+                <TaskCard
+                  key={task.id}
+                  task={task}
+                  editTaskStatus={editTaskStatus}
+                  handleGetTaskData={handleGetTaskData}
+                />
               ))}
 
           {/* {tasks && <TaskCard task={tasks} />} */}
@@ -101,7 +152,11 @@ const Task = () => {
           Usuarios Conectados: {userOnline}
         </h4>
       </div> */}
-      <ModalFormTask />
+      <ModalFormTask
+        createTask={createTask}
+        getTaskData={getTaskData}
+        editTask={editTask}
+      />
     </div>
   );
 };

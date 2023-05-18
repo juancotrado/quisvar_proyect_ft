@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import './CardRegisterTask.css';
-import { Select, Input, TextArea } from '..';
+import { Input, Select, TextArea } from '../../..';
 
 const CardRegisterTask = () => {
   const data1 = [

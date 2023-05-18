@@ -1,14 +1,14 @@
 import Alert from './shared/alert/Alert';
 import Header from './shared/header/Header';
-import CardRegisterUser from './cardRegisterUser/CardRegisterUser';
+import CardRegisterUser from './shared/card/cardRegisterUser/CardRegisterUser';
 import Input from './shared/Input/Input';
-import { ProtectedRoute } from './protectedRoute/ProtectedRoute';
-import CardRegisterArea from './cardRegisterArea/CardRegisterArea';
-import CardRegisterTask from './cardRegisterTask/CardRegisterTask';
-import CardRegisterProject from './cardRegisterProject/CardRegisterProject';
+import { ProtectedRoute } from './ProtectedRoute/ProtectedRoute';
+import CardRegisterArea from './shared/card/cardRegisterArea/CardRegisterArea';
+import CardRegisterTask from './shared/card/cardRegisterTask/CardRegisterTask';
+import CardRegisterProject from './shared/card/cardRegisterProject/CardRegisterProject';
 import Select from './shared/select/Select';
 import TextArea from './shared/textArea/TextArea';
-import CardEditUser from './cardEditProfile/CardEditProfile';
+import CardEditUser from './shared/card/cardEditProfile/CardEditProfile';
 import UserDetail from './userDetail/UserDetail';
 import Menu from './shared/menu/Menu';
 

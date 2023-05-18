@@ -1,0 +1,52 @@
+.container-list-task {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  background-color: #fff;
+  padding: 1rem;
+  border-radius: var(--radius-input);
+  box-shadow: 0px 1.5px 4px rgba(0, 0, 0, 0.2);
+  width: 100%;
+}
+
+.switch {
+  width: 13rem;
+  height: 2rem;
+  background-color: rgba(255, 209, 64, 0.3);
+  display: flex;
+  justify-content: flex-start;
+  border-radius: 50px;
+  align-items: center;
+  padding: 0 5px;
+  cursor: pointer;
+}
+
+.switch[data-isOn='true'] {
+  justify-content: flex-end;
+  background-color: rgba(87, 217, 163, 0.3);
+}
+
+.handle {
+  display: flex;
+  align-items: center;
+  width: 7.5rem;
+  height: 1.35rem;
+  background-color: var(--color-process);
+  border-radius: 30rem;
+  justify-content: center;
+}
+.handle2 {
+  background-color: var(--color-done);
+}
+
+.header-of-header {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+}
+.cards {
+  display: flex;
+  gap: 3rem;
+  flex-wrap: wrap;
+  padding-left: 4rem;
+}

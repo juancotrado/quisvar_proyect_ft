@@ -5,6 +5,7 @@ import { axiosInstance } from '../../services/axiosInstance';
 import { CardRegisterArea } from '../../components';
 import Button from '../../components/shared/button/Button';
 import useRole from '../../hooks/useRole';
+import { isOpenModal$ } from '../../services/sharingSubject';
 
 interface Areas {
   id: number;
@@ -14,7 +15,6 @@ interface Areas {
 }
 const WorkArea = () => {
   const [areas, setAreas] = useState<Areas[] | null>(null);
-  const [isOpen, setIsOpen] = useState(false);
   const [areaData, setAreaData] = useState<Areas | null>(null);
   const { role } = useRole();
   useEffect(() => {
@@ -27,6 +27,15 @@ const WorkArea = () => {
     });
   };
 
+  const addNewArea = () => {
+    isOpenModal$.setSubject = true;
+    setAreaData(null);
+  };
+
+  const editArea = ({ id, name, description }: Areas) => {
+    isOpenModal$.setSubject = true;
+    setAreaData({ id, name, description });
+  };
   return (
     <div className="container area">
       <div className="area-head">
@@ -39,10 +48,7 @@ const WorkArea = () => {
               text="Agregar"
               icon="plus"
               className="btn-add"
-              onClick={() => {
-                setAreaData(null);
-                setIsOpen(true);
-              }}
+              onClick={addNewArea}
             />
           </div>
         )}
@@ -55,17 +61,12 @@ const WorkArea = () => {
               name={name}
               id={id}
               total={_count?.project}
-              onClick={() => {
-                setAreaData({ id, name, description });
-                setIsOpen(true);
-              }}
+              onClick={() => editArea({ id, name, description })}
             />
           ))}
       </div>
       <CardRegisterArea
-        isOpen={isOpen}
         dataWorkArea={areaData}
-        onChangeStatus={() => setIsOpen(false)}
         onSave={() => {
           getAreas();
           setAreaData(null);

@@ -5,10 +5,9 @@ import Button from '../shared/button/Button';
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
 import ButtonDelete from '../shared/button/ButtonDelete';
+import { isOpenModal$ } from '../../services/sharingSubject';
 
 interface CardRegisterAreaProps {
-  isOpen: boolean;
-  onChangeStatus: () => void;
   onSave?: () => void;
   dataWorkArea?: WorkArea | null;
 }
@@ -25,20 +24,15 @@ const InitialValues = {
   description: '',
 };
 
-const CardRegisterArea = ({
-  isOpen,
-  onChangeStatus,
-  dataWorkArea,
-  onSave,
-}: CardRegisterAreaProps) => {
+const CardRegisterArea = ({ dataWorkArea, onSave }: CardRegisterAreaProps) => {
   const [data, setData] = useState<WorkArea>(InitialValues);
   const debounceRef = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
-    if (isOpen && dataWorkArea) {
+    if (dataWorkArea) {
       setData(dataWorkArea);
     }
-  }, [isOpen, dataWorkArea]);
+  }, [dataWorkArea]);
 
   const sendForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -67,17 +61,16 @@ const CardRegisterArea = ({
 
   const successfulShipment = () => {
     onSave?.();
-    onChangeStatus();
     setData(InitialValues);
   };
 
   const closeFunctions = () => {
-    onChangeStatus();
+    isOpenModal$.setSubject = false;
     setData(InitialValues);
   };
 
   return (
-    <Modal isOpen={isOpen} onChangeStatus={closeFunctions} size={50}>
+    <Modal size={50}>
       <form onSubmit={sendForm} className="card-register-area">
         <span className="close-icon" onClick={closeFunctions}>
           <img src="/svg/close.svg" alt="pencil" />

@@ -7,11 +7,14 @@ import { axiosInstance } from '../../services/axiosInstance';
 import { TaskType } from '../../types/types';
 import useSocket from '../../hooks/useSocket';
 import ModalFormTask from '../../components/tasks/modalFormTask/ModalFormTask';
+import useRole from '../../hooks/useRole';
+import Button from '../../components/shared/button/Button';
 
 const Task = () => {
   const [tasks, setTasks] = useState<TaskType[] | null>(null);
   const socket = useSocket();
   const { id } = useParams();
+  const { role } = useRole();
 
   useEffect(() => {
     axiosInstance
@@ -45,11 +48,24 @@ const Task = () => {
     setTasks(newTasks);
   };
   return (
-    <div className="container-list">
-      <div className="title-list">
-        <h2>Lista de tareas</h2>
+    <div className="tasks container">
+      <div className="tasks-head">
+        <h1 className="main-title">
+          LISTA DE <span className="main-title-span">TAREAS</span>
+        </h1>
+        {role !== 'EMPLOYEE' && (
+          <Button
+            text="Agregar"
+            icon="plus"
+            className="btn-add"
+            onClick={() => {
+              console.log('add');
+            }}
+          />
+        )}
       </div>
-      <section>
+
+      <section className="tasks-section-container">
         <div className="container-task container-unresolved">
           <h3>Por hacer</h3>
           {tasks &&

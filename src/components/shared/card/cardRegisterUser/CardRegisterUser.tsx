@@ -1,7 +1,12 @@
+import Input from '../../Input/Input';
 import { motion } from 'framer-motion';
 import './CardRegisterUser.css';
-import { Input, Select } from '../../..';
-
+import Select from '../../select/Select';
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
+import Modal from '../../../portal/Modal';
+import { axiosInstance } from '../../../../services/axiosInstance';
+import { isOpenModal$ } from '../../../../services/sharingSubject';
+import Button from '../../button/Button';
 interface CardRegisterUserProps {
   onSave?: () => void;
   dataRegisterUser?: User | null;
@@ -46,9 +51,9 @@ const CardRegisterUser = ({
   }, [dataRegisterUser]);
   const data1 = [
     //endpoint data answer
-    { id: 1, name: 'Salud' },
-    { id: 2, name: 'Saneamiento' },
-    { id: 3, name: 'Carreteras' },
+    { name: 'Salud' },
+    { name: 'Saneamiento' },
+    { name: 'Carreteras' },
   ];
   const sendForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -84,25 +89,75 @@ const CardRegisterUser = ({
   };
 
   return (
-    <div className="card-register-user">
-      <h1>REGISTRO DE NUEVO USUARIO</h1>
-      <Input placeholder="Correo" title="Correo" label="Correo" />
-      <Input placeholder="Contraseña" type="password" label="Contraseña" />
-      <div className="col-input">
-        <Input placeholder="Nombres" label="Nombres" />
-        <Input placeholder="Apellidos" label="Apellidos" />
-      </div>
-      <div className="col-input">
-        <Input placeholder="N°" label="DNI" />
-        <Input placeholder="Celular" label="Celular" />
-        <Select label="Area" data={data1} itemKey="id" textField="name" />
-      </div>
-      <div className="btn-build">
-        <motion.button className="btn" whileTap={{ scale: 0.9 }}>
-          CREAR
-        </motion.button>
-      </div>
-    </div>
+    <Modal size={50}>
+      <form onSubmit={sendForm} className="card-register-users">
+        <span className="close-icon" onClick={closeFunctions}>
+          <img src="/svg/close.svg" alt="pencil" />
+        </span>
+        <h1>
+          {dataRegisterUser
+            ? 'EDITAR DATOS DE USUARIO'
+            : 'REGISTRO DE NUEVO USUARIO'}
+        </h1>
+        <Input
+          defaultValue={data.email}
+          placeholder="Correo"
+          title="Correo"
+          label="Correo"
+          name="email"
+          onChange={handleChange}
+        />
+        <Input
+          defaultValue={data.password}
+          placeholder="Contraseña"
+          type="password"
+          label="Contraseña"
+          name="password"
+          onChange={handleChange}
+        />
+        <div className="col-input">
+          <Input
+            defaultValue={data.profile.firstName}
+            placeholder="Nombres"
+            label="Nombres"
+            name="firstName"
+            onChange={handleChange}
+          />
+          <Input
+            defaultValue={data.profile.lastName}
+            placeholder="Apellidos"
+            label="Apellidos"
+            name="lastName"
+            onChange={handleChange}
+          />
+        </div>
+        <div className="col-input">
+          <Input
+            defaultValue={data.profile.dni}
+            placeholder="N°"
+            label="DNI"
+            name="dni"
+            onChange={handleChange}
+          />
+          <Input
+            defaultValue={data.profile.phone}
+            placeholder="Celular"
+            label="Celular"
+            name="phone"
+            onChange={handleChange}
+          />
+          {/* <Select label="Area" data={data1} /> */}
+        </div>
+        <div className="btn-build">
+          <Button
+            text={dataRegisterUser ? 'CREAR' : 'GUARDAR'}
+            className="btn-area"
+            whileTap={{ scale: 0.9 }}
+            type="submit"
+          />
+        </div>
+      </form>
+    </Modal>
   );
 };
 

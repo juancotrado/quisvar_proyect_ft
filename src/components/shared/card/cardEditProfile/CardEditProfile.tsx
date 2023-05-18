@@ -2,9 +2,10 @@ import Input from '../../Input/Input';
 import { motion } from 'framer-motion';
 import './CardEditProfile.css';
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
-import { axiosInstance } from '../../services/axiosInstance';
-import Modal from '../portal/Modal';
-import { isOpenModal$ } from '../../services/sharingSubject';
+import { axiosInstance } from '../../../../services/axiosInstance';
+import Modal from '../../../portal/Modal';
+import Button from '../../button/Button';
+// import { isOpenModal$ } from '../../../../services/sharingSubject';
 
 interface CardEdtiUserProps {
   onSave?: () => void;
@@ -119,13 +120,12 @@ const CardEditUser = ({ dataUser, onSave }: CardEdtiUserProps) => {
         {/* <Input placeholder={data.} label="Area" col={true} disabled={true} onChange={handleArea} /> */}
 
         <div className="btn-build">
-          <motion.button
-            className="btn"
+          <Button
+            text={dataUser ? 'CREAR' : 'GUARDAR'}
+            className="btn-area"
             whileTap={{ scale: 0.9 }}
             type="submit"
-          >
-            GUARDAR
-          </motion.button>
+          />
         </div>
       </form>
     </Modal>

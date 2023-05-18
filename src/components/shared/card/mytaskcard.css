@@ -5,7 +5,8 @@
   box-shadow: 0px 1.5px 4px rgba(0, 0, 0, 0.2);
   position: relative;
   display: flex;
-  max-width: 25rem;
+  width: 31rem;
+  height: 15rem;
   border-left: 1.75rem var(--color-secondary) solid;
   flex-direction: column;
 }
@@ -27,14 +28,13 @@
 .my-task-content {
   background-color: #fff;
   width: 100%;
-  flex-grow: 1;
+  height: 100%;
   display: flex;
   padding: 1rem 1rem 1rem;
   flex-direction: column;
   gap: 0.5rem;
   border-radius: 0 0 var(--radius-button) var(--radius-button);
   text-align: justify;
-  justify-content: end;
 }
 .footer-my-task {
   padding: 1rem;

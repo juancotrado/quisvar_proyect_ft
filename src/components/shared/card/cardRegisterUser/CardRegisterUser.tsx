@@ -46,32 +46,22 @@ const CardRegisterUser = ({
   useEffect(() => {
     if (dataRegisterUser) {
       setData(dataRegisterUser);
-      console.log(data);
+      // console.log({ here: dataRegisterUser });
     }
   }, [dataRegisterUser]);
-  const data1 = [
-    //endpoint data answer
-    { name: 'Salud' },
-    { name: 'Saneamiento' },
-    { name: 'Carreteras' },
-  ];
+
   const sendForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (dataRegisterUser) {
-      axiosInstance
-        .patch(`/users/${data.id}`, data)
-        .then(successfulShipment)
-        .catch(err => console.log(err.message));
+      axiosInstance.patch(`/users/${data.id}`, data).then(successfulShipment);
     } else {
-      axiosInstance
-        .post(`/users`, data)
-        .then(successfulShipment)
-        .catch(err => console.log(err.message));
+      axiosInstance.post(`/users`, data).then(successfulShipment);
     }
   };
   const successfulShipment = () => {
     onSave?.();
     setData(InitialValues);
+    window.location.reload();
   };
   const handleChange = ({
     target,

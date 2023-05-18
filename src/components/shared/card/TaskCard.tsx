@@ -9,10 +9,15 @@ import { isOpenModal$ } from '../../../services/sharingSubject';
 
 interface TaskCardProps {
   task: TaskType;
-  editTasks: (id: number, status: string) => void;
+  editTaskStatus: (id: number, status: string) => void;
+  handleGetTaskData: (value: TaskType) => void;
 }
 
-const TaskCard = ({ task, editTasks }: TaskCardProps) => {
+const TaskCard = ({
+  task,
+  editTaskStatus,
+  handleGetTaskData,
+}: TaskCardProps) => {
   const handleNext = () => {
     const { status } = task;
     const statusBody = {
@@ -24,7 +29,7 @@ const TaskCard = ({ task, editTasks }: TaskCardProps) => {
       },
     };
     const body = statusBody[status as keyof typeof statusBody];
-    editTasks(task.id, body.status);
+    editTaskStatus(task.id, body.status);
   };
   const handlePrevius = () => {
     const { status } = task;
@@ -38,10 +43,13 @@ const TaskCard = ({ task, editTasks }: TaskCardProps) => {
       },
     };
     const body = statusBody[status as keyof typeof statusBody];
-    editTasks(task.id, body.status);
+    editTaskStatus(task.id, body.status);
   };
 
-  const openModal = () => (isOpenModal$.setSubject = true);
+  const openModal = () => {
+    handleGetTaskData(task);
+    isOpenModal$.setSubject = true;
+  };
 
   return (
     <div className="task-class">

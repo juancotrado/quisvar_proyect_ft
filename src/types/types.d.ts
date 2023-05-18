@@ -2,12 +2,12 @@ export interface TaskType {
   id: number;
   name: string;
   projectId: number;
-  status: string;
-  employees: employees[];
-  project: {
+  status?: string;
+  employees?: employees[];
+  project?: {
     name: string;
   };
-  subtasks: SubTaskType[];
+  subtasks?: SubTaskType[];
 }
 interface SubTaskType {
   createdAt: Date;

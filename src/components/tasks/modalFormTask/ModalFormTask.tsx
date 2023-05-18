@@ -1,24 +1,39 @@
-import { ChangeEvent, FormEvent, useRef, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import Modal from '../../portal/Modal';
 import Button from '../../shared/button/Button';
 import { isOpenModal$ } from '../../../services/sharingSubject';
 import { Input, TextArea } from '../..';
 import { useParams } from 'react-router-dom';
-import { TaskCreateType } from '../../../types/types';
+import { TaskCreateType, TaskType } from '../../../types/types';
 
 interface ModalFormTaskProps {
-  createTask: (value: TaskCreateType) => void;
+  createTask: (value: TaskType) => void;
+  editTask: (value: TaskType) => void;
+  getTaskData: TaskType | null;
 }
 
-const ModalFormTask = ({ createTask }: ModalFormTaskProps) => {
+const ModalFormTask = ({
+  createTask,
+  getTaskData,
+  editTask,
+}: ModalFormTaskProps) => {
   const debounceRef = useRef<NodeJS.Timeout>();
-  const { id } = useParams();
 
-  const [taskForm, setTaskForm] = useState({
-    project_id: Number(id),
+  const { id } = useParams();
+  const initValues = {
+    id: 0,
+    projectId: Number(id),
     name: '',
-    description: '',
-  });
+  };
+  const [taskForm, setTaskForm] = useState<TaskType>(initValues);
+
+  useEffect(() => {
+    if (!getTaskData) {
+      setTaskForm(initValues);
+      return;
+    }
+    setTaskForm(getTaskData);
+  }, [getTaskData]);
 
   const closeModal = () => (isOpenModal$.setSubject = false);
 
@@ -28,14 +43,18 @@ const ModalFormTask = ({ createTask }: ModalFormTaskProps) => {
     const { name, value } = target;
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
-      setTaskForm({ ...taskForm, [name]: value.trim() });
+      setTaskForm({ ...taskForm, [name]: value });
     }, 250);
   };
 
   const sendForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    createTask(taskForm);
+    if (taskForm.id === 0) {
+      createTask(taskForm);
+    } else {
+      editTask(taskForm);
+    }
     isOpenModal$.setSubject = false;
   };
 
@@ -50,16 +69,18 @@ const ModalFormTask = ({ createTask }: ModalFormTaskProps) => {
           label="Nombre"
           placeholder="Nombre"
           name="name"
+          defaultValue={taskForm.name}
           required={true}
           onChange={handleArea}
         />
-        <TextArea
+        {/* <TextArea
           label="Descripción"
           placeholder="Descripción"
+          value={taskForm.id}
           name="description"
           required={true}
           onChange={handleArea}
-        />
+        /> */}
         <div className="col">
           <div className="btn-contain">
             <Button

@@ -4,7 +4,7 @@ import TaskCard from '../../components/shared/card/TaskCard';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
-import { TaskCreateType, TaskType } from '../../types/types';
+import { TaskType } from '../../types/types';
 import useSocket from '../../hooks/useSocket';
 import ModalFormTask from '../../components/tasks/modalFormTask/ModalFormTask';
 import useRole from '../../hooks/useRole';
@@ -13,6 +13,7 @@ import { isOpenModal$ } from '../../services/sharingSubject';
 
 const Task = () => {
   const [tasks, setTasks] = useState<TaskType[] | null>(null);
+  const [getTaskData, setGetTaskData] = useState<TaskType | null>(null);
   const socket = useSocket();
   const { id } = useParams();
   const { role } = useRole();
@@ -45,8 +46,17 @@ const Task = () => {
       setTasks([...tasks, newTask]);
     });
   }, [socket, tasks]);
+  useEffect(() => {
+    socket.on('update-task', updateTask => {
+      if (!tasks) return;
+      const newTasks = tasks?.map(task =>
+        task.id == updateTask.id ? updateTask : task
+      );
+      setTasks(newTasks);
+    });
+  }, [socket, tasks]);
 
-  const editTasks = (id: number, status: string) => {
+  const editTaskStatus = (id: number, status: string) => {
     if (!tasks) return;
     const newTasks = tasks?.map(task =>
       task.id == id ? { ...task, status } : task
@@ -57,13 +67,24 @@ const Task = () => {
   };
 
   const addNewTask = () => {
+    clearDataInModal();
     isOpenModal$.setSubject = true;
-    // setAreaData(null);
   };
 
-  const createTask = (task: TaskCreateType) => {
+  const createTask = (task: TaskType) => {
     socket.emit('create-task', task);
+    clearDataInModal();
   };
+  const editTask = (task: TaskType) => {
+    socket.emit('edit-task', task);
+    clearDataInModal();
+  };
+
+  const clearDataInModal = () => setGetTaskData(null);
+
+  const handleGetTaskData = (getTask: TaskType) => setGetTaskData(getTask);
+
+  console.log(getTaskData);
   return (
     <div className="tasks container">
       <div className="tasks-head">
@@ -87,7 +108,12 @@ const Task = () => {
             tasks
               .filter(({ status }) => status === 'UNRESOLVED')
               .map(task => (
-                <TaskCard key={task.id} task={task} editTasks={editTasks} />
+                <TaskCard
+                  key={task.id}
+                  task={task}
+                  editTaskStatus={editTaskStatus}
+                  handleGetTaskData={handleGetTaskData}
+                />
               ))}
         </div>
         <div className="container-task container-process">
@@ -96,7 +122,12 @@ const Task = () => {
             tasks
               .filter(({ status }) => status === 'PROCESS')
               .map(task => (
-                <TaskCard key={task.id} task={task} editTasks={editTasks} />
+                <TaskCard
+                  key={task.id}
+                  task={task}
+                  editTaskStatus={editTaskStatus}
+                  handleGetTaskData={handleGetTaskData}
+                />
               ))}
         </div>
         <div className="container-task container-done">
@@ -105,7 +136,12 @@ const Task = () => {
             tasks
               .filter(({ status }) => status === 'DONE')
               .map(task => (
-                <TaskCard key={task.id} task={task} editTasks={editTasks} />
+                <TaskCard
+                  key={task.id}
+                  task={task}
+                  editTaskStatus={editTaskStatus}
+                  handleGetTaskData={handleGetTaskData}
+                />
               ))}
 
           {/* {tasks && <TaskCard task={tasks} />} */}
@@ -116,7 +152,11 @@ const Task = () => {
           Usuarios Conectados: {userOnline}
         </h4>
       </div> */}
-      <ModalFormTask createTask={createTask} />
+      <ModalFormTask
+        createTask={createTask}
+        getTaskData={getTaskData}
+        editTask={editTask}
+      />
     </div>
   );
 };

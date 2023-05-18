@@ -3,14 +3,13 @@ import icon_process from '/svg/task_process.svg';
 import icon_done from '/svg/task_done.svg';
 import './taskcard.css';
 import { TaskType } from '../../../types/types';
-import { axiosInstance } from '../../../services/axiosInstance';
+import ButtonDelete from '../button/ButtonDelete';
+import Button from '../button/Button';
+import { isOpenModal$ } from '../../../services/sharingSubject';
 
 interface TaskCardProps {
   task: TaskType;
   editTasks: (id: number, status: string) => void;
-}
-interface BodyStatus {
-  status: string;
 }
 
 const TaskCard = ({ task, editTasks }: TaskCardProps) => {
@@ -41,6 +40,8 @@ const TaskCard = ({ task, editTasks }: TaskCardProps) => {
     const body = statusBody[status as keyof typeof statusBody];
     editTasks(task.id, body.status);
   };
+
+  const openModal = () => (isOpenModal$.setSubject = true);
 
   return (
     <div className="task-class">
@@ -74,6 +75,18 @@ const TaskCard = ({ task, editTasks }: TaskCardProps) => {
           {(task.status === 'UNRESOLVED' || task.status == 'PROCESS') && (
             <button onClick={handleNext}>Next</button>
           )}
+        </div>
+        <div className="task-buttons-action">
+          <ButtonDelete
+            icon="trash"
+            url={`/projects`}
+            className="project-delete-icon"
+          />
+          <Button
+            icon="pencil"
+            className="project-edit-icon"
+            onClick={openModal}
+          />
         </div>
       </div>
     </div>

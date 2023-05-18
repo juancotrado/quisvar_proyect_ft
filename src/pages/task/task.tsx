@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
 import { TaskType } from '../../types/types';
 import useSocket from '../../hooks/useSocket';
+import ModalFormTask from '../../components/tasks/modalFormTask/ModalFormTask';
 
 const Task = () => {
   const [tasks, setTasks] = useState<TaskType[] | null>(null);
@@ -84,6 +85,7 @@ const Task = () => {
           Usuarios Conectados: {userOnline}
         </h4>
       </div> */}
+      <ModalFormTask />
     </div>
   );
 };

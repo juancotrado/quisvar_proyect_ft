@@ -69,3 +69,10 @@
 .button {
   cursor: pointer;
 }
+
+.task-buttons-action {
+  position: absolute;
+  right: 1rem;
+  display: flex;
+  gap: 1rem;
+}

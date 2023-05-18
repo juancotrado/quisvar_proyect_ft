@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import type { HTMLMotionProps } from 'framer-motion';
 import './button.css';
 interface ButtonProps extends HTMLMotionProps<'button'> {
-  text: string;
+  text?: string;
   type?: 'button' | 'submit' | 'reset';
   icon?: string;
   onClick: (e: React.MouseEvent<HTMLElement>) => void;

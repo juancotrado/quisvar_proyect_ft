@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import './projectCard.css';
 import useRole from '../../../hooks/useRole';
+import ButtonDelete from '../../shared/button/ButtonDelete';
+import Button from '../../shared/button/Button';
 
 export type ProjectType = {
   id: number;
@@ -27,7 +29,6 @@ interface ProjectCardProps {
 const ProjectCard = ({ project }: ProjectCardProps) => {
   const navigate = useNavigate();
   const { role } = useRole();
-
   const handleNext = () => {
     navigate(`/tareas/${project.id}`);
   };
@@ -40,8 +41,25 @@ const ProjectCard = ({ project }: ProjectCardProps) => {
       <div className="project-card-main">
         <div className="projec-card-header">
           <h3 className="project-card-subtitle">{project.name}</h3>
-          {/* <p className="project-card-date">Fecha Limite: {project.untilDate}</p> */}
+          <div className="project-card-option">
+            <p className="project-card-date">Fecha Limite: 25/25/2022</p>
+            {role !== 'EMPLOYEE' && (
+              <>
+                <ButtonDelete
+                  icon="trash"
+                  url={`/projects/${project.id}`}
+                  className="project-delete-icon"
+                />
+                <Button
+                  icon="pencil"
+                  className="project-edit-icon"
+                  onClick={() => console.log('awas')}
+                />
+              </>
+            )}
+          </div>
         </div>
+
         <h4 className="project-card-cordinator">
           COORDINADOR: {project.moderator.profile.firstName}{' '}
           {project.moderator.profile.lastName}

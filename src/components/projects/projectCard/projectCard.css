@@ -9,42 +9,73 @@
   border-radius: 0.5rem;
   box-shadow: 0px 1.5px 4px rgba(0, 0, 0, 0.2);
 }
+
 .project-card-figure {
   width: 9rem;
 }
+
 .project-card-main {
   display: flex;
   width: 100%;
   flex-direction: column;
   gap: 1.5rem;
 }
+
 .projec-card-header {
   display: flex;
   justify-content: space-between;
 }
+
 .project-card-subtitle {
   color: var(--color-secondary);
   font-size: 1.7rem;
   font-weight: 800;
 }
+
 .project-card-date {
   color: var(--color-primary);
   font-weight: 600;
 }
+
 .project-card-cordinator {
   color: var(--color-quaternay);
 }
+
 .project-card-description {
   color: var(--color-quaternay);
 }
+
 .project-card-footer {
   display: flex;
   justify-content: space-between;
 }
+
 .project-card-task {
   color: var(--color-secondary);
   font-weight: 600;
 }
+
+.project-card-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem
+}
+
+.project-edit-icon {
+  background-color: var(--color-primary-gradiant);
+  padding: 0.5rem;
+  border: 0px;
+  border-radius: 50%;
+}
+
+.project-delete-icon {
+  background-color: var(--color-unresolved);
+  padding: 0.5rem;
+  border-radius: 50%;
+  border: 0px;
+}
+
 .project-card-show {
   color: var(--color-primary);
   font-weight: 600;

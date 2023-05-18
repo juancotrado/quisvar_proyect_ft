@@ -3,9 +3,10 @@ import type { HTMLMotionProps } from 'framer-motion';
 import { axiosInstance } from '../../../services/axiosInstance';
 import './button.css';
 interface ButtonProps extends HTMLMotionProps<'button'> {
-  text: string;
+  text?: string;
   type?: 'button' | 'submit' | 'reset';
   url: string;
+  icon: string;
   onSave?: () => void;
 }
 const ButtonDelete = ({
@@ -13,6 +14,7 @@ const ButtonDelete = ({
   text,
   type,
   url,
+  icon,
   onSave,
   ...otherProps
 }: ButtonProps) => {
@@ -32,6 +34,7 @@ const ButtonDelete = ({
       type={type}
       {...otherProps}
     >
+      {icon && <img src={`/svg/${icon}.svg`} alt={`${icon}`} />}
       {text}
     </motion.button>
   );

@@ -76,3 +76,13 @@
   display: flex;
   gap: 1rem;
 }
+
+.task-UNRESOLVED {
+  background-color: var(--color-unresolved);
+}
+.task-PROCESS {
+  background-color: var(--color-process);
+}
+.task-DONE {
+  background-color: var(--color-done);
+}

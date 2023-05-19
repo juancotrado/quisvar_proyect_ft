@@ -53,10 +53,14 @@ const Header = () => {
   ];
 
   const menu = [
-    { name: 'Perfil', action: () => {} },
-    { name: 'Lista', action: handleList },
-    { name: 'Option 3', action: () => {} },
-    { name: 'Salir', action: handleLogout },
+    { name: 'Editar Perfil', icon: '/svg/Group.svg', action: () => {} },
+    { name: 'Configuracion', icon: '/svg/icon.svg', action: handleList },
+    { name: 'Acerca de', icon: '/svg/question-circle.svg', action: () => {} },
+    {
+      name: 'Salir',
+      icon: '/svg/ri_logout-box-r-line.svg',
+      action: handleLogout,
+    },
   ];
 
   return (

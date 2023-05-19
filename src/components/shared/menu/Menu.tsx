@@ -1,6 +1,9 @@
 import { motion } from 'framer-motion';
+import './Menu.css';
 
 const Menu = ({ data }: any) => {
+  console.log(data);
+
   return (
     <motion.ul
       initial={{ opacity: 0, y: -10 }}
@@ -9,15 +12,22 @@ const Menu = ({ data }: any) => {
       transition={{ duration: 0.5 }}
       className="header-toggle"
     >
+      <p className="fullname-menu">Jhon Castillo</p>
+      <div className="line"></div>
       {data.map((value: any, index: number) => (
         <motion.li
           key={index}
           whileTap={{ scale: 0.9 }}
           onClick={() => value.action()}
-          style={{ cursor: 'pointer', userSelect: 'none' }}
+          className="list-menu"
         >
-          {' '}
-          &#127814; {value.name}
+          <img src={value.icon} alt="" className="icon-menu" />
+          <p> {value.name}</p>
+          <img
+            src="/svg/material-symbols_navigate-next.svg"
+            alt=""
+            className="icon-menu-right"
+          />
         </motion.li>
       ))}
     </motion.ul>

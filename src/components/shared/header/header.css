@@ -58,20 +58,3 @@
   width: 2rem;
   height: 2rem;
 }
-.header-toggle {
-  background-color: white;
-  position: absolute;
-  top: var(--header-height);
-  right: 6rem;
-  width: 200px;
-  height: auto;
-  border-radius: 8px;
-  border: 2px solid var(--color-primary);
-}
-.header-toggle li {
-  width: 100%;
-  /* border: 2px solid var(--color-primary); */
-  border-radius: 2px;
-  padding: 8px;
-  /* background-color: blue; */
-}

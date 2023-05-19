@@ -17,7 +17,7 @@ const AreaCard = ({ name, id, total, onClick, onDelete }: AreaCardProps) => {
   const handleNext = () => {
     navigate(`/proyectos/${id}`);
   };
-  
+
   return (
     <div className="area-card" onClick={handleNext}>
       {role !== 'EMPLOYEE' && (
@@ -28,11 +28,7 @@ const AreaCard = ({ name, id, total, onClick, onDelete }: AreaCardProps) => {
             className="area-delete-icon"
             onSave={onDelete}
           />
-          <Button
-            icon="pencil"
-            className="area-edit-icon"
-            onClick={onClick}
-          />
+          <Button icon="pencil" className="area-edit-icon" onClick={onClick} />
         </span>
       )}
       <h2 className="area-card-title">{name}</h2>

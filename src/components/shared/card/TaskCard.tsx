@@ -11,12 +11,14 @@ interface TaskCardProps {
   task: TaskType;
   editTaskStatus: (id: number, status: string) => void;
   handleGetTaskData: (value: TaskType) => void;
+  deleteTask: (id: number) => void;
 }
 
 const TaskCard = ({
   task,
   editTaskStatus,
   handleGetTaskData,
+  deleteTask,
 }: TaskCardProps) => {
   const handleNext = () => {
     const { status } = task;
@@ -51,6 +53,10 @@ const TaskCard = ({
     isOpenModal$.setSubject = true;
   };
 
+  const sendIdForDelete = () => {
+    deleteTask(task.id);
+  };
+
   return (
     <div className="task-class">
       <div className="task-header-card">Unknow </div>
@@ -66,8 +72,6 @@ const TaskCard = ({
           alt={task.status}
         />
       </span>
-      {/* //tasks/status/id */}
-      {/* {tasks && <TaskCard task={tasks} />} */}
       <div className="task-content">
         <h2>{task.name} </h2>
         <p>
@@ -77,7 +81,7 @@ const TaskCard = ({
           consequuntur adipisci?
         </p>
         <div className="buttons">
-          {(task.status == 'DONE' || task.status == 'PROCESS') && (
+          {task.status == 'PROCESS' && (
             <button onClick={handlePrevius}>Previus</button>
           )}
           {(task.status === 'UNRESOLVED' || task.status == 'PROCESS') && (
@@ -88,6 +92,7 @@ const TaskCard = ({
           <ButtonDelete
             icon="trash"
             url={`/projects`}
+            customOnClick={sendIdForDelete}
             className="project-delete-icon"
           />
           <Button

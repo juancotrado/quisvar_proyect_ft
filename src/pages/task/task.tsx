@@ -46,6 +46,7 @@ const Task = () => {
       setTasks([...tasks, newTask]);
     });
   }, [socket, tasks]);
+
   useEffect(() => {
     socket.on('update-task', updateTask => {
       if (!tasks) return;
@@ -56,12 +57,28 @@ const Task = () => {
     });
   }, [socket, tasks]);
 
+  useEffect(() => {
+    socket.on('delete-task-success', id => {
+      if (!tasks) return;
+      const newTasks = tasks.filter(task => task.id !== id);
+      setTasks(newTasks);
+    });
+  }, [socket, tasks]);
+
   const editTaskStatus = (id: number, status: string) => {
     if (!tasks) return;
+    const personalData = localStorage.getItem('personalData');
+    if (!personalData) return;
+    const personalDataParse = JSON.parse(personalData);
+
     const newTasks = tasks?.map(task =>
       task.id == id ? { ...task, status } : task
     );
-    socket.emit('update-status', { id, body: { status } });
+    socket.emit('update-status', {
+      id,
+      body: { status },
+      userId: personalDataParse.id,
+    });
     socket.emit('data', newTasks);
     setTasks(newTasks);
   };
@@ -80,11 +97,13 @@ const Task = () => {
     clearDataInModal();
   };
 
+  const deleteTask = (id: number) => {
+    socket.emit('delete-task', id);
+  };
   const clearDataInModal = () => setGetTaskData(null);
 
   const handleGetTaskData = (getTask: TaskType) => setGetTaskData(getTask);
 
-  console.log(getTaskData);
   return (
     <div className="tasks container">
       <div className="tasks-head">
@@ -113,6 +132,7 @@ const Task = () => {
                   task={task}
                   editTaskStatus={editTaskStatus}
                   handleGetTaskData={handleGetTaskData}
+                  deleteTask={deleteTask}
                 />
               ))}
         </div>
@@ -127,6 +147,7 @@ const Task = () => {
                   task={task}
                   editTaskStatus={editTaskStatus}
                   handleGetTaskData={handleGetTaskData}
+                  deleteTask={deleteTask}
                 />
               ))}
         </div>
@@ -141,6 +162,7 @@ const Task = () => {
                   task={task}
                   editTaskStatus={editTaskStatus}
                   handleGetTaskData={handleGetTaskData}
+                  deleteTask={deleteTask}
                 />
               ))}
 

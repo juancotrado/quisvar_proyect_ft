@@ -1,8 +1,20 @@
 import { motion } from 'framer-motion';
 import './Menu.css';
+import { useEffect, useState } from 'react';
+
+const initValues = {
+  name: 'unknown',
+  id: null,
+};
 
 const Menu = ({ data }: any) => {
-  console.log(data);
+  const [personalData, setPersonalData] = useState(initValues);
+
+  useEffect(() => {
+    const personalData = localStorage.getItem('personalData') || null;
+    if (!personalData) return;
+    setPersonalData(JSON.parse(personalData));
+  }, []);
 
   return (
     <motion.ul
@@ -12,7 +24,7 @@ const Menu = ({ data }: any) => {
       transition={{ duration: 0.5 }}
       className="header-toggle"
     >
-      <p className="fullname-menu">Jhon Castillo</p>
+      <p className="fullname-menu">{personalData.name}</p>
       <div className="line"></div>
       {data.map((value: any, index: number) => (
         <motion.li

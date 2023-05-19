@@ -3,7 +3,7 @@ export interface TaskType {
   name: string;
   projectId: number;
   status?: string;
-  employees?: employees[];
+  employees: Employees[];
   project?: {
     name: string;
   };
@@ -19,8 +19,13 @@ interface SubTaskType {
   taskId: number;
   updatedAt: Date;
 }
-interface employees {
-  assignedAt: string;
+interface Employees {
+  user: {
+    profile: {
+      firstName?: string;
+      userId?: number;
+    };
+  };
 }
 export interface TaskCreateType {
   project_id: number;

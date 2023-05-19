@@ -3,7 +3,6 @@ import { axiosInstance } from '../../../../services/axiosInstance';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
 import Modal from '../../../portal/Modal';
 import Button from '../../button/Button';
-import ButtonDelete from '../../button/ButtonDelete';
 import './CardRegisterArea.css';
 
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
@@ -57,6 +56,7 @@ const CardRegisterArea = ({ dataWorkArea, onSave }: CardRegisterAreaProps) => {
   const successfulShipment = () => {
     onSave?.();
     setData(InitialValues);
+    closeFunctions();
   };
 
   const closeFunctions = () => {
@@ -66,7 +66,11 @@ const CardRegisterArea = ({ dataWorkArea, onSave }: CardRegisterAreaProps) => {
 
   return (
     <Modal size={50}>
-      <form onSubmit={sendForm} className="card-register-area">
+      <form
+        onSubmit={sendForm}
+        className="card-register-area"
+        autoComplete="off"
+      >
         <span className="close-icon" onClick={closeFunctions}>
           <img src="/svg/close.svg" alt="pencil" />
         </span>
@@ -89,21 +93,11 @@ const CardRegisterArea = ({ dataWorkArea, onSave }: CardRegisterAreaProps) => {
           />
           <div className="btn-contain">
             <Button
-              text={dataWorkArea ? 'ACTUALIZAR' : 'CREAR'}
+              text={dataWorkArea ? 'ACTUALIZAR' : 'REGISTRAR'}
               className="btn-area"
               whileTap={{ scale: 0.9 }}
               type="submit"
             />
-            {dataWorkArea && (
-              <ButtonDelete
-                text={'ELIMINAR'}
-                className="btn-area btn-delete"
-                whileTap={{ scale: 0.9 }}
-                url={`/workareas/${data.id}`}
-                type="button"
-                onSave={successfulShipment}
-              />
-            )}
           </div>
         </div>
       </form>

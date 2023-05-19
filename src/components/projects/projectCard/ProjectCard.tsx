@@ -21,6 +21,9 @@ export type ProjectType = {
       userId: number;
     };
   };
+  _count: {
+    tasks: number;
+  };
 };
 
 interface ProjectCardProps {
@@ -32,6 +35,7 @@ interface ProjectCardProps {
 const ProjectCard = ({ project, onClick, onSave }: ProjectCardProps) => {
   const navigate = useNavigate();
   const { role } = useRole();
+
   const handleNext = () => {
     navigate(`/tareas/${project.id}`);
   };
@@ -76,7 +80,9 @@ const ProjectCard = ({ project, onClick, onSave }: ProjectCardProps) => {
             : 'CREACION DEL SERVICIO DE PRÁCTICA DEPORTIVA Y/O RECREATIVA EN LA COMUNIDAD CAMPESINA DE KALAHUALA DISTRITO DE ASILLO DE LA PROVINCIA DE AZANGARO DEL DEPARTAMENTO DE PUNO.'}
         </p>
         <div className="project-card-footer">
-          <p className="project-card-task">TOTAL DE TAREAS: 1</p>
+          <p className="project-card-task">
+            TOTAL DE TAREAS: {project._count.tasks}
+          </p>
           <p className="project-card-show" onClick={handleNext}>
             VER MAS
           </p>

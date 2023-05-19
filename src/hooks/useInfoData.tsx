@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { axiosInstance } from '../services/axiosInstance';
-
 interface AreaType {
   id: number;
   name: string;
@@ -16,16 +15,16 @@ interface UserType {
 }
 
 const useInfoData = () => {
-  const [users, setUsers] = useState([]);
-  const [areas, setAreas] = useState([]);
+  const [users, setUsers] = useState<[] | null>(null);
+  const [areas, setAreas] = useState<[] | null>(null);
 
   useEffect(() => {
-    getUsers();
     getAreas();
+    getUsers();
   }, []);
 
-  const getAreas = async () => {
-    await axiosInstance.get('/workareas').then(res => {
+  const getAreas = () => {
+    axiosInstance.get('/workareas').then(res => {
       const newProjects = res.data.map(({ id, name }: AreaType) => ({
         id,
         name,
@@ -34,8 +33,8 @@ const useInfoData = () => {
     });
   };
 
-  const getUsers = async () => {
-    await axiosInstance.get('/users').then(res => {
+  const getUsers = () => {
+    axiosInstance.get('/users').then(res => {
       const getModeratos = res.data.filter(
         ({ role }: UserType) => role !== 'EMPLOYEE'
       );
@@ -46,6 +45,7 @@ const useInfoData = () => {
       setUsers(newModerators);
     });
   };
+
   return { users, areas };
 };
 

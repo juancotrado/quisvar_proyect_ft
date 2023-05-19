@@ -18,7 +18,13 @@ const Projects = () => {
   const { role } = useRole();
 
   useEffect(() => {
-    getProjects(id);
+    axiosInstance
+      .get(`workareas/${id}`)
+      .then(res => {
+        setProjects(res.data.project);
+      })
+      .catch(err => console.log(err));
+    // getProjects(id);
   }, [id]);
 
   const getProjects = async (id: string | undefined) => {

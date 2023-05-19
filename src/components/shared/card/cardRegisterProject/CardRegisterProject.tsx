@@ -93,7 +93,11 @@ const CardRegisterProject = ({
 
   return (
     <Modal size={50}>
-      <form onSubmit={sendForm} className="card-register-project">
+      <form
+        onSubmit={sendForm}
+        className="card-register-project"
+        autoComplete="off"
+      >
         <span className="close-icon-project" onClick={closeFunctions}>
           <img src="/svg/close.svg" alt="pencil" />
         </span>
@@ -106,26 +110,30 @@ const CardRegisterProject = ({
           placeholder="Nombre"
           onChange={handleProject}
         />
-        <Select
-          defaultValue={`${data.userId}`}
-          required={true}
-          label="Coordinador"
-          name="userId"
-          data={users}
-          itemKey="id"
-          textField="name"
-          onChange={handleProject}
-        />
-        <div className="col-input">
+        {users && (
           <Select
-            label="Area de trabajo"
-            data={areas}
-            name="workareaId"
-            defaultValue={areaId}
+            defaultValue={`${data.userId}`}
+            required={true}
+            label="Coordinador"
+            name="userId"
+            data={users}
             itemKey="id"
             textField="name"
             onChange={handleProject}
           />
+        )}
+        <div className="col-input">
+          {areas && (
+            <Select
+              label="Area de trabajo"
+              data={areas}
+              name="workareaId"
+              defaultValue={areaId}
+              itemKey="id"
+              textField="name"
+              onChange={handleProject}
+            />
+          )}
           <Input
             label="Precio"
             required={true}

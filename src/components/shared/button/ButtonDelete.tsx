@@ -12,6 +12,7 @@ interface ButtonProps extends HTMLMotionProps<'button'> {
   url: string;
   icon: string;
   onSave?: () => void;
+  customOnClick?: () => void;
 }
 const ButtonDelete = ({
   className,
@@ -20,6 +21,7 @@ const ButtonDelete = ({
   url,
   icon,
   onSave,
+  customOnClick,
   ...otherProps
 }: ButtonProps) => {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
@@ -28,11 +30,17 @@ const ButtonDelete = ({
   };
 
   const handleSendDelete = async () => {
+    if (customOnClick) {
+      customOnClick();
+      return;
+    }
+
     await axiosInstance.delete(`${url}`).then(() => {
       onSave?.();
       setIsAlertOpen(false);
     });
   };
+
   return (
     <>
       <motion.button

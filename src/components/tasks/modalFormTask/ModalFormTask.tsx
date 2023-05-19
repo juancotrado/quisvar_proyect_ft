@@ -2,9 +2,9 @@ import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import Modal from '../../portal/Modal';
 import Button from '../../shared/button/Button';
 import { isOpenModal$ } from '../../../services/sharingSubject';
-import { Input, TextArea } from '../..';
+import { Input } from '../..';
 import { useParams } from 'react-router-dom';
-import { TaskCreateType, TaskType } from '../../../types/types';
+import { TaskType } from '../../../types/types';
 
 interface ModalFormTaskProps {
   createTask: (value: TaskType) => void;
@@ -24,6 +24,7 @@ const ModalFormTask = ({
     id: 0,
     projectId: Number(id),
     name: '',
+    employees: [],
   };
   const [taskForm, setTaskForm] = useState<TaskType>(initValues);
 
@@ -73,18 +74,11 @@ const ModalFormTask = ({
           required={true}
           onChange={handleArea}
         />
-        {/* <TextArea
-          label="Descripción"
-          placeholder="Descripción"
-          value={taskForm.id}
-          name="description"
-          required={true}
-          onChange={handleArea}
-        /> */}
+
         <div className="col">
           <div className="btn-contain">
             <Button
-              text={'ACTUALIZAR'}
+              text={taskForm.id === 0 ? 'REGISTRAR' : 'ACTUALIZAR'}
               className="btn-area"
               whileTap={{ scale: 0.9 }}
               type="submit"

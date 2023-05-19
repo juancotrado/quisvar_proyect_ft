@@ -4,7 +4,7 @@ import TaskCard from '../../components/shared/card/TaskCard';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
-import { TaskType } from '../../types/types';
+import { Employees, TaskType } from '../../types/types';
 import useSocket from '../../hooks/useSocket';
 import ModalFormTask from '../../components/tasks/modalFormTask/ModalFormTask';
 import useRole from '../../hooks/useRole';
@@ -65,14 +65,18 @@ const Task = () => {
     });
   }, [socket, tasks]);
 
-  const editTaskStatus = (id: number, status: string) => {
+  const editTaskStatus = (
+    id: number,
+    status: string,
+    newEmployees: Employees[] = []
+  ) => {
     if (!tasks) return;
     const personalData = localStorage.getItem('personalData');
     if (!personalData) return;
     const personalDataParse = JSON.parse(personalData);
 
     const newTasks = tasks?.map(task =>
-      task.id == id ? { ...task, status } : task
+      task.id == id ? { ...task, status, employees: newEmployees } : task
     );
     socket.emit('update-status', {
       id,

@@ -30,13 +30,13 @@ const UserDetail = ({ user, index, onClick }: UserDetailProps) => {
     <tr>
       <td>{index + 1}</td>
       <td className="user-info">
+        <img src="/svg/Profile Avatar.svg" alt="" className="icon" />
         <div className="name-container">
-          <img src="/svg/Profile Avatar.svg" alt="" className="icon" />
           <h1 className="list-name">
             {user.profile?.firstName + ' ' + user.profile?.lastName}
           </h1>
+          <span>{user.email}</span>
         </div>
-        <span>{user.email}</span>
       </td>
       <td>{user.workAreaId}</td>
       <td

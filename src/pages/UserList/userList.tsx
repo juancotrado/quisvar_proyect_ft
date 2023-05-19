@@ -20,6 +20,8 @@ type Users = {
   email: string;
   password: string;
   profile: Profile;
+  role?: string;
+  status?: boolean;
 };
 type Profile = {
   firstName: string;
@@ -44,9 +46,8 @@ const UserList = () => {
     isOpenModal$.setSubject = true;
     setUsersData(null);
   };
-  const editUser = (value: CreateUsers) => {
+  const editUser = (value: Users) => {
     isOpenModal$.setSubject = true;
-    console.log({ here1: value });
     let datos = {
       id: value.id,
       email: value.email,
@@ -57,8 +58,10 @@ const UserList = () => {
         dni: value.profile.dni,
         phone: value.profile.phone,
       },
+      role: value.role,
+      status: value.status,
     };
-    console.log({ here2: datos });
+    // console.log({ here2: datos });
 
     setUsersData(datos);
   };
@@ -95,14 +98,16 @@ const UserList = () => {
                   key={index}
                   user={value}
                   index={index}
-                  onClick={() => editUser(value)}
+                  //@ts-ignore
+                  onClick={() => editUser(value)} //help ps
                 />
               ))}
           </tbody>
         </table>
       </div>
       <CardRegisterUser
-        dataRegisterUser={usersData}
+        //@ts-ignore
+        dataRegisterUser={usersData} //help ps
         onSave={() => {
           getUsers();
           setUsersData(null);

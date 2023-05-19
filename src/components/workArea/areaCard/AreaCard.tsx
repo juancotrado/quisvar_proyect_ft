@@ -1,27 +1,38 @@
 import { useNavigate } from 'react-router-dom';
 import './areaCard.css';
 import useRole from '../../../hooks/useRole';
+import ButtonDelete from '../../shared/button/ButtonDelete';
+import Button from '../../shared/button/Button';
 
 interface AreaCardProps {
   name: string;
   id: number;
   total?: number;
   onClick?: () => void;
+  onDelete?: () => void;
 }
-const AreaCard = ({ name, id, total, onClick }: AreaCardProps) => {
+const AreaCard = ({ name, id, total, onClick, onDelete }: AreaCardProps) => {
   const navigate = useNavigate();
   const { role } = useRole();
   const handleNext = () => {
     navigate(`/proyectos/${id}`);
   };
-
+  
   return (
     <div className="area-card" onClick={handleNext}>
       {role !== 'EMPLOYEE' && (
-        <span className="edit-icon" onClick={e => e.stopPropagation()}>
-          <div className="" onClick={onClick}>
-            <img src="/svg/pencil.svg" alt="pencil" />
-          </div>
+        <span className="area-edit" onClick={e => e.stopPropagation()}>
+          <ButtonDelete
+            icon="trash"
+            url={`/workareas/${id}`}
+            className="area-delete-icon"
+            onSave={onDelete}
+          />
+          <Button
+            icon="pencil"
+            className="area-edit-icon"
+            onClick={onClick}
+          />
         </span>
       )}
       <h2 className="area-card-title">{name}</h2>

@@ -17,7 +17,7 @@
   justify-content: flex-start;
   border-radius: 50px;
   align-items: center;
-  padding: 0 5px;
+  padding: 0 2px;
   cursor: pointer;
 }
 
@@ -30,7 +30,7 @@
   display: flex;
   align-items: center;
   width: 7.5rem;
-  height: 1.35rem;
+  height: 1.5rem;
   background-color: var(--color-process);
   border-radius: 30rem;
   justify-content: center;
@@ -43,10 +43,34 @@
   display: flex;
   gap: 2rem;
   align-items: center;
+  font-size: 1.3rem;
 }
 .cards {
   display: flex;
   gap: 3rem;
   flex-wrap: wrap;
-  padding-left: 4rem;
+  padding: 0rem 4rem 0rem 4rem;
+}
+.my-card-span {
+  font-size: 2rem;
+}
+.my-container-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  background-color: #fff;
+  padding: 4rem;
+  border-radius: var(--radius-input);
+  box-shadow: 0px 1.5px 4px rgba(0, 0, 0, 0.2);
+  width: 100%;
+}
+.my-title-list {
+  padding: 0.2rem 1rem;
+  border-radius: var(--radius-button);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #fff;
+  box-shadow: 0px 1.5px 4px rgba(0, 0, 0, 0.2);
+  color: var(--color-tertiary);
 }

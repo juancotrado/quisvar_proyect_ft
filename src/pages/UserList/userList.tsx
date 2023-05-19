@@ -4,7 +4,7 @@ import { CardRegisterUser, UserDetail } from '../../components';
 import Button from '../../components/shared/button/Button';
 import { axiosInstance } from '../../services/axiosInstance';
 import { isOpenModal$ } from '../../services/sharingSubject';
-interface Users {
+interface CreateUsers {
   id: number;
   email: string;
   password: string;
@@ -15,18 +15,32 @@ interface Users {
   workAreaId: number;
   status: boolean;
 }
+type Users = {
+  id: number;
+  email: string;
+  password: string;
+  profile: Profile;
+  role?: string;
+  status?: boolean;
+};
+type Profile = {
+  firstName: string;
+  lastName: string;
+  dni: string;
+  phone: string;
+};
 const UserList = () => {
-  const [users, setUsers] = useState<Users[] | null>(null);
+  const [users, setUsers] = useState<CreateUsers[] | null>(null);
   const [usersData, setUsersData] = useState<Users | null>(null);
   useEffect(() => {
-    axiosInstance
-      .get('/users')
-      .then(res => {
-        console.log(res.data);
-        setUsers(res.data);
-      })
-      .catch(err => console.log(err));
+    getUsers();
   }, []);
+
+  const getUsers = async () => {
+    await axiosInstance.get('/users').then(res => {
+      setUsers(res.data);
+    });
+  };
 
   const addUser = () => {
     isOpenModal$.setSubject = true;
@@ -34,11 +48,23 @@ const UserList = () => {
   };
   const editUser = (value: Users) => {
     isOpenModal$.setSubject = true;
-    // console.log(value);
+    let datos = {
+      id: value.id,
+      email: value.email,
+      password: value.password,
+      profile: {
+        firstName: value.profile.firstName,
+        lastName: value.profile.lastName,
+        dni: value.profile.dni,
+        phone: value.profile.phone,
+      },
+      role: value.role,
+      status: value.status,
+    };
+    // console.log({ here2: datos });
 
-    setUsersData(value);
+    setUsersData(datos);
   };
-  console.log(users);
   return (
     <div className="content-list">
       <div className="user-list">
@@ -72,16 +98,18 @@ const UserList = () => {
                   key={index}
                   user={value}
                   index={index}
-                  onClick={() => editUser(value)}
+                  //@ts-ignore
+                  onClick={() => editUser(value)} //help ps
                 />
               ))}
           </tbody>
         </table>
       </div>
       <CardRegisterUser
-        dataRegisterUser={usersData}
+        //@ts-ignore
+        dataRegisterUser={usersData} //help ps
         onSave={() => {
-          // getAreas();
+          getUsers();
           setUsersData(null);
         }}
       />

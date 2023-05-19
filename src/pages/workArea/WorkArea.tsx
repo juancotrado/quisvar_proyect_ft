@@ -26,7 +26,6 @@ const WorkArea = () => {
       setAreas(res.data);
     });
   };
-
   const addNewArea = () => {
     isOpenModal$.setSubject = true;
     setAreaData(null);
@@ -62,6 +61,7 @@ const WorkArea = () => {
               id={id}
               total={_count?.project}
               onClick={() => editArea({ id, name, description })}
+              onDelete={() => getAreas()}
             />
           ))}
       </div>

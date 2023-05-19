@@ -1,8 +1,7 @@
 import Input from '../../Input/Input';
-import { motion } from 'framer-motion';
 import './CardRegisterUser.css';
 import Select from '../../select/Select';
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import Modal from '../../../portal/Modal';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
@@ -12,11 +11,18 @@ interface CardRegisterUserProps {
   dataRegisterUser?: User | null;
 }
 
+enum UserRole {
+  'ADMIN',
+  'EMPLOYEE',
+  'MOD',
+}
 type User = {
   id: number;
   email: string;
   password: string;
   profile: Profile;
+  role?: UserRole;
+  status?: boolean | string;
 };
 type Profile = {
   firstName: string;
@@ -36,6 +42,9 @@ const InitialValues = {
   },
 };
 
+const roles = [{ role: 'ADMIN' }, { role: 'EMPLOYEE' }, { role: 'MOD' }];
+const status = [{ status: 'Activo' }, { status: 'Inactivo' }];
+
 const CardRegisterUser = ({
   dataRegisterUser,
   onSave,
@@ -46,40 +55,40 @@ const CardRegisterUser = ({
   useEffect(() => {
     if (dataRegisterUser) {
       setData(dataRegisterUser);
-      console.log(data);
     }
   }, [dataRegisterUser]);
-  const data1 = [
-    //endpoint data answer
-    { name: 'Salud' },
-    { name: 'Saneamiento' },
-    { name: 'Carreteras' },
-  ];
+
   const sendForm = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (dataRegisterUser) {
+      console.log({ here: data });
+
+      let newData = {
+        role: data.role,
+        status: data.status == 'Active' ? true : false,
+      };
       axiosInstance
-        .patch(`/users/${data.id}`, data)
-        .then(successfulShipment)
-        .catch(err => console.log(err.message));
+        .patch(`/users/${data.id}`, newData)
+        .then(successfulShipment);
     } else {
-      axiosInstance
-        .post(`/users`, data)
-        .then(successfulShipment)
-        .catch(err => console.log(err.message));
+      axiosInstance.post(`/users`, data).then(successfulShipment);
     }
   };
   const successfulShipment = () => {
     onSave?.();
     setData(InitialValues);
+    window.location.reload();
   };
   const handleChange = ({
     target,
-  }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  }: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = target;
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
-      setData({ ...data, [name]: value });
+      setData({
+        ...data,
+        [name]: value,
+      });
     }, 250);
   };
 
@@ -106,15 +115,20 @@ const CardRegisterUser = ({
           label="Correo"
           name="email"
           onChange={handleChange}
+          disabled={dataRegisterUser ? true : false}
         />
-        <Input
-          defaultValue={data.password}
-          placeholder="Contraseña"
-          type="password"
-          label="Contraseña"
-          name="password"
-          onChange={handleChange}
-        />
+        {!dataRegisterUser ? (
+          <Input
+            defaultValue={data.password}
+            placeholder="Contraseña"
+            type="password"
+            label="Contraseña"
+            name="password"
+            onChange={handleChange}
+          />
+        ) : (
+          ''
+        )}
         <div className="col-input">
           <Input
             defaultValue={data.profile.firstName}
@@ -122,6 +136,7 @@ const CardRegisterUser = ({
             label="Nombres"
             name="firstName"
             onChange={handleChange}
+            disabled={dataRegisterUser ? true : false}
           />
           <Input
             defaultValue={data.profile.lastName}
@@ -129,6 +144,7 @@ const CardRegisterUser = ({
             label="Apellidos"
             name="lastName"
             onChange={handleChange}
+            disabled={dataRegisterUser ? true : false}
           />
         </div>
         <div className="col-input">
@@ -138,6 +154,7 @@ const CardRegisterUser = ({
             label="DNI"
             name="dni"
             onChange={handleChange}
+            disabled={dataRegisterUser ? true : false}
           />
           <Input
             defaultValue={data.profile.phone}
@@ -145,9 +162,33 @@ const CardRegisterUser = ({
             label="Celular"
             name="phone"
             onChange={handleChange}
+            disabled={dataRegisterUser ? true : false}
           />
-          {/* <Select label="Area" data={data1} /> */}
         </div>
+        {dataRegisterUser ? (
+          <div className="col-input">
+            <Select
+              label="Rol"
+              defaultValue={data.role}
+              data={roles}
+              name="role"
+              itemKey="role"
+              textField="role"
+              onChange={handleChange}
+            />
+            <Select
+              label="Status"
+              defaultValue={data.status ? 'Activo' : 'Inactivo'}
+              data={status}
+              name="status"
+              itemKey="status"
+              textField="status"
+              onChange={handleChange}
+            />
+          </div>
+        ) : (
+          ''
+        )}
         <div className="btn-build">
           <Button
             text={dataRegisterUser ? 'CREAR' : 'GUARDAR'}

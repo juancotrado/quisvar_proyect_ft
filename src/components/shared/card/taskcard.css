@@ -45,28 +45,37 @@
   text-align: left;
   justify-content: end;
 }
+
 .task-unresolved {
   background-color: var(--color-unresolved);
   fill: #fff;
   color: #fff;
 }
+
 .task-process {
   background-color: var(--color-process);
   fill: var(--color-tertiary);
   color: var(--color-tertiary);
 }
+
 .task-done {
   background-color: var(--color-done);
   fill: #fff;
   color: #fff;
 }
+
 .buttons {
   display: flex;
   width: 100%;
   justify-content: center;
   gap: 2rem;
+
 }
-.button {
+
+
+button {
+  font-weight: 600;
+  color: var(--color-primary);
   cursor: pointer;
 }
 
@@ -80,9 +89,11 @@
 .task-UNRESOLVED {
   background-color: var(--color-unresolved);
 }
+
 .task-PROCESS {
   background-color: var(--color-process);
 }
+
 .task-DONE {
   background-color: var(--color-done);
 }

@@ -1,8 +1,9 @@
 import { useMemo } from 'react';
 import io from 'socket.io-client';
+import { URL } from '../services/axiosInstance';
 
 const useSocket = () => {
-  const socket = useMemo(() => io('http://localhost:8081'), []);
+  const socket = useMemo(() => io(URL), []);
 
   return socket;
 };

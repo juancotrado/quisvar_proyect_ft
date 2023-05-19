@@ -107,10 +107,13 @@ const TaskCard = ({
           task.employees?.length === 0) && (
           <div className="buttons">
             {task.status == 'PROCESS' && (
-              <button onClick={handlePrevius}>Previus</button>
+              <button onClick={handlePrevius}>Rechazar</button>
             )}
-            {(task.status === 'UNRESOLVED' || task.status == 'PROCESS') && (
-              <button onClick={handleNext}>Asignarse </button>
+            {task.status === 'UNRESOLVED' && (
+              <button onClick={handleNext}>Asignar</button>
+            )}
+            {task.status == 'PROCESS' && (
+              <button onClick={handleNext}>Terminar</button>
             )}
           </div>
         )}

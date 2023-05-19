@@ -2,7 +2,8 @@ import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { SnackbarUtilities } from '../utils/SnackbarManager';
 import { loader$ } from './sharingSubject';
 
-const API_BASE_URL = 'http://127.0.0.1:8081/api/v1';
+export const URL = 'http://127.0.0.1:8081';
+const API_BASE_URL = `${URL}/api/v1`;
 
 export const axiosInstance: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,

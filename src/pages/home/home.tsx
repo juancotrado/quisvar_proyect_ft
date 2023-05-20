@@ -1,12 +1,15 @@
 import { useEffect, useState } from 'react';
 import './home.css';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 // interface HomePageProps {};
 const initValues = {
   name: 'unknown',
   id: null,
 };
 const Home = () => {
+  const { userSession } = useSelector((state:RootState) => state)
   const [personalData, setPersonalData] = useState(initValues);
 
   const navigate = useNavigate();
@@ -23,7 +26,7 @@ const Home = () => {
     <div className="home">
       <h1 className="home-title">
         BIENVENIDO{' '}
-        <span className="title-content-span">{personalData.name}</span>
+        <span className="title-content-span">{userSession?.profile.firstName}</span>
       </h1>
       <p className="paragraph">
         ¡Bienvenido a nuestro sistema de asignación de tareas! Aquí podrás

@@ -32,3 +32,17 @@ export interface TaskCreateType {
   name: string;
   description: string;
 }
+export type Users = {
+  id: number;
+  email: string;
+  password: string;
+  profile: Profile;
+  role?: string;
+  status?: boolean;
+};
+type Profile = {
+  firstName: string;
+  lastName: string;
+  dni: string;
+  phone: string;
+};

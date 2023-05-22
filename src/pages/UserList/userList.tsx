@@ -4,6 +4,7 @@ import { CardRegisterUser, UserDetail } from '../../components';
 import Button from '../../components/shared/button/Button';
 import { axiosInstance } from '../../services/axiosInstance';
 import { isOpenModal$ } from '../../services/sharingSubject';
+import { Users } from '../../types/types';
 interface CreateUsers {
   id: number;
   email: string;
@@ -15,20 +16,7 @@ interface CreateUsers {
   workAreaId: number;
   status: boolean;
 }
-type Users = {
-  id: number;
-  email: string;
-  password: string;
-  profile: Profile;
-  role?: string;
-  status?: boolean;
-};
-type Profile = {
-  firstName: string;
-  lastName: string;
-  dni: string;
-  phone: string;
-};
+
 const UserList = () => {
   const [users, setUsers] = useState<CreateUsers[] | null>(null);
   const [usersData, setUsersData] = useState<Users | null>(null);
@@ -98,7 +86,6 @@ const UserList = () => {
                   key={index}
                   user={value}
                   index={index}
-                  //@ts-ignore
                   onClick={() => editUser(value)} //help ps
                 />
               ))}
@@ -106,7 +93,6 @@ const UserList = () => {
         </table>
       </div>
       <CardRegisterUser
-        //@ts-ignore
         dataRegisterUser={usersData} //help ps
         onSave={() => {
           getUsers();

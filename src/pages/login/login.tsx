@@ -24,14 +24,7 @@ const Login = () => {
     };
 
     axiosInstance.post('/auth/login', body).then(res => {
-      const personalData = {
-        id: res.data.id,
-        name: res.data.profile.firstName,
-        lastName: res.data.profile.lastName,
-        role: res.data.role,
-      };
       localStorage.setItem('token', res.data.token);
-      localStorage.setItem('personalData', JSON.stringify(personalData));
       navigate('/home');
     });
   };

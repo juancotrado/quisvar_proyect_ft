@@ -1,5 +1,5 @@
 import './Select.css';
-import { LegacyRef, SelectHTMLAttributes, forwardRef } from 'react';
+import { SelectHTMLAttributes, forwardRef } from 'react';
 
 interface SelectOptionsProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
@@ -7,21 +7,9 @@ interface SelectOptionsProps extends SelectHTMLAttributes<HTMLSelectElement> {
   itemKey: string;
   textField: string;
   name: string;
-  defaultValue?: any;
 }
-const SelectOptions = forwardRef(
-  (
-    {
-      name,
-      label,
-      itemKey,
-      textField,
-      data,
-      defaultValue,
-      ...props
-    }: SelectOptionsProps,
-    ref: LegacyRef<HTMLSelectElement>
-  ) => {
+const SelectOptions = forwardRef<HTMLSelectElement, SelectOptionsProps>(
+  ({ label, data, itemKey, textField, name, defaultValue, ...props }, ref) => {
     return (
       <div className="input-container">
         {label && (

@@ -76,8 +76,10 @@ const CardRegisterUser = ({
       axiosInstance
         .patch(`/users/${data.id}`, passData)
         .then(successfulShipment);
+      window.location.reload();
     } else {
       axiosInstance.post(`/users`, passData).then(successfulShipment);
+      window.location.reload();
     }
   };
 

@@ -11,6 +11,7 @@ import TextArea from './shared/textArea/TextArea';
 import CardEditUser from './shared/card/cardEditProfile/CardEditProfile';
 import UserDetail from './userDetail/UserDetail';
 import Menu from './shared/menu/Menu';
+import CardEditInformation from './shared/card/cardEditInformation/CardEditInformation';
 
 export {
   Alert,
@@ -22,6 +23,7 @@ export {
   CardRegisterTask,
   CardRegisterProject,
   CardEditUser,
+  CardEditInformation,
   Select,
   TextArea,
   UserDetail,

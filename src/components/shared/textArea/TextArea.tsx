@@ -1,20 +1,22 @@
 import './TextArea.css';
-import { InputHTMLAttributes } from 'react';
+import { TextareaHTMLAttributes, forwardRef } from 'react';
 
-interface TextAreaProps extends InputHTMLAttributes<HTMLTextAreaElement> {
+interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
 }
-const TextArea = ({ label, ...props }: TextAreaProps) => {
-  return (
-    <div className="input-container">
-      {label && (
-        <label htmlFor="email" className="input-label">
-          {label}
-        </label>
-      )}
-      <textarea {...props} rows={5} placeholder='Opcional...'/>
-    </div>
-  );
-};
+const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
+  ({ label, ...props }, ref) => {
+    return (
+      <div className="input-container">
+        {label && (
+          <label htmlFor="email" className="input-label">
+            {label}
+          </label>
+        )}
+        <textarea ref={ref} {...props} rows={5} placeholder="Opcional..." />
+      </div>
+    );
+  }
+);
 
 export default TextArea;

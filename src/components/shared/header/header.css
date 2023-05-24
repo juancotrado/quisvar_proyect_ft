@@ -9,9 +9,14 @@
   border-bottom: 4px solid var(--color-primary);
   border-radius: 0 0 5px 5px;
 }
+.nav-options {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
 
 .header-figure {
-  width: 6rem;
+  width: calc(var(--header-height) - 0.5rem);
 }
 .items-list {
   display: flex;
@@ -22,18 +27,18 @@
   padding: 0.5rem;
   text-decoration: none;
   display: inline-block;
-  font-size: var(--size-subtitle);
+  font-size: var(--size-button);
 }
 .item-nav-active {
   color: white;
   border-radius: 10px;
-  font-weight: 600;
+  font-weight: 500;
   padding: 10px 20px;
   background-color: var(--color-quaternay);
 }
 .item-nav-inactive {
   color: white;
-  font-weight: 600;
+  font-weight: 500;
   padding: 10px 20px;
 }
 .input-search {

@@ -58,7 +58,7 @@ const Header = () => {
       link: '/dashboard',
       action: handleLogout,
     },
-    { name: '/svg/icon.svg', link: '/dashboard', action: handleLogout },
+    // { name: '/svg/icon.svg', link: '/dashboard', action: handleLogout },
     { name: '/svg/Profile Avatar.svg', link: '/dashboard', action: toggleMenu },
   ];
 
@@ -86,29 +86,25 @@ const Header = () => {
   return (
     <header className="header">
       <nav className="nav-container container">
-        <figure className="header-figure">
-          <img src="/img/quisvar_logo.png" alt="logo QuisVar" />
-        </figure>
-        <ul className="items-list">
-          {items.map((item, id) => (
-            <li key={id}>
-              <NavLink
-                to={item.link}
-                className={({ isActive }) =>
-                  isActive ? 'item-nav-active' : 'item-nav-inactive'
-                }
-              >
-                {item.title}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
-        <input
-          className="input-search"
-          type="text"
-          placeholder="Buscar"
-          // value=""
-        ></input>
+        <div className="nav-options">
+          <figure className="header-figure">
+            <img src="/img/quisvar_logo.png" alt="logo QuisVar" />
+          </figure>
+          <ul className="items-list">
+            {items.map((item, id) => (
+              <li key={id}>
+                <NavLink
+                  to={item.link}
+                  className={({ isActive }) =>
+                    isActive ? 'item-nav-active' : 'item-nav-inactive'
+                  }
+                >
+                  {item.title}
+                </NavLink>
+              </li>
+            ))}
+          </ul>
+        </div>
         <ul className="icons-list">
           {icons.map((icon, id) => (
             <li key={id}>

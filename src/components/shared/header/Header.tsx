@@ -4,7 +4,7 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import { useEffect, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
 import { toggle$ } from '../../../services/sharingSubject';
-import { Menu } from '../..';
+import { CardEditInformation, Menu } from '../..';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -19,7 +19,15 @@ const Header = () => {
       handleToggleRef.current.unsubscribe();
     };
   }, []);
+  const [openModalInfo, setOpenModalInfo] = useState(false);
 
+  const openModal = () => {
+    setOpenModalInfo(true);
+  };
+
+  const closeModal = () => {
+    setOpenModalInfo(false);
+  };
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
@@ -53,9 +61,9 @@ const Header = () => {
   ];
 
   const menu = [
-    { name: 'Editar Perfil', icon: '/svg/Group.svg', action: () => {} },
+    { name: 'Editar Perfil', icon: '/svg/Group.svg', action: openModal },
     { name: 'Configuracion', icon: '/svg/icon.svg', action: handleList },
-    { name: 'Acerca de', icon: '/svg/question-circle.svg', action: () => {} },
+    { name: 'Acerca de', icon: '/svg/question-circle.svg', action: () => { } },
     {
       name: 'Salir',
       icon: '/svg/ri_logout-box-r-line.svg',
@@ -87,7 +95,7 @@ const Header = () => {
           className="input-search"
           type="text"
           placeholder="Buscar"
-          // value=""
+        // value=""
         ></input>
         <ul className="icons-list">
           {icons.map((icon, id) => (
@@ -105,6 +113,7 @@ const Header = () => {
         </ul>
         {isOpen && <Menu data={menu} />}
       </nav>
+      {<CardEditInformation isOpen={openModalInfo} onClose={closeModal} />}
     </header>
   );
 };

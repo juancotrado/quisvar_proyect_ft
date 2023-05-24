@@ -4,30 +4,34 @@ import './login.css';
 
 import { UserLogin } from '../../interfaces/intefaces';
 import { axiosInstance } from '../../services/axiosInstance';
+import InputText from '../../components/shared/Input/Input';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 const InitDataValues = {
   email: '',
   password: '',
 };
+
+interface UserForm {
+  email: string;
+  password: string;
+}
 const Login = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState<UserLogin>(InitDataValues);
 
-  const debounceRef = useRef<NodeJS.Timeout>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<UserForm>();
 
-  const sendForm = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const { email, password } = data;
-    const body = {
-      email,
-      password,
-    };
-
-    axiosInstance.post('/auth/login', body).then(res => {
+  const sendForm: SubmitHandler<UserForm> = data => {
+    axiosInstance.post('/auth/login', data).then(res => {
       localStorage.setItem('token', res.data.token);
       navigate('/home');
     });
   };
+
   useEffect(() => {
     const token = localStorage.getItem('token');
     if (token) {
@@ -35,18 +39,6 @@ const Login = () => {
     }
   }, [navigate]);
 
-  const handleLogin = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => {
-      setData({
-        ...data,
-        [name]: value,
-      });
-    }, 190);
-  };
-
-  console.log(data);
   return (
     <div className="login">
       <figure className="login-figure">
@@ -56,35 +48,22 @@ const Login = () => {
         </div>
       </figure>
       <div className="login-form">
-        <form onSubmit={sendForm} className="form">
+        <form onSubmit={handleSubmit(sendForm)} className="form">
           <img src="/img/quisvar_logo2.png" alt="" />
           <div className="form-group">
-            <label htmlFor="email" className="login-label">
-              CORREO
-            </label>
-            <input
-              type="text"
-              id="email"
-              onChange={handleLogin}
-              name="email"
-              className="login-input"
+            <InputText
+              label="Correo"
               placeholder="Email"
+              {...register('email')}
             />
           </div>
           <div className="form-group">
-            <label htmlFor="password" className="login-label">
-              CONTRASEÑA
-            </label>
-            <input
-              type="password"
-              id="password"
-              onChange={handleLogin}
-              name="password"
-              className="login-input"
+            <InputText
+              label="Contraseña"
               placeholder="Contraseña"
+              {...register('password')}
             />
           </div>
-
           <button type="submit" className="login-btn">
             INGRESAR
           </button>

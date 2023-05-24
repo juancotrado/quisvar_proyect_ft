@@ -47,9 +47,12 @@ const Login = () => {
             <InputText
               label="Correo"
               placeholder="Email"
-              {...register('email', { required: true })}
+              {...register('email', {
+                required: true,
+                pattern:
+                  /[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,5}/i,
+              })}
               errors={errors}
-              type="email"
             />
           </div>
           <div className="form-group">

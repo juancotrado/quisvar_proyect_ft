@@ -15,14 +15,20 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
       <div className={`${col ? 'input-col' : 'input-container'}`}>
         {label && (
           <label
-            htmlFor="email"
+            htmlFor={name}
             className={`${col ? 'input-label-col' : 'input-label'}`}
           >
             {label}
           </label>
         )}
         <div className={`${col ? 'input-option-col' : 'input-option'}`}>
-          <input name={name} className="input-area" ref={ref} {...props} />
+          <input
+            name={name}
+            id={name}
+            className="input-area"
+            ref={ref}
+            {...props}
+          />
           {props.type == 'password' ? (
             <img src={Eye} alt={Eye} className="input-icon" />
           ) : null}

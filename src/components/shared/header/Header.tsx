@@ -61,9 +61,19 @@ const Header = () => {
   ];
 
   const menu = [
-    { name: 'Editar Perfil', icon: '/svg/Group.svg', action: openModal },
+    {
+      name: 'Editar Perfil',
+      icon: '/svg/Group.svg',
+      action: openModal,
+    },
     { name: 'Configuracion', icon: '/svg/icon.svg', action: handleList },
-    { name: 'Acerca de', icon: '/svg/question-circle.svg', action: () => { } },
+    {
+      name: 'Acerca de',
+      icon: '/svg/question-circle.svg',
+      action: () => {
+        null;
+      },
+    },
     {
       name: 'Salir',
       icon: '/svg/ri_logout-box-r-line.svg',
@@ -95,7 +105,7 @@ const Header = () => {
           className="input-search"
           type="text"
           placeholder="Buscar"
-        // value=""
+          // value=""
         ></input>
         <ul className="icons-list">
           {icons.map((icon, id) => (

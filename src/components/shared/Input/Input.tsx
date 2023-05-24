@@ -1,36 +1,28 @@
 import Eye from '/svg/eye.svg';
 import './input.css';
-import { InputHTMLAttributes, LegacyRef, forwardRef } from 'react';
+import type { InputHTMLAttributes } from 'react';
+import { forwardRef } from 'react';
 
 interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   label?: string;
   col?: boolean;
-  defaultValue?: any;
 }
-const InputText = forwardRef(
-  (
-    { name, label, defaultValue, ...props }: InputTextProps,
-    ref: LegacyRef<HTMLInputElement>
-  ) => {
+
+const InputText = forwardRef<HTMLInputElement, InputTextProps>(
+  ({ name, label, col, ...props }, ref) => {
     return (
-      <div className={`${props.col ? 'input-col' : 'input-container'}`}>
+      <div className={`${col ? 'input-col' : 'input-container'}`}>
         {label && (
           <label
             htmlFor="email"
-            className={`${props.col ? 'input-label-col' : 'input-label'}`}
+            className={`${col ? 'input-label-col' : 'input-label'}`}
           >
             {label}
           </label>
         )}
-        <div className={`${props.col ? 'input-option-col' : 'input-option'}`}>
-          <input
-            {...props}
-            name={name}
-            className="input-area"
-            ref={ref}
-            defaultValue={defaultValue}
-          />
+        <div className={`${col ? 'input-option-col' : 'input-option'}`}>
+          <input name={name} className="input-area" ref={ref} {...props} />
           {props.type == 'password' ? (
             <img src={Eye} alt={Eye} className="input-icon" />
           ) : null}

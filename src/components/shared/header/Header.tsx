@@ -1,13 +1,15 @@
 import { motion } from 'framer-motion';
 import './header.css';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
 import { toggle$ } from '../../../services/sharingSubject';
 import { Menu } from '../..';
+import { SocketContext } from '../../../context/SocketContex';
 
 const Header = () => {
   const navigate = useNavigate();
+  const socket = useContext(SocketContext);
   const [isOpen, setIsOpen] = useState(false);
   const handleToggleRef = useRef<Subscription>(new Subscription());
 
@@ -31,7 +33,7 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('personalData');
+    socket.disconnect();
     navigate('login');
   };
 

@@ -1,16 +1,9 @@
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
-
-import { UserLogin } from '../../interfaces/intefaces';
 import { axiosInstance } from '../../services/axiosInstance';
 import InputText from '../../components/shared/Input/Input';
 import { SubmitHandler, useForm } from 'react-hook-form';
-
-const InitDataValues = {
-  email: '',
-  password: '',
-};
 
 interface UserForm {
   email: string;
@@ -54,14 +47,17 @@ const Login = () => {
             <InputText
               label="Correo"
               placeholder="Email"
-              {...register('email')}
+              {...register('email', { required: true })}
+              errors={errors}
+              type="email"
             />
           </div>
           <div className="form-group">
             <InputText
               label="Contraseña"
               placeholder="Contraseña"
-              {...register('password')}
+              {...register('password', { required: true })}
+              errors={errors}
             />
           </div>
           <button type="submit" className="login-btn">

@@ -7,10 +7,11 @@ interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   label?: string;
   col?: boolean;
+  errors?: any;
 }
 
 const InputText = forwardRef<HTMLInputElement, InputTextProps>(
-  ({ name, label, col, ...props }, ref) => {
+  ({ name, label, col, errors, ...props }, ref) => {
     return (
       <div className={`${col ? 'input-col' : 'input-container'}`}>
         {label && (
@@ -25,7 +26,9 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
           <input
             name={name}
             id={name}
-            className="input-area"
+            className={`input-area ${
+              errors && errors[name] && 'input-area-error'
+            }`}
             ref={ref}
             {...props}
           />
@@ -33,6 +36,16 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
             <img src={Eye} alt={Eye} className="input-icon" />
           ) : null}
         </div>
+        {errors && errors[name] && (
+          <span className="input-span-error">
+            <img
+              src="/svg/warning.svg"
+              alt="warning"
+              className="input-span-icon"
+            />{' '}
+            Formato de {label} invalido
+          </span>
+        )}
       </div>
     );
   }

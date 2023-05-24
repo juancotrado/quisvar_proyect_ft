@@ -1,11 +1,12 @@
 import Input from '../../Input/Input';
 import './CardRegisterUser.css';
 import Select from '../../select/Select';
-import { FormEvent, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from '../../../portal/Modal';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
 import Button from '../../button/Button';
+import { useForm, Controller } from 'react-hook-form';
 interface CardRegisterUserProps {
   onSave?: () => void;
   dataRegisterUser?: User | null;
@@ -22,7 +23,7 @@ type User = {
   password: string;
   profile: Profile;
   role?: UserRole;
-  status?: boolean | string;
+  status?: string;
 };
 type Profile = {
   firstName: string;
@@ -50,7 +51,7 @@ const CardRegisterUser = ({
   onSave,
 }: CardRegisterUserProps) => {
   const [data, setData] = useState<User>(InitialValues);
-  const debounceRef = useRef<NodeJS.Timeout>();
+  // const debounceRef = useRef<NodeJS.Timeout>();
 
   useEffect(() => {
     if (dataRegisterUser) {
@@ -58,48 +59,53 @@ const CardRegisterUser = ({
     }
   }, [dataRegisterUser]);
 
-  const sendForm = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (dataRegisterUser) {
-      console.log({ here: data });
+  const { handleSubmit, control } = useForm<User>();
 
-      let newData = {
-        role: data.role,
-        status: data.status == 'Active' ? true : false,
-      };
+  const onSubmit = async (values: User) => {
+    console.log(values);
+    let passData = {
+      email: values.email,
+      password: values.password,
+      firstName: values.profile.firstName,
+      lastName: values.profile.lastName,
+      dni: values.profile.dni,
+      phone: values.profile.phone,
+    };
+    console.log(passData);
+    if (dataRegisterUser) {
       axiosInstance
-        .patch(`/users/${data.id}`, newData)
+        .patch(`/users/${data.id}`, passData)
         .then(successfulShipment);
     } else {
-      axiosInstance.post(`/users`, data).then(successfulShipment);
+      axiosInstance.post(`/users`, passData).then(successfulShipment);
     }
   };
+
   const successfulShipment = () => {
     onSave?.();
     setData(InitialValues);
     window.location.reload();
   };
-  const handleChange = ({
-    target,
-  }: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = target;
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => {
-      setData({
-        ...data,
-        [name]: value,
-      });
-    }, 250);
-  };
+  // const handleChange = ({
+  //   target,
+  // }: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  //   const { name, value } = target;
+  //   if (debounceRef.current) clearTimeout(debounceRef.current);
+  //   debounceRef.current = setTimeout(() => {
+  //     setData({
+  //       ...data,
+  //       [name]: value,
+  //     });
+  //   }, 250);
+  // };
 
   const closeFunctions = () => {
     isOpenModal$.setSubject = false;
     setData(InitialValues);
   };
-
   return (
     <Modal size={50}>
-      <form onSubmit={sendForm} className="card-register-users">
+      <form onSubmit={handleSubmit(onSubmit)} className="card-register-users">
         <span className="close-icon" onClick={closeFunctions}>
           <img src="/svg/close.svg" alt="pencil" />
         </span>
@@ -108,82 +114,139 @@ const CardRegisterUser = ({
             ? 'EDITAR DATOS DE USUARIO'
             : 'REGISTRO DE NUEVO USUARIO'}
         </h1>
-        <Input
-          defaultValue={data.email}
-          placeholder="Correo"
-          title="Correo"
-          label="Correo"
+        <Controller
           name="email"
-          onChange={handleChange}
-          disabled={dataRegisterUser ? true : false}
+          control={control}
+          render={({ field }) => {
+            return (
+              <Input
+                {...field}
+                placeholder="Correo"
+                defaultValue={data.email}
+                label="Correo"
+                disabled={dataRegisterUser ? true : false}
+              />
+            );
+          }}
         />
         {!dataRegisterUser ? (
-          <Input
-            defaultValue={data.password}
-            placeholder="Contraseña"
-            type="password"
-            label="Contraseña"
+          <Controller
             name="password"
-            onChange={handleChange}
+            control={control}
+            render={({ field }) => {
+              return (
+                <Input
+                  {...field}
+                  placeholder="Contraseña"
+                  type="password"
+                  label="Contraseña"
+                  defaultValue={data.password}
+                />
+              );
+            }}
           />
         ) : (
           ''
         )}
         <div className="col-input">
-          <Input
-            defaultValue={data.profile.firstName}
-            placeholder="Nombres"
-            label="Nombres"
-            name="firstName"
-            onChange={handleChange}
-            disabled={dataRegisterUser ? true : false}
+          <Controller
+            name="profile.firstName"
+            control={control}
+            render={({ field }) => {
+              return (
+                <Input
+                  {...field}
+                  placeholder="Nombres"
+                  label="Nombres"
+                  defaultValue={data.profile.firstName}
+                  disabled={dataRegisterUser ? true : false}
+                />
+              );
+            }}
           />
-          <Input
-            defaultValue={data.profile.lastName}
-            placeholder="Apellidos"
-            label="Apellidos"
-            name="lastName"
-            onChange={handleChange}
-            disabled={dataRegisterUser ? true : false}
+          <Controller
+            name="profile.lastName"
+            control={control}
+            render={({ field }) => {
+              return (
+                <Input
+                  {...field}
+                  placeholder="Apellidos"
+                  label="Apellidos"
+                  defaultValue={data.profile.lastName}
+                  disabled={dataRegisterUser ? true : false}
+                />
+              );
+            }}
           />
         </div>
         <div className="col-input">
-          <Input
-            defaultValue={data.profile.dni}
-            placeholder="N°"
-            label="DNI"
-            name="dni"
-            onChange={handleChange}
-            disabled={dataRegisterUser ? true : false}
+          <Controller
+            name="profile.dni"
+            control={control}
+            render={({ field }) => {
+              return (
+                <Input
+                  {...field}
+                  placeholder="N°"
+                  label="DNI"
+                  defaultValue={data.profile.dni}
+                  disabled={dataRegisterUser ? true : false}
+                />
+              );
+            }}
           />
-          <Input
-            defaultValue={data.profile.phone}
-            placeholder="Celular"
-            label="Celular"
-            name="phone"
-            onChange={handleChange}
-            disabled={dataRegisterUser ? true : false}
+          <Controller
+            name="profile.phone"
+            control={control}
+            render={({ field }) => {
+              return (
+                <Input
+                  {...field}
+                  placeholder="Celular"
+                  label="Celular"
+                  defaultValue={data.profile.phone}
+                  disabled={dataRegisterUser ? true : false}
+                />
+              );
+            }}
           />
         </div>
         {dataRegisterUser ? (
           <div className="col-input">
-            <Select
-              label="Rol"
-              defaultValue={data.role}
-              data={roles}
+            <Controller
               name="role"
-              itemKey="role"
-              textField="role"
-              onChange={handleChange}
+              control={control}
+              render={({ field }) => {
+                return (
+                  <Select
+                    {...field}
+                    label="Rol"
+                    defaultValue={data.role}
+                    data={roles}
+                    name="role"
+                    itemKey="role"
+                    textField="role"
+                  />
+                );
+              }}
             />
-            <Select
-              label="Status"
-              defaultValue={data.status ? 'Activo' : 'Inactivo'}
-              data={status}
+            <Controller
               name="status"
-              itemKey="status"
-              textField="status"
-              onChange={handleChange}
+              control={control}
+              render={({ field }) => {
+                return (
+                  <Select
+                    {...field}
+                    label="Status"
+                    defaultValue={data.status ? 'Activo' : 'Inactivo'}
+                    data={status}
+                    name="status"
+                    itemKey="status"
+                    textField="status"
+                  />
+                );
+              }}
             />
           </div>
         ) : (

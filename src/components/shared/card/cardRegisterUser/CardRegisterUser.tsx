@@ -1,12 +1,12 @@
-import Input from '../../Input/Input';
 import './CardRegisterUser.css';
 import Select from '../../select/Select';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import Modal from '../../../portal/Modal';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
 import Button from '../../button/Button';
-import { useForm, Controller } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import InputText from '../../Input/Input';
 interface CardRegisterUserProps {
   onSave?: () => void;
   dataRegisterUser?: User | null;
@@ -50,19 +50,20 @@ const CardRegisterUser = ({
   dataRegisterUser,
   onSave,
 }: CardRegisterUserProps) => {
-  const [data, setData] = useState<User>(InitialValues);
+  // const [data, setData] = useState<User>(InitialValues);
   // const debounceRef = useRef<NodeJS.Timeout>();
+  // console.log(data);
+  const { register, handleSubmit, reset } = useForm<User>({
+    defaultValues: InitialValues,
+  });
 
   useEffect(() => {
     if (dataRegisterUser) {
-      setData(dataRegisterUser);
+      reset(dataRegisterUser);
     }
   }, [dataRegisterUser]);
 
-  const { handleSubmit, control } = useForm<User>();
-
   const onSubmit = async (values: User) => {
-    console.log(values);
     let passData = {
       email: values.email,
       password: values.password,
@@ -74,7 +75,7 @@ const CardRegisterUser = ({
     console.log(passData);
     if (dataRegisterUser) {
       axiosInstance
-        .patch(`/users/${data.id}`, passData)
+        .patch(`/users/${dataRegisterUser.id}`, passData)
         .then(successfulShipment);
       window.location.reload();
     } else {
@@ -85,25 +86,13 @@ const CardRegisterUser = ({
 
   const successfulShipment = () => {
     onSave?.();
-    setData(InitialValues);
+    reset(InitialValues);
     window.location.reload();
   };
-  // const handleChange = ({
-  //   target,
-  // }: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-  //   const { name, value } = target;
-  //   if (debounceRef.current) clearTimeout(debounceRef.current);
-  //   debounceRef.current = setTimeout(() => {
-  //     setData({
-  //       ...data,
-  //       [name]: value,
-  //     });
-  //   }, 250);
-  // };
 
   const closeFunctions = () => {
     isOpenModal$.setSubject = false;
-    setData(InitialValues);
+    reset(InitialValues);
   };
   return (
     <Modal size={50}>
@@ -116,139 +105,72 @@ const CardRegisterUser = ({
             ? 'EDITAR DATOS DE USUARIO'
             : 'REGISTRO DE NUEVO USUARIO'}
         </h1>
-        <Controller
+        <InputText
+          {...register('email')}
+          placeholder="Correo"
+          label="Correo"
           name="email"
-          control={control}
-          render={({ field }) => {
-            return (
-              <Input
-                {...field}
-                placeholder="Correo"
-                defaultValue={data.email}
-                label="Correo"
-                disabled={dataRegisterUser ? true : false}
-              />
-            );
-          }}
+          disabled={dataRegisterUser ? true : false}
         />
         {!dataRegisterUser ? (
-          <Controller
-            name="password"
-            control={control}
-            render={({ field }) => {
-              return (
-                <Input
-                  {...field}
-                  placeholder="Contraseña"
-                  type="password"
-                  label="Contraseña"
-                  defaultValue={data.password}
-                />
-              );
-            }}
+          <InputText
+            {...register('password')}
+            placeholder="Contraseña"
+            type="password"
+            label="Contraseña"
           />
         ) : (
           ''
         )}
         <div className="col-input">
-          <Controller
-            name="profile.firstName"
-            control={control}
-            render={({ field }) => {
-              return (
-                <Input
-                  {...field}
-                  placeholder="Nombres"
-                  label="Nombres"
-                  defaultValue={data.profile.firstName}
-                  disabled={dataRegisterUser ? true : false}
-                />
-              );
-            }}
+          <InputText
+            {...register('profile.firstName')}
+            placeholder="Nombres"
+            label="Nombres"
+            disabled={dataRegisterUser ? true : false}
           />
-          <Controller
-            name="profile.lastName"
-            control={control}
-            render={({ field }) => {
-              return (
-                <Input
-                  {...field}
-                  placeholder="Apellidos"
-                  label="Apellidos"
-                  defaultValue={data.profile.lastName}
-                  disabled={dataRegisterUser ? true : false}
-                />
-              );
-            }}
+          <InputText
+            {...register('profile.lastName')}
+            placeholder="Apellidos"
+            label="Apellidos"
+            disabled={dataRegisterUser ? true : false}
           />
         </div>
         <div className="col-input">
-          <Controller
-            name="profile.dni"
-            control={control}
-            render={({ field }) => {
-              return (
-                <Input
-                  {...field}
-                  placeholder="N°"
-                  label="DNI"
-                  defaultValue={data.profile.dni}
-                  disabled={dataRegisterUser ? true : false}
-                />
-              );
-            }}
+          <InputText
+            {...register('profile.dni')}
+            placeholder="N°"
+            label="DNI"
+            type="number"
+            disabled={dataRegisterUser ? true : false}
           />
-          <Controller
-            name="profile.phone"
-            control={control}
-            render={({ field }) => {
-              return (
-                <Input
-                  {...field}
-                  placeholder="Celular"
-                  label="Celular"
-                  defaultValue={data.profile.phone}
-                  disabled={dataRegisterUser ? true : false}
-                />
-              );
-            }}
+          <InputText
+            {...register('profile.phone')}
+            placeholder="Celular"
+            label="Celular"
+            type="number"
+            disabled={dataRegisterUser ? true : false}
           />
         </div>
         {dataRegisterUser ? (
           <div className="col-input">
-            <Controller
+            <Select
+              {...register('role')}
+              label="Rol"
+              defaultValue={dataRegisterUser.role}
+              data={roles}
               name="role"
-              control={control}
-              render={({ field }) => {
-                return (
-                  <Select
-                    {...field}
-                    label="Rol"
-                    defaultValue={data.role}
-                    data={roles}
-                    name="role"
-                    itemKey="role"
-                    textField="role"
-                  />
-                );
-              }}
+              itemKey="role"
+              textField="role"
             />
-            <Controller
+            <Select
+              {...register('status')}
+              label="Status"
+              defaultValue={dataRegisterUser.status ? 'Activo' : 'Inactivo'}
+              data={status}
               name="status"
-              control={control}
-              render={({ field }) => {
-                return (
-                  <Select
-                    {...field}
-                    label="Status"
-                    defaultValue={data.status ? 'Activo' : 'Inactivo'}
-                    data={status}
-                    name="status"
-                    itemKey="status"
-                    textField="status"
-                  />
-                );
-              }}
+              itemKey="status"
+              textField="status"
             />
           </div>
         ) : (

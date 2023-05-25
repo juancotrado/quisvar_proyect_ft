@@ -1,3 +1,10 @@
+export interface SpecialityType {
+  id: number;
+  name: number;
+  _count?: {
+    projects: number;
+  };
+}
 export interface TaskType {
   id: number;
   name: string;

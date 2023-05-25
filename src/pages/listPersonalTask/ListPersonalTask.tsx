@@ -35,11 +35,12 @@ const ListPersonalTask = () => {
   };
 
   return (
-    <div className="container-list">
-      <div className="title-list">
+    <div className="my-container-list ">
+      <div className="my-title-list">
         <img className="task-icon" src={list_icon} alt="task-list" />
         <h2>Mis tareas</h2>
       </div>
+
       <div className="container-list-task">
         <div className="header-of-header">
           <span>Ordenar por:</span>

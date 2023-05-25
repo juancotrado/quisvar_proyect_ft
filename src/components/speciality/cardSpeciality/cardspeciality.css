@@ -1,0 +1,103 @@
+.speciality-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  padding: 1rem;
+  background-color: white;
+  max-width: 30rem;
+  height: 18rem;
+  border-radius: 12px;
+  border: 2px solid var(--color-primary);
+  border-bottom: 10px solid var(--color-primary);
+  cursor: pointer;
+}
+
+.speciality-buttons-cointainer {
+  width: 100%;
+}
+.speciality-edit {
+  padding: 0.2rem;
+  display: flex;
+  width: 100%;
+  justify-content: end;
+  gap: 0.3rem;
+}
+
+.card-quantity {
+  font-weight: 500;
+}
+
+.editable-title {
+  border-radius: var(--radius-input);
+  font-size: 2rem;
+  padding: 0 0.5rem;
+  font-weight: 800;
+  width: 28rem;
+  height: 10rem;
+  overflow: hidden;
+}
+.editable-form {
+  position: relative;
+}
+.editable-color {
+  background-color: var(--color-menu);
+  color: var(--color-quaternay);
+  overflow-y: auto;
+}
+.editable-submit {
+  position: absolute;
+  bottom: 0.6rem;
+  right: 1.5rem;
+  cursor: pointer;
+  transition: background-color ease 0.5s;
+  font-weight: 500;
+  border: 2px solid var(--color-primary);
+  color: var(--color-primary);
+  padding: 0.2rem;
+  border-radius: var(--radius-button);
+}
+.editable-submit:hover {
+  background-color: var(--color-primary);
+  color: #fff;
+}
+/*
+
+.area-edit-icon {
+  width: 2rem;
+  height: 2rem;
+  background-color: var(--color-primary-gradiant);
+  border: none;
+  border-radius: 50%;
+}
+
+.area-delete-icon {
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  border-radius: 50%;
+}
+
+
+
+.area-card-icon-container {
+  position: absolute;
+  width: 90%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  bottom: 1px;
+}
+
+.area-card-icon {
+  width: 2rem;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background-color: var(--color-secondary);
+}
+
+.area-card-text {
+  font-size: 0.8rem;
+  color: var(--color-quaternay);
+} */

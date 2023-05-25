@@ -1,17 +1,27 @@
 import Eye from '/svg/eye.svg';
+import EyeClose from '/svg/eyeClose.svg';
 import './input.css';
-import type { InputHTMLAttributes } from 'react';
+import { InputHTMLAttributes, useState } from 'react';
 import { forwardRef } from 'react';
 
 interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   name?: string;
   label?: string;
   col?: boolean;
-  errors?: any;
+  type?: string;
+  errors?: { [key: string]: any };
 }
 
 const InputText = forwardRef<HTMLInputElement, InputTextProps>(
-  ({ name, label, col, errors, ...props }, ref) => {
+  ({ name, label, col, errors, type, ...props }, ref) => {
+    const [isShow, setIsShow] = useState(false);
+    const viewPassword = () => setIsShow(!isShow);
+
+    let typeAux = type;
+    if (type == 'password') {
+      typeAux = isShow ? 'text' : 'password';
+    }
+    console.log(isShow);
     return (
       <div className={`${col ? 'input-col' : 'input-container'}`}>
         {label && (
@@ -27,16 +37,22 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
             name={name}
             id={name}
             className={`input-area ${
-              errors && errors[name] && 'input-area-error'
+              errors && name && errors[name] && 'input-area-error'
             }`}
             ref={ref}
+            type={typeAux}
             {...props}
           />
-          {props.type == 'password' ? (
-            <img src={Eye} alt={Eye} className="input-icon" />
+          {type == 'password' ? (
+            <img
+              onClick={viewPassword}
+              src={isShow ? Eye : EyeClose}
+              alt={Eye}
+              className="input-icon"
+            />
           ) : null}
         </div>
-        {errors && errors[name] && (
+        {name && errors && errors[name] && (
           <span className="input-span-error">
             <img
               src="/svg/warning.svg"

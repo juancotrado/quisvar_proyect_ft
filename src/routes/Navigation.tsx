@@ -4,6 +4,7 @@ import WorkArea from '../pages/workArea/WorkArea';
 import Projects from '../pages/projects/Projects';
 import { ProtectedRoute } from '../components';
 import ListPersonalTask from '../pages/listPersonalTask/ListPersonalTask';
+import Specialities from '../pages/specialities/Specialities';
 
 const Navigation = () => {
   return (
@@ -18,6 +19,7 @@ const Navigation = () => {
             <Route path="/tareas/:id" element={<Task />} />
             <Route path="/proyectos/:id" element={<Projects />} />
             <Route path="/areas" element={<WorkArea />} />
+            <Route path="/especialidades" element={<Specialities />} />
             <Route path="/mis-tareas" element={<ListPersonalTask />} />
             <Route path="/lista-de-usuarios" element={<UserList />} />
           </Route>

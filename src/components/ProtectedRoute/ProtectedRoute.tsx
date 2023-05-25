@@ -1,14 +1,16 @@
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { Header } from '..';
-import { toggle$ } from '../../services/sharingSubject';
+import { errorToken$, toggle$ } from '../../services/sharingSubject';
 import { useDispatch } from 'react-redux';
 import { getUserSession } from '../../store/slices/userSession.slice';
 import { AppDispatch } from '../../store';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { SocketProvider } from '../../context/SocketContex';
+import { Subscription } from 'rxjs';
 
 export const ProtectedRoute = () => {
   const dispatch: AppDispatch = useDispatch();
+  const navigate = useNavigate();
   const isLogged = localStorage.getItem('token');
   const clossToggle = () => (toggle$.setSubject = false);
 
@@ -16,18 +18,29 @@ export const ProtectedRoute = () => {
     dispatch(getUserSession());
   }, [dispatch]);
 
-  if (isLogged) {
-    return (
-      <SocketProvider>
-        <div style={{ height: '100vh', backgroundColor: '#f5f5f5' }}>
-          <Header />
-          <div onClick={clossToggle}>
-            <Outlet />
-          </div>
-        </div>
-      </SocketProvider>
+  const handleErrorToken = useRef<Subscription>(new Subscription());
+
+  useEffect(() => {
+    handleErrorToken.current = errorToken$.getSubject.subscribe(() =>
+      navigate('login')
     );
-  } else {
+    return () => {
+      handleErrorToken.current.unsubscribe();
+    };
+  }, [navigate]);
+
+  if (!isLogged) {
     return <Navigate to="/login" />;
   }
+
+  return (
+    <SocketProvider>
+      <div style={{ height: '100vh', backgroundColor: '#f5f5f5' }}>
+        <Header />
+        <div onClick={clossToggle}>
+          <Outlet />
+        </div>
+      </div>
+    </SocketProvider>
+  );
 };

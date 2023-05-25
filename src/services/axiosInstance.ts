@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { SnackbarUtilities } from '../utils/SnackbarManager';
-import { loader$ } from './sharingSubject';
+import { errorToken$, loader$ } from './sharingSubject';
 
 export const URL = 'http://localhost:8081';
 const API_BASE_URL = `${URL}/api/v1`;
@@ -30,12 +30,18 @@ export const axiosInterceptor = () => {
       return res;
     },
     err => {
+      const { response } = err;
       loader$.setSubject = false;
-      if (!err.response) {
+      if (!response) {
         SnackbarUtilities.error(err.message);
         return Promise.reject(err);
       }
-      SnackbarUtilities.error(err.response.data.message);
+      if (response.data.error.name === 'JsonWebTokenError') {
+        localStorage.removeItem('token');
+        errorToken$.setSubject = true;
+        return;
+      }
+      SnackbarUtilities.error(response.data.message);
       return Promise.reject(err);
     }
   );

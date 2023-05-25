@@ -1,7 +1,6 @@
 .project {
   max-height: calc(100vh - var(--header-height));
   overflow-y: auto;
-
 }
 
 .project-head {
@@ -22,6 +21,6 @@
   gap: 1rem; */
   padding: 0 1rem;
   display: grid;
-  margin-top: 3rem;
+  margin-top: 1rem;
   gap: 1rem 0;
 }

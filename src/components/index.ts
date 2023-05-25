@@ -12,7 +12,6 @@ import CardEditUser from './shared/card/cardEditProfile/CardEditProfile';
 import UserDetail from './userDetail/UserDetail';
 import Menu from './shared/menu/Menu';
 import CardEditInformation from './shared/card/cardEditInformation/CardEditInformation';
-import RadioButtonGroup from './shared/radioButtonGroup/RadioButtonGroup';
 
 export {
   Alert,
@@ -25,7 +24,6 @@ export {
   CardRegisterProject,
   CardEditUser,
   CardEditInformation,
-  RadioButtonGroup,
   Select,
   TextArea,
   UserDetail,

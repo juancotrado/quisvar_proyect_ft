@@ -11,14 +11,14 @@
 }
 
 .project-card-figure {
-  width: 9rem;
+  width: 6rem;
 }
 
 .project-card-main {
   display: flex;
   width: 100%;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 0.5rem;
 }
 
 .projec-card-header {
@@ -28,7 +28,8 @@
 
 .project-card-subtitle {
   color: var(--color-secondary);
-  font-size: 1.7rem;
+  font-size: 1.2rem;
+  text-transform: uppercase;
   font-weight: 800;
 }
 
@@ -47,7 +48,27 @@
 
 .project-card-footer {
   display: flex;
-  justify-content: space-between;
+  padding: 0.2rem;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  align-items: center;
+  /* justify-content: end; */
+}
+
+.project-button-footer {
+  font-size: 0.8rem;
+  font-weight: 700;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  transition: ease 0.4s;
+  border: none;
+}
+
+.project-button-footer:hover {
+  font-size: 0.8rem;
+  background-color: var(--color-quaternay);
+  color: #ffffff;
+  border: none;
 }
 
 .project-card-task {
@@ -59,7 +80,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 0.5rem
+  gap: 0.5rem;
 }
 
 .project-edit-icon {

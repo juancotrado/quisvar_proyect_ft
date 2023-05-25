@@ -52,4 +52,27 @@ type Profile = {
   lastName: string;
   dni: string;
   phone: string;
+  userId?: string;
+};
+export interface ProjectType {
+  id: number;
+  description?: string;
+  name: string;
+  price: number;
+  status: boolean;
+  typeSpeciality: string;
+  startDate: Date;
+  untilDate: Date;
+  moderator: {
+    profile: Profile;
+  };
+  _count: {
+    tasks: number;
+  };
+  areas: AreasType[];
+}
+
+type AreasType = {
+  id: number;
+  name: string;
 };

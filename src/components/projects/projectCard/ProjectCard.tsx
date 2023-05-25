@@ -1,30 +1,11 @@
 import { useNavigate } from 'react-router-dom';
 import './projectCard.css';
-import useRole from '../../../hooks/useRole';
 import ButtonDelete from '../../shared/button/ButtonDelete';
 import Button from '../../shared/button/Button';
 import { _date } from '../../../utils/formatDate';
-
-export type ProjectType = {
-  id: number;
-  description?: string;
-  name: string;
-  price: number;
-  status: boolean;
-  startDate: Date;
-  untilDate: Date;
-  moderator: {
-    profile: {
-      firstName: string;
-      lastName: string;
-      phone?: string;
-      userId: number;
-    };
-  };
-  _count: {
-    tasks: number;
-  };
-};
+import { ProjectType } from '../../../types/types';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store';
 
 interface ProjectCardProps {
   onClick?: () => void;
@@ -33,12 +14,10 @@ interface ProjectCardProps {
 }
 
 const ProjectCard = ({ project, onClick, onSave }: ProjectCardProps) => {
+  const { userSession } = useSelector((state: RootState) => state);
+  const role = userSession?.role ? userSession.role : 'EMPLOYEE';
+  const { profile } = project.moderator;
   const navigate = useNavigate();
-  const { role } = useRole();
-
-  const handleNext = () => {
-    navigate(`/tareas/${project.id}`);
-  };
 
   return (
     <div className="project-card">
@@ -47,7 +26,9 @@ const ProjectCard = ({ project, onClick, onSave }: ProjectCardProps) => {
       </figure>
       <div className="project-card-main">
         <div className="projec-card-header">
-          <h3 className="project-card-subtitle">{project.name}</h3>
+          <h3 className="project-card-subtitle">
+            TIPO: {project.typeSpeciality}
+          </h3>
           <div className="project-card-option">
             <p className="project-card-date">{`Fecha Límite: ${_date(
               project.untilDate
@@ -69,24 +50,28 @@ const ProjectCard = ({ project, onClick, onSave }: ProjectCardProps) => {
             )}
           </div>
         </div>
-
         <h4 className="project-card-cordinator">
-          COORDINADOR: {project.moderator.profile.firstName}{' '}
-          {project.moderator.profile.lastName}
+          COORDINADOR: {profile.firstName} {profile.lastName}
         </h4>
+
         <p className="project-card-description">
-          {project.description
-            ? project.description
+          {project.name
+            ? project.name
             : 'CREACION DEL SERVICIO DE PRÁCTICA DEPORTIVA Y/O RECREATIVA EN LA COMUNIDAD CAMPESINA DE KALAHUALA DISTRITO DE ASILLO DE LA PROVINCIA DE AZANGARO DEL DEPARTAMENTO DE PUNO.'}
         </p>
-        <div className="project-card-footer">
-          <p className="project-card-task">
-            TOTAL DE TAREAS: {project._count.tasks}
-          </p>
-          <p className="project-card-show" onClick={handleNext}>
-            VER MAS
-          </p>
-        </div>
+        {project.areas.length > 0 && (
+          <div className="project-card-footer">
+            <span>{`ÁREAS:`}</span>
+            {project.areas.map(area => (
+              <Button
+                key={area.id}
+                text={area.name}
+                className="project-button-footer"
+                onClick={() => navigate(`/tareas/${area.id}`)}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

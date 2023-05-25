@@ -7,7 +7,6 @@ import { isOpenModal$ } from '../../../../services/sharingSubject';
 import Button from '../../button/Button';
 import { useForm } from 'react-hook-form';
 import InputText from '../../Input/Input';
-import { RadioButtonGroup } from '../../..';
 interface CardRegisterUserProps {
   onSave?: () => void;
   dataRegisterUser?: User | null;
@@ -45,10 +44,6 @@ const InitialValues = {
 };
 
 const roles = [{ role: 'ADMIN' }, { role: 'EMPLOYEE' }, { role: 'MOD' }];
-const status = [
-  { status: true, name: 'Activo' },
-  { status: false, name: 'Inactivo' },
-];
 
 const CardRegisterUser = ({
   dataRegisterUser,

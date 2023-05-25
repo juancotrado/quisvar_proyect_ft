@@ -4,9 +4,9 @@ import Button from '../../button/Button';
 import './cardEditInformation.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { RootState } from '../../../../store';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Profile, Users } from '../../../../types/types';
+import { Profile } from '../../../../types/types';
 import { axiosInstance } from '../../../../services/axiosInstance';
 
 const CardEditInformation = ({ isOpen, onClose }: any) => {

@@ -7,6 +7,7 @@ import { isOpenModal$ } from '../../../../services/sharingSubject';
 import Button from '../../button/Button';
 import { useForm } from 'react-hook-form';
 import InputText from '../../Input/Input';
+import { RadioButtonGroup } from '../../..';
 interface CardRegisterUserProps {
   onSave?: () => void;
   dataRegisterUser?: User | null;
@@ -23,7 +24,7 @@ type User = {
   password: string;
   profile: Profile;
   role?: UserRole;
-  status?: string;
+  status?: boolean;
 };
 type Profile = {
   firstName: string;
@@ -44,7 +45,10 @@ const InitialValues = {
 };
 
 const roles = [{ role: 'ADMIN' }, { role: 'EMPLOYEE' }, { role: 'MOD' }];
-const status = [{ status: 'Activo' }, { status: 'Inactivo' }];
+const status = [
+  { status: true, name: 'Activo' },
+  { status: false, name: 'Inactivo' },
+];
 
 const CardRegisterUser = ({
   dataRegisterUser,
@@ -53,17 +57,26 @@ const CardRegisterUser = ({
   // const [data, setData] = useState<User>(InitialValues);
   // const debounceRef = useRef<NodeJS.Timeout>();
   // console.log(data);
-  const { register, handleSubmit, reset } = useForm<User>({
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<User>({
     defaultValues: InitialValues,
   });
 
   useEffect(() => {
     if (dataRegisterUser) {
       reset(dataRegisterUser);
+      setValue('status', dataRegisterUser.status);
     }
   }, [dataRegisterUser]);
 
   const onSubmit = async (values: User) => {
+    // console.log(values.status === 'true');
     let passData = {
       email: values.email,
       password: values.password,
@@ -72,15 +85,18 @@ const CardRegisterUser = ({
       dni: values.profile.dni,
       phone: values.profile.phone,
     };
-    console.log(passData);
     if (dataRegisterUser) {
+      let editData = {
+        role: values.role,
+        status: values.status,
+      };
       axiosInstance
-        .patch(`/users/${dataRegisterUser.id}`, passData)
+        .patch(`/users/${dataRegisterUser.id}`, editData)
         .then(successfulShipment);
-      window.location.reload();
+      // window.location.reload();
     } else {
       axiosInstance.post(`/users`, passData).then(successfulShipment);
-      window.location.reload();
+      // window.location.reload();
     }
   };
 
@@ -106,7 +122,12 @@ const CardRegisterUser = ({
             : 'REGISTRO DE NUEVO USUARIO'}
         </h1>
         <InputText
-          {...register('email')}
+          {...register('email', {
+            required: true,
+            pattern:
+              /[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,5}/i,
+          })}
+          errors={errors}
           placeholder="Correo"
           label="Correo"
           name="email"
@@ -114,7 +135,7 @@ const CardRegisterUser = ({
         />
         {!dataRegisterUser ? (
           <InputText
-            {...register('password')}
+            {...register('password', { required: true })}
             placeholder="Contraseña"
             type="password"
             label="Contraseña"
@@ -124,7 +145,7 @@ const CardRegisterUser = ({
         )}
         <div className="col-input">
           <InputText
-            {...register('profile.firstName')}
+            {...register('profile.firstName', { required: true })}
             placeholder="Nombres"
             label="Nombres"
             disabled={dataRegisterUser ? true : false}
@@ -138,7 +159,7 @@ const CardRegisterUser = ({
         </div>
         <div className="col-input">
           <InputText
-            {...register('profile.dni')}
+            {...register('profile.dni', { required: true })}
             placeholder="N°"
             label="DNI"
             type="number"
@@ -163,7 +184,18 @@ const CardRegisterUser = ({
               itemKey="role"
               textField="role"
             />
-            <Select
+            <div className="input-check">
+              <label className="input-label">Estado</label>
+              <div className="cheack-content">
+                <input
+                  type="checkbox"
+                  id="selectCheckbox"
+                  {...register('status')}
+                />
+                <p>{watch('status') ? 'Active' : 'Inactive'}</p>
+              </div>
+            </div>
+            {/* <Select
               {...register('status')}
               label="Status"
               defaultValue={dataRegisterUser.status ? 'Activo' : 'Inactivo'}
@@ -171,14 +203,14 @@ const CardRegisterUser = ({
               name="status"
               itemKey="status"
               textField="status"
-            />
+            /> */}
           </div>
         ) : (
           ''
         )}
         <div className="btn-build">
           <Button
-            text={dataRegisterUser ? 'CREAR' : 'GUARDAR'}
+            text={dataRegisterUser ? 'GUARDAR' : 'CREAR'}
             className="btn-area"
             whileTap={{ scale: 0.9 }}
             type="submit"

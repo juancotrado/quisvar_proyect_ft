@@ -11,6 +11,7 @@ interface AreaCardProps {
   onClick?: () => void;
   onDelete?: () => void;
 }
+
 const AreaCard = ({ name, id, total, onClick, onDelete }: AreaCardProps) => {
   const navigate = useNavigate();
   const { role } = useRole();

@@ -49,6 +49,7 @@ const Header = () => {
     { title: 'Inicio', link: '/home' },
     { title: 'Tareas', link: '/mis-tareas' },
     { title: 'Areas', link: '/areas' },
+    { title: 'Especialidades', link: '/especialidades' },
   ];
 
   const icons = [

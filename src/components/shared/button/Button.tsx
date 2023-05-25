@@ -17,8 +17,8 @@ const Button = ({
 }: ButtonProps) => {
   return (
     <motion.button
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.9 }}
+      whileHover={{ scale: 0.95 }}
+      whileTap={{ scale: 1 }}
       onClick={onClick}
       className={`${className} btn-main`}
       type={type}

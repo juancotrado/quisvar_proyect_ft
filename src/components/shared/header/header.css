@@ -20,7 +20,7 @@
 }
 .items-list {
   display: flex;
-  gap: 2rem;
+  gap: 1rem;
 }
 .items-list li {
   color: black;
@@ -30,16 +30,16 @@
   font-size: var(--size-button);
 }
 .item-nav-active {
-  color: white;
-  border-radius: 10px;
+  color: #cbcbcb;
+  border-bottom: 2.5px solid var(--color-primary);
   font-weight: 500;
-  padding: 10px 20px;
-  background-color: var(--color-quaternay);
+  padding: 0.5rem 1rem;
+  /* background-color: var(--color-quaternay); */
 }
 .item-nav-inactive {
   color: white;
-  font-weight: 500;
-  padding: 10px 20px;
+  font-weight: 400;
+  padding: 0.5rem 1rem;
 }
 .input-search {
   border: 1px solid #000;
@@ -60,6 +60,6 @@
   gap: 1rem;
 }
 .icons-list li img {
-  width: 2rem;
-  height: 2rem;
+  width: 1.8rem;
+  height: 1.8rem;
 }

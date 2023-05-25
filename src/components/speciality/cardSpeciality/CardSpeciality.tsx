@@ -39,7 +39,7 @@ const CardSpeciality = ({
   };
 
   return (
-    <div className="speciality-card " onClick={handleNext}>
+    <div className="speciality-card" onClick={handleNext}>
       {role !== 'EMPLOYEE' && (
         <span className="speciality-edit" onClick={e => e.stopPropagation()}>
           <ButtonDelete
@@ -74,11 +74,9 @@ const CardSpeciality = ({
       ) : (
         <h2 className="editable-title">{data.name}</h2>
       )}
-      <div className="speciality-edit">
-        <span className="speciality-edit card-quantity ">
-          Proyectos Disponibles: {data._count?.projects}
-        </span>
-      </div>
+      <span className="speciality-edit card-quantity ">
+        Proyectos Disponibles: {data._count?.projects}
+      </span>
     </div>
   );
 };

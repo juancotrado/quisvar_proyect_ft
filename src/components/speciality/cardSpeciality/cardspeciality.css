@@ -43,7 +43,7 @@
 .editable-color {
   background-color: var(--color-menu);
   color: var(--color-quaternay);
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 .editable-submit {
   position: absolute;

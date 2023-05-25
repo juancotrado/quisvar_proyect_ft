@@ -1,11 +1,11 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import Button from '../../components/shared/button/Button';
-import './specialities.css';
-import { useEffect, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
 import { SpecialityType } from '../../types/types';
+import { useEffect, useState } from 'react';
 import CardSpeciality from '../../components/speciality/cardSpeciality/CardSpeciality';
+import CardAddSpeciality from '../../components/speciality/cardAddSpeality/CardAddSpeciality';
+import './specialities.css';
 
 const Specialities = () => {
   const { userSession } = useSelector((state: RootState) => state);
@@ -30,9 +30,6 @@ const Specialities = () => {
         <h1 className="speciality-title">
           <span className="speciality-title-span">ESPECIALIDADES</span>
         </h1>
-        {role !== 'EMPLOYEE' && (
-          <Button text="AGREGAR" icon="plus" className="speciality-add" />
-        )}
       </div>
       <div className="speciality-card-container">
         {specialities &&
@@ -44,6 +41,7 @@ const Specialities = () => {
               onUpdate={getSpecialities}
             />
           ))}
+        {role !== 'EMPLOYEE' && <CardAddSpeciality onSave={getSpecialities} />}
       </div>
     </div>
   );

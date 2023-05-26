@@ -1,0 +1,112 @@
+.information-container {
+  background-color: white;
+  width: 100%;
+  height: 100%;
+  padding: 1.5rem;
+  border-radius: var(--radius-input);
+}
+.information-header {
+  display: flex;
+  justify-content: space-between;
+}
+.main-content {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 2fr 2px 1fr;
+  align-items: center;
+}
+.content-files {
+  padding: 0.6rem;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+}
+.content-details {
+  padding: 0.6rem;
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  height: 100%;
+}
+.line-divide {
+  height: 100%;
+  background-color: rgba(128, 128, 128, 0.664);
+}
+.btn-content {
+  display: flex;
+  justify-content: space-around;
+}
+.statement {
+  width: 100%;
+  height: 200px;
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  background-color: rgba(14, 155, 216, 0.2);
+  border-radius: var(--radius-input);
+}
+.statement div {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  gap: 1rem;
+}
+.first-section {
+  display: flex;
+  gap: 1rem;
+}
+.second-section {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+.content-details p {
+  text-align: center;
+  color: var(--color-primary);
+  font-weight: 600;
+}
+.content-details label {
+  font-weight: 600;
+}
+.progress-bar {
+  width: 100%;
+  height: 5px;
+  background-color: #ccc;
+  position: relative;
+}
+
+.progress-bar-line {
+  height: 100%;
+  background-color: #00aaff;
+  transition: width 0.3s ease;
+  position: absolute;
+}
+
+.progress-bar-points {
+  display: flex;
+  justify-content: space-between;
+  position: absolute;
+  top: -5px;
+  left: 0;
+  right: 0;
+}
+
+.progress-bar-point {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #ccc;
+  cursor: pointer;
+}
+
+.progress-bar-point.active {
+  background-color: #00aaff;
+}
+.btn-declinar {
+  background-color: #c81d1e;
+  color: white;
+  border: 2px solid #c81d1e !important;
+}
+.btn-revisar {
+  background-color: #69d957;
+  color: white;
+  border: 2px solid #69d957 !important;
+}

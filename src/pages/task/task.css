@@ -42,7 +42,7 @@ section {
 .container-task {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 1rem;
   background-color: #fff;
   padding: 1rem;
   border-radius: var(--radius-input);

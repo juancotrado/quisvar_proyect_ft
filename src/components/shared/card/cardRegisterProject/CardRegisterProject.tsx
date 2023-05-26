@@ -1,182 +1,160 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useSelector } from 'react-redux';
 import { Input, Select, TextArea } from '../../..';
-import useInfoData from '../../../../hooks/useInfoData';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
-import { _date, getValueByType } from '../../../../utils/formatDate';
+import { _date } from '../../../../utils/formatDate';
 import Modal from '../../../portal/Modal';
 import Button from '../../button/Button';
 import './CardRegisterProject.css';
-import { useEffect, useRef, useState } from 'react';
-
-export interface ProjectForm {
-  id?: number;
-  name?: string;
-  description?: string;
-  startDate: Date;
-  untilDate: Date;
-  price: number;
-  status: boolean;
-  workAreaId?: number;
-  userId?: number;
-}
+import { useEffect, useMemo, useState } from 'react';
+import { RootState } from '../../../../store';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { ProjectForm } from '../../../../types/types';
 
 const InitialValues: ProjectForm = {
   id: 0,
   name: '',
   description: '',
-  startDate: new Date(),
-  untilDate: new Date(),
-  price: 0,
+  typeSpeciality: '',
+  startDate: _date(new Date()),
+  untilDate: _date(new Date()),
   status: false,
-  workAreaId: 0,
   userId: 0,
 };
 
 interface CardRegisterProjectProps {
   onSave?: () => void;
-  dataProject?: ProjectForm | null;
-  areaId: string;
+  project?: ProjectForm | null;
+  specialityId?: number;
 }
 
 const CardRegisterProject = ({
-  dataProject,
-  areaId,
+  project,
   onSave,
+  specialityId,
 }: CardRegisterProjectProps) => {
-  const [data, setData] = useState<ProjectForm>(InitialValues);
-  const { areas, users } = useInfoData();
-  const debounceRef = useRef<NodeJS.Timeout>();
+  const [dataForm, setDataForm] = useState<ProjectForm>(InitialValues);
+  const { listUsers } = useSelector((state: RootState) => state);
+  const { handleSubmit, register, setValue } = useForm<ProjectForm>();
+  const coordinators = useMemo(
+    () =>
+      listUsers
+        ? listUsers
+            .map(({ profile, ...props }) => ({
+              name: `${profile.firstName} ${profile.lastName}`,
+              ...props,
+            }))
+            .filter(({ role }) => role !== 'EMPLOYEE')
+        : [],
+    [listUsers]
+  );
 
   useEffect(() => {
-    if (dataProject) {
-      setData(dataProject);
-    }
-  }, [dataProject]);
-
-  const sendForm = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (dataProject) {
-      axiosInstance.put(`/projects/${data.id}`, data).then(successfulShipment);
+    if (project) {
+      setDataForm(project);
     } else {
-      axiosInstance
-        .post(`/projects`, { ...data, workAreaId: parseInt(areaId) })
-        .then(successfulShipment);
+      setDataForm(InitialValues);
     }
-  };
+  }, [project]);
 
-  const handleProject = ({
-    target,
-  }: React.ChangeEvent<
-    HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-  >) => {
-    const { name, value, type } = target;
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    const _value = getValueByType(value, type);
-    debounceRef.current = setTimeout(() => {
-      setData({
-        ...data,
-        [name]: _value,
-      });
-    }, 250);
+  useEffect(() => {
+    setValue('name', dataForm.name);
+    setValue('description', dataForm.description);
+    setValue('typeSpeciality', dataForm.typeSpeciality);
+    setValue('userId', dataForm.userId);
+    setValue('startDate', _date(new Date(dataForm.startDate)));
+    setValue('untilDate', _date(new Date(dataForm.untilDate)));
+  }, [dataForm]);
+
+  const onSubmit: SubmitHandler<ProjectForm> = values => {
+    const { startDate, untilDate, ...moreValues } = values;
+    const _data = {
+      startDate: new Date(startDate),
+      untilDate: new Date(untilDate),
+      specialityId,
+      ...moreValues,
+    };
+    if (dataForm.id) {
+      axiosInstance
+        .put(`projects/${dataForm.id}`, _data)
+        .then(successfulShipment);
+    } else {
+      axiosInstance.post('projects', _data).then(successfulShipment);
+    }
   };
 
   const successfulShipment = () => {
     onSave?.();
-    setData(InitialValues);
     isOpenModal$.setSubject = false;
   };
 
   const closeFunctions = () => {
     isOpenModal$.setSubject = false;
-    setData(InitialValues);
   };
 
   return (
-    <Modal size={50}>
+    <Modal size={45}>
       <form
-        onSubmit={sendForm}
+        onSubmit={handleSubmit(onSubmit)}
         className="card-register-project"
         autoComplete="off"
       >
-        <span className="close-icon-project" onClick={closeFunctions}>
+        <span className="close-add-card" onClick={closeFunctions}>
           <img src="/svg/close.svg" alt="pencil" />
         </span>
-        <h2>{dataProject ? 'ACTUALIZAR PROYECTO' : 'REGISTRAR PROYECTO'}</h2>
+        <h2>{project ? 'ACTUALIZAR PROYECTO' : 'REGISTRAR PROYECTO'}</h2>
+        <hr></hr>
         <Input
-          defaultValue={data.name}
           label="Nombre del Proyeto"
+          {...register('name')}
           name="name"
           required={true}
           placeholder="Nombre"
-          onChange={handleProject}
         />
-        {users && (
-          <Select
-            defaultValue={`${data.userId}`}
+        <div className="col-input">
+          <Input
+            label="Tipo"
+            {...register('typeSpeciality')}
+            name="typeSpeciality"
             required={true}
+            placeholder="Especialidad"
+          />
+          <Select
             label="Coordinador"
+            required={true}
+            {...register('userId', { valueAsNumber: true })}
             name="userId"
-            data={users}
+            data={coordinators}
             itemKey="id"
             textField="name"
-            onChange={handleProject}
-          />
-        )}
-        <div className="col-input">
-          {areas && (
-            <Select
-              label="Area de trabajo"
-              data={areas}
-              name="workareaId"
-              defaultValue={areaId}
-              itemKey="id"
-              textField="name"
-              onChange={handleProject}
-            />
-          )}
-          <Input
-            label="Precio"
-            required={true}
-            type="number"
-            step={0.0001}
-            defaultValue={data.price}
-            name="price"
-            onChange={handleProject}
           />
         </div>
         <div className="col-input">
           <Input
             label="Fecha Inicio"
+            {...register('startDate')}
             name="startDate"
-            required={true}
             type="date"
-            defaultValue={_date(data.startDate)}
-            onChange={handleProject}
           />
           <Input
             label="Fecha Limite"
-            type="date"
-            required={true}
+            {...register('untilDate')}
             name="untilDate"
-            defaultValue={_date(data.untilDate)}
-            onChange={handleProject}
+            type="date"
           />
         </div>
         <TextArea
-          defaultValue={data.description}
           label="Descripción"
+          {...register('description')}
           name="description"
           placeholder="Opcional"
-          onChange={handleProject}
         />
-        <div className="btn-build">
-          <Button
-            text={dataProject ? 'ACTUALIZAR' : 'REGISTRAR'}
-            className="btn-area"
-            whileTap={{ scale: 0.9 }}
-            type="submit"
-          />
-        </div>
+        <Button
+          type="submit"
+          text={`${project ? 'Actualizar' : 'Registrar'}`}
+          className="send-button"
+        />
       </form>
     </Modal>
   );

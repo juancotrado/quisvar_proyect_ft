@@ -8,15 +8,17 @@ import Button from '../../components/shared/button/Button';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import './speciality.css';
+import { CardRegisterProject } from '../../components';
+import { isOpenModal$ } from '../../services/sharingSubject';
 
-const $Speciality = () => {
+const Speciality = () => {
   const [projects, setProjects] = useState<ProjectType[]>([]);
   const [name, setName] = useState<string | null>(null);
   const { userSession } = useSelector((state: RootState) => state);
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
-  // const [projectData, setProjectData] = useState<ProjectType | null>(null);
+  const [projectData, setProjectData] = useState<ProjectType | null>(null);
   const { id } = useParams();
-
+  const specialityId = parseInt(id ? id : '');
   useEffect(() => {
     getProjects();
   }, []);
@@ -25,8 +27,22 @@ const $Speciality = () => {
     await axiosInstance.get(`specialities/${id}`).then(res => {
       setProjects(res.data.projects);
       setName(res.data.name);
-      console.log(res.data);
     });
+  };
+
+  const addNewProject = () => {
+    isOpenModal$.setSubject = true;
+    setProjectData(null);
+  };
+
+  const editProject = (data: ProjectType) => {
+    isOpenModal$.setSubject = true;
+    setProjectData(data);
+  };
+
+  const succefullyProject = () => {
+    setProjectData(null);
+    getProjects();
   };
 
   return (
@@ -44,7 +60,7 @@ const $Speciality = () => {
             text="Agregar"
             icon="plus"
             className="btn-add"
-            // onClick={addNewProject}
+            onClick={addNewProject}
           />
         )}
       </div>
@@ -53,13 +69,20 @@ const $Speciality = () => {
           <ProjectCard
             key={project.id}
             project={project}
-            // onClick={() => editProject(project)}
-            // onSave={() => getProjects(id)}
+            onClick={() => {
+              editProject(project);
+            }}
+            onSave={succefullyProject}
           />
         ))}
       </div>
+      <CardRegisterProject
+        specialityId={specialityId}
+        project={projectData}
+        onSave={succefullyProject}
+      />
     </div>
   );
 };
 
-export default $Speciality;
+export default Speciality;

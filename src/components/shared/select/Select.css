@@ -1,20 +1,21 @@
-.input-container {
-  display: grid;
-  gap: 1rem;
+.select-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
   width: 100%;
 }
-.input-label {
+.select-label {
   width: 100%;
-  height: 25px;
-  color: #203881;
+  height: 1.6rem;
+  color: var(--color-quaternay);
+  font-weight: 500;
   font-size: var(--size-label);
-  font-family: 'Montserrat', sans-serif;
 }
-.input-select {
-  height: 3.5rem;
+.select-field {
+  height: 2.8rem;
   width: 100%;
-  border: 1px solid var(--color-secondary);
-  border-radius: 5px;
-  padding: 0.5rem;
+  border: 2px solid var(--color-quaternay);
+  border-radius: var(--radius-input);
   font-size: var(--size-input);
+  padding: 0 0.3rem;
 }

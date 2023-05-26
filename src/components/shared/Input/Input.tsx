@@ -21,9 +21,8 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
     if (type == 'password') {
       typeAux = isShow ? 'text' : 'password';
     }
-    console.log(isShow);
     return (
-      <div className={`${col ? 'input-col' : 'input-container'}`}>
+      <div className={`input-main ${col && 'input-col'}`}>
         {label && (
           <label
             htmlFor={name}

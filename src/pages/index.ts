@@ -5,7 +5,7 @@ import NotFound from './404/NotFound';
 import UserList from './UserList/userList';
 import Specialities from './specialities/Specialities';
 import Task from './task/task';
-import $Speciality from './$speciality/$speciality';
+import Speciality from './speciality/speciality';
 
 export {
   Login,
@@ -15,5 +15,5 @@ export {
   Task,
   UserList,
   Specialities,
-  $Speciality,
+  Speciality,
 };

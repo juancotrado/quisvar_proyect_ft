@@ -7,6 +7,7 @@ import { AppDispatch } from '../../store';
 import { useEffect, useRef } from 'react';
 import { SocketProvider } from '../../context/SocketContex';
 import { Subscription } from 'rxjs';
+import { getListUsers } from '../../store/slices/listUsers.slice';
 import './protecdRoute.css';
 
 export const ProtectedRoute = () => {
@@ -17,6 +18,7 @@ export const ProtectedRoute = () => {
 
   useEffect(() => {
     dispatch(getUserSession());
+    dispatch(getListUsers());
   }, [dispatch]);
 
   const handleErrorToken = useRef<Subscription>(new Subscription());

@@ -10,12 +10,12 @@
   --color-primary-gradiant: #a0dcf5;
   --size-title: 2rem;
   --size-subtitle: 1.1rem;
-  --size-input: 1.3rem;
-  --size-label: 1.2rem;
+  --size-input: 1rem;
+  --size-label: 1.1rem;
   --size-button: 1.2rem;
   --size-paragraph: 0.7rem;
   --radius-button: 12px;
-  --radius-input: 8px;
+  --radius-input: 10px;
   --header-height: 4.5rem;
 }
 

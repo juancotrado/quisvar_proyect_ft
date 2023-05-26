@@ -3,7 +3,7 @@ import { SelectHTMLAttributes, forwardRef } from 'react';
 
 interface SelectOptionsProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
-  data: { [key: string]: string | number }[];
+  data?: { [key: string]: any }[];
   itemKey: string;
   textField: string;
   name: string;
@@ -11,21 +11,21 @@ interface SelectOptionsProps extends SelectHTMLAttributes<HTMLSelectElement> {
 const SelectOptions = forwardRef<HTMLSelectElement, SelectOptionsProps>(
   ({ label, data, itemKey, textField, name, defaultValue, ...props }, ref) => {
     return (
-      <div className="input-container">
+      <div className="select-container">
         {label && (
-          <label htmlFor="email" className="input-label">
+          <label htmlFor="email" className="select-label">
             {label}
           </label>
         )}
         <select
-          className="input-select"
+          className="select-field"
           {...props}
           ref={ref}
           defaultValue={defaultValue}
           name={name}
         >
-          <option>Seleccione</option>
-          {data.map(element => (
+          <option value={0}>Seleccionar</option>
+          {data?.map(element => (
             <option key={element[itemKey]} value={element[itemKey]}>
               {element[textField]}
             </option>

@@ -1,0 +1,8 @@
+.main-container {
+  position: relative;
+  min-height: calc(100vh - var(--header-height));
+  background-color: var(--color-menu);
+}
+.app-container {
+  height: 100vh;
+}

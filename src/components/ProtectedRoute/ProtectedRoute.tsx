@@ -7,6 +7,7 @@ import { AppDispatch } from '../../store';
 import { useEffect, useRef } from 'react';
 import { SocketProvider } from '../../context/SocketContex';
 import { Subscription } from 'rxjs';
+import './protecdRoute.css';
 
 export const ProtectedRoute = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -35,9 +36,9 @@ export const ProtectedRoute = () => {
 
   return (
     <SocketProvider>
-      <div style={{ height: '100vh', backgroundColor: '#f5f5f5' }}>
+      <div className="app-container">
         <Header />
-        <div onClick={clossToggle}>
+        <div className="main-container" onClick={clossToggle}>
           <Outlet />
         </div>
       </div>

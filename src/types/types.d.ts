@@ -76,3 +76,28 @@ type AreasType = {
   id: number;
   name: string;
 };
+
+export interface WorkArea {
+  id: number;
+  name: string;
+  userId: number;
+  projectId: number;
+  indexTasks: IndexTask[];
+}
+
+export interface IndexTask {
+  id: number;
+  name: string;
+  tasks: Task[];
+}
+
+export interface Task {
+  id: number;
+  name: string;
+  subTasks: SubTask[];
+}
+
+export interface SubTask {
+  id: number;
+  name: string;
+}

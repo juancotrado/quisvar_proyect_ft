@@ -3,7 +3,7 @@
   color: white;
   position: absolute;
   top: var(--header-height);
-  right: 6rem;
+  right: 10%;
   width: 220px;
   height: auto;
   border-radius: 8px;

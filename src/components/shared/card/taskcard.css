@@ -1,6 +1,5 @@
 .task-class {
-  /* background-color: var(--color-process); */
-  background-color: var(--color-primary);
+  background-color: var(--color-process);
   border-radius: var(--radius-button);
   width: 100%;
   box-shadow: 0px 1.5px 4px rgba(0, 0, 0, 0.2);
@@ -69,9 +68,7 @@
   width: 100%;
   justify-content: center;
   gap: 2rem;
-
 }
-
 
 button {
   font-weight: 600;

@@ -3,9 +3,13 @@ import './projectCard.css';
 import ButtonDelete from '../../shared/button/ButtonDelete';
 import Button from '../../shared/button/Button';
 import { _date } from '../../../utils/formatDate';
-import { ProjectType } from '../../../types/types';
+import { AreaForm, ProjectType } from '../../../types/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
+import { Input } from '../..';
+import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { axiosInstance } from '../../../services/axiosInstance';
 
 interface ProjectCardProps {
   onClick?: () => void;
@@ -16,8 +20,17 @@ interface ProjectCardProps {
 const ProjectCard = ({ project, onClick, onSave }: ProjectCardProps) => {
   const { userSession } = useSelector((state: RootState) => state);
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
+  const [addArea, setAddArea] = useState(false);
   const { profile } = project.moderator;
+  const { handleSubmit, register, reset, setValue } = useForm<AreaForm>();
   const navigate = useNavigate();
+
+  const onSubmitArea: SubmitHandler<AreaForm> = values => {
+    axiosInstance.post('/workareas', values).then(() => {
+      onSave?.();
+      setAddArea(false);
+    });
+  };
 
   return (
     <div className="project-card">
@@ -53,25 +66,53 @@ const ProjectCard = ({ project, onClick, onSave }: ProjectCardProps) => {
         <h4 className="project-card-cordinator">
           COORDINADOR: {profile.firstName} {profile.lastName}
         </h4>
-
         <p className="project-card-description">
           {project.name
             ? project.name
             : 'CREACION DEL SERVICIO DE PRÁCTICA DEPORTIVA Y/O RECREATIVA EN LA COMUNIDAD CAMPESINA DE KALAHUALA DISTRITO DE ASILLO DE LA PROVINCIA DE AZANGARO DEL DEPARTAMENTO DE PUNO.'}
         </p>
-        {project.areas.length > 0 && (
-          <div className="project-card-footer">
-            <span>{`ÁREAS:`}</span>
-            {project.areas.map(area => (
+        <div className="project-card-footer">
+          <span>ÁREAS: </span>
+          {project.areas.length > 0 &&
+            project.areas.map(area => (
               <Button
                 key={area.id}
                 text={area.name}
-                className="project-button-footer"
+                className="project-btn-footer"
                 onClick={() => navigate(`/tareas/${area.id}`)}
               />
             ))}
-          </div>
-        )}
+          <Button
+            text={`${addArea ? 'Cancelar' : 'Añadir'}`}
+            className={`${addArea && 'btn-red'} area-btn-add `}
+            onClick={() => {
+              setAddArea(!addArea);
+              reset();
+            }}
+          />
+          {addArea && (
+            <form
+              onSubmit={handleSubmit(onSubmitArea)}
+              className="form-add-area"
+            >
+              <Input
+                {...register('name')}
+                name="name"
+                className="form-input-area"
+              />
+              <button
+                className="area-btn-add"
+                type="submit"
+                onClick={() => {
+                  setValue('projectId', project.id);
+                  setValue('userId', project.userId || 0);
+                }}
+              >
+                Agregar
+              </button>
+            </form>
+          )}
+        </div>
       </div>
     </div>
   );

@@ -1,26 +1,25 @@
 // import React from 'react';
 import './task.css';
-import TaskCard from '../../components/shared/card/TaskCard';
 import { useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
-import { Employees, TaskType, WorkArea } from '../../types/types';
-import useSocket from '../../hooks/useSocket';
-import ModalFormTask from '../../components/tasks/modalFormTask/ModalFormTask';
-import useRole from '../../hooks/useRole';
-import Button from '../../components/shared/button/Button';
-import { isOpenModal$ } from '../../services/sharingSubject';
-import { Sidebar } from '../../components';
+import { Employees, SubTask, TaskType, WorkArea } from '../../types/types';
+import { Sidebar, SubTaskCard } from '../../components';
 
 const Task = () => {
   const { id } = useParams();
   const [workArea, setWorkArea] = useState<WorkArea | null>(null);
+  const [subTasks, setSubTasks] = useState<SubTask[] | null>(null);
 
   useEffect(() => {
-    axiosInstance.get(`/workareas/${id}`).then(res => {
-      setWorkArea(res.data);
-    });
+    axiosInstance.get(`/workareas/${id}`).then(res => setWorkArea(res.data));
   }, []);
+
+  const settingSubTasks = (id: number) => {
+    axiosInstance
+      .get(`/tasks/${id}`)
+      .then(res => setSubTasks(res.data.subTasks));
+  };
   //   const [tasks, setTasks] = useState<TaskType[] | null>(null);
   //   const [getTaskData, setGetTaskData] = useState<TaskType | null>(null);
   //   const socket = useSocket();
@@ -117,6 +116,7 @@ const Task = () => {
 
   //   const handleGetTaskData = (getTask: TaskType) => setGetTaskData(getTask);
 
+  console.log(subTasks && subTasks[0]);
   return (
     <>
       <div className="tasks container">
@@ -136,19 +136,19 @@ const Task = () => {
         <section className="tasks-section-container">
           <div className="container-task container-unresolved">
             <h3>Por hacer</h3>
-            {/*
-            {tasks &&
-              tasks
+
+            {subTasks &&
+              subTasks
                 .filter(({ status }) => status === 'UNRESOLVED')
-                .map(task => (
-                  <TaskCard
-                    key={task.id}
-                    task={task}
-                    editTaskStatus={editTaskStatus}
-                    handleGetTaskData={handleGetTaskData}
-                    deleteTask={deleteTask}
+                .map(subTask => (
+                  <SubTaskCard
+                    key={subTask.id}
+                    subTask={subTask}
+                    // editTaskStatus={editTaskStatus}
+                    // handleGetTaskData={handleGetTaskData}
+                    // deleteTask={deleteTask}
                   />
-                ))} */}
+                ))}
           </div>
           <div className="container-task container-process">
             <h3>Haciendo</h3>
@@ -164,6 +164,18 @@ const Task = () => {
                     deleteTask={deleteTask}
                   />
                 ))} */}
+            {subTasks &&
+              subTasks
+                .filter(({ status }) => status === 'PROCESS')
+                .map(subTask => (
+                  <SubTaskCard
+                    key={subTask.id}
+                    subTask={subTask}
+                    // editTaskStatus={editTaskStatus}
+                    // handleGetTaskData={handleGetTaskData}
+                    // deleteTask={deleteTask}
+                  />
+                ))}
           </div>
           <div className="container-task container-done">
             <h3>Hecho</h3>
@@ -180,6 +192,18 @@ const Task = () => {
                   />
                 ))} */}
             {/* {tasks && <TaskCard task={tasks} />} */}
+            {subTasks &&
+              subTasks
+                .filter(({ status }) => status === 'DONE')
+                .map(subTask => (
+                  <SubTaskCard
+                    key={subTask.id}
+                    subTask={subTask}
+                    // editTaskStatus={editTaskStatus}
+                    // handleGetTaskData={handleGetTaskData}
+                    // deleteTask={deleteTask}
+                  />
+                ))}
           </div>
         </section>
         {/* <div className="tasks-online-container">
@@ -193,7 +217,9 @@ const Task = () => {
           editTask={editTask}
         /> */}
       </div>
-      {workArea && <Sidebar workArea={workArea} />}
+      {workArea && (
+        <Sidebar workArea={workArea} settingSubTasks={settingSubTasks} />
+      )}
     </>
   );
 };

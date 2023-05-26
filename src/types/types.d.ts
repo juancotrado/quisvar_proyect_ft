@@ -102,7 +102,26 @@ export interface Task {
   subTasks: SubTask[];
 }
 
+// export interface SubTask {
+//   id: number;
+//   name: string;
+// }
 export interface SubTask {
   id: number;
+  status: string;
+  name: string;
+  percentage: number;
+  description: string;
+  price: string;
+  hours: number;
+  createdAt: Date;
+  updatedAt: Date;
+  taskId: number;
+  users: any[];
+}
+
+export interface AreaForm {
+  projectId: number;
+  userId: number;
   name: string;
 }

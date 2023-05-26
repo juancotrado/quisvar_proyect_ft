@@ -1,22 +1,19 @@
 .aside {
   height: calc(100vh - var(--header-height));
-
-  /* overflow-x: hidden; */
-  width: 23rem;
+  width: 25rem;
   background-color: white;
   position: absolute;
-  left: -21rem;
+  left: -23rem;
   top: 0;
   z-index: 10;
   padding: 0 2rem;
   transition: 0.3s left ease;
+  border-right: 3px solid var(--color-primary);
 }
 .asilde-slice {
   overflow-y: auto;
   overflow-x: hidden;
   height: calc(100vh - var(--header-height) - 85px);
-
-  /* flex-grow: 1; */
 }
 .aside-show {
   left: 0;
@@ -76,6 +73,7 @@
   text-transform: capitalize;
   font-size: 1rem;
   font-weight: 600;
+  cursor: pointer;
 }
 .aside-slide {
   position: absolute;

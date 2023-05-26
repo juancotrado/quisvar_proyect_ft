@@ -1,15 +1,16 @@
 import { useState } from 'react';
-import { WorkArea } from '../../../../types/types';
+import { WorkArea } from '../../../types/types';
 import './sidebar.css';
 
 interface SidebarProps {
   workArea: WorkArea;
+  settingSubTasks: (id: number) => void;
 }
 
-const Sidebar = ({ workArea }: SidebarProps) => {
+const Sidebar = ({ workArea, settingSubTasks }: SidebarProps) => {
   const { name, indexTasks } = workArea;
 
-  const [isShow, setIsShow] = useState<boolean>(false);
+  const [isShow, setIsShow] = useState<boolean>(true);
 
   const handleShow = () => setIsShow(!isShow);
   return (
@@ -32,7 +33,11 @@ const Sidebar = ({ workArea }: SidebarProps) => {
               <div className="aside-dropdown-content">
                 <ul className="aside-dropdown-sub">
                   {indexTask.tasks.map(task => (
-                    <li key={task.id} className="aside-dropdown-sub-list">
+                    <li
+                      key={task.id}
+                      className="aside-dropdown-sub-list"
+                      onClick={() => settingSubTasks(task.id)}
+                    >
                       {task.name.toLowerCase()}
                     </li>
                   ))}

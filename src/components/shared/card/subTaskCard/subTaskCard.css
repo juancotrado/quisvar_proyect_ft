@@ -1,0 +1,74 @@
+.subTask {
+  background-color: white;
+  height: 6rem;
+  border-radius: var(--radius-button);
+  width: 100%;
+  box-shadow: 0px 1.5px 4px rgba(0, 0, 0, 0.2);
+  position: relative;
+  border-left: 1.5rem solid var(--color-tertiary);
+}
+.subTask-icon {
+  background-color: aqua;
+  position: absolute;
+  top: 1rem;
+  left: -0.7rem;
+  border-radius: var(--radius-input);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0.1rem;
+}
+
+.subTask-UNRESOLVED {
+  background-color: var(--color-unresolved);
+  fill: #fff;
+  color: #fff;
+}
+
+.subTask-PROCESS {
+  background-color: var(--color-process);
+  fill: var(--color-tertiary);
+  color: var(--color-tertiary);
+}
+
+.subTask-DONE {
+  background-color: var(--color-done);
+  fill: #fff;
+  color: #fff;
+}
+.subTask-name {
+  color: var(--color-secondary);
+  font-weight: 700;
+}
+.subTask-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100%;
+  padding: 0.5rem 0.5rem 0.5rem 1rem;
+}
+.subTask-info {
+  height: 100%;
+  font-size: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  text-align: right;
+}
+.subTask-owner {
+  color: var(--color-secondary);
+  font-weight: 600;
+}
+.subTask-price-container {
+  list-style: circle;
+}
+.subTask-price {
+  display: block;
+}
+.subTask-more {
+  color: var(--color-secondary);
+  font-weight: 600;
+  text-decoration: underline;
+}

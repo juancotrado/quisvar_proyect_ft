@@ -12,7 +12,8 @@ import CardEditUser from './shared/card/cardEditProfile/CardEditProfile';
 import UserDetail from './userDetail/UserDetail';
 import Menu from './shared/menu/Menu';
 import CardEditInformation from './shared/card/cardEditInformation/CardEditInformation';
-import Sidebar from './tasks/modalFormTask/sidebar/Sidebar';
+import Sidebar from './tasks/sidebar/Sidebar';
+import SubTaskCard from './shared/card/subTaskCard/SubTaskCard';
 
 export {
   Alert,
@@ -30,4 +31,5 @@ export {
   UserDetail,
   Menu,
   Sidebar,
+  SubTaskCard,
 };

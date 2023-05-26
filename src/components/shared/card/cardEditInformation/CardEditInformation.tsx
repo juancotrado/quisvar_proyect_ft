@@ -6,30 +6,28 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { RootState } from '../../../../store';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Profile } from '../../../../types/types';
+import { Users } from '../../../../types/types';
 import { axiosInstance } from '../../../../services/axiosInstance';
 
 const CardEditInformation = ({ isOpen, onClose }: any) => {
   const { userSession } = useSelector((state: RootState) => state);
-  const { register, handleSubmit, reset } = useForm<Profile>();
+  const { register, handleSubmit, reset } = useForm<Users>();
 
   useEffect(() => {
-    let datos = {
-      firstName: userSession?.profile.firstName,
-      lastName: userSession?.profile.lastName,
-      dni: userSession?.profile.dni,
-      phone: userSession?.profile.phone,
-    };
-    reset(datos);
+    if (userSession) {
+      reset(userSession);
+    }
   }, [userSession]);
 
-  const onSubmit = async (values: Profile) => {
+  const onSubmit = async (values: Users) => {
+    console.log(userSession);
+
     if (userSession?.id !== undefined) {
       let saveData = {
-        firstName: values.firstName,
-        lastName: values.lastName,
-        phone: values.phone,
-        dni: values.dni,
+        firstName: values.profile.firstName,
+        lastName: values.profile.lastName,
+        phone: values.profile.phone,
+        dni: values.profile.dni,
       };
       axiosInstance
         .put(`/profile/${userSession?.id}`, saveData)
@@ -37,7 +35,6 @@ const CardEditInformation = ({ isOpen, onClose }: any) => {
     }
   };
   const successfulShipment = () => {
-    // reset(InitialValues);
     window.location.reload();
   };
 
@@ -51,24 +48,29 @@ const CardEditInformation = ({ isOpen, onClose }: any) => {
           transition={{ duration: 1 }}
           className="modal-edit-info"
         >
-          <form onSubmit={handleSubmit(onSubmit)} className="col-input">
-            <h1>INFORMACIÓN BÁSICA</h1>
+          <form onSubmit={handleSubmit(onSubmit)}>
+            <div className="col-input">
+              <h1>INFORMACIÓN BÁSICA</h1>
+            </div>
+            <div className="divider"></div>
+            <section className="inputs-section">
+              <InputText {...register('profile.firstName')} label="Nombres" />
+              <InputText {...register('profile.lastName')} label="Apellidos" />
+              <InputText {...register('profile.phone')} label="Celular" />
+              <InputText {...register('profile.dni')} label="DNI" disabled />
+              <InputText {...register('email')} label="Correo" disabled />
+            </section>
+            <div className="divider"></div>
+            <div className="col-btns">
+              <Button
+                text="CANCEL"
+                onClick={onClose}
+                className="bg-btn-close"
+                type="button"
+              />
+              <Button text="GUARDAR" className="bg-inverse" type="submit" />
+            </div>
           </form>
-          <div className="divider"></div>
-          <InputText {...register('firstName')} label="Nombres" />
-          <InputText {...register('lastName')} label="Apellidos" />
-          <InputText {...register('phone')} label="Celular" />
-
-          <div className="divider"></div>
-          <div className="col-btns">
-            <Button
-              text="CANCEL"
-              onClick={onClose}
-              className="bg-btn-close"
-              type="button"
-            />
-            <Button text="GUARDAR" className="bg-inverse" type="submit" />
-          </div>
         </motion.div>
       )}
     </AnimatePresence>

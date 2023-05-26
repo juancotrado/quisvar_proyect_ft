@@ -1,5 +1,8 @@
 td {
   padding: var(--radius-input);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .user-info {
   display: flex;

@@ -5,20 +5,20 @@ import Button from '../../components/shared/button/Button';
 import { axiosInstance } from '../../services/axiosInstance';
 import { isOpenModal$ } from '../../services/sharingSubject';
 import { Users } from '../../types/types';
-interface CreateUsers {
-  id: number;
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  dni: string;
-  phone: string;
-  workAreaId: number;
-  status: boolean;
-}
+// interface CreateUsers {
+//   id: number;
+//   email: string;
+//   password: string;
+//   firstName: string;
+//   lastName: string;
+//   dni: string;
+//   phone: string;
+//   workAreaId: number;
+//   status: boolean;
+// }
 
 const UserList = () => {
-  const [users, setUsers] = useState<CreateUsers[] | null>(null);
+  const [users, setUsers] = useState<Users | null>(null);
   const [usersData, setUsersData] = useState<Users | null>(null);
   useEffect(() => {
     getUsers();
@@ -49,8 +49,6 @@ const UserList = () => {
       role: value.role,
       status: value.status,
     };
-    // console.log({ here2: datos });
-
     setUsersData(datos);
   };
   return (
@@ -80,20 +78,20 @@ const UserList = () => {
             </tr>
           </thead>
           <tbody style={{ overflowY: 'auto' }}>
-            {users &&
+            {Array.isArray(users) &&
               users.map((value, index) => (
                 <UserDetail
                   key={index}
                   user={value}
                   index={index}
-                  onClick={() => editUser(value)} //help ps
+                  onClick={() => editUser(value)}
                 />
               ))}
           </tbody>
         </table>
       </div>
       <CardRegisterUser
-        dataRegisterUser={usersData} //help ps
+        dataRegisterUser={usersData}
         onSave={() => {
           getUsers();
           setUsersData(null);

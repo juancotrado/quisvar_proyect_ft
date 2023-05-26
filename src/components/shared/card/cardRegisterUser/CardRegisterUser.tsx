@@ -1,36 +1,18 @@
 import './CardRegisterUser.css';
 import Select from '../../select/Select';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Modal from '../../../portal/Modal';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
 import Button from '../../button/Button';
 import { useForm } from 'react-hook-form';
 import InputText from '../../Input/Input';
+import { Users } from '../../../../types/types';
 interface CardRegisterUserProps {
   onSave?: () => void;
-  dataRegisterUser?: User | null;
+  dataRegisterUser?: Users | null;
 }
 
-enum UserRole {
-  'ADMIN',
-  'EMPLOYEE',
-  'MOD',
-}
-type User = {
-  id: number;
-  email: string;
-  password: string;
-  profile: Profile;
-  role?: UserRole;
-  status?: boolean;
-};
-type Profile = {
-  firstName: string;
-  lastName: string;
-  dni: string;
-  phone: string;
-};
 const InitialValues = {
   id: 0,
   email: '',
@@ -49,9 +31,7 @@ const CardRegisterUser = ({
   dataRegisterUser,
   onSave,
 }: CardRegisterUserProps) => {
-  // const [data, setData] = useState<User>(InitialValues);
-  // const debounceRef = useRef<NodeJS.Timeout>();
-  // console.log(data);
+  const [data, setData] = useState<Users>(InitialValues);
   const {
     register,
     handleSubmit,
@@ -59,19 +39,31 @@ const CardRegisterUser = ({
     watch,
     reset,
     formState: { errors },
-  } = useForm<User>({
+  } = useForm<Users>({
     defaultValues: InitialValues,
   });
 
   useEffect(() => {
     if (dataRegisterUser) {
-      reset(dataRegisterUser);
-      setValue('status', dataRegisterUser.status);
+      setData(dataRegisterUser);
+    } else {
+      setData(InitialValues);
     }
   }, [dataRegisterUser]);
 
-  const onSubmit = async (values: User) => {
-    // console.log(values.status === 'true');
+  useEffect(() => {
+    setValue('id', data.id);
+    setValue('email', data.email);
+    setValue('password', data.password);
+    setValue('profile.dni', data.profile.dni);
+    setValue('profile.firstName', data.profile.firstName);
+    setValue('profile.lastName', data.profile.lastName);
+    setValue('profile.phone', data.profile.phone);
+    setValue('status', data.status);
+    setValue('role', data.role);
+  }, [data]);
+
+  const onSubmit = async (values: Users) => {
     let passData = {
       email: values.email,
       password: values.password,
@@ -88,10 +80,8 @@ const CardRegisterUser = ({
       axiosInstance
         .patch(`/users/${dataRegisterUser.id}`, editData)
         .then(successfulShipment);
-      // window.location.reload();
     } else {
       axiosInstance.post(`/users`, passData).then(successfulShipment);
-      // window.location.reload();
     }
   };
 
@@ -190,15 +180,6 @@ const CardRegisterUser = ({
                 <p>{watch('status') ? 'Active' : 'Inactive'}</p>
               </div>
             </div>
-            {/* <Select
-              {...register('status')}
-              label="Status"
-              defaultValue={dataRegisterUser.status ? 'Activo' : 'Inactivo'}
-              data={status}
-              name="status"
-              itemKey="status"
-              textField="status"
-            /> */}
           </div>
         ) : (
           ''

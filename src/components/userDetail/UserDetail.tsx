@@ -1,31 +1,13 @@
+import { Users } from '../../types/types';
 import Button from '../shared/button/Button';
 import ButtonDelete from '../shared/button/ButtonDelete';
 import './UserDetail.css';
-type Users = {
-  id: number;
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  dni: string;
-  phone: string;
-  workAreaId: number;
-  status: boolean;
-};
 interface UserDetailProps {
-  user: Users & { profile?: Profile };
+  user: Users;
   index: number;
   onClick?: () => void;
 }
-type Profile = {
-  firstName: string;
-  lastName: string;
-  dni: string;
-  phone: string;
-};
 const UserDetail = ({ user, index, onClick }: UserDetailProps) => {
-  console.log(user);
-
   return (
     <tr>
       <td>{index + 1}</td>

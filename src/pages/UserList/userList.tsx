@@ -79,7 +79,7 @@ const UserList = () => {
               <th>EDITAR</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody style={{ overflowY: 'auto' }}>
             {users &&
               users.map((value, index) => (
                 <UserDetail

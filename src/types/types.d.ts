@@ -119,3 +119,9 @@ export interface SubTask {
   taskId: number;
   users: any[];
 }
+
+export interface AreaForm {
+  projectId: number;
+  userId: number;
+  name: string;
+}

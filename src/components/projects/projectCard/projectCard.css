@@ -55,7 +55,18 @@
   /* justify-content: end; */
 }
 
-.project-button-footer {
+.area-btn-add {
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  transition: ease 0.4s;
+  border: none;
+}
+
+.project-btn-footer {
   font-size: 0.8rem;
   font-weight: 700;
   background-color: var(--color-primary);
@@ -64,7 +75,8 @@
   border: none;
 }
 
-.project-button-footer:hover {
+.project-btn-footer:hover,
+.area-btn-add:hover {
   font-size: 0.8rem;
   background-color: var(--color-quaternay);
   color: #ffffff;
@@ -102,4 +114,27 @@
   font-weight: 600;
   text-decoration: underline;
   cursor: pointer;
+}
+
+.form-add-area {
+  display: flex;
+  gap: 0.5rem;
+  height: 1.8rem;
+  background-color: var(--color-menu);
+  border: 2px solid var(--color-primary);
+  border-radius: var(--radius-input);
+}
+
+.form-add-area button {
+  border-radius: 0 0.5rem 0.5rem 0;
+}
+.form-input-area {
+  height: 1.8rem;
+  background-color: transparent;
+}
+.btn-red {
+  background-color: #f56565;
+}
+.btn-red:hover {
+  background-color: var(--color-unresolved);
 }

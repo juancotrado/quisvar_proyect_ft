@@ -22,3 +22,8 @@
   background-color: white;
   top: var(--header-height);
 }
+.col-btns {
+  display: flex;
+  width: 100%;
+  justify-content: space-around;
+}

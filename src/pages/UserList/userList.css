@@ -4,6 +4,7 @@
   display: flex;
   justify-content: center;
   margin-top: 1.5rem;
+  background-color: #f5f5f5;
 }
 .user-list {
   width: 80%;
@@ -21,8 +22,8 @@
   align-items: center;
   margin-bottom: 1.5rem;
 }
-.user-list table {
-  width: 100%;
+tbody {
+  width: 100vh;
 }
 .btn-add {
   color: var(--color-primary);

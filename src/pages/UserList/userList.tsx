@@ -72,7 +72,7 @@ const UserList = () => {
             <tr>
               <th>#</th>
               <th>USUARIO</th>
-              <th>AREA DE TRABAJO</th>
+              <th>ROL</th>
               <th>ESTADO</th>
               <th>DNI</th>
               <th>CELULAR</th>

@@ -24,7 +24,7 @@ type Profile = {
   phone: string;
 };
 const UserDetail = ({ user, index, onClick }: UserDetailProps) => {
-  // console.log(onclick);
+  console.log(user);
 
   return (
     <tr>
@@ -38,7 +38,7 @@ const UserDetail = ({ user, index, onClick }: UserDetailProps) => {
           <span>{user.email}</span>
         </div>
       </td>
-      <td>{user.workAreaId}</td>
+      <td>{user.role}</td>
       <td
         className={`list-status ${
           user.status ? 'user-active' : 'user-inactive'

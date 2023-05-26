@@ -12,8 +12,7 @@ import { axiosInstance } from '../../../../services/axiosInstance';
 const CardEditInformation = ({ isOpen, onClose }: any) => {
   const { userSession } = useSelector((state: RootState) => state);
   const { register, handleSubmit, reset } = useForm<Profile>();
-  // const [data, setData] = useState([])
-  // console.log(data?.profile.firstName);
+
   useEffect(() => {
     console.log(userSession);
     let datos = {
@@ -42,6 +41,7 @@ const CardEditInformation = ({ isOpen, onClose }: any) => {
     // reset(InitialValues);
     window.location.reload();
   };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -54,22 +54,22 @@ const CardEditInformation = ({ isOpen, onClose }: any) => {
         >
           <form onSubmit={handleSubmit(onSubmit)} className="col-input">
             <h1>INFORMACIÓN BÁSICA</h1>
-            <div className="col-input">
-              <Button
-                text="CANCEL"
-                onClick={onClose}
-                className="bg-btn-close"
-                type="button"
-              />
-              <Button text="GUARDAR" className="bg-inverse" type="submit" />
-            </div>
           </form>
           <div className="divider"></div>
-          <div className="col-input">
-            <InputText {...register('firstName')} label="Nombres" />
-            <InputText {...register('lastName')} label="Apellidos" />
-          </div>
+          <InputText {...register('firstName')} label="Nombres" />
+          <InputText {...register('lastName')} label="Apellidos" />
           <InputText {...register('phone')} label="Celular" />
+
+          <div className="divider"></div>
+          <div className="col-btns">
+            <Button
+              text="CANCEL"
+              onClick={onClose}
+              className="bg-btn-close"
+              type="button"
+            />
+            <Button text="GUARDAR" className="bg-inverse" type="submit" />
+          </div>
         </motion.div>
       )}
     </AnimatePresence>

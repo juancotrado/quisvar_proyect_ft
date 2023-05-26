@@ -58,7 +58,6 @@ export interface ProjectType {
   id: number;
   description?: string;
   name: string;
-  price: number;
   status: boolean;
   typeSpeciality: string;
   startDate: Date;
@@ -69,6 +68,7 @@ export interface ProjectType {
   _count: {
     tasks: number;
   };
+  userId?: number;
   areas: AreasType[];
 }
 
@@ -76,6 +76,11 @@ type AreasType = {
   id: number;
   name: string;
 };
+
+export type ProjectForm = Omit<
+  ProjectType,
+  'areas' | '_count' | 'moderator' | 'startDate' | 'untilDate'
+> & { startDate: string | Date; untilDate: string | Date };
 
 export interface WorkArea {
   id: number;

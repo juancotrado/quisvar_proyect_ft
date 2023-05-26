@@ -1,24 +1,12 @@
-import { useEffect, useState } from 'react';
 import './home.css';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 // interface HomePageProps {};
-const initValues = {
-  name: 'unknown',
-  id: null,
-};
 const Home = () => {
-  const { userSession } = useSelector((state:RootState) => state)
-  const [personalData, setPersonalData] = useState(initValues);
+  const { userSession } = useSelector((state: RootState) => state);
 
   const navigate = useNavigate();
-
-  useEffect(() => {
-    const personalData = localStorage.getItem('personalData') || null;
-    if (!personalData) return;
-    setPersonalData(JSON.parse(personalData));
-  }, []);
 
   const handleNavigateToAreas = () => navigate('/areas');
   const handleNavigateMyWorks = () => navigate('/mis-tareas');
@@ -26,7 +14,9 @@ const Home = () => {
     <div className="home">
       <h1 className="home-title">
         BIENVENIDO{' '}
-        <span className="title-content-span">{userSession?.profile.firstName}</span>
+        <span className="title-content-span">
+          {userSession?.profile.firstName}
+        </span>
       </h1>
       <p className="paragraph">
         ¡Bienvenido a nuestro sistema de asignación de tareas! Aquí podrás

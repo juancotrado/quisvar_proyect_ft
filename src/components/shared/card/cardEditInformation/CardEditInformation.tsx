@@ -14,7 +14,6 @@ const CardEditInformation = ({ isOpen, onClose }: any) => {
   const { register, handleSubmit, reset } = useForm<Profile>();
 
   useEffect(() => {
-    console.log(userSession);
     let datos = {
       firstName: userSession?.profile.firstName,
       lastName: userSession?.profile.lastName,

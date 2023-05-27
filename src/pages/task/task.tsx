@@ -42,11 +42,11 @@ const Task = () => {
   };
 
   useEffect(() => {
-    socket.on('server:update-status-subTask', ({ status, id }) => {
+    socket.on('server:update-status-subTask', (newSubTask: SubTask) => {
       console.log('me llamaron');
       if (!subTasks) return;
       const newSubTasks = subTasks?.map(subTask =>
-        subTask.id == id ? { ...subTask, status } : subTask
+        subTask.id == newSubTask.id ? newSubTask : subTask
       );
       setSubTasks(newSubTasks);
     });

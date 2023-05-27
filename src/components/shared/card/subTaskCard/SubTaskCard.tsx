@@ -41,7 +41,11 @@ const SubTaskCard = ({ subTask, getSubtask }: SubTaskCardProps) => {
       <div className="subTask-container">
         <h3 className="subTask-name">{subTask.name}</h3>
         <div className="subTask-info">
-          <p className="subTask-owner">Jhon Doe</p>
+          <p className="subTask-owner">
+            {subTask.users?.length === 0
+              ? 'Libre'
+              : subTask.users?.at(0)?.user.profile.firstName}
+          </p>
 
           <p className="subTask-price-container">
             - Precio:

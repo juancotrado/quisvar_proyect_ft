@@ -14,6 +14,7 @@ import Menu from './shared/menu/Menu';
 import CardEditInformation from './shared/card/cardEditInformation/CardEditInformation';
 import Sidebar from './tasks/sidebar/Sidebar';
 import SubTaskCard from './shared/card/subTaskCard/SubTaskCard';
+import CardTaskInformation from './shared/card/cardTaskInformation/CardTaskInformation';
 
 export {
   Alert,
@@ -32,4 +33,5 @@ export {
   Menu,
   Sidebar,
   SubTaskCard,
+  CardTaskInformation,
 };

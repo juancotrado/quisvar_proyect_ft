@@ -1,15 +1,18 @@
 // import React from 'react';
 import './task.css';
 import { useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
 import { Employees, SubTask, TaskType, WorkArea } from '../../types/types';
-import { Sidebar, SubTaskCard } from '../../components';
+import { CardTaskInformation, Sidebar, SubTaskCard } from '../../components';
+import { SocketContext } from '../../context/SocketContex';
 
 const Task = () => {
   const { id } = useParams();
   const [workArea, setWorkArea] = useState<WorkArea | null>(null);
   const [subTasks, setSubTasks] = useState<SubTask[] | null>(null);
+  const [subTask, setSubTask] = useState<SubTask | null>(null);
+  const socket = useContext(SocketContext);
 
   useEffect(() => {
     axiosInstance.get(`/workareas/${id}`).then(res => setWorkArea(res.data));
@@ -20,6 +23,19 @@ const Task = () => {
       .get(`/tasks/${id}`)
       .then(res => setSubTasks(res.data.subTasks));
   };
+
+  const getSubtask = (subTask: SubTask) => setSubTask(subTask);
+
+  useEffect(() => {
+    socket.on('server:update-status-subTask', ({ status, id }) => {
+      console.log('me llamaron');
+      if (!subTasks) return;
+      const newSubTasks = subTasks?.map(subTask =>
+        subTask.id == id ? { ...subTask, status } : subTask
+      );
+      setSubTasks(newSubTasks);
+    });
+  }, [socket, subTasks]);
   //   const [tasks, setTasks] = useState<TaskType[] | null>(null);
   //   const [getTaskData, setGetTaskData] = useState<TaskType | null>(null);
   //   const socket = useSocket();
@@ -144,6 +160,8 @@ const Task = () => {
                   <SubTaskCard
                     key={subTask.id}
                     subTask={subTask}
+                    getSubtask={getSubtask}
+
                     // editTaskStatus={editTaskStatus}
                     // handleGetTaskData={handleGetTaskData}
                     // deleteTask={deleteTask}
@@ -166,11 +184,15 @@ const Task = () => {
                 ))} */}
             {subTasks &&
               subTasks
-                .filter(({ status }) => status === 'PROCESS')
+                .filter(
+                  ({ status }) => status !== 'UNRESOLVED' && status !== 'DONE'
+                )
                 .map(subTask => (
                   <SubTaskCard
                     key={subTask.id}
                     subTask={subTask}
+                    getSubtask={getSubtask}
+
                     // editTaskStatus={editTaskStatus}
                     // handleGetTaskData={handleGetTaskData}
                     // deleteTask={deleteTask}
@@ -199,6 +221,8 @@ const Task = () => {
                   <SubTaskCard
                     key={subTask.id}
                     subTask={subTask}
+                    getSubtask={getSubtask}
+
                     // editTaskStatus={editTaskStatus}
                     // handleGetTaskData={handleGetTaskData}
                     // deleteTask={deleteTask}
@@ -216,6 +240,7 @@ const Task = () => {
           getTaskData={getTaskData}
           editTask={editTask}
         /> */}
+        {subTask && <CardTaskInformation subTask={subTask} />}
       </div>
       {workArea && (
         <Sidebar workArea={workArea} settingSubTasks={settingSubTasks} />

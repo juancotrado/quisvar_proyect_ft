@@ -4,9 +4,18 @@ import Modal from '../../../portal/Modal';
 import './cardTaskInformation.css';
 import SelectOptions from '../../select/Select';
 import Button from '../../button/Button';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
+import { SubTask } from '../../../../types/types';
+import { SocketContext } from '../../../../context/SocketContex';
+import { axiosInstance } from '../../../../services/axiosInstance';
 
-const CardTaskInformation = () => {
+interface CardTaskInformationProps {
+  subTask: SubTask;
+}
+
+const CardTaskInformation = ({ subTask }: CardTaskInformationProps) => {
+  const socket = useContext(SocketContext);
+
   const [selectedFile, setSelectedFile] = useState(null);
 
   const handleDrop = (event: any) => {
@@ -30,6 +39,25 @@ const CardTaskInformation = () => {
     setPercentage(newPercentage);
   };
 
+  const handleAsigned = () => {
+    const { status } = subTask;
+    const statusBody = {
+      UNRESOLVED: {
+        status: 'PROCESS',
+      },
+      PROCESS: {
+        status: 'DONE',
+      },
+    };
+    const body = statusBody[status as keyof typeof statusBody];
+    axiosInstance.patch(`/subtasks/status/${subTask.id}`, body).then(res => {
+      isOpenModal$.setSubject = false;
+      socket.emit('client:update-status-subTask', res.data);
+    });
+
+    // editTaskStatus(task.id, body.status, employees);
+  };
+
   const data = [
     { name: 'Por Hacer' },
     { name: 'En proceso' },
@@ -42,7 +70,7 @@ const CardTaskInformation = () => {
     <Modal size={50}>
       <div className="information-container">
         <div className="information-header">
-          <h1>Tarea: Distribucion primer nivel</h1>
+          <h1>Tarea: {subTask.name}</h1>
           <button onClick={closeFunctions}>CERRAR</button>
         </div>
         <div className="main-content">
@@ -86,7 +114,7 @@ const CardTaskInformation = () => {
           <div className="line-divide" />
           <div className="content-details">
             <SelectOptions data={data} itemKey="" textField="name" name="" />
-            <p>Credo: 21/01/23</p>
+            <p>Creación: 21/01/23</p>
             <h1>Avance</h1>
             <div className="progress-bar">
               <div
@@ -129,12 +157,22 @@ const CardTaskInformation = () => {
             <p>{percentage}%</p>
             <label>Precio general: s/260.00</label>
             <label>Precio por avance: s/260.00</label>
-            <label>Total de horas estimadas: 24 horas</label>
+            <label>Total de horas estimadas: {subTask.hours} horas</label>
             <label>Total Horas: </label>
             <p>Encargado: Diego Romani</p>
             <div className="btn-content">
-              <Button text="Declinar" className="btn-declinar" />
-              <Button text="Revisar" className="btn-revisar" />
+              {subTask.status === 'PROCESS' && (
+                <Button text="Declinar" className="btn-declinar" />
+              )}
+              {subTask.status !== 'DONE' && (
+                <Button
+                  text={
+                    subTask.status === 'PROCESS' ? 'Por Revisar' : 'Asignar'
+                  }
+                  className="btn-revisar"
+                  onClick={handleAsigned}
+                />
+              )}
             </div>
           </div>
         </div>

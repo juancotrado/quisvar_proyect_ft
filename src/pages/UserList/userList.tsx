@@ -5,6 +5,7 @@ import Button from '../../components/shared/button/Button';
 import { axiosInstance } from '../../services/axiosInstance';
 import { isOpenModal$ } from '../../services/sharingSubject';
 import { Users } from '../../types/types';
+import UserInfo from '../../components/users/UserInfo';
 // interface CreateUsers {
 //   id: number;
 //   email: string;
@@ -18,8 +19,9 @@ import { Users } from '../../types/types';
 // }
 
 const UserList = () => {
-  const [users, setUsers] = useState<Users | null>(null);
-  const [usersData, setUsersData] = useState<Users | null>(null);
+  const [users, setUsers] = useState<Users[] | null>(null);
+  const [userData, setUserData] = useState<Users | null>(null);
+
   useEffect(() => {
     getUsers();
   }, []);
@@ -31,26 +33,14 @@ const UserList = () => {
   };
 
   const addUser = () => {
+    setUserData(null);
     isOpenModal$.setSubject = true;
-    setUsersData(null);
   };
   const editUser = (value: Users) => {
     isOpenModal$.setSubject = true;
-    let datos = {
-      id: value.id,
-      email: value.email,
-      password: value.password,
-      profile: {
-        firstName: value.profile.firstName,
-        lastName: value.profile.lastName,
-        dni: value.profile.dni,
-        phone: value.profile.phone,
-      },
-      role: value.role,
-      status: value.status,
-    };
-    setUsersData(datos);
+    setUserData(value);
   };
+
   return (
     <div className="content-list">
       <div className="user-list">
@@ -65,36 +55,23 @@ const UserList = () => {
             />
           </div>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>USUARIO</th>
-              <th>ROL</th>
-              <th>ESTADO</th>
-              <th>DNI</th>
-              <th>CELULAR</th>
-              <th>EDITAR</th>
-            </tr>
-          </thead>
-          <tbody style={{ overflowY: 'auto' }}>
-            {Array.isArray(users) &&
-              users.map((value, index) => (
-                <UserDetail
-                  key={index}
-                  user={value}
-                  index={index}
-                  onClick={() => editUser(value)}
-                />
-              ))}
-          </tbody>
-        </table>
+        <div className="user-container-list">
+          {users &&
+            users.map(user => (
+              <UserInfo
+                key={user.id}
+                user={user}
+                onUpdateStatus={getUsers}
+                onUpdate={() => editUser(user)}
+              />
+            ))}
+        </div>
       </div>
       <CardRegisterUser
-        dataRegisterUser={usersData}
+        user={userData}
         onSave={() => {
           getUsers();
-          setUsersData(null);
+          setUserData(null);
         }}
       />
     </div>

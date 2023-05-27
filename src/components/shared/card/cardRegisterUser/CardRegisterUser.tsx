@@ -1,100 +1,77 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import './CardRegisterUser.css';
-import Select from '../../select/Select';
 import { useEffect, useState } from 'react';
 import Modal from '../../../portal/Modal';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
 import Button from '../../button/Button';
-import { useForm } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import InputText from '../../Input/Input';
-import { Users } from '../../../../types/types';
+import { UserForm, Users } from '../../../../types/types';
 interface CardRegisterUserProps {
   onSave?: () => void;
-  dataRegisterUser?: Users | null;
+  user?: Users | null;
 }
 
-const InitialValues = {
+const InitialValues: UserForm = {
   id: 0,
   email: '',
   password: '',
-  profile: {
-    firstName: '',
-    lastName: '',
-    dni: '',
-    phone: '',
-  },
+  firstName: '',
+  lastName: '',
+  dni: '',
+  phone: '',
 };
 
-const roles = [{ role: 'ADMIN' }, { role: 'EMPLOYEE' }, { role: 'MOD' }];
-
-const CardRegisterUser = ({
-  dataRegisterUser,
-  onSave,
-}: CardRegisterUserProps) => {
-  const [data, setData] = useState<Users>(InitialValues);
+const CardRegisterUser = ({ user, onSave }: CardRegisterUserProps) => {
+  const [data, setData] = useState<UserForm>(InitialValues);
   const {
     register,
     handleSubmit,
     setValue,
-    watch,
     reset,
     formState: { errors },
-  } = useForm<Users>({
+  } = useForm<UserForm>({
     defaultValues: InitialValues,
   });
 
   useEffect(() => {
-    if (dataRegisterUser) {
-      setData(dataRegisterUser);
+    if (user) {
+      const { profile, ..._data } = user;
+      setData({ ...profile, ..._data });
     } else {
       setData(InitialValues);
     }
-  }, [dataRegisterUser]);
+  }, [user]);
 
   useEffect(() => {
     setValue('id', data.id);
     setValue('email', data.email);
     setValue('password', data.password);
-    setValue('profile.dni', data.profile.dni);
-    setValue('profile.firstName', data.profile.firstName);
-    setValue('profile.lastName', data.profile.lastName);
-    setValue('profile.phone', data.profile.phone);
-    setValue('status', data.status);
-    setValue('role', data.role);
+    setValue('dni', data.dni);
+    setValue('firstName', data.firstName);
+    setValue('lastName', data.lastName);
+    setValue('phone', data.phone);
   }, [data]);
 
-  const onSubmit = async (values: Users) => {
-    let passData = {
-      email: values.email,
-      password: values.password,
-      firstName: values.profile.firstName,
-      lastName: values.profile.lastName,
-      dni: values.profile.dni,
-      phone: values.profile.phone,
-    };
-    if (dataRegisterUser) {
-      let editData = {
-        role: values.role,
-        status: values.status,
-      };
-      axiosInstance
-        .patch(`/users/${dataRegisterUser.id}`, editData)
-        .then(successfulShipment);
+  const onSubmit: SubmitHandler<UserForm> = async values => {
+    if (data.id) {
+      axiosInstance.put(`/profile/${data.id}`, values).then(successfulShipment);
     } else {
-      axiosInstance.post(`/users`, passData).then(successfulShipment);
+      axiosInstance.post(`/users`, values).then(successfulShipment);
     }
   };
 
   const successfulShipment = () => {
     onSave?.();
-    reset(InitialValues);
-    window.location.reload();
+    isOpenModal$.setSubject = false;
   };
 
   const closeFunctions = () => {
     isOpenModal$.setSubject = false;
-    reset(InitialValues);
+    reset();
   };
+
   return (
     <Modal size={50}>
       <form onSubmit={handleSubmit(onSubmit)} className="card-register-users">
@@ -102,9 +79,7 @@ const CardRegisterUser = ({
           <img src="/svg/close.svg" alt="pencil" />
         </span>
         <h1>
-          {dataRegisterUser
-            ? 'EDITAR DATOS DE USUARIO'
-            : 'REGISTRO DE NUEVO USUARIO'}
+          {user ? 'EDITAR DATOS DE USUARIO' : 'REGISTRO DE NUEVO USUARIO'}
         </h1>
         <InputText
           {...register('email', {
@@ -116,77 +91,47 @@ const CardRegisterUser = ({
           placeholder="Correo"
           label="Correo"
           name="email"
-          disabled={dataRegisterUser ? true : false}
+          disabled={user ? true : false}
         />
-        {!dataRegisterUser ? (
+        {!user && (
           <InputText
             {...register('password', { required: true })}
             placeholder="Contraseña"
             type="password"
+            autoComplete="no"
             label="Contraseña"
           />
-        ) : (
-          ''
         )}
         <div className="col-input">
           <InputText
-            {...register('profile.firstName', { required: true })}
+            {...register('firstName', { required: true })}
             placeholder="Nombres"
             label="Nombres"
-            disabled={dataRegisterUser ? true : false}
           />
           <InputText
-            {...register('profile.lastName')}
+            {...register('lastName')}
             placeholder="Apellidos"
             label="Apellidos"
-            disabled={dataRegisterUser ? true : false}
           />
         </div>
         <div className="col-input">
           <InputText
-            {...register('profile.dni', { required: true })}
+            {...register('dni', { required: true })}
             placeholder="N°"
             label="DNI"
             type="number"
-            disabled={dataRegisterUser ? true : false}
+            disabled={user ? true : false}
           />
           <InputText
-            {...register('profile.phone')}
+            {...register('phone')}
             placeholder="Celular"
             label="Celular"
             type="number"
-            disabled={dataRegisterUser ? true : false}
           />
         </div>
-        {dataRegisterUser ? (
-          <div className="col-input">
-            <Select
-              {...register('role')}
-              label="Rol"
-              defaultValue={dataRegisterUser.role}
-              data={roles}
-              name="role"
-              itemKey="role"
-              textField="role"
-            />
-            <div className="input-check">
-              <label className="input-label">Estado</label>
-              <div className="cheack-content">
-                <input
-                  type="checkbox"
-                  id="selectCheckbox"
-                  {...register('status')}
-                />
-                <p>{watch('status') ? 'Active' : 'Inactive'}</p>
-              </div>
-            </div>
-          </div>
-        ) : (
-          ''
-        )}
         <div className="btn-build">
           <Button
-            text={dataRegisterUser ? 'GUARDAR' : 'CREAR'}
+            text={user ? 'GUARDAR' : 'CREAR'}
             className="btn-area"
             whileTap={{ scale: 0.9 }}
             type="submit"

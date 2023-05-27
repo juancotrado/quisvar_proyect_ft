@@ -12,10 +12,13 @@
 .switch {
   width: 13rem;
   height: 2rem;
+  color: #fff;
+  font-size: 1rem;
+  text-transform: uppercase;
   background-color: rgba(255, 209, 64, 0.3);
   display: flex;
   justify-content: flex-start;
-  border-radius: 50px;
+  border-radius: 2rem;
   align-items: center;
   padding: 0 2px;
   cursor: pointer;

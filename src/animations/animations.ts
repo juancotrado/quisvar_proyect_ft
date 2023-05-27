@@ -18,3 +18,9 @@ export const dropIn = {
     y: '-100vh',
   },
 };
+
+export const spring = {
+  type: 'spring',
+  stiffness: 150,
+  damping: 30,
+};

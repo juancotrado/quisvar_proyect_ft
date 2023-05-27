@@ -8,6 +8,13 @@
   display: flex;
   justify-content: center;
 }
+
+.user-container-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .user-list {
   width: 80%;
   height: 100%;

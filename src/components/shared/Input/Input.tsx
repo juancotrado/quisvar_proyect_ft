@@ -9,11 +9,12 @@ interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   col?: boolean;
   type?: string;
+  disabled?: boolean;
   errors?: { [key: string]: any };
 }
 
 const InputText = forwardRef<HTMLInputElement, InputTextProps>(
-  ({ name, label, col, errors, type, ...props }, ref) => {
+  ({ name, label, col, errors, type, disabled, ...props }, ref) => {
     const [isShow, setIsShow] = useState(false);
     const viewPassword = () => setIsShow(!isShow);
 
@@ -37,7 +38,8 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
             id={name}
             className={`input-area ${
               errors && name && errors[name] && 'input-area-error'
-            }`}
+            } ${disabled && 'input-disabled'}`}
+            disabled={disabled}
             ref={ref}
             type={typeAux}
             {...props}

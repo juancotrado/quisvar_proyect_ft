@@ -64,7 +64,6 @@ const ListPersonalTask = () => {
               )
               .map(task => (
                 <div key={task.id}>
-                  {' '}
                   <MyTaskCard task={task} />{' '}
                 </div>
               ))}

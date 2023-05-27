@@ -92,20 +92,16 @@ const UserInfo = ({ user, onUpdate, onUpdateStatus }: UserInfoProps) => {
             layout
             transition={spring}
           >
-            <span className="span-list-task">
+            {/* <span className="span-list-task">
               {isOn ? 'Activo' : 'Inactivo'}
-            </span>
+            </span> */}
           </motion.div>
         </div>
       </div>
       <div className="col-span phone-container">{profile.dni}</div>
       <div className="col-span phone-container">{profile.phone}</div>
       <div className="col-span actions-container">
-        <Button
-          icon="pencil"
-          className="project-edit-icon"
-          onClick={onUpdate}
-        />
+        <Button icon="pencil" className="role-btn" onClick={onUpdate} />
         <ButtonDelete
           icon="trash"
           url={`/users/${user.id}`}

@@ -44,8 +44,9 @@
 }
 
 .switch-status {
-  width: 7rem;
+  width: 4rem;
   height: 2rem;
+  padding: 0.2rem;
   text-transform: uppercase;
   color: #fff;
   background-color: rgba(237, 100, 90, 0.647);
@@ -63,7 +64,7 @@
   display: flex;
   font-size: 0.7rem;
   align-items: center;
-  width: 5rem;
+  width: 1.5rem;
   height: 100%;
   background-color: var(--color-unresolved);
   border-radius: 30rem;

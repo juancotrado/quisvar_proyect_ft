@@ -117,7 +117,7 @@ export interface SubTask {
   createdAt?: Date;
   updatedAt?: Date;
   taskId: number;
-  users: any[];
+  users: Users[];
 }
 
 export interface AreaForm {
@@ -134,4 +134,24 @@ export interface UserForm {
   lastName: string;
   dni: string;
   phone: string;
+}
+
+export interface ReviewList {
+  id: number;
+  name: string;
+  task: {
+    name: string;
+    indexTask: {
+      name: string;
+      workArea: {
+        name: string;
+        project: {
+          name: string;
+        };
+      };
+    };
+  };
+  users: {
+    user: Users;
+  }[];
 }

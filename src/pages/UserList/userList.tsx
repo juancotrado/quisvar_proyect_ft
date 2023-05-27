@@ -1,22 +1,11 @@
 import { useEffect, useState } from 'react';
 import './userList.css';
-import { CardRegisterUser, UserDetail } from '../../components';
+import { CardRegisterUser } from '../../components';
 import Button from '../../components/shared/button/Button';
 import { axiosInstance } from '../../services/axiosInstance';
 import { isOpenModal$ } from '../../services/sharingSubject';
 import { Users } from '../../types/types';
 import UserInfo from '../../components/users/UserInfo';
-// interface CreateUsers {
-//   id: number;
-//   email: string;
-//   password: string;
-//   firstName: string;
-//   lastName: string;
-//   dni: string;
-//   phone: string;
-//   workAreaId: number;
-//   status: boolean;
-// }
 
 const UserList = () => {
   const [users, setUsers] = useState<Users[] | null>(null);

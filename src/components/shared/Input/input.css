@@ -1,61 +1,43 @@
-.input-main {
+.input-container {
   position: relative;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  gap: 0.3rem;
-}
-
-.input-col {
-  flex-direction: row;
+  display: grid;
   gap: 1rem;
-}
-
-.input-area {
-  height: 2.8rem;
   width: 100%;
-  border: 2px solid var(--color-quaternay);
-  border-radius: var(--radius-input);
-  padding: 0 0.3rem;
+}
+.input-area {
+  height: 3.5rem;
+  width: 100%;
+  border: 1px solid var(--color-secondary);
+  border-radius: 5px;
+  padding: 0.5rem;
   font-size: var(--size-input);
-  font-weight: 500;
 }
 .input-area-error {
   border-color: #df0000;
 }
 .input-span-error {
   position: absolute;
-  color: #df0000;
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  bottom: -22px;
+  gap: 0.5rem;
+  bottom: -25px;
   left: 1px;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
   font-weight: 500;
+  color: #df0000;
 }
 
 .input-label {
   width: 100%;
-  height: 3rem;
-  color: var(--color-quaternay);
-  font-weight: 500;
+  height: 25px;
+  color: #203881;
   font-size: var(--size-label);
 }
-.input-label-col {
-  width: 30%;
-  height: 3rem;
-  font-weight: 500;
-  color: var(--color-quaternay);
-  font-size: calc(var(--size-label) - 0.1rem);
-  text-align: left;
-}
-
 .input-icon {
-  width: 1.5rem;
-  height: 1.5rem;
+  width: 30px;
+  height: 30px;
   position: absolute;
-  margin-right: 0.8rem;
+  margin-right: 20px;
   cursor: pointer;
 }
 .input-option {
@@ -64,7 +46,18 @@
   flex-direction: row-reverse;
   align-items: center;
 }
-
+.input-col {
+  width: 100%;
+  display: flex;
+  gap: 2rem;
+}
+.input-label-col {
+  width: 25%;
+  height: 25px;
+  color: #203881;
+  font-size: var(--size-label);
+  text-align: end;
+}
 .input-option-col {
   width: 75%;
   display: flex;
@@ -74,11 +67,4 @@
 .input-span-icon {
   width: 1rem;
   height: 1rem;
-}
-
-.input-disabled {
-  color: #979797;
-  font-weight: 500;
-  font-style: italic;
-  cursor: no-drop;
 }

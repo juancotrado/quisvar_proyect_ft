@@ -8,7 +8,7 @@ const Home = () => {
 
   const navigate = useNavigate();
 
-  const handleNavigateToAreas = () => navigate('/areas');
+  const handleNavigateToAreas = () => navigate('/especialidades');
   const handleNavigateMyWorks = () => navigate('/mis-tareas');
   return (
     <div className="home">
@@ -35,7 +35,7 @@ const Home = () => {
           className="home-btn btn-color-2"
           onClick={handleNavigateToAreas}
         >
-          Áreas
+          Especialidades
         </button>
       </div>
     </div>

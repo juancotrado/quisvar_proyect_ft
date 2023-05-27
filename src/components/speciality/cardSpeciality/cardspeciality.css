@@ -5,7 +5,7 @@
   align-items: center;
   padding: 1rem;
   background-color: white;
-  max-width: 30rem;
+  width: 32%;
   height: 18rem;
   border-radius: 12px;
   border: 2px solid var(--color-primary);
@@ -33,9 +33,9 @@
   font-size: 2rem;
   padding: 0 0.5rem;
   font-weight: 800;
-  width: 28rem;
-  height: 10rem;
+  width: 100%;
   overflow: hidden;
+  height: 9rem;
 }
 .editable-form {
   position: relative;
@@ -44,6 +44,7 @@
   background-color: var(--color-menu);
   color: var(--color-quaternay);
   overflow-y: auto;
+  height: 8.8rem;
 }
 .editable-submit {
   position: absolute;

@@ -13,20 +13,28 @@ interface SubTaskCardProps {
 const SubTaskCard = ({ subTask, getSubtask }: SubTaskCardProps) => {
   const hanldeViewMore = () => {
     getSubtask(subTask);
-    isOpenModal$.setSubject = true;
   };
+
+  const { status } = subTask;
+  const proccessInfoShow =
+    status !== 'UNRESOLVED' && status !== 'DONE' && status !== 'PROCESS';
   return (
     <div className="subTask">
-      <span className={`subTask-icon subTask-${subTask.status}`}>
+      {proccessInfoShow && (
+        <span className="subTask-proccess-info">
+          {status === 'INREVIEW' ? 'Por Revisar' : 'Revisado, por corregir'}
+        </span>
+      )}
+      <span className={`subTask-icon subTask-${status}`}>
         <img
           src={
-            subTask.status === 'DONE'
+            status === 'DONE'
               ? icon_done
-              : subTask.status === 'PROCESS'
+              : status === 'PROCESS'
               ? icon_process
               : icon_unresolved
           }
-          alt={subTask.status}
+          alt={status}
         />
       </span>
 

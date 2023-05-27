@@ -52,7 +52,7 @@ type Profile = {
   lastName: string;
   dni: string;
   phone: string;
-  userId?: string;
+  userId: number;
 };
 export interface ProjectType {
   id: number;
@@ -114,8 +114,8 @@ export interface SubTask {
   description: string;
   price: string;
   hours: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
   taskId: number;
   users: any[];
 }

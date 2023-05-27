@@ -6,12 +6,24 @@ import { axiosInstance } from '../../services/axiosInstance';
 import { Employees, SubTask, TaskType, WorkArea } from '../../types/types';
 import { CardTaskInformation, Sidebar, SubTaskCard } from '../../components';
 import { SocketContext } from '../../context/SocketContex';
+import { isOpenModal$ } from '../../services/sharingSubject';
 
+const initValuesSubTask: SubTask = {
+  id: 0,
+  status: '',
+  name: '',
+  percentage: 0,
+  description: '',
+  price: '',
+  hours: 0,
+  taskId: 0,
+  users: [],
+};
 const Task = () => {
   const { id } = useParams();
   const [workArea, setWorkArea] = useState<WorkArea | null>(null);
   const [subTasks, setSubTasks] = useState<SubTask[] | null>(null);
-  const [subTask, setSubTask] = useState<SubTask | null>(null);
+  const [subTask, setSubTask] = useState<SubTask>(initValuesSubTask);
   const socket = useContext(SocketContext);
 
   useEffect(() => {
@@ -24,7 +36,10 @@ const Task = () => {
       .then(res => setSubTasks(res.data.subTasks));
   };
 
-  const getSubtask = (subTask: SubTask) => setSubTask(subTask);
+  const getSubtask = (subTask: SubTask) => {
+    setSubTask(subTask);
+    isOpenModal$.setSubject = true;
+  };
 
   useEffect(() => {
     socket.on('server:update-status-subTask', ({ status, id }) => {
@@ -132,7 +147,6 @@ const Task = () => {
 
   //   const handleGetTaskData = (getTask: TaskType) => setGetTaskData(getTask);
 
-  console.log(subTasks && subTasks[0]);
   return (
     <>
       <div className="tasks container">
@@ -240,7 +254,7 @@ const Task = () => {
           getTaskData={getTaskData}
           editTask={editTask}
         /> */}
-        {subTask && <CardTaskInformation subTask={subTask} />}
+        <CardTaskInformation subTask={subTask} />
       </div>
       {workArea && (
         <Sidebar workArea={workArea} settingSubTasks={settingSubTasks} />

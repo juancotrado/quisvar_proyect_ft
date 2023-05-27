@@ -8,13 +8,56 @@ import { useContext, useState } from 'react';
 import { SubTask } from '../../../../types/types';
 import { SocketContext } from '../../../../context/SocketContex';
 import { axiosInstance } from '../../../../services/axiosInstance';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../store';
 
 interface CardTaskInformationProps {
   subTask: SubTask;
 }
-
+interface StatusBody {
+  [category: string]: {
+    [role: string]: {
+      [state: string]: {
+        status: string;
+      };
+    };
+  };
+}
+const statusBody: StatusBody = {
+  ASIG: {
+    EMPLOYEE: {
+      UNRESOLVED: {
+        status: 'PROCESS',
+      },
+      PROCESS: {
+        status: 'INREVIEW',
+      },
+      DENIED: {
+        status: 'INREVIEW',
+      },
+    },
+    SUPERADMIN: {
+      INREVIEW: {
+        status: 'DONE',
+      },
+    },
+  },
+  DENY: {
+    EMPLOYEE: {
+      PROCESS: {
+        status: 'UNRESOLVED',
+      },
+    },
+    SUPERADMIN: {
+      INREVIEW: {
+        status: 'DENIED',
+      },
+    },
+  },
+};
 const CardTaskInformation = ({ subTask }: CardTaskInformationProps) => {
   const socket = useContext(SocketContext);
+  const { userSession } = useSelector((state: RootState) => state);
 
   const [selectedFile, setSelectedFile] = useState(null);
 
@@ -39,23 +82,24 @@ const CardTaskInformation = ({ subTask }: CardTaskInformationProps) => {
     setPercentage(newPercentage);
   };
 
-  const handleAsigned = () => {
+  const getStatus = (
+    category: string,
+    role: string,
+    state: string
+  ): { status: string } | undefined => {
+    return statusBody[category]?.[role]?.[state];
+  };
+  const handleChangeStatus = async (option: 'ASIG' | 'DENY') => {
     const { status } = subTask;
-    const statusBody = {
-      UNRESOLVED: {
-        status: 'PROCESS',
-      },
-      PROCESS: {
-        status: 'DONE',
-      },
-    };
-    const body = statusBody[status as keyof typeof statusBody];
-    axiosInstance.patch(`/subtasks/status/${subTask.id}`, body).then(res => {
-      isOpenModal$.setSubject = false;
-      socket.emit('client:update-status-subTask', res.data);
-    });
+    const role = userSession.role === 'EMPLOYEE' ? 'EMPLOYEE' : 'SUPERADMIN';
+    const body = getStatus(option, role, status);
+    if (!body) return;
 
-    // editTaskStatus(task.id, body.status, employees);
+    const resStatus = await axiosInstance.patch(
+      `/subtasks/status/${subTask.id}`,
+      body
+    );
+    socket.emit('client:update-status-subTask', resStatus.data);
   };
 
   const data = [
@@ -66,6 +110,7 @@ const CardTaskInformation = ({ subTask }: CardTaskInformationProps) => {
   const closeFunctions = () => {
     isOpenModal$.setSubject = false;
   };
+  const { status } = subTask;
   return (
     <Modal size={50}>
       <div className="information-container">
@@ -161,16 +206,30 @@ const CardTaskInformation = ({ subTask }: CardTaskInformationProps) => {
             <label>Total Horas: </label>
             <p>Encargado: Diego Romani</p>
             <div className="btn-content">
-              {subTask.status === 'PROCESS' && (
-                <Button text="Declinar" className="btn-declinar" />
-              )}
-              {subTask.status !== 'DONE' && (
+              {(status === 'PROCESS' ||
+                (status === 'INREVIEW' && userSession.role !== 'EMPLOYEE')) && (
                 <Button
-                  text={
-                    subTask.status === 'PROCESS' ? 'Por Revisar' : 'Asignar'
-                  }
+                  text={status === 'INREVIEW' ? 'Desaprobar' : 'Declinar'}
+                  className="btn-declinar"
+                  onClick={() => handleChangeStatus('DENY')}
+                />
+              )}
+              {status !== 'DONE' &&
+                userSession.role === 'EMPLOYEE' &&
+                status !== 'INREVIEW' && (
+                  <Button
+                    text={
+                      status === 'UNRESOLVED' ? 'Asignar' : 'Mandar a Revisar'
+                    }
+                    className="btn-revisar"
+                    onClick={() => handleChangeStatus('ASIG')}
+                  />
+                )}
+              {status === 'INREVIEW' && userSession.role !== 'EMPLOYEE' && (
+                <Button
+                  text={'Aprobar'}
                   className="btn-revisar"
-                  onClick={handleAsigned}
+                  onClick={() => handleChangeStatus('ASIG')}
                 />
               )}
             </div>

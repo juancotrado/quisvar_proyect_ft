@@ -125,3 +125,13 @@ export interface AreaForm {
   userId: number;
   name: string;
 }
+
+export interface UserForm {
+  id: number;
+  email: string;
+  password: string;
+  firstName: string;
+  lastName: string;
+  dni: string;
+  phone: string;
+}

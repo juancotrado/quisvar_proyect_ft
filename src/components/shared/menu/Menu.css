@@ -2,9 +2,10 @@
   background-color: var(--color-primary);
   color: white;
   position: absolute;
-  top: var(--header-height);
-  right: 10%;
-  width: 220px;
+  /* top: var(--header-height); */
+  top: 2rem;
+  left: -11rem;
+  width: 13rem;
   height: auto;
   border-radius: 8px;
   border: 2px solid var(--color-primary);

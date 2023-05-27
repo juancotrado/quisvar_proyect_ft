@@ -48,19 +48,23 @@ const Header = () => {
   const items = [
     { title: 'Inicio', link: '/home' },
     { title: 'Tareas', link: '/mis-tareas' },
-    // { title: 'Areas', link: '/areas' },
     { title: 'Especialidades', link: '/especialidades' },
   ];
 
   const icons = [
-    { name: '/svg/bell.svg', link: '/dashboard', action: handleLogout },
+    { id: 1, name: '/svg/bell.svg', link: '/dashboard', action: handleLogout },
     {
+      id: 2,
       name: '/svg/question-circle.svg',
       link: '/dashboard',
       action: handleLogout,
     },
-    // { name: '/svg/icon.svg', link: '/dashboard', action: handleLogout },
-    { name: '/svg/Profile Avatar.svg', link: '/dashboard', action: toggleMenu },
+    {
+      id: 3,
+      name: '/svg/Profile Avatar.svg',
+      link: '/dashboard',
+      action: toggleMenu,
+    },
   ];
 
   const menu = [
@@ -107,8 +111,8 @@ const Header = () => {
           </ul>
         </div>
         <ul className="icons-list">
-          {icons.map((icon, id) => (
-            <li key={id}>
+          {icons.map(icon => (
+            <li key={icon.id} className="icon-list">
               <motion.img
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.9 }}
@@ -117,10 +121,10 @@ const Header = () => {
                 alt={icon.name}
                 className="icon"
               />
+              {icon.id === 3 && isOpen && <Menu data={menu} />}
             </li>
           ))}
         </ul>
-        {isOpen && <Menu data={menu} />}
       </nav>
       {<CardEditInformation isOpen={openModalInfo} onClose={closeModal} />}
     </header>

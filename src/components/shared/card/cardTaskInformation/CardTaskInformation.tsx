@@ -10,7 +10,7 @@ import { SocketContext } from '../../../../context/SocketContex';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
-
+import { InputRange } from '../../../index';
 interface CardTaskInformationProps {
   subTask: SubTask;
 }
@@ -77,6 +77,7 @@ const CardTaskInformation = ({ subTask }: CardTaskInformationProps) => {
   //     }
   // };
   const [percentage, setPercentage] = useState(50);
+  console.log(percentage);
 
   const handleClick = (newPercentage: any) => {
     setPercentage(newPercentage);
@@ -102,7 +103,9 @@ const CardTaskInformation = ({ subTask }: CardTaskInformationProps) => {
     socket.emit('client:update-status-subTask', resStatus.data);
     isOpenModal$.setSubject = false;
   };
-
+  const handleInputChange = (value: number) => {
+    console.log('Nuevo valor:', value);
+  };
   const data = [
     { name: 'Por Hacer' },
     { name: 'En proceso' },
@@ -159,7 +162,9 @@ const CardTaskInformation = ({ subTask }: CardTaskInformationProps) => {
           </div>
           <div className="line-divide" />
           <div className="content-details">
-            <SelectOptions data={data} itemKey="" textField="name" name="" />
+            <div className="status-content">
+              <label className="status-text status-hold">Por Asignar</label>
+            </div>
             <p>Creación: 21/01/23</p>
             <h1>Avance</h1>
             {/* <div className="progress-bar">
@@ -200,7 +205,11 @@ const CardTaskInformation = ({ subTask }: CardTaskInformationProps) => {
                 />
               </div>
             </div> */}
-            <InputRange maxRange={100} />
+            <InputRange
+              maxRange={100}
+              percentage={percentage}
+              onChange={handleInputChange}
+            />
             {/* <p>{percentage}%</p> */}
             <label>Precio general: s/260.00</label>
             <label>Precio por avance: s/260.00</label>

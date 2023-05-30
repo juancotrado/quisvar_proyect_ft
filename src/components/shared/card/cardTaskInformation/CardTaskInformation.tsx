@@ -10,6 +10,7 @@ import { SocketContext } from '../../../../context/SocketContex';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
+import { InputRange } from '../../..';
 
 interface CardTaskInformationProps {
   subTask: SubTask;
@@ -162,7 +163,7 @@ const CardTaskInformation = ({ subTask }: CardTaskInformationProps) => {
             <SelectOptions data={data} itemKey="" textField="name" name="" />
             <p>Creación: 21/01/23</p>
             <h1>Avance</h1>
-            <div className="progress-bar">
+            {/* <div className="progress-bar">
               <div
                 className="progress-bar-line"
                 style={{ width: `${percentage}%` }}
@@ -199,8 +200,9 @@ const CardTaskInformation = ({ subTask }: CardTaskInformationProps) => {
                   onClick={() => handleClick(100)}
                 />
               </div>
-            </div>
-            <p>{percentage}%</p>
+            </div> */}
+            <InputRange maxRange={100} />
+            {/* <p>{percentage}%</p> */}
             <label>Precio general: s/260.00</label>
             <label>Precio por avance: s/260.00</label>
             <label>Total de horas estimadas: {subTask.hours} horas</label>

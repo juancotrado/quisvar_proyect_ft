@@ -37,7 +37,7 @@ const MyTaskCard = ({ task }: TaskCardProps) => {
       </div>
       <div className="footer-my-task">
         <h3>Fecha Inicio: {`${_date(task.createdAt)}`}</h3>
-        <span onClick={() => na}>Ver mas</span>
+        <span onClick={() => {}}>Ver mas</span>
       </div>
     </div>
   );

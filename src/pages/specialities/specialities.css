@@ -1,6 +1,8 @@
 .speciality {
   max-height: calc(100vh - var(--header-height));
-  overflow-y: auto;
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
 }
 .speciality-head {
   display: flex;
@@ -40,4 +42,5 @@
   gap: 1rem;
   padding: 0 1rem;
   margin-top: 3rem;
+  overflow-y: auto;
 }

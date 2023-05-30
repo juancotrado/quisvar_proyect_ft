@@ -19,14 +19,20 @@ const NotificationsList = () => {
   }, [userSession.id]);
 
   return (
-    <div
-      className="content-area"
-      style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}
-    >
-      {subTasks &&
-        subTasks.map(subtask => (
-          <SubtaskDetail key={subtask.id} subtask={subtask} />
-        ))}
+    <div className="notify container">
+      <div className="notify-head">
+        <div>
+          <h1 className="main-title">
+            LISTA DE <span className="main-title-span">NOTIFICACIONES </span>
+          </h1>
+        </div>
+      </div>
+      <div className="notify-card-container">
+        {subTasks &&
+          subTasks.map(subtask => (
+            <SubtaskDetail key={subtask.id} subtask={subtask} />
+          ))}
+      </div>
     </div>
   );
 };

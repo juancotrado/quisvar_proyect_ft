@@ -9,7 +9,7 @@ import Portal from '../../portal/Portal';
 interface ButtonProps extends HTMLMotionProps<'button'> {
   text?: string;
   type?: 'button' | 'submit' | 'reset';
-  url: string;
+  url?: string;
   icon: string;
   onSave?: () => void;
   customOnClick?: () => void;
@@ -32,9 +32,10 @@ const ButtonDelete = ({
   const handleSendDelete = async () => {
     if (customOnClick) {
       customOnClick();
+      setIsAlertOpen(false);
+
       return;
     }
-
     await axiosInstance.delete(`${url}`).then(() => {
       onSave?.();
       setIsAlertOpen(false);

@@ -46,7 +46,6 @@ const Task = () => {
 
   useEffect(() => {
     socket.on('server:update-subTask', (newSubTask: SubTask) => {
-      console.log('me llamaron');
       if (!subTasks) return;
       const newSubTasks = subTasks?.map(subTask =>
         subTask.id == newSubTask.id ? newSubTask : subTask
@@ -59,12 +58,12 @@ const Task = () => {
     };
   }, [socket, subTasks]);
   useEffect(() => {
-    socket.on('server:client:upload-file-subTask', (newSubTask: SubTask) => {
+    socket.on('server:upload-file-subTask', (newSubTask: SubTask) => {
       setSubTask(newSubTask);
     });
 
     return () => {
-      socket.off('server:client:upload-file-subTask');
+      socket.off('server:upload-file-subTask');
     };
   }, [socket, subTask]);
   //   const [tasks, setTasks] = useState<TaskType[] | null>(null);
@@ -270,7 +269,12 @@ const Task = () => {
           getTaskData={getTaskData}
           editTask={editTask}
         /> */}
-        <CardTaskInformation subTask={subTask} />
+        {workArea && (
+          <CardTaskInformation
+            subTask={subTask}
+            coordinatorId={workArea?.userId}
+          />
+        )}
       </div>
       {workArea && (
         <Sidebar workArea={workArea} settingSubTasks={settingSubTasks} />

@@ -11,8 +11,10 @@ import { URL_FILES, axiosInstance } from '../../../../services/axiosInstance';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
 import { InputRange } from '../../../index';
+import ButtonDelete from '../../button/ButtonDelete';
 interface CardTaskInformationProps {
   subTask: SubTask;
+  coordinatorId: number;
 }
 interface StatusBody {
   [category: string]: {
@@ -55,14 +57,16 @@ const statusBody: StatusBody = {
     },
   },
 };
-const CardTaskInformation = ({ subTask }: CardTaskInformationProps) => {
+const CardTaskInformation = ({
+  subTask,
+  coordinatorId,
+}: CardTaskInformationProps) => {
   const socket = useContext(SocketContext);
   const { userSession } = useSelector((state: RootState) => state);
   const [selectedFile, setSelectedFile] = useState(null);
   const [percentage, setPercentage] = useState(50);
   const [file, setFile] = useState<FileList[0]>();
   const role = userSession.role === 'EMPLOYEE' ? 'EMPLOYEE' : 'SUPERADMIN';
-  const { status } = subTask;
 
   const handleDrop = (event: any) => {
     event.preventDefault();
@@ -91,6 +95,7 @@ const CardTaskInformation = ({ subTask }: CardTaskInformationProps) => {
   ): { status: string } | undefined => {
     return statusBody[category]?.[role]?.[state];
   };
+
   const handleChangeStatus = async (option: 'ASIG' | 'DENY') => {
     const { status } = subTask;
     const body = getStatus(option, role, status);
@@ -111,9 +116,27 @@ const CardTaskInformation = ({ subTask }: CardTaskInformationProps) => {
     const indexName = name.indexOf('$');
     return name.slice(indexName + 1);
   };
+
+  const deleteFile = (URL: string) => {
+    axiosInstance
+      .delete(URL)
+      .then(res => socket.emit('client:upload-file-subTask', res.data));
+  };
   const closeFunctions = () => {
     isOpenModal$.setSubject = false;
   };
+
+  // validations
+  const { status } = subTask;
+
+  const isAuthorizedUser = subTask?.users?.some(
+    ({ user }) => user.profile.userId === userSession.id
+  );
+  const isAuthorizedMod = userSession.id === coordinatorId;
+
+  const areAuthorizedUsers = isAuthorizedMod || isAuthorizedUser;
+  const isStatusProcesOrDenied = status === 'PROCESS' || status === 'DENIED';
+
   return (
     <Modal size={50}>
       <div className="information-container">
@@ -135,53 +158,72 @@ const CardTaskInformation = ({ subTask }: CardTaskInformationProps) => {
                 </div>
               </div>
             </div>
-            <div className="content-file">
-              <h4 className="content-file-title">Archivos:</h4>
-
-              <div className="subtask-files">
-                {subTask.files?.map(file => (
-                  <a
-                    href={`${URL_FILES}/${file}`}
-                    target="_blank"
-                    key={file}
-                    className="subtask-file"
-                    download={'xyz.pdf'}
-                  >
-                    <img
-                      src="/svg/file-download.svg"
-                      alt="W3Schools"
-                      className="subtask-file-icon"
-                    ></img>
-                    <span className="subtask-file-name">
-                      {normalizeFileName(file)}
-                    </span>
-                  </a>
-                ))}
-              </div>
-            </div>
-            <div className="content-file">
-              <h4 className="content-file-title">Subir Archivo:</h4>
-
-              <div
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  border: '2px dashed #ccc',
-                  borderRadius: '5px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justifyContent: 'center',
-                  alignItems: 'center',
-                  cursor: 'pointer',
-                }}
-                onDrop={handleDrop}
-                onDragOver={event => event.preventDefault()}
-              >
-                {!selectedFile && <p>Arrastra los archivos aquí</p>}
-                <input type="file" onChange={handleFileChange} />
-              </div>
-              <Button text="Subir archivo" onClick={handleUploadClick} />
-            </div>
+            {status !== 'UNRESOLVED' && (
+              <>
+                <div className="content-file">
+                  <h4 className="content-file-title">Archivos:</h4>
+                  <div className="subtask-files">
+                    {subTask.files?.map(file => (
+                      <div className="subtask-file-contain">
+                        <a
+                          href={`${URL_FILES}/${file}`}
+                          target="_blank"
+                          key={file}
+                          className="subtask-file"
+                          download={'xyz.pdf'}
+                        >
+                          <img
+                            src="/svg/file-download.svg"
+                            alt="W3Schools"
+                            className="subtask-file-icon"
+                          ></img>
+                          <span className="subtask-file-name">
+                            {normalizeFileName(file)}
+                          </span>
+                        </a>
+                        {((isStatusProcesOrDenied && isAuthorizedUser) ||
+                          (isAuthorizedMod && status === 'INREVIEW')) && (
+                          <ButtonDelete
+                            icon="trash-red"
+                            customOnClick={() =>
+                              deleteFile(
+                                `/subtasks/deleteFile/${subTask.id}/${file}`
+                              )
+                            }
+                            className="subtask-delete-icon"
+                          />
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+                {((isStatusProcesOrDenied && isAuthorizedUser) ||
+                  (isAuthorizedMod && status === 'INREVIEW')) && (
+                  <div className="content-file">
+                    <h4 className="content-file-title">Subir Archivo:</h4>
+                    <div
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        border: '2px dashed #ccc',
+                        borderRadius: '5px',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        cursor: 'pointer',
+                      }}
+                      onDrop={handleDrop}
+                      onDragOver={event => event.preventDefault()}
+                    >
+                      {!selectedFile && <p>Arrastra los archivos aquí</p>}
+                      <input type="file" onChange={handleFileChange} />
+                    </div>
+                    <Button text="Subir archivo" onClick={handleUploadClick} />
+                  </div>
+                )}
+              </>
+            )}
           </div>
           <div className="line-divide" />
           <div className="content-details">

@@ -38,6 +38,10 @@
   display: flex;
   gap: 1rem;
 }
+.subtask-file-contain {
+  display: flex;
+  gap: 1rem;
+}
 .subtask-file-name {
   display: block;
   font-size: 0.8rem;
@@ -72,6 +76,14 @@
   flex-direction: column;
   padding: 1rem;
   gap: 1rem;
+}
+.subtask-delete-icon {
+  background-color: white;
+  padding: 0;
+  border: none;
+}
+.subtask-delete-icon img {
+  width: 1rem;
 }
 .content-file {
   display: flex;

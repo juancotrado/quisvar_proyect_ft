@@ -10,7 +10,6 @@ import { SocketContext } from '../../../../context/SocketContex';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
-import { InputRange } from '../../..';
 
 interface CardTaskInformationProps {
   subTask: SubTask;

@@ -3,6 +3,7 @@ import { SnackbarUtilities } from '../utils/SnackbarManager';
 import { errorToken$, loader$ } from './sharingSubject';
 
 export const URL = 'http://localhost:8081';
+export const URL_FILES = 'http://localhost:8081/static';
 const API_BASE_URL = `${URL}/api/v1`;
 
 export const axiosInstance: AxiosInstance = axios.create({

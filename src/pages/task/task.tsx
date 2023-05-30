@@ -16,6 +16,7 @@ const initValuesSubTask: SubTask = {
   description: '',
   price: '',
   hours: 0,
+  files: [],
   taskId: 0,
   users: [],
 };
@@ -44,7 +45,7 @@ const Task = () => {
   };
 
   useEffect(() => {
-    socket.on('server:update-status-subTask', (newSubTask: SubTask) => {
+    socket.on('server:update-subTask', (newSubTask: SubTask) => {
       console.log('me llamaron');
       if (!subTasks) return;
       const newSubTasks = subTasks?.map(subTask =>
@@ -54,9 +55,18 @@ const Task = () => {
     });
 
     return () => {
-      socket.off('server:update-status-subTask');
+      socket.off('server:update-subTask');
     };
   }, [socket, subTasks]);
+  useEffect(() => {
+    socket.on('server:client:upload-file-subTask', (newSubTask: SubTask) => {
+      setSubTask(newSubTask);
+    });
+
+    return () => {
+      socket.off('server:client:upload-file-subTask');
+    };
+  }, [socket, subTask]);
   //   const [tasks, setTasks] = useState<TaskType[] | null>(null);
   //   const [getTaskData, setGetTaskData] = useState<TaskType | null>(null);
   //   const socket = useSocket();

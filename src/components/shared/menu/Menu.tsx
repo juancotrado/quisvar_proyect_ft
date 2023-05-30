@@ -1,19 +1,14 @@
 import { motion } from 'framer-motion';
 import './Menu.css';
 import { useEffect, useState } from 'react';
-
-const initValues = {
-  name: 'unknown',
-  id: null,
-};
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store';
 
 const Menu = ({ data }: any) => {
-  const [personalData, setPersonalData] = useState(initValues);
-
+  const [personalData, setPersonalData] = useState('');
+  const { userSession } = useSelector((state: RootState) => state);
   useEffect(() => {
-    const personalData = localStorage.getItem('personalData') || null;
-    if (!personalData) return;
-    setPersonalData(JSON.parse(personalData));
+    setPersonalData(userSession?.profile.firstName);
   }, []);
 
   return (
@@ -24,7 +19,7 @@ const Menu = ({ data }: any) => {
       transition={{ duration: 0.4 }}
       className="header-toggle"
     >
-      <p className="fullname-menu">{personalData.name}</p>
+      <p className="fullname-menu">{personalData}</p>
       <div className="line"></div>
       {data.map((value: any, index: number) => (
         <motion.li

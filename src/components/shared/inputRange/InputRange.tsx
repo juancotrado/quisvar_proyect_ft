@@ -3,21 +3,28 @@ import { InputHTMLAttributes } from 'react';
 
 import './inputRange.css';
 
-interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
+interface InputTextProps
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
   maxRange: number;
+  percentage?: number;
+  onChange?: (value: number) => void;
 }
 
 const InputRange = forwardRef<HTMLInputElement, InputTextProps>(
-  ({ maxRange, ...props }, ref) => {
-    const [value, setValue] = useState(0);
+  ({ maxRange, percentage, onChange, ...props }, ref) => {
+    const [value, setValue] = useState(percentage ? percentage : '');
 
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-      if (+e.target.value > maxRange) return;
-      setValue(+e.target.value);
+      const newValue = +e.target.value;
+      if (newValue > maxRange) return;
+      setValue(newValue);
+      if (onChange) {
+        onChange(newValue);
+      }
     };
-    console.log(value);
+    // console.log(value);
     return (
-      <div className="input-range">
+      <div className="input-range range-container">
         <input
           ref={ref}
           type="range"
@@ -27,7 +34,13 @@ const InputRange = forwardRef<HTMLInputElement, InputTextProps>(
           className="input-range"
           onChange={handleChange}
         />
-        <input type="text" max={100} value={value} onChange={handleChange} />
+        <input
+          type="text"
+          max={100}
+          value={value}
+          onChange={handleChange}
+          className="input-range-text"
+        />
       </div>
     );
   }

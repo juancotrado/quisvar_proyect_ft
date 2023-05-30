@@ -1,11 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import type { PayloadAction } from '@reduxjs/toolkit';
-import { Users } from '../../types/types';
+import { User } from '../../types/types';
 import { AppDispatch } from '..';
 import { axiosInstance } from '../../services/axiosInstance';
 // type State = Users | null;
 
-const INITIAL_STATE: Users = {
+const INITIAL_STATE: User = {
   id: 0,
   email: '',
   password: '',
@@ -22,7 +22,7 @@ const userSessionSlice = createSlice({
   name: 'userSession',
   initialState: INITIAL_STATE,
   reducers: {
-    setUserSessionGlobal: (state, action: PayloadAction<Users>) =>
+    setUserSessionGlobal: (state, action: PayloadAction<User>) =>
       action.payload,
   },
 });

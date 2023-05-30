@@ -16,6 +16,7 @@ const initValuesSubTask: SubTask = {
   description: '',
   price: '',
   hours: 0,
+  files: [],
   taskId: 0,
   users: [],
 };
@@ -28,12 +29,14 @@ const Task = () => {
 
   useEffect(() => {
     axiosInstance.get(`/workareas/${id}`).then(res => setWorkArea(res.data));
-  }, []);
+  }, [id]);
 
   const settingSubTasks = (id: number) => {
-    axiosInstance
-      .get(`/tasks/${id}`)
-      .then(res => setSubTasks(res.data.subTasks));
+    axiosInstance.get(`/tasks/${id}`).then(res => {
+      setSubTasks(res.data.subTasks);
+      socket.emit('join', res.data.id);
+      isOpenModal$.setSubject = false;
+    });
   };
 
   const getSubtask = (subTask: SubTask) => {
@@ -42,7 +45,7 @@ const Task = () => {
   };
 
   useEffect(() => {
-    socket.on('server:update-status-subTask', (newSubTask: SubTask) => {
+    socket.on('server:update-subTask', (newSubTask: SubTask) => {
       console.log('me llamaron');
       if (!subTasks) return;
       const newSubTasks = subTasks?.map(subTask =>
@@ -50,7 +53,20 @@ const Task = () => {
       );
       setSubTasks(newSubTasks);
     });
+
+    return () => {
+      socket.off('server:update-subTask');
+    };
   }, [socket, subTasks]);
+  useEffect(() => {
+    socket.on('server:client:upload-file-subTask', (newSubTask: SubTask) => {
+      setSubTask(newSubTask);
+    });
+
+    return () => {
+      socket.off('server:client:upload-file-subTask');
+    };
+  }, [socket, subTask]);
   //   const [tasks, setTasks] = useState<TaskType[] | null>(null);
   //   const [getTaskData, setGetTaskData] = useState<TaskType | null>(null);
   //   const socket = useSocket();

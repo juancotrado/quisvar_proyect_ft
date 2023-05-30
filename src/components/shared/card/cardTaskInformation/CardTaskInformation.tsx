@@ -4,13 +4,13 @@ import Modal from '../../../portal/Modal';
 import './cardTaskInformation.css';
 import SelectOptions from '../../select/Select';
 import Button from '../../button/Button';
-import { useContext, useState } from 'react';
+import { ChangeEvent, useContext, useState } from 'react';
 import { SubTask } from '../../../../types/types';
 import { SocketContext } from '../../../../context/SocketContex';
-import { axiosInstance } from '../../../../services/axiosInstance';
+import { URL_FILES, axiosInstance } from '../../../../services/axiosInstance';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
-
+import { InputRange } from '../../../index';
 interface CardTaskInformationProps {
   subTask: SubTask;
 }
@@ -58,8 +58,11 @@ const statusBody: StatusBody = {
 const CardTaskInformation = ({ subTask }: CardTaskInformationProps) => {
   const socket = useContext(SocketContext);
   const { userSession } = useSelector((state: RootState) => state);
-
   const [selectedFile, setSelectedFile] = useState(null);
+  const [percentage, setPercentage] = useState(50);
+  const [file, setFile] = useState<FileList[0]>();
+  const role = userSession.role === 'EMPLOYEE' ? 'EMPLOYEE' : 'SUPERADMIN';
+  const { status } = subTask;
 
   const handleDrop = (event: any) => {
     event.preventDefault();
@@ -67,19 +70,18 @@ const CardTaskInformation = ({ subTask }: CardTaskInformationProps) => {
     setSelectedFile(file);
   };
 
-  const handleFileChange = (event: any) => {
-    setSelectedFile(event.target.files[0]);
+  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!e.target.files) return;
+    setFile(e.target.files[0]);
   };
 
-  // const handleUpload = () => {
-  //     if (selectedFile) {
-  //         console.log('Archivo seleccionado:', selectedFile);
-  //     }
-  // };
-  const [percentage, setPercentage] = useState(50);
-
-  const handleClick = (newPercentage: any) => {
-    setPercentage(newPercentage);
+  const handleUploadClick = () => {
+    if (!file) return;
+    const formdata = new FormData();
+    formdata.append('myFiles', file);
+    axiosInstance
+      .post(`/subtasks/upload/${subTask.id}`, formdata)
+      .then(res => socket.emit('client:upload-file-subTask', res.data));
   };
 
   const getStatus = (
@@ -89,7 +91,6 @@ const CardTaskInformation = ({ subTask }: CardTaskInformationProps) => {
   ): { status: string } | undefined => {
     return statusBody[category]?.[role]?.[state];
   };
-  const role = userSession.role === 'EMPLOYEE' ? 'EMPLOYEE' : 'SUPERADMIN';
   const handleChangeStatus = async (option: 'ASIG' | 'DENY') => {
     const { status } = subTask;
     const body = getStatus(option, role, status);
@@ -99,30 +100,30 @@ const CardTaskInformation = ({ subTask }: CardTaskInformationProps) => {
       `/subtasks/status/${subTask.id}`,
       body
     );
-    socket.emit('client:update-status-subTask', resStatus.data);
+    socket.emit('client:update-subTask', resStatus.data);
     isOpenModal$.setSubject = false;
   };
+  const handleInputChange = (value: number) => {
+    console.log('Nuevo valor:', value);
+  };
 
-  const data = [
-    { name: 'Por Hacer' },
-    { name: 'En proceso' },
-    { name: 'Terminado' },
-  ];
+  const normalizeFileName = (name: string) => {
+    const indexName = name.indexOf('$');
+    return name.slice(indexName + 1);
+  };
   const closeFunctions = () => {
     isOpenModal$.setSubject = false;
   };
-  const { status } = subTask;
   return (
     <Modal size={50}>
       <div className="information-container">
-        <div className="information-header">
-          <h1>Tarea: {subTask.name}</h1>
-          <button onClick={closeFunctions}>CERRAR</button>
-        </div>
+        <h3 className="information-title">Tarea: {subTask.name}</h3>
+        {/* <button onClick={closeFunctions}>CERRAR</button> */}
         <div className="main-content">
           <div className="content-files">
-            <section className="first-section">
-              <span>Enuncionado</span>
+            <div className="content-file">
+              <h4 className="content-file-title">Enunciado:</h4>
+
               <div className="statement">
                 <div>
                   <label>Archivo modelo:</label>
@@ -133,9 +134,34 @@ const CardTaskInformation = ({ subTask }: CardTaskInformationProps) => {
                   <Link to="https://www.google.com/">Click aqui</Link>
                 </div>
               </div>
-            </section>
-            <section className="second-section">
-              <span>Enuncionado</span>
+            </div>
+            <div className="content-file">
+              <h4 className="content-file-title">Archivos:</h4>
+
+              <div className="subtask-files">
+                {subTask.files?.map(file => (
+                  <a
+                    href={`${URL_FILES}/${file}`}
+                    target="_blank"
+                    key={file}
+                    className="subtask-file"
+                    download={'xyz.pdf'}
+                  >
+                    <img
+                      src="/svg/file-download.svg"
+                      alt="W3Schools"
+                      className="subtask-file-icon"
+                    ></img>
+                    <span className="subtask-file-name">
+                      {normalizeFileName(file)}
+                    </span>
+                  </a>
+                ))}
+              </div>
+            </div>
+            <div className="content-file">
+              <h4 className="content-file-title">Subir Archivo:</h4>
+
               <div
                 style={{
                   width: '100%',
@@ -153,54 +179,22 @@ const CardTaskInformation = ({ subTask }: CardTaskInformationProps) => {
               >
                 {!selectedFile && <p>Arrastra los archivos aquí</p>}
                 <input type="file" onChange={handleFileChange} />
-                {/* <button onClick={handleUpload}>Subir archivo</button> */}
               </div>
-            </section>
+              <Button text="Subir archivo" onClick={handleUploadClick} />
+            </div>
           </div>
           <div className="line-divide" />
           <div className="content-details">
-            <SelectOptions data={data} itemKey="" textField="name" name="" />
+            <div className="status-content">
+              <label className="status-text status-hold">Por Asignar</label>
+            </div>
             <p>Creación: 21/01/23</p>
             <h1>Avance</h1>
-            {/* <div className="progress-bar">
-              <div
-                className="progress-bar-line"
-                style={{ width: `${percentage}%` }}
-              />
-              <div className="progress-bar-points">
-                <div
-                  className={`progress-bar-point ${
-                    percentage === 0 || percentage > 0 ? 'active' : ''
-                  }`}
-                  onClick={() => handleClick(0)}
-                />
-                <div
-                  className={`progress-bar-point ${
-                    percentage === 25 || percentage > 25 ? 'active' : ''
-                  }`}
-                  onClick={() => handleClick(25)}
-                />
-                <div
-                  className={`progress-bar-point ${
-                    percentage === 50 || percentage > 50 ? 'active' : ''
-                  }`}
-                  onClick={() => handleClick(50)}
-                />
-                <div
-                  className={`progress-bar-point ${
-                    percentage === 75 || percentage > 75 ? 'active' : ''
-                  }`}
-                  onClick={() => handleClick(75)}
-                />
-                <div
-                  className={`progress-bar-point ${
-                    percentage === 100 || percentage > 100 ? 'active' : ''
-                  }`}
-                  onClick={() => handleClick(100)}
-                />
-              </div>
-            </div> */}
-            {/* <InputRange maxRange={100} /> */}
+            <InputRange
+              maxRange={100}
+              percentage={percentage}
+              onChange={handleInputChange}
+            />
             {/* <p>{percentage}%</p> */}
             <label>Precio general: s/260.00</label>
             <label>Precio por avance: s/260.00</label>

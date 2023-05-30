@@ -25,6 +25,8 @@ interface SubTaskType {
   price: number;
   taskId: number;
   updatedAt: Date;
+  status?: string;
+  employees: Employees[];
 }
 interface Employees {
   user: {

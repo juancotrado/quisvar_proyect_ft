@@ -4,7 +4,9 @@ import { axiosInstance } from '../../services/axiosInstance';
 import { motion } from 'framer-motion';
 import list_icon from '/svg/task_list.svg';
 import MyTaskCard from '../../components/shared/card/MyTaskCard';
-import { TaskType } from '../../types/types';
+import { SubTaskType } from '../../types/types';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 const spring = {
   type: 'spring',
@@ -12,23 +14,21 @@ const spring = {
   damping: 30,
 };
 const ListPersonalTask = () => {
-  const [tasks, setTasks] = useState<TaskType[] | null>(null);
+  const [tasks, setTasks] = useState<SubTaskType[] | null>(null);
   const [isOn, setIsOn] = useState(false);
+  const { userSession } = useSelector((state: RootState) => state);
+  const { id } = userSession;
   useEffect(() => {
-    const data = localStorage.getItem('personalData');
-    if (typeof data !== 'string') return;
-    const personalData = JSON.parse(data);
-    const { id } = personalData;
-
     axiosInstance
-      .get(`/users/${id}/tasks`)
+      .get(`/users/${id}/subTasks`)
       .then(res => {
+        console.log(res.data);
         setTasks(res.data);
       })
       .catch(err => {
         console.log(err);
       });
-  }, []);
+  }, [userSession]);
 
   const toggleSwitch = () => {
     setIsOn(!isOn);

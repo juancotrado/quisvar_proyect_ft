@@ -21,7 +21,7 @@ const ListPersonalTask = () => {
     const { id } = personalData;
 
     axiosInstance
-      .get(`/users/${id}/tasks`)
+      .get(`/users/${id}/subTasks`)
       .then(res => {
         setTasks(res.data);
       })

@@ -37,7 +37,7 @@ const CardSpeciality = ({
     onUpdate?.();
     setIsEditable(false);
   };
-
+  console.log(role);
   return (
     <div className="speciality-card" onClick={handleNext}>
       {role !== 'EMPLOYEE' && (

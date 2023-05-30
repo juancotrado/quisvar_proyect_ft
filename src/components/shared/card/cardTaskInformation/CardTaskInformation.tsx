@@ -200,7 +200,7 @@ const CardTaskInformation = ({ subTask }: CardTaskInformationProps) => {
                 />
               </div>
             </div> */}
-            <InputRange maxRange={100} />
+            {/* <InputRange maxRange={100} /> */}
             {/* <p>{percentage}%</p> */}
             <label>Precio general: s/260.00</label>
             <label>Precio por avance: s/260.00</label>

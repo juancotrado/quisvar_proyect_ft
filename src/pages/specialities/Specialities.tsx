@@ -39,6 +39,7 @@ const Specialities = () => {
               data={_speciality}
               onDelete={getSpecialities}
               onUpdate={getSpecialities}
+              role={role}
             />
           ))}
         {role !== 'EMPLOYEE' && <CardAddSpeciality onSave={getSpecialities} />}

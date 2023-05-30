@@ -1,12 +1,13 @@
 // import React from 'react';
 import './task.css';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
 import { Employees, SubTask, TaskType, WorkArea } from '../../types/types';
 import { CardTaskInformation, Sidebar, SubTaskCard } from '../../components';
 import { SocketContext } from '../../context/SocketContex';
 import { isOpenModal$ } from '../../services/sharingSubject';
+import Button from '../../components/shared/button/Button';
 
 const initValuesSubTask: SubTask = {
   id: 0,
@@ -21,6 +22,7 @@ const initValuesSubTask: SubTask = {
 };
 const Task = () => {
   const { id } = useParams();
+  const navigation = useNavigate();
   const [workArea, setWorkArea] = useState<WorkArea | null>(null);
   const [subTasks, setSubTasks] = useState<SubTask[] | null>(null);
   const [subTask, setSubTask] = useState<SubTask>(initValuesSubTask);
@@ -160,6 +162,7 @@ const Task = () => {
           <h1 className="main-title">
             LISTA DE <span className="main-title-span">TAREAS</span>
           </h1>
+          <Button onClick={() => navigation(-1)} icon="left-icon" />
           {/* {role !== 'EMPLOYEE' && (
             <Button
               text="Agregar"

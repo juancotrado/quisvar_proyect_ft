@@ -28,12 +28,14 @@ const Task = () => {
 
   useEffect(() => {
     axiosInstance.get(`/workareas/${id}`).then(res => setWorkArea(res.data));
-  }, []);
+  }, [id]);
 
   const settingSubTasks = (id: number) => {
-    axiosInstance
-      .get(`/tasks/${id}`)
-      .then(res => setSubTasks(res.data.subTasks));
+    axiosInstance.get(`/tasks/${id}`).then(res => {
+      setSubTasks(res.data.subTasks);
+      socket.emit('join', res.data.id);
+      isOpenModal$.setSubject = false;
+    });
   };
 
   const getSubtask = (subTask: SubTask) => {
@@ -50,6 +52,10 @@ const Task = () => {
       );
       setSubTasks(newSubTasks);
     });
+
+    return () => {
+      socket.off('server:update-status-subTask');
+    };
   }, [socket, subTasks]);
   //   const [tasks, setTasks] = useState<TaskType[] | null>(null);
   //   const [getTaskData, setGetTaskData] = useState<TaskType | null>(null);

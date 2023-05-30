@@ -15,11 +15,13 @@ import CardEditInformation from './shared/card/cardEditInformation/CardEditInfor
 import Sidebar from './tasks/sidebar/Sidebar';
 import SubTaskCard from './shared/card/subTaskCard/SubTaskCard';
 import CardTaskInformation from './shared/card/cardTaskInformation/CardTaskInformation';
+import InputRange from './shared/inputRange/InputRange';
 
 export {
   Alert,
   Header,
   Input,
+  InputRange,
   ProtectedRoute,
   CardRegisterUser,
   CardRegisterArea,

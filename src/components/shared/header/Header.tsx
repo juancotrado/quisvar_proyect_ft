@@ -33,7 +33,9 @@ const Header = () => {
   const toggleMenu = () => {
     setIsOpen(!isOpen);
   };
-
+  const handleNotification = () => {
+    navigate('lista-de-notificaciones');
+  };
   const handleList = () => {
     setIsOpen(false);
     navigate('lista-de-usuarios');
@@ -52,7 +54,12 @@ const Header = () => {
   ];
 
   const icons = [
-    { id: 1, name: '/svg/bell.svg', link: '/dashboard', action: handleLogout },
+    {
+      id: 1,
+      name: '/svg/bell.svg',
+      link: '/lista-de-notificaciones',
+      action: handleNotification,
+    },
     {
       id: 2,
       name: '/svg/question-circle.svg',

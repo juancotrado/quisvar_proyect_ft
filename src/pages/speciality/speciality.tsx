@@ -55,7 +55,6 @@ const Speciality = () => {
           </h1>
           <span>{name}</span>
         </div>
-        <Button onClick={() => navigation(-1)} icon="left-icon" />
 
         {role !== 'EMPLOYEE' && (
           <Button

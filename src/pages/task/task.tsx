@@ -8,6 +8,7 @@ import { CardTaskInformation, Sidebar, SubTaskCard } from '../../components';
 import { SocketContext } from '../../context/SocketContex';
 import { isOpenModal$ } from '../../services/sharingSubject';
 import Button from '../../components/shared/button/Button';
+import { motion } from 'framer-motion';
 
 const initValuesSubTask: SubTask = {
   id: 0,
@@ -172,7 +173,14 @@ const Task = () => {
           <h1 className="main-title">
             LISTA DE <span className="main-title-span">TAREAS</span>
           </h1>
-          <Button onClick={() => navigation(-1)} icon="left-icon" />
+          <motion.img
+            whileHover={{ scale: 0.95 }}
+            whileTap={{ scale: 1 }}
+            onClick={() => navigation(-1)}
+            src="/svg/left-icon.svg"
+            alt="left-icon"
+            style={{ width: 32, height: 32, cursor: 'pointer' }}
+          />
           {/* {role !== 'EMPLOYEE' && (
             <Button
               text="Agregar"

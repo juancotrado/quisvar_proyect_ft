@@ -23,7 +23,7 @@ const SubtaskDetail = ({ onView, subtask }: SubtaskDetail) => {
             <div className="subtask-detail-user">
               {listUsers && (
                 <h4>
-                  {listUsers.user.profile.firstName}
+                  {listUsers.user.profile.firstName} {'  '}
                   {listUsers.user.profile.lastName}
                 </h4>
               )}

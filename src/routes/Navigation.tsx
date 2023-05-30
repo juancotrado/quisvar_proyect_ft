@@ -12,6 +12,7 @@ import {
 import WorkArea from '../pages/workArea/WorkArea';
 import { ProtectedRoute } from '../components';
 import ListPersonalTask from '../pages/listPersonalTask/ListPersonalTask';
+import NotificationsList from '../pages/notificationsList/NotificationsList';
 
 const Navigation = () => {
   return (
@@ -29,6 +30,10 @@ const Navigation = () => {
             <Route path="/especialidades/:id" element={<Speciality />} />
             <Route path="/mis-tareas" element={<ListPersonalTask />} />
             <Route path="/lista-de-usuarios" element={<UserList />} />
+            <Route
+              path="/lista-de-notificaciones"
+              element={<NotificationsList />}
+            />
           </Route>
           <Route path="/*" element={<NotFound />} />
         </Routes>

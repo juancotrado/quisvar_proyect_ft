@@ -85,7 +85,7 @@ const CardTaskInformation = ({
     formdata.append('myFiles', file);
     axiosInstance
       .post(`/subtasks/upload/${subTask.id}`, formdata)
-      .then(res => socket.emit('client:upload-file-subTask', res.data));
+      .then(res => socket.emit('client:update-subTask', res.data));
   };
 
   const getStatus = (
@@ -120,7 +120,7 @@ const CardTaskInformation = ({
   const deleteFile = (URL: string) => {
     axiosInstance
       .delete(URL)
-      .then(res => socket.emit('client:upload-file-subTask', res.data));
+      .then(res => socket.emit('client:update-subTask', res.data));
   };
   const closeFunctions = () => {
     isOpenModal$.setSubject = false;

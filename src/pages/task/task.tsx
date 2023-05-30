@@ -53,6 +53,7 @@ const Task = () => {
       const newSubTasks = subTasks?.map(subTask =>
         subTask.id == newSubTask.id ? newSubTask : subTask
       );
+      setSubTask(newSubTask);
       setSubTasks(newSubTasks);
     });
 
@@ -60,15 +61,16 @@ const Task = () => {
       socket.off('server:update-subTask');
     };
   }, [socket, subTasks]);
-  useEffect(() => {
-    socket.on('server:upload-file-subTask', (newSubTask: SubTask) => {
-      setSubTask(newSubTask);
-    });
 
-    return () => {
-      socket.off('server:upload-file-subTask');
-    };
-  }, [socket, subTask]);
+  // useEffect(() => {
+  //   socket.on('server:upload-file-subTask', (newSubTask: SubTask) => {
+  //     setSubTask(newSubTask);
+  //   });
+
+  //   return () => {
+  //     socket.off('server:upload-file-subTask');
+  //   };
+  // }, [socket, subTask]);
   //   const [tasks, setTasks] = useState<TaskType[] | null>(null);
   //   const [getTaskData, setGetTaskData] = useState<TaskType | null>(null);
   //   const socket = useSocket();

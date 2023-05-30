@@ -53,6 +53,7 @@ const Sidebar = ({ workArea, settingSubTasks }: SidebarProps) => {
           alt="reportes"
           className={`aside-slide-icon ${isShow && 'aside-slide-icon-rotate'}`}
         />
+        <img src="/svg/trapecio2.svg" alt="trapecio" className="trapecio" />
       </div>
     </aside>
   );

@@ -3,7 +3,7 @@
   width: 25rem;
   background-color: white;
   position: absolute;
-  left: -23rem;
+  left: -25rem;
   top: 0;
   z-index: 10;
   padding: 0 2rem;
@@ -80,19 +80,23 @@
   top: 50%;
   transform: translateY(-50%);
   right: -10%;
-  width: 4rem;
+  /* width: 4rem; */
   aspect-ratio: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--color-primary);
-  border-radius: 50%;
+  /* background-color: var(--color-primary); */
+  /* border-radius: 50%; */
 }
 .aside-slide-icon {
   width: 2rem;
   transform: rotate(270deg);
   transition: 0.2s transform;
   cursor: pointer;
+  position: absolute;
+}
+.trapecio {
+  height: 8rem;
 }
 .aside-slide-icon-rotate {
   transform: rotate(90deg);

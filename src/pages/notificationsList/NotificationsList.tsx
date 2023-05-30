@@ -8,21 +8,16 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 
 const NotificationsList = () => {
-  //   const [isOpen, setIsOpen] = useState(false);
-  //   const handleOpen = () => {
-  //     setIsOpen(!isOpen);
-  //   };
-
   const { userSession } = useSelector((state: RootState) => state);
   const [subTasks, setSubTasks] = useState<ReviewList[]>();
+
   useEffect(() => {
-    getNotification();
-  }, [userSession]);
-  const getNotification = async () => {
-    await axiosInstance
+    if (!userSession.id) return;
+    axiosInstance
       .get(`/workareas/${userSession.id}/review`)
       .then(res => setSubTasks(res.data));
-  };
+  }, [userSession.id]);
+
   return (
     <div
       className="content-area"

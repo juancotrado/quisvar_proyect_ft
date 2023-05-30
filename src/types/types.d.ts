@@ -41,7 +41,12 @@ export interface TaskCreateType {
   name: string;
   description: string;
 }
+
 export type Users = {
+  user: User;
+};
+
+export type User = {
   id: number;
   email: string;
   password: string;
@@ -116,6 +121,7 @@ export interface SubTask {
   description: string;
   price: string;
   hours: number;
+  files: string[];
   createdAt?: Date;
   updatedAt?: Date;
   taskId: number;
@@ -154,6 +160,6 @@ export interface ReviewList {
     };
   };
   users: {
-    user: Users;
+    user: User;
   }[];
 }

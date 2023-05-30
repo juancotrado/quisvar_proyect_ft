@@ -115,3 +115,14 @@ h3 {
 ::-webkit-scrollbar-thumb:active {
   background-color: #00000066;
 }
+
+a.nostyle:link {
+  text-decoration: inherit;
+  cursor: auto;
+}
+
+a.nostyle:visited {
+  text-decoration: inherit;
+  color: inherit;
+  cursor: auto;
+}

@@ -96,6 +96,7 @@ const CardRegisterUser = ({ user, onSave }: CardRegisterUserProps) => {
         {!user && (
           <InputText
             {...register('password', { required: true })}
+            errors={errors}
             placeholder="Contraseña"
             type="password"
             autoComplete="no"
@@ -107,18 +108,21 @@ const CardRegisterUser = ({ user, onSave }: CardRegisterUserProps) => {
             {...register('firstName', { required: true })}
             placeholder="Nombres"
             label="Nombres"
+            errors={errors}
           />
           <InputText
             {...register('lastName')}
             placeholder="Apellidos"
+            errors={errors}
             label="Apellidos"
           />
         </div>
         <div className="col-input">
           <InputText
-            {...register('dni', { required: true })}
+            {...register('dni', { required: true, max: 8 })}
             placeholder="N°"
             label="DNI"
+            errors={errors}
             type="number"
             disabled={user ? true : false}
           />
@@ -127,6 +131,7 @@ const CardRegisterUser = ({ user, onSave }: CardRegisterUserProps) => {
             placeholder="Celular"
             label="Celular"
             type="number"
+            errors={errors}
           />
         </div>
         <div className="btn-build">

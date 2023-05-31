@@ -46,6 +46,14 @@ const UserList = () => {
             />
           </div>
         </div>
+        <div className="header-container-list">
+          <div className="header-list-user">USUARIO</div>
+          <div className="header-list-role">ROL DE TRABAJO</div>
+          <div className="header-list-status">ESTADO</div>
+          <div className="header-list-dni">DNI</div>
+          <div className="header-list-phone">CELULAR</div>
+          <div className="header-list-edit">EDITAR</div>
+        </div>
         <div className="user-container-list">
           {users &&
             users.map(user => (

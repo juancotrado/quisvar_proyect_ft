@@ -68,6 +68,17 @@ const Task = () => {
     };
   }, [socket, subTasks]);
 
+  useEffect(() => {
+    socket.on('server:create-subTask', (newSubTask: SubTask) => {
+      if (!subTasks) return;
+      setSubTasks([...subTasks, newSubTask]);
+    });
+
+    return () => {
+      socket.off('server:create-subTask');
+    };
+  }, [socket, subTasks]);
+
   // useEffect(() => {
   //   socket.on('server:upload-file-subTask', (newSubTask: SubTask) => {
   //     setSubTask(newSubTask);
@@ -172,7 +183,7 @@ const Task = () => {
   //   const clearDataInModal = () => setGetTaskData(null);
 
   //   const handleGetTaskData = (getTask: TaskType) => setGetTaskData(getTask);
-
+  const taskId = subTasks?.at(0)?.taskId;
   const openModaltoAdd = () => (isTaskInformation$.setSubject = false);
   return (
     <>
@@ -181,7 +192,7 @@ const Task = () => {
           <h1 className="main-title">
             LISTA DE <span className="main-title-span">TAREAS</span>
           </h1>
-          {role !== 'EMPLOYEE' && (
+          {role !== 'EMPLOYEE' && subTasks && (
             <Button
               text="Agregar"
               icon="plus"
@@ -237,10 +248,11 @@ const Task = () => {
                 ))}
           </div>
         </section>
-        {workArea && (
+        {workArea && taskId && (
           <CardRegisterAndInformation
             subTask={subTask}
             coordinatorId={workArea?.userId}
+            taskId={taskId}
           />
         )}
       </div>

@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import { Input, TextArea } from '../../..';
 import './cardRegisterSubTask.css';
 import DropDownSimple from '../../select/DropDownSimple';
@@ -6,9 +6,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import InputFile from '../../Input/InputFile';
+import { axiosInstance } from '../../../../services/axiosInstance';
+import { SocketContext } from '../../../../context/SocketContex';
+import { isOpenModal$ } from '../../../../services/sharingSubject';
 
 type SubTaskForm = {
-  id: number;
+  // id: number;
   name: string;
   description?: string;
   hours: number;
@@ -17,18 +20,17 @@ type SubTaskForm = {
 
 interface CardRegisterSubTaskProps {
   subTask?: any;
-  subTaskId?: number;
+  taskId: number;
 }
 
 type DataUser = { id: number; name: string };
 
-const CardRegisterSubTask = ({
-  subTask,
-  subTaskId,
-}: CardRegisterSubTaskProps) => {
+const CardRegisterSubTask = ({ subTask, taskId }: CardRegisterSubTaskProps) => {
   const { listUsers } = useSelector((state: RootState) => state);
   const [usersData, setUsersData] = useState<DataUser[]>([]);
   const { handleSubmit, register, setValue, watch } = useForm<SubTaskForm>();
+  const socket = useContext(SocketContext);
+
   const users = useMemo(
     () =>
       listUsers
@@ -40,9 +42,15 @@ const CardRegisterSubTask = ({
     [listUsers]
   );
 
-  const onSubmit: SubmitHandler<SubTaskForm> = values => {
-    const users = usersData.map(u => ({ id: u.id }));
-    console.log({ ...values, users, subTaskId });
+  const onSubmit: SubmitHandler<SubTaskForm> = data => {
+    const body = { ...data, taskId };
+    axiosInstance.post('/subtasks', body).then(res => {
+      socket.emit('client:create-subTask', res.data);
+      isOpenModal$.setSubject = false;
+    });
+
+    // const users = usersData.map(u => ({ id: u.id }));
+    // console.log({ ...values, users, taskId });
   };
 
   const handleAddUser = (user: DataUser) => {
@@ -65,24 +73,23 @@ const CardRegisterSubTask = ({
   };
 
   return (
-    <div>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="card-register-project"
-        autoComplete="off"
-      >
-        {/* <span className="close-add-card">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="card-register-project"
+      autoComplete="off"
+    >
+      {/* <span className="close-add-card">
           <img src="/svg/close.svg" alt="pencil" />
         </span> */}
-        <h2>{subTask ? 'ACTUALIZAR TAREA' : 'REGISTRAR TAREA'}</h2>
-        <hr></hr>
-        <Input label="Nombre" {...register('name')} name="name" type="text" />
-        <TextArea
-          label="Descripción"
-          {...register('description')}
-          name="description"
-        />
-        <div className="col-input col-files">
+      <h2>{subTask ? 'ACTUALIZAR TAREA' : 'REGISTRAR TAREA'}</h2>
+      <hr></hr>
+      <Input label="Nombre" {...register('name')} name="name" type="text" />
+      <TextArea
+        label="Descripción"
+        {...register('description')}
+        name="description"
+      />
+      {/* <div className="col-input col-files">
           <div className="manual-file">
             <div className="input-file">
               <InputFile
@@ -90,7 +97,7 @@ const CardRegisterSubTask = ({
                 label="Manuales"
               />
             </div>
-            <div className="list-file">{/* <div>awassss</div> */}</div>
+            <div className="list-file"><div>awassss</div></div>
           </div>
           <div className="manual-file">
             <div className="input-file">
@@ -99,10 +106,11 @@ const CardRegisterSubTask = ({
                 label="Manuales"
               />
             </div>
-            <div className="list-file">{/* <div>awassss</div> */}</div>
+            <div className="list-file"><div>awassss</div></div>
           </div>
-        </div>
-        <div className="col-input">
+        </div> */}
+      <div className="col-input">
+        {false && (
           <div className="col-users">
             <DropDownSimple
               data={users}
@@ -126,35 +134,36 @@ const CardRegisterSubTask = ({
                     className="delete-list-user"
                     onClick={() => handleRemoveUser(_user)}
                   >
-                    <img src="svg/close.svg" />
+                    <img src="/svg/close.svg" />
                   </button>
                 </div>
               ))}
           </div>
-          <div className="col-hours ">
-            <Input
-              label="Horas"
-              col={true}
-              {...register('hours', { valueAsNumber: true })}
-              type="number"
-              name="hours"
-            />
-            <Input
-              label="Precio S/."
-              col={true}
-              {...register('price', { valueAsNumber: true })}
-              step={0.01}
-              type="number"
-              name="price"
-              disabled={true}
-              value={handleSetPrice(watch('hours'))}
-              readOnly={true}
-            />
-          </div>
+        )}
+        <div className="col-hours ">
+          <Input
+            label="Horas"
+            col={true}
+            {...register('hours', { valueAsNumber: true })}
+            type="number"
+            name="hours"
+          />
+          <Input
+            label="Precio S/."
+            col={true}
+            {...register('price', { valueAsNumber: true })}
+            step={0.01}
+            type="number"
+            name="price"
+            disabled={true}
+            value={handleSetPrice(watch('hours'))}
+            readOnly={true}
+          />
         </div>
-        <button type="submit">send</button>
-      </form>
-    </div>
+      </div>
+
+      <button type="submit">send</button>
+    </form>
   );
 };
 

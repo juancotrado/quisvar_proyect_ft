@@ -29,6 +29,7 @@ const initValuesSubTask: SubTask = {
 };
 const Task = () => {
   const { id } = useParams();
+
   const [workArea, setWorkArea] = useState<WorkArea | null>(null);
   const [subTasks, setSubTasks] = useState<SubTask[] | null>(null);
   const [subTask, setSubTask] = useState<SubTask>(initValuesSubTask);

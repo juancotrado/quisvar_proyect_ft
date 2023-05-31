@@ -85,7 +85,7 @@ const DropDownSimple = ({
               {...otherProps}
             />
             <motion.div onClick={toogleIsActive} className="dropdown-icon">
-              <img src="svg/search.svg" />
+              <img src="/svg/search.svg" />
             </motion.div>
           </div>
           {isActive && (

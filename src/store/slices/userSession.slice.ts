@@ -9,6 +9,7 @@ const INITIAL_STATE: User = {
   id: 0,
   email: '',
   password: '',
+  role: 'EMPLOYEE',
   profile: {
     firstName: '',
     lastName: '',

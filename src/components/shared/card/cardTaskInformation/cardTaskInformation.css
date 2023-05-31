@@ -1,6 +1,6 @@
 .information-container {
   background-color: white;
-  width: 65rem;
+  width: 100%;
   padding: 1.5rem;
   border-radius: var(--radius-input);
 }
@@ -16,10 +16,14 @@
 .main-content {
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
 }
 .subtask-files {
   display: flex;
 
+  border-radius: var(--radius-input);
+  background-color: var(--color-menu);
+  padding: 0.5rem;
   height: 9rem;
   overflow-y: auto;
   gap: 0.5rem;
@@ -117,8 +121,13 @@
 .content-file-send {
   width: 100%;
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
 }
-
+.content-file-send-button {
+  font-size: 0.8rem;
+}
 .progress-bar-line {
   height: 100%;
   background-color: #00aaff;
@@ -142,7 +151,15 @@
   background-color: #ccc;
   cursor: pointer;
 }
-
+.content-advance-label {
+  width: 100%;
+  text-align: center;
+  font-weight: 700;
+}
+.content-resource {
+  display: flex;
+  flex-direction: column;
+}
 .progress-bar-point.active {
   background-color: #00aaff;
 }
@@ -157,23 +174,28 @@
   border: 2px solid #69d957 !important;
 }
 .status-content {
-  width: 100%;
+  width: 80%;
+  margin: 0 auto;
+  border-radius: 1rem;
+  background-color: red;
+  aspect-ratio: 4;
   display: flex;
-  justify-content: center;
+  align-items: center;
 }
 .status-text {
+  width: 100%;
+  font-size: 1.5rem;
   color: white;
   text-align: center;
-  padding: 1rem;
   border-radius: var(--radius-input);
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 .status-hold {
-  background-color: #c81d1dd9;
+  background-color: var(--color-unresolved);
 }
 .status-process {
-  background-color: #ffd140;
+  background-color: var(--color-process);
 }
 .status-done {
-  background-color: #57d9a3;
+  background-color: var(--color-process);
 }

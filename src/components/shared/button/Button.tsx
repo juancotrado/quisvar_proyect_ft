@@ -20,7 +20,7 @@ const Button = ({
       whileHover={{ scale: 0.95 }}
       whileTap={{ scale: 1 }}
       onClick={onClick}
-      className={`${className} btn-main`}
+      className={`btn-main ${className}`}
       type={type}
       {...otherProps}
     >

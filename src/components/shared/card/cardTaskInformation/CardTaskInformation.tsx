@@ -95,156 +95,153 @@ const CardTaskInformation = ({
   const isStatusProcesOrDenied = status === 'PROCESS' || status === 'DENIED';
   // const subTaskStatus: keyof typeof statusText = subTask.status;
   return (
-    <Modal size={50}>
-      <div className="information-container">
-        <div className="main-content">
-          <div className="content-files">
-            <h3 className="information-title">Tarea: {subTask.name}</h3>
-            {((isStatusProcesOrDenied && isAuthorizedUser) ||
-              (isAuthorizedMod && status === 'INREVIEW')) && (
+    <div className="information-container">
+      <div className="main-content">
+        <div className="content-files">
+          <h3 className="information-title">Tarea: {subTask.name}</h3>
+          {((isStatusProcesOrDenied && isAuthorizedUser) ||
+            (isAuthorizedMod && status === 'INREVIEW')) && (
+            <div className="content-file">
+              <h4 className="content-file-title">Subir Archivo:</h4>
+              <div className="content-file-send">
+                <div
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    border: '2px dashed #ccc',
+                    borderRadius: '5px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    cursor: 'pointer',
+                  }}
+                  onDrop={handleDrop}
+                  onDragOver={event => event.preventDefault()}
+                >
+                  {!selectedFile && <p>Arrastra los archivos aquí</p>}
+                  <input type="file" onChange={handleFileChange} />
+                </div>
+                <Button
+                  text="Subir archivo"
+                  className="content-file-send-button"
+                  onClick={handleUploadClick}
+                />
+              </div>
+            </div>
+          )}
+          {status !== 'UNRESOLVED' && (
+            <>
               <div className="content-file">
-                <h4 className="content-file-title">Subir Archivo:</h4>
-                <div className="content-file-send">
-                  <div
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      border: '2px dashed #ccc',
-                      borderRadius: '5px',
-                      display: 'flex',
-                      flexDirection: 'column',
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                      cursor: 'pointer',
-                    }}
-                    onDrop={handleDrop}
-                    onDragOver={event => event.preventDefault()}
-                  >
-                    {!selectedFile && <p>Arrastra los archivos aquí</p>}
-                    <input type="file" onChange={handleFileChange} />
-                  </div>
-                  <Button
-                    text="Subir archivo"
-                    className="content-file-send-button"
-                    onClick={handleUploadClick}
-                  />
+                <h4 className="content-file-title">Archivos:</h4>
+                <div className="subtask-files">
+                  {subTask.files?.map(file => (
+                    <div key={file} className="subtask-file-contain">
+                      <a
+                        href={`${URL_FILES}/${file}`}
+                        target="_blank"
+                        className="subtask-file"
+                        download={'xyz.pdf'}
+                      >
+                        <img
+                          src="/svg/file-download.svg"
+                          alt="W3Schools"
+                          className="subtask-file-icon"
+                        ></img>
+                        <span className="subtask-file-name">
+                          {normalizeFileName(file)}
+                        </span>
+                      </a>
+                      {((isStatusProcesOrDenied && isAuthorizedUser) ||
+                        (isAuthorizedMod && status === 'INREVIEW')) && (
+                        <ButtonDelete
+                          icon="trash-red"
+                          customOnClick={() =>
+                            deleteFile(
+                              `/subtasks/deleteFile/${subTask.id}/${file}`
+                            )
+                          }
+                          className="subtask-delete-icon"
+                        />
+                      )}
+                    </div>
+                  ))}
                 </div>
               </div>
-            )}
-            {status !== 'UNRESOLVED' && (
-              <>
-                <div className="content-file">
-                  <h4 className="content-file-title">Archivos:</h4>
-                  <div className="subtask-files">
-                    {subTask.files?.map(file => (
-                      <div key={file} className="subtask-file-contain">
-                        <a
-                          href={`${URL_FILES}/${file}`}
-                          target="_blank"
-                          className="subtask-file"
-                          download={'xyz.pdf'}
-                        >
-                          <img
-                            src="/svg/file-download.svg"
-                            alt="W3Schools"
-                            className="subtask-file-icon"
-                          ></img>
-                          <span className="subtask-file-name">
-                            {normalizeFileName(file)}
-                          </span>
-                        </a>
-                        {((isStatusProcesOrDenied && isAuthorizedUser) ||
-                          (isAuthorizedMod && status === 'INREVIEW')) && (
-                          <ButtonDelete
-                            icon="trash-red"
-                            customOnClick={() =>
-                              deleteFile(
-                                `/subtasks/deleteFile/${subTask.id}/${file}`
-                              )
-                            }
-                            className="subtask-delete-icon"
-                          />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
 
-                {(userSession.id == subTask.users?.at(0)?.user.profile.userId ||
-                  subTask.users?.length === 0 ||
-                  role === 'SUPERADMIN') && (
-                  <div className="btn-content">
-                    {(status === 'PROCESS' ||
-                      (status === 'INREVIEW' &&
-                        userSession.role !== 'EMPLOYEE')) && (
+              {(userSession.id == subTask.users?.at(0)?.user.profile.userId ||
+                subTask.users?.length === 0 ||
+                role === 'SUPERADMIN') && (
+                <div className="btn-content">
+                  {(status === 'PROCESS' ||
+                    (status === 'INREVIEW' &&
+                      userSession.role !== 'EMPLOYEE')) && (
+                    <Button
+                      text={status === 'INREVIEW' ? 'Desaprobar' : 'Declinar'}
+                      className="btn-declinar"
+                      onClick={() => handleChangeStatus('DENY')}
+                    />
+                  )}
+                  {status !== 'DONE' &&
+                    userSession.role === 'EMPLOYEE' &&
+                    status !== 'INREVIEW' && (
                       <Button
-                        text={status === 'INREVIEW' ? 'Desaprobar' : 'Declinar'}
-                        className="btn-declinar"
-                        onClick={() => handleChangeStatus('DENY')}
+                        text={
+                          status === 'UNRESOLVED'
+                            ? 'Asignar'
+                            : 'Mandar a Revisar'
+                        }
+                        className="btn-revisar"
+                        onClick={() => handleChangeStatus('ASIG')}
                       />
                     )}
-                    {status !== 'DONE' &&
-                      userSession.role === 'EMPLOYEE' &&
-                      status !== 'INREVIEW' && (
-                        <Button
-                          text={
-                            status === 'UNRESOLVED'
-                              ? 'Asignar'
-                              : 'Mandar a Revisar'
-                          }
-                          className="btn-revisar"
-                          onClick={() => handleChangeStatus('ASIG')}
-                        />
-                      )}
-                    {status === 'INREVIEW' &&
-                      userSession.role !== 'EMPLOYEE' && (
-                        <Button
-                          text={'Aprobar'}
-                          className="btn-revisar"
-                          onClick={() => handleChangeStatus('ASIG')}
-                        />
-                      )}
-                  </div>
-                )}
-              </>
-            )}
-          </div>
-          <div className="content-details">
-            <div className="status-content">
-              <label className="status-text status-hold">
-                {statusText[status as keyof typeof statusText]}
-              </label>
-            </div>
-            <p>Creación: 21/01/23</p>
-            <div className="content-advance">
-              <h4 className="content-file-title">Avance</h4>
-              <InputRange
-                maxRange={100}
-                percentage={percentage}
-                onChange={handleInputChange}
-              />
-            </div>
-            <label className="content-advance-label">
-              Precio por Avance: {subTask.price}
+                  {status === 'INREVIEW' && userSession.role !== 'EMPLOYEE' && (
+                    <Button
+                      text={'Aprobar'}
+                      className="btn-revisar"
+                      onClick={() => handleChangeStatus('ASIG')}
+                    />
+                  )}
+                </div>
+              )}
+            </>
+          )}
+        </div>
+        <div className="content-details">
+          <div className="status-content">
+            <label className="status-text status-hold">
+              {statusText[status as keyof typeof statusText]}
             </label>
-            <div className="content-resource">
-              <h4 className="content-file-title">Enunciado:</h4>
+          </div>
+          <p>Creación: 21/01/23</p>
+          <div className="content-advance">
+            <h4 className="content-file-title">Avance</h4>
+            <InputRange
+              maxRange={100}
+              percentage={percentage}
+              onChange={handleInputChange}
+            />
+          </div>
+          <label className="content-advance-label">
+            Precio por Avance: {subTask.price}
+          </label>
+          <div className="content-resource">
+            <h4 className="content-file-title">Enunciado:</h4>
 
-              <div className="statement">
-                <div>
-                  <label>Archivo modelo:</label>
-                  <Link to="https://www.google.com/">Click aqui</Link>
-                </div>
-                <div>
-                  <label>Video relacionado:</label>
-                  <Link to="https://www.google.com/">Click aqui</Link>
-                </div>
+            <div className="statement">
+              <div>
+                <label>Archivo modelo:</label>
+                <Link to="https://www.google.com/">Click aqui</Link>
+              </div>
+              <div>
+                <label>Video relacionado:</label>
+                <Link to="https://www.google.com/">Click aqui</Link>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </Modal>
+    </div>
   );
 };
 

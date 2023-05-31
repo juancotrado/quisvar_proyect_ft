@@ -1,14 +1,19 @@
 // import React from 'react';
 import './task.css';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
-import { Employees, SubTask, TaskType, WorkArea } from '../../types/types';
-import { CardTaskInformation, Sidebar, SubTaskCard } from '../../components';
+import { SubTask, WorkArea } from '../../types/types';
+import { Sidebar, SubTaskCard } from '../../components';
 import { SocketContext } from '../../context/SocketContex';
-import { isOpenModal$ } from '../../services/sharingSubject';
+import {
+  isOpenModal$,
+  isTaskInformation$,
+} from '../../services/sharingSubject';
 import Button from '../../components/shared/button/Button';
-import { motion } from 'framer-motion';
+import CardRegisterAndInformation from '../../components/shared/card/cardRegisterAndInformation/CardRegisterAndInformation';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 const initValuesSubTask: SubTask = {
   id: 0,
@@ -24,11 +29,11 @@ const initValuesSubTask: SubTask = {
 };
 const Task = () => {
   const { id } = useParams();
-  const navigation = useNavigate();
   const [workArea, setWorkArea] = useState<WorkArea | null>(null);
   const [subTasks, setSubTasks] = useState<SubTask[] | null>(null);
   const [subTask, setSubTask] = useState<SubTask>(initValuesSubTask);
   const socket = useContext(SocketContext);
+  const { role } = useSelector((state: RootState) => state.userSession);
 
   useEffect(() => {
     axiosInstance.get(`/workareas/${id}`).then(res => setWorkArea(res.data));
@@ -44,7 +49,7 @@ const Task = () => {
 
   const getSubtask = (subTask: SubTask) => {
     setSubTask(subTask);
-    isOpenModal$.setSubject = true;
+    isTaskInformation$.setSubject = true;
   };
 
   useEffect(() => {
@@ -167,6 +172,7 @@ const Task = () => {
 
   //   const handleGetTaskData = (getTask: TaskType) => setGetTaskData(getTask);
 
+  const openModaltoAdd = () => (isTaskInformation$.setSubject = false);
   return (
     <>
       <div className="tasks container">
@@ -174,27 +180,18 @@ const Task = () => {
           <h1 className="main-title">
             LISTA DE <span className="main-title-span">TAREAS</span>
           </h1>
-          <motion.img
-            whileHover={{ scale: 0.95 }}
-            whileTap={{ scale: 1 }}
-            onClick={() => navigation(-1)}
-            src="/svg/left-icon.svg"
-            alt="left-icon"
-            style={{ width: 32, height: 32, cursor: 'pointer' }}
-          />
-          {/* {role !== 'EMPLOYEE' && (
+          {role !== 'EMPLOYEE' && (
             <Button
               text="Agregar"
               icon="plus"
               className="btn-add"
-              onClick={addNewTask}
+              onClick={openModaltoAdd}
             />
-          )} */}
+          )}
         </div>
         <section className="tasks-section-container">
           <div className="container-task container-unresolved">
             <h3>Por hacer</h3>
-
             {subTasks &&
               subTasks
                 .filter(({ status }) => status === 'UNRESOLVED')
@@ -212,18 +209,6 @@ const Task = () => {
           </div>
           <div className="container-task container-process">
             <h3>Haciendo</h3>
-            {/* {tasks &&
-              tasks
-                .filter(({ status }) => status === 'PROCESS')
-                .map(task => (
-                  <TaskCard
-                    key={task.id}
-                    task={task}
-                    editTaskStatus={editTaskStatus}
-                    handleGetTaskData={handleGetTaskData}
-                    deleteTask={deleteTask}
-                  />
-                ))} */}
             {subTasks &&
               subTasks
                 .filter(
@@ -234,28 +219,11 @@ const Task = () => {
                     key={subTask.id}
                     subTask={subTask}
                     getSubtask={getSubtask}
-
-                    // editTaskStatus={editTaskStatus}
-                    // handleGetTaskData={handleGetTaskData}
-                    // deleteTask={deleteTask}
                   />
                 ))}
           </div>
           <div className="container-task container-done">
             <h3>Hecho</h3>
-            {/* {tasks &&
-              tasks
-                .filter(({ status }) => status === 'DONE')
-                .map(task => (
-                  <TaskCard
-                    key={task.id}
-                    task={task}
-                    editTaskStatus={editTaskStatus}
-                    handleGetTaskData={handleGetTaskData}
-                    deleteTask={deleteTask}
-                  />
-                ))} */}
-            {/* {tasks && <TaskCard task={tasks} />} */}
             {subTasks &&
               subTasks
                 .filter(({ status }) => status === 'DONE')
@@ -264,26 +232,12 @@ const Task = () => {
                     key={subTask.id}
                     subTask={subTask}
                     getSubtask={getSubtask}
-
-                    // editTaskStatus={editTaskStatus}
-                    // handleGetTaskData={handleGetTaskData}
-                    // deleteTask={deleteTask}
                   />
                 ))}
           </div>
         </section>
-        {/* <div className="tasks-online-container">
-          <h4 className="task-online-number">
-            Usuarios Conectados: {userOnline}
-          </h4>
-        </div> */}
-        {/* <ModalFormTask
-          createTask={createTask}
-          getTaskData={getTaskData}
-          editTask={editTask}
-        /> */}
         {workArea && (
-          <CardTaskInformation
+          <CardRegisterAndInformation
             subTask={subTask}
             coordinatorId={workArea?.userId}
           />

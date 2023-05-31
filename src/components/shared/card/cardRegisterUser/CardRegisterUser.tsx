@@ -7,10 +7,10 @@ import { isOpenModal$ } from '../../../../services/sharingSubject';
 import Button from '../../button/Button';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import InputText from '../../Input/Input';
-import { UserForm, Users } from '../../../../types/types';
+import { UserForm, User } from '../../../../types/types';
 interface CardRegisterUserProps {
   onSave?: () => void;
-  user?: Users | null;
+  user?: User | null;
 }
 
 const InitialValues: UserForm = {

@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Users } from '../../types/types';
+import { User } from '../../types/types';
 import Button from '../shared/button/Button';
 import ButtonDelete from '../shared/button/ButtonDelete';
 import './userinfo.css';
@@ -15,11 +15,17 @@ const roleList = [
 ];
 
 interface UserInfoProps {
-  user: Users;
+  user: User;
   onUpdate?: () => void;
   onUpdateStatus?: () => void;
+  onDelete?: () => void;
 }
-const UserInfo = ({ user, onUpdate, onUpdateStatus }: UserInfoProps) => {
+const UserInfo = ({
+  user,
+  onUpdate,
+  onUpdateStatus,
+  onDelete,
+}: UserInfoProps) => {
   const [isOn, setIsOn] = useState(user.status);
   const [openRole, setOpenRole] = useState(false);
   const { profile } = user;
@@ -106,6 +112,7 @@ const UserInfo = ({ user, onUpdate, onUpdateStatus }: UserInfoProps) => {
           icon="trash"
           url={`/users/${user.id}`}
           className="project-delete-icon"
+          onSave={onDelete}
         />
       </div>
     </div>

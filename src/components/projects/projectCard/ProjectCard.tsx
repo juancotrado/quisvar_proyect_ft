@@ -82,14 +82,16 @@ const ProjectCard = ({ project, onClick, onSave }: ProjectCardProps) => {
                 onClick={() => navigate(`/tareas/${area.id}`)}
               />
             ))}
-          <Button
-            text={`${addArea ? 'Cancelar' : 'Añadir'}`}
-            className={`${addArea && 'btn-red'} area-btn-add `}
-            onClick={() => {
-              setAddArea(!addArea);
-              reset();
-            }}
-          />
+          {role !== 'EMPLOYEE' && (
+            <Button
+              text={`${addArea ? 'Cancelar' : 'Añadir'}`}
+              className={`${addArea && 'btn-red'} area-btn-add `}
+              onClick={() => {
+                setAddArea(!addArea);
+                reset();
+              }}
+            />
+          )}
           {addArea && (
             <form
               onSubmit={handleSubmit(onSubmitArea)}

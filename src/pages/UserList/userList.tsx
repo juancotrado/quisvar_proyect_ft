@@ -4,12 +4,12 @@ import { CardRegisterUser } from '../../components';
 import Button from '../../components/shared/button/Button';
 import { axiosInstance } from '../../services/axiosInstance';
 import { isOpenModal$ } from '../../services/sharingSubject';
-import { Users } from '../../types/types';
+import { User } from '../../types/types';
 import UserInfo from '../../components/users/UserInfo';
 
 const UserList = () => {
-  const [users, setUsers] = useState<Users[] | null>(null);
-  const [userData, setUserData] = useState<Users | null>(null);
+  const [users, setUsers] = useState<User[] | null>(null);
+  const [userData, setUserData] = useState<User | null>(null);
 
   useEffect(() => {
     getUsers();
@@ -25,7 +25,7 @@ const UserList = () => {
     setUserData(null);
     isOpenModal$.setSubject = true;
   };
-  const editUser = (value: Users) => {
+  const editUser = (value: User) => {
     isOpenModal$.setSubject = true;
     setUserData(value);
   };
@@ -52,6 +52,7 @@ const UserList = () => {
                 user={user}
                 onUpdateStatus={getUsers}
                 onUpdate={() => editUser(user)}
+                onDelete={() => getUsers()}
               />
             ))}
         </div>

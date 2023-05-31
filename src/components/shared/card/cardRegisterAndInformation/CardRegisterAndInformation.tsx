@@ -13,11 +13,13 @@ import { Subscription } from 'rxjs';
 interface CardRegisterAndInformationProps {
   subTask: SubTask;
   coordinatorId: number;
+  taskId: number;
 }
 
 const CardRegisterAndInformation = ({
   coordinatorId,
   subTask,
+  taskId,
 }: CardRegisterAndInformationProps) => {
   const [isTaskInformation, setIsTaskInformation] = useState<boolean>(true);
 
@@ -34,13 +36,12 @@ const CardRegisterAndInformation = ({
       handleToggleRef.current.unsubscribe();
     };
   }, []);
-
   return (
     <Modal size={50}>
       {isTaskInformation ? (
         <CardTaskInformation coordinatorId={coordinatorId} subTask={subTask} />
       ) : (
-        <CardRegisterSubTask />
+        <CardRegisterSubTask taskId={taskId} />
       )}
     </Modal>
   );

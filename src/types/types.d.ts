@@ -96,7 +96,7 @@ export interface WorkArea {
   projectId: number;
   indexTasks: IndexTask[];
 }
-
+export type WorkAreaForm = Omit<WorkArea, 'indexTasks'>;
 export interface IndexTask {
   id: number;
   name: string;

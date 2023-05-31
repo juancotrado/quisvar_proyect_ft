@@ -9,6 +9,7 @@
   padding: 0 2rem;
   transition: 0.3s left ease;
   border-right: 3px solid var(--color-primary);
+  box-shadow: 0px 1.5px 4px rgba(0, 0, 0, 0.2);
 }
 .asilde-slice {
   overflow-y: auto;
@@ -33,6 +34,25 @@
   gap: 0.6rem;
   font-weight: 700;
   position: relative;
+}
+.area-menu-button {
+  width: 1.5rem;
+  height: 1.5rem;
+  transition: 0.5s ease-out;
+  cursor: pointer;
+}
+.area-menu-button:hover {
+  transform: rotate(-90deg);
+}
+.area-menu-button:active {
+  scale: 0.9;
+}
+
+.aside-container-title {
+  display: flex;
+  position: relative;
+  align-items: center;
+  justify-content: space-between;
 }
 .aside-dropdown-icon {
   width: 1.5rem;
@@ -85,6 +105,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
   /* background-color: var(--color-primary); */
   /* border-radius: 50%; */
 }

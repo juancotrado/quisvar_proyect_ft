@@ -9,6 +9,7 @@ type typeObj = { [key: string]: any };
 
 interface DropDownSimpleProps extends InputHTMLAttributes<HTMLInputElement> {
   data: typeObj[] | string[];
+  selector?: boolean;
   textField: string;
   itemKey: string;
   defaultInput?: string;
@@ -27,6 +28,8 @@ const DropDownSimple = ({
   defaultInput,
   placeholder,
   onChangeInput,
+  selector,
+  className,
   ...otherProps
 }: DropDownSimpleProps) => {
   const [options, setOptions] = useState<typeObj[] | null>();
@@ -69,10 +72,10 @@ const DropDownSimple = ({
   };
   return (
     <Outside onClickOutside={() => setIsActive(false)}>
-      <div className="dropdown-container-main">
+      <div className={`${className} dropdown-container-main`}>
         <div className="dropdown-container">
           {label && <label className="select-label">{label}</label>}
-          <div className="dropdown-input-container">
+          <div className={` dropdown-input-container `}>
             <input
               className={`dropdown-field`}
               placeholder={!isActive ? placeholder : 'Buscar...'}
@@ -84,9 +87,9 @@ const DropDownSimple = ({
               value={query}
               {...otherProps}
             />
-            <motion.div onClick={toogleIsActive} className="dropdown-icon">
-              <img src="/svg/search.svg" />
-            </motion.div>
+            <div onClick={toogleIsActive} className="dropdown-icon">
+              <img src="/svg/search.svg" alt="search" />
+            </div>
           </div>
           {isActive && (
             <motion.ul
@@ -101,7 +104,7 @@ const DropDownSimple = ({
                 <li
                   key={item[itemKey]}
                   onClick={() => {
-                    setQuery('');
+                    setQuery(selector ? item[textField] : '');
                     valueInput?.(item[textField], item[itemKey]);
                     setIsActive(false);
                   }}

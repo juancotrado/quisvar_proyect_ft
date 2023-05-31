@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
 import Modal from '../../../portal/Modal';
 import './cardTaskInformation.css';
-import SelectOptions from '../../select/Select';
 import Button from '../../button/Button';
 import { ChangeEvent, useContext, useState } from 'react';
 import { SubTask } from '../../../../types/types';
@@ -12,51 +11,12 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
 import { InputRange } from '../../../index';
 import ButtonDelete from '../../button/ButtonDelete';
+import { statusBody, statusText } from './constans';
 interface CardTaskInformationProps {
   subTask: SubTask;
   coordinatorId: number;
 }
-interface StatusBody {
-  [category: string]: {
-    [role: string]: {
-      [state: string]: {
-        status: string;
-      };
-    };
-  };
-}
-const statusBody: StatusBody = {
-  ASIG: {
-    EMPLOYEE: {
-      UNRESOLVED: {
-        status: 'PROCESS',
-      },
-      PROCESS: {
-        status: 'INREVIEW',
-      },
-      DENIED: {
-        status: 'INREVIEW',
-      },
-    },
-    SUPERADMIN: {
-      INREVIEW: {
-        status: 'DONE',
-      },
-    },
-  },
-  DENY: {
-    EMPLOYEE: {
-      PROCESS: {
-        status: 'UNRESOLVED',
-      },
-    },
-    SUPERADMIN: {
-      INREVIEW: {
-        status: 'DENIED',
-      },
-    },
-  },
-};
+
 const CardTaskInformation = ({
   subTask,
   coordinatorId,
@@ -122,9 +82,6 @@ const CardTaskInformation = ({
       .delete(URL)
       .then(res => socket.emit('client:update-subTask', res.data));
   };
-  const closeFunctions = () => {
-    isOpenModal$.setSubject = false;
-  };
 
   // validations
   const { status } = subTask;
@@ -134,30 +91,46 @@ const CardTaskInformation = ({
   );
   const isAuthorizedMod = userSession.id === coordinatorId;
 
-  const areAuthorizedUsers = isAuthorizedMod || isAuthorizedUser;
+  // const areAuthorizedUsers = isAuthorizedMod || isAuthorizedUser;
   const isStatusProcesOrDenied = status === 'PROCESS' || status === 'DENIED';
-
+  // const subTaskStatus: keyof typeof statusText = subTask.status;
   return (
     <Modal size={50}>
       <div className="information-container">
-        <h3 className="information-title">Tarea: {subTask.name}</h3>
-        {/* <button onClick={closeFunctions}>CERRAR</button> */}
         <div className="main-content">
           <div className="content-files">
-            <div className="content-file">
-              <h4 className="content-file-title">Enunciado:</h4>
-
-              <div className="statement">
-                <div>
-                  <label>Archivo modelo:</label>
-                  <Link to="https://www.google.com/">Click aqui</Link>
-                </div>
-                <div>
-                  <label>Video relacionado:</label>
-                  <Link to="https://www.google.com/">Click aqui</Link>
+            <h3 className="information-title">Tarea: {subTask.name}</h3>
+            {((isStatusProcesOrDenied && isAuthorizedUser) ||
+              (isAuthorizedMod && status === 'INREVIEW')) && (
+              <div className="content-file">
+                <h4 className="content-file-title">Subir Archivo:</h4>
+                <div className="content-file-send">
+                  <div
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      border: '2px dashed #ccc',
+                      borderRadius: '5px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      cursor: 'pointer',
+                    }}
+                    onDrop={handleDrop}
+                    onDragOver={event => event.preventDefault()}
+                  >
+                    {!selectedFile && <p>Arrastra los archivos aquí</p>}
+                    <input type="file" onChange={handleFileChange} />
+                  </div>
+                  <Button
+                    text="Subir archivo"
+                    className="content-file-send-button"
+                    onClick={handleUploadClick}
+                  />
                 </div>
               </div>
-            </div>
+            )}
             {status !== 'UNRESOLVED' && (
               <>
                 <div className="content-file">
@@ -196,34 +169,41 @@ const CardTaskInformation = ({
                     ))}
                   </div>
                 </div>
-                {((isStatusProcesOrDenied && isAuthorizedUser) ||
-                  (isAuthorizedMod && status === 'INREVIEW')) && (
-                  <div className="content-file">
-                    <h4 className="content-file-title">Subir Archivo:</h4>
-                    <div className="content-file-send">
-                      <div
-                        style={{
-                          width: '100%',
-                          height: '100%',
-                          border: '2px dashed #ccc',
-                          borderRadius: '5px',
-                          display: 'flex',
-                          flexDirection: 'column',
-                          justifyContent: 'center',
-                          alignItems: 'center',
-                          cursor: 'pointer',
-                        }}
-                        onDrop={handleDrop}
-                        onDragOver={event => event.preventDefault()}
-                      >
-                        {!selectedFile && <p>Arrastra los archivos aquí</p>}
-                        <input type="file" onChange={handleFileChange} />
-                      </div>
+
+                {(userSession.id == subTask.users?.at(0)?.user.profile.userId ||
+                  subTask.users?.length === 0 ||
+                  role === 'SUPERADMIN') && (
+                  <div className="btn-content">
+                    {(status === 'PROCESS' ||
+                      (status === 'INREVIEW' &&
+                        userSession.role !== 'EMPLOYEE')) && (
                       <Button
-                        text="Subir archivo"
-                        onClick={handleUploadClick}
+                        text={status === 'INREVIEW' ? 'Desaprobar' : 'Declinar'}
+                        className="btn-declinar"
+                        onClick={() => handleChangeStatus('DENY')}
                       />
-                    </div>
+                    )}
+                    {status !== 'DONE' &&
+                      userSession.role === 'EMPLOYEE' &&
+                      status !== 'INREVIEW' && (
+                        <Button
+                          text={
+                            status === 'UNRESOLVED'
+                              ? 'Asignar'
+                              : 'Mandar a Revisar'
+                          }
+                          className="btn-revisar"
+                          onClick={() => handleChangeStatus('ASIG')}
+                        />
+                      )}
+                    {status === 'INREVIEW' &&
+                      userSession.role !== 'EMPLOYEE' && (
+                        <Button
+                          text={'Aprobar'}
+                          className="btn-revisar"
+                          onClick={() => handleChangeStatus('ASIG')}
+                        />
+                      )}
                   </div>
                 )}
               </>
@@ -231,54 +211,36 @@ const CardTaskInformation = ({
           </div>
           <div className="content-details">
             <div className="status-content">
-              <label className="status-text status-hold">Por Asignar</label>
+              <label className="status-text status-hold">
+                {statusText[status as keyof typeof statusText]}
+              </label>
             </div>
             <p>Creación: 21/01/23</p>
-            <h1>Avance</h1>
-            <InputRange
-              maxRange={100}
-              percentage={percentage}
-              onChange={handleInputChange}
-            />
-            {/* <p>{percentage}%</p> */}
-            <label>Precio general: s/260.00</label>
-            <label>Precio por avance: s/260.00</label>
-            <label>Total de horas estimadas: {subTask.hours} horas</label>
-            <label>Total Horas: </label>
-            <p>Encargado: Diego Romani</p>
-            {(userSession.id == subTask.users?.at(0)?.user.profile.userId ||
-              subTask.users?.length === 0 ||
-              role === 'SUPERADMIN') && (
-              <div className="btn-content">
-                {(status === 'PROCESS' ||
-                  (status === 'INREVIEW' &&
-                    userSession.role !== 'EMPLOYEE')) && (
-                  <Button
-                    text={status === 'INREVIEW' ? 'Desaprobar' : 'Declinar'}
-                    className="btn-declinar"
-                    onClick={() => handleChangeStatus('DENY')}
-                  />
-                )}
-                {status !== 'DONE' &&
-                  userSession.role === 'EMPLOYEE' &&
-                  status !== 'INREVIEW' && (
-                    <Button
-                      text={
-                        status === 'UNRESOLVED' ? 'Asignar' : 'Mandar a Revisar'
-                      }
-                      className="btn-revisar"
-                      onClick={() => handleChangeStatus('ASIG')}
-                    />
-                  )}
-                {status === 'INREVIEW' && userSession.role !== 'EMPLOYEE' && (
-                  <Button
-                    text={'Aprobar'}
-                    className="btn-revisar"
-                    onClick={() => handleChangeStatus('ASIG')}
-                  />
-                )}
+            <div className="content-advance">
+              <h4 className="content-file-title">Avance</h4>
+              <InputRange
+                maxRange={100}
+                percentage={percentage}
+                onChange={handleInputChange}
+              />
+            </div>
+            <label className="content-advance-label">
+              Precio por Avance: {subTask.price}
+            </label>
+            <div className="content-resource">
+              <h4 className="content-file-title">Enunciado:</h4>
+
+              <div className="statement">
+                <div>
+                  <label>Archivo modelo:</label>
+                  <Link to="https://www.google.com/">Click aqui</Link>
+                </div>
+                <div>
+                  <label>Video relacionado:</label>
+                  <Link to="https://www.google.com/">Click aqui</Link>
+                </div>
               </div>
-            )}
+            </div>
           </div>
         </div>
       </div>

@@ -1,9 +1,9 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { Users } from '../../types/types';
+import { User } from '../../types/types';
 import { AppDispatch } from '..';
 import { axiosInstance } from '../../services/axiosInstance';
 
-type State = Users[] | null;
+type State = User[] | null;
 const initialState = null as State;
 
 const listUsersSlice = createSlice({

@@ -8,12 +8,12 @@ interface OutsideProps {
 
 const Outside = ({ onClickOutside, children }: OutsideProps) => {
   const ref = useRef<HTMLDivElement>(null);
-  const handleEvent = (event: MouseEvent) => {
-    if (ref.current && !ref.current.contains(event.target as Node)) {
+  const handleEvent = ({ target }: MouseEvent) => {
+    if (ref.current && !ref.current.contains(target as Node)) {
       onClickOutside && onClickOutside();
     }
   };
-  
+
   useEffect(() => {
     document.addEventListener('click', handleEvent, true);
     return () => {

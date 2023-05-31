@@ -1,0 +1,120 @@
+import type { ChangeEvent, InputHTMLAttributes } from 'react';
+import { motion } from 'framer-motion';
+import { useEffect, useMemo, useState } from 'react';
+import { container } from '../../../animations/animations';
+import './dropDownSimple.css';
+import Outside from '../../portal/Outside';
+
+type typeObj = { [key: string]: any };
+
+interface DropDownSimpleProps extends InputHTMLAttributes<HTMLInputElement> {
+  data: typeObj[] | string[];
+  textField: string;
+  itemKey: string;
+  defaultInput?: string;
+  label?: string;
+  className?: string;
+  valueInput?: (event: string, index: string) => void;
+  onChangeInput?: (event: ChangeEvent<HTMLInputElement>) => void;
+}
+
+const DropDownSimple = ({
+  data,
+  itemKey,
+  textField,
+  label,
+  valueInput,
+  defaultInput,
+  placeholder,
+  onChangeInput,
+  ...otherProps
+}: DropDownSimpleProps) => {
+  const [options, setOptions] = useState<typeObj[] | null>();
+  const [isActive, setIsActive] = useState(false);
+  const [query, setQuery] = useState<string>(
+    defaultInput !== undefined ? defaultInput : ''
+  );
+
+  useEffect(() => {
+    if (data !== undefined) {
+      const transformData = data.map((_item, index) => {
+        if (typeof _item === 'string') {
+          return { [`${itemKey}`]: index.toString(), [`${textField}`]: _item };
+        } else {
+          return _item;
+        }
+      });
+      setOptions(transformData);
+    }
+  }, [data, itemKey, textField]);
+
+  const optionsFiltered = useMemo(
+    () =>
+      query
+        ? options?.filter(_option =>
+            _option[textField].toLowerCase().includes(query.toLowerCase())
+          )
+        : options,
+    [options, query, textField]
+  );
+
+  const filterByQuery = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    const { value } = target;
+    setQuery(value);
+    value.length !== 0 ? setIsActive(true) : setIsActive(false);
+  };
+
+  const toogleIsActive = () => {
+    setIsActive(!isActive);
+  };
+  return (
+    <Outside onClickOutside={() => setIsActive(false)}>
+      <div className="dropdown-container-main">
+        <div className="dropdown-container">
+          {label && <label className="select-label">{label}</label>}
+          <div className="dropdown-input-container">
+            <input
+              className={`dropdown-field`}
+              placeholder={!isActive ? placeholder : 'Buscar...'}
+              onClick={toogleIsActive}
+              onChange={event => {
+                filterByQuery(event);
+                onChangeInput?.(event);
+              }}
+              value={query}
+              {...otherProps}
+            />
+            <motion.div onClick={toogleIsActive} className="dropdown-icon">
+              <img src="svg/search.svg" />
+            </motion.div>
+          </div>
+          {isActive && (
+            <motion.ul
+              variants={container}
+              initial="hidden"
+              animate="show"
+              className={`dropdown-list-option ${
+                optionsFiltered?.length === 0 && 'dropdown-none'
+              }`}
+            >
+              {optionsFiltered?.map(item => (
+                <li
+                  key={item[itemKey]}
+                  onClick={() => {
+                    setQuery('');
+                    valueInput?.(item[textField], item[itemKey]);
+                    setIsActive(false);
+                  }}
+                >
+                  {item[textField]}
+                </li>
+              ))}
+            </motion.ul>
+          )}
+        </div>
+      </div>
+    </Outside>
+  );
+};
+
+export default DropDownSimple;

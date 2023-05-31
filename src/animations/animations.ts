@@ -24,3 +24,20 @@ export const spring = {
   stiffness: 150,
   damping: 30,
 };
+
+export const container = {
+  hidden: {
+    opacity: 0,
+    transition: {
+      delay: 0.5,
+      duration: 0.3,
+    },
+  },
+  show: {
+    opacity: 1,
+    transition: {
+      delayChildren: 0.5,
+      staggerDirection: -1,
+    },
+  },
+};

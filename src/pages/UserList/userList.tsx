@@ -34,7 +34,9 @@ const UserList = () => {
     <div className="content-list">
       <div className="user-list">
         <div className="list-title">
-          <h1>LISTA DE USUARIOS</h1>
+          <h1 className="main-title">
+            LISTA DE <span className="main-title-span">USUARIOS </span>
+          </h1>
           <div>
             <Button
               text="Agregar"

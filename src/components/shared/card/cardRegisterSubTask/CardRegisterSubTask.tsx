@@ -65,24 +65,23 @@ const CardRegisterSubTask = ({
   };
 
   return (
-    <div>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="card-register-project"
-        autoComplete="off"
-      >
-        {/* <span className="close-add-card">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="card-register-project"
+      autoComplete="off"
+    >
+      {/* <span className="close-add-card">
           <img src="/svg/close.svg" alt="pencil" />
         </span> */}
-        <h2>{subTask ? 'ACTUALIZAR TAREA' : 'REGISTRAR TAREA'}</h2>
-        <hr></hr>
-        <Input label="Nombre" {...register('name')} name="name" type="text" />
-        <TextArea
-          label="Descripción"
-          {...register('description')}
-          name="description"
-        />
-        <div className="col-input col-files">
+      <h2>{subTask ? 'ACTUALIZAR TAREA' : 'REGISTRAR TAREA'}</h2>
+      <hr></hr>
+      <Input label="Nombre" {...register('name')} name="name" type="text" />
+      <TextArea
+        label="Descripción"
+        {...register('description')}
+        name="description"
+      />
+      {/* <div className="col-input col-files">
           <div className="manual-file">
             <div className="input-file">
               <InputFile
@@ -90,7 +89,7 @@ const CardRegisterSubTask = ({
                 label="Manuales"
               />
             </div>
-            <div className="list-file">{/* <div>awassss</div> */}</div>
+            <div className="list-file"><div>awassss</div></div>
           </div>
           <div className="manual-file">
             <div className="input-file">
@@ -99,62 +98,60 @@ const CardRegisterSubTask = ({
                 label="Manuales"
               />
             </div>
-            <div className="list-file">{/* <div>awassss</div> */}</div>
+            <div className="list-file"><div>awassss</div></div>
           </div>
+        </div> */}
+      <div className="col-input">
+        <div className="col-users">
+          <DropDownSimple
+            data={users}
+            textField="name"
+            itemKey="id"
+            label="Usuarios"
+            valueInput={(name, id) => handleAddUser({ id: parseInt(id), name })}
+          />
+          {usersData &&
+            usersData.map((_user, index) => (
+              <div key={_user.id} className="col-list-user">
+                <span className="user-info">
+                  {index + 1}
+                  {') '}
+                  {_user.name}
+                </span>
+                <button
+                  type="button"
+                  className="delete-list-user"
+                  onClick={() => handleRemoveUser(_user)}
+                >
+                  <img src="svg/close.svg" />
+                </button>
+              </div>
+            ))}
         </div>
-        <div className="col-input">
-          <div className="col-users">
-            <DropDownSimple
-              data={users}
-              textField="name"
-              itemKey="id"
-              label="Usuarios"
-              valueInput={(name, id) =>
-                handleAddUser({ id: parseInt(id), name })
-              }
-            />
-            {usersData &&
-              usersData.map((_user, index) => (
-                <div key={_user.id} className="col-list-user">
-                  <span className="user-info">
-                    {index + 1}
-                    {') '}
-                    {_user.name}
-                  </span>
-                  <button
-                    type="button"
-                    className="delete-list-user"
-                    onClick={() => handleRemoveUser(_user)}
-                  >
-                    <img src="svg/close.svg" />
-                  </button>
-                </div>
-              ))}
-          </div>
-          <div className="col-hours ">
-            <Input
-              label="Horas"
-              col={true}
-              {...register('hours', { valueAsNumber: true })}
-              type="number"
-              name="hours"
-            />
-            <Input
-              label="Precio S/."
-              col={true}
-              {...register('price', { valueAsNumber: true })}
-              step={0.01}
-              type="number"
-              name="price"
-              disabled={true}
-              value={handleSetPrice(watch('hours'))}
-              readOnly={true}
-            />
-          </div>
+        <div className="col-hours ">
+          <Input
+            label="Horas"
+            col={true}
+            {...register('hours', { valueAsNumber: true })}
+            type="number"
+            name="hours"
+          />
+          <Input
+            label="Precio S/."
+            col={true}
+            {...register('price', { valueAsNumber: true })}
+            step={0.01}
+            type="number"
+            name="price"
+            disabled={true}
+            value={handleSetPrice(watch('hours'))}
+            readOnly={true}
+          />
         </div>
-        <button type="submit">send</button>
-      </form>
-    </div>
+      </div>
+
+      <button type="submit">send</button>
+    </form>
   );
 };
 

@@ -180,7 +180,7 @@ const Task = () => {
           <h1 className="main-title">
             LISTA DE <span className="main-title-span">TAREAS</span>
           </h1>
-          {role !== 'EMPLOYEE' && (
+          {role !== 'EMPLOYEE' && subTasks && (
             <Button
               text="Agregar"
               icon="plus"

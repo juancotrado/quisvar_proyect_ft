@@ -14,7 +14,7 @@ const Dashboard = () => {
 
   return (
     <div>
-      <CardRegisterSubTask taskId={1} />
+      <CardRegisterSubTask subTaskId={1} />
       {/* <InputFile /> */}
     </div>
   );

@@ -17,12 +17,15 @@ type SubTaskForm = {
 
 interface CardRegisterSubTaskProps {
   subTask?: any;
-  taskId?: number;
+  subTaskId?: number;
 }
 
 type DataUser = { id: number; name: string };
 
-const CardRegisterSubTask = ({ subTask, taskId }: CardRegisterSubTaskProps) => {
+const CardRegisterSubTask = ({
+  subTask,
+  subTaskId,
+}: CardRegisterSubTaskProps) => {
   const { listUsers } = useSelector((state: RootState) => state);
   const [usersData, setUsersData] = useState<DataUser[]>([]);
   const { handleSubmit, register, setValue, watch } = useForm<SubTaskForm>();
@@ -39,7 +42,7 @@ const CardRegisterSubTask = ({ subTask, taskId }: CardRegisterSubTaskProps) => {
 
   const onSubmit: SubmitHandler<SubTaskForm> = values => {
     const users = usersData.map(u => ({ id: u.id }));
-    console.log({ ...values, users, taskId });
+    console.log({ ...values, users, subTaskId });
   };
 
   const handleAddUser = (user: DataUser) => {

@@ -15,7 +15,7 @@ const Sidebar = ({ workArea, settingSubTasks }: SidebarProps) => {
   const handleShow = () => setIsShow(!isShow);
   return (
     <aside className={`aside ${isShow && 'aside-show'}`}>
-      <h2 className="aside-title">{name}</h2>
+      <h2 className="aside-title">{name} </h2>
       <div className="asilde-slice">
         <ul className="aside-dropdown">
           {indexTasks.map(indexTask => (

@@ -168,43 +168,39 @@ const CardTaskInformation = ({
                   ))}
                 </div>
               </div>
-
-              {(userSession.id == subTask.users?.at(0)?.user.profile.userId ||
-                subTask.users?.length === 0 ||
-                role === 'SUPERADMIN') && (
-                <div className="btn-content">
-                  {(status === 'PROCESS' ||
-                    (status === 'INREVIEW' &&
-                      userSession.role !== 'EMPLOYEE')) && (
-                    <Button
-                      text={status === 'INREVIEW' ? 'Desaprobar' : 'Declinar'}
-                      className="btn-declinar"
-                      onClick={() => handleChangeStatus('DENY')}
-                    />
-                  )}
-                  {status !== 'DONE' &&
-                    userSession.role === 'EMPLOYEE' &&
-                    status !== 'INREVIEW' && (
-                      <Button
-                        text={
-                          status === 'UNRESOLVED'
-                            ? 'Asignar'
-                            : 'Mandar a Revisar'
-                        }
-                        className="btn-revisar"
-                        onClick={() => handleChangeStatus('ASIG')}
-                      />
-                    )}
-                  {status === 'INREVIEW' && userSession.role !== 'EMPLOYEE' && (
-                    <Button
-                      text={'Aprobar'}
-                      className="btn-revisar"
-                      onClick={() => handleChangeStatus('ASIG')}
-                    />
-                  )}
-                </div>
-              )}
             </>
+          )}
+          {(userSession.id == subTask.users?.at(0)?.user.profile.userId ||
+            subTask.users?.length === 0 ||
+            role === 'SUPERADMIN') && (
+            <div className="btn-content">
+              {(status === 'PROCESS' ||
+                (status === 'INREVIEW' && userSession.role !== 'EMPLOYEE')) && (
+                <Button
+                  text={status === 'INREVIEW' ? 'Desaprobar' : 'Declinar'}
+                  className="btn-declinar"
+                  onClick={() => handleChangeStatus('DENY')}
+                />
+              )}
+              {status !== 'DONE' &&
+                userSession.role === 'EMPLOYEE' &&
+                status !== 'INREVIEW' && (
+                  <Button
+                    text={
+                      status === 'UNRESOLVED' ? 'Asignar' : 'Mandar a Revisar'
+                    }
+                    className="btn-revisar"
+                    onClick={() => handleChangeStatus('ASIG')}
+                  />
+                )}
+              {status === 'INREVIEW' && userSession.role !== 'EMPLOYEE' && (
+                <Button
+                  text={'Aprobar'}
+                  className="btn-revisar"
+                  onClick={() => handleChangeStatus('ASIG')}
+                />
+              )}
+            </div>
           )}
         </div>
         <div className="content-details">

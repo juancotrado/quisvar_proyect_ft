@@ -164,11 +164,10 @@ const CardTaskInformation = ({
                   <h4 className="content-file-title">Archivos:</h4>
                   <div className="subtask-files">
                     {subTask.files?.map(file => (
-                      <div className="subtask-file-contain">
+                      <div key={file} className="subtask-file-contain">
                         <a
                           href={`${URL_FILES}/${file}`}
                           target="_blank"
-                          key={file}
                           className="subtask-file"
                           download={'xyz.pdf'}
                         >
@@ -201,31 +200,35 @@ const CardTaskInformation = ({
                   (isAuthorizedMod && status === 'INREVIEW')) && (
                   <div className="content-file">
                     <h4 className="content-file-title">Subir Archivo:</h4>
-                    <div
-                      style={{
-                        width: '100%',
-                        height: '100%',
-                        border: '2px dashed #ccc',
-                        borderRadius: '5px',
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        cursor: 'pointer',
-                      }}
-                      onDrop={handleDrop}
-                      onDragOver={event => event.preventDefault()}
-                    >
-                      {!selectedFile && <p>Arrastra los archivos aquí</p>}
-                      <input type="file" onChange={handleFileChange} />
+                    <div className="content-file-send">
+                      <div
+                        style={{
+                          width: '100%',
+                          height: '100%',
+                          border: '2px dashed #ccc',
+                          borderRadius: '5px',
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          cursor: 'pointer',
+                        }}
+                        onDrop={handleDrop}
+                        onDragOver={event => event.preventDefault()}
+                      >
+                        {!selectedFile && <p>Arrastra los archivos aquí</p>}
+                        <input type="file" onChange={handleFileChange} />
+                      </div>
+                      <Button
+                        text="Subir archivo"
+                        onClick={handleUploadClick}
+                      />
                     </div>
-                    <Button text="Subir archivo" onClick={handleUploadClick} />
                   </div>
                 )}
               </>
             )}
           </div>
-          <div className="line-divide" />
           <div className="content-details">
             <div className="status-content">
               <label className="status-text status-hold">Por Asignar</label>

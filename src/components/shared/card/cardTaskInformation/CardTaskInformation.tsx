@@ -113,6 +113,14 @@ const CardTaskInformation = ({
     return name.slice(indexName + 1);
   };
 
+  const handleReloadSubTask = () => {
+    axiosInstance
+      .patch(`/subtasks/asigned/${subTask.id}?status=decline`)
+      .then(res => {
+        socket.emit('client:update-subTask', res.data);
+        isOpenModal$.setSubject = false;
+      });
+  };
   const handleAddUserByTask = () => {
     axiosInstance
       .patch(`/subtasks/assignUser/${subTask.id}`, usersData)
@@ -331,6 +339,13 @@ const CardTaskInformation = ({
               </div>
             </div>
           </div>
+          {isAuthorizedMod && (
+            <Button
+              text="REINICIAR TAREA"
+              className="btn-declinar"
+              onClick={handleReloadSubTask}
+            />
+          )}
         </div>
       </div>
     </div>

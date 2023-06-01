@@ -1,14 +1,21 @@
 import './mytaskcard.css';
 import icon_done from '/svg/task_done.svg';
-import { SubTaskType } from '../../../types/types';
+import { useState } from 'react';
+import { SubTask, SubTaskType } from '../../../types/types';
 import icon_list_task from '/svg/icon_list_task.svg';
 import { _date } from '../../../utils/formatDate';
+import CardRegisterAndInformation from './cardRegisterAndInformation/CardRegisterAndInformation';
+import { isTaskInformation$ } from '../../../services/sharingSubject';
 
 interface TaskCardProps {
   task: SubTaskType;
+  getSubtask: (value: SubTask) => void;
 }
 
-const MyTaskCard = ({ task }: TaskCardProps) => {
+const MyTaskCard = ({ task, getSubtask }: TaskCardProps) => {
+  const hanldeViewMore = () => {
+    getSubtask(task);
+  };
   return (
     <div className="my-task-class">
       <span className={`my-icon-card`}>
@@ -37,7 +44,7 @@ const MyTaskCard = ({ task }: TaskCardProps) => {
       </div>
       <div className="footer-my-task">
         <h3>Fecha Inicio: {`${_date(task.createdAt)}`}</h3>
-        <span onClick={() => {}}>Ver mas</span>
+        <span onClick={hanldeViewMore}>Ver mas</span>
       </div>
     </div>
   );

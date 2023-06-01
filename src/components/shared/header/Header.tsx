@@ -6,12 +6,16 @@ import { Subscription } from 'rxjs';
 import { toggle$ } from '../../../services/sharingSubject';
 import { SocketContext } from '../../../context/SocketContex';
 import { CardEditInformation, Menu } from '../..';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store';
 
 const Header = () => {
   const navigate = useNavigate();
   const socket = useContext(SocketContext);
   const [isOpen, setIsOpen] = useState(false);
   const handleToggleRef = useRef<Subscription>(new Subscription());
+  const { userSession } = useSelector((state: RootState) => state);
+  console.log(userSession.role);
 
   useEffect(() => {
     handleToggleRef.current = toggle$.getSubject.subscribe((value: boolean) =>
@@ -132,14 +136,16 @@ const Header = () => {
         <ul className="icons-list">
           {icons.map(icon => (
             <li key={icon.id} className="icon-list">
-              <motion.img
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={icon.action}
-                src={icon.name}
-                alt={icon.name}
-                className="icon"
-              />
+              {(userSession.role !== 'EMPLOYEE' || icon.id !== 1) && (
+                <motion.img
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={icon.action}
+                  src={icon.name}
+                  alt={icon.name}
+                  className="icon"
+                />
+              )}
               {icon.id === 3 && isOpen && <Menu data={menu} />}
             </li>
           ))}

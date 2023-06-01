@@ -143,7 +143,7 @@ const CardTaskInformation = ({
     ({ user }) => user.profile.userId === userSession.id
   );
 
-  // const areAuthorizedUsers = isAuthorizedMod || isAuthorizedUser;
+  const areAuthorizedUsers = isAuthorizedMod || isAuthorizedUser;
   const isStatusProcesOrDenied = status === 'PROCESS' || status === 'DENIED';
   // const subTaskStatus: keyof typeof statusText = subTask.status;
   return (
@@ -274,19 +274,32 @@ const CardTaskInformation = ({
               />
             </div>
           )}
-          {(userSession.id == subTask.users?.at(0)?.user.profile.userId ||
-            subTask.users?.length === 0 ||
-            role === 'SUPERADMIN') && (
+          {areAuthorizedUsers && (
             <div className="btn-content">
-              {(status === 'PROCESS' ||
+              {/* {(status === 'PROCESS' ||
                 (status === 'INREVIEW' && userSession.role !== 'EMPLOYEE')) && (
                 <Button
                   text={status === 'INREVIEW' ? 'Desaprobar' : 'Declinar'}
                   className="btn-declinar"
                   onClick={() => handleChangeStatus('DENY')}
                 />
+              )} */}
+              {status === 'PROCESS' && !isAuthorizedMod && (
+                <Button
+                  text={'Declinar'}
+                  className="btn-declinar"
+                  onClick={handleReloadSubTask}
+                />
               )}
-              {status !== 'DONE' &&
+              {isAuthorizedMod && status === 'INREVIEW' && (
+                <Button
+                  text={'Desaprobar'}
+                  className="btn-declinar"
+                  onClick={() => handleChangeStatus('DENY')}
+                />
+              )}
+
+              {/* {status !== 'DONE' &&
                 userSession.role === 'EMPLOYEE' &&
                 status !== 'INREVIEW' && (
                   <Button
@@ -296,8 +309,24 @@ const CardTaskInformation = ({
                     className="btn-revisar"
                     onClick={() => handleChangeStatus('ASIG')}
                   />
+                )} */}
+
+              {status === 'UNRESOLVED' && !isAuthorizedMod && (
+                <Button
+                  text="ASIGNAR"
+                  className="btn-revisar"
+                  onClick={() => handleChangeStatus('ASIG')}
+                />
+              )}
+              {(status === 'PROCESS' || status === 'DENIED') &&
+                !isAuthorizedMod && (
+                  <Button
+                    text="Mandar a Revisar"
+                    className="btn-revisar"
+                    onClick={() => handleChangeStatus('ASIG')}
+                  />
                 )}
-              {status === 'INREVIEW' && userSession.role !== 'EMPLOYEE' && (
+              {status === 'INREVIEW' && isAuthorizedMod && (
                 <Button
                   text={'Aprobar'}
                   className="btn-revisar"

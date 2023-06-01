@@ -1,4 +1,4 @@
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { Input, TextArea } from '../../..';
 import './cardRegisterSubTask.css';
 import DropDownSimple from '../../select/DropDownSimple';
@@ -9,9 +9,9 @@ import InputFile from '../../Input/InputFile';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { SocketContext } from '../../../../context/SocketContex';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
+import { SubTask } from '../../../../types/types';
 
 type SubTaskForm = {
-  // id: number;
   name: string;
   description?: string;
   hours: number;
@@ -19,7 +19,7 @@ type SubTaskForm = {
 };
 
 interface CardRegisterSubTaskProps {
-  subTask?: any;
+  subTask: SubTask | null;
   taskId: number;
 }
 
@@ -28,7 +28,8 @@ type DataUser = { id: number; name: string };
 const CardRegisterSubTask = ({ subTask, taskId }: CardRegisterSubTaskProps) => {
   const { listUsers } = useSelector((state: RootState) => state);
   const [usersData, setUsersData] = useState<DataUser[]>([]);
-  const { handleSubmit, register, setValue, watch } = useForm<SubTaskForm>();
+  const { handleSubmit, register, setValue, watch, reset } =
+    useForm<SubTaskForm>();
   const socket = useContext(SocketContext);
 
   const users = useMemo(
@@ -42,13 +43,33 @@ const CardRegisterSubTask = ({ subTask, taskId }: CardRegisterSubTaskProps) => {
     [listUsers]
   );
 
-  const onSubmit: SubmitHandler<SubTaskForm> = data => {
-    const body = { ...data, taskId };
-    axiosInstance.post('/subtasks', body).then(res => {
-      socket.emit('client:create-subTask', res.data);
-      isOpenModal$.setSubject = false;
+  useEffect(() => {
+    if (!subTask) return;
+    reset({
+      description: subTask.description,
+      hours: subTask.hours,
+      name: subTask.name,
+      price: +subTask.price,
     });
+  }, [subTask]);
 
+  const onSubmit: SubmitHandler<SubTaskForm> = data => {
+    if (subTask?.id) {
+      if (usersData.length) {
+        console.log({ ...data, usersData });
+        return;
+      }
+      axiosInstance.patch(`/subtasks/${subTask.id}`, data).then(res => {
+        socket.emit('client:update-subTask', res.data);
+      });
+    } else {
+      const body = { ...data, taskId };
+
+      axiosInstance.post('/subtasks', body).then(res => {
+        socket.emit('client:create-subTask', res.data);
+        isOpenModal$.setSubject = false;
+      });
+    }
     // const users = usersData.map(u => ({ id: u.id }));
     // console.log({ ...values, users, taskId });
   };

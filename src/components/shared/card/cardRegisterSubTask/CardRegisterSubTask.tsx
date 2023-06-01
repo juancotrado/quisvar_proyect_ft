@@ -131,7 +131,7 @@ const CardRegisterSubTask = ({ subTask, taskId }: CardRegisterSubTaskProps) => {
           </div>
         </div> */}
       <div className="col-input">
-        {subTask && (
+        {false && (
           <div className="col-users">
             <DropDownSimple
               data={users}

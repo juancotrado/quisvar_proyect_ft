@@ -22,6 +22,17 @@
   display: flex;
   gap: 1rem;
 }
+.content-add-users {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+.content-lists-users {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
 .main-content {
   width: 100%;
   display: flex;

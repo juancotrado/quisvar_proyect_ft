@@ -6,7 +6,7 @@ import {
 import Modal from '../../../portal/Modal';
 import './cardTaskInformation.css';
 import Button from '../../button/Button';
-import { ChangeEvent, useContext, useState } from 'react';
+import { ChangeEvent, useContext, useMemo, useState } from 'react';
 import { SubTask } from '../../../../types/types';
 import { SocketContext } from '../../../../context/SocketContex';
 import { URL_FILES, axiosInstance } from '../../../../services/axiosInstance';
@@ -15,11 +15,13 @@ import { RootState } from '../../../../store';
 import { InputRange } from '../../../index';
 import ButtonDelete from '../../button/ButtonDelete';
 import { statusBody, statusText } from './constans';
+import DropDownSimple from '../../select/DropDownSimple';
 interface CardTaskInformationProps {
   subTask: SubTask;
   isAuthorizedMod: boolean;
   openModalEdit: () => void;
 }
+type DataUser = { id: number; name: string };
 
 const CardTaskInformation = ({
   subTask,
@@ -32,7 +34,21 @@ const CardTaskInformation = ({
   const [percentage, setPercentage] = useState(50);
   const [file, setFile] = useState<FileList[0]>();
   const role = userSession.role === 'EMPLOYEE' ? 'EMPLOYEE' : 'SUPERADMIN';
+  const [usersData, setUsersData] = useState<DataUser[]>([]);
+  const { listUsers } = useSelector((state: RootState) => state);
 
+  const users = useMemo(
+    () =>
+      listUsers
+        ? listUsers
+            .filter(({ role }) => role === 'EMPLOYEE')
+            .map(({ profile, ...props }) => ({
+              name: `${profile.firstName} ${profile.lastName}`,
+              ...props,
+            }))
+        : [],
+    [listUsers]
+  );
   const handleDrop = (event: any) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
@@ -53,6 +69,15 @@ const CardTaskInformation = ({
       .then(res => socket.emit('client:update-subTask', res.data));
   };
 
+  const handleAddUser = (user: DataUser) => {
+    const getId = usersData.find(list => list.id == user.id);
+    if (!getId) setUsersData([...usersData, user]);
+  };
+
+  const handleRemoveUser = (user: DataUser) => {
+    const filterValue = usersData.filter(list => list.id !== user.id);
+    setUsersData(filterValue);
+  };
   const getStatus = (
     category: string,
     role: string,
@@ -86,6 +111,15 @@ const CardTaskInformation = ({
   const normalizeFileName = (name: string) => {
     const indexName = name.indexOf('$');
     return name.slice(indexName + 1);
+  };
+
+  const handleAddUserByTask = () => {
+    axiosInstance
+      .patch(`/subtasks/assignUser/${subTask.id}`, usersData)
+      .then(res => {
+        socket.emit('client:update-subTask', res.data);
+        isOpenModal$.setSubject = false;
+      });
   };
 
   const deleteFile = (URL: string) => {
@@ -157,44 +191,80 @@ const CardTaskInformation = ({
             </div>
           )}
           {status !== 'UNRESOLVED' && (
-            <>
-              <div className="content-file">
-                <h4 className="content-file-title">Archivos:</h4>
-                <div className="subtask-files">
-                  {subTask.files?.map(file => (
-                    <div key={file} className="subtask-file-contain">
-                      <a
-                        href={`${URL_FILES}/${file}`}
-                        target="_blank"
-                        className="subtask-file"
-                        download={'xyz.pdf'}
+            <div className="content-file">
+              <h4 className="content-file-title">Archivos:</h4>
+              <div className="subtask-files">
+                {subTask.files?.map(file => (
+                  <div key={file} className="subtask-file-contain">
+                    <a
+                      href={`${URL_FILES}/${file}`}
+                      target="_blank"
+                      className="subtask-file"
+                      download={'xyz.pdf'}
+                    >
+                      <img
+                        src="/svg/file-download.svg"
+                        alt="W3Schools"
+                        className="subtask-file-icon"
+                      ></img>
+                      <span className="subtask-file-name">
+                        {normalizeFileName(file)}
+                      </span>
+                    </a>
+                    {((isStatusProcesOrDenied && isAuthorizedUser) ||
+                      (isAuthorizedMod && status === 'INREVIEW')) && (
+                      <ButtonDelete
+                        icon="trash-red"
+                        customOnClick={() =>
+                          deleteFile(
+                            `/subtasks/deleteFile/${subTask.id}/${file}`
+                          )
+                        }
+                        className="subtask-delete-icon"
+                      />
+                    )}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+          {status === 'UNRESOLVED' && (
+            <div className="content-add-users">
+              <DropDownSimple
+                data={users}
+                textField="name"
+                itemKey="id"
+                label="Agregar Usuarios a la tarea:"
+                valueInput={(name, id) =>
+                  handleAddUser({ id: parseInt(id), name })
+                }
+              />
+              {usersData && (
+                <div className="content-lists-users">
+                  {usersData.map((_user, index) => (
+                    <div key={_user.id} className="col-list-user">
+                      <span className="user-info">
+                        {index + 1}
+                        {') '}
+                        {_user.name}
+                      </span>
+                      <button
+                        type="button"
+                        className="delete-list-user"
+                        onClick={() => handleRemoveUser(_user)}
                       >
-                        <img
-                          src="/svg/file-download.svg"
-                          alt="W3Schools"
-                          className="subtask-file-icon"
-                        ></img>
-                        <span className="subtask-file-name">
-                          {normalizeFileName(file)}
-                        </span>
-                      </a>
-                      {((isStatusProcesOrDenied && isAuthorizedUser) ||
-                        (isAuthorizedMod && status === 'INREVIEW')) && (
-                        <ButtonDelete
-                          icon="trash-red"
-                          customOnClick={() =>
-                            deleteFile(
-                              `/subtasks/deleteFile/${subTask.id}/${file}`
-                            )
-                          }
-                          className="subtask-delete-icon"
-                        />
-                      )}
+                        <img src="/svg/close.svg" />
+                      </button>
                     </div>
                   ))}
                 </div>
-              </div>
-            </>
+              )}
+              <Button
+                text="agregar usuarios"
+                className="content-file-send-button"
+                onClick={handleAddUserByTask}
+              />
+            </div>
           )}
           {(userSession.id == subTask.users?.at(0)?.user.profile.userId ||
             subTask.users?.length === 0 ||

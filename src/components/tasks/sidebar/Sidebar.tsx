@@ -38,9 +38,11 @@ const Sidebar = ({ workArea, settingSubTasks, onUpdate }: SidebarProps) => {
               : ' Agregar Coordinador *'}
           </span>
         </div>
-        <button className="area-menu-button" onClick={handleEditArea}>
-          <img src="/svg/menu.svg" alt="menu" />
-        </button>
+        {role !== 'EMPLOYEE' && (
+          <button className="area-menu-button" onClick={handleEditArea}>
+            <img src="/svg/menu.svg" alt="menu" />
+          </button>
+        )}
         {openEditArea && (
           <CardRegisterArea
             onClose={handleEditArea}

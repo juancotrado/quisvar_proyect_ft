@@ -16,8 +16,10 @@ const MyTaskCard = ({ task, getSubtask }: TaskCardProps) => {
   const hanldeViewMore = () => {
     getSubtask(task);
   };
+
   return (
     <div className="my-task-class">
+      {/* <span className="task-text">{`${task.status == 'DONE'? "Hecho":"asd"}` }</span> */}
       <span className={`my-icon-card`}>
         <img
           src={
@@ -36,10 +38,14 @@ const MyTaskCard = ({ task, getSubtask }: TaskCardProps) => {
         </div>
         <ul>
           <h3>{task.description} </h3>
-          {/* {subtasks &&
-            subtasks.map(subtask => (
-              <li key={subtask.id}>{subtask.description}</li>
-            ))} */}
+          <span
+            className={`task-text ${task.status === 'DENIED' && 'hold'} ${
+              task.status === 'PROCESS' && 'process'
+            } ${task.status === 'DONE' && 'done'}`}
+          >
+            {task.status === 'DENIED' && 'Por Revisar'}
+            {task.status === 'PROCESS' && 'En Revisión'}
+          </span>
         </ul>
       </div>
       <div className="footer-my-task">

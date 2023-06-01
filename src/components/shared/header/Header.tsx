@@ -51,13 +51,18 @@ const Header = () => {
     navigate('login');
   };
   const handleHome = () => {
-    navigate('home');
+    navigate('/home');
   };
 
-  const items = [
-    { title: 'Inicio', link: '/home' },
-    { title: 'Tareas', link: '/mis-tareas' },
-    { title: 'Especialidades', link: '/especialidades' },
+  const itemsAdmin = [
+    { id: 1, title: 'Inicio', link: '/home' },
+    { id: 2, title: 'Reportes', link: '/reportes' },
+    { id: 3, title: 'Especialidades', link: '/especialidades' },
+  ];
+  const itemsEmployee = [
+    { id: 1, title: 'Inicio', link: '/home' },
+    { id: 2, title: 'Tareas', link: '/mis-tareas' },
+    { id: 3, title: 'Especialidades', link: '/especialidades' },
   ];
 
   const icons = [
@@ -105,7 +110,7 @@ const Header = () => {
       action: handleLogout,
     },
   ];
-
+  const itemType = userSession.role == 'ADMIN' ? itemsAdmin : itemsEmployee;
   return (
     <header className="header">
       <nav className="nav-container container">
@@ -119,8 +124,8 @@ const Header = () => {
             />
           </figure>
           <ul className="items-list">
-            {items.map((item, id) => (
-              <li key={id}>
+            {itemType.map(item => (
+              <li key={item.id}>
                 <NavLink
                   to={item.link}
                   className={({ isActive }) =>

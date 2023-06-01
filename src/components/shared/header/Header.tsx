@@ -88,16 +88,19 @@ const Header = () => {
 
   const menu = [
     {
+      id: 1,
       name: 'Editar Perfil',
       icon: '/svg/Group.svg',
       action: openModal,
     },
     {
+      id: 2,
       name: 'Lista de usuarios',
       icon: '/svg/list-user.svg',
       action: handleList,
     },
     {
+      id: 3,
       name: 'Acerca de',
       icon: '/svg/question-circle.svg',
       action: () => {
@@ -105,6 +108,7 @@ const Header = () => {
       },
     },
     {
+      id: 4,
       name: 'Salir',
       icon: '/svg/ri_logout-box-r-line.svg',
       action: handleLogout,

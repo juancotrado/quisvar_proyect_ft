@@ -46,6 +46,9 @@ const Header = () => {
     socket.disconnect();
     navigate('login');
   };
+  const handleHome = () => {
+    navigate('home');
+  };
 
   const items = [
     { title: 'Inicio', link: '/home' },
@@ -80,7 +83,11 @@ const Header = () => {
       icon: '/svg/Group.svg',
       action: openModal,
     },
-    { name: 'Configuracion', icon: '/svg/icon.svg', action: handleList },
+    {
+      name: 'Lista de usuarios',
+      icon: '/svg/list-user.svg',
+      action: handleList,
+    },
     {
       name: 'Acerca de',
       icon: '/svg/question-circle.svg',
@@ -100,7 +107,12 @@ const Header = () => {
       <nav className="nav-container container">
         <div className="nav-options">
           <figure className="header-figure">
-            <img src="/img/quisvar_logo.png" alt="logo QuisVar" />
+            <img
+              className="nav-logo"
+              src="/img/quisvar_logo.png"
+              onClick={handleHome}
+              alt="logo QuisVar"
+            />
           </figure>
           <ul className="items-list">
             {items.map((item, id) => (

@@ -6,12 +6,12 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { RootState } from '../../../../store';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
-import { Users } from '../../../../types/types';
+import { User } from '../../../../types/types';
 import { axiosInstance } from '../../../../services/axiosInstance';
 
 const CardEditInformation = ({ isOpen, onClose }: any) => {
   const { userSession } = useSelector((state: RootState) => state);
-  const { register, handleSubmit, reset } = useForm<Users>();
+  const { register, handleSubmit, reset } = useForm<User>();
 
   useEffect(() => {
     if (userSession) {
@@ -19,7 +19,7 @@ const CardEditInformation = ({ isOpen, onClose }: any) => {
     }
   }, [userSession]);
 
-  const onSubmit = async (values: Users) => {
+  const onSubmit = async (values: User) => {
     console.log(userSession);
 
     if (userSession?.id !== undefined) {

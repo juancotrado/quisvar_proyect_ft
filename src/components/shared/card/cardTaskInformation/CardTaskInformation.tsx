@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom';
-import { isOpenModal$ } from '../../../../services/sharingSubject';
+import {
+  isOpenModal$,
+  isTaskInformation$,
+} from '../../../../services/sharingSubject';
 import Modal from '../../../portal/Modal';
 import './cardTaskInformation.css';
 import Button from '../../button/Button';
@@ -15,11 +18,13 @@ import { statusBody, statusText } from './constans';
 interface CardTaskInformationProps {
   subTask: SubTask;
   isAuthorizedMod: boolean;
+  openModalEdit: () => void;
 }
 
 const CardTaskInformation = ({
   subTask,
   isAuthorizedMod,
+  openModalEdit,
 }: CardTaskInformationProps) => {
   const socket = useContext(SocketContext);
   const { userSession } = useSelector((state: RootState) => state);
@@ -111,6 +116,11 @@ const CardTaskInformation = ({
                   icon="trash-red"
                   url={`/subtasks/${subTask.id}`}
                   customOnClick={handleSubTaskDelete}
+                />
+                <Button
+                  icon="pencil"
+                  className="speciality-edit-icon"
+                  onClick={openModalEdit}
                 />
               </div>
             )}

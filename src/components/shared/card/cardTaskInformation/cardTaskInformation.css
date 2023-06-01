@@ -16,6 +16,11 @@
 .content-head {
   display: flex;
   justify-content: space-between;
+  gap: 2rem;
+}
+.conten-buttons-actions {
+  display: flex;
+  gap: 1rem;
 }
 .main-content {
   width: 100%;

@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // import React from 'react';
 import './task.css';
 import { useParams } from 'react-router-dom';
@@ -39,8 +40,12 @@ const Task = () => {
   );
 
   useEffect(() => {
+    getWorkAreas();
+  }, []);
+
+  const getWorkAreas = async () => {
     axiosInstance.get(`/workareas/${id}`).then(res => setWorkArea(res.data));
-  }, [id]);
+  };
 
   const settingSubTasks = (id: number) => {
     axiosInstance.get(`/tasks/${id}`).then(res => {
@@ -274,7 +279,11 @@ const Task = () => {
         )}
       </div>
       {workArea && (
-        <Sidebar workArea={workArea} settingSubTasks={settingSubTasks} />
+        <Sidebar
+          workArea={workArea}
+          settingSubTasks={settingSubTasks}
+          onUpdate={getWorkAreas}
+        />
       )}
     </>
   );

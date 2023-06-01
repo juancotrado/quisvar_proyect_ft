@@ -75,12 +75,21 @@ const ProjectCard = ({ project, onClick, onSave }: ProjectCardProps) => {
           <span>ÁREAS: </span>
           {project.areas.length > 0 &&
             project.areas.map(area => (
-              <Button
-                key={area.id}
-                text={area.name}
-                className="project-btn-footer"
-                onClick={() => navigate(`/tareas/${area.id}`)}
-              />
+              <div key={area.id} className="project-btn-container">
+                <Button
+                  text={area.name}
+                  className="project-btn-footer"
+                  onClick={() => navigate(`/tareas/${area.id}`)}
+                />
+                {role !== 'EMPLOYEE' && (
+                  <ButtonDelete
+                    className="btn-delete-area"
+                    icon="close"
+                    url={`/workareas/${area.id}`}
+                    onSave={onSave}
+                  />
+                )}
+              </div>
             ))}
           {role !== 'EMPLOYEE' && (
             <Button

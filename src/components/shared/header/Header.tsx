@@ -15,7 +15,6 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
   const handleToggleRef = useRef<Subscription>(new Subscription());
   const { userSession } = useSelector((state: RootState) => state);
-  console.log(userSession.role);
 
   useEffect(() => {
     handleToggleRef.current = toggle$.getSubject.subscribe((value: boolean) =>

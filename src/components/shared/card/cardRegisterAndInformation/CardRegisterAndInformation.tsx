@@ -6,18 +6,17 @@ import CardRegisterSubTask from '../cardRegisterSubTask/CardRegisterSubTask';
 import {
   isOpenModal$,
   isTaskInformation$,
-  toggle$,
 } from '../../../../services/sharingSubject';
 import { Subscription } from 'rxjs';
 
 interface CardRegisterAndInformationProps {
   subTask: SubTask;
-  coordinatorId: number;
+  isAuthorizedMod: boolean;
   taskId: number;
 }
 
 const CardRegisterAndInformation = ({
-  coordinatorId,
+  isAuthorizedMod,
   subTask,
   taskId,
 }: CardRegisterAndInformationProps) => {
@@ -39,7 +38,10 @@ const CardRegisterAndInformation = ({
   return (
     <Modal size={50}>
       {isTaskInformation ? (
-        <CardTaskInformation coordinatorId={coordinatorId} subTask={subTask} />
+        <CardTaskInformation
+          isAuthorizedMod={isAuthorizedMod}
+          subTask={subTask}
+        />
       ) : (
         <CardRegisterSubTask taskId={taskId} />
       )}

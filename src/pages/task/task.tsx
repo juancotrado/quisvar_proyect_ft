@@ -33,7 +33,9 @@ const Task = () => {
   const [subTasks, setSubTasks] = useState<SubTask[] | null>(null);
   const [subTask, setSubTask] = useState<SubTask>(initValuesSubTask);
   const socket = useContext(SocketContext);
-  const { role } = useSelector((state: RootState) => state.userSession);
+  const { role, id: userSessionId } = useSelector(
+    (state: RootState) => state.userSession
+  );
 
   useEffect(() => {
     axiosInstance.get(`/workareas/${id}`).then(res => setWorkArea(res.data));
@@ -64,6 +66,19 @@ const Task = () => {
 
     return () => {
       socket.off('server:update-subTask');
+    };
+  }, [socket, subTasks]);
+  useEffect(() => {
+    socket.on('server:delete-subTask', (newSubTask: SubTask) => {
+      if (!subTasks) return;
+      const newSubTasks = subTasks?.filter(
+        subTask => subTask.id !== newSubTask.id
+      );
+      setSubTasks(newSubTasks);
+    });
+
+    return () => {
+      socket.off('server:delete-subTask');
     };
   }, [socket, subTasks]);
 
@@ -183,6 +198,8 @@ const Task = () => {
 
   //   const handleGetTaskData = (getTask: TaskType) => setGetTaskData(getTask);
   const taskId = subTasks?.at(0)?.taskId;
+  const isAuthorizedMod = userSessionId === workArea?.userId;
+
   const openModaltoAdd = () => (isTaskInformation$.setSubject = false);
   return (
     <>
@@ -191,7 +208,7 @@ const Task = () => {
           <h1 className="main-title">
             LISTA DE <span className="main-title-span">TAREAS</span>
           </h1>
-          {role !== 'EMPLOYEE' && subTasks && (
+          {isAuthorizedMod && subTasks && (
             <Button
               text="Agregar"
               icon="plus"
@@ -250,7 +267,7 @@ const Task = () => {
         {workArea && taskId && (
           <CardRegisterAndInformation
             subTask={subTask}
-            coordinatorId={workArea?.userId}
+            isAuthorizedMod={isAuthorizedMod}
             taskId={taskId}
           />
         )}

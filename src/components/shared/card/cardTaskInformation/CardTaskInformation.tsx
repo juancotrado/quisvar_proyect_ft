@@ -14,12 +14,12 @@ import ButtonDelete from '../../button/ButtonDelete';
 import { statusBody, statusText } from './constans';
 interface CardTaskInformationProps {
   subTask: SubTask;
-  coordinatorId: number;
+  isAuthorizedMod: boolean;
 }
 
 const CardTaskInformation = ({
   subTask,
-  coordinatorId,
+  isAuthorizedMod,
 }: CardTaskInformationProps) => {
   const socket = useContext(SocketContext);
   const { userSession } = useSelector((state: RootState) => state);
@@ -72,6 +72,12 @@ const CardTaskInformation = ({
     console.log('Nuevo valor:', value);
   };
 
+  const handleSubTaskDelete = () => {
+    axiosInstance.delete(`/subtasks/${subTask.id}`).then(res => {
+      socket.emit('client:delete-subTask', res.data);
+      isOpenModal$.setSubject = false;
+    });
+  };
   const normalizeFileName = (name: string) => {
     const indexName = name.indexOf('$');
     return name.slice(indexName + 1);
@@ -89,7 +95,6 @@ const CardTaskInformation = ({
   const isAuthorizedUser = subTask?.users?.some(
     ({ user }) => user.profile.userId === userSession.id
   );
-  const isAuthorizedMod = userSession.id === coordinatorId;
 
   // const areAuthorizedUsers = isAuthorizedMod || isAuthorizedUser;
   const isStatusProcesOrDenied = status === 'PROCESS' || status === 'DENIED';
@@ -98,7 +103,18 @@ const CardTaskInformation = ({
     <div className="information-container">
       <div className="main-content">
         <div className="content-files">
-          <h3 className="information-title">Tarea: {subTask.name}</h3>
+          <div className="content-head">
+            <h3 className="information-title">Tarea: {subTask.name}</h3>
+            {isAuthorizedMod && status === 'UNRESOLVED' && (
+              <div className="conten-buttons-actions">
+                <ButtonDelete
+                  icon="trash-red"
+                  url={`/subtasks/${subTask.id}`}
+                  customOnClick={handleSubTaskDelete}
+                />
+              </div>
+            )}
+          </div>
           {((isStatusProcesOrDenied && isAuthorizedUser) ||
             (isAuthorizedMod && status === 'INREVIEW')) && (
             <div className="content-file">

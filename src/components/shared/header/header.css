@@ -67,3 +67,6 @@
 .icon-list {
   position: relative;
 }
+.nav-logo {
+  cursor: pointer;
+}

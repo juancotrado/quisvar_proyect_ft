@@ -119,7 +119,7 @@ const CardRegisterUser = ({ user, onSave }: CardRegisterUserProps) => {
         </div>
         <div className="col-input">
           <InputText
-            {...register('dni', { required: true, max: 8 })}
+            {...register('dni', { required: true, maxLength: 9 })}
             placeholder="N°"
             label="DNI"
             errors={errors}

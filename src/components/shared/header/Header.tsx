@@ -6,12 +6,16 @@ import { Subscription } from 'rxjs';
 import { toggle$ } from '../../../services/sharingSubject';
 import { SocketContext } from '../../../context/SocketContex';
 import { CardEditInformation, Menu } from '../..';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store';
 
 const Header = () => {
   const navigate = useNavigate();
   const socket = useContext(SocketContext);
   const [isOpen, setIsOpen] = useState(false);
   const handleToggleRef = useRef<Subscription>(new Subscription());
+  const { userSession } = useSelector((state: RootState) => state);
+  console.log(userSession.role);
 
   useEffect(() => {
     handleToggleRef.current = toggle$.getSubject.subscribe((value: boolean) =>
@@ -46,11 +50,19 @@ const Header = () => {
     socket.disconnect();
     navigate('login');
   };
+  const handleHome = () => {
+    navigate('/home');
+  };
 
-  const items = [
-    { title: 'Inicio', link: '/home' },
-    { title: 'Tareas', link: '/mis-tareas' },
-    { title: 'Especialidades', link: '/especialidades' },
+  const itemsAdmin = [
+    { id: 1, title: 'Inicio', link: '/home' },
+    { id: 2, title: 'Reportes', link: '/reportes' },
+    { id: 3, title: 'Especialidades', link: '/especialidades' },
+  ];
+  const itemsEmployee = [
+    { id: 1, title: 'Inicio', link: '/home' },
+    { id: 2, title: 'Tareas', link: '/mis-tareas' },
+    { id: 3, title: 'Especialidades', link: '/especialidades' },
   ];
 
   const icons = [
@@ -80,7 +92,11 @@ const Header = () => {
       icon: '/svg/Group.svg',
       action: openModal,
     },
-    { name: 'Configuracion', icon: '/svg/icon.svg', action: handleList },
+    {
+      name: 'Lista de usuarios',
+      icon: '/svg/list-user.svg',
+      action: handleList,
+    },
     {
       name: 'Acerca de',
       icon: '/svg/question-circle.svg',
@@ -94,17 +110,22 @@ const Header = () => {
       action: handleLogout,
     },
   ];
-
+  const itemType = userSession.role == 'ADMIN' ? itemsAdmin : itemsEmployee;
   return (
     <header className="header">
       <nav className="nav-container container">
         <div className="nav-options">
           <figure className="header-figure">
-            <img src="/img/quisvar_logo.png" alt="logo QuisVar" />
+            <img
+              className="nav-logo"
+              src="/img/quisvar_logo.png"
+              onClick={handleHome}
+              alt="logo QuisVar"
+            />
           </figure>
           <ul className="items-list">
-            {items.map((item, id) => (
-              <li key={id}>
+            {itemType.map(item => (
+              <li key={item.id}>
                 <NavLink
                   to={item.link}
                   className={({ isActive }) =>
@@ -120,14 +141,16 @@ const Header = () => {
         <ul className="icons-list">
           {icons.map(icon => (
             <li key={icon.id} className="icon-list">
-              <motion.img
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={icon.action}
-                src={icon.name}
-                alt={icon.name}
-                className="icon"
-              />
+              {(userSession.role !== 'EMPLOYEE' || icon.id !== 1) && (
+                <motion.img
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                  onClick={icon.action}
+                  src={icon.name}
+                  alt={icon.name}
+                  className="icon"
+                />
+              )}
               {icon.id === 3 && isOpen && <Menu data={menu} />}
             </li>
           ))}

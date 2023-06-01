@@ -23,7 +23,7 @@ import { WorkAreaForm } from '../../../../types/types';
 import { SubmitHandler, useForm } from 'react-hook-form';
 
 interface CardRegisterAreaProps {
-  onSave?: () => void;
+  onSave?: (name: string) => void;
   onClose?: () => void;
   projectId?: number;
   dataWorkArea?: WorkAreaForm | null;
@@ -50,7 +50,7 @@ const CardRegisterArea = ({
   const [data, setData] = useState<WorkAreaForm>(InitialValues);
   const { listUsers } = useSelector((state: RootState) => state);
   const [coordinator, setCoordinator] = useState<CoordinatorType>();
-  const { handleSubmit, register, setValue, watch } = useForm<WorkAreaForm>();
+  const { handleSubmit, register, setValue } = useForm<WorkAreaForm>();
 
   useEffect(() => {
     if (dataWorkArea) {
@@ -79,14 +79,19 @@ const CardRegisterArea = ({
   );
 
   const onSubmit: SubmitHandler<WorkAreaForm> = values => {
-    const userId = coordinator?.id;
-    console.log({ ...values, userId, projectId });
+    const userId = coordinator?.id || data.userId;
+    const workareaData = { ...values, userId, projectId };
+    axiosInstance.put(`/workareas/${values.id}`, workareaData).then(() => {
+      onSave?.(coordinator ? coordinator.name : handleGetUserById());
+      onClose?.();
+    });
   };
 
-  // const handleGetUserById = () => {
-  //   const findUser = data.userId;
-  //   const aw =
-  // };
+  const handleGetUserById = () => {
+    const findUser = users.find(u => u.id === dataWorkArea?.userId);
+    if (findUser) return findUser.name;
+    return '';
+  };
 
   return (
     <motion.form
@@ -106,7 +111,8 @@ const CardRegisterArea = ({
         className="input-project"
       />
       <DropDownSimple
-        defaultInput={''}
+        type="search"
+        defaultInput={handleGetUserById()}
         className="dropdown-area"
         selector
         data={users}

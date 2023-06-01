@@ -57,4 +57,5 @@
 
 .btn-area:hover {
   background-color: var(--color-secondary);
+  color: #ffffff;
 }

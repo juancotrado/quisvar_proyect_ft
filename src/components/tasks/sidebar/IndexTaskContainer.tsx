@@ -49,10 +49,10 @@ const IndexTaskContainer = ({ indexTask, onSave }: IndexTaskContainerProps) => {
         ) : (
           <>
             <span className="aside-name-index">{indexTask.name}</span>
+            <img src="/svg/down.svg" className="aside-dropdown-arrow" />
             <input type="checkbox" className="aside-dropdown-check" />
           </>
         )}
-        <img src="/svg/down.svg" className="aside-dropdown-arrow" />
       </div>
       {role !== 'EMPLOYEE' && (
         <div className="menu-index-task">

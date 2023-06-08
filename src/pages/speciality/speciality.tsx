@@ -12,7 +12,6 @@ import { CardRegisterProject } from '../../components';
 import { isOpenModal$ } from '../../services/sharingSubject';
 
 const Speciality = () => {
-  const navigation = useNavigate();
   const [projects, setProjects] = useState<ProjectType[]>([]);
   const [name, setName] = useState<string | null>(null);
   const { userSession } = useSelector((state: RootState) => state);

@@ -1,5 +1,5 @@
 // import React from 'react';
-import './task.css';
+import './tasks.css';
 import { useParams } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
@@ -27,7 +27,7 @@ const initValuesSubTask: SubTask = {
   taskId: 0,
   users: [],
 };
-const Task = () => {
+const Tasks = () => {
   const { id } = useParams();
   const [workArea, setWorkArea] = useState<WorkArea | null>(null);
   const [subTasks, setSubTasks] = useState<SubTask[] | null>(null);
@@ -250,4 +250,4 @@ const Task = () => {
   );
 };
 
-export default Task;
+export default Tasks;

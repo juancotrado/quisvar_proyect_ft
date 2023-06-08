@@ -1,32 +1,56 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+import { motion } from 'framer-motion';
 import { Input, TextArea } from '../../..';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
 import Modal from '../../../portal/Modal';
 import Button from '../../button/Button';
 import './CardRegisterArea.css';
-
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  FormEvent,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
+import { container } from '../../../../animations/animations';
+import InputText from '../../Input/Input';
+import DropDownSimple from '../../select/DropDownSimple';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../store';
+import { WorkAreaForm } from '../../../../types/types';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 interface CardRegisterAreaProps {
-  onSave?: () => void;
-  dataWorkArea?: WorkArea | null;
+  onSave?: (name: string) => void;
+  onClose?: () => void;
+  projectId?: number;
+  dataWorkArea?: WorkAreaForm | null;
 }
 
-type WorkArea = {
+type CoordinatorType = {
   id: number;
   name: string;
-  description?: string;
 };
 
-const InitialValues = {
+const InitialValues: WorkAreaForm = {
   id: 0,
   name: '',
-  description: '',
+  userId: 0,
+  projectId: 0,
 };
 
-const CardRegisterArea = ({ dataWorkArea, onSave }: CardRegisterAreaProps) => {
-  const [data, setData] = useState<WorkArea>(InitialValues);
-  const debounceRef = useRef<NodeJS.Timeout>();
+const CardRegisterArea = ({
+  dataWorkArea,
+  onSave,
+  projectId,
+  onClose,
+}: CardRegisterAreaProps) => {
+  const [data, setData] = useState<WorkAreaForm>(InitialValues);
+  const { listUsers } = useSelector((state: RootState) => state);
+  const [coordinator, setCoordinator] = useState<CoordinatorType>();
+  const { handleSubmit, register, setValue } = useForm<WorkAreaForm>();
 
   useEffect(() => {
     if (dataWorkArea) {
@@ -34,74 +58,70 @@ const CardRegisterArea = ({ dataWorkArea, onSave }: CardRegisterAreaProps) => {
     }
   }, [dataWorkArea]);
 
-  const sendForm = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (dataWorkArea) {
-      axiosInstance.put(`/workareas/${data.id}`, data).then(successfulShipment);
-    } else {
-      axiosInstance.post(`/workareas`, data).then(successfulShipment);
-    }
+  useEffect(() => {
+    setValue('name', data.name);
+    setValue('id', data.id);
+    setValue('projectId', data.projectId);
+    setValue('userId', data.userId);
+  }, [data]);
+
+  const users = useMemo(
+    () =>
+      listUsers
+        ? listUsers
+            .map(({ profile, ...props }) => ({
+              name: `${profile.firstName} ${profile.lastName}`,
+              ...props,
+            }))
+            .filter(u => u.role !== 'EMPLOYEE')
+        : [],
+    [listUsers]
+  );
+
+  const onSubmit: SubmitHandler<WorkAreaForm> = values => {
+    const userId = coordinator?.id || data.userId;
+    const workareaData = { ...values, userId, projectId };
+    axiosInstance.put(`/workareas/${values.id}`, workareaData).then(() => {
+      onSave?.(coordinator ? coordinator.name : handleGetUserById());
+      onClose?.();
+    });
   };
 
-  const handleArea = ({
-    target,
-  }: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = target;
-    if (debounceRef.current) clearTimeout(debounceRef.current);
-    debounceRef.current = setTimeout(() => {
-      setData({ ...data, [name]: value });
-    }, 250);
-  };
-
-  const successfulShipment = () => {
-    onSave?.();
-    setData(InitialValues);
-    closeFunctions();
-  };
-
-  const closeFunctions = () => {
-    isOpenModal$.setSubject = false;
-    setData(InitialValues);
+  const handleGetUserById = () => {
+    const findUser = users.find(u => u.id === dataWorkArea?.userId);
+    if (findUser) return findUser.name;
+    return '';
   };
 
   return (
-    <Modal size={50}>
-      <form
-        onSubmit={sendForm}
-        className="card-register-area"
-        autoComplete="off"
-      >
-        <span className="close-icon" onClick={closeFunctions}>
-          <img src="/svg/close.svg" alt="pencil" />
-        </span>
-        <h1>{dataWorkArea ? 'ACTUALIZAR AREA' : 'REGISTRAR AREA'}</h1>
-        <div className="col">
-          <Input
-            defaultValue={data.name}
-            label="Nombre"
-            placeholder="Nombre"
-            name="name"
-            required={true}
-            onChange={handleArea}
-          />
-          <TextArea
-            defaultValue={data.description}
-            label="Descripción"
-            name="description"
-            onChange={handleArea}
-            placeholder="Opcional"
-          />
-          <div className="btn-contain">
-            <Button
-              text={dataWorkArea ? 'ACTUALIZAR' : 'REGISTRAR'}
-              className="btn-area"
-              whileTap={{ scale: 0.9 }}
-              type="submit"
-            />
-          </div>
-        </div>
-      </form>
-    </Modal>
+    <motion.form
+      initial="hidden"
+      animate="show"
+      exit="hidden"
+      variants={container}
+      className="card-register-area"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+      <span className="close-icon" onClick={onClose}>
+        <img src="/svg/close.svg" alt="pencil" />
+      </span>
+      <InputText
+        {...register('name')}
+        placeholder="nombre"
+        className="input-project"
+      />
+      <DropDownSimple
+        type="search"
+        defaultInput={handleGetUserById()}
+        className="dropdown-area"
+        selector
+        data={users}
+        textField="name"
+        itemKey="id"
+        valueInput={(name, id) => setCoordinator({ id: parseInt(id), name })}
+      />
+      <button className="btn-area">Guardar</button>
+    </motion.form>
   );
 };
 

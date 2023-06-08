@@ -42,7 +42,7 @@ const CardSpeciality = ({
       {role !== 'EMPLOYEE' && (
         <span className="speciality-edit" onClick={e => e.stopPropagation()}>
           <ButtonDelete
-            icon="trash"
+            icon="trash-red"
             url={`/specialities/${data.id}`}
             className="speciality-delete-icon"
             onSave={onDelete}

@@ -11,6 +11,7 @@ import {
   WorkArea,
   NotificationsList,
   ListPersonalTask,
+  CommingSoon,
 } from '../pages';
 import { ProtectedRoute } from '../components';
 
@@ -30,6 +31,7 @@ const Navigation = () => {
             <Route path="/especialidades/:id" element={<Speciality />} />
             <Route path="/mis-tareas" element={<ListPersonalTask />} />
             <Route path="/lista-de-usuarios" element={<UsersList />} />
+            <Route path="/reportes" element={<CommingSoon />} />
             <Route
               path="/lista-de-notificaciones"
               element={<NotificationsList />}

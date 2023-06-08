@@ -6,20 +6,22 @@ import CardRegisterSubTask from '../cardRegisterSubTask/CardRegisterSubTask';
 import {
   isOpenModal$,
   isTaskInformation$,
-  toggle$,
 } from '../../../../services/sharingSubject';
 import { Subscription } from 'rxjs';
 
 interface CardRegisterAndInformationProps {
   subTask: SubTask;
-  coordinatorId: number;
+  isAuthorizedMod: boolean;
+  taskId: number;
 }
 
 const CardRegisterAndInformation = ({
-  coordinatorId,
+  isAuthorizedMod,
   subTask,
+  taskId,
 }: CardRegisterAndInformationProps) => {
   const [isTaskInformation, setIsTaskInformation] = useState<boolean>(true);
+  const [subTaskToEdit, setSubTaskToEdit] = useState<SubTask | null>(null);
 
   const handleToggleRef = useRef<Subscription>(new Subscription());
 
@@ -27,6 +29,7 @@ const CardRegisterAndInformation = ({
     handleToggleRef.current = isTaskInformation$.getSubject.subscribe(
       (value: boolean) => {
         setIsTaskInformation(value);
+        setSubTaskToEdit(null);
         isOpenModal$.setSubject = true;
       }
     );
@@ -35,12 +38,20 @@ const CardRegisterAndInformation = ({
     };
   }, []);
 
+  const openModalEdit = () => {
+    setIsTaskInformation(false);
+    setSubTaskToEdit(subTask);
+  };
   return (
     <Modal size={50}>
       {isTaskInformation ? (
-        <CardTaskInformation coordinatorId={coordinatorId} subTask={subTask} />
+        <CardTaskInformation
+          isAuthorizedMod={isAuthorizedMod}
+          subTask={subTask}
+          openModalEdit={openModalEdit}
+        />
       ) : (
-        <CardRegisterSubTask />
+        <CardRegisterSubTask subTask={subTaskToEdit} taskId={taskId} />
       )}
     </Modal>
   );

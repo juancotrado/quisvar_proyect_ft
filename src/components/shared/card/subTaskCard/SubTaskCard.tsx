@@ -15,6 +15,8 @@ const SubTaskCard = ({ subTask, getSubtask }: SubTaskCardProps) => {
     getSubtask(subTask);
   };
 
+  const usersAsigned = subTask.users.map(user => user.user.profile.firstName);
+  console.log(usersAsigned.join(','));
   const { status } = subTask;
   const proccessInfoShow =
     status !== 'UNRESOLVED' && status !== 'DONE' && status !== 'PROCESS';
@@ -42,9 +44,7 @@ const SubTaskCard = ({ subTask, getSubtask }: SubTaskCardProps) => {
         <h3 className="subTask-name">{subTask.name}</h3>
         <div className="subTask-info">
           <p className="subTask-owner">
-            {subTask.users?.length === 0
-              ? 'Libre'
-              : subTask.users?.at(0)?.user.profile.firstName}
+            {usersAsigned.length === 0 ? 'Libre' : usersAsigned.join(', ')}
           </p>
 
           <p className="subTask-price-container">

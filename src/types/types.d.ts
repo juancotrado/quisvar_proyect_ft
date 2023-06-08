@@ -93,10 +93,11 @@ export interface WorkArea {
   id: number;
   name: string;
   userId: number;
+  user: User;
   projectId: number;
   indexTasks: IndexTask[];
 }
-
+export type WorkAreaForm = Omit<WorkArea, 'indexTasks' | 'user'>;
 export interface IndexTask {
   id: number;
   name: string;
@@ -107,6 +108,7 @@ export interface Task {
   id: number;
   name: string;
   subTasks: SubTask[];
+  _count?: { subTasks: number };
 }
 
 // export interface SubTask {

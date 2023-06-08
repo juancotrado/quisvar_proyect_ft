@@ -9,6 +9,7 @@
   padding: 0 2rem;
   transition: 0.3s left ease;
   border-right: 3px solid var(--color-primary);
+  box-shadow: 0px 1.5px 4px rgba(0, 0, 0, 0.2);
 }
 .asilde-slice {
   overflow-y: auto;
@@ -18,28 +19,102 @@
 .aside-show {
   left: 0;
 }
+.index-task-section {
+  display: flex;
+  align-items: center;
+}
+.aside-title-info {
+  margin: 1rem 0;
+  font-size: 0.9rem;
+}
+.aside-coordinator-off {
+  color: var(--color-unresolved);
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+.aside-add-index-task {
+  display: flex;
+  font-size: 0.8rem;
+  gap: 0.8rem;
+  padding: 0.5rem 1rem;
+  color: var(--color-primary);
+  font-weight: 500;
+  justify-content: space-between;
+  /* border: 1px solid red; */
+  border-radius: var(--radius-input);
+  /* background-color: var(--color-menu); */
+}
+.add-btn-indextask {
+  width: 1rem;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+  transition: 0.1s ease;
+}
+.menu-index-task {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 20%;
+  gap: 0.5rem;
+  padding: 0.5rem;
+}
+.menu-index-task img {
+  height: 1.2rem;
+}
+.aside-name-index {
+  flex-grow: 1;
+}
+.delete-indextask {
+  padding: 0;
+  gap: 0;
+  width: 2rem;
+  height: 3rem;
+  border: none;
+}
 .aside-title {
   color: var(--color-secondary);
-  text-align: center;
+  text-align: left;
   font-size: 1.3rem;
-  margin: 1rem 0;
 }
 .aside-dropdown-section {
-  color: var(--color-secondary);
-  padding: 1em 0.7em;
-  font-size: 1rem;
+  /* min-width: 80%; */
+  flex-grow: 1;
   display: flex;
+  position: relative;
+  padding: 1em 0.7em;
+  color: var(--color-secondary);
+  font-size: 1rem;
   align-items: center;
   gap: 0.6rem;
   font-weight: 700;
+  gap: 0.5rem;
+}
+.area-menu-button {
+  width: 1.5rem;
+  height: 1.5rem;
+  transition: 0.5s ease-out;
+  cursor: pointer;
+}
+.area-menu-button:hover {
+  transform: rotate(-90deg);
+}
+.area-menu-button:active {
+  scale: 0.9;
+}
+
+.aside-container-title {
+  display: flex;
   position: relative;
+  align-items: center;
+  justify-content: space-between;
 }
 .aside-dropdown-icon {
   width: 1.5rem;
 }
 .aside-dropdown-check {
   position: absolute;
-  width: 100%;
+  min-width: 90%;
   height: 100%;
   opacity: 0;
   cursor: pointer;
@@ -67,6 +142,8 @@
   margin-left: auto;
 }
 .aside-dropdown-sub-list {
+  display: flex;
+  align-items: center;
   color: var(--color-secondary);
   padding: 1rem 0 1rem 1rem;
   border-left: 0.2rem solid var(--color-secondary);
@@ -74,6 +151,23 @@
   font-size: 1rem;
   font-weight: 600;
   cursor: pointer;
+}
+.aside-dropdown-sub-list span {
+  flex-grow: 1;
+}
+.input-task {
+  flex-grow: 1;
+  height: 2rem;
+  padding: 0 0.5rem;
+  border-radius: var(--radius-input);
+  background-color: var(--color-menu);
+}
+.delete-task {
+  padding: 0;
+  gap: 0;
+  width: 2rem;
+  height: 2rem;
+  border: none;
 }
 .aside-slide {
   position: absolute;
@@ -85,6 +179,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
   /* background-color: var(--color-primary); */
   /* border-radius: 50%; */
 }

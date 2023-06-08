@@ -9,8 +9,9 @@ import Tasks from './task/Tasks';
 import WorkArea from './workArea/WorkArea';
 import ListPersonalTask from './listPersonalTask/ListPersonalTask';
 import NotificationsList from './notificationsList/NotificationsList';
-
+import CommingSoon from './commingSoon/CommingSoon';
 export {
+  CommingSoon,
   ListPersonalTask,
   NotificationsList,
   Login,

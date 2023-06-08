@@ -1,50 +1,86 @@
 import { useState } from 'react';
 import { WorkArea } from '../../../types/types';
 import './sidebar.css';
+import { CardRegisterArea } from '../..';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store';
+import TaskListContainer from './TaskListContainer';
+import IndexTaskContainer from './IndexTaskContainer';
+import AddIndexTask from './AddIndexTask';
+import AddTask from './AddTask';
 
 interface SidebarProps {
   workArea: WorkArea;
+  onUpdate?: () => void;
   settingSubTasks: (id: number) => void;
 }
 
-const Sidebar = ({ workArea, settingSubTasks }: SidebarProps) => {
-  const { name, indexTasks } = workArea;
-
+const Sidebar = ({ workArea, settingSubTasks, onUpdate }: SidebarProps) => {
+  const { userSession } = useSelector((state: RootState) => state);
   const [isShow, setIsShow] = useState<boolean>(true);
+  const [openEditArea, setOpenEditArea] = useState<boolean>(false);
+  const { name, indexTasks, user, ...areaData } = workArea;
+  const role = userSession?.role ? userSession.role : 'EMPLOYEE';
+  const profileUser = user?.profile;
+  const workAreaInfo = { ...areaData, name };
 
+  const handleEditArea = () => setOpenEditArea(!openEditArea);
   const handleShow = () => setIsShow(!isShow);
+
   return (
     <aside className={`aside ${isShow && 'aside-show'}`}>
-      <h2 className="aside-title">{name} </h2>
+      <div className="aside-container-title">
+        <div className="aside-title-info">
+          <h2 className="aside-title">{name}</h2>
+          <span className={`${profileUser || 'aside-coordinator-off'}`}>
+            {profileUser
+              ? `${profileUser.firstName} ${profileUser.lastName}`
+              : ' Agregar Coordinador *'}
+          </span>
+        </div>
+        {role !== 'EMPLOYEE' && (
+          <button className="area-menu-button" onClick={handleEditArea}>
+            <img src="/svg/menu.svg" alt="menu" />
+          </button>
+        )}
+        {openEditArea && (
+          <CardRegisterArea
+            onClose={handleEditArea}
+            projectId={workArea.projectId}
+            dataWorkArea={workAreaInfo}
+            onSave={onUpdate}
+          />
+        )}
+      </div>
       <div className="asilde-slice">
         <ul className="aside-dropdown">
           {indexTasks.map(indexTask => (
             <li key={indexTask.id} className="aside-dropdown-list">
-              <div className="aside-dropdown-section">
-                <img
-                  src="/svg/reports.svg"
-                  alt="reportes"
-                  className="aside-dropdown-icon"
-                />
-                <span>{indexTask.name}</span>
-                <img src="/svg/down.svg" className="aside-dropdown-arrow" />
-                <input type="checkbox" className="aside-dropdown-check" />
-              </div>
+              <IndexTaskContainer indexTask={indexTask} onSave={onUpdate} />
               <div className="aside-dropdown-content">
                 <ul className="aside-dropdown-sub">
                   {indexTask.tasks.map(task => (
-                    <li
+                    <TaskListContainer
                       key={task.id}
-                      className="aside-dropdown-sub-list"
-                      onClick={() => settingSubTasks(task.id)}
-                    >
-                      {task.name.toLowerCase()}
-                    </li>
+                      task={task}
+                      settingSubTask={() => settingSubTasks(task.id)}
+                      onSave={onUpdate}
+                    />
                   ))}
+                  {role !== 'EMPLOYEE' && (
+                    <li>
+                      <AddTask indexTaskId={indexTask.id} onSave={onUpdate} />
+                    </li>
+                  )}
                 </ul>
               </div>
             </li>
           ))}
+          {role !== 'EMPLOYEE' && (
+            <li>
+              <AddIndexTask workAreaId={workArea.id} onSave={onUpdate} />
+            </li>
+          )}
         </ul>
       </div>
       <div className="aside-slide" onClick={handleShow}>

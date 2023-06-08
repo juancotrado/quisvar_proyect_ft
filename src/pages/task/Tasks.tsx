@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // import React from 'react';
 import './tasks.css';
 import { useParams } from 'react-router-dom';
@@ -29,15 +30,22 @@ const initValuesSubTask: SubTask = {
 };
 const Tasks = () => {
   const { id } = useParams();
+
   const [workArea, setWorkArea] = useState<WorkArea | null>(null);
   const [subTasks, setSubTasks] = useState<SubTask[] | null>(null);
   const [subTask, setSubTask] = useState<SubTask>(initValuesSubTask);
   const socket = useContext(SocketContext);
-  const { role } = useSelector((state: RootState) => state.userSession);
+  const { role, id: userSessionId } = useSelector(
+    (state: RootState) => state.userSession
+  );
 
   useEffect(() => {
+    getWorkAreas();
+  }, []);
+
+  const getWorkAreas = async () => {
     axiosInstance.get(`/workareas/${id}`).then(res => setWorkArea(res.data));
-  }, [id]);
+  };
 
   const settingSubTasks = (id: number) => {
     axiosInstance.get(`/tasks/${id}`).then(res => {
@@ -64,6 +72,30 @@ const Tasks = () => {
 
     return () => {
       socket.off('server:update-subTask');
+    };
+  }, [socket, subTasks]);
+  useEffect(() => {
+    socket.on('server:delete-subTask', (newSubTask: SubTask) => {
+      if (!subTasks) return;
+      const newSubTasks = subTasks?.filter(
+        subTask => subTask.id !== newSubTask.id
+      );
+      setSubTasks(newSubTasks);
+    });
+
+    return () => {
+      socket.off('server:delete-subTask');
+    };
+  }, [socket, subTasks]);
+
+  useEffect(() => {
+    socket.on('server:create-subTask', (newSubTask: SubTask) => {
+      if (!subTasks) return;
+      setSubTasks([...subTasks, newSubTask]);
+    });
+
+    return () => {
+      socket.off('server:create-subTask');
     };
   }, [socket, subTasks]);
 
@@ -171,6 +203,8 @@ const Tasks = () => {
   //   const clearDataInModal = () => setGetTaskData(null);
 
   //   const handleGetTaskData = (getTask: TaskType) => setGetTaskData(getTask);
+  const taskId = subTasks?.at(0)?.taskId;
+  const isAuthorizedMod = userSessionId === workArea?.userId;
 
   const openModaltoAdd = () => (isTaskInformation$.setSubject = false);
   return (
@@ -180,7 +214,7 @@ const Tasks = () => {
           <h1 className="main-title">
             LISTA DE <span className="main-title-span">TAREAS</span>
           </h1>
-          {role !== 'EMPLOYEE' && (
+          {isAuthorizedMod && subTasks && (
             <Button
               text="Agregar"
               icon="plus"
@@ -236,15 +270,20 @@ const Tasks = () => {
                 ))}
           </div>
         </section>
-        {workArea && (
+        {workArea && taskId && (
           <CardRegisterAndInformation
             subTask={subTask}
-            coordinatorId={workArea?.userId}
+            isAuthorizedMod={isAuthorizedMod}
+            taskId={taskId}
           />
         )}
       </div>
       {workArea && (
-        <Sidebar workArea={workArea} settingSubTasks={settingSubTasks} />
+        <Sidebar
+          workArea={workArea}
+          settingSubTasks={settingSubTasks}
+          onUpdate={getWorkAreas}
+        />
       )}
     </>
   );

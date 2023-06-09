@@ -1,6 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { ProjectType } from '../../types/types';
 import { axiosInstance } from '../../services/axiosInstance';
 import ProjectCard from '../../components/projects/projectCard/ProjectCard';

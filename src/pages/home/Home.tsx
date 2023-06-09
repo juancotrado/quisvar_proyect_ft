@@ -2,7 +2,7 @@ import './home.css';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-// interface HomePageProps {};
+
 const Home = () => {
   const { userSession } = useSelector((state: RootState) => state);
 

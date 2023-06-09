@@ -1,6 +1,6 @@
 export interface SpecialityType {
   id: number;
-  name: number;
+  name: string;
   _count?: {
     projects: number;
   };

@@ -53,10 +53,12 @@ const ProjectCard = ({ project, onClick, onSave }: ProjectCardProps) => {
                   url={`/projects/${project.id}`}
                   className="project-delete-icon"
                   onSave={onSave}
+                  imageStyle="project-size-img"
                 />
                 <Button
                   icon="pencil"
                   className="project-edit-icon"
+                  imageStyle="project-size-img"
                   onClick={onClick}
                 />
               </>

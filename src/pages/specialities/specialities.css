@@ -33,15 +33,27 @@
   gap: 0.4rem;
   color: var(--color-tertiary);
 }
-
+.speciality-main {
+  display: flex;
+  align-items: flex-start;
+}
 .speciality-card-container {
-  width: 25%;
+  width: 30%;
   display: flex;
   flex-wrap: wrap;
   justify-items: center;
   justify-content: center;
   gap: 1rem;
   padding: 0 1rem;
-  margin-top: 3rem;
+  margin-top: 1rem;
+  overflow-y: auto;
+}
+.speciality-project-container {
+  border-left: 0.2rem solid var(--color-secondary);
+  width: 100%;
+  padding: 0 1rem 0 1rem;
+  display: grid;
+  margin-top: 1rem;
+  gap: 1rem 0;
   overflow-y: auto;
 }

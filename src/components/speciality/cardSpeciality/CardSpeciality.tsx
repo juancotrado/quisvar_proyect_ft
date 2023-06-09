@@ -12,6 +12,7 @@ interface CardSpecialityProps {
   role?: string;
   onUpdate?: () => void;
   onDelete?: () => void;
+  getProjects: (value: number) => void;
 }
 
 const CardSpeciality = ({
@@ -19,12 +20,13 @@ const CardSpeciality = ({
   role,
   onDelete,
   onUpdate,
+  getProjects,
 }: CardSpecialityProps) => {
   const navigate = useNavigate();
   const [isEditable, setIsEditable] = useState(false);
   const { handleSubmit, register } = useForm<SpecialityType>();
-  const handleNext = () => {
-    navigate(`/especialidades/${data.id}`);
+  const handleProject = () => {
+    getProjects(data.id);
   };
 
   const onSubmit: SubmitHandler<SpecialityType> = values => {
@@ -38,7 +40,7 @@ const CardSpeciality = ({
     setIsEditable(false);
   };
   return (
-    <div className="speciality-card" onClick={handleNext} title={data.name}>
+    <div className="speciality-card" onClick={handleProject} title={data.name}>
       <div className="speciality-main-title">
         {role !== 'EMPLOYEE' && (
           <div className="speciality-edit" onClick={e => e.stopPropagation()}>

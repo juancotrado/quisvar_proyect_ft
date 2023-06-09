@@ -21,10 +21,11 @@ const InitialValues: ProjectForm = {
   untilDate: _date(new Date()),
   status: false,
   userId: 0,
+  specialityId: 0,
 };
 
 interface CardRegisterProjectProps {
-  onSave?: () => void;
+  onSave?: (value: number) => void;
   project?: ProjectForm | null;
   specialityId?: number;
 }
@@ -68,12 +69,16 @@ const CardRegisterProject = ({
   }, [dataForm]);
 
   const onSubmit: SubmitHandler<ProjectForm> = values => {
-    const { startDate, untilDate, ...moreValues } = values;
+    const { startDate, untilDate, userId, description, typeSpeciality, name } =
+      values;
     const _data = {
       startDate: new Date(startDate),
       untilDate: new Date(untilDate),
       specialityId,
-      ...moreValues,
+      userId,
+      description,
+      typeSpeciality,
+      name,
     };
     if (dataForm.id) {
       axiosInstance
@@ -85,7 +90,8 @@ const CardRegisterProject = ({
   };
 
   const successfulShipment = () => {
-    onSave?.();
+    if (!specialityId) return;
+    onSave?.(specialityId);
     isOpenModal$.setSubject = false;
   };
 

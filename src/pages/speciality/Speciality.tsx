@@ -68,9 +68,9 @@ const Speciality = () => {
           <ProjectCard
             key={project.id}
             project={project}
-            onClick={() => {
-              editProject(project);
-            }}
+            // onClick={() => {
+            //   editProject(project);
+            // }}
             onSave={succefullyProject}
           />
         ))}

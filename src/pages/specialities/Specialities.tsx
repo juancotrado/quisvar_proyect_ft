@@ -7,11 +7,15 @@ import CardSpeciality from '../../components/speciality/cardSpeciality/CardSpeci
 import CardAddSpeciality from '../../components/speciality/cardAddSpeality/CardAddSpeciality';
 import './specialities.css';
 import ProjectCard from '../../components/projects/projectCard/ProjectCard';
+import { CardRegisterProject } from '../../components';
+import Button from '../../components/shared/button/Button';
+import { isOpenModal$ } from '../../services/sharingSubject';
 
 const Specialities = () => {
   const { userSession } = useSelector((state: RootState) => state);
-  const [projects, setProjects] = useState<ProjectType[]>([]);
-
+  const [projects, setProjects] = useState<ProjectType[] | null>(null);
+  const [project, setProject] = useState<ProjectType | null>(null);
+  const [specialityId, setSpecialityId] = useState<number | null>(null);
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
   const [specialities, setSpecialities] = useState<SpecialityType[] | null>(
     null
@@ -27,16 +31,34 @@ const Specialities = () => {
       .then(res => setSpecialities(res.data));
   };
   const getProjects = async (id: number) => {
+    setSpecialityId(id);
     await axiosInstance.get(`specialities/${id}`).then(res => {
       setProjects(res.data.projects);
     });
   };
+
+  const addNewProject = () => {
+    isOpenModal$.setSubject = true;
+    setProject(null);
+  };
+  const editProject = (project: ProjectType) => {
+    setProject(project);
+    isOpenModal$.setSubject = true;
+  };
   return (
-    <div className="container speciality">
+    <div className="speciality container">
       <div className="speciality-head">
         <h1 className="speciality-title">
           <span className="speciality-title-span">ESPECIALIDADES</span>
         </h1>
+        {role !== 'EMPLOYEE' && projects && (
+          <Button
+            text="Agregar"
+            icon="plus"
+            className="btn-add"
+            onClick={addNewProject}
+          />
+        )}
       </div>
       <div className="speciality-main">
         <div className="speciality-card-container">
@@ -56,18 +78,27 @@ const Specialities = () => {
           )}
         </div>
         <div className="speciality-project-container">
-          {projects.map(project => (
-            <ProjectCard
-              key={project.id}
-              project={project}
-              // onClick={() => {
-              //   editProject(project);
-              // }}
-              // onSave={succefullyProject}
-            />
-          ))}
+          {projects &&
+            projects.map(project => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                // onClick={() => {
+                //   editProject(project);
+                // }}
+                editProject={editProject}
+                onSave={getProjects}
+              />
+            ))}
         </div>
       </div>
+      {specialityId && (
+        <CardRegisterProject
+          specialityId={specialityId}
+          project={project}
+          onSave={getProjects}
+        />
+      )}
     </div>
   );
 };

@@ -45,6 +45,15 @@ const Specialities = () => {
     setProject(project);
     isOpenModal$.setSubject = true;
   };
+  const getText = () => {
+    if (projects === null)
+      return 'Seleccione unas de las especialidades para ver los proyectos disponibles.';
+    if (projects.length === 0) {
+      return role === 'EMPLOYEE'
+        ? 'Esta especialidad no tiene proyectos, elija otra especialidad.'
+        : 'Esta especialidad no tiene proyectos, agregue un nuevo proyecto.';
+    }
+  };
   return (
     <div className="speciality container">
       <div className="speciality-head">
@@ -77,20 +86,23 @@ const Specialities = () => {
             <CardAddSpeciality onSave={getSpecialities} />
           )}
         </div>
-        <div className="speciality-project-container">
-          {projects &&
-            projects.map(project => (
-              <ProjectCard
-                key={project.id}
-                project={project}
-                // onClick={() => {
-                //   editProject(project);
-                // }}
-                editProject={editProject}
-                onSave={getProjects}
-              />
-            ))}
-        </div>
+        {projects?.length ? (
+          <div className="speciality-project-container">
+            {projects &&
+              projects.map(project => (
+                <ProjectCard
+                  key={project.id}
+                  project={project}
+                  editProject={editProject}
+                  onSave={getProjects}
+                />
+              ))}
+          </div>
+        ) : (
+          <div className="speciality-project-aditional">
+            <p className="speciality-project-paragraph">{getText()}</p>
+          </div>
+        )}
       </div>
       {specialityId && (
         <CardRegisterProject

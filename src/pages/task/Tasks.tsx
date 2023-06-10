@@ -34,6 +34,7 @@ const Tasks = () => {
   const [workArea, setWorkArea] = useState<WorkArea | null>(null);
   const [subTasks, setSubTasks] = useState<SubTask[] | null>(null);
   const [subTask, setSubTask] = useState<SubTask>(initValuesSubTask);
+  const [taskId, setTaskId] = useState<number | null>(null);
   const socket = useContext(SocketContext);
   const { role, id: userSessionId } = useSelector(
     (state: RootState) => state.userSession
@@ -49,6 +50,7 @@ const Tasks = () => {
 
   const settingSubTasks = (id: number) => {
     axiosInstance.get(`/tasks/${id}`).then(res => {
+      setTaskId(res.data.id);
       setSubTasks(res.data.subTasks);
       socket.emit('join', res.data.id);
       isOpenModal$.setSubject = false;
@@ -203,7 +205,7 @@ const Tasks = () => {
   //   const clearDataInModal = () => setGetTaskData(null);
 
   //   const handleGetTaskData = (getTask: TaskType) => setGetTaskData(getTask);
-  const taskId = subTasks?.at(0)?.taskId;
+  // const taskId = subTasks?.at(0)?.taskId;
   const isAuthorizedMod = userSessionId === workArea?.userId;
 
   const openModaltoAdd = () => (isTaskInformation$.setSubject = false);
@@ -270,7 +272,7 @@ const Tasks = () => {
                 ))}
           </div>
         </section>
-        {workArea && taskId && (
+        {workArea && (
           <CardRegisterAndInformation
             subTask={subTask}
             isAuthorizedMod={isAuthorizedMod}

@@ -5,7 +5,6 @@ import DropDownSimple from '../../select/DropDownSimple';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import InputFile from '../../Input/InputFile';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { SocketContext } from '../../../../context/SocketContex';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
@@ -20,7 +19,7 @@ type SubTaskForm = {
 
 interface CardRegisterSubTaskProps {
   subTask: SubTask | null;
-  taskId: number;
+  taskId: number | null;
 }
 
 type DataUser = { id: number; name: string };
@@ -64,7 +63,6 @@ const CardRegisterSubTask = ({ subTask, taskId }: CardRegisterSubTaskProps) => {
       });
     } else {
       const body = { ...data, taskId };
-
       axiosInstance.post('/subtasks', body).then(res => {
         socket.emit('client:create-subTask', res.data);
         isOpenModal$.setSubject = false;

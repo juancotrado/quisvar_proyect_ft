@@ -12,7 +12,7 @@ import { Subscription } from 'rxjs';
 interface CardRegisterAndInformationProps {
   subTask: SubTask;
   isAuthorizedMod: boolean;
-  taskId: number;
+  taskId: number | null;
 }
 
 const CardRegisterAndInformation = ({

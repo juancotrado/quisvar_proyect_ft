@@ -136,9 +136,9 @@ const CardTaskInformation = ({
       });
   };
 
-  const deleteFile = (URL: string) => {
+  const deleteFile = (id: number) => {
     axiosInstance
-      .delete(URL)
+      .delete(`/files/remove/${id}`)
       .then(res => socket.emit('client:update-subTask', res.data));
   };
 
@@ -151,8 +151,6 @@ const CardTaskInformation = ({
 
   const areAuthorizedUsers = isAuthorizedMod || isAuthorizedUser;
   const isStatusProcesOrDenied = status === 'PROCESS' || status === 'DENIED';
-
-  // const subTaskStatus: keyof typeof statusText = subTask.status;
   return (
     <div className="information-container">
       <div className="main-content">
@@ -232,11 +230,7 @@ const CardTaskInformation = ({
                         (isAuthorizedMod && status === 'INREVIEW')) && (
                         <ButtonDelete
                           icon="trash-red"
-                          customOnClick={() =>
-                            deleteFile(
-                              `/subtasks/deleteFile/${subTask.id}/${file}`
-                            )
-                          }
+                          customOnClick={() => deleteFile(file.id)}
                           className="subtask-delete-icon"
                         />
                       )}
@@ -419,15 +413,10 @@ const CardTaskInformation = ({
                             {normalizeFileName(file.name)}
                           </span>
                         </a>
-                        {((isStatusProcesOrDenied && isAuthorizedUser) ||
-                          (isAuthorizedMod && status === 'INREVIEW')) && (
+                        {isAuthorizedMod && status === 'UNRESOLVED' && (
                           <ButtonDelete
                             icon="trash-red"
-                            customOnClick={() =>
-                              deleteFile(
-                                `/subtasks/deleteFile/${subTask.id}/${file}`
-                              )
-                            }
+                            customOnClick={() => deleteFile(file.id)}
                             className="subtask-delete-icon"
                           />
                         )}

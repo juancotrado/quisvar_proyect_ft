@@ -1,6 +1,5 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { ProjectType } from '../../types/types';
 import { axiosInstance } from '../../services/axiosInstance';
 import ProjectCard from '../../components/projects/projectCard/ProjectCard';
@@ -12,7 +11,6 @@ import { CardRegisterProject } from '../../components';
 import { isOpenModal$ } from '../../services/sharingSubject';
 
 const Speciality = () => {
-  const navigation = useNavigate();
   const [projects, setProjects] = useState<ProjectType[]>([]);
   const [name, setName] = useState<string | null>(null);
   const { userSession } = useSelector((state: RootState) => state);
@@ -70,9 +68,9 @@ const Speciality = () => {
           <ProjectCard
             key={project.id}
             project={project}
-            onClick={() => {
-              editProject(project);
-            }}
+            // onClick={() => {
+            //   editProject(project);
+            // }}
             onSave={succefullyProject}
           />
         ))}

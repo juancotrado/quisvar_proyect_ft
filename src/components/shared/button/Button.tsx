@@ -5,6 +5,7 @@ interface ButtonProps extends HTMLMotionProps<'button'> {
   text?: string;
   type?: 'button' | 'submit' | 'reset';
   icon?: string;
+  imageStyle?: string;
   onClick: (e: React.MouseEvent<HTMLElement>) => void;
 }
 const Button = ({
@@ -12,6 +13,7 @@ const Button = ({
   text,
   onClick,
   type,
+  imageStyle = '',
   icon,
   ...otherProps
 }: ButtonProps) => {
@@ -24,7 +26,7 @@ const Button = ({
       type={type}
       {...otherProps}
     >
-      {icon && <img src={`/svg/${icon}.svg`} />}
+      {icon && <img src={`/svg/${icon}.svg`} className={imageStyle} />}
       {text}
     </motion.button>
   );

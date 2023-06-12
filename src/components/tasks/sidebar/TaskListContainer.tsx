@@ -11,12 +11,14 @@ interface TaskListContainerProps {
   task: Task;
   settingSubTask: () => void;
   onSave?: () => void;
+  taskSelected: number | null;
 }
 
 const TaskListContainer = ({
   task,
   settingSubTask,
   onSave,
+  taskSelected,
 }: TaskListContainerProps) => {
   const [openEditTask, setOpenEditTask] = useState<boolean>(false);
   const { userSession } = useSelector((state: RootState) => state);
@@ -36,7 +38,7 @@ const TaskListContainer = ({
   };
 
   return (
-    <li className="aside-dropdown-sub-list" onClick={() => settingSubTask()}>
+    <li className="aside-dropdown-sub-list " onClick={settingSubTask}>
       {openEditTask ? (
         <Input
           defaultValue={task.name}
@@ -46,7 +48,13 @@ const TaskListContainer = ({
           onChange={e => toggleInput(e)}
         />
       ) : (
-        <span>{task.name.toLowerCase()}</span>
+        <span
+          className={`aside-dropdown-sub-list-span ${
+            task.id === taskSelected && 'aside-dropdown-sub-list-span-active'
+          }`}
+        >
+          {task.name.toLowerCase()}
+        </span>
       )}
       {role !== 'EMPLOYEE' && (
         <div className="menu-index-task">

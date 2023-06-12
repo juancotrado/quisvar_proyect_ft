@@ -13,6 +13,7 @@ interface ButtonProps extends HTMLMotionProps<'button'> {
   icon: string;
   onSave?: () => void;
   customOnClick?: () => void;
+  imageStyle?: string;
 }
 const ButtonDelete = ({
   className,
@@ -21,6 +22,7 @@ const ButtonDelete = ({
   url,
   icon,
   onSave,
+  imageStyle = '',
   customOnClick,
   ...otherProps
 }: ButtonProps) => {
@@ -52,7 +54,13 @@ const ButtonDelete = ({
         type={type}
         {...otherProps}
       >
-        {icon && <img src={`/svg/${icon}.svg`} alt={`${icon}`} />}
+        {icon && (
+          <img
+            src={`/svg/${icon}.svg`}
+            alt={`${icon}`}
+            className={imageStyle}
+          />
+        )}
         {text}
       </motion.button>
 

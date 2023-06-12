@@ -100,12 +100,7 @@
   background-color: rgba(14, 155, 216, 0.2);
   border-radius: var(--radius-input);
 }
-.statement div {
-  display: flex;
-  flex-direction: column;
-  padding: 1rem;
-  gap: 1rem;
-}
+
 .subtask-delete-icon {
   background-color: white;
   padding: 0;

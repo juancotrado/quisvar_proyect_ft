@@ -4,16 +4,16 @@ import {
   Home,
   Login,
   NotFound,
-  Task,
-  UserList,
+  Tasks,
   Specialities,
   Speciality,
+  UsersList,
+  WorkArea,
+  NotificationsList,
+  ListPersonalTask,
+  CommingSoon,
 } from '../pages';
-import WorkArea from '../pages/workArea/WorkArea';
 import { ProtectedRoute } from '../components';
-import ListPersonalTask from '../pages/listPersonalTask/ListPersonalTask';
-import NotificationsList from '../pages/notificationsList/NotificationsList';
-import CommingSoon from '../pages/commingSoon/CommingSoon';
 
 const Navigation = () => {
   return (
@@ -25,12 +25,12 @@ const Navigation = () => {
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/tareas/:id" element={<Task />} />
+            <Route path="/tareas/:id" element={<Tasks />} />
             <Route path="/areas" element={<WorkArea />} />
             <Route path="/especialidades" element={<Specialities />} />
             <Route path="/especialidades/:id" element={<Speciality />} />
             <Route path="/mis-tareas" element={<ListPersonalTask />} />
-            <Route path="/lista-de-usuarios" element={<UserList />} />
+            <Route path="/lista-de-usuarios" element={<UsersList />} />
             <Route path="/reportes" element={<CommingSoon />} />
             <Route
               path="/lista-de-notificaciones"

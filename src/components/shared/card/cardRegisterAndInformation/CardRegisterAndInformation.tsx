@@ -12,13 +12,15 @@ import { Subscription } from 'rxjs';
 interface CardRegisterAndInformationProps {
   subTask: SubTask;
   isAuthorizedMod: boolean;
-  taskId: number;
+  taskId: number | null;
+  projectName: string;
 }
 
 const CardRegisterAndInformation = ({
   isAuthorizedMod,
   subTask,
   taskId,
+  projectName,
 }: CardRegisterAndInformationProps) => {
   const [isTaskInformation, setIsTaskInformation] = useState<boolean>(true);
   const [subTaskToEdit, setSubTaskToEdit] = useState<SubTask | null>(null);
@@ -49,6 +51,7 @@ const CardRegisterAndInformation = ({
           isAuthorizedMod={isAuthorizedMod}
           subTask={subTask}
           openModalEdit={openModalEdit}
+          projectName={projectName}
         />
       ) : (
         <CardRegisterSubTask subTask={subTaskToEdit} taskId={taskId} />

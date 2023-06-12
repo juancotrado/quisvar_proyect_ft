@@ -12,12 +12,12 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { axiosInstance } from '../../../services/axiosInstance';
 
 interface ProjectCardProps {
-  onClick?: () => void;
+  editProject: (value: ProjectType) => void;
   project: ProjectType;
-  onSave?: () => void;
+  onSave?: (value: number) => void;
 }
 
-const ProjectCard = ({ project, onClick, onSave }: ProjectCardProps) => {
+const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
   const { userSession } = useSelector((state: RootState) => state);
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
   const [addArea, setAddArea] = useState(false);
@@ -27,11 +27,18 @@ const ProjectCard = ({ project, onClick, onSave }: ProjectCardProps) => {
 
   const onSubmitArea: SubmitHandler<AreaForm> = values => {
     axiosInstance.post('/workareas', values).then(() => {
-      onSave?.();
+      handleSave();
       setAddArea(false);
     });
   };
 
+  const handleSave = () => {
+    onSave?.(project.specialityId);
+  };
+
+  const handleEdit = () => {
+    editProject(project);
+  };
   return (
     <div className="project-card">
       <figure className="project-card-figure">
@@ -52,12 +59,14 @@ const ProjectCard = ({ project, onClick, onSave }: ProjectCardProps) => {
                   icon="trash"
                   url={`/projects/${project.id}`}
                   className="project-delete-icon"
-                  onSave={onSave}
+                  onSave={handleSave}
+                  imageStyle="project-size-img"
                 />
                 <Button
                   icon="pencil"
                   className="project-edit-icon"
-                  onClick={onClick}
+                  imageStyle="project-size-img"
+                  onClick={handleEdit}
                 />
               </>
             )}
@@ -86,7 +95,7 @@ const ProjectCard = ({ project, onClick, onSave }: ProjectCardProps) => {
                     className="btn-delete-area"
                     icon="close"
                     url={`/workareas/${area.id}`}
-                    onSave={onSave}
+                    onSave={handleSave}
                   />
                 )}
               </div>

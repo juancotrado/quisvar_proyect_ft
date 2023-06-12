@@ -23,9 +23,15 @@ const Sidebar = ({ workArea, settingSubTasks, onUpdate }: SidebarProps) => {
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
   const profileUser = user?.profile;
   const workAreaInfo = { ...areaData, name };
+  const [taskSelected, setTaskSelected] = useState<number | null>(null);
 
   const handleEditArea = () => setOpenEditArea(!openEditArea);
   const handleShow = () => setIsShow(!isShow);
+
+  const handleTaks = (id: number) => {
+    settingSubTasks(id);
+    setTaskSelected(id);
+  };
 
   return (
     <aside className={`aside ${isShow && 'aside-show'}`}>
@@ -63,8 +69,9 @@ const Sidebar = ({ workArea, settingSubTasks, onUpdate }: SidebarProps) => {
                     <TaskListContainer
                       key={task.id}
                       task={task}
-                      settingSubTask={() => settingSubTasks(task.id)}
+                      settingSubTask={() => handleTaks(task.id)}
                       onSave={onUpdate}
+                      taskSelected={taskSelected}
                     />
                   ))}
                   {role !== 'EMPLOYEE' && (

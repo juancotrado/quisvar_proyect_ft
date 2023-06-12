@@ -7,7 +7,7 @@ import { isOpenModal$ } from '../../services/sharingSubject';
 import { User } from '../../types/types';
 import UserInfo from '../../components/users/UserInfo';
 
-const UserList = () => {
+const UsersList = () => {
   const [users, setUsers] = useState<User[] | null>(null);
   const [userData, setUserData] = useState<User | null>(null);
 
@@ -78,4 +78,4 @@ const UserList = () => {
   );
 };
 
-export default UserList;
+export default UsersList;

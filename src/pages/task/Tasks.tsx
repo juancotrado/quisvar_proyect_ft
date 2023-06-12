@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // import React from 'react';
-import './task.css';
+import './tasks.css';
 import { useParams } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
@@ -28,12 +28,13 @@ const initValuesSubTask: SubTask = {
   taskId: 0,
   users: [],
 };
-const Task = () => {
+const Tasks = () => {
   const { id } = useParams();
 
   const [workArea, setWorkArea] = useState<WorkArea | null>(null);
   const [subTasks, setSubTasks] = useState<SubTask[] | null>(null);
   const [subTask, setSubTask] = useState<SubTask>(initValuesSubTask);
+  const [taskId, setTaskId] = useState<number | null>(null);
   const socket = useContext(SocketContext);
   const { role, id: userSessionId } = useSelector(
     (state: RootState) => state.userSession
@@ -49,6 +50,7 @@ const Task = () => {
 
   const settingSubTasks = (id: number) => {
     axiosInstance.get(`/tasks/${id}`).then(res => {
+      setTaskId(res.data.id);
       setSubTasks(res.data.subTasks);
       socket.emit('join', res.data.id);
       isOpenModal$.setSubject = false;
@@ -203,7 +205,7 @@ const Task = () => {
   //   const clearDataInModal = () => setGetTaskData(null);
 
   //   const handleGetTaskData = (getTask: TaskType) => setGetTaskData(getTask);
-  const taskId = subTasks?.at(0)?.taskId;
+  // const taskId = subTasks?.at(0)?.taskId;
   const isAuthorizedMod = userSessionId === workArea?.userId;
 
   const openModaltoAdd = () => (isTaskInformation$.setSubject = false);
@@ -270,9 +272,10 @@ const Task = () => {
                 ))}
           </div>
         </section>
-        {workArea && taskId && (
+        {workArea && (
           <CardRegisterAndInformation
             subTask={subTask}
+            projectName={workArea.project.name}
             isAuthorizedMod={isAuthorizedMod}
             taskId={taskId}
           />
@@ -289,4 +292,4 @@ const Task = () => {
   );
 };
 
-export default Task;
+export default Tasks;

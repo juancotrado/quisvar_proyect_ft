@@ -275,6 +275,7 @@ const Tasks = () => {
         {workArea && (
           <CardRegisterAndInformation
             subTask={subTask}
+            projectName={workArea.project.name}
             isAuthorizedMod={isAuthorizedMod}
             taskId={taskId}
           />

@@ -7,9 +7,13 @@ import Modal from '../../../portal/Modal';
 import './cardTaskInformation.css';
 import Button from '../../button/Button';
 import { ChangeEvent, useContext, useMemo, useState } from 'react';
-import { SubTask } from '../../../../types/types';
+import { SubTask, fyleType } from '../../../../types/types';
 import { SocketContext } from '../../../../context/SocketContex';
-import { URL_FILES, axiosInstance } from '../../../../services/axiosInstance';
+import {
+  URL,
+  URL_FILES,
+  axiosInstance,
+} from '../../../../services/axiosInstance';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
 import { InputRange } from '../../../index';
@@ -20,6 +24,7 @@ interface CardTaskInformationProps {
   subTask: SubTask;
   isAuthorizedMod: boolean;
   openModalEdit: () => void;
+  projectName: string;
 }
 type DataUser = { id: number; name: string };
 
@@ -27,6 +32,7 @@ const CardTaskInformation = ({
   subTask,
   isAuthorizedMod,
   openModalEdit,
+  projectName,
 }: CardTaskInformationProps) => {
   const socket = useContext(SocketContext);
   const { userSession } = useSelector((state: RootState) => state);
@@ -60,12 +66,12 @@ const CardTaskInformation = ({
     setFile(e.target.files[0]);
   };
 
-  const handleUploadClick = () => {
+  const handleUploadClick = (type: fyleType) => {
     if (!file) return;
     const formdata = new FormData();
-    formdata.append('myFiles', file);
+    formdata.append('file', file);
     axiosInstance
-      .post(`/subtasks/upload/${subTask.id}`, formdata)
+      .post(`/files/upload/${subTask.id}/?status=${type}`, formdata)
       .then(res => socket.emit('client:update-subTask', res.data));
   };
 
@@ -145,6 +151,7 @@ const CardTaskInformation = ({
 
   const areAuthorizedUsers = isAuthorizedMod || isAuthorizedUser;
   const isStatusProcesOrDenied = status === 'PROCESS' || status === 'DENIED';
+
   // const subTaskStatus: keyof typeof statusText = subTask.status;
   return (
     <div className="information-container">
@@ -193,7 +200,7 @@ const CardTaskInformation = ({
                 <Button
                   text="Subir archivo"
                   className="content-file-send-button"
-                  onClick={handleUploadClick}
+                  onClick={() => handleUploadClick('REVIEW')}
                 />
               </div>
             </div>
@@ -202,77 +209,116 @@ const CardTaskInformation = ({
             <div className="content-file">
               <h4 className="content-file-title">Archivos:</h4>
               <div className="subtask-files">
-                {subTask.files?.map(file => (
-                  <div key={file} className="subtask-file-contain">
-                    <a
-                      href={`${URL_FILES}/${file}`}
-                      target="_blank"
-                      className="subtask-file"
-                      download={'xyz.pdf'}
-                    >
-                      <img
-                        src="/svg/file-download.svg"
-                        alt="W3Schools"
-                        className="subtask-file-icon"
-                      ></img>
-                      <span className="subtask-file-name">
-                        {normalizeFileName(file)}
-                      </span>
-                    </a>
-                    {((isStatusProcesOrDenied && isAuthorizedUser) ||
-                      (isAuthorizedMod && status === 'INREVIEW')) && (
-                      <ButtonDelete
-                        icon="trash-red"
-                        customOnClick={() =>
-                          deleteFile(
-                            `/subtasks/deleteFile/${subTask.id}/${file}`
-                          )
-                        }
-                        className="subtask-delete-icon"
-                      />
-                    )}
-                  </div>
-                ))}
+                {subTask.files
+                  ?.filter(({ type }) => type === 'REVIEW')
+                  .map(file => (
+                    <div key={file.id} className="subtask-file-contain">
+                      <a
+                        href={`${URL}/review/${projectName}/${file.name}`}
+                        target="_blank"
+                        className="subtask-file"
+                        download={'xyz.pdf'}
+                      >
+                        <img
+                          src="/svg/file-download.svg"
+                          alt="W3Schools"
+                          className="subtask-file-icon"
+                        ></img>
+                        <span className="subtask-file-name">
+                          {normalizeFileName(file.name)}
+                        </span>
+                      </a>
+                      {((isStatusProcesOrDenied && isAuthorizedUser) ||
+                        (isAuthorizedMod && status === 'INREVIEW')) && (
+                        <ButtonDelete
+                          icon="trash-red"
+                          customOnClick={() =>
+                            deleteFile(
+                              `/subtasks/deleteFile/${subTask.id}/${file}`
+                            )
+                          }
+                          className="subtask-delete-icon"
+                        />
+                      )}
+                    </div>
+                  ))}
               </div>
             </div>
           )}
-          {status === 'UNRESOLVED' && (
-            <div className="content-add-users">
-              <DropDownSimple
-                data={users}
-                textField="name"
-                itemKey="id"
-                label="Agregar Usuarios a la tarea:"
-                valueInput={(name, id) =>
-                  handleAddUser({ id: parseInt(id), name })
-                }
-              />
-              {usersData && (
-                <div className="content-lists-users">
-                  {usersData.map((_user, index) => (
-                    <div key={_user.id} className="col-list-user">
-                      <span className="user-info">
-                        {index + 1}
-                        {') '}
-                        {_user.name}
-                      </span>
-                      <button
-                        type="button"
-                        className="delete-list-user"
-                        onClick={() => handleRemoveUser(_user)}
-                      >
-                        <img src="/svg/close.svg" />
-                      </button>
-                    </div>
-                  ))}
+          {status === 'UNRESOLVED' && isAuthorizedMod && (
+            <>
+              <div className="content-add-users">
+                <DropDownSimple
+                  data={users}
+                  textField="name"
+                  itemKey="id"
+                  label="Agregar Usuarios a la tarea:"
+                  valueInput={(name, id) =>
+                    handleAddUser({ id: parseInt(id), name })
+                  }
+                />
+                {usersData && (
+                  <div className="content-lists-users">
+                    {usersData.map((_user, index) => (
+                      <div key={_user.id} className="col-list-user">
+                        <span className="user-info">
+                          {index + 1}
+                          {') '}
+                          {_user.name}
+                        </span>
+                        <button
+                          type="button"
+                          className="delete-list-user"
+                          onClick={() => handleRemoveUser(_user)}
+                        >
+                          <img src="/svg/close.svg" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                <Button
+                  text="agregar usuarios"
+                  className="content-file-send-button"
+                  onClick={handleAddUserByTask}
+                />
+              </div>
+              <div className="content-file">
+                <h4 className="content-file-title">Subir Recursos:</h4>
+                <div className="content-file-send">
+                  <div
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      border: '2px dashed #ccc',
+                      borderRadius: '5px',
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      cursor: 'pointer',
+                    }}
+                    onDrop={handleDrop}
+                    onDragOver={event => event.preventDefault()}
+                  >
+                    {!selectedFile && <p>Arrastra los archivos aquí</p>}
+                    <input type="file" onChange={handleFileChange} />
+                  </div>
+                  <Button
+                    text="Subir archivo"
+                    className="content-file-send-button"
+                    onClick={() => handleUploadClick('MATERIAL')}
+                  />
                 </div>
-              )}
-              <Button
-                text="agregar usuarios"
-                className="content-file-send-button"
-                onClick={handleAddUserByTask}
-              />
-            </div>
+              </div>
+            </>
+          )}
+          {status === 'UNRESOLVED' && !isAuthorizedMod && (
+            <Button
+              text="ASIGNAR"
+              className="btn-revisar"
+              onClick={() => handleChangeStatus('ASIG')}
+            />
           )}
           {areAuthorizedUsers && (
             <div className="btn-content">
@@ -311,13 +357,6 @@ const CardTaskInformation = ({
                   />
                 )} */}
 
-              {status === 'UNRESOLVED' && !isAuthorizedMod && (
-                <Button
-                  text="ASIGNAR"
-                  className="btn-revisar"
-                  onClick={() => handleChangeStatus('ASIG')}
-                />
-              )}
               {(status === 'PROCESS' || status === 'DENIED') &&
                 !isAuthorizedMod && (
                   <Button
@@ -360,11 +399,41 @@ const CardTaskInformation = ({
             <div className="statement">
               <div>
                 <label>Archivo modelo:</label>
-                <Link to="https://www.google.com/">Click aqui</Link>
-              </div>
-              <div>
-                <label>Video relacionado:</label>
-                <Link to="https://www.google.com/">Click aqui</Link>
+                <div className="subtask-files">
+                  {subTask.files
+                    ?.filter(({ type }) => type === 'MATERIAL')
+                    .map(file => (
+                      <div key={file.id} className="subtask-file-contain">
+                        <a
+                          href={`${URL}/models/${projectName}/${file.name}`}
+                          target="_blank"
+                          className="subtask-file"
+                          download={'xyz.pdf'}
+                        >
+                          <img
+                            src="/svg/file-download.svg"
+                            alt="W3Schools"
+                            className="subtask-file-icon"
+                          ></img>
+                          <span className="subtask-file-name">
+                            {normalizeFileName(file.name)}
+                          </span>
+                        </a>
+                        {((isStatusProcesOrDenied && isAuthorizedUser) ||
+                          (isAuthorizedMod && status === 'INREVIEW')) && (
+                          <ButtonDelete
+                            icon="trash-red"
+                            customOnClick={() =>
+                              deleteFile(
+                                `/subtasks/deleteFile/${subTask.id}/${file}`
+                              )
+                            }
+                            className="subtask-delete-icon"
+                          />
+                        )}
+                      </div>
+                    ))}
+                </div>
               </div>
             </div>
           </div>

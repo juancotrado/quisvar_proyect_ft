@@ -46,6 +46,8 @@ export type Users = {
   user: User;
 };
 
+export type fyleType = 'MATERIAL' | 'SUCCESSFUL' | 'REVIEW';
+
 export type User = {
   id: number;
   email: string;
@@ -97,6 +99,9 @@ export interface WorkArea {
   user: User;
   projectId: number;
   indexTasks: IndexTask[];
+  project: {
+    name: string;
+  };
 }
 export type WorkAreaForm = Omit<WorkArea, 'indexTasks' | 'user'>;
 export interface IndexTask {
@@ -124,13 +129,21 @@ export interface SubTask {
   description: string;
   price: string;
   hours: number;
-  files: string[];
+  files: Files[];
   createdAt?: Date;
   updatedAt?: Date;
   taskId: number;
   users: Users[];
 }
 
+interface Files {
+  id: number;
+  name: string;
+  userId: number;
+  dir: string;
+  type: string;
+  subTasksId: number;
+}
 export interface AreaForm {
   projectId: number;
   userId: number;

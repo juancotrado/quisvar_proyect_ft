@@ -1,19 +1,10 @@
-import { Link } from 'react-router-dom';
-import {
-  isOpenModal$,
-  isTaskInformation$,
-} from '../../../../services/sharingSubject';
-import Modal from '../../../portal/Modal';
+import { isOpenModal$ } from '../../../../services/sharingSubject';
 import './cardTaskInformation.css';
 import Button from '../../button/Button';
 import { ChangeEvent, useContext, useMemo, useState } from 'react';
 import { SubTask, fyleType } from '../../../../types/types';
 import { SocketContext } from '../../../../context/SocketContex';
-import {
-  URL,
-  URL_FILES,
-  axiosInstance,
-} from '../../../../services/axiosInstance';
+import { URL, axiosInstance } from '../../../../services/axiosInstance';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
 import { InputRange } from '../../../index';
@@ -152,13 +143,13 @@ const CardTaskInformation = ({
   const areAuthorizedUsers = isAuthorizedMod || isAuthorizedUser;
   const isStatusProcesOrDenied = status === 'PROCESS' || status === 'DENIED';
   return (
-    <div className="information-container">
-      <div className="main-content">
-        <div className="content-files">
-          <div className="content-head">
-            <h3 className="information-title">Tarea: {subTask.name}</h3>
+    <div className="subtask-container">
+      <div className="subtask-main-content">
+        <div className="subtask-content-files">
+          <div className="subtask-content-head">
+            <h3 className="subtask-info-title">Tarea: {subTask.name}</h3>
             {isAuthorizedMod && status === 'UNRESOLVED' && (
-              <div className="conten-buttons-actions">
+              <div className="subtask-content-btn-actions">
                 <ButtonDelete
                   icon="trash-red"
                   url={`/subtasks/${subTask.id}`}
@@ -174,9 +165,9 @@ const CardTaskInformation = ({
           </div>
           {((isStatusProcesOrDenied && isAuthorizedUser) ||
             (isAuthorizedMod && status === 'INREVIEW')) && (
-            <div className="content-file">
-              <h4 className="content-file-title">Subir Archivo:</h4>
-              <div className="content-file-send">
+            <div className="subtask-file">
+              <h4 className="subtask-file-title">Subir Archivo:</h4>
+              <div className="subtask-file-send">
                 <div
                   style={{
                     width: '100%',
@@ -197,15 +188,15 @@ const CardTaskInformation = ({
                 </div>
                 <Button
                   text="Subir archivo"
-                  className="content-file-send-button"
+                  className="subtask-file-send-button"
                   onClick={() => handleUploadClick('REVIEW')}
                 />
               </div>
             </div>
           )}
           {status !== 'UNRESOLVED' && (
-            <div className="content-file">
-              <h4 className="content-file-title">Archivos:</h4>
+            <div className="subtask-file">
+              <h4 className="subtask-file-title">Archivos:</h4>
               <div className="subtask-files">
                 {subTask.files
                   ?.filter(({ type }) => type === 'REVIEW')
@@ -241,7 +232,7 @@ const CardTaskInformation = ({
           )}
           {status === 'UNRESOLVED' && isAuthorizedMod && (
             <>
-              <div className="content-add-users">
+              <div className="subtask-add-users">
                 <DropDownSimple
                   data={users}
                   textField="name"
@@ -252,7 +243,7 @@ const CardTaskInformation = ({
                   }
                 />
                 {usersData && (
-                  <div className="content-lists-users">
+                  <div className="subtask-lists-users">
                     {usersData.map((_user, index) => (
                       <div key={_user.id} className="col-list-user">
                         <span className="user-info">
@@ -273,13 +264,13 @@ const CardTaskInformation = ({
                 )}
                 <Button
                   text="agregar usuarios"
-                  className="content-file-send-button"
+                  className="subtask-file-send-button"
                   onClick={handleAddUserByTask}
                 />
               </div>
-              <div className="content-file">
-                <h4 className="content-file-title">Subir Recursos:</h4>
-                <div className="content-file-send">
+              <div className="subtask-file">
+                <h4 className="subtask-file-title">Subir Recursos:</h4>
+                <div className="subtask-file-send">
                   <div
                     style={{
                       width: '100%',
@@ -300,7 +291,7 @@ const CardTaskInformation = ({
                   </div>
                   <Button
                     text="Subir archivo"
-                    className="content-file-send-button"
+                    className="subtask-file-send-button"
                     onClick={() => handleUploadClick('MATERIAL')}
                   />
                 </div>

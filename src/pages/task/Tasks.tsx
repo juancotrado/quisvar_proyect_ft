@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 // import React from 'react';
 import './tasks.css';
 import { useParams } from 'react-router-dom';

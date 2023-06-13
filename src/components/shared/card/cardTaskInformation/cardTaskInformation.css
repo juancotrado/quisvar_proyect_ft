@@ -1,10 +1,10 @@
-.information-container {
+.subtask-container {
   background-color: white;
   width: 100%;
   padding: 1.5rem;
   border-radius: var(--radius-input);
 }
-.information-title {
+.subtask-info-title {
   font-size: 1.8rem;
   font-weight: 700;
   color: var(--color-secondary);
@@ -13,27 +13,27 @@
   display: flex;
   justify-content: space-between;
 }
-.content-head {
+.subtask-content-head {
   display: flex;
   justify-content: space-between;
   gap: 2rem;
 }
-.conten-buttons-actions {
+.subtask-content-btn-actions {
   display: flex;
   gap: 1rem;
 }
-.content-add-users {
+.subtask-add-users {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
 }
-.content-lists-users {
+.subtask-lists-users {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
-.main-content {
+.subtask-main-content {
   width: 100%;
   display: flex;
   flex-wrap: wrap;
@@ -55,7 +55,7 @@
   align-items: center;
   gap: 0.5rem;
 }
-.content-files {
+.subtask-content-files {
   padding: 0.6rem;
   display: flex;
   flex: 2;
@@ -109,11 +109,11 @@
 .subtask-delete-icon img {
   width: 1rem;
 }
-.content-file {
+.subtask-file {
   display: flex;
   gap: 1rem;
 }
-.content-file-title {
+.subtask-file-title {
   font-size: 1.1rem;
   font-weight: 700;
   color: var(--color-secondary);
@@ -133,14 +133,14 @@
   background-color: #ccc;
   position: relative;
 }
-.content-file-send {
+.subtask-file-send {
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1rem;
 }
-.content-file-send-button {
+.subtask-file-send-button {
   font-size: 0.8rem;
 }
 .progress-bar-line {

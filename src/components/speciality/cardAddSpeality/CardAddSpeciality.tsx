@@ -37,29 +37,31 @@ const CardAddSpeciality = ({ onSave }: CardAddSpecialityProps) => {
           + Agregar
         </button>
       ) : (
-        <textarea
-          className="text-area-card"
-          {...register('name')}
-          name="name"
-          placeholder="Ingrese nueva especialidad"
-        />
-      )}
-      {!isActive && (
-        <>
-          <button
-            className="close-add-card"
-            type="button"
-            onClick={() => {
-              handleActive();
-              reset();
-            }}
-          >
-            <img src="public/svg/close.svg" />
-          </button>
-          <button className="editable-add-submit" type="submit">
-            Registrar
-          </button>
-        </>
+        <div className="text-area-card">
+          <textarea
+            className="text-areas"
+            {...register('name')}
+            name="name"
+            placeholder="Ingrese nueva especialidad"
+          />
+          {!isActive && (
+            <div className="text-area-btns">
+              <button
+                className="close-add-card"
+                type="button"
+                onClick={() => {
+                  handleActive();
+                  reset();
+                }}
+              >
+                <img src="public/svg/close.svg" />
+              </button>
+              <button className="editable-add-submit" type="submit">
+                Registrar
+              </button>
+            </div>
+          )}
+        </div>
       )}
     </form>
   );

@@ -3,6 +3,7 @@ import './cardAddSpeciality.css';
 import { SpecialityType } from '../../../types/types';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { axiosInstance } from '../../../services/axiosInstance';
+import Button from '../../shared/button/Button';
 
 interface CardAddSpecialityProps {
   onSave?: () => void;
@@ -56,9 +57,11 @@ const CardAddSpeciality = ({ onSave }: CardAddSpecialityProps) => {
               >
                 <img src="public/svg/close.svg" />
               </button>
-              <button className="editable-add-submit" type="submit">
-                Registrar
-              </button>
+              <Button
+                type="submit"
+                icon="save"
+                className="editable-add-submit"
+              />
             </div>
           )}
         </div>

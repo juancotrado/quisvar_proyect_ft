@@ -69,9 +69,10 @@ const CardSpeciality = ({
               defaultValue={data.name}
               className="editable-title editable-color"
             />
-            <button className="editable-submit" type="submit">
+            <Button type="submit" icon="save" className="editable-submit" />
+            {/* <button className="editable-submit" type="submit">
               Guardar
-            </button>
+            </button> */}
           </form>
         ) : (
           <>

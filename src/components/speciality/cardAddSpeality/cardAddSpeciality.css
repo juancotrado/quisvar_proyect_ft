@@ -76,14 +76,9 @@
   bottom: 0.5rem;
   right: 0.5rem;
   cursor: pointer;
-  transition: background-color ease 0.5s;
-  font-weight: 500;
-  border: 2px solid var(--color-primary);
-  color: var(--color-primary);
-  padding: 0.5rem;
-  border-radius: var(--radius-button);
-}
-.editable-add-submit:hover {
-  background-color: var(--color-primary);
-  color: #fff;
+  padding: 0;
+  gap: 0;
+  width: 1.5rem;
+  height: 2.5rem;
+  border: none;
 }

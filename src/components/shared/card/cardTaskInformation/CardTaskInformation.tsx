@@ -187,14 +187,44 @@ const CardTaskInformation = ({
           )}
         </div>
         <div className="subtask-first">
+          {status !== 'UNRESOLVED' && isAuthorizedMod && (
+            <div className="subtask-file-list">
+              <h4 className="subtask-file-title">Archivos:</h4>
+              <div className="subtask-files-content">
+                {subTask.files
+                  ?.filter(({ type }) => type === 'REVIEW')
+                  .map(file => (
+                    <div key={file.id} className="subtask-file-contain">
+                      <a
+                        href={`${URL}/review/${projectName}/${file.name}`}
+                        target="_blank"
+                        className="subtask-file"
+                        download={'xyz.pdf'}
+                      >
+                        <img
+                          src="/svg/file-download.svg"
+                          alt="W3Schools"
+                          className="subtask-file-icon"
+                        ></img>
+                        <span className="subtask-file-name">
+                          {normalizeFileName(file.name)}
+                        </span>
+                      </a>
+                      {((isStatusProcesOrDenied && isAuthorizedUser) ||
+                        (isAuthorizedMod && status === 'INREVIEW')) && (
+                        <ButtonDelete
+                          icon="trash-red"
+                          customOnClick={() => deleteFile(file.id)}
+                          className="subtask-delete-icon"
+                        />
+                      )}
+                    </div>
+                  ))}
+              </div>
+            </div>
+          )}
           {status === 'UNRESOLVED' && !isAuthorizedMod && (
-            <div
-              style={{
-                width: '100%',
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
+            <div className="subtask-asign-btn">
               <Button
                 text="Asignarme"
                 className="btn-revisar"
@@ -266,7 +296,41 @@ const CardTaskInformation = ({
           {((isStatusProcesOrDenied && isAuthorizedUser) ||
             (isAuthorizedMod && status === 'INREVIEW')) && (
             <div className="subtask-add-files">
-              <h2>Adujuntar archivo:</h2>
+              <div className="subtask-models">
+                <div style={{ width: '100%' }}>
+                  <h2>Archivos:</h2>
+                </div>
+                <div className="subtask-fil">
+                  {subTask.files
+                    ?.filter(({ type }) => type === 'REVIEW')
+                    .map(file => (
+                      <div key={file.id} className="subtask-file-contain">
+                        <a
+                          href={`${URL}/models/${projectName}/${file.name}`}
+                          target="_blank"
+                          className="subtask-file"
+                          download={'xyz.pdf'}
+                        >
+                          <img
+                            src="/svg/file-download.svg"
+                            alt="W3Schools"
+                            className="subtask-file-icon"
+                          />
+                          <span className="subtask-file-name">
+                            {normalizeFileName(file.name)}
+                          </span>
+                        </a>
+                        {isAuthorizedUser && status === 'PROCESS' && (
+                          <ButtonDelete
+                            icon="trash-red"
+                            customOnClick={() => deleteFile(file.id)}
+                            className="subtask-btn-delete-icons"
+                          />
+                        )}
+                      </div>
+                    ))}
+                </div>
+              </div>
               <div className="subtask-file-area">
                 <input
                   type="file"
@@ -283,11 +347,11 @@ const CardTaskInformation = ({
                   <p>Arrastra o Selecciona un archivo</p>
                 )}
               </div>
-              <Button
+              {/* <Button
                 text="Subir archivo"
                 className="subtask-send-btn"
-                onClick={() => handleUploadClick('REVIEW')}
-              />
+                onClick={() => handleUploadClick('MATERIAL')}
+              /> */}
             </div>
           )}
         </div>
@@ -332,42 +396,6 @@ const CardTaskInformation = ({
                 className="subtask-add-btn"
                 onClick={handleAddUserByTask}
               /> */}
-            </div>
-          )}
-          {status !== 'UNRESOLVED' && (
-            <div className="subtask-file-list">
-              <h4 className="subtask-file-title">Archivos:</h4>
-              <div className="subtask-files-content">
-                {subTask.files
-                  ?.filter(({ type }) => type === 'REVIEW')
-                  .map(file => (
-                    <div key={file.id} className="subtask-file-contain">
-                      <a
-                        href={`${URL}/review/${projectName}/${file.name}`}
-                        target="_blank"
-                        className="subtask-file"
-                        download={'xyz.pdf'}
-                      >
-                        <img
-                          src="/svg/file-download.svg"
-                          alt="W3Schools"
-                          className="subtask-file-icon"
-                        ></img>
-                        <span className="subtask-file-name">
-                          {normalizeFileName(file.name)}
-                        </span>
-                      </a>
-                      {((isStatusProcesOrDenied && isAuthorizedUser) ||
-                        (isAuthorizedMod && status === 'INREVIEW')) && (
-                        <ButtonDelete
-                          icon="trash-red"
-                          customOnClick={() => deleteFile(file.id)}
-                          className="subtask-delete-icon"
-                        />
-                      )}
-                    </div>
-                  ))}
-              </div>
             </div>
           )}
         </div>
@@ -426,6 +454,43 @@ const CardTaskInformation = ({
           <p>Creación: 21/01/23</p>
           <h2>Precio: S/. {subTask.price}</h2>
           <h3>Total Horas: 24 horas</h3>
+          {status !== 'UNRESOLVED' && (
+            <div className="subtask-models">
+              <div style={{ width: '100%' }}>
+                <h2>Archivo modelo:</h2>
+              </div>
+              <div className="subtask-fil">
+                {subTask.files
+                  ?.filter(({ type }) => type === 'MATERIAL')
+                  .map(file => (
+                    <div key={file.id} className="subtask-file-contain">
+                      <a
+                        href={`${URL}/models/${projectName}/${file.name}`}
+                        target="_blank"
+                        className="subtask-file"
+                        download={'xyz.pdf'}
+                      >
+                        <img
+                          src="/svg/file-download.svg"
+                          alt="W3Schools"
+                          className="subtask-file-icon"
+                        />
+                        <span className="subtask-file-name">
+                          {normalizeFileName(file.name)}
+                        </span>
+                      </a>
+                      {isAuthorizedMod && status !== 'UNRESOLVED' && (
+                        <ButtonDelete
+                          icon="trash-red"
+                          customOnClick={() => deleteFile(file.id)}
+                          className="subtask-btn-delete-icons"
+                        />
+                      )}
+                    </div>
+                  ))}
+              </div>
+            </div>
+          )}
           {/* <div className="statement">
             <div>
               <label>Archivo modelo:</label>

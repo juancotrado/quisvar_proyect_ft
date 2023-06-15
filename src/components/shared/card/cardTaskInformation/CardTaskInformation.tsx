@@ -46,15 +46,33 @@ const CardTaskInformation = ({
         : [],
     [listUsers]
   );
-  const handleDrop = (event: React.DragEvent<HTMLDivElement>) => {
+  const handleDrop = (
+    type: fyleType,
+    event: React.DragEvent<HTMLDivElement>
+  ) => {
     event.preventDefault();
     const file = event.dataTransfer.files[0];
-    setFile(file);
+    const formdata = new FormData();
+    formdata.append('file', file);
+    axiosInstance
+      .post(`/files/upload/${subTask.id}/?status=${type}`, formdata)
+      .then(res => socket.emit('client:update-subTask', res.data));
+    // setFile(file);
   };
 
-  const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (
+    type: fyleType,
+    e: ChangeEvent<HTMLInputElement>
+  ) => {
     if (!e.target.files) return;
-    setFile(e.target.files[0]);
+
+    // setFile(e.target.files[0]);
+    const formdata = new FormData();
+    formdata.append('file', e.target.files[0]);
+    axiosInstance
+      .post(`/files/upload/${subTask.id}/?status=${type}`, formdata)
+      .then(res => socket.emit('client:update-subTask', res.data));
+    // setFile(null);
   };
 
   const handleUploadClick = (type: fyleType) => {
@@ -145,7 +163,11 @@ const CardTaskInformation = ({
   const isStatusProcesOrDenied = status === 'PROCESS' || status === 'DENIED';
   return (
     <div className="subtask-container">
-      <section className="subtask-files">
+      <section
+        className={`subtask-files ${
+          status === 'UNRESOLVED' ? 'min-height' : 'normal-height'
+        }`}
+      >
         <div className="subtask-header">
           <h3 className="subtask-info-title">Tarea: {subTask.name}</h3>
           {isAuthorizedMod && status === 'UNRESOLVED' && (
@@ -182,14 +204,48 @@ const CardTaskInformation = ({
           )}
           {status === 'UNRESOLVED' && isAuthorizedMod && (
             <div className="subtask-add-files">
-              <h2>Adujuntar archivo modelo:</h2>
+              <div className="subtask-models">
+                <div style={{ width: '100%' }}>
+                  <h2>Archivo modelo:</h2>
+                </div>
+                <div className="subtask-fil">
+                  {subTask.files
+                    ?.filter(({ type }) => type === 'MATERIAL')
+                    .map(file => (
+                      <div key={file.id} className="subtask-file-contain">
+                        <a
+                          href={`${URL}/models/${projectName}/${file.name}`}
+                          target="_blank"
+                          className="subtask-file"
+                          download={'xyz.pdf'}
+                        >
+                          <img
+                            src="/svg/file-download.svg"
+                            alt="W3Schools"
+                            className="subtask-file-icon"
+                          />
+                          <span className="subtask-file-name">
+                            {normalizeFileName(file.name)}
+                          </span>
+                        </a>
+                        {isAuthorizedMod && status === 'UNRESOLVED' && (
+                          <ButtonDelete
+                            icon="trash-red"
+                            customOnClick={() => deleteFile(file.id)}
+                            className="subtask-btn-delete-icons"
+                          />
+                        )}
+                      </div>
+                    ))}
+                </div>
+              </div>
               <div className="subtask-file-area">
                 <input
                   type="file"
-                  onChange={handleFileChange}
+                  onChange={e => handleFileChange('MATERIAL', e)}
                   // onDragOver={handleDragOver}
                   onDragOver={event => event.preventDefault()}
-                  onDrop={handleDrop}
+                  onDrop={e => handleDrop('MATERIAL', e)}
                   className="subtask-file-input"
                   style={{ opacity: 0 }}
                 />
@@ -199,11 +255,11 @@ const CardTaskInformation = ({
                   <p>Arrastra o Selecciona un archivo</p>
                 )}
               </div>
-              <Button
+              {/* <Button
                 text="Subir archivo"
                 className="subtask-send-btn"
                 onClick={() => handleUploadClick('MATERIAL')}
-              />
+              /> */}
             </div>
           )}
 
@@ -214,10 +270,10 @@ const CardTaskInformation = ({
               <div className="subtask-file-area">
                 <input
                   type="file"
-                  onChange={handleFileChange}
+                  onChange={e => handleFileChange('REVIEW', e)}
                   // onDragOver={handleDragOver}
                   onDragOver={event => event.preventDefault()}
-                  onDrop={handleDrop}
+                  onDrop={e => handleDrop('REVIEW', e)}
                   className="subtask-file-input"
                   style={{ opacity: 0 }}
                 />
@@ -237,9 +293,10 @@ const CardTaskInformation = ({
         </div>
         <div className="subtask-second">
           {status === 'UNRESOLVED' && isAuthorizedMod && (
-            <>
+            <div className="subtask-second-area-color">
               <div className="subtask-search-users">
                 <DropDownSimple
+                  label="Asignar Usuario"
                   data={users}
                   textField="name"
                   itemKey="id"
@@ -247,34 +304,35 @@ const CardTaskInformation = ({
                     handleAddUser({ id: parseInt(id), name })
                   }
                   placeholder="Seleccione Usuario"
+                  className="subtask-dropdown"
                 />
-                {usersData && (
-                  <div className="subtask-lists-users">
-                    {usersData.map((_user, index) => (
-                      <div key={_user.id} className="col-list-user">
-                        <span className="user-info">
-                          {index + 1}
-                          {') '}
-                          {_user.name}
-                        </span>
-                        <button
-                          type="button"
-                          className="delete-list-user"
-                          onClick={() => handleRemoveUser(_user)}
-                        >
-                          <img src="/svg/close.svg" />
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                )}
               </div>
-              <Button
+              {usersData && (
+                <div className="subtask-lists-users">
+                  {usersData.map((_user, index) => (
+                    <div key={_user.id} className="col-list-user">
+                      <span className="user-info">
+                        {index + 1}
+                        {') '}
+                        {_user.name}
+                      </span>
+                      <button
+                        type="button"
+                        className="delete-list-user"
+                        onClick={() => handleRemoveUser(_user)}
+                      >
+                        <img src="/svg/close.svg" />
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {/* <Button
                 text="ASIGNAR"
                 className="subtask-add-btn"
                 onClick={handleAddUserByTask}
-              />
-            </>
+              /> */}
+            </div>
           )}
           {status !== 'UNRESOLVED' && (
             <div className="subtask-file-list">
@@ -350,7 +408,7 @@ const CardTaskInformation = ({
           )}
         </div>
       </section>
-      <section className="subtask-details">
+      <section className={`subtask-details`}>
         <div className="subtask-status-content">
           <label
             className={`status-text 
@@ -368,7 +426,7 @@ const CardTaskInformation = ({
           <p>Creación: 21/01/23</p>
           <h2>Precio: S/. {subTask.price}</h2>
           <h3>Total Horas: 24 horas</h3>
-          <div className="statement">
+          {/* <div className="statement">
             <div>
               <label>Archivo modelo:</label>
               <div className="subtask-fil">
@@ -402,12 +460,19 @@ const CardTaskInformation = ({
                   ))}
               </div>
             </div>
-          </div>
+          </div> */}
           {isAuthorizedMod && (
             <Button
-              text="REINICIAR TAREA"
+              text="RESTABLECER"
               className="btn-declinar"
               onClick={handleReloadSubTask}
+            />
+          )}
+          {status === 'UNRESOLVED' && isAuthorizedMod && (
+            <Button
+              text="LISTO"
+              className="subtask-add-btn"
+              onClick={handleAddUserByTask}
             />
           )}
         </div>

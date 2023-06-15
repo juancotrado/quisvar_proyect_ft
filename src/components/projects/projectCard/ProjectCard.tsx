@@ -9,7 +9,7 @@ import { RootState } from '../../../store';
 import { Input } from '../..';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { axiosInstance } from '../../../services/axiosInstance';
+import { URL, axiosInstance } from '../../../services/axiosInstance';
 
 interface ProjectCardProps {
   editProject: (value: ProjectType) => void;
@@ -39,6 +39,18 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
   const handleEdit = () => {
     editProject(project);
   };
+
+  const handleArchiver = () => {
+    console.log(project.name);
+    const body = {
+      projectName: project.name,
+    };
+
+    axiosInstance.post('/projects/archiver', body).then(res => {
+      window.location.href = `${URL}/static/${res.data.url}`;
+    });
+  };
+
   return (
     <div className="project-card">
       <figure className="project-card-figure">
@@ -81,57 +93,66 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
             : 'CREACION DEL SERVICIO DE PRÁCTICA DEPORTIVA Y/O RECREATIVA EN LA COMUNIDAD CAMPESINA DE KALAHUALA DISTRITO DE ASILLO DE LA PROVINCIA DE AZANGARO DEL DEPARTAMENTO DE PUNO.'}
         </p>
         <div className="project-card-footer">
-          <span>ÁREAS: </span>
-          {project.areas.length > 0 &&
-            project.areas.map(area => (
-              <div key={area.id} className="project-btn-container">
-                <Button
-                  text={area.name}
-                  className="project-btn-footer"
-                  onClick={() => navigate(`/tareas/${area.id}`)}
-                />
-                {role !== 'EMPLOYEE' && (
-                  <ButtonDelete
-                    className="btn-delete-area"
-                    icon="close"
-                    url={`/workareas/${area.id}`}
-                    onSave={handleSave}
+          <div className="project-card-footer-area">
+            <span>ÁREAS: </span>
+            {project.areas.length > 0 &&
+              project.areas.map(area => (
+                <div key={area.id} className="project-btn-container">
+                  <Button
+                    text={area.name}
+                    className="project-btn-footer"
+                    onClick={() => navigate(`/tareas/${area.id}`)}
                   />
-                )}
-              </div>
-            ))}
-          {role !== 'EMPLOYEE' && (
-            <Button
-              text={`${addArea ? 'Cancelar' : 'Añadir'}`}
-              className={`${addArea && 'btn-red'} area-btn-add `}
-              onClick={() => {
-                setAddArea(!addArea);
-                reset();
-              }}
-            />
-          )}
-          {addArea && (
-            <form
-              onSubmit={handleSubmit(onSubmitArea)}
-              className="form-add-area"
-            >
-              <Input
-                {...register('name')}
-                name="name"
-                className="form-input-area"
-              />
-              <button
-                className="area-btn-add"
-                type="submit"
+                  {role !== 'EMPLOYEE' && (
+                    <ButtonDelete
+                      className="btn-delete-area"
+                      icon="close"
+                      url={`/workareas/${area.id}`}
+                      onSave={handleSave}
+                    />
+                  )}
+                </div>
+              ))}
+            {role !== 'EMPLOYEE' && (
+              <Button
+                text={`${addArea ? 'Cancelar' : 'Añadir'}`}
+                className={`${addArea && 'btn-red'} area-btn-add `}
                 onClick={() => {
-                  setValue('projectId', project.id);
-                  setValue('userId', project.userId || 0);
+                  setAddArea(!addArea);
+                  reset();
                 }}
+              />
+            )}
+            {addArea && (
+              <form
+                onSubmit={handleSubmit(onSubmitArea)}
+                className="form-add-area"
               >
-                Agregar
-              </button>
-            </form>
-          )}
+                <Input
+                  {...register('name')}
+                  name="name"
+                  className="form-input-area"
+                />
+                <button
+                  className="area-btn-add"
+                  type="submit"
+                  onClick={() => {
+                    setValue('projectId', project.id);
+                    setValue('userId', project.userId || 0);
+                  }}
+                >
+                  Agregar
+                </button>
+              </form>
+            )}
+          </div>
+          <div className="project-card-footer-archiver">
+            <Button
+              text={'comprimir'}
+              className="project-btn-footer"
+              onClick={handleArchiver}
+            />
+          </div>
         </div>
       </div>
     </div>

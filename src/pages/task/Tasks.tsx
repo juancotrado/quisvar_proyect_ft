@@ -163,7 +163,6 @@ const Tasks = () => {
                     key={subTask.id}
                     subTask={subTask}
                     getSubtask={getSubtask}
-
                     // editTaskStatus={editTaskStatus}
                     // handleGetTaskData={handleGetTaskData}
                     // deleteTask={deleteTask}

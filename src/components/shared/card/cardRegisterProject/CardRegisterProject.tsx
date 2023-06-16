@@ -11,18 +11,24 @@ import { useEffect, useMemo, useState } from 'react';
 import { RootState } from '../../../../store';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ProjectForm } from '../../../../types/types';
-
+import { spring } from '../../../../animations/animations';
+import { motion } from 'framer-motion';
 const InitialValues: ProjectForm = {
   id: 0,
   name: '',
   description: '',
-  typeSpeciality: '',
+  typeSpeciality: '0',
   startDate: _date(new Date()),
   untilDate: _date(new Date()),
   status: false,
   userId: 0,
   specialityId: 0,
 };
+
+const typeSpecialities = [
+  { id: 1, name: 'Tipo 1' },
+  { id: 2, name: 'Tipo 2' },
+];
 
 interface CardRegisterProjectProps {
   onSave?: (value: number) => void;
@@ -37,7 +43,13 @@ const CardRegisterProject = ({
 }: CardRegisterProjectProps) => {
   const [dataForm, setDataForm] = useState<ProjectForm>(InitialValues);
   const { listUsers } = useSelector((state: RootState) => state);
-  const { handleSubmit, register, setValue } = useForm<ProjectForm>();
+  const { handleSubmit, register, setValue, reset } = useForm<ProjectForm>();
+  const [isOn, setIsOn] = useState(false);
+  const toggleSwitch = () => {
+    setIsOn(!isOn);
+    setValue('unique', !isOn);
+  };
+
   const coordinators = useMemo(
     () =>
       listUsers
@@ -69,13 +81,21 @@ const CardRegisterProject = ({
   }, [dataForm]);
 
   const onSubmit: SubmitHandler<ProjectForm> = values => {
-    const { startDate, untilDate, userId, description, typeSpeciality, name } =
-      values;
+    const {
+      startDate,
+      untilDate,
+      userId,
+      description,
+      typeSpeciality,
+      name,
+      unique,
+    } = values;
     const _data = {
       startDate: new Date(startDate),
       untilDate: new Date(untilDate),
       specialityId,
       userId,
+      unique,
       description,
       typeSpeciality,
       name,
@@ -92,10 +112,13 @@ const CardRegisterProject = ({
   const successfulShipment = () => {
     if (!specialityId) return;
     onSave?.(specialityId);
+    setIsOn(false);
     isOpenModal$.setSubject = false;
+    reset();
   };
 
   const closeFunctions = () => {
+    setIsOn(false);
     isOpenModal$.setSubject = false;
   };
 
@@ -119,12 +142,14 @@ const CardRegisterProject = ({
           placeholder="Nombre"
         />
         <div className="col-input">
-          <Input
+          <Select
             label="Tipo"
+            required={true}
             {...register('typeSpeciality')}
             name="typeSpeciality"
-            required={true}
-            placeholder="Especialidad"
+            data={typeSpecialities}
+            itemKey="name"
+            textField="name"
           />
           <Select
             label="Coordinador"
@@ -150,14 +175,25 @@ const CardRegisterProject = ({
             type="date"
           />
         </div>
-        {/* <div className="col-input">
-          <Input
-            label="Fecha Inicio"
-            {...register('startDate')}
-            name="startDate"
-            type="radius"
-          />
-        </div> */}
+        {!project && (
+          <div className="col-unique">
+            <span>¿eL proyecto tendrá area única?</span>
+            <div
+              className="switch-status"
+              data-ison={isOn}
+              onClick={toggleSwitch}
+            >
+              <motion.div
+                className={`handle-statuts ${isOn && 'handle-on'}`}
+                layout
+                transition={spring}
+              >
+                <div>{isOn ? 'si' : 'no'} </div>
+              </motion.div>
+            </div>
+          </div>
+        )}
+
         <TextArea
           label="Descripción"
           {...register('description')}

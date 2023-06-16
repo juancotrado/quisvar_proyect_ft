@@ -5,7 +5,6 @@
   justify-content: space-evenly;
   align-items: center;
   padding: 0.5rem;
-  background-color: white;
   border-radius: 3px;
   border: 2px solid var(--color-primary);
   border-left: 10px solid var(--color-primary);
@@ -29,10 +28,12 @@
 .speciality-delete-icon {
   border: none;
   padding: 0;
+  background-color: transparent;
 }
 .speciality-edit-icon {
   border: none;
   padding: 0;
+  background-color: transparent;
 }
 .card-quantity {
   width: 100%;
@@ -45,6 +46,9 @@
   flex-direction: row-reverse;
   align-items: center;
   overflow: hidden;
+}
+.speciality-selected {
+  background-color: #d9d9d9;
 }
 /* .gradient{
   width: 1.5rem;

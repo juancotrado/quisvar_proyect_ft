@@ -4,46 +4,28 @@ import { axiosInstance } from '../../services/axiosInstance';
 import { motion } from 'framer-motion';
 import list_icon from '/svg/task_list.svg';
 import MyTaskCard from '../../components/shared/card/MyTaskCard';
-import { SubTask, SubTaskType } from '../../types/types';
+import { SubtaskIncludes } from '../../types/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import CardRegisterAndInformation from '../../components/shared/card/cardRegisterAndInformation/CardRegisterAndInformation';
-import { isTaskInformation$ } from '../../services/sharingSubject';
 
 const spring = {
   type: 'spring',
   stiffness: 150,
   damping: 30,
 };
-const initValuesSubTask: SubTask = {
-  id: 0,
-  status: '',
-  name: '',
-  percentage: 0,
-  description: '',
-  price: '',
-  hours: 0,
-  files: [],
-  taskId: 0,
-  users: [],
-};
+
 const ListPersonalTask = () => {
-  const [tasks, setTasks] = useState<SubTaskType[] | null>(null);
   const [isOn, setIsOn] = useState(false);
   const { userSession } = useSelector((state: RootState) => state);
   const { id } = userSession;
-  const [subTask, setSubTask] = useState<SubTask>(initValuesSubTask);
-  const getSubtask = (subTask: SubTask) => {
-    setSubTask(subTask);
-    isTaskInformation$.setSubject = true;
-  };
+  const [subTask, setSubTask] = useState<SubtaskIncludes[] | null>(null);
 
   useEffect(() => {
     axiosInstance
       .get(`/users/${id}/subTasks`)
       .then(res => {
         // console.log(res.data);
-        setTasks(res.data);
+        setSubTask(res.data);
       })
       .catch(err => {
         console.log(err);
@@ -77,19 +59,18 @@ const ListPersonalTask = () => {
           </div>
         </div>
         <div className="cards">
-          {tasks &&
-            tasks
+          {subTask &&
+            subTask
               ?.filter(
                 ({ status }) => status === `${isOn ? 'DONE' : 'PROCESS'}`
               )
-              .map(task => (
-                <div key={task.id}>
-                  <MyTaskCard task={task} getSubtask={getSubtask} />{' '}
+              .map(subTask => (
+                <div key={subTask.id}>
+                  <MyTaskCard subTask={subTask} />{' '}
                 </div>
               ))}
         </div>
       </div>
-      {<CardRegisterAndInformation subTask={subTask} coordinatorId={id} />}
     </div>
   );
 };

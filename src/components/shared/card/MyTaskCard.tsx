@@ -1,31 +1,37 @@
 import './mytaskcard.css';
 import icon_done from '/svg/task_done.svg';
-import { useState } from 'react';
-import { SubTask, SubTaskType } from '../../../types/types';
+import { SubtaskIncludes } from '../../../types/types';
 import icon_list_task from '/svg/icon_list_task.svg';
 import { _date } from '../../../utils/formatDate';
-import CardRegisterAndInformation from './cardRegisterAndInformation/CardRegisterAndInformation';
-import { isTaskInformation$ } from '../../../services/sharingSubject';
+import { useNavigate } from 'react-router-dom';
 
 interface TaskCardProps {
-  task: SubTaskType;
-  getSubtask: (value: SubTask) => void;
+  subTask: SubtaskIncludes;
 }
 
-const MyTaskCard = ({ task, getSubtask }: TaskCardProps) => {
-  const hanldeViewMore = () => {
-    getSubtask(task);
-  };
+const MyTaskCard = ({ subTask }: TaskCardProps) => {
+  const navigate = useNavigate();
 
+  const handleNavigate = () => {
+    const { task, id } = subTask;
+    // console.log(task.indexTask.workAreaId);:
+    navigate(`/tareas/${task.indexTask.workAreaId}`, {
+      state: {
+        taskIdProp: task.id,
+        subTaskIdProp: id,
+      },
+      replace: true,
+    });
+  };
   return (
     <div className="my-task-class">
       {/* <span className="task-text">{`${task.status == 'DONE'? "Hecho":"asd"}` }</span> */}
       <span className={`my-icon-card`}>
         <img
           src={
-            task.status === 'DONE'
+            subTask.status === 'DONE'
               ? icon_done
-              : task.status === 'PROCESS'
+              : subTask.status === 'PROCESS'
               ? icon_list_task
               : ''
           }
@@ -33,24 +39,26 @@ const MyTaskCard = ({ task, getSubtask }: TaskCardProps) => {
       </span>
       <div className="my-task-content">
         <div className="task-header">
-          <h2>{task.name}</h2>
-          <span>Precio: S/{task.price}</span>
+          <h2>{subTask.name}</h2>
+          <span>Precio: S/{subTask.price}</span>
         </div>
         <ul>
-          <h3>{task.description} </h3>
+          <h3>{subTask.description} </h3>
           <span
-            className={`task-text ${task.status === 'DENIED' && 'hold'} ${
-              task.status === 'PROCESS' && 'process'
-            } ${task.status === 'DONE' && 'done'}`}
+            className={`task-text ${subTask.status === 'DENIED' && 'hold'} ${
+              subTask.status === 'PROCESS' && 'process'
+            } ${subTask.status === 'DONE' && 'done'}`}
           >
-            {task.status === 'DENIED' && 'Por Revisar'}
-            {task.status === 'PROCESS' && 'En Revisión'}
+            {subTask.status === 'DENIED' && 'Por Revisar'}
+            {subTask.status === 'PROCESS' && 'En Revisión'}
           </span>
         </ul>
       </div>
       <div className="footer-my-task">
-        <h3>Fecha Inicio: {`${_date(task.createdAt)}`}</h3>
-        <span onClick={hanldeViewMore}>Ver mas</span>
+        <h3>
+          Fecha Inicio: {`${subTask.createdAt && _date(subTask.createdAt)}`}
+        </h3>
+        <span onClick={handleNavigate}>Ver mas</span>
       </div>
     </div>
   );

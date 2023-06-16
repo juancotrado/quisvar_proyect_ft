@@ -43,7 +43,7 @@ const CardSpeciality = ({
       .put(`/specialities/${data.id}`, { name: values.name })
       .then(closeSubmit);
   };
-
+  const numberProjects = data._count?.projects;
   const closeSubmit = () => {
     onUpdate?.();
     setIsEditable(false);
@@ -57,12 +57,14 @@ const CardSpeciality = ({
       <div className="speciality-main-title">
         {role !== 'EMPLOYEE' && (
           <div className="speciality-edit" onClick={e => e.stopPropagation()}>
-            <ButtonDelete
-              icon="trash-red"
-              url={`/specialities/${data.id}`}
-              className="speciality-delete-icon"
-              onSave={onDelete}
-            />
+            {numberProjects == 0 && (
+              <ButtonDelete
+                icon="trash-red"
+                url={`/specialities/${data.id}`}
+                className="speciality-delete-icon"
+                onSave={onDelete}
+              />
+            )}
             <Button
               icon="pencil"
               className="speciality-edit-icon"
@@ -95,7 +97,7 @@ const CardSpeciality = ({
         )}
       </div>
       <span className=" card-quantity ">
-        Proyectos Disponibles: {data._count?.projects}
+        Proyectos Disponibles: {numberProjects}
       </span>
     </div>
   );

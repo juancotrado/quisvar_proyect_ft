@@ -9,17 +9,26 @@ import IndexTaskContainer from './IndexTaskContainer';
 import AddIndexTask from './AddIndexTask';
 import AddTask from './AddTask';
 
+type SettingType = 'task' | 'indextask';
+
 interface SidebarProps {
   workArea: WorkArea;
   onUpdate?: () => void;
-  settingSubTasks: (id: number) => void;
+  settingSubTasks: (id: number, type: SettingType) => void;
+  isShowInitValue: boolean;
 }
 
-const Sidebar = ({ workArea, settingSubTasks, onUpdate }: SidebarProps) => {
+const Sidebar = ({
+  workArea,
+  settingSubTasks,
+  onUpdate,
+  isShowInitValue,
+}: SidebarProps) => {
+  console.log('isShowInitValue', isShowInitValue);
   const { userSession } = useSelector((state: RootState) => state);
-  const [isShow, setIsShow] = useState<boolean>(true);
+  const [isShow, setIsShow] = useState<boolean>(isShowInitValue);
   const [openEditArea, setOpenEditArea] = useState<boolean>(false);
-  const { name, indexTasks, user, ...areaData } = workArea;
+  const { name, item, indexTasks, user, ...areaData } = workArea;
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
   const profileUser = user?.profile;
   const workAreaInfo = { ...areaData, name };
@@ -28,8 +37,9 @@ const Sidebar = ({ workArea, settingSubTasks, onUpdate }: SidebarProps) => {
   const handleEditArea = () => setOpenEditArea(!openEditArea);
   const handleShow = () => setIsShow(!isShow);
 
-  const handleTaks = (id: number) => {
-    settingSubTasks(id);
+  const handleTaks = (id: number, type: 'task' | 'indextask') => {
+    console.log(id);
+    settingSubTasks(id, type);
     setTaskSelected(id);
   };
 
@@ -37,7 +47,7 @@ const Sidebar = ({ workArea, settingSubTasks, onUpdate }: SidebarProps) => {
     <aside className={`aside ${isShow && 'aside-show'}`}>
       <div className="aside-container-title">
         <div className="aside-title-info">
-          <h2 className="aside-title">{name}</h2>
+          <h2 className="aside-title">{`${item}. ${name}`}</h2>
           <span className={`${profileUser || 'aside-coordinator-off'}`}>
             {profileUser
               ? `${profileUser.firstName} ${profileUser.lastName}`
@@ -62,25 +72,31 @@ const Sidebar = ({ workArea, settingSubTasks, onUpdate }: SidebarProps) => {
         <ul className="aside-dropdown">
           {indexTasks.map(indexTask => (
             <li key={indexTask.id} className="aside-dropdown-list">
-              <IndexTaskContainer indexTask={indexTask} onSave={onUpdate} />
-              <div className="aside-dropdown-content">
-                <ul className="aside-dropdown-sub">
-                  {indexTask.tasks.map(task => (
-                    <TaskListContainer
-                      key={task.id}
-                      task={task}
-                      settingSubTask={() => handleTaks(task.id)}
-                      onSave={onUpdate}
-                      taskSelected={taskSelected}
-                    />
-                  ))}
-                  {role !== 'EMPLOYEE' && (
-                    <li>
-                      <AddTask indexTaskId={indexTask.id} onSave={onUpdate} />
-                    </li>
-                  )}
-                </ul>
-              </div>
+              <IndexTaskContainer
+                indexTask={indexTask}
+                onSave={onUpdate}
+                settingSubTask={() => handleTaks(indexTask.id, 'indextask')}
+              />
+              {indexTask.unique || (
+                <div className="aside-dropdown-content">
+                  <ul className="aside-dropdown-sub">
+                    {indexTask.tasks.map(task => (
+                      <TaskListContainer
+                        key={task.id}
+                        task={task}
+                        settingSubTask={() => handleTaks(task.id, 'task')}
+                        onSave={onUpdate}
+                        taskSelected={taskSelected}
+                      />
+                    ))}
+                    {role !== 'EMPLOYEE' && (
+                      <li>
+                        <AddTask indexTaskId={indexTask.id} onSave={onUpdate} />
+                      </li>
+                    )}
+                  </ul>
+                </div>
+              )}
             </li>
           ))}
           {role !== 'EMPLOYEE' && (

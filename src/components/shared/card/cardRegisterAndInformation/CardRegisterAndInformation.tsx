@@ -13,7 +13,7 @@ interface CardRegisterAndInformationProps {
   subTask: SubTask;
   isAuthorizedMod: boolean;
   taskId: number | null;
-  projectName: string;
+  projectName: string | undefined;
 }
 
 const CardRegisterAndInformation = ({
@@ -46,7 +46,7 @@ const CardRegisterAndInformation = ({
   };
   return (
     <Modal size={50}>
-      {isTaskInformation ? (
+      {isTaskInformation && projectName ? (
         <CardTaskInformation
           isAuthorizedMod={isAuthorizedMod}
           subTask={subTask}

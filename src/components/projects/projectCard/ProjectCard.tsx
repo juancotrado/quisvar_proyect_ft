@@ -67,13 +67,15 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
             )}`}</p>
             {role !== 'EMPLOYEE' && (
               <>
-                <ButtonDelete
-                  icon="trash"
-                  url={`/projects/${project.id}`}
-                  className="project-delete-icon"
-                  onSave={handleSave}
-                  imageStyle="project-size-img"
-                />
+                {project.areas.length == 0 && (
+                  <ButtonDelete
+                    icon="trash"
+                    url={`/projects/${project.id}`}
+                    className="project-delete-icon"
+                    onSave={handleSave}
+                    imageStyle="project-size-img"
+                  />
+                )}
                 <Button
                   icon="pencil"
                   className="project-edit-icon"

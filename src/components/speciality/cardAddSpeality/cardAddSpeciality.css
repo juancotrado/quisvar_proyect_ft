@@ -24,8 +24,8 @@
 
 .speciality-content-add-card:hover {
   background-color: #ffffff;
-  font-size: 1.7rem;
-  border: 0.3rem dashed var(--color-primary);
+  font-size: 1.3rem;
+  border: 0.2rem dashed var(--color-primary);
   color: var(--color-primary);
 }
 .text-area-card {
@@ -35,7 +35,7 @@
   align-items: center;
   background-color: var(--color-menu);
   color: var(--color-quaternay);
-  border: 0.3rem dashed var(--color-quaternay);
+  border: 0.2rem dashed var(--color-quaternay);
   width: 100%;
   height: 100%;
   cursor: pointer;

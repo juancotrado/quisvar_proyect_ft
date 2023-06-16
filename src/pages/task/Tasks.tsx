@@ -1,6 +1,7 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 // import React from 'react';
 import './tasks.css';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
 import { SubTask, WorkArea } from '../../types/types';
@@ -29,13 +30,13 @@ const initValuesSubTask: SubTask = {
 };
 const Tasks = () => {
   const { id } = useParams();
-
+  const { state } = useLocation();
   const [workArea, setWorkArea] = useState<WorkArea | null>(null);
   const [subTasks, setSubTasks] = useState<SubTask[] | null>(null);
   const [subTask, setSubTask] = useState<SubTask>(initValuesSubTask);
   const [taskId, setTaskId] = useState<number | null>(null);
   const socket = useContext(SocketContext);
-  const { role, id: userSessionId } = useSelector(
+  const { id: userSessionId } = useSelector(
     (state: RootState) => state.userSession
   );
 
@@ -47,13 +48,26 @@ const Tasks = () => {
     axiosInstance.get(`/workareas/${id}`).then(res => setWorkArea(res.data));
   };
 
-  const settingSubTasks = (id: number) => {
-    axiosInstance.get(`/tasks/${id}`).then(res => {
-      setTaskId(res.data.id);
-      setSubTasks(res.data.subTasks);
-      socket.emit('join', res.data.id);
-      isOpenModal$.setSubject = false;
-    });
+  const settingSubTasks = (id: number, type: 'task' | 'indextask') => {
+    if (type === 'task') {
+      return new Promise<SubTask[]>(resolve => {
+        axiosInstance.get(`/tasks/${id}`).then(res => {
+          setTaskId(res.data.id);
+          setSubTasks(res.data.subTasks);
+          socket.emit('join', res.data.id);
+          isOpenModal$.setSubject = false;
+          resolve(res.data.subTasks);
+        });
+      });
+    }
+    if (type === 'indextask') {
+      axiosInstance.get(`/indextasks/${id}/subtasks`).then(res => {
+        // setTaskId(res.data.id);
+        setSubTasks(res.data.subTasks);
+        // socket.emit('join', res.data.id);
+        isOpenModal$.setSubject = false;
+      });
+    }
   };
 
   const getSubtask = (subTask: SubTask) => {
@@ -61,6 +75,25 @@ const Tasks = () => {
     isTaskInformation$.setSubject = true;
   };
 
+  useEffect(() => {
+    if (state?.taskIdProp && state?.subTaskIdProp) {
+      openMySubTask();
+    }
+  }, []);
+
+  const openMySubTask = async () => {
+    const { taskIdProp, subTaskIdProp } = state;
+    console.log(subTaskIdProp);
+
+    const subTasksSelected = await settingSubTasks(taskIdProp, 'task');
+    console.log('hola');
+    const subTaskSelect = subTasksSelected?.find(
+      subTask => subTask.id === subTaskIdProp
+    );
+    console.log('dsadsa', subTaskSelect);
+    if (!subTaskSelect) return;
+    getSubtask(subTaskSelect);
+  };
   useEffect(() => {
     socket.on('server:update-subTask', (newSubTask: SubTask) => {
       if (!subTasks) return;
@@ -100,111 +133,6 @@ const Tasks = () => {
     };
   }, [socket, subTasks]);
 
-  // useEffect(() => {
-  //   socket.on('server:upload-file-subTask', (newSubTask: SubTask) => {
-  //     setSubTask(newSubTask);
-  //   });
-
-  //   return () => {
-  //     socket.off('server:upload-file-subTask');
-  //   };
-  // }, [socket, subTask]);
-  //   const [tasks, setTasks] = useState<TaskType[] | null>(null);
-  //   const [getTaskData, setGetTaskData] = useState<TaskType | null>(null);
-  //   const socket = useSocket();
-  //   const { id } = useParams();
-  //   const { role } = useRole();
-
-  //   useEffect(() => {
-  //     axiosInstance
-  //       .get(`/projects/${id}`)
-  //       .then(res => {
-  //         setTasks(res.data.tasks);
-  //         socket.emit('data', res.data.tasks);
-  //       })
-  //       .catch(err => console.log(err));
-
-  //     return () => {
-  //       socket.disconnect();
-  //     };
-  //   }, [id, socket]);
-
-  //   useEffect(() => {
-  //     socket.on('data', (tasksSocket: TaskType[]) => {
-  //       if (tasks && tasksSocket[0].projectId === tasks[0].projectId) {
-  //         setTasks(tasksSocket);
-  //       }
-  //     });
-  //   }, [socket, tasks]);
-
-  //   useEffect(() => {
-  //     socket.on('add-task', newTask => {
-  //       if (!tasks) return;
-  //       setTasks([...tasks, newTask]);
-  //     });
-  //   }, [socket, tasks]);
-
-  //   useEffect(() => {
-  //     socket.on('update-task', updateTask => {
-  //       if (!tasks) return;
-  //       const newTasks = tasks?.map(task =>
-  //         task.id == updateTask.id ? updateTask : task
-  //       );
-  //       setTasks(newTasks);
-  //     });
-  //   }, [socket, tasks]);
-
-  //   useEffect(() => {
-  //     socket.on('delete-task-success', id => {
-  //       if (!tasks) return;
-  //       const newTasks = tasks.filter(task => task.id !== id);
-  //       setTasks(newTasks);
-  //     });
-  //   }, [socket, tasks]);
-
-  //   const editTaskStatus = (
-  //     id: number,
-  //     status: string,
-  //     newEmployees: Employees[] = []
-  //   ) => {
-  //     if (!tasks) return;
-  //     const personalData = localStorage.getItem('personalData');
-  //     if (!personalData) return;
-  //     const personalDataParse = JSON.parse(personalData);
-
-  //     const newTasks = tasks?.map(task =>
-  //       task.id == id ? { ...task, status, employees: newEmployees } : task
-  //     );
-  //     socket.emit('update-status', {
-  //       id,
-  //       body: { status },
-  //       userId: personalDataParse.id,
-  //     });
-  //     socket.emit('data', newTasks);
-  //     setTasks(newTasks);
-  //   };
-
-  //   const addNewTask = () => {
-  //     clearDataInModal();
-  //     isOpenModal$.setSubject = true;
-  //   };
-
-  //   const createTask = (task: TaskType) => {
-  //     socket.emit('create-task', task);
-  //     clearDataInModal();
-  //   };
-  //   const editTask = (task: TaskType) => {
-  //     socket.emit('edit-task', task);
-  //     clearDataInModal();
-  //   };
-
-  //   const deleteTask = (id: number) => {
-  //     socket.emit('delete-task', id);
-  //   };
-  //   const clearDataInModal = () => setGetTaskData(null);
-
-  //   const handleGetTaskData = (getTask: TaskType) => setGetTaskData(getTask);
-  // const taskId = subTasks?.at(0)?.taskId;
   const isAuthorizedMod = userSessionId === workArea?.userId;
 
   const openModaltoAdd = () => (isTaskInformation$.setSubject = false);
@@ -271,20 +199,21 @@ const Tasks = () => {
                 ))}
           </div>
         </section>
-        {workArea && (
+        {
           <CardRegisterAndInformation
             subTask={subTask}
-            projectName={workArea.project.name}
+            projectName={workArea?.project.name}
             isAuthorizedMod={isAuthorizedMod}
             taskId={taskId}
           />
-        )}
+        }
       </div>
       {workArea && (
         <Sidebar
           workArea={workArea}
-          settingSubTasks={settingSubTasks}
+          settingSubTasks={(id, type) => settingSubTasks(id, type)}
           onUpdate={getWorkAreas}
+          isShowInitValue={state?.taskIdProp === undefined}
         />
       )}
     </>

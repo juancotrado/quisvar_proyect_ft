@@ -10,9 +10,14 @@ import { axiosInstance } from '../../../services/axiosInstance';
 interface IndexTaskContainerProps {
   indexTask: IndexTask;
   onSave?: () => void;
+  settingSubTask: () => void;
 }
 
-const IndexTaskContainer = ({ indexTask, onSave }: IndexTaskContainerProps) => {
+const IndexTaskContainer = ({
+  indexTask,
+  onSave,
+  settingSubTask,
+}: IndexTaskContainerProps) => {
   const { userSession } = useSelector((state: RootState) => state);
   const [name, setName] = useState<string>();
   const [openEditIndexTask, setOpenEditIndexTask] = useState<boolean>(false);
@@ -23,6 +28,10 @@ const IndexTaskContainer = ({ indexTask, onSave }: IndexTaskContainerProps) => {
     setName(value);
   };
 
+  const handleUniqueVerify = () => {
+    if (!indexTask.unique) return;
+    settingSubTask();
+  };
   const handleForm = async () => {
     await axiosInstance
       .patch(`indextasks/${indexTask.id}`, { name })
@@ -32,7 +41,7 @@ const IndexTaskContainer = ({ indexTask, onSave }: IndexTaskContainerProps) => {
       });
   };
   return (
-    <div className="index-task-section">
+    <div className="index-task-section" onClick={handleUniqueVerify}>
       <div className="aside-dropdown-section">
         <img
           src="/svg/reports.svg"
@@ -48,7 +57,9 @@ const IndexTaskContainer = ({ indexTask, onSave }: IndexTaskContainerProps) => {
           />
         ) : (
           <>
-            <span className="aside-name-index">{indexTask.name}</span>
+            <span className="aside-name-index">
+              {indexTask.item}. {indexTask.name}
+            </span>
             <img src="/svg/down.svg" className="aside-dropdown-arrow" />
             <input type="checkbox" className="aside-dropdown-check" />
           </>

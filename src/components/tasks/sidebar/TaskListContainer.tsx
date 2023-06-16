@@ -53,7 +53,7 @@ const TaskListContainer = ({
             task.id === taskSelected && 'aside-dropdown-sub-list-span-active'
           }`}
         >
-          {task.name.toLowerCase()}
+          {task.item}. {task.name.toLowerCase()}
         </span>
       )}
       {role !== 'EMPLOYEE' && (

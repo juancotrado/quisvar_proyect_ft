@@ -36,7 +36,12 @@ const AddTask = ({ indexTaskId, onSave }: AddTaskProps) => {
       ) : (
         <span>AÑADIR TAREA </span>
       )}
-      {addTask && <Button icon="save" className="add-btn-indextask" />}
+      {addTask && (
+        <>
+          {/* <Button icon="save" className="add-btn-indextask" /> */}
+          <Button icon="save" className="add-btn-indextask" />
+        </>
+      )}
       <Button
         type="button"
         icon={addTask ? 'close' : 'plus'}

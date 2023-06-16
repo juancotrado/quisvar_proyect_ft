@@ -20,7 +20,9 @@ const Specialities = () => {
   const [specialities, setSpecialities] = useState<SpecialityType[] | null>(
     null
   );
-
+  const [selectedSpecialityId, setSelectedSpecialityId] = useState<
+    number | null
+  >(null);
   useEffect(() => {
     getSpecialities();
   }, []);
@@ -54,6 +56,13 @@ const Specialities = () => {
         : 'Esta especialidad no tiene proyectos, agregue un nuevo proyecto.';
     }
   };
+  const handleSpecialitySelect = (specialityId: number) => {
+    if (specialityId === selectedSpecialityId) {
+      setSelectedSpecialityId(null);
+    } else {
+      setSelectedSpecialityId(specialityId);
+    }
+  };
   return (
     <div className="speciality container">
       <div className="speciality-head">
@@ -80,6 +89,8 @@ const Specialities = () => {
                 onUpdate={getSpecialities}
                 role={role}
                 getProjects={getProjects}
+                selected={selectedSpecialityId === _speciality.id}
+                onSelect={() => handleSpecialitySelect(_speciality.id)}
               />
             ))}
           {role !== 'EMPLOYEE' && (

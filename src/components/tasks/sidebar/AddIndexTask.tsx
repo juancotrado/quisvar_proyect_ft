@@ -5,7 +5,7 @@ import Button from '../../shared/button/Button';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { axiosInstance } from '../../../services/axiosInstance';
 
-type IndexTaskForm = { name: string; workAreaId: number };
+type IndexTaskForm = { name: string; workAreaId: number; unique: boolean };
 
 interface AddIndexTaskProps {
   workAreaId: number;
@@ -13,7 +13,8 @@ interface AddIndexTaskProps {
 }
 const AddIndexTask = ({ onSave, workAreaId }: AddIndexTaskProps) => {
   const [addIndexTask, setAddIndexTask] = useState<boolean>(false);
-  const { handleSubmit, register, setValue } = useForm<IndexTaskForm>();
+  const { handleSubmit, register, setValue, resetField } =
+    useForm<IndexTaskForm>();
 
   useEffect(() => {
     setValue('workAreaId', workAreaId);
@@ -23,6 +24,8 @@ const AddIndexTask = ({ onSave, workAreaId }: AddIndexTaskProps) => {
     await axiosInstance.post('/indextasks', values).then(() => {
       onSave?.();
       setAddIndexTask(false);
+      resetField('name');
+      resetField('unique');
     });
   };
   return (
@@ -35,7 +38,12 @@ const AddIndexTask = ({ onSave, workAreaId }: AddIndexTaskProps) => {
       ) : (
         <span>AÑADIR ÍNDICE DE TAREA </span>
       )}
-      {addIndexTask && <Button icon="save" className="add-btn-indextask" />}
+      {addIndexTask && (
+        <>
+          <input {...register('unique')} type="checkbox" name="unique" />
+          <Button icon="save" className="add-btn-indextask" />
+        </>
+      )}
       <Button
         type="button"
         icon={addIndexTask ? 'close' : 'plus'}

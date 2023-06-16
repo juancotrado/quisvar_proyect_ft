@@ -150,6 +150,14 @@ const CardRegisterProject = ({
             type="date"
           />
         </div>
+        {/* <div className="col-input">
+          <Input
+            label="Fecha Inicio"
+            {...register('startDate')}
+            name="startDate"
+            type="radius"
+          />
+        </div> */}
         <TextArea
           label="Descripción"
           {...register('description')}

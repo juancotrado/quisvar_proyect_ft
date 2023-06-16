@@ -1,19 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { motion } from 'framer-motion';
-import { Input, TextArea } from '../../..';
 import { axiosInstance } from '../../../../services/axiosInstance';
-import { isOpenModal$ } from '../../../../services/sharingSubject';
-import Modal from '../../../portal/Modal';
-import Button from '../../button/Button';
 import './CardRegisterArea.css';
-import {
-  ChangeEvent,
-  FormEvent,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { container } from '../../../../animations/animations';
 import InputText from '../../Input/Input';
 import DropDownSimple from '../../select/DropDownSimple';

@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 // import React from 'react';
 import './tasks.css';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
 import { SubTask, WorkArea } from '../../types/types';
@@ -30,7 +30,7 @@ const initValuesSubTask: SubTask = {
 };
 const Tasks = () => {
   const { id } = useParams();
-
+  const { state } = useLocation();
   const [workArea, setWorkArea] = useState<WorkArea | null>(null);
   const [subTasks, setSubTasks] = useState<SubTask[] | null>(null);
   const [subTask, setSubTask] = useState<SubTask>(initValuesSubTask);
@@ -50,11 +50,14 @@ const Tasks = () => {
 
   const settingSubTasks = (id: number, type: 'task' | 'indextask') => {
     if (type === 'task') {
-      axiosInstance.get(`/tasks/${id}`).then(res => {
-        setTaskId(res.data.id);
-        setSubTasks(res.data.subTasks);
-        socket.emit('join', res.data.id);
-        isOpenModal$.setSubject = false;
+      return new Promise<SubTask[]>(resolve => {
+        axiosInstance.get(`/tasks/${id}`).then(res => {
+          setTaskId(res.data.id);
+          setSubTasks(res.data.subTasks);
+          socket.emit('join', res.data.id);
+          isOpenModal$.setSubject = false;
+          resolve(res.data.subTasks);
+        });
       });
     }
     if (type === 'indextask') {
@@ -72,6 +75,25 @@ const Tasks = () => {
     isTaskInformation$.setSubject = true;
   };
 
+  useEffect(() => {
+    if (state?.taskIdProp && state?.subTaskIdProp) {
+      openMySubTask();
+    }
+  }, []);
+
+  const openMySubTask = async () => {
+    const { taskIdProp, subTaskIdProp } = state;
+    console.log(subTaskIdProp);
+
+    const subTasksSelected = await settingSubTasks(taskIdProp, 'task');
+    console.log('hola');
+    const subTaskSelect = subTasksSelected?.find(
+      subTask => subTask.id === subTaskIdProp
+    );
+    console.log('dsadsa', subTaskSelect);
+    if (!subTaskSelect) return;
+    getSubtask(subTaskSelect);
+  };
   useEffect(() => {
     socket.on('server:update-subTask', (newSubTask: SubTask) => {
       if (!subTasks) return;
@@ -177,20 +199,21 @@ const Tasks = () => {
                 ))}
           </div>
         </section>
-        {workArea && (
+        {
           <CardRegisterAndInformation
             subTask={subTask}
-            projectName={workArea.project.name}
+            projectName={workArea?.project.name}
             isAuthorizedMod={isAuthorizedMod}
             taskId={taskId}
           />
-        )}
+        }
       </div>
       {workArea && (
         <Sidebar
           workArea={workArea}
           settingSubTasks={(id, type) => settingSubTasks(id, type)}
           onUpdate={getWorkAreas}
+          isShowInitValue={state?.taskIdProp === undefined}
         />
       )}
     </>

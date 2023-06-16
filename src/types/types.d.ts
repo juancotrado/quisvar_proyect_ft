@@ -1,3 +1,4 @@
+import { IndexTask } from './types.d';
 export interface SpecialityType {
   id: number;
   name: string;
@@ -138,6 +139,16 @@ export interface SubTask {
   updatedAt?: Date;
   taskId: number;
   users: Users[];
+  createdAt?: Date;
+}
+export interface SubtaskIncludes extends SubTask {
+  task: {
+    id: number;
+    indexTask: {
+      id: number;
+      workAreaId: number;
+    };
+  };
 }
 
 interface Files {

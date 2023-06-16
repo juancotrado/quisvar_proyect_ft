@@ -15,11 +15,18 @@ interface SidebarProps {
   workArea: WorkArea;
   onUpdate?: () => void;
   settingSubTasks: (id: number, type: SettingType) => void;
+  isShowInitValue: boolean;
 }
 
-const Sidebar = ({ workArea, settingSubTasks, onUpdate }: SidebarProps) => {
+const Sidebar = ({
+  workArea,
+  settingSubTasks,
+  onUpdate,
+  isShowInitValue,
+}: SidebarProps) => {
+  console.log('isShowInitValue', isShowInitValue);
   const { userSession } = useSelector((state: RootState) => state);
-  const [isShow, setIsShow] = useState<boolean>(true);
+  const [isShow, setIsShow] = useState<boolean>(isShowInitValue);
   const [openEditArea, setOpenEditArea] = useState<boolean>(false);
   const { name, item, indexTasks, user, ...areaData } = workArea;
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
@@ -27,7 +34,6 @@ const Sidebar = ({ workArea, settingSubTasks, onUpdate }: SidebarProps) => {
   const workAreaInfo = { ...areaData, name };
   const [taskSelected, setTaskSelected] = useState<number | null>(null);
 
-  console.log(workArea);
   const handleEditArea = () => setOpenEditArea(!openEditArea);
   const handleShow = () => setIsShow(!isShow);
 

@@ -60,7 +60,9 @@ const IndexTaskContainer = ({
             <span className="aside-name-index">
               {indexTask.item}. {indexTask.name}
             </span>
-            <img src="/svg/down.svg" className="aside-dropdown-arrow" />
+            {!indexTask.unique && (
+              <img src="/svg/down.svg" className="aside-dropdown-arrow" />
+            )}
             <input type="checkbox" className="aside-dropdown-check" />
           </>
         )}

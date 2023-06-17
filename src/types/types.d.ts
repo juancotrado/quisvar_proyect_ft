@@ -82,6 +82,7 @@ export interface ProjectType {
   userId?: number;
   areas: AreasType[];
   specialityId: number;
+  unique?: boolean;
 }
 
 type AreasType = {

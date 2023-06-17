@@ -26,33 +26,32 @@ const MyTaskCard = ({ subTask }: TaskCardProps) => {
   return (
     <div className="my-task-class">
       {/* <span className="task-text">{`${task.status == 'DONE'? "Hecho":"asd"}` }</span> */}
-      <span className={`my-icon-card`}>
-        <img
-          src={
-            subTask.status === 'DONE'
-              ? icon_done
-              : subTask.status === 'PROCESS'
-              ? icon_list_task
-              : ''
-          }
-        />
-      </span>
+
       <div className="my-task-content">
+        <span className={`my-icon-card`}>
+          <img
+            src={
+              subTask.status === 'DONE'
+                ? icon_done
+                : subTask.status === 'PROCESS'
+                ? icon_list_task
+                : ''
+            }
+            className="img-task"
+          />
+        </span>
+        <span
+          className={`task-text ${subTask.status === 'DENIED' && 'hold'} ${
+            subTask.status === 'PROCESS' && 'process'
+          } ${subTask.status === 'DONE' && 'done'}`}
+        >
+          {subTask.status === 'DENIED' && 'Por Revisar'}
+          {subTask.status === 'PROCESS' && 'En Revisión'}
+        </span>
         <div className="task-header">
           <h2>{subTask.name}</h2>
           <span>Precio: S/{subTask.price}</span>
         </div>
-        <ul>
-          <h3>{subTask.description} </h3>
-          <span
-            className={`task-text ${subTask.status === 'DENIED' && 'hold'} ${
-              subTask.status === 'PROCESS' && 'process'
-            } ${subTask.status === 'DONE' && 'done'}`}
-          >
-            {subTask.status === 'DENIED' && 'Por Revisar'}
-            {subTask.status === 'PROCESS' && 'En Revisión'}
-          </span>
-        </ul>
       </div>
       <div className="footer-my-task">
         <h3>

@@ -21,22 +21,25 @@ const Menu = ({ data }: any) => {
     >
       <p className="fullname-menu">{personalData}</p>
       <div className="line"></div>
-      {data.map((value: any, index: number) => (
-        <motion.li
-          key={index}
-          whileTap={{ scale: 0.9 }}
-          onClick={() => value.action()}
-          className="list-menu"
-        >
-          <img src={value.icon} alt="" className="icon-menu" />
-          <p> {value.name}</p>
-          <img
-            src="/svg/material-symbols_navigate-next.svg"
-            alt=""
-            className="icon-menu-right"
-          />
-        </motion.li>
-      ))}
+      {data.map(
+        (value: any) =>
+          (userSession.role !== 'EMPLOYEE' || value.id !== 2) && (
+            <motion.li
+              key={value.id}
+              whileTap={{ scale: 0.9 }}
+              onClick={() => value.action()}
+              className="list-menu"
+            >
+              <img src={value.icon} alt="" className="icon-menu" />
+              <p> {value.name}</p>
+              <img
+                src="/svg/material-symbols_navigate-next.svg"
+                alt=""
+                className="icon-menu-right"
+              />
+            </motion.li>
+          )
+      )}
     </motion.ul>
   );
 };

@@ -20,7 +20,6 @@ interface CardSubtaskDone {
 const CardSubtaskDone = ({
   subTask,
   isAuthorizedMod,
-  isAuthorizedUser,
   areAuthorizedUsers,
   projectName,
 }: CardSubtaskDone) => {
@@ -42,17 +41,17 @@ const CardSubtaskDone = ({
   ): { status: string } | undefined => {
     return statusBody[category]?.[role]?.[state];
   };
-  const handleChangeStatus = async (option: 'ASIG' | 'DENY') => {
-    const body = getStatus(option, role, status);
-    if (!body) return;
+  // const handleChangeStatus = async (option: 'ASIG' | 'DENY') => {
+  //   const body = getStatus(option, role, status);
+  //   if (!body) return;
 
-    const resStatus = await axiosInstance.patch(
-      `/subtasks/status/${subTask.id}`,
-      body
-    );
-    socket.emit('client:update-subTask', resStatus.data);
-    isOpenModal$.setSubject = false;
-  };
+  //   const resStatus = await axiosInstance.patch(
+  //     `/subtasks/status/${subTask.id}`,
+  //     body
+  //   );
+  //   socket.emit('client:update-subTask', resStatus.data);
+  //   isOpenModal$.setSubject = false;
+  // };
   const handleReloadSubTask = () => {
     axiosInstance
       .patch(`/subtasks/asigned/${subTask.id}?status=decline`)
@@ -145,7 +144,7 @@ const CardSubtaskDone = ({
                 onClick={handleReloadSubTask}
               />
             )}
-            {isAuthorizedMod && status === 'INREVIEW' && (
+            {/* {isAuthorizedMod && status === 'INREVIEW' && (
               <Button
                 text={'Desaprobar'}
                 className="btn-declinar"
@@ -166,7 +165,7 @@ const CardSubtaskDone = ({
                 className="btn-revisar"
                 onClick={() => handleChangeStatus('ASIG')}
               />
-            )}
+            )} */}
           </div>
         )}
       </section>

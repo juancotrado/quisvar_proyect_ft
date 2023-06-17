@@ -15,13 +15,16 @@ interface CardSubtaskHold {
   subTask: SubTask;
   isAuthorizedMod: boolean;
   isAuthorizedUser: boolean;
+  handleChangeStatus: (option: 'ASIG' | 'DENY') => void;
   projectName: string;
+  handleFileChange: (type: fyleType, e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const CardSubtaskHold = ({
   subTask,
   isAuthorizedMod,
-  isAuthorizedUser,
+  handleFileChange,
+  handleChangeStatus,
   projectName,
 }: CardSubtaskHold) => {
   const socket = useContext(SocketContext);
@@ -61,17 +64,7 @@ const CardSubtaskHold = ({
   ): { status: string } | undefined => {
     return statusBody[category]?.[role]?.[state];
   };
-  const handleChangeStatus = async (option: 'ASIG' | 'DENY') => {
-    const body = getStatus(option, role, status);
-    if (!body) return;
 
-    const resStatus = await axiosInstance.patch(
-      `/subtasks/status/${subTask.id}`,
-      body
-    );
-    socket.emit('client:update-subTask', resStatus.data);
-    isOpenModal$.setSubject = false;
-  };
   const handleReloadSubTask = () => {
     axiosInstance
       .patch(`/subtasks/asigned/${subTask.id}?status=decline`)
@@ -114,20 +107,7 @@ const CardSubtaskHold = ({
     }
     console.log(usersData);
   };
-  const handleFileChange = (
-    type: fyleType,
-    e: ChangeEvent<HTMLInputElement>
-  ) => {
-    if (!e.target.files) return;
 
-    // setFile(e.target.files[0]);
-    const formdata = new FormData();
-    formdata.append('file', e.target.files[0]);
-    axiosInstance
-      .post(`/files/upload/${subTask.id}/?status=${type}`, formdata)
-      .then(res => socket.emit('client:update-subTask', res.data));
-    // setFile(null);
-  };
   return (
     <div className="subtask-content-area">
       <section className="subtask-files">

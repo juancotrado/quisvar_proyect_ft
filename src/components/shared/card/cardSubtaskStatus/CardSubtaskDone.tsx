@@ -41,6 +41,7 @@ const CardSubtaskDone = ({
   ): { status: string } | undefined => {
     return statusBody[category]?.[role]?.[state];
   };
+
   // const handleChangeStatus = async (option: 'ASIG' | 'DENY') => {
   //   const body = getStatus(option, role, status);
   //   if (!body) return;
@@ -52,6 +53,7 @@ const CardSubtaskDone = ({
   //   socket.emit('client:update-subTask', resStatus.data);
   //   isOpenModal$.setSubject = false;
   // };
+
   const handleReloadSubTask = () => {
     axiosInstance
       .patch(`/subtasks/asigned/${subTask.id}?status=decline`)
@@ -93,6 +95,7 @@ const CardSubtaskDone = ({
       .then(res => socket.emit('client:update-subTask', res.data));
     // setFile(null);
   };
+
   return (
     <div className="subtask-content-area">
       <section className="subtask-files">
@@ -191,7 +194,7 @@ const CardSubtaskDone = ({
             </div>
             <div className="subtask-fil">
               {subTask.files
-                ?.filter(({ type }) => type === 'MATERIAL')
+                ?.filter(({ type }) => type === 'REVIEW')
                 .map(file => (
                   <div key={file.id} className="subtask-file-contain">
                     <a

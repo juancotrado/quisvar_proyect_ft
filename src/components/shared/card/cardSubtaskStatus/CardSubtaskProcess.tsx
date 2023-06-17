@@ -215,7 +215,7 @@ const CardSubtaskProcess = ({
             </div>
             <div className="subtask-fil">
               {subTask.files
-                ?.filter(({ type }) => type === 'REVIEW')
+                ?.filter(({ type }) => type === 'MATERIAL')
                 .map(file => (
                   <div key={file.id} className="subtask-file-contain">
                     <a

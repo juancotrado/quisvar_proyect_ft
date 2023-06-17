@@ -55,7 +55,7 @@ const CardAddSpeciality = ({ onSave }: CardAddSpecialityProps) => {
                   reset();
                 }}
               >
-                <img src="public/svg/close.svg" />
+                <img src="svg/close.svg" />
               </button>
               <Button
                 type="submit"

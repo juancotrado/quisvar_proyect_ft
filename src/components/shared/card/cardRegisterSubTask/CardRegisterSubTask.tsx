@@ -9,6 +9,7 @@ import { axiosInstance } from '../../../../services/axiosInstance';
 import { SocketContext } from '../../../../context/SocketContex';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
 import { SubTask } from '../../../../types/types';
+import Button from '../../button/Button';
 
 type SubTaskForm = {
   name: string;
@@ -91,16 +92,25 @@ const CardRegisterSubTask = ({ subTask, taskId }: CardRegisterSubTaskProps) => {
     return roundPrice;
   };
 
+  const closeFunctions = () => {
+    isOpenModal$.setSubject = false;
+  };
+
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
       className="card-register-project"
       autoComplete="off"
     >
-      {/* <span className="close-add-card">
-          <img src="/svg/close.svg" alt="pencil" />
-        </span> */}
-      <h2>{subTask ? 'ACTUALIZAR TAREA' : 'REGISTRAR TAREA'}</h2>
+      <div className="subtask-head-title">
+        <h2>{subTask ? 'ACTUALIZAR TAREA' : 'REGISTRAR TAREA'}</h2>
+        <Button
+          type="button"
+          icon="close"
+          className="close-add-card-subtask"
+          onClick={closeFunctions}
+        />
+      </div>
       <hr></hr>
       <Input label="Nombre" {...register('name')} name="name" type="text" />
       <TextArea
@@ -159,7 +169,7 @@ const CardRegisterSubTask = ({ subTask, taskId }: CardRegisterSubTaskProps) => {
               ))}
           </div>
         )}
-        <div className="col-hours ">
+        <div className="col-hours-subtask">
           <Input
             label="Horas"
             col={true}
@@ -180,8 +190,7 @@ const CardRegisterSubTask = ({ subTask, taskId }: CardRegisterSubTaskProps) => {
           />
         </div>
       </div>
-
-      <button type="submit">send</button>
+      <Button text="Guardar" className="btn-area" type="submit" />
     </form>
   );
 };

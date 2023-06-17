@@ -97,11 +97,7 @@ const UserInfo = ({
             className={`handle-statuts ${isOn && 'handle-on'}`}
             layout
             transition={spring}
-          >
-            {/* <span className="span-list-task">
-              {isOn ? 'Activo' : 'Inactivo'}
-            </span> */}
-          </motion.div>
+          ></motion.div>
         </div>
       </div>
       <div className="col-span phone-container">{profile.dni}</div>

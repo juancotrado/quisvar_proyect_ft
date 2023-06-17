@@ -1,4 +1,3 @@
-import { useNavigate } from 'react-router-dom';
 import { SpecialityType } from '../../../types/types';
 import Button from '../../shared/button/Button';
 import ButtonDelete from '../../shared/button/ButtonDelete';
@@ -26,7 +25,6 @@ const CardSpeciality = ({
   selected,
   onSelect,
 }: CardSpecialityProps) => {
-  const navigate = useNavigate();
   const [isEditable, setIsEditable] = useState(false);
   const { handleSubmit, register } = useForm<SpecialityType>();
   const handleProject = () => {
@@ -57,7 +55,7 @@ const CardSpeciality = ({
       <div className="speciality-main-title">
         {role !== 'EMPLOYEE' && (
           <div className="speciality-edit" onClick={e => e.stopPropagation()}>
-            {numberProjects == 0 && (
+            {numberProjects == 0 && !isEditable && (
               <ButtonDelete
                 icon="trash-red"
                 url={`/specialities/${data.id}`}
@@ -66,7 +64,7 @@ const CardSpeciality = ({
               />
             )}
             <Button
-              icon="pencil"
+              icon={isEditable ? 'close' : 'pencil'}
               className="speciality-edit-icon"
               onClick={() => setIsEditable(!isEditable)}
             />
@@ -84,15 +82,11 @@ const CardSpeciality = ({
               defaultValue={data.name}
               className="editable-title editable-color"
             />
-            <Button type="submit" icon="save" className="editable-submit" />
-            {/* <button className="editable-submit" type="submit">
-              Guardar
-            </button> */}
+            <Button icon="save" className="editable-submit" />
           </form>
         ) : (
           <>
             <h2 className="editable-title">{data.name}</h2>
-            {/* <div className="gradient"></div> */}
           </>
         )}
       </div>

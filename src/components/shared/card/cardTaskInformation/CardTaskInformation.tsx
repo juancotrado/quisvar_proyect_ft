@@ -19,6 +19,7 @@ import {
 import ButtonDelete from '../../button/ButtonDelete';
 import { statusBody, statusText } from './constans';
 import DropDownSimple from '../../select/DropDownSimple';
+import { SnackbarUtilities } from '../../../../utils/SnackbarManager';
 interface CardTaskInformationProps {
   subTask: SubTask;
   isAuthorizedMod: boolean;
@@ -38,35 +39,36 @@ const CardTaskInformation = ({
   // const [selectedFile, setSelectedFile] = useState<FileList[0] | null>();
   const [percentage, setPercentage] = useState(50);
   const [file, setFile] = useState<FileList[0] | null>();
+  const [haveFile, setHaveFile] = useState(false);
   const role = userSession.role === 'EMPLOYEE' ? 'EMPLOYEE' : 'SUPERADMIN';
   const [usersData, setUsersData] = useState<DataUser[]>([]);
   const { listUsers } = useSelector((state: RootState) => state);
 
-  const users = useMemo(
-    () =>
-      listUsers
-        ? listUsers
-            .filter(({ role }) => role === 'EMPLOYEE')
-            .map(({ profile, ...props }) => ({
-              name: `${profile.firstName} ${profile.lastName}`,
-              ...props,
-            }))
-        : [],
-    [listUsers]
-  );
-  const handleDrop = (
-    type: fyleType,
-    event: React.DragEvent<HTMLDivElement>
-  ) => {
-    event.preventDefault();
-    const file = event.dataTransfer.files[0];
-    const formdata = new FormData();
-    formdata.append('file', file);
-    axiosInstance
-      .post(`/files/upload/${subTask.id}/?status=${type}`, formdata)
-      .then(res => socket.emit('client:update-subTask', res.data));
-    // setFile(file);
-  };
+  // // const users = useMemo(
+  // //   () =>
+  // //     listUsers
+  // //       ? listUsers
+  // //           .filter(({ role }) => role === 'EMPLOYEE')
+  // //           .map(({ profile, ...props }) => ({
+  // //             name: `${profile.firstName} ${profile.lastName}`,
+  // //             ...props,
+  // //           }))
+  // //       : [],
+  // //   [listUsers]
+  // // );
+  // const handleDrop = (
+  //   type: fyleType,
+  //   event: React.DragEvent<HTMLDivElement>
+  // ) => {
+  //   event.preventDefault();
+  //   const file = event.dataTransfer.files[0];
+  //   const formdata = new FormData();
+  //   formdata.append('file', file);
+  //   axiosInstance
+  //     .post(`/files/upload/${subTask.id}/?status=${type}`, formdata)
+  //     .then(res => socket.emit('client:update-subTask', res.data));
+  //   // setFile(file);
+  // };
   const closeModal = () => {
     isTaskInformation$.setSubject = false;
     isOpenModal$.setSubject = false;
@@ -77,36 +79,37 @@ const CardTaskInformation = ({
   ) => {
     if (!e.target.files) return;
 
-    // setFile(e.target.files[0]);
     const formdata = new FormData();
     formdata.append('file', e.target.files[0]);
     axiosInstance
       .post(`/files/upload/${subTask.id}/?status=${type}`, formdata)
-      .then(res => socket.emit('client:update-subTask', res.data));
-    // setFile(null);
+      .then(res => {
+        setHaveFile(true);
+        socket.emit('client:update-subTask', res.data);
+      });
   };
 
-  const handleUploadClick = (type: fyleType) => {
-    if (!file) return;
-    const formdata = new FormData();
-    formdata.append('file', file);
-    axiosInstance
-      .post(`/files/upload/${subTask.id}/?status=${type}`, formdata)
-      .then(res => socket.emit('client:update-subTask', res.data));
-    setFile(null);
-  };
-  const [addBtn, setAddBtn] = useState(false);
-  const handleAddUser = (user: DataUser) => {
-    setAddBtn(true);
-    const getId = usersData.find(list => list.id == user.id);
-    if (!getId) setUsersData([...usersData, user]);
-  };
+  // const handleUploadClick = (type: fyleType) => {
+  //   if (!file) return;
+  //   const formdata = new FormData();
+  //   formdata.append('file', file);
+  //   axiosInstance
+  //     .post(`/files/upload/${subTask.id}/?status=${type}`, formdata)
+  //     .then(res => socket.emit('client:update-subTask', res.data));
+  //   setFile(null);
+  // };
+  // const [addBtn, setAddBtn] = useState(false);
+  // const handleAddUser = (user: DataUser) => {
+  //   setAddBtn(true);
+  //   const getId = usersData.find(list => list.id == user.id);
+  //   if (!getId) setUsersData([...usersData, user]);
+  // };
 
-  const handleRemoveUser = (user: DataUser) => {
-    const filterValue = usersData.filter(list => list.id !== user.id);
-    setUsersData(filterValue);
-    setAddBtn(false);
-  };
+  // const handleRemoveUser = (user: DataUser) => {
+  //   const filterValue = usersData.filter(list => list.id !== user.id);
+  //   setUsersData(filterValue);
+  //   setAddBtn(false);
+  // };
   const getStatus = (
     category: string,
     role: string,
@@ -117,7 +120,15 @@ const CardTaskInformation = ({
 
   const handleChangeStatus = async (option: 'ASIG' | 'DENY') => {
     const { status } = subTask;
+
     const body = getStatus(option, role, status);
+    if (
+      (status === 'PROCESS' || status === 'DENIED' || status === 'INREVIEW') &&
+      body?.status !== 'DONE' &&
+      !haveFile
+    ) {
+      return SnackbarUtilities.warning('Asegurese de subir una archivo antes.');
+    }
     if (!body) return;
 
     const resStatus = await axiosInstance.patch(
@@ -125,11 +136,12 @@ const CardTaskInformation = ({
       body
     );
     socket.emit('client:update-subTask', resStatus.data);
+    setHaveFile(false);
     isOpenModal$.setSubject = false;
   };
-  const handleInputChange = (value: number) => {
-    console.log('Nuevo valor:', value);
-  };
+  // const handleInputChange = (value: number) => {
+  //   console.log('Nuevo valor:', value);
+  // };
 
   const handleSubTaskDelete = () => {
     axiosInstance.delete(`/subtasks/${subTask.id}`).then(res => {
@@ -137,33 +149,33 @@ const CardTaskInformation = ({
       isOpenModal$.setSubject = false;
     });
   };
-  const normalizeFileName = (name: string) => {
-    const indexName = name.indexOf('$');
-    return name.slice(indexName + 1);
-  };
+  // const normalizeFileName = (name: string) => {
+  //   const indexName = name.indexOf('$');
+  //   return name.slice(indexName + 1);
+  // };
 
-  const handleReloadSubTask = () => {
-    axiosInstance
-      .patch(`/subtasks/asigned/${subTask.id}?status=decline`)
-      .then(res => {
-        socket.emit('client:update-subTask', res.data);
-        isOpenModal$.setSubject = false;
-      });
-  };
-  const handleAddUserByTask = () => {
-    axiosInstance
-      .patch(`/subtasks/assignUser/${subTask.id}`, usersData)
-      .then(res => {
-        socket.emit('client:update-subTask', res.data);
-        isOpenModal$.setSubject = false;
-      });
-  };
+  // const handleReloadSubTask = () => {
+  //   axiosInstance
+  //     .patch(`/subtasks/asigned/${subTask.id}?status=decline`)
+  //     .then(res => {
+  //       socket.emit('client:update-subTask', res.data);
+  //       isOpenModal$.setSubject = false;
+  //     });
+  // };
+  // const handleAddUserByTask = () => {
+  //   axiosInstance
+  //     .patch(`/subtasks/assignUser/${subTask.id}`, usersData)
+  //     .then(res => {
+  //       socket.emit('client:update-subTask', res.data);
+  //       isOpenModal$.setSubject = false;
+  //     });
+  // };
 
-  const deleteFile = (id: number) => {
-    axiosInstance
-      .delete(`/files/remove/${id}`)
-      .then(res => socket.emit('client:update-subTask', res.data));
-  };
+  // const deleteFile = (id: number) => {
+  //   axiosInstance
+  //     .delete(`/files/remove/${id}`)
+  //     .then(res => socket.emit('client:update-subTask', res.data));
+  // };
 
   // validations
   const { status } = subTask;
@@ -206,6 +218,8 @@ const CardTaskInformation = ({
           isAuthorizedMod={isAuthorizedMod}
           isAuthorizedUser={isAuthorizedUser}
           projectName={projectName}
+          handleFileChange={handleFileChange}
+          handleChangeStatus={handleChangeStatus}
         />
       )}
       {(status === 'PROCESS' ||
@@ -217,6 +231,8 @@ const CardTaskInformation = ({
           isAuthorizedUser={isAuthorizedUser}
           areAuthorizedUsers={areAuthorizedUsers}
           projectName={projectName}
+          handleFileChange={handleFileChange}
+          handleChangeStatus={handleChangeStatus}
         />
       )}
       {status === 'DONE' && (

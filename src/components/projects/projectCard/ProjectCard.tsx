@@ -46,9 +46,18 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
       projectName: project.name,
     };
 
-    axiosInstance.post('/projects/archiver', body).then(res => {
-      window.location.href = `${URL}/static/${res.data.url}`;
-    });
+    axiosInstance
+      .post('/projects/archiver', body)
+      .then(res => {
+        window.location.href = `${URL}/static/${res.data.url}`;
+      })
+      .finally(() => {
+        axiosInstance
+          .delete(`/projects/archiver/?projectName=${project.name}`)
+          .then(res => {
+            console.log(res.data);
+          });
+      });
   };
 
   return (

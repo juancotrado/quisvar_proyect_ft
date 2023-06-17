@@ -24,6 +24,7 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
   const { profile } = project.moderator;
   const { handleSubmit, register, reset, setValue } = useForm<AreaForm>();
   const navigate = useNavigate();
+  console.log(project);
 
   const onSubmitArea: SubmitHandler<AreaForm> = values => {
     axiosInstance.post('/workareas', values).then(() => {

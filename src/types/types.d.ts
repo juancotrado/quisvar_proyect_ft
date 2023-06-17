@@ -68,6 +68,7 @@ export interface ProjectType {
   id: number;
   description?: string;
   name: string;
+  unique?: boolean;
   status: boolean;
   typeSpeciality: string;
   startDate: Date;
@@ -81,6 +82,7 @@ export interface ProjectType {
   userId?: number;
   areas: AreasType[];
   specialityId: number;
+  unique?: boolean;
 }
 
 type AreasType = {

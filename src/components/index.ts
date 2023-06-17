@@ -16,6 +16,9 @@ import Sidebar from './tasks/sidebar/Sidebar';
 import SubTaskCard from './shared/card/subTaskCard/SubTaskCard';
 import CardTaskInformation from './shared/card/cardTaskInformation/CardTaskInformation';
 import InputRange from './shared/inputRange/InputRange';
+import CardSubtaskDone from './shared/card/cardSubtaskStatus/CardSubtaskDone';
+import CardSubtaskHold from './shared/card/cardSubtaskStatus/CardSubtaskHold';
+import CardSubtaskProcess from './shared/card/cardSubtaskStatus/CardSubtaskProcess';
 
 export {
   Alert,
@@ -29,6 +32,9 @@ export {
   CardRegisterProject,
   CardEditUser,
   CardEditInformation,
+  CardSubtaskHold,
+  CardSubtaskProcess,
+  CardSubtaskDone,
   Select,
   TextArea,
   UserDetail,

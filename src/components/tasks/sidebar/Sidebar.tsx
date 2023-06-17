@@ -24,7 +24,6 @@ const Sidebar = ({
   onUpdate,
   isShowInitValue,
 }: SidebarProps) => {
-  console.log('isShowInitValue', isShowInitValue);
   const { userSession } = useSelector((state: RootState) => state);
   const [isShow, setIsShow] = useState<boolean>(isShowInitValue);
   const [openEditArea, setOpenEditArea] = useState<boolean>(false);
@@ -47,7 +46,9 @@ const Sidebar = ({
     <aside className={`aside ${isShow && 'aside-show'}`}>
       <div className="aside-container-title">
         <div className="aside-title-info">
-          <h2 className="aside-title">{`${item}. ${name}`}</h2>
+          <h2 className="aside-title">{`${
+            item !== '0' ? item + '.' : ''
+          } ${name}`}</h2>
           <span className={`${profileUser || 'aside-coordinator-off'}`}>
             {profileUser
               ? `${profileUser.firstName} ${profileUser.lastName}`

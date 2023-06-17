@@ -59,6 +59,15 @@
   gap: 2rem;
 }
 
+.col-unique {
+  text-transform: capitalize;
+  padding: 0.5rem 0;
+  display: flex;
+  font-weight: 600;
+  align-items: center;
+  gap: 2rem;
+}
+
 .btn-build {
   display: flex;
   justify-content: center;

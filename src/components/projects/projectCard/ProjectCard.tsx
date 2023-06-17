@@ -24,6 +24,7 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
   const { profile } = project.moderator;
   const { handleSubmit, register, reset, setValue } = useForm<AreaForm>();
   const navigate = useNavigate();
+  console.log(project);
 
   const onSubmitArea: SubmitHandler<AreaForm> = values => {
     axiosInstance.post('/workareas', values).then(() => {
@@ -41,11 +42,9 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
   };
 
   const handleArchiver = () => {
-    console.log(project.name);
     const body = {
       projectName: project.name,
     };
-
     axiosInstance.post('/projects/archiver', body).then(res => {
       window.location.href = `${URL}/static/${res.data.url}`;
     });
@@ -67,7 +66,16 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
             )}`}</p>
             {role !== 'EMPLOYEE' && (
               <>
-                {project.areas.length == 0 && (
+                {project.unique && (
+                  <ButtonDelete
+                    icon="trash"
+                    url={`/projects/${project.id}`}
+                    className="project-delete-icon"
+                    onSave={handleSave}
+                    imageStyle="project-size-img"
+                  />
+                )}
+                {project.areas.length === 0 && (
                   <ButtonDelete
                     icon="trash"
                     url={`/projects/${project.id}`}
@@ -95,59 +103,72 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
             : 'CREACION DEL SERVICIO DE PRÁCTICA DEPORTIVA Y/O RECREATIVA EN LA COMUNIDAD CAMPESINA DE KALAHUALA DISTRITO DE ASILLO DE LA PROVINCIA DE AZANGARO DEL DEPARTAMENTO DE PUNO.'}
         </p>
         <div className="project-card-footer">
-          <div className="project-card-footer-area">
-            <span>ÁREAS: </span>
-            {project.areas.length > 0 &&
-              project.areas.map(area => (
-                <div key={area.id} className="project-btn-container">
-                  <Button
-                    text={area.name}
-                    className="project-btn-footer"
-                    onClick={() => navigate(`/tareas/${area.id}`)}
-                  />
-                  {role !== 'EMPLOYEE' && (
-                    <ButtonDelete
-                      className="btn-delete-area"
-                      icon="close"
-                      url={`/workareas/${area.id}`}
-                      onSave={handleSave}
-                    />
-                  )}
-                </div>
-              ))}
-            {role !== 'EMPLOYEE' && (
-              <Button
-                text={`${addArea ? 'Cancelar' : 'Añadir'}`}
-                className={`${addArea && 'btn-red'} area-btn-add `}
-                onClick={() => {
-                  setAddArea(!addArea);
-                  reset();
-                }}
-              />
-            )}
-            {addArea && (
-              <form
-                onSubmit={handleSubmit(onSubmitArea)}
-                className="form-add-area"
-              >
-                <Input
-                  {...register('name')}
-                  name="name"
-                  className="form-input-area"
+          {project.unique ? (
+            <div className="project-card-footer-area">
+              {project.areas.map(area => (
+                <Button
+                  key={area.id}
+                  text="Ver más"
+                  className="project-btn-footer"
+                  onClick={() => navigate(`/tareas/${area.id}`)}
                 />
-                <button
-                  className="area-btn-add"
-                  type="submit"
+              ))}
+            </div>
+          ) : (
+            <div className="project-card-footer-area">
+              <span>ÁREAS: </span>
+              {project.areas.length > 0 &&
+                project.areas.map(area => (
+                  <div key={area.id} className="project-btn-container">
+                    <Button
+                      text={area.name}
+                      className="project-btn-footer"
+                      onClick={() => navigate(`/tareas/${area.id}`)}
+                    />
+                    {role !== 'EMPLOYEE' && (
+                      <ButtonDelete
+                        className="btn-delete-area"
+                        icon="close"
+                        url={`/workareas/${area.id}`}
+                        onSave={handleSave}
+                      />
+                    )}
+                  </div>
+                ))}
+              {role !== 'EMPLOYEE' && (
+                <Button
+                  text={`${addArea ? 'Cancelar' : 'Añadir'}`}
+                  className={`${addArea && 'btn-red'} area-btn-add `}
                   onClick={() => {
-                    setValue('projectId', project.id);
-                    setValue('userId', project.userId || 0);
+                    setAddArea(!addArea);
+                    reset();
                   }}
+                />
+              )}
+              {addArea && (
+                <form
+                  onSubmit={handleSubmit(onSubmitArea)}
+                  className="form-add-area"
                 >
-                  Agregar
-                </button>
-              </form>
-            )}
-          </div>
+                  <Input
+                    {...register('name')}
+                    name="name"
+                    className="form-input-area"
+                  />
+                  <button
+                    className="area-btn-add"
+                    type="submit"
+                    onClick={() => {
+                      setValue('projectId', project.id);
+                      setValue('userId', project.userId || 0);
+                    }}
+                  >
+                    Agregar
+                  </button>
+                </form>
+              )}
+            </div>
+          )}
           <div className="project-card-footer-archiver">
             <Button
               text={'comprimir'}

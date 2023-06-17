@@ -24,14 +24,12 @@ const ListPersonalTask = () => {
     axiosInstance
       .get(`/users/${id}/subTasks`)
       .then(res => {
-        // console.log(res.data);
         setSubTask(res.data);
       })
       .catch(err => {
         console.log(err);
       });
   }, [userSession]);
-
   const toggleSwitch = () => {
     setIsOn(!isOn);
   };
@@ -61,8 +59,10 @@ const ListPersonalTask = () => {
         <div className="cards">
           {subTask &&
             subTask
-              ?.filter(
-                ({ status }) => status === `${isOn ? 'DONE' : 'PROCESS'}`
+              ?.filter(({ status }) =>
+                !isOn
+                  ? ['INREVIEW', 'PROCESS', 'DENIED'].includes(status)
+                  : status === 'DONE'
               )
               .map(subTask => (
                 <div key={subTask.id}>

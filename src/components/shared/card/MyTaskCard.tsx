@@ -22,13 +22,15 @@ const MyTaskCard = ({ subTask }: TaskCardProps) => {
       },
       replace: true,
     });
+    console.log(subTask.status);
   };
+
   return (
     <div className="my-task-class">
       {/* <span className="task-text">{`${task.status == 'DONE'? "Hecho":"asd"}` }</span> */}
 
       <div className="my-task-content">
-        <span className={`my-icon-card`}>
+        <span className="my-icon-card">
           <img
             src={
               subTask.status === 'DONE'
@@ -37,16 +39,18 @@ const MyTaskCard = ({ subTask }: TaskCardProps) => {
                 ? icon_list_task
                 : ''
             }
-            className="img-task"
           />
         </span>
         <span
-          className={`task-text ${subTask.status === 'DENIED' && 'hold'} ${
-            subTask.status === 'PROCESS' && 'process'
-          } ${subTask.status === 'DONE' && 'done'}`}
+          className={`task-text ${subTask.status === 'DENIED'} ${
+            subTask.status === 'PROCESS'
+          } ${subTask.status === 'DONE'}
+          ${subTask.status === 'INREVIEW'}`}
         >
-          {subTask.status === 'DENIED' && 'Por Revisar'}
-          {subTask.status === 'PROCESS' && 'En Revisión'}
+          {subTask.status === 'DENIED' && 'CORREGIR'}
+          {subTask.status === 'PROCESS' && 'EN PROCESO'}
+          {subTask.status === 'INREVIEW' && 'POR REVISAR'}
+          {subTask.status === 'DONE' && 'HECHO'}
         </span>
         <div className="task-header">
           <h2>{subTask.name}</h2>

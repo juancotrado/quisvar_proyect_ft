@@ -96,7 +96,6 @@ const CardSubtaskProcess = ({
   //     .post(`/files/upload/${subTask.id}/?status=${type}`, formdata)
   //     .then(res => socket.emit('client:update-subTask', res.data));
   // };
-  console.log(`${URL}/models/${projectName}/`);
   return (
     <div className="subtask-content-area">
       <section className="subtask-files">
@@ -117,13 +116,16 @@ const CardSubtaskProcess = ({
                         className="subtask-file"
                         download={true}
                       >
+                        <span className="subtask-file-username">
+                          {file.user.profile.firstName} :
+                        </span>
                         <img
                           src="/svg/file-download.svg"
                           alt="W3Schools"
                           className="subtask-file-icon"
                         />
                         <span className="subtask-file-name">
-                          {`${URL}/static/${projectName}//${file.name}`}
+                          {normalizeFileName(file.name)}
                         </span>
                       </a>
                       {(isAuthorizedMod || isAuthorizedUser) &&

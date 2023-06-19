@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
 import ButtonDelete from '../../button/ButtonDelete';
 import { statusBody, statusText } from '../cardTaskInformation/constans';
-import { axiosInstance } from '../../../../services/axiosInstance';
+import { URL, axiosInstance } from '../../../../services/axiosInstance';
 import { SocketContext } from '../../../../context/SocketContex';
 import Button from '../../button/Button';
 import { SubTask, fyleType } from '../../../../types/types';
@@ -96,7 +96,7 @@ const CardSubtaskProcess = ({
   //     .post(`/files/upload/${subTask.id}/?status=${type}`, formdata)
   //     .then(res => socket.emit('client:update-subTask', res.data));
   // };
-
+  console.log(`${URL}/models/${projectName}/`);
   return (
     <div className="subtask-content-area">
       <section className="subtask-files">
@@ -112,10 +112,10 @@ const CardSubtaskProcess = ({
                   .map(file => (
                     <div key={file.id} className="subtask-file-contain">
                       <a
-                        href={`${URL}/models/${projectName}/${file.name}`}
+                        href={`${URL}/static/${projectName}/${file.name}`}
                         target="_blank"
                         className="subtask-file"
-                        download={'xyz.pdf'}
+                        download={true}
                       >
                         <img
                           src="/svg/file-download.svg"
@@ -123,7 +123,7 @@ const CardSubtaskProcess = ({
                           className="subtask-file-icon"
                         />
                         <span className="subtask-file-name">
-                          {normalizeFileName(file.name)}
+                          {`${URL}/static/${projectName}//${file.name}`}
                         </span>
                       </a>
                       {(isAuthorizedMod || isAuthorizedUser) &&

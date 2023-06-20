@@ -130,7 +130,9 @@ const CardTaskInformation = ({
       body?.status !== 'DONE' &&
       !hasPdf
     )
-      return SnackbarUtilities.warning('Asegurese de subir una archivo antes.');
+      return SnackbarUtilities.warning(
+        'Asegurese de subir una archivo PDF antes.'
+      );
 
     if (!body) return;
 

@@ -8,6 +8,7 @@ import { SocketContext } from '../../../../context/SocketContex';
 import Button from '../../button/Button';
 import { SubTask, fyleType } from '../../../../types/types';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
+import SubtaskFile from '../../../subtasks/subtaskFiles/SubtaskFile';
 
 interface CardSubtaskProcess {
   subTask: SubTask;
@@ -103,49 +104,21 @@ const CardSubtaskProcess = ({
           <div className="subtask-add-files-process">
             <div className="subtask-models">
               <div style={{ width: '100%' }}>
-                <h2>Archivos:</h2>
+                <h2>Archivos2:</h2>
               </div>
               <div className="subtask-fil">
-                {subTask.files
-                  ?.filter(({ type }) => type === 'REVIEW')
-                  .map(file => (
-                    <div key={file.id} className="subtask-file-contain">
-                      <a
-                        href={`${URL}/static/${projectName}/${file.name}`}
-                        target="_blank"
-                        className="subtask-file"
-                        download={true}
-                      >
-                        <span className="subtask-file-username">
-                          {file.user.profile.firstName} :
-                        </span>
-                        <img
-                          src="/svg/file-download.svg"
-                          alt="W3Schools"
-                          className="subtask-file-icon"
-                        />
-                        <span className="subtask-file-name">
-                          {normalizeFileName(file.name)}
-                        </span>
-                      </a>
-                      {(isAuthorizedMod || isAuthorizedUser) &&
-                        status !== 'DONE' &&
-                        status !== 'UNRESOLVED' && (
-                          <ButtonDelete
-                            icon="trash-red"
-                            customOnClick={() => deleteFile(file.id)}
-                            className="subtask-btn-delete-icons"
-                          />
-                        )}
-                    </div>
-                  ))}
+                <SubtaskFile
+                  subTask={subTask}
+                  isAuthorizedMod={isAuthorizedMod}
+                  isAuthorizedUser={isAuthorizedUser}
+                  typeFile="REVIEW"
+                />
               </div>
             </div>
             <div className="subtask-file-area">
               <input
                 type="file"
                 onChange={e => handleFileChange('REVIEW', e)}
-                // onDragOver={handleDragOver}
                 onDragOver={event => event.preventDefault()}
                 onDrop={e => handleDrop('REVIEW', e)}
                 className="subtask-file-input"
@@ -216,36 +189,12 @@ const CardSubtaskProcess = ({
               <h2>Archivos Modelo:</h2>
             </div>
             <div className="subtask-fil">
-              {subTask.files
-                ?.filter(({ type }) => type === 'MATERIAL')
-                .map(file => (
-                  <div key={file.id} className="subtask-file-contain">
-                    <a
-                      href={`${URL}/models/${projectName}/${file.name}`}
-                      target="_blank"
-                      className="subtask-file"
-                      download={'xyz.pdf'}
-                    >
-                      <img
-                        src="/svg/file-download.svg"
-                        alt="W3Schools"
-                        className="subtask-file-icon"
-                      />
-                      <span className="subtask-file-name">
-                        {normalizeFileName(file.name)}
-                      </span>
-                    </a>
-                    {isAuthorizedMod &&
-                      status !== 'UNRESOLVED' &&
-                      status !== 'DONE' && (
-                        <ButtonDelete
-                          icon="trash-red"
-                          customOnClick={() => deleteFile(file.id)}
-                          className="subtask-btn-delete-icons"
-                        />
-                      )}
-                  </div>
-                ))}
+              <SubtaskFile
+                subTask={subTask}
+                isAuthorizedMod={isAuthorizedMod}
+                isAuthorizedUser={isAuthorizedUser}
+                typeFile="MATERIAL"
+              />
             </div>
           </div>
           <h3>Total Horas: 24 horas</h3>

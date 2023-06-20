@@ -158,6 +158,7 @@ interface Files {
   id: number;
   name: string;
   userId: number;
+  user: User;
   dir: string;
   type: string;
   subTasksId: number;

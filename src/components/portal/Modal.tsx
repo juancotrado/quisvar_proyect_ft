@@ -28,7 +28,7 @@ const Modal = ({ children, size }: ModalProps) => {
   return (
     <Portal wrapperId="modal">
       <motion.div
-        onClick={() => setIsOpen(false)}
+        // onClick={() => setIsOpen(false)}
         role="dialog"
         className="modal-main"
         initial={{ opacity: 0 }}

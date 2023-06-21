@@ -21,17 +21,21 @@ type SubTaskForm = {
 interface CardRegisterSubTaskProps {
   subTask: SubTask | null;
   taskId: number | null;
+  typeTask?: TypeTask;
 }
-
+export type TypeTask = 'task' | 'indextask';
 type DataUser = { id: number; name: string };
 
-const CardRegisterSubTask = ({ subTask, taskId }: CardRegisterSubTaskProps) => {
+const CardRegisterSubTask = ({
+  subTask,
+  taskId,
+  typeTask,
+}: CardRegisterSubTaskProps) => {
   const { listUsers } = useSelector((state: RootState) => state);
   const [usersData, setUsersData] = useState<DataUser[]>([]);
   const { handleSubmit, register, setValue, watch, reset } =
     useForm<SubTaskForm>();
   const socket = useContext(SocketContext);
-
   const users = useMemo(
     () =>
       listUsers
@@ -42,7 +46,7 @@ const CardRegisterSubTask = ({ subTask, taskId }: CardRegisterSubTaskProps) => {
         : [],
     [listUsers]
   );
-
+  console.log(taskId, typeTask, '<==');
   useEffect(() => {
     if (!subTask) return;
     reset({
@@ -63,7 +67,9 @@ const CardRegisterSubTask = ({ subTask, taskId }: CardRegisterSubTaskProps) => {
         socket.emit('client:update-subTask', res.data);
       });
     } else {
-      const body = { ...data, taskId };
+      let body;
+      if (typeTask == 'indextask') body = { ...data, indexTaskId: taskId };
+      if (typeTask == 'task') body = { ...data, taskId };
       axiosInstance.post('/subtasks', body).then(res => {
         socket.emit('client:create-subTask', res.data);
         isOpenModal$.setSubject = false;

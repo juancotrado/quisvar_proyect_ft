@@ -37,7 +37,6 @@ const Sidebar = ({
   const handleShow = () => setIsShow(!isShow);
 
   const handleTaks = (id: number, type: 'task' | 'indextask') => {
-    console.log(id);
     settingSubTasks(id, type);
     setTaskSelected(id);
   };

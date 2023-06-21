@@ -269,6 +269,14 @@
   white-space: nowrap;
   text-overflow: ellipsis;
 }
+.subtask-file-username {
+  min-width: 5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .subtask-delete-icon {
   background-color: white;
   padding: 0;

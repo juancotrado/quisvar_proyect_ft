@@ -2,7 +2,9 @@ import { useEffect, useRef, useState } from 'react';
 import { SubTask } from '../../../../types/types';
 import Modal from '../../../portal/Modal';
 import CardTaskInformation from '../cardTaskInformation/CardTaskInformation';
-import CardRegisterSubTask from '../cardRegisterSubTask/CardRegisterSubTask';
+import CardRegisterSubTask, {
+  TypeTask,
+} from '../cardRegisterSubTask/CardRegisterSubTask';
 import {
   isOpenModal$,
   isTaskInformation$,
@@ -13,6 +15,7 @@ interface CardRegisterAndInformationProps {
   subTask: SubTask;
   isAuthorizedMod: boolean;
   taskId: number | null;
+  typeTask?: TypeTask;
   projectName: string | undefined;
 }
 
@@ -21,6 +24,7 @@ const CardRegisterAndInformation = ({
   subTask,
   taskId,
   projectName,
+  typeTask,
 }: CardRegisterAndInformationProps) => {
   const [isTaskInformation, setIsTaskInformation] = useState<boolean>(true);
   const [subTaskToEdit, setSubTaskToEdit] = useState<SubTask | null>(null);
@@ -54,7 +58,11 @@ const CardRegisterAndInformation = ({
           projectName={projectName}
         />
       ) : (
-        <CardRegisterSubTask subTask={subTaskToEdit} taskId={taskId} />
+        <CardRegisterSubTask
+          subTask={subTaskToEdit}
+          taskId={taskId}
+          typeTask={typeTask}
+        />
       )}
     </Modal>
   );

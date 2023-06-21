@@ -58,6 +58,7 @@ export type User = {
   status?: boolean;
 };
 type Profile = {
+  id: number;
   firstName: string;
   lastName: string;
   dni: string;
@@ -158,6 +159,7 @@ interface Files {
   id: number;
   name: string;
   userId: number;
+  user: User;
   dir: string;
   type: string;
   subTasksId: number;

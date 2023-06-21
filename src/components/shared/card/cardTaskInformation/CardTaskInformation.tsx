@@ -39,7 +39,7 @@ const CardTaskInformation = ({
   // const [selectedFile, setSelectedFile] = useState<FileList[0] | null>();
   const [percentage, setPercentage] = useState(50);
   const [file, setFile] = useState<FileList[0] | null>();
-  const [haveFile, setHaveFile] = useState(false);
+  const [hasPdf, setHasPdf] = useState(false);
   const role = userSession.role === 'EMPLOYEE' ? 'EMPLOYEE' : 'SUPERADMIN';
   const [usersData, setUsersData] = useState<DataUser[]>([]);
   const { listUsers } = useSelector((state: RootState) => state);
@@ -81,10 +81,14 @@ const CardTaskInformation = ({
 
     const formdata = new FormData();
     formdata.append('file', e.target.files[0]);
+    const file = formdata.get('file');
     axiosInstance
       .post(`/files/upload/${subTask.id}/?status=${type}`, formdata)
       .then(res => {
-        setHaveFile(true);
+        if (file instanceof File && file.type === 'application/pdf') {
+          console.log('es pdf');
+          setHasPdf(true);
+        }
         socket.emit('client:update-subTask', res.data);
       });
   };
@@ -120,15 +124,16 @@ const CardTaskInformation = ({
 
   const handleChangeStatus = async (option: 'ASIG' | 'DENY') => {
     const { status } = subTask;
-
     const body = getStatus(option, role, status);
     if (
       (status === 'PROCESS' || status === 'DENIED' || status === 'INREVIEW') &&
       body?.status !== 'DONE' &&
-      !haveFile
-    ) {
-      return SnackbarUtilities.warning('Asegurese de subir una archivo antes.');
-    }
+      !hasPdf
+    )
+      return SnackbarUtilities.warning(
+        'Asegurese de subir una archivo PDF antes.'
+      );
+
     if (!body) return;
 
     const resStatus = await axiosInstance.patch(
@@ -136,7 +141,7 @@ const CardTaskInformation = ({
       body
     );
     socket.emit('client:update-subTask', resStatus.data);
-    setHaveFile(false);
+    setHasPdf(false);
     isOpenModal$.setSubject = false;
   };
   // const handleInputChange = (value: number) => {

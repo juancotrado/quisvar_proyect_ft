@@ -3,20 +3,23 @@ import { URL, axiosInstance } from '../../../services/axiosInstance';
 import { SubTask } from '../../../types/types';
 import ButtonDelete from '../../shared/button/ButtonDelete';
 import { SocketContext } from '../../../context/SocketContex';
-
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store';
+import './SubtaskFile.css';
 interface SubtaskFileProps {
   subTask: SubTask;
-  isAuthorizedMod: boolean;
-  isAuthorizedUser: boolean;
-  typeFile: 'REVIEW' | 'MATERIAL';
+  typeFile: 'REVIEW' | 'MATERIAL' | 'SUCCESSFUL';
+  showDeleteBtn?: boolean;
+  showDeleteBtnByUserAuth?: boolean;
 }
 
 const SubtaskFile = ({
   subTask,
-  isAuthorizedMod,
-  isAuthorizedUser,
   typeFile,
+  showDeleteBtn,
+  showDeleteBtnByUserAuth,
 }: SubtaskFileProps) => {
+  const { userSession } = useSelector((state: RootState) => state);
   const socket = useContext(SocketContext);
 
   const normalizeFileName = (name: string) => {
@@ -30,6 +33,7 @@ const SubtaskFile = ({
   };
 
   const normalizeUrlFile = (url: string, status: string) => {
+    if (!url) return;
     const valueReplace =
       status === 'SUCCESSFUL' ? './uploads' : './file_review';
     const newValueReplace =
@@ -40,8 +44,9 @@ const SubtaskFile = ({
         : 'models';
     return url.replace(valueReplace, newValueReplace);
   };
+
   return (
-    <>
+    <div className="subtask-file-container">
       {subTask.files
         ?.filter(({ type }) => type === typeFile)
         .map(file => (
@@ -54,9 +59,11 @@ const SubtaskFile = ({
               className="subtask-file"
               download={true}
             >
-              <span className="subtask-file-username">
-                {file.user.profile.firstName} :
-              </span>
+              {file.type !== 'MATERIAL' && (
+                <span className="subtask-file-username">
+                  {file.user.profile.firstName} :
+                </span>
+              )}
               <img
                 src="/svg/file-download.svg"
                 alt="W3Schools"
@@ -66,18 +73,18 @@ const SubtaskFile = ({
                 {normalizeFileName(file.name)}
               </span>
             </a>
-            {(isAuthorizedMod || isAuthorizedUser) &&
-              status !== 'DONE' &&
-              status !== 'UNRESOLVED' && (
-                <ButtonDelete
-                  icon="trash-red"
-                  customOnClick={() => deleteFile(file.id)}
-                  className="subtask-btn-delete-icons"
-                />
-              )}
+            {(showDeleteBtnByUserAuth
+              ? userSession.profile.id === file.user.profile.id
+              : showDeleteBtn) && (
+              <ButtonDelete
+                icon="trash-red"
+                customOnClick={() => deleteFile(file.id)}
+                className="subtask-btn-delete-icons"
+              />
+            )}
           </div>
         ))}
-    </>
+    </div>
   );
 };
 

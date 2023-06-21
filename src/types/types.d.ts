@@ -58,6 +58,7 @@ export type User = {
   status?: boolean;
 };
 type Profile = {
+  id: number;
   firstName: string;
   lastName: string;
   dni: string;

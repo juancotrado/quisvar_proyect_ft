@@ -11,6 +11,7 @@ const INITIAL_STATE: User = {
   password: '',
   role: 'EMPLOYEE',
   profile: {
+    id: 0,
     firstName: '',
     lastName: '',
     dni: '',

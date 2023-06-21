@@ -1,0 +1,10 @@
+.subtask-file-container {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-menu);
+  padding: 0.5rem;
+  gap: 0.5rem;
+  height: 9rem;
+  overflow-y: auto;
+  width: 100%;
+}

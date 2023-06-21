@@ -45,5 +45,4 @@ const InputRange = forwardRef<HTMLInputElement, InputTextProps>(
     );
   }
 );
-
 export default InputRange;

@@ -3,7 +3,7 @@
 input[type='range'] {
   -webkit-appearance: none;
   appearance: none;
-  background: transparent;
+  background-color: white;
   cursor: pointer;
   width: 15rem;
 }
@@ -16,7 +16,7 @@ input[type='range']:focus {
 /***** Chrome, Safari, Opera and Edge Chromium styles *****/
 /* slider track */
 input[type='range']::-webkit-slider-runnable-track {
-  background-color: var(--color-secondary);
+  background-color: var(--color-primary);
   border-radius: 0.5rem;
   height: 0.5rem;
 }
@@ -68,6 +68,7 @@ input[type='range']:focus::-moz-range-thumb {
 .input-range-text {
   border-radius: var(--radius-input);
   border: 2px solid var(--color-primary);
+  color: var(--color-primary);
   width: 2rem;
   height: 2rem;
   text-align: center;

@@ -20,6 +20,7 @@ const SubTaskCard = ({ subTask, getSubtask }: SubTaskCardProps) => {
   const { status } = subTask;
   const proccessInfoShow =
     status !== 'UNRESOLVED' && status !== 'DONE' && status !== 'PROCESS';
+  const formatted = (+subTask.price).toFixed(2);
   return (
     <div className="subTask">
       {proccessInfoShow && (
@@ -49,7 +50,7 @@ const SubTaskCard = ({ subTask, getSubtask }: SubTaskCardProps) => {
 
           <p className="subTask-price-container">
             - Precio:
-            <span className="subTask-price">S/.{subTask.price}.00</span>
+            <span className="subTask-price">S/. {formatted}</span>
           </p>
           <p className="subTask-more" onClick={hanldeViewMore}>
             ver más

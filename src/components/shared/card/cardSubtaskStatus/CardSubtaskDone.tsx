@@ -8,6 +8,7 @@ import { SocketContext } from '../../../../context/SocketContex';
 import Button from '../../button/Button';
 import { SubTask, fyleType } from '../../../../types/types';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
+import SubtaskFile from '../../../subtasks/subtaskFiles/SubtaskFile';
 
 interface CardSubtaskDone {
   subTask: SubTask;
@@ -21,7 +22,7 @@ const CardSubtaskDone = ({
   subTask,
   isAuthorizedMod,
   areAuthorizedUsers,
-  projectName,
+  isAuthorizedUser,
 }: CardSubtaskDone) => {
   const socket = useContext(SocketContext);
   const [file, setFile] = useState<FileList[0] | null>();
@@ -63,39 +64,6 @@ const CardSubtaskDone = ({
       });
   };
 
-  const deleteFile = (id: number) => {
-    axiosInstance
-      .delete(`/files/remove/${id}`)
-      .then(res => socket.emit('client:update-subTask', res.data));
-  };
-  const handleDrop = (
-    type: fyleType,
-    event: React.DragEvent<HTMLDivElement>
-  ) => {
-    event.preventDefault();
-    const file = event.dataTransfer.files[0];
-    const formdata = new FormData();
-    formdata.append('file', file);
-    axiosInstance
-      .post(`/files/upload/${subTask.id}/?status=${type}`, formdata)
-      .then(res => socket.emit('client:update-subTask', res.data));
-    // setFile(file);
-  };
-  const handleFileChange = (
-    type: fyleType,
-    e: ChangeEvent<HTMLInputElement>
-  ) => {
-    if (!e.target.files) return;
-
-    // setFile(e.target.files[0]);
-    const formdata = new FormData();
-    formdata.append('file', e.target.files[0]);
-    axiosInstance
-      .post(`/files/upload/${subTask.id}/?status=${type}`, formdata)
-      .then(res => socket.emit('client:update-subTask', res.data));
-    // setFile(null);
-  };
-
   return (
     <div className="subtask-content-area">
       <section className="subtask-files">
@@ -105,36 +73,11 @@ const CardSubtaskDone = ({
               <div style={{ width: '30%', padding: '0.5rem' }}>
                 <h2>Archivos:</h2>
               </div>
-              <div className="subtask-fil">
-                {subTask.files
-                  ?.filter(({ type }) => type === 'SUCCESSFUL')
-                  .map(file => (
-                    <div key={file.id} className="subtask-file-contain">
-                      <a
-                        href={`${URL}/models/${projectName}/${file.name}`}
-                        target="_blank"
-                        className="subtask-file"
-                        download={'xyz.pdf'}
-                      >
-                        <img
-                          src="/svg/file-download.svg"
-                          alt="W3Schools"
-                          className="subtask-file-icon"
-                        />
-                        <span className="subtask-file-name">
-                          {normalizeFileName(file.name)}
-                        </span>
-                      </a>
-                      {isAuthorizedMod && status === 'UNRESOLVED' && (
-                        <ButtonDelete
-                          icon="trash-red"
-                          customOnClick={() => deleteFile(file.id)}
-                          className="subtask-btn-delete-icons"
-                        />
-                      )}
-                    </div>
-                  ))}
-              </div>
+              <SubtaskFile
+                showDeleteBtn={false}
+                subTask={subTask}
+                typeFile="SUCCESSFUL"
+              />
             </div>
           </div>
         </div>
@@ -147,28 +90,6 @@ const CardSubtaskDone = ({
                 onClick={handleReloadSubTask}
               />
             )}
-            {/* {isAuthorizedMod && status === 'INREVIEW' && (
-              <Button
-                text={'Desaprobar'}
-                className="btn-declinar"
-                onClick={() => handleChangeStatus('DENY')}
-              />
-            )}
-            {(status === 'PROCESS' || status === 'DENIED') &&
-              !isAuthorizedMod && (
-                <Button
-                  text="Mandar a Revisar"
-                  className="btn-revisar"
-                  onClick={() => handleChangeStatus('ASIG')}
-                />
-              )}
-            {status === 'INREVIEW' && isAuthorizedMod && (
-              <Button
-                text={'Aprobar'}
-                className="btn-revisar"
-                onClick={() => handleChangeStatus('ASIG')}
-              />
-            )} */}
           </div>
         )}
       </section>
@@ -192,36 +113,11 @@ const CardSubtaskDone = ({
             <div style={{ width: '100%' }}>
               <h2>Archivos Modelo:</h2>
             </div>
-            <div className="subtask-fil">
-              {subTask.files
-                ?.filter(({ type }) => type === 'REVIEW')
-                .map(file => (
-                  <div key={file.id} className="subtask-file-contain">
-                    <a
-                      href={`${URL}/models/${projectName}/${file.name}`}
-                      target="_blank"
-                      className="subtask-file"
-                      download={'xyz.pdf'}
-                    >
-                      <img
-                        src="/svg/file-download.svg"
-                        alt="W3Schools"
-                        className="subtask-file-icon"
-                      />
-                      <span className="subtask-file-name">
-                        {normalizeFileName(file.name)}
-                      </span>
-                    </a>
-                    {isAuthorizedMod && status === 'UNRESOLVED' && (
-                      <ButtonDelete
-                        icon="trash-red"
-                        customOnClick={() => deleteFile(file.id)}
-                        className="subtask-btn-delete-icons"
-                      />
-                    )}
-                  </div>
-                ))}
-            </div>
+            <SubtaskFile
+              showDeleteBtn={false}
+              subTask={subTask}
+              typeFile="MATERIAL"
+            />
           </div>
           <h3>Total Horas: 24 horas</h3>
           <h2>Precio: S/. {subTask.price}</h2>

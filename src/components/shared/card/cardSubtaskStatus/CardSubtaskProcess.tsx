@@ -106,14 +106,11 @@ const CardSubtaskProcess = ({
               <div style={{ width: '100%' }}>
                 <h2>Archivos2:</h2>
               </div>
-              <div className="subtask-fil">
-                <SubtaskFile
-                  subTask={subTask}
-                  isAuthorizedMod={isAuthorizedMod}
-                  isAuthorizedUser={isAuthorizedUser}
-                  typeFile="REVIEW"
-                />
-              </div>
+              <SubtaskFile
+                showDeleteBtnByUserAuth={true}
+                subTask={subTask}
+                typeFile="REVIEW"
+              />
             </div>
             <div className="subtask-file-area">
               <input
@@ -188,14 +185,11 @@ const CardSubtaskProcess = ({
             <div style={{ width: '100%' }}>
               <h2>Archivos Modelo:</h2>
             </div>
-            <div className="subtask-fil">
-              <SubtaskFile
-                subTask={subTask}
-                isAuthorizedMod={isAuthorizedMod}
-                isAuthorizedUser={isAuthorizedUser}
-                typeFile="MATERIAL"
-              />
-            </div>
+            <SubtaskFile
+              subTask={subTask}
+              typeFile="MATERIAL"
+              showDeleteBtn={false}
+            />
           </div>
           <h3>Total Horas: 24 horas</h3>
           <h2>Precio: S/. {subTask.price}</h2>

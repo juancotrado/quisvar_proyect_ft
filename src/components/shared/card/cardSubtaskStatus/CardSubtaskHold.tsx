@@ -9,6 +9,7 @@ import Button from '../../button/Button';
 import { SubTask, fyleType } from '../../../../types/types';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
 import DropDownSimple from '../../select/DropDownSimple';
+import SubtaskFile from '../../../subtasks/subtaskFiles/SubtaskFile';
 
 type DataUser = { id: number; name: string };
 interface CardSubtaskHold {
@@ -25,7 +26,7 @@ const CardSubtaskHold = ({
   isAuthorizedMod,
   handleFileChange,
   handleChangeStatus,
-  projectName,
+  isAuthorizedUser,
 }: CardSubtaskHold) => {
   const socket = useContext(SocketContext);
   const [addBtn, setAddBtn] = useState(false);
@@ -118,36 +119,11 @@ const CardSubtaskHold = ({
                 <div style={{ width: '100%' }}>
                   <h2>Archivo modelo:</h2>
                 </div>
-                <div className="subtask-fil">
-                  {subTask.files
-                    ?.filter(({ type }) => type === 'MATERIAL')
-                    .map(file => (
-                      <div key={file.id} className="subtask-file-contain">
-                        <a
-                          href={`${URL}/models/${projectName}/${file.name}`}
-                          target="_blank"
-                          className="subtask-file"
-                          download={'xyz.pdf'}
-                        >
-                          <img
-                            src="/svg/file-download.svg"
-                            alt="W3Schools"
-                            className="subtask-file-icon"
-                          />
-                          <span className="subtask-file-name">
-                            {normalizeFileName(file.name)}
-                          </span>
-                        </a>
-                        {isAuthorizedMod && status === 'UNRESOLVED' && (
-                          <ButtonDelete
-                            icon="trash-red"
-                            customOnClick={() => deleteFile(file.id)}
-                            className="subtask-btn-delete-icons"
-                          />
-                        )}
-                      </div>
-                    ))}
-                </div>
+                <SubtaskFile
+                  subTask={subTask}
+                  typeFile="MATERIAL"
+                  showDeleteBtn={isAuthorizedMod}
+                />
               </div>
               <div className="subtask-file-area">
                 <input

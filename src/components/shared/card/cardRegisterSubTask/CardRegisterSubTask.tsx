@@ -15,7 +15,7 @@ type SubTaskForm = {
   name: string;
   description?: string;
   hours: number;
-  price: number;
+  price: number | string;
 };
 
 interface CardRegisterSubTaskProps {
@@ -53,7 +53,7 @@ const CardRegisterSubTask = ({
       description: subTask.description,
       hours: subTask.hours,
       name: subTask.name,
-      price: +subTask.price,
+      price: subTask.price,
     });
   }, [subTask]);
 
@@ -91,9 +91,9 @@ const CardRegisterSubTask = ({
 
   const handleSetPrice = (hours: number) => {
     if (!hours) return 0;
-    const pricePerDay = 68.45;
-    const price = (hours * pricePerDay) / 24;
-    const roundPrice = Math.round(price * 100) / 100;
+    const pricePerDay = 86.67;
+    const price = hours * pricePerDay;
+    const roundPrice = price.toFixed(2);
     setValue('price', roundPrice);
     return roundPrice;
   };
@@ -177,7 +177,7 @@ const CardRegisterSubTask = ({
         )}
         <div className="col-hours-subtask">
           <Input
-            label="Horas"
+            label="Dias"
             col={true}
             {...register('hours', { valueAsNumber: true })}
             type="number"
@@ -188,7 +188,7 @@ const CardRegisterSubTask = ({
             col={true}
             {...register('price', { valueAsNumber: true })}
             step={0.01}
-            type="number"
+            // type="number"
             name="price"
             disabled={true}
             value={handleSetPrice(watch('hours'))}

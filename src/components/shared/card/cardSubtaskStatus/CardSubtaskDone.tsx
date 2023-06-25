@@ -1,8 +1,5 @@
-import { useContext, useState, ChangeEvent } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../store';
-import ButtonDelete from '../../button/ButtonDelete';
-import { statusBody, statusText } from '../cardTaskInformation/constans';
+import { useContext } from 'react';
+import { statusText } from '../cardTaskInformation/constans';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { SocketContext } from '../../../../context/SocketContex';
 import Button from '../../button/Button';
@@ -13,47 +10,11 @@ import SubtaskFile from '../../../subtasks/subtaskFiles/SubtaskFile';
 interface CardSubtaskDone {
   subTask: SubTask;
   isAuthorizedMod: boolean;
-  isAuthorizedUser: boolean;
-  projectName: string;
-  areAuthorizedUsers: boolean;
 }
 
-const CardSubtaskDone = ({
-  subTask,
-  isAuthorizedMod,
-  areAuthorizedUsers,
-  isAuthorizedUser,
-}: CardSubtaskDone) => {
+const CardSubtaskDone = ({ subTask, isAuthorizedMod }: CardSubtaskDone) => {
   const socket = useContext(SocketContext);
-  const [file, setFile] = useState<FileList[0] | null>();
-  const { userSession } = useSelector((state: RootState) => state);
-  const role = userSession.role === 'EMPLOYEE' ? 'EMPLOYEE' : 'SUPERADMIN';
-  const normalizeFileName = (name: string) => {
-    const indexName = name.indexOf('$');
-    return name.slice(indexName + 1);
-  };
-
   const { status } = subTask;
-
-  const getStatus = (
-    category: string,
-    role: string,
-    state: string
-  ): { status: string } | undefined => {
-    return statusBody[category]?.[role]?.[state];
-  };
-
-  // const handleChangeStatus = async (option: 'ASIG' | 'DENY') => {
-  //   const body = getStatus(option, role, status);
-  //   if (!body) return;
-
-  //   const resStatus = await axiosInstance.patch(
-  //     `/subtasks/status/${subTask.id}`,
-  //     body
-  //   );
-  //   socket.emit('client:update-subTask', resStatus.data);
-  //   isOpenModal$.setSubject = false;
-  // };
 
   const handleReloadSubTask = () => {
     axiosInstance
@@ -81,17 +42,6 @@ const CardSubtaskDone = ({
             </div>
           </div>
         </div>
-        {areAuthorizedUsers && (
-          <div className="subtask-btns">
-            {status === 'PROCESS' && !isAuthorizedMod && (
-              <Button
-                text={'Declinar'}
-                className="btn-declinar"
-                onClick={handleReloadSubTask}
-              />
-            )}
-          </div>
-        )}
       </section>
       <section className="subtask-details">
         <div className="subtask-status-content">

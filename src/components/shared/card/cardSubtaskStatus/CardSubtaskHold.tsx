@@ -1,43 +1,33 @@
-import { useContext, useState, ChangeEvent, useMemo } from 'react';
+import { useContext, useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
-import ButtonDelete from '../../button/ButtonDelete';
-import { statusBody, statusText } from '../cardTaskInformation/constans';
+import { statusText } from '../cardTaskInformation/constans';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { SocketContext } from '../../../../context/SocketContex';
 import Button from '../../button/Button';
-import { SubTask, fyleType } from '../../../../types/types';
+import { SubTask } from '../../../../types/types';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
 import DropDownSimple from '../../select/DropDownSimple';
 import SubtaskFile from '../../../subtasks/subtaskFiles/SubtaskFile';
+import SubtaskUploadFiles from '../../../subtasks/subtaskUploadFiles/SubtaskUploadFiles';
 
 type DataUser = { id: number; name: string };
 interface CardSubtaskHold {
   subTask: SubTask;
   isAuthorizedMod: boolean;
-  isAuthorizedUser: boolean;
   handleChangeStatus: (option: 'ASIG' | 'DENY') => void;
   projectName: string;
-  handleFileChange: (type: fyleType, e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const CardSubtaskHold = ({
   subTask,
   isAuthorizedMod,
-  handleFileChange,
   handleChangeStatus,
-  isAuthorizedUser,
 }: CardSubtaskHold) => {
   const socket = useContext(SocketContext);
   const [addBtn, setAddBtn] = useState(false);
   const [usersData, setUsersData] = useState<DataUser[]>([]);
-  const [file, setFile] = useState<FileList[0] | null>();
-  const { userSession } = useSelector((state: RootState) => state);
-  const role = userSession.role === 'EMPLOYEE' ? 'EMPLOYEE' : 'SUPERADMIN';
-  const normalizeFileName = (name: string) => {
-    const indexName = name.indexOf('$');
-    return name.slice(indexName + 1);
-  };
+
   const { listUsers } = useSelector((state: RootState) => state);
 
   const users = useMemo(
@@ -58,13 +48,6 @@ const CardSubtaskHold = ({
     const getId = usersData.find(list => list.id == user.id);
     if (!getId) setUsersData([...usersData, user]);
   };
-  const getStatus = (
-    category: string,
-    role: string,
-    state: string
-  ): { status: string } | undefined => {
-    return statusBody[category]?.[role]?.[state];
-  };
 
   const handleReloadSubTask = () => {
     axiosInstance
@@ -82,24 +65,7 @@ const CardSubtaskHold = ({
         isOpenModal$.setSubject = false;
       });
   };
-  const deleteFile = (id: number) => {
-    axiosInstance
-      .delete(`/files/remove/${id}`)
-      .then(res => socket.emit('client:update-subTask', res.data));
-  };
-  const handleDrop = (
-    type: fyleType,
-    event: React.DragEvent<HTMLDivElement>
-  ) => {
-    event.preventDefault();
-    const file = event.dataTransfer.files[0];
-    const formdata = new FormData();
-    formdata.append('file', file);
-    axiosInstance
-      .post(`/files/upload/${subTask.id}/?status=${type}`, formdata)
-      .then(res => socket.emit('client:update-subTask', res.data));
-    // setFile(file);
-  };
+
   const handleRemoveUser = (user: DataUser) => {
     const filterValue = usersData.filter(list => list.id !== user.id);
     setUsersData(filterValue);
@@ -125,22 +91,7 @@ const CardSubtaskHold = ({
                   showDeleteBtn={isAuthorizedMod}
                 />
               </div>
-              <div className="subtask-file-area">
-                <input
-                  type="file"
-                  onChange={e => handleFileChange('MATERIAL', e)}
-                  // onDragOver={handleDragOver}
-                  onDragOver={event => event.preventDefault()}
-                  onDrop={e => handleDrop('MATERIAL', e)}
-                  className="subtask-file-input"
-                  style={{ opacity: 0 }}
-                />
-                {file ? (
-                  <p>{file?.name}</p>
-                ) : (
-                  <p>Arrastra o Selecciona un archivo</p>
-                )}
-              </div>
+              <SubtaskUploadFiles id={subTask.id} type="MATERIAL" />
             </div>
           ) : (
             <div className="subtask-asign-btn">

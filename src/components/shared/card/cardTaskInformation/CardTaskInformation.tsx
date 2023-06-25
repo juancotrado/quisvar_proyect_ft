@@ -190,7 +190,6 @@ const CardTaskInformation = ({
   );
 
   const areAuthorizedUsers = isAuthorizedMod || isAuthorizedUser;
-  const isStatusProcesOrDenied = status === 'PROCESS' || status === 'DENIED';
   return (
     <div className="subtask-container">
       <Button
@@ -221,9 +220,7 @@ const CardTaskInformation = ({
         <CardSubtaskHold
           subTask={subTask}
           isAuthorizedMod={isAuthorizedMod}
-          isAuthorizedUser={isAuthorizedUser}
           projectName={projectName}
-          handleFileChange={handleFileChange}
           handleChangeStatus={handleChangeStatus}
         />
       )}
@@ -235,19 +232,11 @@ const CardTaskInformation = ({
           isAuthorizedMod={isAuthorizedMod}
           isAuthorizedUser={isAuthorizedUser}
           areAuthorizedUsers={areAuthorizedUsers}
-          projectName={projectName}
-          handleFileChange={handleFileChange}
           handleChangeStatus={handleChangeStatus}
         />
       )}
       {status === 'DONE' && (
-        <CardSubtaskDone
-          subTask={subTask}
-          isAuthorizedMod={isAuthorizedMod}
-          isAuthorizedUser={isAuthorizedUser}
-          areAuthorizedUsers={areAuthorizedUsers}
-          projectName={projectName}
-        />
+        <CardSubtaskDone subTask={subTask} isAuthorizedMod={isAuthorizedMod} />
       )}
     </div>
   );

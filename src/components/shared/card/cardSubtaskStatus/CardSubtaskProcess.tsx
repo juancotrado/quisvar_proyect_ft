@@ -1,23 +1,21 @@
-import { useContext, useState, ChangeEvent } from 'react';
+import { useContext } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
-import ButtonDelete from '../../button/ButtonDelete';
-import { statusBody, statusText } from '../cardTaskInformation/constans';
-import { URL, axiosInstance } from '../../../../services/axiosInstance';
+import { statusText } from '../cardTaskInformation/constans';
+import { axiosInstance } from '../../../../services/axiosInstance';
 import { SocketContext } from '../../../../context/SocketContex';
 import Button from '../../button/Button';
-import { SubTask, fyleType } from '../../../../types/types';
+import { SubTask } from '../../../../types/types';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
 import SubtaskFile from '../../../subtasks/subtaskFiles/SubtaskFile';
+import SubtaskUploadFiles from '../../../subtasks/subtaskUploadFiles/SubtaskUploadFiles';
 
 interface CardSubtaskProcess {
   subTask: SubTask;
   isAuthorizedMod: boolean;
   isAuthorizedUser: boolean;
-  projectName: string;
   areAuthorizedUsers: boolean;
   handleChangeStatus: (option: 'ASIG' | 'DENY') => void;
-  handleFileChange: (type: fyleType, e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 const CardSubtaskProcess = ({
@@ -26,38 +24,13 @@ const CardSubtaskProcess = ({
   isAuthorizedUser,
   areAuthorizedUsers,
   handleChangeStatus,
-  projectName,
-  handleFileChange,
 }: CardSubtaskProcess) => {
   const socket = useContext(SocketContext);
-  const [file, setFile] = useState<FileList[0] | null>();
   const { userSession } = useSelector((state: RootState) => state);
   const role = userSession.role === 'EMPLOYEE' ? 'EMPLOYEE' : 'SUPERADMIN';
-  const normalizeFileName = (name: string) => {
-    const indexName = name.indexOf('$');
-    return name.slice(indexName + 1);
-  };
 
   const { status } = subTask;
 
-  const getStatus = (
-    category: string,
-    role: string,
-    state: string
-  ): { status: string } | undefined => {
-    return statusBody[category]?.[role]?.[state];
-  };
-  // const handleChangeStatus = async (option: 'ASIG' | 'DENY') => {
-  //   const body = getStatus(option, role, status);
-  //   if (!body) return;
-
-  //   const resStatus = await axiosInstance.patch(
-  //     `/subtasks/status/${subTask.id}`,
-  //     body
-  //   );
-  //   socket.emit('client:update-subTask', resStatus.data);
-  //   isOpenModal$.setSubject = false;
-  // };
   const handleReloadSubTask = () => {
     axiosInstance
       .patch(`/subtasks/asigned/${subTask.id}?status=decline`)
@@ -67,67 +40,25 @@ const CardSubtaskProcess = ({
       });
   };
 
-  const deleteFile = (id: number) => {
-    axiosInstance
-      .delete(`/files/remove/${id}`)
-      .then(res => socket.emit('client:update-subTask', res.data));
-  };
-  const handleDrop = (
-    type: fyleType,
-    event: React.DragEvent<HTMLDivElement>
-  ) => {
-    event.preventDefault();
-    const file = event.dataTransfer.files[0];
-    const formdata = new FormData();
-    formdata.append('file', file);
-    axiosInstance
-      .post(`/files/upload/${subTask.id}/?status=${type}`, formdata)
-      .then(res => socket.emit('client:update-subTask', res.data));
-    // setFile(file);
-  };
-  // const handleFileChange = (
-  //   type: fyleType,
-  //   e: ChangeEvent<HTMLInputElement>
-  // ) => {
-  //   if (!e.target.files) return;
-
-  //   const formdata = new FormData();
-  //   formdata.append('file', e.target.files[0]);
-  //   axiosInstance
-  //     .post(`/files/upload/${subTask.id}/?status=${type}`, formdata)
-  //     .then(res => socket.emit('client:update-subTask', res.data));
-  // };
   return (
     <div className="subtask-content-area">
       <section className="subtask-files">
         <div className="subtask-files-content">
-          <div className="subtask-add-files-process">
-            <div className="subtask-models">
-              <div style={{ width: '100%' }}>
-                <h2>Archivos2:</h2>
+          {
+            <div className="subtask-add-files-process">
+              <div className="subtask-models">
+                <div style={{ width: '100%' }}>
+                  <h2>Archivos:</h2>
+                </div>
+                <SubtaskFile
+                  showDeleteBtnByUserAuth={true}
+                  subTask={subTask}
+                  typeFile="REVIEW"
+                />
               </div>
-              <SubtaskFile
-                showDeleteBtnByUserAuth={true}
-                subTask={subTask}
-                typeFile="REVIEW"
-              />
+              <SubtaskUploadFiles id={subTask.id} type="REVIEW" />
             </div>
-            <div className="subtask-file-area">
-              <input
-                type="file"
-                onChange={e => handleFileChange('REVIEW', e)}
-                onDragOver={event => event.preventDefault()}
-                onDrop={e => handleDrop('REVIEW', e)}
-                className="subtask-file-input"
-                style={{ opacity: 0 }}
-              />
-              {file ? (
-                <p>{file?.name}</p>
-              ) : (
-                <p>Arrastra o Selecciona un archivo</p>
-              )}
-            </div>
-          </div>
+          }
         </div>
         {areAuthorizedUsers && (
           <div className="subtask-btns">

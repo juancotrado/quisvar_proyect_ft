@@ -1,11 +1,11 @@
 .subtaskUploadFiles-area {
   display: flex;
-  flex: 1;
   border: 2px dashed var(--color-primary);
-  height: 100%;
+  height: 7rem;
   position: relative;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 .subtaskUploadFiles-text {
   position: absolute;

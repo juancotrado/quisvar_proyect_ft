@@ -1,0 +1,38 @@
+.cardSubtaskProcess {
+  background-color: white;
+  width: 100%; /*falta calcular*/
+  border-radius: var(--radius-input);
+  flex-wrap: wrap;
+  gap: 5px;
+  display: flex;
+}
+.cardSubtaskProcess-left-details {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  align-items: center;
+}
+.cardSubtaskProcess-files-content {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: var(--radius-input);
+  background-color: var(--color-menu);
+  gap: 1.5rem;
+  padding: 1rem;
+}
+
+.cardSubtaskProcess-files-title {
+  font-size: 0.87rem;
+  color: var(--color-primary);
+}
+
+.cardSubtaskProcess-files-view {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}

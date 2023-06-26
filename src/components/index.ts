@@ -18,7 +18,7 @@ import CardTaskInformation from './shared/card/cardTaskInformation/CardTaskInfor
 import InputRange from './shared/inputRange/InputRange';
 import CardSubtaskDone from './shared/card/cardSubtaskStatus/CardSubtaskDone';
 import CardSubtaskHold from './shared/card/cardSubtaskStatus/CardSubtaskHold';
-import CardSubtaskProcess from './shared/card/cardSubtaskStatus/CardSubtaskProcess';
+import CardSubtaskProcess from './shared/card/cardSubtaskStatus/cardSubTaskProcess/CardSubtaskProcess';
 
 export {
   Alert,

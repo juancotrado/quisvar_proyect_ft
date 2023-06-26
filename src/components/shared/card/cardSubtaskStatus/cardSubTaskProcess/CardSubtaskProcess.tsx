@@ -1,15 +1,17 @@
 import { useContext } from 'react';
-import { statusText } from '../cardTaskInformation/constans';
-import { axiosInstance } from '../../../../services/axiosInstance';
-import { SocketContext } from '../../../../context/SocketContex';
-import Button from '../../button/Button';
-import { SubTask } from '../../../../types/types';
-import { isOpenModal$ } from '../../../../services/sharingSubject';
-import SubtaskFile from '../../../subtasks/subtaskFiles/SubtaskFile';
-import SubtaskUploadFiles from '../../../subtasks/subtaskUploadFiles/SubtaskUploadFiles';
-import SubtaskChangeStatusBtn from '../../../subtasks/subtaskChangeStatusBtn/SubtaskChangeStatusBtn';
+import { statusText } from '../../cardTaskInformation/constans';
+import { axiosInstance } from '../../../../../services/axiosInstance';
+import { SocketContext } from '../../../../../context/SocketContex';
+import Button from '../../../button/Button';
+import { SubTask } from '../../../../../types/types';
+import { isOpenModal$ } from '../../../../../services/sharingSubject';
+import SubtaskFile from '../../../../subtasks/subtaskFiles/SubtaskFile';
+import SubtaskUploadFiles from '../../../../subtasks/subtaskUploadFiles/SubtaskUploadFiles';
+import SubtaskChangeStatusBtn from '../../../../subtasks/subtaskChangeStatusBtn/SubtaskChangeStatusBtn';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../../../store';
+import { RootState } from '../../../../../store';
+import './cardSubTaskProcess.css';
+
 interface CardSubtaskProcess {
   subTask: SubTask;
   isAuthorizedMod: boolean;
@@ -40,28 +42,23 @@ const CardSubtaskProcess = ({
 
   const areAuthorizedUsers = isAuthorizedMod || isAuthorizedUser;
   return (
-    <div className="subtask-content-area">
-      <section className="subtask-files">
-        <div className="subtask-files-content">
-          {
-            <div className="subtask-add-files-process">
-              <div className="subtask-models">
-                <div style={{ width: '100%' }}>
-                  <h2>Archivos:</h2>
-                </div>
-                <SubtaskFile
-                  showDeleteBtnByUserAuth={true}
-                  subTask={subTask}
-                  typeFile="REVIEW"
-                />
-              </div>
-              {((status !== 'INREVIEW' && isAuthorizedUser) ||
-                (isAuthorizedMod && status === 'INREVIEW')) && (
-                <SubtaskUploadFiles id={subTask.id} type="REVIEW" />
-              )}
-            </div>
-          }
+    <div className="cardSubtaskProcess">
+      <section className="cardSubtaskProcess-left-details">
+        <div className="cardSubtaskProcess-files-content">
+          {((status !== 'INREVIEW' && isAuthorizedUser) ||
+            (isAuthorizedMod && status === 'INREVIEW')) && (
+            <SubtaskUploadFiles id={subTask.id} type="REVIEW" />
+          )}
+          <div className="cardSubtaskProcess-files-view">
+            <h2 className="cardSubtaskProcess-files-title">Archivos:</h2>
+            <SubtaskFile
+              showDeleteBtnByUserAuth={true}
+              subTask={subTask}
+              typeFile="REVIEW"
+            />
+          </div>
         </div>
+
         {areAuthorizedUsers && (
           <div className="subtask-btns">
             {status === 'PROCESS' &&

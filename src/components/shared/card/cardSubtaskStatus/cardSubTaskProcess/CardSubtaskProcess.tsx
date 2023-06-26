@@ -99,20 +99,24 @@ const CardSubtaskProcess = ({
       </section>
       <section className="cardSubtaskProcess-details">
         <SubTaskStatusLabel status={status} />
-        <div className="subtask-status-info">
-          <p>Creación: 21/01/23</p>
-          <div className="subtask-models-process">
-            <div style={{ width: '100%' }}>
-              <h2>Archivos Modelo:</h2>
-            </div>
+        <div className="cardSubtaskProcess-info">
+          <p className="cardSubtaskProcess-info-date">Creación: 21/01/23</p>
+          <div className="cardSubtaskProcess-files-models">
+            <h2 className="cardSubtaskProcess-files-models-title">
+              Archivos Modelo:
+            </h2>
             <SubtaskFile
               subTask={subTask}
               typeFile="MATERIAL"
               showDeleteBtn={false}
             />
           </div>
-          <h3>Total Horas: 24 horas</h3>
-          <h2>Precio: S/. {subTask.price}</h2>
+          <h3 className="cardSubtaskProcess-info-hours">
+            Total Horas: 24 horas
+          </h3>
+          <h2 className="cardSubtaskProcess-info-price">
+            Precio: S/. {subTask.price}
+          </h2>
         </div>
         {isAuthorizedMod && (
           <Button

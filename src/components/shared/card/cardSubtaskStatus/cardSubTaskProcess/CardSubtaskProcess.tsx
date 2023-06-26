@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import { statusText } from '../../cardTaskInformation/constans';
 import { axiosInstance } from '../../../../../services/axiosInstance';
 import { SocketContext } from '../../../../../context/SocketContex';
 import Button from '../../../button/Button';
@@ -11,6 +10,7 @@ import SubtaskChangeStatusBtn from '../../../../subtasks/subtaskChangeStatusBtn/
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../store';
 import './cardSubTaskProcess.css';
+import SubTaskStatusLabel from '../../../../subtasks/subTaskStatusLabel/SubTaskStatusLabel';
 
 interface CardSubtaskProcess {
   subTask: SubTask;
@@ -60,7 +60,7 @@ const CardSubtaskProcess = ({
         </div>
 
         {areAuthorizedUsers && (
-          <div className="subtask-btns">
+          <div className="cardSubtaskProcess-btns">
             {status === 'PROCESS' &&
               !isAuthorizedMod &&
               subTask.files.length === 0 && (
@@ -97,18 +97,8 @@ const CardSubtaskProcess = ({
           </div>
         )}
       </section>
-      <section className="subtask-details">
-        <div className="subtask-status-content">
-          <label
-            className={`status-text 
-                    ${status === 'PROCESS' && 'status-process'} 
-                    ${status === 'INREVIEW' && 'status-inreview'} 
-                    ${status === 'DENIED' && 'status-denied'} 
-                    `}
-          >
-            {statusText[status as keyof typeof statusText]}
-          </label>
-        </div>
+      <section className="cardSubtaskProcess-details">
+        <SubTaskStatusLabel status={status} />
         <div className="subtask-status-info">
           <p>Creación: 21/01/23</p>
           <div className="subtask-models-process">

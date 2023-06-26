@@ -141,37 +141,7 @@
 .normal-height {
   height: 30rem;
 }
-.subtask-status-content {
-  width: 80%;
-  margin: 0 auto;
-  border-radius: 1rem;
-  display: flex;
-  align-items: center;
-}
-.status-text {
-  width: 100%;
-  font-size: 1rem;
-  color: white;
-  text-align: center;
-  border-radius: var(--radius-input);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  padding: 0.5rem;
-}
-.status-unresolved {
-  background-color: var(--color-unresolved);
-}
-.status-denied {
-  background-color: var(--color-unresolved);
-}
-.status-process {
-  background-color: var(--color-process);
-}
-.status-inreview {
-  background-color: var(--color-process);
-}
-.status-done {
-  background-color: var(--color-done);
-}
+
 .subtask-status-info {
   margin: 0 auto;
   display: flex;

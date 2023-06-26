@@ -11,6 +11,7 @@ import DropDownSimple from '../../select/DropDownSimple';
 import SubtaskFile from '../../../subtasks/subtaskFiles/SubtaskFile';
 import SubtaskUploadFiles from '../../../subtasks/subtaskUploadFiles/SubtaskUploadFiles';
 import SubtaskChangeStatusBtn from '../../../subtasks/subtaskChangeStatusBtn/SubtaskChangeStatusBtn';
+import SubTaskStatusLabel from '../../../subtasks/subTaskStatusLabel/SubTaskStatusLabel';
 
 type DataUser = { id: number; name: string };
 interface CardSubtaskHold {
@@ -139,19 +140,7 @@ const CardSubtaskHold = ({ subTask, isAuthorizedMod }: CardSubtaskHold) => {
         )}
       </section>
       <section className="subtask-details">
-        <div className="subtask-status-content">
-          <label
-            className={`status-text 
-                      ${status === 'UNRESOLVED' && 'status-unresolved'} 
-                      ${status === 'PROCESS' && 'status-process'} 
-                      ${status === 'INREVIEW' && 'status-inreview'} 
-                      ${status === 'DENIED' && 'status-denied'} 
-                      ${status === 'DONE' && 'status-done'} 
-                      `}
-          >
-            {statusText[status as keyof typeof statusText]}
-          </label>
-        </div>
+        <SubTaskStatusLabel status={status} />
         <div className="subtask-status-info">
           <p>Creación: 21/01/23</p>
           <h2>Precio: S/. {subTask.price}</h2>

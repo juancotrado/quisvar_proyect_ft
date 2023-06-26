@@ -6,6 +6,7 @@ import Button from '../../button/Button';
 import { SubTask, fyleType } from '../../../../types/types';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
 import SubtaskFile from '../../../subtasks/subtaskFiles/SubtaskFile';
+import SubTaskStatusLabel from '../../../subtasks/subTaskStatusLabel/SubTaskStatusLabel';
 
 interface CardSubtaskDone {
   subTask: SubTask;
@@ -44,19 +45,8 @@ const CardSubtaskDone = ({ subTask, isAuthorizedMod }: CardSubtaskDone) => {
         </div>
       </section>
       <section className="subtask-details">
-        <div className="subtask-status-content">
-          <label
-            className={`status-text 
-                    ${status === 'UNRESOLVED' && 'status-unresolved'} 
-                    ${status === 'PROCESS' && 'status-process'} 
-                    ${status === 'INREVIEW' && 'status-inreview'} 
-                    ${status === 'DENIED' && 'status-denied'} 
-                    ${status === 'DONE' && 'status-done'} 
-                    `}
-          >
-            {statusText[status as keyof typeof statusText]}
-          </label>
-        </div>
+        <SubTaskStatusLabel status={status} />
+
         <div className="subtask-status-info">
           <p>Creación: 21/01/23</p>
           <div className="subtask-models-process">

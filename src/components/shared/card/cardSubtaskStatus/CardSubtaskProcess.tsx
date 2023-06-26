@@ -8,21 +8,20 @@ import { isOpenModal$ } from '../../../../services/sharingSubject';
 import SubtaskFile from '../../../subtasks/subtaskFiles/SubtaskFile';
 import SubtaskUploadFiles from '../../../subtasks/subtaskUploadFiles/SubtaskUploadFiles';
 import SubtaskChangeStatusBtn from '../../../subtasks/subtaskChangeStatusBtn/SubtaskChangeStatusBtn';
-
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../store';
 interface CardSubtaskProcess {
   subTask: SubTask;
   isAuthorizedMod: boolean;
-  isAuthorizedUser: boolean;
-  areAuthorizedUsers: boolean;
 }
 
 const CardSubtaskProcess = ({
   subTask,
   isAuthorizedMod,
-  isAuthorizedUser,
-  areAuthorizedUsers,
 }: CardSubtaskProcess) => {
   const socket = useContext(SocketContext);
+
+  const { userSession } = useSelector((state: RootState) => state);
 
   const { status } = subTask;
 
@@ -35,6 +34,11 @@ const CardSubtaskProcess = ({
       });
   };
 
+  const isAuthorizedUser = subTask?.users?.some(
+    ({ user }) => user.profile.userId === userSession.id
+  );
+
+  const areAuthorizedUsers = isAuthorizedMod || isAuthorizedUser;
   return (
     <div className="subtask-content-area">
       <section className="subtask-files">

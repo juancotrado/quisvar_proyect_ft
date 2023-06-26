@@ -46,30 +46,30 @@ const SubtaskFile = ({
   };
 
   return (
-    <div className="subtask-file-container">
+    <div className="subtaskFile">
       {subTask.files
         ?.filter(({ type }) => type === typeFile)
         .map(file => (
-          <div key={file.id} className="subtask-file-contain">
+          <div key={file.id} className="subtaskFile-contain">
             <a
               href={`${URL}/${normalizeUrlFile(file.dir, file.type)}/${
                 file.name
               }`}
               target="_blank"
-              className="subtask-file"
+              className="subtaskFile-anchor"
               download={true}
             >
               {file.type !== 'MATERIAL' && (
-                <span className="subtask-file-username">
+                <span className="subtaskFile-username">
                   {file.user.profile.firstName} :
                 </span>
               )}
               <img
                 src="/svg/file-download.svg"
                 alt="W3Schools"
-                className="subtask-file-icon"
+                className="subtaskFile-icon"
               />
-              <span className="subtask-file-name">
+              <span className="subtaskFile-name">
                 {normalizeFileName(file.name)}
               </span>
             </a>
@@ -79,7 +79,7 @@ const SubtaskFile = ({
               <ButtonDelete
                 icon="trash-red"
                 customOnClick={() => deleteFile(file.id)}
-                className="subtask-btn-delete-icons"
+                className="subtaskFile-btn-delete"
               />
             )}
           </div>

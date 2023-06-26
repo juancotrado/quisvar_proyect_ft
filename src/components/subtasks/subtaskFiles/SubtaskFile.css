@@ -1,4 +1,4 @@
-.subtask-file-container {
+.subtaskFile {
   display: flex;
   flex-direction: column;
   background-color: var(--color-menu);
@@ -7,4 +7,43 @@
   height: 9rem;
   overflow-y: auto;
   width: 100%;
+}
+.subtaskFile-contain {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.subtaskFile-anchor {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 80%;
+}
+.subtaskFile-icon {
+  width: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+.subtaskFile-name {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: black;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.subtaskFile-username {
+  min-width: 5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subtaskFile-btn-delete {
+  border: none;
+  background-color: transparent;
 }

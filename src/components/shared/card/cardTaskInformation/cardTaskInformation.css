@@ -107,14 +107,7 @@
   font-size: 0.87rem;
   color: var(--color-primary);
 }
-.subtask-file-input {
-  border: 2px dashed var(--color-primary);
-  width: 100%;
-  border-radius: 50px;
-  padding: 20px;
-  cursor: pointer;
-  background-color: transparent;
-}
+
 .subtask-send-btn {
   color: white;
   background-color: var(--color-primary);
@@ -130,25 +123,7 @@
   justify-content: center;
   align-items: center;
 }
-.subtask-file-area {
-  border: 2px dashed var(--color-primary);
-  width: 50%;
-  height: 100%;
-  /* border-radius: 50px; */
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-left: 10px;
-}
-.subtask-file-area p {
-  position: absolute;
-  pointer-events: none;
-  font-size: 1rem;
-  font-weight: 700;
-  color: gray;
-  text-align: center;
-}
+
 .subtask-details {
   flex: 1;
   height: 100%;
@@ -286,19 +261,7 @@
 .subtask-delete-icon img {
   width: 1rem;
 }
-.btn-declinar {
-  width: fit-content;
-  background-color: #c81d1e;
-  color: white;
-  border: 2px solid #c81d1e !important;
-}
-.btn-revisar {
-  height: fit-content;
-  bottom: 0;
-  background-color: #69d957;
-  color: white;
-  border: 2px solid #69d957 !important;
-}
+
 .statement div label {
   color: var(--color-primary);
   width: 100%;

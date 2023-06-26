@@ -2,7 +2,7 @@ import { ChangeEvent, useState, useContext } from 'react';
 import { fyleType } from '../../../types/types';
 import { axiosInstance } from '../../../services/axiosInstance';
 import { SocketContext } from '../../../context/SocketContex';
-
+import './subtaskUploadFiles.css';
 interface SubtaskUploadFilesProps {
   type: fyleType;
 
@@ -30,15 +30,16 @@ const SubtaskUploadFiles = ({ id, type }: SubtaskUploadFilesProps) => {
       });
   };
   return (
-    <div className="subtask-file-area">
+    <div className="subtaskUploadFiles-area">
       <input
         type="file"
         onChange={handleFileChange}
-        className="subtask-file-input"
-        style={{ opacity: 0 }}
+        className="subtaskUploadFiles-input"
       />
 
-      <p>Arrastra o Selecciona un archivo</p>
+      <p className="subtaskUploadFiles-text">
+        Arrastra o Selecciona un archivo
+      </p>
     </div>
   );
 };

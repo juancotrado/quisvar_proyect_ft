@@ -4,10 +4,10 @@ import {
 } from '../../../../services/sharingSubject';
 import './cardTaskInformation.css';
 import Button from '../../button/Button';
-import { ChangeEvent, useContext, useMemo, useState } from 'react';
+import { ChangeEvent, useContext, useState } from 'react';
 import { SubTask, fyleType } from '../../../../types/types';
 import { SocketContext } from '../../../../context/SocketContex';
-import { URL, axiosInstance } from '../../../../services/axiosInstance';
+import { axiosInstance } from '../../../../services/axiosInstance';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
 import {
@@ -73,80 +73,6 @@ const CardTaskInformation = ({
     isTaskInformation$.setSubject = false;
     isOpenModal$.setSubject = false;
   };
-  const handleFileChange = (
-    type: fyleType,
-    e: ChangeEvent<HTMLInputElement>
-  ) => {
-    if (!e.target.files) return;
-
-    const formdata = new FormData();
-    formdata.append('file', e.target.files[0]);
-    const file = formdata.get('file');
-    axiosInstance
-      .post(`/files/upload/${subTask.id}/?status=${type}`, formdata)
-      .then(res => {
-        if (file instanceof File && file.type === 'application/pdf') {
-          console.log('es pdf');
-          setHasPdf(true);
-        }
-        socket.emit('client:update-subTask', res.data);
-      });
-  };
-
-  // const handleUploadClick = (type: fyleType) => {
-  //   if (!file) return;
-  //   const formdata = new FormData();
-  //   formdata.append('file', file);
-  //   axiosInstance
-  //     .post(`/files/upload/${subTask.id}/?status=${type}`, formdata)
-  //     .then(res => socket.emit('client:update-subTask', res.data));
-  //   setFile(null);
-  // };
-  // const [addBtn, setAddBtn] = useState(false);
-  // const handleAddUser = (user: DataUser) => {
-  //   setAddBtn(true);
-  //   const getId = usersData.find(list => list.id == user.id);
-  //   if (!getId) setUsersData([...usersData, user]);
-  // };
-
-  // const handleRemoveUser = (user: DataUser) => {
-  //   const filterValue = usersData.filter(list => list.id !== user.id);
-  //   setUsersData(filterValue);
-  //   setAddBtn(false);
-  // };
-  const getStatus = (
-    category: string,
-    role: string,
-    state: string
-  ): { status: string } | undefined => {
-    return statusBody[category]?.[role]?.[state];
-  };
-
-  const handleChangeStatus = async (option: 'ASIG' | 'DENY') => {
-    const { status } = subTask;
-    const body = getStatus(option, role, status);
-    if (
-      (status === 'PROCESS' || status === 'DENIED' || status === 'INREVIEW') &&
-      body?.status !== 'DONE' &&
-      !hasPdf
-    )
-      return SnackbarUtilities.warning(
-        'Asegurese de subir una archivo PDF antes.'
-      );
-
-    if (!body) return;
-
-    const resStatus = await axiosInstance.patch(
-      `/subtasks/status/${subTask.id}`,
-      body
-    );
-    socket.emit('client:update-subTask', resStatus.data);
-    setHasPdf(false);
-    isOpenModal$.setSubject = false;
-  };
-  // const handleInputChange = (value: number) => {
-  //   console.log('Nuevo valor:', value);
-  // };
 
   const handleSubTaskDelete = () => {
     axiosInstance.delete(`/subtasks/${subTask.id}`).then(res => {
@@ -154,35 +80,7 @@ const CardTaskInformation = ({
       isOpenModal$.setSubject = false;
     });
   };
-  // const normalizeFileName = (name: string) => {
-  //   const indexName = name.indexOf('$');
-  //   return name.slice(indexName + 1);
-  // };
 
-  // const handleReloadSubTask = () => {
-  //   axiosInstance
-  //     .patch(`/subtasks/asigned/${subTask.id}?status=decline`)
-  //     .then(res => {
-  //       socket.emit('client:update-subTask', res.data);
-  //       isOpenModal$.setSubject = false;
-  //     });
-  // };
-  // const handleAddUserByTask = () => {
-  //   axiosInstance
-  //     .patch(`/subtasks/assignUser/${subTask.id}`, usersData)
-  //     .then(res => {
-  //       socket.emit('client:update-subTask', res.data);
-  //       isOpenModal$.setSubject = false;
-  //     });
-  // };
-
-  // const deleteFile = (id: number) => {
-  //   axiosInstance
-  //     .delete(`/files/remove/${id}`)
-  //     .then(res => socket.emit('client:update-subTask', res.data));
-  // };
-
-  // validations
   const { status } = subTask;
 
   const isAuthorizedUser = subTask?.users?.some(
@@ -221,7 +119,6 @@ const CardTaskInformation = ({
           subTask={subTask}
           isAuthorizedMod={isAuthorizedMod}
           projectName={projectName}
-          handleChangeStatus={handleChangeStatus}
         />
       )}
       {(status === 'PROCESS' ||
@@ -232,7 +129,6 @@ const CardTaskInformation = ({
           isAuthorizedMod={isAuthorizedMod}
           isAuthorizedUser={isAuthorizedUser}
           areAuthorizedUsers={areAuthorizedUsers}
-          handleChangeStatus={handleChangeStatus}
         />
       )}
       {status === 'DONE' && (

@@ -1,6 +1,4 @@
 import { useContext } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../store';
 import { statusText } from '../cardTaskInformation/constans';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { SocketContext } from '../../../../context/SocketContex';
@@ -9,13 +7,13 @@ import { SubTask } from '../../../../types/types';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
 import SubtaskFile from '../../../subtasks/subtaskFiles/SubtaskFile';
 import SubtaskUploadFiles from '../../../subtasks/subtaskUploadFiles/SubtaskUploadFiles';
+import SubtaskChangeStatusBtn from '../../../subtasks/subtaskChangeStatusBtn/SubtaskChangeStatusBtn';
 
 interface CardSubtaskProcess {
   subTask: SubTask;
   isAuthorizedMod: boolean;
   isAuthorizedUser: boolean;
   areAuthorizedUsers: boolean;
-  handleChangeStatus: (option: 'ASIG' | 'DENY') => void;
 }
 
 const CardSubtaskProcess = ({
@@ -23,11 +21,8 @@ const CardSubtaskProcess = ({
   isAuthorizedMod,
   isAuthorizedUser,
   areAuthorizedUsers,
-  handleChangeStatus,
 }: CardSubtaskProcess) => {
   const socket = useContext(SocketContext);
-  const { userSession } = useSelector((state: RootState) => state);
-  const role = userSession.role === 'EMPLOYEE' ? 'EMPLOYEE' : 'SUPERADMIN';
 
   const { status } = subTask;
 
@@ -71,27 +66,29 @@ const CardSubtaskProcess = ({
                   onClick={handleReloadSubTask}
                 />
               )}
-            {isAuthorizedMod && status === 'INREVIEW' && (
-              <Button
-                text={'Desaprobar'}
-                className="btn-declinar"
-                onClick={() => handleChangeStatus('DENY')}
+            {status !== 'INREVIEW' && !isAuthorizedUser && (
+              <SubtaskChangeStatusBtn
+                option="ASIG"
+                subtaskId={subTask.id}
+                subtaskStatus={status}
+                text="Mandar a Revisar"
               />
             )}
-            {(status === 'PROCESS' || status === 'DENIED') &&
-              !isAuthorizedMod && (
-                <Button
-                  text="Mandar a Revisar"
-                  className="btn-revisar"
-                  onClick={() => handleChangeStatus('ASIG')}
-                />
-              )}
             {status === 'INREVIEW' && isAuthorizedMod && (
-              <Button
-                text={'Aprobar'}
-                className="btn-revisar"
-                onClick={() => handleChangeStatus('ASIG')}
-              />
+              <>
+                <SubtaskChangeStatusBtn
+                  option="DENY"
+                  subtaskId={subTask.id}
+                  subtaskStatus={status}
+                  text="Desaprobar"
+                />
+                <SubtaskChangeStatusBtn
+                  option="ASIG"
+                  subtaskId={subTask.id}
+                  subtaskStatus={status}
+                  text="Aprobar"
+                />
+              </>
             )}
           </div>
         )}
@@ -100,11 +97,9 @@ const CardSubtaskProcess = ({
         <div className="subtask-status-content">
           <label
             className={`status-text 
-                    ${status === 'UNRESOLVED' && 'status-unresolved'} 
                     ${status === 'PROCESS' && 'status-process'} 
                     ${status === 'INREVIEW' && 'status-inreview'} 
                     ${status === 'DENIED' && 'status-denied'} 
-                    ${status === 'DONE' && 'status-done'} 
                     `}
           >
             {statusText[status as keyof typeof statusText]}

@@ -10,20 +10,16 @@ import { isOpenModal$ } from '../../../../services/sharingSubject';
 import DropDownSimple from '../../select/DropDownSimple';
 import SubtaskFile from '../../../subtasks/subtaskFiles/SubtaskFile';
 import SubtaskUploadFiles from '../../../subtasks/subtaskUploadFiles/SubtaskUploadFiles';
+import SubtaskChangeStatusBtn from '../../../subtasks/subtaskChangeStatusBtn/SubtaskChangeStatusBtn';
 
 type DataUser = { id: number; name: string };
 interface CardSubtaskHold {
   subTask: SubTask;
   isAuthorizedMod: boolean;
-  handleChangeStatus: (option: 'ASIG' | 'DENY') => void;
   projectName: string;
 }
 
-const CardSubtaskHold = ({
-  subTask,
-  isAuthorizedMod,
-  handleChangeStatus,
-}: CardSubtaskHold) => {
+const CardSubtaskHold = ({ subTask, isAuthorizedMod }: CardSubtaskHold) => {
   const socket = useContext(SocketContext);
   const [addBtn, setAddBtn] = useState(false);
   const [usersData, setUsersData] = useState<DataUser[]>([]);
@@ -95,10 +91,11 @@ const CardSubtaskHold = ({
             </div>
           ) : (
             <div className="subtask-asign-btn">
-              <Button
+              <SubtaskChangeStatusBtn
+                option="ASIG"
+                subtaskId={subTask.id}
+                subtaskStatus={status}
                 text="Asignarme"
-                className="btn-revisar"
-                onClick={() => handleChangeStatus('ASIG')}
               />
             </div>
           )}

@@ -87,7 +87,6 @@ const Tasks = () => {
 
   const openMySubTask = async () => {
     const { taskIdProp, subTaskIdProp } = state;
-
     const subTasksSelected = await settingSubTasks(taskIdProp, 'task');
     const subTaskSelect = subTasksSelected?.find(
       subTask => subTask.id === subTaskIdProp
@@ -125,7 +124,6 @@ const Tasks = () => {
 
   useEffect(() => {
     socket.on('server:create-subTask', (newSubTask: SubTask) => {
-      console.log(subTask, '<===');
       if (!subTasks) return;
       setSubTasks([...subTasks, newSubTask]);
     });
@@ -165,9 +163,6 @@ const Tasks = () => {
                     key={subTask.id}
                     subTask={subTask}
                     getSubtask={getSubtask}
-                    // editTaskStatus={editTaskStatus}
-                    // handleGetTaskData={handleGetTaskData}
-                    // deleteTask={deleteTask}
                   />
                 ))}
           </div>
@@ -203,7 +198,6 @@ const Tasks = () => {
         {
           <CardRegisterAndInformation
             subTask={subTask}
-            projectName={workArea?.project.name}
             isAuthorizedMod={isAuthorizedMod}
             taskId={taskId}
             typeTask={typeTask}

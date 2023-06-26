@@ -55,7 +55,10 @@ const CardSubtaskProcess = ({
                   typeFile="REVIEW"
                 />
               </div>
-              <SubtaskUploadFiles id={subTask.id} type="REVIEW" />
+              {((status !== 'INREVIEW' && isAuthorizedUser) ||
+                (isAuthorizedMod && status === 'INREVIEW')) && (
+                <SubtaskUploadFiles id={subTask.id} type="REVIEW" />
+              )}
             </div>
           }
         </div>
@@ -70,7 +73,7 @@ const CardSubtaskProcess = ({
                   onClick={handleReloadSubTask}
                 />
               )}
-            {status !== 'INREVIEW' && !isAuthorizedUser && (
+            {status !== 'INREVIEW' && isAuthorizedUser && (
               <SubtaskChangeStatusBtn
                 option="ASIG"
                 subtaskId={subTask.id}

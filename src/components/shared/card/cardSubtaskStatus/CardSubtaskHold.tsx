@@ -16,7 +16,6 @@ type DataUser = { id: number; name: string };
 interface CardSubtaskHold {
   subTask: SubTask;
   isAuthorizedMod: boolean;
-  projectName: string;
 }
 
 const CardSubtaskHold = ({ subTask, isAuthorizedMod }: CardSubtaskHold) => {

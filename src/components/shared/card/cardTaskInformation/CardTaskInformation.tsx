@@ -19,14 +19,12 @@ interface CardTaskInformationProps {
   subTask: SubTask;
   isAuthorizedMod: boolean;
   openModalEdit: () => void;
-  projectName: string;
 }
 
 const CardTaskInformation = ({
   subTask,
   isAuthorizedMod,
   openModalEdit,
-  projectName,
 }: CardTaskInformationProps) => {
   const socket = useContext(SocketContext);
 
@@ -71,11 +69,7 @@ const CardTaskInformation = ({
         )}
       </div>
       {status === 'UNRESOLVED' && (
-        <CardSubtaskHold
-          subTask={subTask}
-          isAuthorizedMod={isAuthorizedMod}
-          projectName={projectName}
-        />
+        <CardSubtaskHold subTask={subTask} isAuthorizedMod={isAuthorizedMod} />
       )}
       {(status === 'PROCESS' ||
         status === 'INREVIEW' ||

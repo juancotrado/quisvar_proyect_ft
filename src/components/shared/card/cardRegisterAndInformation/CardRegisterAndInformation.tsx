@@ -16,14 +16,12 @@ interface CardRegisterAndInformationProps {
   isAuthorizedMod: boolean;
   taskId: number | null;
   typeTask?: TypeTask;
-  projectName: string | undefined;
 }
 
 const CardRegisterAndInformation = ({
   isAuthorizedMod,
   subTask,
   taskId,
-  projectName,
   typeTask,
 }: CardRegisterAndInformationProps) => {
   const [isTaskInformation, setIsTaskInformation] = useState<boolean>(true);
@@ -50,12 +48,11 @@ const CardRegisterAndInformation = ({
   };
   return (
     <Modal size={50}>
-      {isTaskInformation && projectName ? (
+      {isTaskInformation ? (
         <CardTaskInformation
           isAuthorizedMod={isAuthorizedMod}
           subTask={subTask}
           openModalEdit={openModalEdit}
-          projectName={projectName}
         />
       ) : (
         <CardRegisterSubTask

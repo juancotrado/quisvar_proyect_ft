@@ -10,14 +10,9 @@ import { axiosInstance } from '../../../services/axiosInstance';
 interface IndexTaskContainerProps {
   indexTask: IndexTask;
   onSave?: () => void;
-  settingSubTask: () => void;
 }
 
-const IndexTaskContainer = ({
-  indexTask,
-  onSave,
-  settingSubTask,
-}: IndexTaskContainerProps) => {
+const IndexTaskContainer = ({ indexTask, onSave }: IndexTaskContainerProps) => {
   const { userSession } = useSelector((state: RootState) => state);
   const [name, setName] = useState<string>();
   const [openEditIndexTask, setOpenEditIndexTask] = useState<boolean>(false);
@@ -28,10 +23,10 @@ const IndexTaskContainer = ({
     setName(value);
   };
 
-  const handleUniqueVerify = () => {
-    if (!indexTask.unique) return;
-    settingSubTask();
-  };
+  // const handleUniqueVerify = () => {
+  //   if (!indexTask.unique) return;
+  //   settingSubTask();
+  // };
   const handleForm = async () => {
     await axiosInstance
       .patch(`indextasks/${indexTask.id}`, { name })
@@ -41,7 +36,7 @@ const IndexTaskContainer = ({
       });
   };
   return (
-    <div className="index-task-section" onClick={handleUniqueVerify}>
+    <div className="index-task-section">
       <div className="aside-dropdown-section">
         <img
           src="/svg/reports.svg"
@@ -53,7 +48,7 @@ const IndexTaskContainer = ({
             defaultValue={indexTask.name}
             type="text"
             className="input-task"
-            onChange={e => toggleInput(e)}
+            onChange={toggleInput}
           />
         ) : (
           <>

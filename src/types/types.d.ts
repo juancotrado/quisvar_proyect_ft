@@ -115,11 +115,11 @@ export interface IndexTask {
   unique?: boolean;
   name: string;
   tasks: Task[];
-  unique: boolean;
 }
 
 export interface Task {
   id: number;
+  unique?: boolean;
   item?: string;
   name: string;
   subTasks: SubTask[];

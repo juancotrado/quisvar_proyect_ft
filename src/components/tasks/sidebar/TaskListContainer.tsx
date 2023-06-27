@@ -9,14 +9,12 @@ import { axiosInstance } from '../../../services/axiosInstance';
 
 interface TaskListContainerProps {
   task: Task;
-  settingSubTask: () => void;
   onSave?: () => void;
   taskSelected: number | null;
 }
 
 const TaskListContainer = ({
   task,
-  settingSubTask,
   onSave,
   taskSelected,
 }: TaskListContainerProps) => {
@@ -38,7 +36,7 @@ const TaskListContainer = ({
   };
 
   return (
-    <li className="aside-dropdown-sub-list " onClick={settingSubTask}>
+    <div className="aside-dropdown-sub-list-item">
       {openEditTask ? (
         <Input
           defaultValue={task.name}
@@ -93,7 +91,7 @@ const TaskListContainer = ({
           )}
         </div>
       )}
-    </li>
+    </div>
   );
 };
 

@@ -207,7 +207,7 @@ const Tasks = () => {
       {workArea && (
         <Sidebar
           workArea={workArea}
-          settingSubTasks={(id, type) => settingSubTasks(id, type)}
+          settingSubTasks={settingSubTasks}
           onUpdate={getWorkAreas}
           isShowInitValue={state?.taskIdProp === undefined}
         />

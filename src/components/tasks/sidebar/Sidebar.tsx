@@ -6,8 +6,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import TaskListContainer from './TaskListContainer';
 import IndexTaskContainer from './IndexTaskContainer';
-import AddIndexTask from './AddIndexTask';
-import AddTask from './AddTask';
+import SidebarAddNewLevel from './sidebarAddNewLevel/SidebarAddNewLevel';
 
 type SettingType = 'task' | 'indextask';
 
@@ -36,7 +35,12 @@ const Sidebar = ({
   const handleEditArea = () => setOpenEditArea(!openEditArea);
   const handleShow = () => setIsShow(!isShow);
 
-  const handleTaks = (id: number, type: 'task' | 'indextask') => {
+  const handleTaks = (
+    id: number,
+    type: 'task' | 'indextask',
+    isUnique: boolean = false
+  ) => {
+    if (!isUnique) return;
     settingSubTasks(id, type);
     setTaskSelected(id);
   };
@@ -71,27 +75,69 @@ const Sidebar = ({
       <div className="asilde-slice">
         <ul className="aside-dropdown">
           {indexTasks.map(indexTask => (
-            <li key={indexTask.id} className="aside-dropdown-list">
-              <IndexTaskContainer
-                indexTask={indexTask}
-                onSave={onUpdate}
-                settingSubTask={() => handleTaks(indexTask.id, 'indextask')}
-              />
+            <li
+              key={indexTask.id}
+              className="aside-dropdown-list"
+              onClick={() =>
+                handleTaks(indexTask.id, 'indextask', indexTask.unique)
+              }
+            >
+              <IndexTaskContainer indexTask={indexTask} onSave={onUpdate} />
               {indexTask.unique || (
                 <div className="aside-dropdown-content">
                   <ul className="aside-dropdown-sub">
                     {indexTask.tasks.map(task => (
-                      <TaskListContainer
-                        key={task.id}
-                        task={task}
-                        settingSubTask={() => handleTaks(task.id, 'task')}
-                        onSave={onUpdate}
-                        taskSelected={taskSelected}
-                      />
+                      <li
+                        className="aside-dropdown-sub-list"
+                        onClick={() => handleTaks(task.id, 'task', task.unique)}
+                      >
+                        <TaskListContainer
+                          key={task.id}
+                          task={task}
+                          // settingSubTask={() => handleTaks(task.id, 'task')}
+                          onSave={onUpdate}
+                          taskSelected={taskSelected}
+                        />
+                        {task.unique || (
+                          <div className="aside-dropdown-content">
+                            <ul className="aside-dropdown-sub">
+                              {/* {indexTask.tasks.map(task => (
+                              <li
+                                className="aside-dropdown-sub-list "
+                                onClick={() =>
+                                  handleTaks(task.id, 'task', task.unique)
+                                }
+                              >
+                                <TaskListContainer
+                                  key={task.id}
+                                  task={task}
+                                  // settingSubTask={() => handleTaks(task.id, 'task')}
+                                  onSave={onUpdate}
+                                  taskSelected={taskSelected}
+                                />
+                              </li>
+                            ))} */}
+                              {role !== 'EMPLOYEE' && (
+                                <li>
+                                  <SidebarAddNewLevel
+                                    idValue={task.id}
+                                    keyNameId="taskId"
+                                    onSave={onUpdate}
+                                  />
+                                </li>
+                              )}
+                            </ul>
+                          </div>
+                        )}
+                      </li>
                     ))}
                     {role !== 'EMPLOYEE' && (
                       <li>
-                        <AddTask indexTaskId={indexTask.id} onSave={onUpdate} />
+                        <SidebarAddNewLevel
+                          idValue={indexTask.id}
+                          keyNameId="indexTaskId"
+                          onSave={onUpdate}
+                        />
                       </li>
                     )}
                   </ul>
@@ -101,7 +147,11 @@ const Sidebar = ({
           ))}
           {role !== 'EMPLOYEE' && (
             <li>
-              <AddIndexTask workAreaId={workArea.id} onSave={onUpdate} />
+              <SidebarAddNewLevel
+                idValue={workArea.id}
+                keyNameId="workAreaId"
+                onSave={onUpdate}
+              />
             </li>
           )}
         </ul>

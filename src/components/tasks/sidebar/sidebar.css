@@ -150,6 +150,10 @@
 }
 .aside-dropdown-sub-list {
   display: flex;
+  flex-direction: column;
+}
+.aside-dropdown-sub-list-item {
+  display: flex;
   align-items: center;
   color: var(--color-secondary);
   border-left: 0.2rem solid var(--color-secondary);

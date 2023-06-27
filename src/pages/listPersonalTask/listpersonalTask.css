@@ -70,12 +70,32 @@
   padding: 0.2rem 1rem;
   border-radius: var(--radius-button);
   display: flex;
+  width: 100%;
   align-items: center;
+  justify-content: space-between;
   gap: 0.5rem;
   background-color: #fff;
   box-shadow: 0px 1.5px 4px rgba(0, 0, 0, 0.2);
   color: var(--color-tertiary);
 }
+.my-title-content {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.my-project-list {
+  width: 40%;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.my-select-speciality {
+  height: 2rem;
+  border: none;
+  box-shadow: 0px 1.5px 4px rgba(0, 0, 0, 0.2);
+  background-color: var(--color-menu);
+}
+
 .span-list-task {
   font-size: small;
 }

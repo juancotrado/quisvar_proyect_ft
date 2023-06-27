@@ -17,13 +17,13 @@ const CardEditInformation = ({ isOpen, onClose }: any) => {
     if (userSession) {
       reset(userSession);
     }
-  }, [userSession]);
+  }, [reset, userSession]);
 
   const onSubmit = async (values: User) => {
     console.log(userSession);
 
     if (userSession?.id !== undefined) {
-      let saveData = {
+      const saveData = {
         firstName: values.profile.firstName,
         lastName: values.profile.lastName,
         phone: values.profile.phone,

@@ -1,7 +1,6 @@
 import { useContext, useState, useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
-import { statusText } from '../cardTaskInformation/constans';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { SocketContext } from '../../../../context/SocketContex';
 import Button from '../../button/Button';

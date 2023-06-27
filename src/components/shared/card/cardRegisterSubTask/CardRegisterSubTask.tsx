@@ -55,7 +55,7 @@ const CardRegisterSubTask = ({
       name: subTask.name,
       price: subTask.price,
     });
-  }, [subTask]);
+  }, [reset, subTask]);
 
   const onSubmit: SubmitHandler<SubTaskForm> = data => {
     if (subTask?.id) {

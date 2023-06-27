@@ -1,5 +1,4 @@
 import Input from '../../Input/Input';
-import { motion } from 'framer-motion';
 import './CardEditProfile.css';
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import { axiosInstance } from '../../../../services/axiosInstance';
@@ -48,7 +47,6 @@ const CardEditUser = ({ dataUser, onSave }: CardEdtiUserProps) => {
   useEffect(() => {
     if (dataUser) {
       setData(dataUser);
-      console.log(data);
     }
   }, [dataUser]);
   const sendForm = async (e: FormEvent<HTMLFormElement>) => {

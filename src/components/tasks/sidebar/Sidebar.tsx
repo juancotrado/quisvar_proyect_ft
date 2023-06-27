@@ -4,11 +4,10 @@ import './sidebar.css';
 import { CardRegisterArea } from '../..';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
-import TaskListContainer from './TaskListContainer';
-import IndexTaskContainer from './IndexTaskContainer';
 import SidebarAddNewLevel from './sidebarAddNewLevel/SidebarAddNewLevel';
+import SidebarLevelList from './sidebarLevelList/SidebarLevelList';
 
-type SettingType = 'task' | 'indextask';
+type SettingType = 'task' | 'indextask' | 'task2' | 'task3';
 
 interface SidebarProps {
   workArea: WorkArea;
@@ -37,7 +36,7 @@ const Sidebar = ({
 
   const handleTaks = (
     id: number,
-    type: 'task' | 'indextask',
+    type: SettingType,
     isUnique: boolean = false
   ) => {
     if (!isUnique) return;
@@ -82,41 +81,76 @@ const Sidebar = ({
                 handleTaks(indexTask.id, 'indextask', indexTask.unique)
               }
             >
-              <IndexTaskContainer indexTask={indexTask} onSave={onUpdate} />
+              {/* <IndexTaskContainer data={indexTask} onSave={onUpdate} /> */}
+              <SidebarLevelList
+                data={indexTask}
+                onSave={onUpdate}
+                type="indextasks"
+              />
               {indexTask.unique || (
                 <div className="aside-dropdown-content">
                   <ul className="aside-dropdown-sub">
                     {indexTask.tasks.map(task => (
                       <li
+                        key={task.id}
                         className="aside-dropdown-sub-list"
                         onClick={() => handleTaks(task.id, 'task', task.unique)}
                       >
-                        <TaskListContainer
-                          key={task.id}
-                          task={task}
-                          // settingSubTask={() => handleTaks(task.id, 'task')}
+                        <SidebarLevelList
+                          data={task}
                           onSave={onUpdate}
-                          taskSelected={taskSelected}
+                          type="task"
                         />
                         {task.unique || (
                           <div className="aside-dropdown-content">
                             <ul className="aside-dropdown-sub">
-                              {/* {indexTask.tasks.map(task => (
-                              <li
-                                className="aside-dropdown-sub-list "
-                                onClick={() =>
-                                  handleTaks(task.id, 'task', task.unique)
-                                }
-                              >
-                                <TaskListContainer
-                                  key={task.id}
-                                  task={task}
-                                  // settingSubTask={() => handleTaks(task.id, 'task')}
-                                  onSave={onUpdate}
-                                  taskSelected={taskSelected}
-                                />
-                              </li>
-                            ))} */}
+                              {task.tasks_2.map(task2 => (
+                                <li
+                                  className="aside-dropdown-sub-list "
+                                  onClick={() =>
+                                    handleTaks(task2.id, 'task2', task2.unique)
+                                  }
+                                >
+                                  <SidebarLevelList
+                                    data={task2}
+                                    onSave={onUpdate}
+                                    type="task2"
+                                  />
+                                  {task2.unique || (
+                                    <div className="aside-dropdown-content">
+                                      <ul className="aside-dropdown-sub">
+                                        {task2.tasks_3.map(task3 => (
+                                          <li
+                                            className="aside-dropdown-sub-list "
+                                            onClick={() =>
+                                              handleTaks(
+                                                task3.id,
+                                                'task3',
+                                                task3.unique
+                                              )
+                                            }
+                                          >
+                                            <SidebarLevelList
+                                              data={task3}
+                                              onSave={onUpdate}
+                                              type="task2"
+                                            />
+                                          </li>
+                                        ))}
+                                        {role !== 'EMPLOYEE' && (
+                                          <li>
+                                            <SidebarAddNewLevel
+                                              idValue={task2.id}
+                                              keyNameId="task_2_Id"
+                                              onSave={onUpdate}
+                                            />
+                                          </li>
+                                        )}
+                                      </ul>
+                                    </div>
+                                  )}
+                                </li>
+                              ))}
                               {role !== 'EMPLOYEE' && (
                                 <li>
                                   <SidebarAddNewLevel

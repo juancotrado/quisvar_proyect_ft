@@ -109,21 +109,24 @@ export interface WorkArea {
   };
 }
 export type WorkAreaForm = Omit<WorkArea, 'indexTasks' | 'user' | 'project'>;
-export interface IndexTask {
-  id: number;
-  item?: string;
-  unique?: boolean;
-  name: string;
-  tasks: Task[];
-  unique: boolean;
-}
 
-export interface Task {
+export interface DataTask {
   id: number;
+  unique?: boolean;
   item?: string;
   name: string;
   subTasks: SubTask[];
+}
+export interface IndexTask extends DataTask {
+  tasks: Task[];
+}
+export interface Task extends DataTask {
+  tasks_2: Task2[];
   _count?: { subTasks: number };
+}
+
+export interface Task2 extends DataTask {
+  tasks_3: DataTask[];
 }
 
 // export interface SubTask {
@@ -134,6 +137,7 @@ export interface SubTask {
   id: number;
   status: string;
   name: string;
+  item?: string;
   percentage: number;
   description: string;
   price: string;
@@ -145,6 +149,8 @@ export interface SubTask {
   users: Users[];
   createdAt?: Date;
 }
+
+export type TypeTask = 'task' | 'indextask' | 'task2' | 'task3';
 export interface SubtaskIncludes extends SubTask {
   task: {
     id: number;
@@ -152,6 +158,10 @@ export interface SubtaskIncludes extends SubTask {
       id: number;
       workAreaId: number;
     };
+  };
+  indexTask: {
+    id: number;
+    workAreaId: number;
   };
 }
 

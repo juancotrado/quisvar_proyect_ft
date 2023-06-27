@@ -4,7 +4,7 @@ import './tasks.css';
 import { useLocation, useParams } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
-import { SubTask, WorkArea } from '../../types/types';
+import { SubTask, TypeTask, WorkArea } from '../../types/types';
 import { Sidebar, SubTaskCard } from '../../components';
 import { SocketContext } from '../../context/SocketContex';
 import {
@@ -15,7 +15,6 @@ import Button from '../../components/shared/button/Button';
 import CardRegisterAndInformation from '../../components/shared/card/cardRegisterAndInformation/CardRegisterAndInformation';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import { TypeTask } from '../../components/shared/card/cardRegisterSubTask/CardRegisterSubTask';
 
 const initValuesSubTask: SubTask = {
   id: 0,
@@ -35,6 +34,7 @@ const Tasks = () => {
   const [workArea, setWorkArea] = useState<WorkArea | null>(null);
   const [subTasks, setSubTasks] = useState<SubTask[] | null>(null);
   const [typeTask, setTypeTask] = useState<TypeTask>();
+  const [isOpen, setIsOpen] = useState(false);
   const [subTask, setSubTask] = useState<SubTask>(initValuesSubTask);
   const [taskId, setTaskId] = useState<number | null>(null);
   const socket = useContext(SocketContext);
@@ -47,30 +47,31 @@ const Tasks = () => {
   }, []);
 
   const getWorkAreas = async () => {
-    axiosInstance.get(`/workareas/${id}`).then(res => setWorkArea(res.data));
+    axiosInstance.get(`/workareas/${id}`).then(res => {
+      setWorkArea(res.data);
+      setIsOpen(true);
+    });
   };
 
-  const settingSubTasks = (id: number, type: TypeTask) => {
-    if (type === 'task') {
-      return new Promise<SubTask[]>(resolve => {
-        axiosInstance.get(`/tasks/${id}`).then(res => {
-          setTaskId(res.data.id);
-          setTypeTask(type);
-          setSubTasks(res.data.subTasks);
-          socket.emit('join', res.data.id + type);
-          isOpenModal$.setSubject = false;
-          resolve(res.data.subTasks);
-        });
-      });
-    }
-    if (type === 'indextask') {
-      axiosInstance.get(`/indextasks/${id}/subtasks`).then(res => {
+  const querySubTask = (url: string, type: TypeTask) => {
+    return new Promise<SubTask[]>(resolve => {
+      axiosInstance.get(url).then(res => {
         setTaskId(res.data.id);
         setTypeTask(type);
         setSubTasks(res.data.subTasks);
         socket.emit('join', res.data.id + type);
         isOpenModal$.setSubject = false;
+        resolve(res.data.subTasks);
       });
+    });
+  };
+
+  const settingSubTasks = (id: number, type: TypeTask) => {
+    if (type === 'task') {
+      return querySubTask(`/tasks/${id}`, type);
+    }
+    if (type === 'indextask') {
+      return querySubTask(`/indextasks/${id}/subtasks`, type);
     }
   };
 
@@ -86,8 +87,8 @@ const Tasks = () => {
   }, []);
 
   const openMySubTask = async () => {
-    const { taskIdProp, subTaskIdProp } = state;
-    const subTasksSelected = await settingSubTasks(taskIdProp, 'task');
+    const { taskIdProp, subTaskType, subTaskIdProp } = state;
+    const subTasksSelected = await settingSubTasks(taskIdProp, subTaskType);
     const subTaskSelect = subTasksSelected?.find(
       subTask => subTask.id === subTaskIdProp
     );
@@ -207,7 +208,7 @@ const Tasks = () => {
       {workArea && (
         <Sidebar
           workArea={workArea}
-          settingSubTasks={(id, type) => settingSubTasks(id, type)}
+          settingSubTasks={settingSubTasks}
           onUpdate={getWorkAreas}
           isShowInitValue={state?.taskIdProp === undefined}
         />

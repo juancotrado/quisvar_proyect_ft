@@ -15,7 +15,7 @@
   font-size: small;
 }
 .my-icon-card {
-  background-color: var(--color-primary);
+  /* background-color: var(--color-primary); */
   position: absolute;
   top: 1rem;
   left: -0.8rem;
@@ -27,7 +27,18 @@
   height: 1.5rem;
   padding: 0.3rem;
 }
-
+.my-icon-card-process {
+  background-color: var(--color-process);
+  color: var(--color-process);
+}
+.my-icon-card-denied {
+  background-color: var(--color-unresolved);
+  color: var(--color-unresolved);
+}
+.my-icon-card-done {
+  background-color: var(--color-done);
+  color: var(--color-done);
+}
 .my-task-content {
   background-color: #fff;
   width: 100%;

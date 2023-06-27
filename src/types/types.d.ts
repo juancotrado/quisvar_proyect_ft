@@ -137,6 +137,7 @@ export interface SubTask {
   id: number;
   status: string;
   name: string;
+  item?: string;
   percentage: number;
   description: string;
   price: string;
@@ -148,6 +149,8 @@ export interface SubTask {
   users: Users[];
   createdAt?: Date;
 }
+
+export type TypeTask = 'task' | 'indextask' | 'task2' | 'task3';
 export interface SubtaskIncludes extends SubTask {
   task: {
     id: number;
@@ -155,6 +158,10 @@ export interface SubtaskIncludes extends SubTask {
       id: number;
       workAreaId: number;
     };
+  };
+  indexTask: {
+    id: number;
+    workAreaId: number;
   };
 }
 

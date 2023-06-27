@@ -8,7 +8,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { SocketContext } from '../../../../context/SocketContex';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
-import { SubTask } from '../../../../types/types';
+import { SubTask, TypeTask } from '../../../../types/types';
 import Button from '../../button/Button';
 
 type SubTaskForm = {
@@ -23,7 +23,6 @@ interface CardRegisterSubTaskProps {
   taskId: number | null;
   typeTask?: TypeTask;
 }
-export type TypeTask = 'task' | 'indextask';
 type DataUser = { id: number; name: string };
 
 const CardRegisterSubTask = ({

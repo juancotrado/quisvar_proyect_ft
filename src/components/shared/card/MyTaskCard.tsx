@@ -1,7 +1,5 @@
 import './mytaskcard.css';
-import icon_done from '/svg/task_done.svg';
-import { SubtaskIncludes } from '../../../types/types';
-import icon_list_task from '/svg/icon_list_task.svg';
+import { SubtaskIncludes, TypeTask } from '../../../types/types';
 import { _date } from '../../../utils/formatDate';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,33 +9,53 @@ interface TaskCardProps {
 
 const MyTaskCard = ({ subTask }: TaskCardProps) => {
   const navigate = useNavigate();
-
-  const handleNavigate = () => {
-    const { task, id } = subTask;
-    // console.log(task.indexTask.workAreaId);:
-    navigate(`/tareas/${task.indexTask.workAreaId}`, {
+  const navigateLocation = (
+    workAreaId: number,
+    taskIdProp: number,
+    subTaskIdProp: number,
+    subTaskType: TypeTask
+  ) => {
+    return navigate(`/tareas/${workAreaId}`, {
       state: {
-        taskIdProp: task.id,
-        subTaskIdProp: id,
+        taskIdProp,
+        subTaskIdProp,
+        subTaskType,
       },
       replace: true,
     });
-    console.log(subTask.status);
+  };
+
+  const handleNavigate = () => {
+    const { task, id, indexTask } = subTask;
+    if (indexTask) {
+      navigateLocation(indexTask.workAreaId, indexTask.id, id, 'indextask');
+    }
+    if (task) {
+      navigateLocation(task.indexTask.workAreaId, task.id, id, 'task');
+    }
   };
 
   return (
-    <div className="my-task-class">
+    <div className={`my-task-class`}>
       {/* <span className="task-text">{`${task.status == 'DONE'? "Hecho":"asd"}` }</span> */}
 
       <div className="my-task-content">
-        <span className="my-icon-card">
+        <span
+          className={`my-icon-card ${
+            subTask.status === 'DONE'
+              ? 'my-icon-card-done'
+              : subTask.status === 'PROCESS'
+              ? 'my-icon-card-process'
+              : 'my-icon-card-denied'
+          }`}
+        >
           <img
             src={
               subTask.status === 'DONE'
-                ? icon_done
+                ? 'svg/task_done.svg'
                 : subTask.status === 'PROCESS'
-                ? icon_list_task
-                : ''
+                ? 'svg/icon_list_task.svg'
+                : 'svg/task_unresolved.svg'
             }
           />
         </span>
@@ -53,15 +71,18 @@ const MyTaskCard = ({ subTask }: TaskCardProps) => {
           {subTask.status === 'DONE' && 'HECHO'}
         </span>
         <div className="task-header">
-          <h2>{subTask.name}</h2>
-          <span>Precio: S/{subTask.price}</span>
+          <div>
+            <span>{subTask.item}</span>
+            <h2>{subTask.name}</h2>
+          </div>
+          <span>S/.{subTask.price}</span>
         </div>
       </div>
       <div className="footer-my-task">
-        <h3>
-          Fecha Inicio: {`${subTask.createdAt && _date(subTask.createdAt)}`}
-        </h3>
-        <span onClick={handleNavigate}>Ver mas</span>
+        <h3>Fecha: {`${subTask.createdAt && _date(subTask.createdAt)}`}</h3>
+        <span onClick={handleNavigate}>
+          <b>Ver más</b>
+        </span>
       </div>
     </div>
   );

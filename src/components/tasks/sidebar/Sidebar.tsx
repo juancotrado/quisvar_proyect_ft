@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { WorkArea } from '../../../types/types';
+import { TypeTask, WorkArea } from '../../../types/types';
 import './sidebar.css';
 import { CardRegisterArea } from '../..';
 import { useSelector } from 'react-redux';
@@ -7,12 +7,10 @@ import { RootState } from '../../../store';
 import SidebarAddNewLevel from './sidebarAddNewLevel/SidebarAddNewLevel';
 import SidebarLevelList from './sidebarLevelList/SidebarLevelList';
 
-type SettingType = 'task' | 'indextask' | 'task2' | 'task3';
-
 interface SidebarProps {
   workArea: WorkArea;
   onUpdate?: () => void;
-  settingSubTasks: (id: number, type: SettingType) => void;
+  settingSubTasks: (id: number, type: TypeTask) => void;
   isShowInitValue: boolean;
 }
 
@@ -29,19 +27,13 @@ const Sidebar = ({
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
   const profileUser = user?.profile;
   const workAreaInfo = { ...areaData, name };
-  const [taskSelected, setTaskSelected] = useState<number | null>(null);
 
   const handleEditArea = () => setOpenEditArea(!openEditArea);
   const handleShow = () => setIsShow(!isShow);
 
-  const handleTaks = (
-    id: number,
-    type: SettingType,
-    isUnique: boolean = false
-  ) => {
+  const handleTaks = (id: number, type: TypeTask, isUnique?: boolean) => {
     if (!isUnique) return;
     settingSubTasks(id, type);
-    setTaskSelected(id);
   };
 
   return (
@@ -106,6 +98,7 @@ const Sidebar = ({
                             <ul className="aside-dropdown-sub">
                               {task.tasks_2.map(task2 => (
                                 <li
+                                  key={task2.id}
                                   className="aside-dropdown-sub-list "
                                   onClick={() =>
                                     handleTaks(task2.id, 'task2', task2.unique)
@@ -121,6 +114,7 @@ const Sidebar = ({
                                       <ul className="aside-dropdown-sub">
                                         {task2.tasks_3.map(task3 => (
                                           <li
+                                            key={task3.id}
                                             className="aside-dropdown-sub-list "
                                             onClick={() =>
                                               handleTaks(

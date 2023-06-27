@@ -21,14 +21,9 @@ const ListPersonalTask = () => {
   const [subTask, setSubTask] = useState<SubtaskIncludes[] | null>(null);
 
   useEffect(() => {
-    axiosInstance
-      .get(`/users/${id}/subTasks`)
-      .then(res => {
-        setSubTask(res.data);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    axiosInstance.get(`/users/${id}/subTasks?project=52`).then(res => {
+      setSubTask(res.data);
+    });
   }, [userSession]);
   const toggleSwitch = () => {
     setIsOn(!isOn);
@@ -66,7 +61,7 @@ const ListPersonalTask = () => {
               )
               .map(subTask => (
                 <div key={subTask.id}>
-                  <MyTaskCard subTask={subTask} />{' '}
+                  <MyTaskCard subTask={subTask} />
                 </div>
               ))}
         </div>

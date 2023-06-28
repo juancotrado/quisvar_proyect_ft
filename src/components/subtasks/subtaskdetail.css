@@ -19,9 +19,16 @@
   gap: 1rem;
 }
 
-.subtask-details {
+.subtask-details-content {
   text-transform: uppercase;
   font-weight: 600;
+  flex: 1;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  flex-direction: column;
+  gap: 1rem;
 }
 
 .subtask-area {
@@ -33,7 +40,7 @@
   font-weight: 500;
 }
 
-.subtask-details h4 {
+.subtask-details-content h4 {
   font-weight: 800;
   font-size: 1.3rem;
 }

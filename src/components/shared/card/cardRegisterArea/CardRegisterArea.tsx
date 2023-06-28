@@ -98,8 +98,10 @@ const CardRegisterArea = ({
         {...register('name')}
         placeholder="nombre"
         className="input-project"
+        label="Nombre del área"
       />
       <DropDownSimple
+        label="Coordinador"
         type="search"
         defaultInput={handleGetUserById()}
         className="dropdown-area"

@@ -12,7 +12,7 @@ const SubtaskDetail = ({ onView, subtask }: SubtaskDetail) => {
     <div className="subtask-container-main">
       {subtask && (
         <div className="subtask-container">
-          <div className="subtask-details">
+          <div className="subtask-details-content">
             <span className="subtask-area">
               {subtask.task.indexTask.workArea.name}
             </span>

@@ -1,4 +1,4 @@
-import { DataTask } from '../../../../types/types';
+import { DataTask, TypeTask } from '../../../../types/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
 import Button from '../../../shared/button/Button';
@@ -10,7 +10,7 @@ import { axiosInstance } from '../../../../services/axiosInstance';
 interface IndexTaskContainerProps {
   data: DataTask;
   onSave?: () => void;
-  type: 'indextasks' | 'task' | 'task2' | 'task3';
+  type: TypeTask;
 }
 const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
   const { userSession } = useSelector((state: RootState) => state);
@@ -30,7 +30,7 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
     });
   };
 
-  const isFirstLevel = type === 'indextasks';
+  const isFirstLevel = type === 'indextask';
   return (
     // <div className="index-task-section">
     <div

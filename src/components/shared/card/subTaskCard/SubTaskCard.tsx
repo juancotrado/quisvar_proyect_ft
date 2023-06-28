@@ -40,7 +40,9 @@ const SubTaskCard = ({ subTask, getSubtask }: SubTaskCardProps) => {
       </span>
 
       <div className="subTask-container">
-        <h3 className="subTask-name">{subTask.name}</h3>
+        <h3 className="subTask-name">
+          {subTask.item} {subTask.name}
+        </h3>
         <div className="subTask-info">
           <p className="subTask-owner">
             {usersAsigned &&

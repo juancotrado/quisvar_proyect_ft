@@ -21,17 +21,15 @@ const urlPost = {
 
 const SidebarAddNewLevel = ({ idValue, onSave, keyNameId }: AddTaskProps) => {
   const [addLevel, setAddLevel] = useState<boolean>(false);
-  const { handleSubmit, register, reset, setValue } = useForm<TaskForm>();
+  const { handleSubmit, register, reset } = useForm<TaskForm>();
   const isLastLevel = keyNameId === 'task_2_Id';
 
   useEffect(() => {
     reset({
       [keyNameId]: idValue,
+      unique: isLastLevel,
     });
-    if (isLastLevel) {
-      setValue('unique', true);
-    }
-  }, [idValue]);
+  }, [idValue, isLastLevel, keyNameId, reset]);
 
   const onSubmitTask: SubmitHandler<TaskForm> = async values => {
     const url = urlPost[keyNameId as keyof typeof urlPost];
@@ -42,6 +40,8 @@ const SidebarAddNewLevel = ({ idValue, onSave, keyNameId }: AddTaskProps) => {
     });
   };
 
+  const handleAddlevel = () => setAddLevel(!addLevel);
+
   return (
     <form
       onSubmit={handleSubmit(onSubmitTask)}
@@ -50,7 +50,7 @@ const SidebarAddNewLevel = ({ idValue, onSave, keyNameId }: AddTaskProps) => {
       {addLevel ? (
         <Input {...register('name')} name="name" className="input-task" />
       ) : (
-        <span>AÑADIR NIVEL </span>
+        <span>AÑADIR NIVEL</span>
       )}
       {addLevel && (
         <>
@@ -67,7 +67,7 @@ const SidebarAddNewLevel = ({ idValue, onSave, keyNameId }: AddTaskProps) => {
         className="add-btn-indextask"
         whileHover={{ rotate: 90 }}
         whileTap={{ scale: 1.1 }}
-        onClick={() => setAddLevel(!addLevel)}
+        onClick={handleAddlevel}
       />
     </form>
   );

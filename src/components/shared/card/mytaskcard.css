@@ -14,6 +14,12 @@
   font-weight: 600;
   font-size: small;
 }
+.task-header h3 {
+  background-color: transparent;
+  color: var(--color-quaternay);
+  overflow-y: auto;
+  resize: none;
+}
 .my-icon-card {
   /* background-color: var(--color-primary); */
   position: absolute;

@@ -63,7 +63,7 @@ const Sidebar = ({
           />
         )}
       </div>
-      <div className="asilde-slice">
+      <div className="aside-slice">
         <ul className="aside-dropdown">
           {indexTasks.map(indexTask => (
             <li
@@ -73,11 +73,10 @@ const Sidebar = ({
                 handleTaks(indexTask.id, 'indextask', indexTask.unique)
               }
             >
-              {/* <IndexTaskContainer data={indexTask} onSave={onUpdate} /> */}
               <SidebarLevelList
                 data={indexTask}
                 onSave={onUpdate}
-                type="indextasks"
+                type="indextask"
               />
               {indexTask.unique || (
                 <div className="aside-dropdown-content">
@@ -132,13 +131,11 @@ const Sidebar = ({
                                           </li>
                                         ))}
                                         {role !== 'EMPLOYEE' && (
-                                          <li>
-                                            <SidebarAddNewLevel
-                                              idValue={task2.id}
-                                              keyNameId="task_2_Id"
-                                              onSave={onUpdate}
-                                            />
-                                          </li>
+                                          <SidebarAddNewLevel
+                                            idValue={task2.id}
+                                            keyNameId="task_2_Id"
+                                            onSave={onUpdate}
+                                          />
                                         )}
                                       </ul>
                                     </div>
@@ -146,13 +143,11 @@ const Sidebar = ({
                                 </li>
                               ))}
                               {role !== 'EMPLOYEE' && (
-                                <li>
-                                  <SidebarAddNewLevel
-                                    idValue={task.id}
-                                    keyNameId="taskId"
-                                    onSave={onUpdate}
-                                  />
-                                </li>
+                                <SidebarAddNewLevel
+                                  idValue={task.id}
+                                  keyNameId="taskId"
+                                  onSave={onUpdate}
+                                />
                               )}
                             </ul>
                           </div>
@@ -160,13 +155,11 @@ const Sidebar = ({
                       </li>
                     ))}
                     {role !== 'EMPLOYEE' && (
-                      <li>
-                        <SidebarAddNewLevel
-                          idValue={indexTask.id}
-                          keyNameId="indexTaskId"
-                          onSave={onUpdate}
-                        />
-                      </li>
+                      <SidebarAddNewLevel
+                        idValue={indexTask.id}
+                        keyNameId="indexTaskId"
+                        onSave={onUpdate}
+                      />
                     )}
                   </ul>
                 </div>
@@ -174,13 +167,11 @@ const Sidebar = ({
             </li>
           ))}
           {role !== 'EMPLOYEE' && (
-            <li>
-              <SidebarAddNewLevel
-                idValue={workArea.id}
-                keyNameId="workAreaId"
-                onSave={onUpdate}
-              />
-            </li>
+            <SidebarAddNewLevel
+              idValue={workArea.id}
+              keyNameId="workAreaId"
+              onSave={onUpdate}
+            />
           )}
         </ul>
       </div>

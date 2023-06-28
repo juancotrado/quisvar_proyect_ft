@@ -1,10 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
-import { SubTask } from '../../../../types/types';
+import { SubTask, TypeTask } from '../../../../types/types';
 import Modal from '../../../portal/Modal';
 import CardTaskInformation from '../cardTaskInformation/CardTaskInformation';
-import CardRegisterSubTask, {
-  TypeTask,
-} from '../cardRegisterSubTask/CardRegisterSubTask';
+import CardRegisterSubTask from '../cardRegisterSubTask/CardRegisterSubTask';
 import {
   isOpenModal$,
   isTaskInformation$,

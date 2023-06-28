@@ -28,6 +28,13 @@ const initValuesSubTask: SubTask = {
   taskId: 0,
   users: [],
 };
+const path = {
+  task: 'tasks',
+  task2: 'tasks2',
+  task3: 'tasks3',
+  indextask: 'indextasks',
+};
+
 const Tasks = () => {
   const { id } = useParams();
   const { state } = useLocation();
@@ -67,12 +74,7 @@ const Tasks = () => {
   };
 
   const settingSubTasks = (id: number, type: TypeTask) => {
-    if (type === 'task') {
-      return querySubTask(`/tasks/${id}`, type);
-    }
-    if (type === 'indextask') {
-      return querySubTask(`/indextasks/${id}/subtasks`, type);
-    }
+    return querySubTask(`/${path[type]}/${id}`, type);
   };
 
   const getSubtask = (subTask: SubTask) => {
@@ -125,6 +127,7 @@ const Tasks = () => {
 
   useEffect(() => {
     socket.on('server:create-subTask', (newSubTask: SubTask) => {
+      console.log({ newSubTask });
       if (!subTasks) return;
       setSubTasks([...subTasks, newSubTask]);
     });

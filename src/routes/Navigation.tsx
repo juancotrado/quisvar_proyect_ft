@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 import {
   Dashboard,
   Home,
@@ -16,7 +16,7 @@ import { ProtectedRoute } from '../components';
 const Navigation = () => {
   return (
     <>
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/login" element={<Login />} />
@@ -35,7 +35,7 @@ const Navigation = () => {
           </Route>
           <Route path="/*" element={<NotFound />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </>
   );
 };

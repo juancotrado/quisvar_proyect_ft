@@ -7,9 +7,22 @@ interface SelectOptionsProps extends SelectHTMLAttributes<HTMLSelectElement> {
   itemKey: string;
   textField: string;
   name: string;
+  className?: string;
 }
 const SelectOptions = forwardRef<HTMLSelectElement, SelectOptionsProps>(
-  ({ label, data, itemKey, textField, name, defaultValue, ...props }, ref) => {
+  (
+    {
+      label,
+      data,
+      itemKey,
+      textField,
+      name,
+      defaultValue,
+      className,
+      ...props
+    },
+    ref
+  ) => {
     return (
       <div className="select-container">
         {label && (
@@ -18,7 +31,7 @@ const SelectOptions = forwardRef<HTMLSelectElement, SelectOptionsProps>(
           </label>
         )}
         <select
-          className="select-field"
+          className={`${className} select-field`}
           {...props}
           ref={ref}
           defaultValue={defaultValue}

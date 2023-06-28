@@ -60,10 +60,13 @@ const MyTaskCard = ({ subTask }: TaskCardProps) => {
           />
         </span>
         <span
-          className={`task-text ${subTask.status === 'DENIED'} ${
-            subTask.status === 'PROCESS'
-          } ${subTask.status === 'DONE'}
-          ${subTask.status === 'INREVIEW'}`}
+          className={`task-text ${
+            subTask.status === 'DONE'
+              ? 'my-icon-card-done-color'
+              : subTask.status === 'PROCESS'
+              ? 'my-icon-card-process-color'
+              : 'my-icon-card-denied-color'
+          }`}
         >
           {subTask.status === 'DENIED' && 'CORREGIR'}
           {subTask.status === 'PROCESS' && 'EN PROCESO'}

@@ -39,6 +39,15 @@
   background-color: var(--color-done);
   color: var(--color-done);
 }
+.my-icon-card-process-color {
+  color: var(--color-process);
+}
+.my-icon-card-denied-color {
+  color: var(--color-unresolved);
+}
+.my-icon-card-done-color {
+  color: var(--color-done);
+}
 .my-task-content {
   background-color: #fff;
   width: 100%;

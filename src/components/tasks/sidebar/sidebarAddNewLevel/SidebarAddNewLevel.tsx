@@ -21,12 +21,16 @@ const urlPost = {
 
 const SidebarAddNewLevel = ({ idValue, onSave, keyNameId }: AddTaskProps) => {
   const [addLevel, setAddLevel] = useState<boolean>(false);
-  const { handleSubmit, register, reset } = useForm<TaskForm>();
+  const { handleSubmit, register, reset, setValue } = useForm<TaskForm>();
+  const isLastLevel = keyNameId === 'task_2_Id';
 
   useEffect(() => {
     reset({
       [keyNameId]: idValue,
     });
+    if (isLastLevel) {
+      setValue('unique', true);
+    }
   }, [idValue]);
 
   const onSubmitTask: SubmitHandler<TaskForm> = async values => {
@@ -37,6 +41,7 @@ const SidebarAddNewLevel = ({ idValue, onSave, keyNameId }: AddTaskProps) => {
       reset();
     });
   };
+
   return (
     <form
       onSubmit={handleSubmit(onSubmitTask)}
@@ -49,7 +54,9 @@ const SidebarAddNewLevel = ({ idValue, onSave, keyNameId }: AddTaskProps) => {
       )}
       {addLevel && (
         <>
-          <input {...register('unique')} type="checkbox" name="unique" />
+          {!isLastLevel && (
+            <input {...register('unique')} type="checkbox" name="unique" />
+          )}
 
           <Button icon="save" className="add-btn-indextask" />
         </>

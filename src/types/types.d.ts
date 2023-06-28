@@ -213,21 +213,47 @@ export interface UserForm {
   phone: string;
 }
 
+interface ReviewListIndexTask {
+  id: number;
+  item: string;
+  name: string;
+  workArea: {
+    id: number;
+    item: string;
+    name: string;
+    project: {
+      name: string;
+    };
+  };
+}
+interface ReviewListTask {
+  id: number;
+  item: string;
+  name: string;
+  indexTask: ReviewListIndexTask;
+}
+interface ReviewListTask2 {
+  id: number;
+  item: string;
+  name: string;
+  task: ReviewListTask;
+}
+interface ReviewListTask3 {
+  id: number;
+  item: string;
+  name: string;
+  task_2: ReviewListTask2;
+}
+
 export interface ReviewList {
   id: number;
   name: string;
-  task: {
-    name: string;
-    indexTask: {
-      name: string;
-      workArea: {
-        name: string;
-        project: {
-          name: string;
-        };
-      };
-    };
-  };
+  item: string;
+  status: string;
+  task: ReviewListTask | null;
+  indexTask: ReviewListIndexTask | null;
+  task_lvl_2: ReviewListTask2 | null;
+  task_lvl_3: ReviewListTask3 | null;
   users: {
     user: User;
   }[];

@@ -3,7 +3,6 @@ import icon_unresolved from '/svg/task_unresolved.svg';
 import icon_process from '/svg/task_process.svg';
 import { SubTask } from '../../../../types/types';
 import './subTaskCard.css';
-import { isOpenModal$ } from '../../../../services/sharingSubject';
 
 interface SubTaskCardProps {
   subTask: SubTask;

@@ -10,7 +10,7 @@ const listUsersSlice = createSlice({
   name: 'list_users',
   initialState,
   reducers: {
-    setListUser: (state, action: PayloadAction<State>) => action.payload,
+    setListUser: (_state, action: PayloadAction<State>) => action.payload,
   },
 });
 

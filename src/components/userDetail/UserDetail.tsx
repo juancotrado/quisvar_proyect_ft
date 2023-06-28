@@ -1,9 +1,9 @@
-import { Users } from '../../types/types';
+import { User } from '../../types/types';
 import Button from '../shared/button/Button';
 import ButtonDelete from '../shared/button/ButtonDelete';
 import './UserDetail.css';
 interface UserDetailProps {
-  user: Users;
+  user: User;
   index: number;
   onClick?: () => void;
 }

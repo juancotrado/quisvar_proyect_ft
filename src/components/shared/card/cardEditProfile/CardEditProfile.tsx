@@ -1,5 +1,4 @@
 import Input from '../../Input/Input';
-import { motion } from 'framer-motion';
 import './CardEditProfile.css';
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import { axiosInstance } from '../../../../services/axiosInstance';

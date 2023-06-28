@@ -6,9 +6,7 @@ import {
   NotFound,
   Tasks,
   Specialities,
-  Speciality,
   UsersList,
-  WorkArea,
   NotificationsList,
   ListPersonalTask,
   CommingSoon,
@@ -26,9 +24,7 @@ const Navigation = () => {
             <Route path="/home" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/tareas/:id" element={<Tasks />} />
-            <Route path="/areas" element={<WorkArea />} />
             <Route path="/especialidades" element={<Specialities />} />
-            <Route path="/especialidades/:id" element={<Speciality />} />
             <Route path="/mis-tareas" element={<ListPersonalTask />} />
             <Route path="/lista-de-usuarios" element={<UsersList />} />
             <Route path="/reportes" element={<CommingSoon />} />

@@ -1,4 +1,4 @@
-import { ChangeEvent, useState, useContext } from 'react';
+import { ChangeEvent, useContext } from 'react';
 import { fyleType } from '../../../types/types';
 import { axiosInstance } from '../../../services/axiosInstance';
 import { SocketContext } from '../../../context/SocketContex';
@@ -10,7 +10,7 @@ interface SubtaskUploadFilesProps {
 }
 
 const SubtaskUploadFiles = ({ id, type }: SubtaskUploadFilesProps) => {
-  const [hasPdf, setHasPdf] = useState(false);
+  // const [setHasPdf] = useState(false);
   const socket = useContext(SocketContext);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -24,7 +24,7 @@ const SubtaskUploadFiles = ({ id, type }: SubtaskUploadFilesProps) => {
       .then(res => {
         if (file instanceof File && file.type === 'application/pdf') {
           console.log('es pdf');
-          setHasPdf(true);
+          // setHasPdf(true);
         }
         socket.emit('client:update-subTask', res.data);
       });

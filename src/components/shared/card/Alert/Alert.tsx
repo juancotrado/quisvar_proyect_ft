@@ -1,4 +1,3 @@
-import React from 'react';
 import Modal from '../../../portal/Modal';
 
 const Alert = () => {

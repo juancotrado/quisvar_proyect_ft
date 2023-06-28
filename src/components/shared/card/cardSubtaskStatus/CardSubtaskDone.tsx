@@ -1,9 +1,8 @@
 import { useContext } from 'react';
-import { statusText } from '../cardTaskInformation/constans';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { SocketContext } from '../../../../context/SocketContex';
 import Button from '../../button/Button';
-import { SubTask, fyleType } from '../../../../types/types';
+import { SubTask } from '../../../../types/types';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
 import SubtaskFile from '../../../subtasks/subtaskFiles/SubtaskFile';
 import SubTaskStatusLabel from '../../../subtasks/subTaskStatusLabel/SubTaskStatusLabel';

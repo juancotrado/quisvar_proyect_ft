@@ -28,6 +28,7 @@ const ListPersonalTask = () => {
   useEffect(() => {
     axiosInstance.get(`/users/${id}/subTasks`).then(res => {
       setSubTask(res.data);
+      console.log(res.data);
       specialitiesList();
     });
   }, [userSession]);

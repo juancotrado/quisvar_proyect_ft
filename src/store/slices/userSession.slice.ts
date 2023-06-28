@@ -24,7 +24,7 @@ const userSessionSlice = createSlice({
   name: 'userSession',
   initialState: INITIAL_STATE,
   reducers: {
-    setUserSessionGlobal: (state, action: PayloadAction<User>) =>
+    setUserSessionGlobal: (_state, action: PayloadAction<User>) =>
       action.payload,
   },
 });

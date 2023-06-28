@@ -41,7 +41,6 @@ const Tasks = () => {
   const [workArea, setWorkArea] = useState<WorkArea | null>(null);
   const [subTasks, setSubTasks] = useState<SubTask[] | null>(null);
   const [typeTask, setTypeTask] = useState<TypeTask>();
-  const [isOpen, setIsOpen] = useState(false);
   const [subTask, setSubTask] = useState<SubTask>(initValuesSubTask);
   const [taskId, setTaskId] = useState<number | null>(null);
   const socket = useContext(SocketContext);
@@ -56,7 +55,6 @@ const Tasks = () => {
   const getWorkAreas = async () => {
     axiosInstance.get(`/workareas/${id}`).then(res => {
       setWorkArea(res.data);
-      setIsOpen(true);
     });
   };
 

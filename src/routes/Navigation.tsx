@@ -1,4 +1,4 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 import {
   Dashboard,
   Home,
@@ -6,9 +6,7 @@ import {
   NotFound,
   Tasks,
   Specialities,
-  Speciality,
   UsersList,
-  WorkArea,
   NotificationsList,
   ListPersonalTask,
   CommingSoon,
@@ -18,7 +16,7 @@ import { ProtectedRoute } from '../components';
 const Navigation = () => {
   return (
     <>
-      <BrowserRouter>
+      <HashRouter>
         <Routes>
           <Route path="/" element={<Navigate to="/home" />} />
           <Route path="/login" element={<Login />} />
@@ -26,9 +24,7 @@ const Navigation = () => {
             <Route path="/home" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/tareas/:id" element={<Tasks />} />
-            <Route path="/areas" element={<WorkArea />} />
             <Route path="/especialidades" element={<Specialities />} />
-            <Route path="/especialidades/:id" element={<Speciality />} />
             <Route path="/mis-tareas" element={<ListPersonalTask />} />
             <Route path="/lista-de-usuarios" element={<UsersList />} />
             <Route path="/reportes" element={<CommingSoon />} />
@@ -39,7 +35,7 @@ const Navigation = () => {
           </Route>
           <Route path="/*" element={<NotFound />} />
         </Routes>
-      </BrowserRouter>
+      </HashRouter>
     </>
   );
 };

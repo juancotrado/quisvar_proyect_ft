@@ -163,6 +163,29 @@ export interface SubtaskIncludes extends SubTask {
     id: number;
     workAreaId: number;
   };
+  task_lvl_2: {
+    id: number;
+    task: {
+      id: number;
+      indexTask: {
+        id: number;
+        workAreaId: number;
+      };
+    };
+  };
+  task_lvl_3: {
+    id: number;
+    task_2: {
+      id: number;
+      task: {
+        id: number;
+        indexTask: {
+          id: number;
+          workAreaId: number;
+        };
+      };
+    };
+  };
 }
 
 interface Files {

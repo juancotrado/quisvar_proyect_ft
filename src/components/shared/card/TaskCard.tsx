@@ -2,10 +2,9 @@ import icon_unresolved from '/svg/task_unresolved.svg';
 import icon_process from '/svg/task_process.svg';
 import icon_done from '/svg/task_done.svg';
 import './taskcard.css';
-import { Employees, SubTask, TaskType } from '../../../types/types';
+import { SubTask } from '../../../types/types';
 import ButtonDelete from '../button/ButtonDelete';
 import Button from '../button/Button';
-import { isOpenModal$ } from '../../../services/sharingSubject';
 import useRole from '../../../hooks/useRole';
 
 interface TaskCardProps {
@@ -13,7 +12,7 @@ interface TaskCardProps {
 }
 
 const TaskCard = ({ subTask }: TaskCardProps) => {
-  const { role, id, name } = useRole();
+  const { role } = useRole();
 
   // const handleNext = () => {
   //   const { status } = task;

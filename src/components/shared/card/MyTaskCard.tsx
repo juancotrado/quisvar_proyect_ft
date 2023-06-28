@@ -26,12 +26,28 @@ const MyTaskCard = ({ subTask }: TaskCardProps) => {
   };
 
   const handleNavigate = () => {
-    const { task, id, indexTask } = subTask;
+    const { indexTask, task, task_lvl_2, task_lvl_3, id } = subTask;
     if (indexTask) {
       navigateLocation(indexTask.workAreaId, indexTask.id, id, 'indextask');
     }
     if (task) {
       navigateLocation(task.indexTask.workAreaId, task.id, id, 'task');
+    }
+    if (task_lvl_2) {
+      navigateLocation(
+        task_lvl_2.task.indexTask.workAreaId,
+        task_lvl_2.id,
+        id,
+        'task2'
+      );
+    }
+    if (task_lvl_3) {
+      navigateLocation(
+        task_lvl_3.task_2.task.indexTask.workAreaId,
+        task_lvl_3.id,
+        id,
+        'task3'
+      );
     }
   };
 

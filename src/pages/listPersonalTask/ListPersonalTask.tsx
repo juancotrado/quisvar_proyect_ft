@@ -25,41 +25,42 @@ const ListPersonalTask = () => {
   const { id } = userSession;
   const [subTask, setSubTask] = useState<SubtaskIncludes[] | null>(null);
 
-  // useEffect(() => {
-  //   axiosInstance.get(`/users/${id}/subTasks?project=52`).then(res => {
-  //     setSubTask(res.data);
-  //   });
-  // }, [userSession]);
+  useEffect(() => {
+    axiosInstance.get(`/users/${id}/subTasks`).then(res => {
+      setSubTask(res.data);
+      specialitiesList();
+    });
+  }, [userSession]);
 
   const toggleSwitch = () => {
     setIsOn(!isOn);
   };
 
-  useEffect(() => {
-    specialitiesList();
-  }, []);
-
-  const specialitiesList = () => {
-    return axiosInstance
+  const specialitiesList = async () => {
+    return await axiosInstance
       .get(`/specialities`)
       .then(res => setSpecialities(res.data));
   };
 
-  const handleProjectsList = ({ target }: ChangeEvent<HTMLSelectElement>) => {
+  const handleProjectsList = async ({
+    target,
+  }: ChangeEvent<HTMLSelectElement>) => {
     const specialityId = target.value;
-    return axiosInstance
-      .get(`/specialities/${specialityId}`)
-      .then(res => setProjects(res.data.projects));
+    const res = await axiosInstance.get(`/specialities/${specialityId}`);
+    return setProjects(res.data.projects);
   };
 
-  const handleSubTaskList = ({ target }: ChangeEvent<HTMLSelectElement>) => {
+  const handleSubTaskList = async ({
+    target,
+  }: ChangeEvent<HTMLSelectElement>) => {
     const projectId = target.value;
-    return axiosInstance
+    return await axiosInstance
       .get(`/users/${id}/subTasks?project=${projectId}`)
       .then(res => {
         setSubTask(res.data);
       });
   };
+
   return (
     <div className="my-container-list ">
       <div className="my-title-list">

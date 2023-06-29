@@ -44,7 +44,7 @@ const Tasks = () => {
   const [subTask, setSubTask] = useState<SubTask>(initValuesSubTask);
   const [taskId, setTaskId] = useState<number | null>(null);
   const socket = useContext(SocketContext);
-  const { id: userSessionId } = useSelector(
+  const { id: userSessionId, role } = useSelector(
     (state: RootState) => state.userSession
   );
 
@@ -137,6 +137,16 @@ const Tasks = () => {
 
   const isAuthorizedMod = userSessionId === workArea?.userId;
 
+  const getText = () => {
+    if (subTasks === null)
+      return 'Seleccione uno de las indices para ver las tareas disponibles.';
+    if (subTasks.length === 0) {
+      return role === 'EMPLOYEE'
+        ? 'Este indice no tiene tareas, elije otra indice.'
+        : 'Este indice no tiene tareas, agregue una nueva tarea.';
+    }
+  };
+
   const openModaltoAdd = () => (isTaskInformation$.setSubject = false);
   return (
     <>
@@ -154,11 +164,11 @@ const Tasks = () => {
             />
           )}
         </div>
-        <section className="tasks-section-container">
-          <div className="container-task container-unresolved">
-            <h3>Por hacer</h3>
-            {subTasks &&
-              subTasks
+        {subTasks?.length ? (
+          <section className="tasks-section-container">
+            <div className="container-task container-unresolved">
+              <h3>Por hacer</h3>
+              {subTasks
                 .filter(({ status }) => status === 'UNRESOLVED')
                 .map(subTask => (
                   <SubTaskCard
@@ -167,11 +177,10 @@ const Tasks = () => {
                     getSubtask={getSubtask}
                   />
                 ))}
-          </div>
-          <div className="container-task container-process">
-            <h3>Haciendo</h3>
-            {subTasks &&
-              subTasks
+            </div>
+            <div className="container-task container-process">
+              <h3>Haciendo</h3>
+              {subTasks
                 .filter(
                   ({ status }) => status !== 'UNRESOLVED' && status !== 'DONE'
                 )
@@ -182,11 +191,10 @@ const Tasks = () => {
                     getSubtask={getSubtask}
                   />
                 ))}
-          </div>
-          <div className="container-task container-done">
-            <h3>Hecho</h3>
-            {subTasks &&
-              subTasks
+            </div>
+            <div className="container-task container-done">
+              <h3>Hecho</h3>
+              {subTasks
                 .filter(({ status }) => status === 'DONE')
                 .map(subTask => (
                   <SubTaskCard
@@ -195,8 +203,13 @@ const Tasks = () => {
                     getSubtask={getSubtask}
                   />
                 ))}
+            </div>
+          </section>
+        ) : (
+          <div className="task-empty">
+            <p className="task-empty-paragraph">{getText()}</p>
           </div>
-        </section>
+        )}
         {
           <CardRegisterAndInformation
             subTask={subTask}

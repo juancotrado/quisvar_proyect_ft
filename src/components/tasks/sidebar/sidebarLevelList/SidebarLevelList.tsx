@@ -32,7 +32,6 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
 
   const isFirstLevel = type === 'indextask';
   return (
-    // <div className="index-task-section">
     <div
       className={`${
         isFirstLevel ? 'index-task-section' : 'aside-dropdown-sub-list-item'
@@ -55,7 +54,6 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
           />
         ) : (
           <>
-            {/* <span className="aside-name-index"> */}
             <span
               className={`${
                 isFirstLevel
@@ -90,7 +88,6 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
               onClick={e => {
                 e.stopPropagation();
                 handleForm();
-                // setOpenEditData(!openEditData);
               }}
             />
           ) : (

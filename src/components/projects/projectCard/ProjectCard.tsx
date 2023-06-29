@@ -45,7 +45,6 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
     const body = {
       projectName: project.name,
     };
-
     axiosInstance
       .post('/projects/archiver', body)
       .then(res => {

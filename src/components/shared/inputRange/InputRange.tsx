@@ -12,8 +12,11 @@ interface InputTextProps
 
 const InputRange = forwardRef<HTMLInputElement, InputTextProps>(
   ({ maxRange, percentage, onChange, ...props }, ref) => {
-    const [value, setValue] = useState(percentage ? percentage : '');
-
+    const [value, setValue] = useState(percentage ? percentage : 0);
+    const getBackgroundSize = (v: number) => ({
+      backgroundSize:
+        typeof v === 'number' ? `${(v * 100) / 100}% 100%` : '0% 100%',
+    });
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
       const newValue = +e.target.value;
       if (newValue > maxRange) return;
@@ -22,6 +25,9 @@ const InputRange = forwardRef<HTMLInputElement, InputTextProps>(
         onChange(newValue);
       }
     };
+    // const barFilledStyle = {
+    //   width: `${value}%`,
+    // };
     // console.log(value);
     return (
       <div className="input-range range-container">
@@ -33,6 +39,7 @@ const InputRange = forwardRef<HTMLInputElement, InputTextProps>(
           {...props}
           className="input-range"
           onChange={handleChange}
+          style={getBackgroundSize(value)}
         />
         <input
           type="text"

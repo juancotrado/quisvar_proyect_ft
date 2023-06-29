@@ -89,7 +89,7 @@
 
   gap: 0.5rem;
 }
-.indextasks {
+.indextask {
   background-color: var(--background-indextasks, white);
 }
 .aside-dropdown-section-active {

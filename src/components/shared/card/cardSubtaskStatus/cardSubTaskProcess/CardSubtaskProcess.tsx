@@ -82,6 +82,7 @@ const CardSubtaskProcess = ({
                 option="ASIG"
                 subtaskId={subTask.id}
                 subtaskStatus={status}
+                percentage={percentage}
                 text="Mandar a Revisar"
               />
             )}
@@ -108,11 +109,13 @@ const CardSubtaskProcess = ({
         <SubTaskStatusLabel status={status} />
         <div className="cardSubtaskProcess-info">
           <p className="cardSubtaskProcess-info-date">Creación: 21/01/23</p>
-          <InputRange
-            maxRange={100}
-            percentage={percentage}
-            onChange={handlePercentageChange}
-          />
+          {isAuthorizedUser && (
+            <InputRange
+              maxRange={100}
+              percentage={percentage}
+              onChange={handlePercentageChange}
+            />
+          )}
           <div className="cardSubtaskProcess-files-models">
             <h2 className="cardSubtaskProcess-files-models-title">
               Archivos Modelo:

@@ -15,6 +15,7 @@ interface SubtaskChangeStatusBtn {
   option: 'ASIG' | 'DENY';
   text: string;
   requirePdf?: boolean;
+  percentage?: number;
 }
 
 const SubtaskChangeStatusBtn = ({
@@ -23,6 +24,7 @@ const SubtaskChangeStatusBtn = ({
   option,
   text,
   requirePdf = false,
+  percentage,
 }: SubtaskChangeStatusBtn) => {
   const [hasPdf, setHasPdf] = useState(true);
   const { userSession } = useSelector((state: RootState) => state);
@@ -37,7 +39,7 @@ const SubtaskChangeStatusBtn = ({
   };
   const handleChangeStatus = async () => {
     const role = userSession.role === 'EMPLOYEE' ? 'EMPLOYEE' : 'SUPERADMIN';
-    const body = getStatus(option, role, subtaskStatus);
+    const body = { ...getStatus(option, role, subtaskStatus), percentage };
 
     if (requirePdf && !hasPdf)
       return SnackbarUtilities.warning(

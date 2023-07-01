@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { axiosInstance } from '../../../../../services/axiosInstance';
 import { SocketContext } from '../../../../../context/SocketContex';
 import Button from '../../../button/Button';
@@ -11,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../store';
 import './cardSubTaskProcess.css';
 import SubTaskStatusLabel from '../../../../subtasks/subTaskStatusLabel/SubTaskStatusLabel';
+import { InputRange } from '../../../..';
 
 interface CardSubtaskProcess {
   subTask: SubTask;
@@ -21,11 +22,17 @@ const CardSubtaskProcess = ({
   subTask,
   isAuthorizedMod,
 }: CardSubtaskProcess) => {
+  const [percentage, setPercentage] = useState(subTask.percentage);
+
   const socket = useContext(SocketContext);
 
   const { userSession } = useSelector((state: RootState) => state);
 
   const { status } = subTask;
+
+  const handlePercentageChange = (newPercentage: number) => {
+    setPercentage(newPercentage);
+  };
 
   const handleReloadSubTask = () => {
     axiosInstance
@@ -37,7 +44,7 @@ const CardSubtaskProcess = ({
   };
 
   const isAuthorizedUser = subTask?.users?.some(
-    ({ user }) => user.profile.userId === userSession.id
+    ({ user }) => user.profile.userId === userSession?.id
   );
 
   const areAuthorizedUsers = isAuthorizedMod || isAuthorizedUser;
@@ -75,6 +82,7 @@ const CardSubtaskProcess = ({
                 option="ASIG"
                 subtaskId={subTask.id}
                 subtaskStatus={status}
+                percentage={percentage}
                 text="Mandar a Revisar"
                 requirePdf={true}
               />
@@ -103,6 +111,13 @@ const CardSubtaskProcess = ({
         <SubTaskStatusLabel status={status} />
         <div className="cardSubtaskProcess-info">
           <p className="cardSubtaskProcess-info-date">Creación: 21/01/23</p>
+          {isAuthorizedUser && (
+            <InputRange
+              maxRange={100}
+              percentage={percentage}
+              onChange={handlePercentageChange}
+            />
+          )}
           <div className="cardSubtaskProcess-files-models">
             <h2 className="cardSubtaskProcess-files-models-title">
               Archivos Modelo:

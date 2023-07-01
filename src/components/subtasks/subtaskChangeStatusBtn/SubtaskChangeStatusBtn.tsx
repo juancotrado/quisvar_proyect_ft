@@ -3,7 +3,7 @@ import Button from '../../shared/button/Button';
 import { statusBody } from '../../shared/card/cardTaskInformation/constans';
 import { RootState } from '../../../store';
 import { SnackbarUtilities } from '../../../utils/SnackbarManager';
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { axiosInstance } from '../../../services/axiosInstance';
 import { isOpenModal$ } from '../../../services/sharingSubject';
 import { SocketContext } from '../../../context/SocketContex';
@@ -15,6 +15,7 @@ interface SubtaskChangeStatusBtn {
   option: 'ASIG' | 'DENY';
   text: string;
   requirePdf?: boolean;
+  percentage?: number;
 }
 
 const SubtaskChangeStatusBtn = ({
@@ -23,6 +24,7 @@ const SubtaskChangeStatusBtn = ({
   option,
   text,
   requirePdf = false,
+  percentage,
 }: SubtaskChangeStatusBtn) => {
   const { userSession } = useSelector((state: RootState) => state);
   const socket = useContext(SocketContext);
@@ -36,8 +38,8 @@ const SubtaskChangeStatusBtn = ({
   };
   const handleChangeStatus = async () => {
     const role = userSession.role === 'EMPLOYEE' ? 'EMPLOYEE' : 'SUPERADMIN';
-    const body = getStatus(option, role, subtaskStatus);
     const hasPdf = localStorage.getItem('hasPdf');
+    const body = { ...getStatus(option, role, subtaskStatus), percentage };
     if (hasPdf && !JSON.parse(hasPdf) && requirePdf)
       return SnackbarUtilities.warning(
         'Asegurese de subir una archivo PDF antes.'

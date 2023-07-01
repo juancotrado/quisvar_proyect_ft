@@ -183,6 +183,7 @@ const CardRegisterSubTask = ({
             {...register('days')}
             type="number"
             name="days"
+            step={0.01}
           />
           <Input
             label="Precio S/."

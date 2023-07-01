@@ -7,7 +7,7 @@ import { AreaForm, ProjectType } from '../../../types/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import { Input } from '../..';
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { URL, axiosInstance } from '../../../services/axiosInstance';
 
@@ -24,6 +24,7 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
   const { profile } = project.moderator;
   const { handleSubmit, register, reset, setValue } = useForm<AreaForm>();
   const navigate = useNavigate();
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   console.log(project);
 
   const onSubmitArea: SubmitHandler<AreaForm> = values => {
@@ -42,21 +43,22 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
   };
 
   const handleArchiver = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
     const body = {
       projectName: project.name,
     };
-    axiosInstance
-      .post('/projects/archiver', body)
-      .then(res => {
-        window.location.href = `${URL}/static/${res.data.url}`;
-      })
-      .finally(() => {
+    axiosInstance.post('/projects/archiver', body).then(res => {
+      window.location.href = `${URL}/static/${res.data.url}`;
+      timeoutRef.current = setTimeout(() => {
         axiosInstance
           .delete(`/projects/archiver/?projectName=${project.name}`)
           .then(res => {
             console.log(res.data);
           });
-      });
+      }, 3000);
+    });
   };
 
   return (

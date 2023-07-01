@@ -15,7 +15,8 @@ interface SubtaskChangeStatusBtn {
   option: 'ASIG' | 'DENY';
   text: string;
   requirePdf?: boolean;
-  percentage?: number;
+  percentageRange?: number;
+  type?: 'button' | 'submit' | 'reset' | undefined;
 }
 
 const SubtaskChangeStatusBtn = ({
@@ -24,7 +25,8 @@ const SubtaskChangeStatusBtn = ({
   option,
   text,
   requirePdf = false,
-  percentage,
+  percentageRange,
+  type,
 }: SubtaskChangeStatusBtn) => {
   const [hasPdf, setHasPdf] = useState(true);
   const { userSession } = useSelector((state: RootState) => state);
@@ -39,6 +41,7 @@ const SubtaskChangeStatusBtn = ({
   };
   const handleChangeStatus = async () => {
     const role = userSession.role === 'EMPLOYEE' ? 'EMPLOYEE' : 'SUPERADMIN';
+    const percentage = Number(percentageRange);
     const body = { ...getStatus(option, role, subtaskStatus), percentage };
 
     if (requirePdf && !hasPdf)
@@ -61,6 +64,7 @@ const SubtaskChangeStatusBtn = ({
       text={text}
       className={`SubtaskChangeStatusBtn ${option}`}
       onClick={handleChangeStatus}
+      type={type ? type : undefined}
     />
   );
 };

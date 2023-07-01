@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { axiosInstance } from '../../../../../services/axiosInstance';
 import { SocketContext } from '../../../../../context/SocketContex';
 import Button from '../../../button/Button';
@@ -12,6 +12,7 @@ import { RootState } from '../../../../../store';
 import './cardSubTaskProcess.css';
 import SubTaskStatusLabel from '../../../../subtasks/subTaskStatusLabel/SubTaskStatusLabel';
 import { InputRange } from '../../../..';
+import { useForm } from 'react-hook-form';
 
 interface CardSubtaskProcess {
   subTask: SubTask;
@@ -22,17 +23,15 @@ const CardSubtaskProcess = ({
   subTask,
   isAuthorizedMod,
 }: CardSubtaskProcess) => {
-  const [percentage, setPercentage] = useState(subTask.percentage);
+  const { watch, register } = useForm();
+
+  const percentage = watch('percentage');
 
   const socket = useContext(SocketContext);
 
   const { userSession } = useSelector((state: RootState) => state);
 
   const { status } = subTask;
-
-  const handlePercentageChange = (newPercentage: number) => {
-    setPercentage(newPercentage);
-  };
 
   const handleReloadSubTask = () => {
     axiosInstance
@@ -82,7 +81,8 @@ const CardSubtaskProcess = ({
                 option="ASIG"
                 subtaskId={subTask.id}
                 subtaskStatus={status}
-                percentage={percentage}
+                percentageRange={percentage || subTask.percentage}
+                type="submit"
                 text="Mandar a Revisar"
               />
             )}
@@ -92,12 +92,14 @@ const CardSubtaskProcess = ({
                   option="DENY"
                   subtaskId={subTask.id}
                   subtaskStatus={status}
+                  percentageRange={percentage || subTask.percentage}
                   text="Desaprobar"
                 />
                 <SubtaskChangeStatusBtn
                   option="ASIG"
                   subtaskId={subTask.id}
                   subtaskStatus={status}
+                  percentageRange={percentage || subTask.percentage}
                   text="Aprobar"
                 />
               </>
@@ -109,11 +111,13 @@ const CardSubtaskProcess = ({
         <SubTaskStatusLabel status={status} />
         <div className="cardSubtaskProcess-info">
           <p className="cardSubtaskProcess-info-date">Creación: 21/01/23</p>
-          {isAuthorizedUser && (
+          {areAuthorizedUsers && (
             <InputRange
+              {...register('percentage')}
               maxRange={100}
-              percentage={percentage}
-              onChange={handlePercentageChange}
+              newPercentage={percentage}
+              defaultValue={subTask.percentage}
+              disabled={isAuthorizedMod ? true : false}
             />
           )}
           <div className="cardSubtaskProcess-files-models">

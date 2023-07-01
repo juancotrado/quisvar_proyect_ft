@@ -52,6 +52,9 @@
 .subTask-name {
   color: var(--color-secondary);
   font-weight: 700;
+  width: 85%;
+  overflow-y: auto;
+  height: 2.96rem;
 }
 .subTask-container {
   display: flex;
@@ -77,10 +80,13 @@
 }
 .subTask-price {
   display: block;
+  font-size: 0.6rem;
+  font-weight: 800;
 }
 .subTask-more {
   color: var(--color-secondary);
   font-weight: 600;
   text-decoration: underline;
   cursor: pointer;
+  font-size: 0.7rem;
 }

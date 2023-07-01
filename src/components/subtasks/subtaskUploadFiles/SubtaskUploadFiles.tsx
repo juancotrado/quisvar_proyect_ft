@@ -10,7 +10,6 @@ interface SubtaskUploadFilesProps {
 }
 
 const SubtaskUploadFiles = ({ id, type }: SubtaskUploadFilesProps) => {
-  // const [setHasPdf] = useState(false);
   const socket = useContext(SocketContext);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -22,10 +21,8 @@ const SubtaskUploadFiles = ({ id, type }: SubtaskUploadFilesProps) => {
     axiosInstance
       .post(`/files/upload/${id}/?status=${type}`, formdata)
       .then(res => {
-        if (file instanceof File && file.type === 'application/pdf') {
-          console.log('es pdf');
-          // setHasPdf(true);
-        }
+        if (file instanceof File && file.type === 'application/pdf')
+          localStorage.setItem('hasPdf', JSON.stringify(true));
         socket.emit('client:update-subTask', res.data);
       });
   };

@@ -48,6 +48,18 @@ const CardSubtaskProcess = ({
   );
 
   const areAuthorizedUsers = isAuthorizedMod || isAuthorizedUser;
+
+  const getTimeOut = () => {
+    const assignedAt = new Date();
+    const untilDate = subTask.users.at(0)?.untilDate;
+
+    if (!assignedAt || !untilDate) return 0;
+    const untilDateTime =
+      new Date(untilDate).getTime() - new Date(assignedAt).getTime();
+    const transforToHours = Math.floor(untilDateTime / 1000 / 60 / 60);
+    return transforToHours;
+  };
+  getTimeOut();
   return (
     <div className="cardSubtaskProcess">
       <section className="cardSubtaskProcess-left-details">
@@ -110,6 +122,13 @@ const CardSubtaskProcess = ({
         <SubTaskStatusLabel status={status} />
         <div className="cardSubtaskProcess-info">
           <p className="cardSubtaskProcess-info-date">Creación: 21/01/23</p>
+          <p
+            className={`cardSubtaskProcess-info-untilDate ${
+              getTimeOut() <= 0 && 'expired-time '
+            }`}
+          >
+            Tiempo restante: {getTimeOut()} hrs
+          </p>
           {isAuthorizedUser && (
             <InputRange
               maxRange={100}
@@ -130,7 +149,7 @@ const CardSubtaskProcess = ({
           <h3 className="cardSubtaskProcess-info-hours">
             Total Horas: 24 horas
           </h3>
-          <h2 className="cardSubtaskProcess-info-price">
+          <h2 className={'cardSubtaskProcess-info-price'}>
             Precio: S/. {subTask.price}
           </h2>
         </div>

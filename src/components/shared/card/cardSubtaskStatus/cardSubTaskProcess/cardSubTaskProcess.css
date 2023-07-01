@@ -80,3 +80,10 @@
   font-size: 0.87rem;
   color: var(--color-primary);
 }
+.cardSubtaskProcess-info-untilDate {
+  color: var(--color-done);
+}
+
+.expired-time {
+  color: var(--color-unresolved);
+}

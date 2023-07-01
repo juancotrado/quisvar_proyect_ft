@@ -44,6 +44,8 @@ export interface TaskCreateType {
 }
 
 export type Users = {
+  assignedAt: Date;
+  untilDate: Date;
   user: User;
 };
 

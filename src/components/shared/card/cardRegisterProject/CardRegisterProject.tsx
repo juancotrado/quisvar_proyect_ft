@@ -134,13 +134,24 @@ const CardRegisterProject = ({
         </span>
         <h2>{project ? 'ACTUALIZAR PROYECTO' : 'REGISTRAR PROYECTO'}</h2>
         <hr></hr>
-        <Input
-          label="Nombre del Proyeto"
-          {...register('name')}
-          name="name"
-          required={true}
-          placeholder="Nombre"
-        />
+        <div className="col-input-top">
+          <Input
+            label="CUI"
+            {...register('name')}
+            name="cui"
+            required={true}
+            placeholder="CUI"
+            className="input1"
+          />
+          <Input
+            label="Nombre del Proyeto"
+            {...register('name')}
+            name="name"
+            required={true}
+            placeholder="Nombre"
+            className="input2"
+          />
+        </div>
         <div className="col-input">
           <Select
             label="Tipo"

@@ -100,7 +100,6 @@ const CardSubtaskProcess = ({
                   subtaskId={subTask.id}
                   subtaskStatus={status}
                   text="Aprobar"
-                  requirePdf={true}
                 />
               </>
             )}

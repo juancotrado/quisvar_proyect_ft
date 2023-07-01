@@ -14,7 +14,7 @@ import Button from '../../button/Button';
 type SubTaskForm = {
   name: string;
   description?: string;
-  hours: number;
+  days: number;
   price: number | string;
 };
 
@@ -45,39 +45,39 @@ const CardRegisterSubTask = ({
         : [],
     [listUsers]
   );
-  console.log(taskId, typeTask, '<==');
+  console.log('subTask', subTask);
   useEffect(() => {
     if (!subTask) return;
     reset({
       description: subTask.description,
-      hours: subTask.hours,
+      days: subTask.hours / 24,
       name: subTask.name,
       price: subTask.price,
     });
   }, [reset, subTask]);
 
   const onSubmit: SubmitHandler<SubTaskForm> = data => {
+    const body = { ...data, hours: data.days * 24 };
     if (subTask?.id) {
       if (usersData.length) {
         console.log({ ...data, usersData });
         return;
       }
-      axiosInstance.patch(`/subtasks/${subTask.id}`, data).then(res => {
+      axiosInstance.patch(`/subtasks/${subTask.id}`, body).then(res => {
         socket.emit('client:update-subTask', res.data);
       });
     } else {
-      let body;
-      if (typeTask == 'indextask') body = { ...data, indexTaskId: taskId };
-      if (typeTask == 'task') body = { ...data, taskId };
-      if (typeTask == 'task2') body = { ...data, task_2_Id: taskId };
-      if (typeTask == 'task3') body = { ...data, task_3_Id: taskId };
-      axiosInstance.post('/subtasks', body).then(res => {
+      let bodyForCreate;
+      if (typeTask == 'indextask')
+        bodyForCreate = { ...body, indexTaskId: taskId };
+      if (typeTask == 'task') bodyForCreate = { ...body, taskId };
+      if (typeTask == 'task2') bodyForCreate = { ...body, task_2_Id: taskId };
+      if (typeTask == 'task3') bodyForCreate = { ...body, task_3_Id: taskId };
+      axiosInstance.post('/subtasks', bodyForCreate).then(res => {
         socket.emit('client:create-subTask', res.data);
         isOpenModal$.setSubject = false;
       });
     }
-    // const users = usersData.map(u => ({ id: u.id }));
-    // console.log({ ...values, users, taskId });
   };
 
   const handleAddUser = (user: DataUser) => {
@@ -180,19 +180,18 @@ const CardRegisterSubTask = ({
           <Input
             label="Dias"
             col={true}
-            {...register('hours', { valueAsNumber: true })}
+            {...register('days')}
             type="number"
-            name="hours"
+            name="days"
           />
           <Input
             label="Precio S/."
             col={true}
             {...register('price', { valueAsNumber: true })}
             step={0.01}
-            // type="number"
             name="price"
             disabled={true}
-            value={handleSetPrice(watch('hours'))}
+            value={handleSetPrice(watch('days'))}
             readOnly={true}
           />
         </div>

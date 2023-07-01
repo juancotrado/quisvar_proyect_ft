@@ -115,7 +115,7 @@ const ListPersonalTask = () => {
                   : status === 'DONE'
               )
               .map(subTask => (
-                <div key={subTask.id}>
+                <div key={subTask.id} className="sub-cards">
                   <MyTaskCard subTask={subTask} />
                 </div>
               ))}

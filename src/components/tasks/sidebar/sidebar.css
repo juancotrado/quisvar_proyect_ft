@@ -74,6 +74,9 @@
   color: var(--color-secondary);
   text-align: left;
   font-size: 1.1rem;
+  overflow-y: auto;
+  height: 2.4rem;
+  margin-right: 0.5rem;
 }
 .aside-dropdown-section {
   flex-grow: 1;

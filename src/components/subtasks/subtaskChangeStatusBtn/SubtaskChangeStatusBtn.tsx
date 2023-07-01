@@ -25,7 +25,7 @@ const SubtaskChangeStatusBtn = ({
   option,
   text,
   requirePdf = false,
-  percentageRange,
+  percentageRange = 0,
   type,
 }: SubtaskChangeStatusBtn) => {
   const [hasPdf, setHasPdf] = useState(true);

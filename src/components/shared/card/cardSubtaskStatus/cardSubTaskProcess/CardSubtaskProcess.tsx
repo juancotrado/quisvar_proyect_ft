@@ -76,6 +76,7 @@ const CardSubtaskProcess = ({
                 subtaskId={subTask.id}
                 subtaskStatus={status}
                 text="Mandar a Revisar"
+                requirePdf={true}
               />
             )}
             {status === 'INREVIEW' && isAuthorizedMod && (
@@ -91,6 +92,7 @@ const CardSubtaskProcess = ({
                   subtaskId={subTask.id}
                   subtaskStatus={status}
                   text="Aprobar"
+                  requirePdf={true}
                 />
               </>
             )}

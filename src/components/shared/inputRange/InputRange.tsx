@@ -1,52 +1,51 @@
-import { ChangeEvent, forwardRef, useState } from 'react';
+import { forwardRef, useState } from 'react';
 import { InputHTMLAttributes } from 'react';
 
 import './inputRange.css';
 
 interface InputTextProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
+  name?: string;
   maxRange: number;
-  percentage?: number;
-  onChange?: (value: number) => void;
+  newPercentage?: number;
+  defaultValue?: number;
+  disabled?: boolean;
 }
 
 const InputRange = forwardRef<HTMLInputElement, InputTextProps>(
-  ({ maxRange, percentage, onChange, ...props }, ref) => {
-    const [value, setValue] = useState(percentage ? percentage : 0);
-    const getBackgroundSize = (v: number) => ({
-      backgroundSize:
-        typeof v === 'number' ? `${(v * 100) / 100}% 100%` : '0% 100%',
+  (
+    { name, maxRange, newPercentage, defaultValue, disabled, ...props },
+    ref
+  ) => {
+    const [value, setValue] = useState<number | undefined>(defaultValue);
+
+    const getBackgroundSize = () => ({
+      backgroundSize: newPercentage
+        ? `${(newPercentage * 100) / 100}% 100%`
+        : `${defaultValue}% 100%`,
     });
-    const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
-      const newValue = +e.target.value;
-      if (newValue > maxRange) return;
-      setValue(newValue);
-      if (onChange) {
-        onChange(newValue);
-      }
-    };
-    // const barFilledStyle = {
-    //   width: `${value}%`,
-    // };
-    // console.log(value);
+
     return (
       <div className="input-range range-container">
         <input
+          name={name}
           ref={ref}
           type="range"
-          value={value}
           maxLength={maxRange}
+          defaultValue={newPercentage || defaultValue}
           {...props}
           className="input-range"
-          onChange={handleChange}
-          style={getBackgroundSize(value)}
+          style={getBackgroundSize()}
+          disabled={disabled}
         />
         <input
-          type="text"
+          {...props}
+          type="number"
           max={100}
-          value={value}
-          onChange={handleChange}
+          value={newPercentage || value}
+          onChange={e => setValue(Number(e.target.value))}
           className="input-range-text"
+          disabled={disabled}
         />
       </div>
     );

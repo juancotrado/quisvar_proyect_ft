@@ -15,7 +15,8 @@ interface SubtaskChangeStatusBtn {
   option: 'ASIG' | 'DENY';
   text: string;
   requirePdf?: boolean;
-  percentage?: number;
+  percentageRange?: number;
+  type?: 'button' | 'submit' | 'reset' | undefined;
 }
 
 const SubtaskChangeStatusBtn = ({
@@ -24,7 +25,8 @@ const SubtaskChangeStatusBtn = ({
   option,
   text,
   requirePdf = false,
-  percentage,
+  percentageRange,
+  type,
 }: SubtaskChangeStatusBtn) => {
   const { userSession } = useSelector((state: RootState) => state);
   const socket = useContext(SocketContext);
@@ -39,6 +41,7 @@ const SubtaskChangeStatusBtn = ({
   const handleChangeStatus = async () => {
     const role = userSession.role === 'EMPLOYEE' ? 'EMPLOYEE' : 'SUPERADMIN';
     const hasPdf = localStorage.getItem('hasPdf');
+    const percentage = Number(percentageRange);
     const body = { ...getStatus(option, role, subtaskStatus), percentage };
     if (hasPdf && !JSON.parse(hasPdf) && requirePdf)
       return SnackbarUtilities.warning(
@@ -61,6 +64,7 @@ const SubtaskChangeStatusBtn = ({
       text={text}
       className={`SubtaskChangeStatusBtn ${option}`}
       onClick={handleChangeStatus}
+      type={type ? type : undefined}
     />
   );
 };

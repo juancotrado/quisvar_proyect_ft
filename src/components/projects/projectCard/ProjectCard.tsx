@@ -109,6 +109,7 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
           COORDINADOR: {profile.firstName} {profile.lastName}
         </h4>
         <p className="project-card-description">
+          CUI: {project.CUI ? project.CUI : '123456'}{' '}
           {project.name
             ? project.name
             : 'CREACION DEL SERVICIO DE PRÁCTICA DEPORTIVA Y/O RECREATIVA EN LA COMUNIDAD CAMPESINA DE KALAHUALA DISTRITO DE ASILLO DE LA PROVINCIA DE AZANGARO DEL DEPARTAMENTO DE PUNO.'}

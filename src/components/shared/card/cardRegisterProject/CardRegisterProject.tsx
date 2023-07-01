@@ -16,6 +16,7 @@ import { motion } from 'framer-motion';
 const InitialValues: ProjectForm = {
   id: 0,
   name: '',
+  CUI: '',
   description: '',
   typeSpeciality: '0',
   startDate: _date(new Date()),
@@ -26,8 +27,9 @@ const InitialValues: ProjectForm = {
 };
 
 const typeSpecialities = [
-  { id: 1, name: 'Tipo 1' },
-  { id: 2, name: 'Tipo 2' },
+  { id: 1, name: 'Represas' },
+  { id: 2, name: 'Irrigaciones' },
+  { id: 2, name: 'Tipo de especialidad numero 3' },
 ];
 
 interface CardRegisterProjectProps {
@@ -72,6 +74,7 @@ const CardRegisterProject = ({
   }, [project]);
 
   useEffect(() => {
+    setValue('CUI', dataForm.CUI);
     setValue('name', dataForm.name);
     setValue('description', dataForm.description);
     setValue('typeSpeciality', dataForm.typeSpeciality);
@@ -89,6 +92,7 @@ const CardRegisterProject = ({
       typeSpeciality,
       name,
       unique,
+      CUI,
     } = values;
     const _data = {
       startDate: new Date(startDate),
@@ -99,6 +103,7 @@ const CardRegisterProject = ({
       description,
       typeSpeciality,
       name,
+      CUI,
     };
     if (dataForm.id) {
       axiosInstance
@@ -134,13 +139,24 @@ const CardRegisterProject = ({
         </span>
         <h2>{project ? 'ACTUALIZAR PROYECTO' : 'REGISTRAR PROYECTO'}</h2>
         <hr></hr>
-        <Input
-          label="Nombre del Proyeto"
-          {...register('name')}
-          name="name"
-          required={true}
-          placeholder="Nombre"
-        />
+        <div className="col-input-top">
+          <Input
+            label="CUI"
+            {...register('CUI')}
+            name="CUI"
+            required={true}
+            placeholder="CUI"
+            className="input1"
+          />
+          <Input
+            label="Nombre del Proyeto"
+            {...register('name')}
+            name="name"
+            required={true}
+            placeholder="Nombre"
+            className="input2"
+          />
+        </div>
         <div className="col-input">
           <Select
             label="Tipo"

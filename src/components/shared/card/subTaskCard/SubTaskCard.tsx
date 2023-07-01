@@ -48,10 +48,7 @@ const SubTaskCard = ({ subTask, getSubtask }: SubTaskCardProps) => {
             {usersAsigned &&
               (usersAsigned.length === 0 ? 'Libre' : usersAsigned.join(', '))}
           </p>
-          <p className="subTask-price-container">
-            - Precio:
-            <span className="subTask-price">S/. {formatted}</span>
-          </p>
+          <span className="subTask-price">S/. {formatted}</span>
           <p className="subTask-more" onClick={hanldeViewMore}>
             ver más
           </p>

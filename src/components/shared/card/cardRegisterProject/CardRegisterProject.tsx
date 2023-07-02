@@ -149,11 +149,11 @@ const CardRegisterProject = ({
             className="input1"
           />
           <Input
-            label="Nombre del Proyeto"
-            {...register('name')}
-            name="name"
-            required={true}
-            placeholder="Nombre"
+            label="Distrito"
+            {...register('description')}
+            name="description"
+            type="text"
+            placeholder="Distrito"
             className="input2"
           />
         </div>
@@ -209,12 +209,11 @@ const CardRegisterProject = ({
             </div>
           </div>
         )}
-
         <TextArea
-          label="Descripción"
-          {...register('description')}
-          name="description"
-          placeholder="Opcional"
+          label="Nombre del Proyeto"
+          {...register('name')}
+          name="name"
+          placeholder="Nombre"
         />
         <Button
           type="submit"

@@ -13,7 +13,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
             {label}
           </label>
         )}
-        <textarea ref={ref} {...props} rows={5} placeholder="Opcional..." />
+        <textarea ref={ref} {...props} rows={5} />
       </div>
     );
   }

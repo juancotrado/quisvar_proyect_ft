@@ -51,7 +51,7 @@
 }
 .subTask-name {
   color: var(--color-secondary);
-  font-weight: 700;
+  font-weight: 600;
   width: 85%;
   overflow-y: auto;
   height: 2.96rem;

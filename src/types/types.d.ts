@@ -109,6 +109,8 @@ export interface WorkArea {
   indexTasks: IndexTask[];
   project: {
     name: string;
+    description?: string;
+    unique?: boolean;
   };
 }
 export type WorkAreaForm = Omit<WorkArea, 'indexTasks' | 'user' | 'project'>;

@@ -9,6 +9,10 @@
   border-left: 1.5rem solid var(--color-tertiary);
 }
 
+.subTask-inreview {
+  background-color: rgba(255, 166, 0, 0.6);
+}
+
 .subTask-proccess-info {
   top: 0.4rem;
   width: 100%;
@@ -19,7 +23,7 @@
 }
 
 .subTask-icon {
-  background-color: aqua;
+  background-color: rgb(255, 166, 0);
   position: absolute;
   top: 1rem;
   left: -0.7rem;
@@ -49,20 +53,29 @@
   fill: #fff;
   color: #fff;
 }
+
 .subTask-name {
   color: var(--color-secondary);
-  font-weight: 600;
-  width: 85%;
-  overflow-y: auto;
-  height: 2.96rem;
+  font-weight: 700;
+  overflow: hidden;
+  height: 2.8rem;
 }
+
 .subTask-container {
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 100%;
-  padding: 0.5rem 0.5rem 0.5rem 1rem;
+  padding: 0.5rem 1rem;
 }
+
+.subTask-title {
+  display: flex;
+  max-width: 80%;
+  padding-left: 0.2rem;
+  flex-direction: column;
+}
+
 .subTask-info {
   height: 100%;
   font-size: 0.85rem;
@@ -71,22 +84,26 @@
   justify-content: space-between;
   text-align: right;
 }
+
 .subTask-owner {
   color: var(--color-secondary);
   font-weight: 600;
 }
+
 .subTask-price-container {
   list-style: circle;
 }
+
 .subTask-price {
   display: block;
-  font-size: 0.6rem;
+  font-size: 0.8rem;
   font-weight: 800;
 }
+
 .subTask-more {
   color: var(--color-secondary);
   font-weight: 600;
   text-decoration: underline;
   cursor: pointer;
-  font-size: 0.7rem;
+  font-size: 0.9rem;
 }

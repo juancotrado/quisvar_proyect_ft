@@ -5,12 +5,15 @@
 }
 .dots-content {
   cursor: pointer;
+
   user-select: none;
 }
 .dot-options {
   display: flex;
   flex-direction: column;
-  position: absolute;
+  position: fixed;
+  color: var(--color-secondary);
+  /* position: absolute; */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
 .option-list {
@@ -20,11 +23,20 @@
   z-index: 1;
   display: flex;
   gap: 0.5rem;
+  transition: 0.3s ease-in;
+  border: none;
+  font-weight: 500;
+  border-radius: 0;
 }
 .option-list:hover {
-  background-color: rgb(216, 211, 211);
+  background-color: rgb(236, 236, 236);
 }
+
 .dot-icon {
   width: 20px;
   height: 20px;
+}
+.menu-icon-dot {
+  height: 1.3rem;
+  width: 1.3rem;
 }

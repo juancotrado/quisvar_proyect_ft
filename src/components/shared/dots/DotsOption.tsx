@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import './DotsOption.css';
+import Outside from '../../portal/Outside';
+import ButtonDelete from '../button/ButtonDelete';
 
-interface Option {
+export interface Option {
   name: string;
   icon?: string;
+  url?: string;
   function?: () => void;
+  type?: 'button' | 'reset' | 'submit';
 }
 
 interface DotsOptionProps {
-  data?: Option[];
-  icon?: string;
+  data: Option[];
   className?: string;
 }
 
@@ -17,36 +20,36 @@ const DotsOption = ({ data, className }: DotsOptionProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
-    <div>
-      <div
-        className={`${className} dots-content`}
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <span>
-          <img src="/svg/dots.svg" alt="" />
-        </span>
-        {isOpen && (
+    <Outside onClickOutside={() => setIsOpen(false)}>
+      <div onClick={e => e.stopPropagation()}>
+        <div className={`${className} dots-content`}>
+          <span onClick={() => setIsOpen(!isOpen)}>
+            <img className="menu-icon-dot" src="/svg/menusmall.svg" alt="" />
+          </span>
           <div className="dot-options">
-            {data?.map((option, index) => (
-              <div
-                key={index}
-                className="option-list"
-                onClick={option.function}
-              >
-                <span>
-                  <img
-                    src={`/svg/${option.icon}.svg`}
-                    alt=""
-                    className="dot-icon"
-                  />
-                </span>
-                {option.name}
-              </div>
-            ))}
+            {isOpen &&
+              data.map((option, index) => (
+                <button
+                  key={index}
+                  className="option-list"
+                  onClick={option.function}
+                  type={option.type}
+                >
+                  {option.icon && (
+                    <span>
+                      <img
+                        src={`/svg/${option.icon}.svg`}
+                        className="dot-icon"
+                      />
+                    </span>
+                  )}
+                  {option.name}
+                </button>
+              ))}
           </div>
-        )}
+        </div>
       </div>
-    </div>
+    </Outside>
   );
 };
 

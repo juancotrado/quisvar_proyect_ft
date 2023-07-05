@@ -10,6 +10,7 @@ import { Input } from '../..';
 import { useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { URL, axiosInstance } from '../../../services/axiosInstance';
+import DropDownSelector from '../../shared/select/DropDownSelector';
 
 interface ProjectCardProps {
   editProject: (value: ProjectType) => void;
@@ -22,17 +23,16 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
   const [addArea, setAddArea] = useState(false);
   const { profile } = project.moderator;
-  const { handleSubmit, register, reset, setValue } = useForm<AreaForm>();
+  // const { handleSubmit, register, reset, setValue } = useForm<AreaForm>();
   const navigate = useNavigate();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-  console.log(project);
 
-  const onSubmitArea: SubmitHandler<AreaForm> = values => {
-    axiosInstance.post('/workareas', values).then(() => {
-      handleSave();
-      setAddArea(false);
-    });
-  };
+  // const onSubmitArea: SubmitHandler<AreaForm> = values => {
+  //   axiosInstance.post('/workareas', values).then(() => {
+  //     handleSave();
+  //     setAddArea(false);
+  //   });
+  // };
 
   const handleSave = () => {
     onSave?.(project.specialityId);
@@ -128,57 +128,17 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
             </div>
           ) : (
             <div className="project-card-footer-area">
-              <span>ÁREAS: </span>
-              {project.areas.length > 0 &&
-                project.areas.map(area => (
-                  <div key={area.id} className="project-btn-container">
-                    <Button
-                      text={area.name}
-                      className="project-btn-footer"
-                      onClick={() => navigate(`/tareas/${area.id}`)}
-                    />
-                    {role !== 'EMPLOYEE' && (
-                      <ButtonDelete
-                        className="btn-delete-area"
-                        icon="close"
-                        url={`/workareas/${area.id}`}
-                        onSave={handleSave}
-                      />
-                    )}
-                  </div>
-                ))}
-              {role !== 'EMPLOYEE' && (
-                <Button
-                  text={`${addArea ? 'Cancelar' : 'Añadir'}`}
-                  className={`${addArea && 'btn-red'} area-btn-add `}
-                  onClick={() => {
-                    setAddArea(!addArea);
-                    reset();
-                  }}
-                />
-              )}
-              {addArea && (
-                <form
-                  onSubmit={handleSubmit(onSubmitArea)}
-                  className="form-add-area"
-                >
-                  <Input
-                    {...register('name')}
-                    name="name"
-                    className="form-input-area"
-                  />
-                  <button
-                    className="area-btn-add"
-                    type="submit"
-                    onClick={() => {
-                      setValue('projectId', project.id);
-                      setValue('userId', project.userId || 0);
-                    }}
-                  >
-                    Agregar
-                  </button>
-                </form>
-              )}
+              <DropDownSelector
+                data={project.areas}
+                itemKey="id"
+                textField="name"
+                label="Seleccionar Area"
+                post="workareas"
+                valuesQuery={{
+                  projectId: project.id,
+                }}
+                onSave={handleSave}
+              />
             </div>
           )}
           <div className="project-card-footer-archiver">

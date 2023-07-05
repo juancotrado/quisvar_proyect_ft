@@ -30,12 +30,10 @@ const ButtonDelete = ({
   const handleCloseButton = () => {
     setIsAlertOpen(!isAlertOpen);
   };
-
   const handleSendDelete = async () => {
     if (customOnClick) {
       customOnClick();
       setIsAlertOpen(false);
-
       return;
     }
     await axiosInstance.delete(`${url}`).then(() => {
@@ -43,14 +41,13 @@ const ButtonDelete = ({
       setIsAlertOpen(false);
     });
   };
-
   return (
     <>
       <motion.button
-        whileHover={{ scale: 1.05 }}
-        whileTap={{ scale: 0.9 }}
+        // whileHover={{ scale: 1.05 }}
+        // whileTap={{ scale: 0.9 }}
         onClick={handleCloseButton}
-        className={` btn-main ${className} btn-delete `}
+        className={`${className} btn-main  btn-delete `}
         type={type}
         {...otherProps}
       >
@@ -90,6 +87,7 @@ const ButtonDelete = ({
                 <Button
                   className=" btn-alert  btn-delete"
                   text="Si, estoy seguro"
+                  type="button"
                   onClick={handleSendDelete}
                 />
               </div>

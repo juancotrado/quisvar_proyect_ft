@@ -4,10 +4,14 @@ import { axiosInstance } from '../../services/axiosInstance';
 import { motion } from 'framer-motion';
 import list_icon from '/svg/task_list.svg';
 import MyTaskCard from '../../components/shared/card/MyTaskCard';
-import { SubtaskIncludes } from '../../types/types';
+import { SubTask, SubtaskIncludes } from '../../types/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import SelectOptions from '../../components/shared/select/Select';
+import Button from '../../components/shared/button/Button';
+import * as ExcelJS from 'exceljs';
+import { Input } from '../../components';
+import { SubmitHandler, useForm } from 'react-hook-form';
 
 const spring = {
   type: 'spring',
@@ -15,15 +19,23 @@ const spring = {
   damping: 30,
 };
 
+interface DateRange {
+  initial: String;
+  until: String;
+}
+
 type Options = { id: number; name: string };
 
 const ListPersonalTask = () => {
   const [isOn, setIsOn] = useState(false);
+  // const [dateRange, setDateRange] = useState<DateRange | null>(null);
   const { userSession } = useSelector((state: RootState) => state);
   const [specialities, setSpecialities] = useState<Options[] | null>(null);
   const [projects, setProjects] = useState<Options[]>();
   const { id } = userSession;
   const [subTask, setSubTask] = useState<SubtaskIncludes[] | null>(null);
+
+  const { register, reset, handleSubmit } = useForm<DateRange>();
 
   useEffect(() => {
     axiosInstance.get(`/users/${id}/subTasks`).then(res => {
@@ -59,6 +71,105 @@ const ListPersonalTask = () => {
       .then(res => {
         setSubTask(res.data);
       });
+  };
+  const onSubmitDateRange: SubmitHandler<DateRange> = data => {
+    const { initial, until } = data;
+    axiosInstance
+      .get(`/reports/user/?initial=${initial}&until=${until}`)
+      .then(res => handleEditExcel(res.data));
+    // console.log(values);
+  };
+  const handleEditExcel = async (data: SubTask[]) => {
+    // Cargar la plantilla desde un archivo
+    const { firstName, lastName, dni, phone } = userSession.profile;
+    const response = await fetch('/templates/report_template.xlsx');
+    const buffer = await response.arrayBuffer();
+    const workbook = new ExcelJS.Workbook();
+    await workbook.xlsx.load(buffer);
+
+    // Obtener la hoja de cálculo
+    const worksheet = workbook.getWorksheet('PERIDO 18');
+    // worksheet.autoFilter = {
+    //   from: 'A1',
+    //   to: 'C1',
+    // };
+    // worksheet.columns = [
+    //   { header: 'Id', key: 'id', width: 10 },
+    //   { header: 'Name', key: 'name', width: 32 },
+    //   { header: 'D.O.B.', key: 'dob', width: 10, outlineLevel: 1 },
+    //   { header: 'Price', key: 'price', width: 10, outlineLevel: 1 },
+    // ];
+    // worksheet.insertRow(2, {
+    //   id: 2,
+    //   name: 'John Doe',
+    //   dob: new Date(1970, 1, 1),
+    //   price: 10,
+    // });
+    worksheet.getCell('B5').value = firstName + ' ' + lastName;
+    worksheet.getCell('H3').value = dni;
+    worksheet.getCell('H4').value = phone;
+    const longitud = data.length + 16;
+    data.forEach(el => {
+      const priceFinal = +el.price * (el.percentage / 100);
+      worksheet.insertRow(12, [
+        el.item,
+        el.name,
+        el.price,
+        el.percentage,
+        '',
+        '',
+        priceFinal,
+      ]);
+    });
+
+    worksheet.getCell(String('J' + longitud)).value = dni;
+    worksheet.getCell(String('J' + longitud + 1)).value =
+      firstName + ' ' + lastName;
+
+    // worksheet.addTable({
+    //   name: 'MyTable',
+    //   ref: 'A20',
+    //   headerRow: true,
+    //   totalsRow: true,
+    //   style: {
+    //     theme: 'TableStyleDark3',
+    //     showRowStripes: true,
+    //   },
+    //   columns: [
+    //     { name: 'Date', totalsRowLabel: 'Totals:', filterButton: true },
+    //     { name: 'Amount', totalsRowFunction: 'sum', filterButton: false },
+    //   ],
+    //   rows: [
+    //     [new Date('2019-07-20'), 70.1],
+    //     [new Date('2019-07-21'), 70.6],
+    //     [new Date('2019-07-22'), 70.1],
+    //   ],
+    // });
+
+    // const table = worksheet.getTable('GozuDeMrd');
+    // const table2 = worksheet.getTable('MyTable');
+
+    // console.log(table);
+    // console.log(table2);
+    // table.addRow(['gozu de mrd', 100.1,'gozu de mrd','gozu de mrd','gozu de mrd','gozu de mrd','gozu de mrd'], 3);
+    // Editar la hoja de cálculo con tus datos
+
+    // worksheet.getCell('B1').value = 'Jhon Carlos Castillo Atencio';
+
+    // worksheet.addRow({id: 2, name: 'Jane Doe', dob: new Date(1965,1,7)});;
+    // worksheet.mergeCells('H3:J3');hghhgfg
+
+    // Guardar los cambios en un nuevo archivo o en la misma plantilla
+    const editedBuffer = await workbook.xlsx.writeBuffer();
+    const editedBlob = new Blob([editedBuffer], {
+      type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+    });
+    const editedUrl = URL.createObjectURL(editedBlob);
+    const a = document.createElement('a');
+    a.href = editedUrl;
+    a.download = 'edited-data.xlsx';
+    a.click();
+    URL.revokeObjectURL(editedUrl);
   };
 
   return (
@@ -121,6 +232,25 @@ const ListPersonalTask = () => {
               ))}
         </div>
       </div>
+      {isOn && (
+        <div>
+          <form onSubmit={handleSubmit(onSubmitDateRange)}>
+            <Input
+              type="date"
+              {...register('initial')}
+              name="initial"
+              label="Inicio"
+            ></Input>
+            <Input
+              type="date"
+              {...register('until')}
+              name="until"
+              label="Fin"
+            ></Input>
+            <Button text="Generar Reporte" />
+          </form>
+        </div>
+      )}
     </div>
   );
 };

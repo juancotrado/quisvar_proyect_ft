@@ -23,7 +23,7 @@ const Sidebar = ({
   const { userSession } = useSelector((state: RootState) => state);
   const [isShow, setIsShow] = useState<boolean>(isShowInitValue);
   const [openEditArea, setOpenEditArea] = useState<boolean>(false);
-  const { name, item, indexTasks, user, ...areaData } = workArea;
+  const { name, project, item, indexTasks, user, ...areaData } = workArea;
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
   const profileUser = user?.profile;
   const workAreaInfo = { ...areaData, name };
@@ -40,9 +40,9 @@ const Sidebar = ({
     <aside className={`aside ${isShow && 'aside-show'}`}>
       <div className="aside-container-title">
         <div className="aside-title-info">
-          <h2 className="aside-title">{`${
-            item !== '0' ? item + '.' : ''
-          } ${name}`}</h2>
+          <h2 className="aside-title">{`${item !== '0' ? item + '.' : ''} ${
+            project.unique ? project.description : name
+          }`}</h2>
           <span className={`${profileUser || 'aside-coordinator-off'}`}>
             {profileUser
               ? `${profileUser.firstName} ${profileUser.lastName}`

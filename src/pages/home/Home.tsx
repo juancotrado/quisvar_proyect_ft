@@ -7,9 +7,17 @@ const Home = () => {
   const { userSession } = useSelector((state: RootState) => state);
 
   const navigate = useNavigate();
-
   const handleNavigateToAreas = () => navigate('/especialidades');
   const handleNavigateMyWorks = () => navigate('/mis-tareas');
+  const handleNavigateReports = () => navigate('/lista-de-notificaciones');
+  const handleNavigateMyAdmin = () => {
+    if (userSession.role !== 'EMPLOYEE') {
+      handleNavigateReports();
+    } else {
+      handleNavigateMyWorks();
+    }
+  };
+
   return (
     <div className="home">
       <h1 className="home-title">
@@ -27,7 +35,7 @@ const Home = () => {
       <div className="btn-section">
         <button
           className="home-btn btn-color-1"
-          onClick={handleNavigateMyWorks}
+          onClick={handleNavigateMyAdmin}
         >
           Tus tareas
         </button>

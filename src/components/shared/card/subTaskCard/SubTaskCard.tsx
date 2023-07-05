@@ -20,7 +20,11 @@ const SubTaskCard = ({ subTask, getSubtask }: SubTaskCardProps) => {
     status !== 'UNRESOLVED' && status !== 'DONE' && status !== 'PROCESS';
   const formatted = (+subTask.price).toFixed(2);
   return (
-    <div className="subTask">
+    <div
+      className={` subTask ${
+        subTask.status === 'DENIED' && 'subTask-inreview'
+      }`}
+    >
       {proccessInfoShow && (
         <span className="subTask-proccess-info">
           {status === 'INREVIEW' ? 'Por Revisar' : 'Revisado, por corregir'}
@@ -40,20 +44,18 @@ const SubTaskCard = ({ subTask, getSubtask }: SubTaskCardProps) => {
       </span>
 
       <div className="subTask-container">
-        <h3 className="subTask-name">
-          {subTask.item} {subTask.name}
-        </h3>
+        <div className="subTask-title">
+          <span> {subTask.item}</span>
+          <h3 className="subTask-name">{subTask.name}</h3>
+        </div>
         <div className="subTask-info">
           <p className="subTask-owner">
             {usersAsigned &&
               (usersAsigned.length === 0 ? 'Libre' : usersAsigned.join(', '))}
           </p>
-          <p className="subTask-price-container">
-            - Precio:
-            <span className="subTask-price">S/. {formatted}</span>
-          </p>
+          <span className="subTask-price">S/. {formatted}</span>
           <p className="subTask-more" onClick={hanldeViewMore}>
-            ver más
+            Ver más
           </p>
         </div>
       </div>

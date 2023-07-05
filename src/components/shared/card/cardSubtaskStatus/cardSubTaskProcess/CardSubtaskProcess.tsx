@@ -105,7 +105,6 @@ const CardSubtaskProcess = ({
                   option="DENY"
                   subtaskId={subTask.id}
                   subtaskStatus={status}
-                  // percentageRange={percentage || subTask.percentage}
                   text="Desaprobar"
                 />
                 <SubtaskChangeStatusBtn

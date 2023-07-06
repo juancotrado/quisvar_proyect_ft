@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import './DotsOption.css';
 import Outside from '../../portal/Outside';
-import ButtonDelete from '../button/ButtonDelete';
 
 export interface Option {
   name: string;

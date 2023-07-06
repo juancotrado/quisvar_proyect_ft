@@ -3,12 +3,10 @@ import './projectCard.css';
 import ButtonDelete from '../../shared/button/ButtonDelete';
 import Button from '../../shared/button/Button';
 import { _date } from '../../../utils/formatDate';
-import { AreaForm, ProjectType } from '../../../types/types';
+import { ProjectType } from '../../../types/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
-import { Input } from '../..';
-import { useRef, useState } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useRef } from 'react';
 import { URL, axiosInstance } from '../../../services/axiosInstance';
 import DropDownSelector from '../../shared/select/DropDownSelector';
 
@@ -21,7 +19,6 @@ interface ProjectCardProps {
 const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
   const { userSession } = useSelector((state: RootState) => state);
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
-  const [addArea, setAddArea] = useState(false);
   const { profile } = project.moderator;
   // const { handleSubmit, register, reset, setValue } = useForm<AreaForm>();
   const navigate = useNavigate();
@@ -134,6 +131,7 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
                 textField="name"
                 label="Seleccionar Area"
                 post="workareas"
+                navigateRoute="tareas"
                 valuesQuery={{
                   projectId: project.id,
                 }}

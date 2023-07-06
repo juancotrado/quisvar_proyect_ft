@@ -1,17 +1,18 @@
 .dots {
   color: var(--color-primary);
   cursor: pointer;
-  position: relative;
 }
 .dots-content {
   cursor: pointer;
-
   user-select: none;
+  position: relative;
 }
 .dot-options {
+  position: absolute;
+  right: 0;
+  top: 2rem;
   display: flex;
   flex-direction: column;
-  position: fixed;
   color: var(--color-secondary);
   /* position: absolute; */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
@@ -19,14 +20,16 @@
 .option-list {
   background-color: white;
   padding: 0.5rem;
+  align-items: center;
   font-size: 0.8rem;
-  z-index: 1;
   display: flex;
+  justify-content: start;
   gap: 0.5rem;
   transition: 0.3s ease-in;
   border: none;
   font-weight: 500;
   border-radius: 0;
+  z-index: 10;
 }
 .option-list:hover {
   background-color: rgb(236, 236, 236);

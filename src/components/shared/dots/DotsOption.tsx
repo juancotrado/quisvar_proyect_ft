@@ -21,11 +21,11 @@ const DotsOption = ({ data, className }: DotsOptionProps) => {
   return (
     <Outside onClickOutside={() => setIsOpen(false)}>
       <div onClick={e => e.stopPropagation()}>
-        <div className={`${className} dots-content`}>
+        <div className={` dots-content`}>
           <span onClick={() => setIsOpen(!isOpen)}>
             <img className="menu-icon-dot" src="/svg/menusmall.svg" alt="" />
           </span>
-          <div className="dot-options">
+          <div className={`${className} dot-options`}>
             {isOpen &&
               data.map((option, index) => (
                 <button
@@ -35,12 +35,7 @@ const DotsOption = ({ data, className }: DotsOptionProps) => {
                   type={option.type}
                 >
                   {option.icon && (
-                    <span>
-                      <img
-                        src={`/svg/${option.icon}.svg`}
-                        className="dot-icon"
-                      />
-                    </span>
+                    <img src={`/svg/${option.icon}.svg`} className="dot-icon" />
                   )}
                   {option.name}
                 </button>

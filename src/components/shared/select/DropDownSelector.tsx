@@ -78,6 +78,7 @@ const LabelChip = ({
       )}
       {role !== 'EMPLOYEE' && (
         <DotsOption
+          className="dots-options"
           data={[
             {
               name: isEditable ? 'Guardar' : 'Eliminar',
@@ -113,6 +114,8 @@ const DropDownSelector = ({
   const [isActive, setIsActive] = useState(false);
   const [addArea, setAddArea] = useState(false);
   const [options, setOptions] = useState<typeObj[] | null>();
+  const { userSession } = useSelector((state: RootState) => state);
+  const role = userSession?.role ? userSession.role : 'EMPLOYEE';
 
   const optionsFiltered = useMemo(() => options, [options]);
 
@@ -215,7 +218,7 @@ const DropDownSelector = ({
                   />
                 </li>
               ))}
-              {post && (
+              {post && role !== 'EMPLOYEE' && (
                 <li className="dropdown-element-add ">
                   <form
                     onClick={e => e.stopPropagation()}

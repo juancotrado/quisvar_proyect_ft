@@ -87,3 +87,43 @@
 .expired-time {
   color: var(--color-unresolved);
 }
+.cardSubtaskProcess-files-contain {
+  display: flex;
+  flex-direction: column;
+  padding: 0.5rem;
+  gap: 0.5rem;
+  height: 9rem;
+  overflow-y: auto;
+  width: 100%;
+}
+.cardSubtaskProcess-files-values-contain {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.cardSubtaskProcess-files-name-contain {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 80%;
+}
+.cardSubtaskProcess-files-icon {
+  width: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+.cardSubtaskProcess-files-name {
+  display: block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: black;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.cardSubtaskProcess-files-btn-delete {
+  border: none;
+  background-color: transparent;
+}

@@ -8,6 +8,7 @@ import { axiosInstance } from '../../../services/axiosInstance';
 import { isOpenModal$ } from '../../../services/sharingSubject';
 import { SocketContext } from '../../../context/SocketContex';
 import './subtaskChangeStatusBtn.css';
+import { FileInfo } from '../../../types/types';
 
 interface SubtaskChangeStatusBtn {
   subtaskStatus: string;
@@ -17,6 +18,7 @@ interface SubtaskChangeStatusBtn {
   requirePdf?: boolean;
   percentageRange?: number;
   type?: 'button' | 'submit' | 'reset' | undefined;
+  files?: FileInfo[];
 }
 
 const SubtaskChangeStatusBtn = ({
@@ -27,6 +29,7 @@ const SubtaskChangeStatusBtn = ({
   requirePdf = false,
   percentageRange = 0,
   type,
+  files,
 }: SubtaskChangeStatusBtn) => {
   const { userSession } = useSelector((state: RootState) => state);
   const socket = useContext(SocketContext);
@@ -43,13 +46,22 @@ const SubtaskChangeStatusBtn = ({
     const hasPdf = localStorage.getItem('hasPdf');
     const percentage = Number(percentageRange);
     const body = { ...getStatus(option, role, subtaskStatus), percentage };
-    if (hasPdf && !JSON.parse(hasPdf) && requirePdf)
-      return SnackbarUtilities.warning(
-        'Asegurese de subir una archivo PDF antes.'
-      );
+    // if (hasPdf && !JSON.parse(hasPdf) && requirePdf)
+    //   return SnackbarUtilities.warning(
+    //     'Asegurese de subir una archivo PDF antes.'
+    //   );
 
     if (!body) return;
-
+    if (files?.length) {
+      const formdata = new FormData();
+      for (const i in files) {
+        formdata.append('files', files[i]);
+      }
+      axiosInstance.post(
+        `/files/uploads/${subtaskId}/?status=REVIEW`,
+        formdata
+      );
+    }
     const resStatus = await axiosInstance.patch(
       `/subtasks/status/${subtaskId}`,
       body

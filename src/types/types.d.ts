@@ -1,4 +1,5 @@
-import { IndexTask } from './types.d';
+import { type } from 'os';
+import { IndexTask, FileInfo } from './types.d';
 export interface SpecialityType {
   id: number;
   name: string;
@@ -48,6 +49,20 @@ export type Users = {
   untilDate: Date;
   user: User;
 };
+
+export interface FileInfo {
+  lastModified?: number; // Optional due to browser-specific behavior
+  lastModifiedDate?: Date; // Optional due to browser-specific behavior
+  name: string;
+  size: number;
+  type: string;
+  webkitRelativePath?: string; // Optional due to browser-specific behavior
+}
+export interface FilesSubtask {
+  id: string;
+  name: string;
+  size: number;
+}
 
 export type fyleType = 'MATERIAL' | 'SUCCESSFUL' | 'REVIEW';
 

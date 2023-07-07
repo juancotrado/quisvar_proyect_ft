@@ -92,11 +92,9 @@
 .cardSubtaskProcess-files-contain {
   display: flex;
   padding: 1rem 0.5rem;
-  flex-wrap: wrap;
   gap: 2rem;
-  height: 9rem;
-  overflow-y: auto;
-  width: 100%;
+  overflow-x: auto;
+  width: 40rem;
 }
 .cardSubtaskProcess-files-values-contain {
   display: flex;
@@ -120,19 +118,19 @@
 }
 .cardSubtaskProcess-files-icon {
   position: relative;
-  width: 3rem;
+  width: 1.5rem;
   display: flex;
   gap: 1rem;
 }
 .cardSubtaskProcess-files-name {
   display: block;
-  font-size: 0.8rem;
+  font-size: 0.6rem;
   font-weight: 600;
   color: black;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 10rem;
+  width: 5rem;
   text-align: center;
 }
 

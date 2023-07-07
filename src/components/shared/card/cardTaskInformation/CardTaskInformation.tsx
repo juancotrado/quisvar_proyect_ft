@@ -52,7 +52,10 @@ const CardTaskInformation = ({
       />
       <div className="subtask-header">
         <h3 className="subtask-info-title">
-          Tarea: {subTask.item} {subTask.name}
+          TAREA:{' '}
+          <b>
+            {subTask.item}. {subTask.name}
+          </b>
         </h3>
         {isAuthorizedMod && status === 'UNRESOLVED' && (
           <div className="subtask-btn-actions">

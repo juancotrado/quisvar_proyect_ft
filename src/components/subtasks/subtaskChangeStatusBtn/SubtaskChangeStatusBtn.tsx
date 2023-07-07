@@ -8,14 +8,13 @@ import { axiosInstance } from '../../../services/axiosInstance';
 import { isOpenModal$ } from '../../../services/sharingSubject';
 import { SocketContext } from '../../../context/SocketContex';
 import './subtaskChangeStatusBtn.css';
-import { DataFeedback, FileInfo } from '../../../types/types';
+import { DataFeedback, FileInfo, StatusType } from '../../../types/types';
 
 interface SubtaskChangeStatusBtn {
-  subtaskStatus: string;
+  subtaskStatus: StatusType;
   subtaskId: number;
   option: 'ASIG' | 'DENY';
   text: string;
-  requirePdf?: boolean;
   percentageRange?: number;
   type?: 'button' | 'submit' | 'reset' | undefined;
   files?: File[];
@@ -27,7 +26,6 @@ const SubtaskChangeStatusBtn = ({
   subtaskId,
   option,
   text,
-  requirePdf = false,
   dataFeedback,
   percentageRange = 0,
   type,
@@ -45,19 +43,26 @@ const SubtaskChangeStatusBtn = ({
   };
   const handleChangeStatus = async () => {
     const role = userSession.role === 'EMPLOYEE' ? 'EMPLOYEE' : 'SUPERADMIN';
-    const hasPdf = localStorage.getItem('hasPdf');
     const percentage = Number(percentageRange);
     const body = { ...getStatus(option, role, subtaskStatus), percentage };
-    // if (hasPdf && !JSON.parse(hasPdf) && requirePdf)
-    //   return SnackbarUtilities.warning(
-    //     'Asegurese de subir una archivo PDF antes.'
-    //   );
 
+    console.log('status', subtaskStatus);
     if (!body) return;
-    if (files?.length) {
+    if (!files?.length && subtaskStatus !== 'INREVIEW')
+      return SnackbarUtilities.warning(
+        'Asegurese de subir una archivo  antes.'
+      );
+    if (files?.length && subtaskStatus !== 'INREVIEW') {
       const formdata = new FormData();
-      for (const i in files) {
-        formdata.append('files', files[i]);
+      const hasPdf = Array.from(files).some(
+        file => file.type === 'application/pdf'
+      );
+      if (!hasPdf)
+        return SnackbarUtilities.warning(
+          'Asegurese de subir una archivo PDF antes.'
+        );
+      for (const file of files) {
+        formdata.append('files', file);
       }
       await axiosInstance.post(
         `/files/uploads/${subtaskId}/?status=REVIEW`,
@@ -80,7 +85,6 @@ const SubtaskChangeStatusBtn = ({
       body
     );
     socket.emit('client:update-subTask', resStatus.data);
-    localStorage.setItem('hasPdf', JSON.stringify(false));
 
     isOpenModal$.setSubject = false;
   };

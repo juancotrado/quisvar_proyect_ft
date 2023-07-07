@@ -24,16 +24,13 @@ const SubtaskUploadFiles = ({
     if (type === 'REVIEW' && addFiles) return addFiles(files);
 
     const formdata = new FormData();
-    // files.forEach(file => formdata.append('files', file));
-    for (const i in files) {
-      formdata.append('files', files[i]);
+    for (const file of files) {
+      formdata.append('files', file);
     }
-    // const file = formdata.get('file');
+
     axiosInstance
       .post(`/files/uploads/${id}/?status=${type}`, formdata)
       .then(res => {
-        // if (file instanceof File && file.type === 'application/pdf')
-        //   localStorage.setItem('hasPdf', JSON.stringify(true));
         socket.emit('client:update-subTask', res.data);
       });
   };

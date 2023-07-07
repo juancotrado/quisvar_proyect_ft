@@ -35,9 +35,11 @@ const CardSubtaskProcess = ({
     setFiles([...files, ...newFiles]);
   };
   const deleteFiles = (delFiles: File) => {
-    const newFiles = files?.filter(file => file !== delFiles);
-    if (!newFiles) return;
-    setFiles(newFiles);
+    if (files) {
+      const newFiles = Array.from(files).filter(file => file !== delFiles);
+      if (!newFiles) return;
+      setFiles(newFiles);
+    }
   };
 
   const handleReloadSubTask = () => {
@@ -145,7 +147,7 @@ const CardSubtaskProcess = ({
                     }
                     onBlur={e =>
                       getDataFeedback({
-                        comment: e.target.value,
+                        comment: e.target.value.trim(),
                         id: feedBack.id,
                       })
                     }
@@ -176,7 +178,6 @@ const CardSubtaskProcess = ({
                 percentageRange={percentage || subTask.percentage}
                 type="submit"
                 text="Mandar a Revisar"
-                requirePdf={true}
                 files={files}
               />
             )}

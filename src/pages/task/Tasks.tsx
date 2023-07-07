@@ -18,8 +18,9 @@ import { RootState } from '../../store';
 
 const initValuesSubTask: SubTask = {
   id: 0,
-  status: '',
+  status: 'UNRESOLVED',
   name: '',
+  feedBacks: [],
   percentage: 0,
   description: '',
   price: '',

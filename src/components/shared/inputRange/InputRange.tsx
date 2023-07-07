@@ -1,10 +1,15 @@
-import { forwardRef, useState } from 'react';
+import {
+  forwardRef,
+  useState,
+  useImperativeHandle,
+  Ref,
+  useEffect,
+} from 'react';
 import { InputHTMLAttributes } from 'react';
 
 import './inputRange.css';
 
-interface InputTextProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange'> {
+interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   name?: string;
   maxRange: number;
   newPercentage?: number;
@@ -12,7 +17,12 @@ interface InputTextProps
   disabled?: boolean;
 }
 
-const InputRange = forwardRef<HTMLInputElement, InputTextProps>(
+interface InputRangeRef {
+  getValue: () => number | undefined;
+  setValue: (newValue: number) => void;
+}
+
+const InputRange = forwardRef<InputRangeRef, InputTextProps>(
   (
     { name, maxRange, newPercentage, defaultValue, disabled, ...props },
     ref
@@ -20,30 +30,46 @@ const InputRange = forwardRef<HTMLInputElement, InputTextProps>(
     const [value, setValue] = useState<number | undefined>(defaultValue);
 
     const getBackgroundSize = () => ({
-      backgroundSize: newPercentage
-        ? `${(newPercentage * 100) / 100}% 100%`
+      backgroundSize: value
+        ? `${(value * 100) / maxRange}% 100%`
         : `${defaultValue}% 100%`,
     });
+
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const newValue = Number(e.target.value);
+      setValue(newValue);
+    };
+
+    useImperativeHandle(ref, () => ({
+      getValue: () => value,
+      setValue: (newValue: number) => setValue(newValue),
+    }));
+
+    useEffect(() => {
+      setValue(newPercentage);
+    }, [newPercentage]);
 
     return (
       <div className="input-range range-container">
         <input
           name={name}
-          ref={ref}
+          ref={ref as Ref<HTMLInputElement>}
           type="range"
           maxLength={maxRange}
-          defaultValue={newPercentage || defaultValue}
+          value={value === undefined ? String(defaultValue) : String(value)}
+          // defaultValue={defaultValue}
           {...props}
           className="input-range"
           style={getBackgroundSize()}
           disabled={disabled}
+          onChange={handleInputChange}
         />
         <input
           {...props}
           type="number"
-          max={100}
-          value={newPercentage || value}
-          onChange={e => setValue(Number(e.target.value))}
+          max={maxRange}
+          value={value || defaultValue}
+          onChange={handleInputChange}
           className="input-range-text"
           disabled={disabled}
         />
@@ -51,4 +77,5 @@ const InputRange = forwardRef<HTMLInputElement, InputTextProps>(
     );
   }
 );
+
 export default InputRange;

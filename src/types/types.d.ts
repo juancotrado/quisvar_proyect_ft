@@ -154,7 +154,7 @@ export interface Task2 extends DataTask {
 // }
 export interface SubTask {
   id: number;
-  status: statusType;
+  status: StatusType;
   name: string;
   item?: string;
   feedBacks: feedBacks[];
@@ -184,7 +184,7 @@ export interface DataFeedback {
   comment: string;
 }
 
-type statusType =
+type StatusType =
   | 'UNRESOLVED'
   | 'PROCESS'
   | 'INREVIEW'

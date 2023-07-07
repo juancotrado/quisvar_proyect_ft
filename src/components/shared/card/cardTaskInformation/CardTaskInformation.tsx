@@ -51,7 +51,12 @@ const CardTaskInformation = ({
         onClick={closeModal}
       />
       <div className="subtask-header">
-        <h3 className="subtask-info-title">Tarea: {subTask.name}</h3>
+        <h3 className="subtask-info-title">
+          TAREA:{' '}
+          <b>
+            {subTask.item}. {subTask.name}
+          </b>
+        </h3>
         {isAuthorizedMod && status === 'UNRESOLVED' && (
           <div className="subtask-btn-actions">
             <Button

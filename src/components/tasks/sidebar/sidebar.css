@@ -14,7 +14,7 @@
 .aside-slice {
   overflow-y: auto;
   overflow-x: hidden;
-  height: calc(100vh - var(--header-height) - 85px);
+  height: calc(100vh - var(--header-height) - 90px);
 }
 .aside-show {
   left: 0;

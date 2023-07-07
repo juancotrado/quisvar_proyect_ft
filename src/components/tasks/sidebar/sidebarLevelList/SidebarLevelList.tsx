@@ -1,11 +1,10 @@
 import { DataTask, TypeTask } from '../../../../types/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
-import Button from '../../../shared/button/Button';
-import ButtonDelete from '../../../shared/button/ButtonDelete';
 import { Input } from '../../..';
 import React, { useState } from 'react';
 import { axiosInstance } from '../../../../services/axiosInstance';
+import DotsOption from '../../../shared/dots/DotsOption';
 
 interface IndexTaskContainerProps {
   data: DataTask;
@@ -28,6 +27,11 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
       setOpenEditData(false);
       onSave?.();
     });
+  };
+
+  const handleDelete = async (id: number) => {
+    setOpenEditData(false);
+    await axiosInstance.delete(`/${type}/${id}`).then(() => onSave?.());
   };
 
   const isFirstLevel = type === 'indextask';
@@ -72,15 +76,40 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
       </div>
       {role !== 'EMPLOYEE' && (
         <div className="menu-index-task">
-          <Button
+          <DotsOption
+            data={[
+              {
+                name: openEditData ? 'Cancelar' : 'Editar',
+                type: openEditData ? 'submit' : 'button',
+                icon: openEditData ? 'close' : 'pencil',
+                function: () => {
+                  setOpenEditData(!openEditData);
+                },
+              },
+              {
+                name: openEditData ? 'Guardar' : 'Eliminar',
+                type: openEditData ? 'submit' : 'button',
+                icon: openEditData ? 'save' : 'trash-red',
+                function: openEditData
+                  ? () => handleForm()
+                  : () => handleDelete(data.id),
+              },
+              {
+                name: 'Comprimir',
+                type: 'button',
+                icon: 'file-zipper',
+              },
+            ]}
+          />
+          {/* <Button
             type="button"
             icon={openEditData ? 'close' : 'pencil'}
             className="delete-indextask"
             onClick={() => {
               setOpenEditData(!openEditData);
             }}
-          />
-          {openEditData ? (
+          /> */}
+          {/* {openEditData ? (
             <Button
               type="button"
               icon="save"
@@ -102,7 +131,7 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
                 />
               )}
             </>
-          )}
+          )} */}
         </div>
       )}
     </div>

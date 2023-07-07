@@ -1,4 +1,3 @@
-import { type } from 'os';
 import { IndexTask, FileInfo } from './types.d';
 export interface SpecialityType {
   id: number;

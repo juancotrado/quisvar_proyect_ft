@@ -1,4 +1,4 @@
-import { DataTask, TypeTask } from '../../../../types/types';
+import { DataTask } from '../../../../types/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
 import { Input } from '../../..';
@@ -6,10 +6,11 @@ import { ChangeEvent, useState } from 'react';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import DotsOption from '../../../shared/dots/DotsOption';
 
+type NewTypeTask = 'tasks' | 'indextasks' | 'tasks2' | 'tasks3';
 interface IndexTaskContainerProps {
   data: DataTask;
   onSave?: () => void;
-  type: TypeTask;
+  type: NewTypeTask;
 }
 const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
   const { userSession } = useSelector((state: RootState) => state);
@@ -17,7 +18,6 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
   const [unique, setUnique] = useState(data.unique);
   const [openEditData, setOpenEditData] = useState<boolean>(false);
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
-
   const toggleInput = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const { value } = target;
     setName(value);
@@ -41,7 +41,7 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
     await axiosInstance.delete(`/${type}/${id}`).then(() => onSave?.());
   };
 
-  const isFirstLevel = type === 'indextask';
+  const isFirstLevel = type === 'indextasks';
   return (
     <div
       className={`${
@@ -67,7 +67,7 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
               className="input-task"
               onChange={toggleInput}
             />
-            {type !== 'task3' && (
+            {type !== 'tasks3' && data.subTasks.length === 0 && (
               <div className="aside-unique-container">
                 <label htmlFor="unique">Unico:</label>
                 <input

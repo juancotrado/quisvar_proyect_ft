@@ -1,36 +1,47 @@
-import { DataTask, TypeTask } from '../../../../types/types';
+import { DataTask } from '../../../../types/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
-import Button from '../../../shared/button/Button';
-import ButtonDelete from '../../../shared/button/ButtonDelete';
 import { Input } from '../../..';
-import React, { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { axiosInstance } from '../../../../services/axiosInstance';
+import DotsOption from '../../../shared/dots/DotsOption';
 
+type NewTypeTask = 'tasks' | 'indextasks' | 'tasks2' | 'tasks3';
 interface IndexTaskContainerProps {
   data: DataTask;
   onSave?: () => void;
-  type: TypeTask;
+  type: NewTypeTask;
 }
 const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
   const { userSession } = useSelector((state: RootState) => state);
   const [name, setName] = useState<string>();
+  const [unique, setUnique] = useState(data.unique);
   const [openEditData, setOpenEditData] = useState<boolean>(false);
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
-
-  const toggleInput = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+  const toggleInput = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const { value } = target;
     setName(value);
   };
 
+  const toggleInputChecked = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    const { checked } = target;
+    setUnique(checked);
+  };
   const handleForm = async () => {
-    await axiosInstance.patch(`/${type}/${data.id}`, { name }).then(() => {
-      setOpenEditData(false);
-      onSave?.();
-    });
+    await axiosInstance
+      .patch(`/${type}/${data.id}`, { name, unique })
+      .then(() => {
+        setOpenEditData(false);
+        onSave?.();
+      });
   };
 
-  const isFirstLevel = type === 'indextask';
+  const handleDelete = async (id: number) => {
+    setOpenEditData(false);
+    await axiosInstance.delete(`/${type}/${id}`).then(() => onSave?.());
+  };
+
+  const isFirstLevel = type === 'indextasks';
   return (
     <div
       className={`${
@@ -46,12 +57,29 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
           />
         )}
         {openEditData ? (
-          <Input
-            defaultValue={data.name}
-            type="text"
-            className="input-task"
-            onChange={toggleInput}
-          />
+          <div
+            className="aside-edit-area-container"
+            onClick={e => e.stopPropagation()}
+          >
+            <Input
+              defaultValue={data.name}
+              type="text"
+              className="input-task"
+              onChange={toggleInput}
+            />
+            {type !== 'tasks3' && data.subTasks.length === 0 && (
+              <div className="aside-unique-container">
+                <label htmlFor="unique">Unico:</label>
+                <input
+                  name="unique"
+                  type="checkbox"
+                  defaultChecked={data.unique}
+                  className="aside-checkbox-edit"
+                  onChange={toggleInputChecked}
+                />
+              </div>
+            )}
+          </div>
         ) : (
           <>
             <span
@@ -66,21 +94,48 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
             {!data.unique && (
               <img src="/svg/down.svg" className="aside-dropdown-arrow" />
             )}
-            <input type="checkbox" className="aside-dropdown-check" />
           </>
+        )}
+        {!openEditData && (
+          <input type="checkbox" className="aside-dropdown-check" />
         )}
       </div>
       {role !== 'EMPLOYEE' && (
         <div className="menu-index-task">
-          <Button
+          <DotsOption
+            data={[
+              {
+                name: openEditData ? 'Cancelar' : 'Editar',
+                type: openEditData ? 'submit' : 'button',
+                icon: openEditData ? 'close' : 'pencil',
+                function: () => {
+                  setOpenEditData(!openEditData);
+                },
+              },
+              {
+                name: openEditData ? 'Guardar' : 'Eliminar',
+                type: openEditData ? 'submit' : 'button',
+                icon: openEditData ? 'save' : 'trash-red',
+                function: openEditData
+                  ? () => handleForm()
+                  : () => handleDelete(data.id),
+              },
+              {
+                name: 'Comprimir',
+                type: 'button',
+                icon: 'file-zipper',
+              },
+            ]}
+          />
+          {/* <Button
             type="button"
             icon={openEditData ? 'close' : 'pencil'}
             className="delete-indextask"
             onClick={() => {
               setOpenEditData(!openEditData);
             }}
-          />
-          {openEditData ? (
+          /> */}
+          {/* {openEditData ? (
             <Button
               type="button"
               icon="save"
@@ -102,7 +157,7 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
                 />
               )}
             </>
-          )}
+          )} */}
         </div>
       )}
     </div>

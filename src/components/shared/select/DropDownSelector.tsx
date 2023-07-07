@@ -20,43 +20,104 @@ interface DropDownSelectorProps {
   itemKey: string;
   label?: string;
   post?: string;
+  navigateRoute: string;
   valuesQuery?: { [key: string]: string | number | boolean };
   defaultInput?: string;
   valueInput?: (event: string, index: string) => void;
   onSave?: () => void;
 }
 
+const LabelChip = ({
+  navigateRoute,
+  defaultValue,
+  itemKey,
+  update,
+  onDelete,
+  onSave,
+}: Pick<DropDownSelectorProps, 'navigateRoute'> & {
+  defaultValue: string;
+  itemKey: number;
+  update?: string;
+  onDelete?: () => void;
+  onSave?: () => void;
+}) => {
+  const [isEditable, setIsEditable] = useState(false);
+  const { userSession } = useSelector((state: RootState) => state);
+  const role = userSession?.role ? userSession.role : 'EMPLOYEE';
+  const navigate = useNavigate();
+  const { handleSubmit, register } = useForm<Pick<AreaForm, 'name'>>();
+
+  const onSubmitEditArea: SubmitHandler<Pick<AreaForm, 'name'>> = values => {
+    axiosInstance.put(`/${update}/${itemKey}`, values).then(() => {
+      onSave?.();
+      setIsEditable(false);
+    });
+  };
+  return (
+    <form
+      onSubmit={handleSubmit(onSubmitEditArea)}
+      className="label-chip-form "
+    >
+      {isEditable ? (
+        <>
+          <Input
+            defaultValue={defaultValue}
+            {...register('name')}
+            name="name"
+            className="dropdown-input-add"
+          />
+        </>
+      ) : (
+        <span
+          onClick={() => {
+            navigate(`/${navigateRoute}/${itemKey}`);
+          }}
+        >
+          {defaultValue}
+        </span>
+      )}
+      {role !== 'EMPLOYEE' && (
+        <DotsOption
+          className="dots-options"
+          data={[
+            {
+              name: isEditable ? 'Guardar' : 'Eliminar',
+              function: isEditable ? () => null : () => onDelete?.(),
+              icon: isEditable ? 'save' : 'trash-red',
+              type: isEditable ? 'submit' : 'button',
+            },
+            {
+              name: isEditable ? 'Cancelar' : 'Editar',
+              function: () => setIsEditable(!isEditable),
+              icon: isEditable ? 'close' : 'pencil',
+              type: 'button',
+            },
+          ]}
+        />
+      )}
+    </form>
+  );
+};
+
 const DropDownSelector = ({
   data,
   textField,
   itemKey,
-  defaultInput,
   label,
+  navigateRoute,
   valueInput,
   post,
   valuesQuery,
   onSave,
 }: DropDownSelectorProps) => {
-  const { userSession } = useSelector((state: RootState) => state);
-  const navigate = useNavigate();
-  const role = userSession?.role ? userSession.role : 'EMPLOYEE';
   const { handleSubmit, register, reset } = useForm<Pick<AreaForm, 'name'>>();
   const [isActive, setIsActive] = useState(false);
   const [addArea, setAddArea] = useState(false);
   const [options, setOptions] = useState<typeObj[] | null>();
-  const [query, setQuery] = useState<string>(
-    defaultInput !== undefined ? defaultInput : ''
-  );
+  const { userSession } = useSelector((state: RootState) => state);
+  const role = userSession?.role ? userSession.role : 'EMPLOYEE';
 
-  const optionsFiltered = useMemo(
-    () =>
-      query
-        ? options?.filter(_option =>
-            _option[textField].toLowerCase().includes(query.toLowerCase())
-          )
-        : options,
-    [options, query, textField]
-  );
+  const optionsFiltered = useMemo(() => options, [options]);
 
   const onSubmitArea: SubmitHandler<Pick<AreaForm, 'name'>> = values => {
     const _data = { ...valuesQuery, ...values };
@@ -93,6 +154,7 @@ const DropDownSelector = ({
     {
       name: 'Guardar',
       type: 'submit',
+      icon: 'save',
     },
     {
       name: 'Descartar',
@@ -101,6 +163,7 @@ const DropDownSelector = ({
         reset();
       },
       type: 'reset',
+      icon: 'trash-red',
     },
   ];
 
@@ -127,7 +190,6 @@ const DropDownSelector = ({
               <img src="/svg/down-white.svg" alt="search" />
             </div>
           </div>
-
           {isActive && (
             <motion.ul
               variants={container}
@@ -142,25 +204,21 @@ const DropDownSelector = ({
                   onClick={e => {
                     e.stopPropagation();
                     valueInput?.(item[textField], item[itemKey]);
-                    setIsActive(false);
                   }}
                 >
-                  <span onClick={() => navigate(`/tareas/${item[itemKey]}`)}>
-                    {item[textField]}
-                  </span>
-                  {role !== 'EMPLOYEE' && (
-                    <DotsOption
-                      data={[
-                        {
-                          name: 'eliminar',
-                          function: () => handleDelete(item[itemKey]),
-                        },
-                      ]}
-                    />
-                  )}
+                  <LabelChip
+                    onDelete={() => {
+                      handleDelete(item[itemKey]);
+                    }}
+                    update={post}
+                    navigateRoute={navigateRoute}
+                    defaultValue={`${item[textField]}`}
+                    itemKey={item[itemKey]}
+                    onSave={() => onSave?.()}
+                  />
                 </li>
               ))}
-              {post && (
+              {post && role !== 'EMPLOYEE' && (
                 <li className="dropdown-element-add ">
                   <form
                     onClick={e => e.stopPropagation()}

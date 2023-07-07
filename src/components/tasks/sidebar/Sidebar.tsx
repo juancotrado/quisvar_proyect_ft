@@ -76,7 +76,7 @@ const Sidebar = ({
               <SidebarLevelList
                 data={indexTask}
                 onSave={onUpdate}
-                type="indextask"
+                type="indextasks"
               />
               {indexTask.unique || (
                 <div className="aside-dropdown-content">
@@ -90,7 +90,7 @@ const Sidebar = ({
                         <SidebarLevelList
                           data={task}
                           onSave={onUpdate}
-                          type="task"
+                          type="tasks"
                         />
                         {task.unique || (
                           <div className="aside-dropdown-content">
@@ -106,7 +106,7 @@ const Sidebar = ({
                                   <SidebarLevelList
                                     data={task2}
                                     onSave={onUpdate}
-                                    type="task2"
+                                    type="tasks2"
                                   />
                                   {task2.unique || (
                                     <div className="aside-dropdown-content">
@@ -126,7 +126,7 @@ const Sidebar = ({
                                             <SidebarLevelList
                                               data={task3}
                                               onSave={onUpdate}
-                                              type="task2"
+                                              type="tasks2"
                                             />
                                           </li>
                                         ))}

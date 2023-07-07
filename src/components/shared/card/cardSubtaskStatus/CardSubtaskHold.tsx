@@ -81,7 +81,7 @@ const CardSubtaskHold = ({ subTask, isAuthorizedMod }: CardSubtaskHold) => {
                   <h2>Archivo modelo:</h2>
                 </div>
                 <SubtaskFile
-                  subTask={subTask}
+                  files={subTask.files}
                   typeFile="MATERIAL"
                   showDeleteBtn={isAuthorizedMod}
                 />

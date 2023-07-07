@@ -36,7 +36,7 @@ const CardSubtaskDone = ({ subTask, isAuthorizedMod }: CardSubtaskDone) => {
               </div>
               <SubtaskFile
                 showDeleteBtn={false}
-                subTask={subTask}
+                files={subTask.files}
                 typeFile="SUCCESSFUL"
               />
             </div>
@@ -54,7 +54,7 @@ const CardSubtaskDone = ({ subTask, isAuthorizedMod }: CardSubtaskDone) => {
             </div>
             <SubtaskFile
               showDeleteBtn={false}
-              subTask={subTask}
+              files={subTask.files}
               typeFile="MATERIAL"
             />
           </div>

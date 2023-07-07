@@ -87,30 +87,29 @@ const CardSubtaskProcess = ({
             />
           )}
           <div className="cardSubtaskProcess-files-view">
-            <h2 className="cardSubtaskProcess-files-title">Archivos:</h2>
+            <h2 className="cardSubtaskProcess-files-title">
+              Archivos Cargados, listos para enviar:
+            </h2>
             <div className="cardSubtaskProcess-files-contain">
               {files &&
                 files.map(file => (
                   <div
                     key={file.lastModified + file.name + file.size}
-                    className="cardSubtaskProcess-files-values-contain"
+                    className="cardSubtaskProcess-files-name-contain"
                   >
-                    <div className="cardSubtaskProcess-files-name-contain">
-                      <img
-                        src="/svg/file-download.svg"
-                        alt="W3Schools"
-                        className="cardSubtaskProcess-files-icon"
-                      />
-                      <span className="cardSubtaskProcess-files-name">
-                        {file.name}
-                      </span>
-                    </div>
-
-                    <ButtonDelete
-                      icon="trash-red"
-                      customOnClick={() => deleteFiles(file)}
-                      className="cardSubtaskProcess-files-btn-delete"
-                    />
+                    <figure className="cardSubtaskProcess-files-icon">
+                      <img src="/svg/file-download.svg" alt="W3Schools" />
+                      <div className="cardSubtaskProcess-files-btn">
+                        <ButtonDelete
+                          icon="trash-red"
+                          customOnClick={() => deleteFiles(file)}
+                          className="cardSubtaskProcess-files-btn-delete"
+                        />
+                      </div>
+                    </figure>
+                    <span className="cardSubtaskProcess-files-name">
+                      {file.name}
+                    </span>
                   </div>
                 ))}
             </div>

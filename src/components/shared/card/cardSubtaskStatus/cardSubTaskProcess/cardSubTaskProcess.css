@@ -89,9 +89,9 @@
 }
 .cardSubtaskProcess-files-contain {
   display: flex;
-  flex-direction: column;
-  padding: 0.5rem;
-  gap: 0.5rem;
+  padding: 1rem 0.5rem;
+  flex-wrap: wrap;
+  gap: 2rem;
   height: 9rem;
   overflow-y: auto;
   width: 100%;
@@ -104,12 +104,18 @@
 
 .cardSubtaskProcess-files-name-contain {
   display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 0.5rem;
-  width: 80%;
+}
+.cardSubtaskProcess-files-btn {
+  position: absolute;
+  right: -10px;
+  top: -10px;
 }
 .cardSubtaskProcess-files-icon {
-  width: 1rem;
+  position: relative;
+  width: 3rem;
   display: flex;
   gap: 1rem;
 }
@@ -119,11 +125,14 @@
   font-weight: 600;
   color: black;
   overflow: hidden;
-  white-space: nowrap;
   text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 10rem;
+  text-align: center;
 }
 
 .cardSubtaskProcess-files-btn-delete {
   border: none;
   background-color: transparent;
+  padding: 0;
 }

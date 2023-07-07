@@ -150,7 +150,7 @@ const Tasks = () => {
   const openModaltoAdd = () => (isTaskInformation$.setSubject = false);
   return (
     <>
-      <div className="tasks container">
+      <div className="task container">
         <div className="tasks-head">
           <h1 className="main-title">
             LISTA DE <span className="main-title-span">TAREAS</span>

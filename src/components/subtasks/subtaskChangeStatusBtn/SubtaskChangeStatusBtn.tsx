@@ -18,7 +18,7 @@ interface SubtaskChangeStatusBtn {
   requirePdf?: boolean;
   percentageRange?: number;
   type?: 'button' | 'submit' | 'reset' | undefined;
-  files?: FileInfo[];
+  files?: File[];
 }
 
 const SubtaskChangeStatusBtn = ({
@@ -57,10 +57,14 @@ const SubtaskChangeStatusBtn = ({
       for (const i in files) {
         formdata.append('files', files[i]);
       }
-      axiosInstance.post(
+      await axiosInstance.post(
         `/files/uploads/${subtaskId}/?status=REVIEW`,
         formdata
       );
+      const feedbackBody = {
+        subTasksId: subtaskId,
+      };
+      await axiosInstance.post(`/feedbacks`, feedbackBody);
     }
     const resStatus = await axiosInstance.patch(
       `/subtasks/status/${subtaskId}`,

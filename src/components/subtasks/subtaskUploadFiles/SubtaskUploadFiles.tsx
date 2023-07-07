@@ -7,12 +7,14 @@ interface SubtaskUploadFilesProps {
   type: fyleType;
   id: number;
   addFiles?: (values: File[]) => void;
+  className?: string;
 }
 
 const SubtaskUploadFiles = ({
   id,
   type,
   addFiles,
+  className,
 }: SubtaskUploadFilesProps) => {
   const socket = useContext(SocketContext);
 
@@ -36,7 +38,7 @@ const SubtaskUploadFiles = ({
       });
   };
   return (
-    <div className="subtaskUploadFiles-area">
+    <div className={`subtaskUploadFiles-area ${className}`}>
       <input
         type="file"
         multiple

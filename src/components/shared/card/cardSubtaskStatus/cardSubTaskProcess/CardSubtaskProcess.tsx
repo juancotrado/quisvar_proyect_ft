@@ -65,6 +65,19 @@ const CardSubtaskProcess = ({
     const transforToHours = Math.floor(untilDateTime / 1000 / 60 / 60);
     return transforToHours;
   };
+  const getDatetimeCreated = (dateTime: string) => {
+    const date = new Date(dateTime);
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+    };
+    const localeDate = date.toLocaleDateString('es-PE', options);
+    const localeTime = date.toLocaleTimeString('en-US');
+
+    return `Enviado el ${localeDate} a las ${localeTime}`;
+  };
   const getDataFeedback = (data: DataFeedback) => setDataFeedback(data);
   return (
     <div className="cardSubtaskProcess">
@@ -114,30 +127,30 @@ const CardSubtaskProcess = ({
         )}
         {subTask.feedBacks.length !== 0 && (
           <div className="cardSubtaskProcess-review-contain">
-            {subTask.feedBacks.map((feedBacks: Feedback) => (
-              <div
-                key={feedBacks.id}
-                className="cardSubtaskProcess-review-card"
-              >
+            {subTask.feedBacks.map((feedBack: Feedback) => (
+              <div key={feedBack.id} className="cardSubtaskProcess-review-card">
+                <h3 className="cardSubtaskProcess-review-card-time">
+                  {getDatetimeCreated(feedBack.createdAt)}:
+                </h3>
                 <SubtaskFile
-                  files={feedBacks.files}
+                  files={feedBack.files}
                   typeFile="REVIEW"
                   showDeleteBtn={false}
                 />
-                {((isAuthorizedUser && feedBacks.comment) ||
+                {((isAuthorizedUser && feedBack.comment) ||
                   (status === 'INREVIEW' && isAuthorizedMod)) && (
                   <TextArea
                     label={
-                      !feedBacks.comment ? 'Agregar Comentario' : 'Comentario'
+                      !feedBack.comment ? 'Agregar Comentario' : 'Comentario'
                     }
                     onBlur={e =>
                       getDataFeedback({
                         comment: e.target.value,
-                        id: feedBacks.id,
+                        id: feedBack.id,
                       })
                     }
-                    defaultValue={feedBacks.comment || ''}
-                    disabled={feedBacks.comment ? true : false}
+                    defaultValue={feedBack.comment || ''}
+                    disabled={feedBack.comment ? true : false}
                   />
                 )}
               </div>
@@ -212,6 +225,13 @@ const CardSubtaskProcess = ({
             <h2 className="cardSubtaskProcess-files-models-title">
               Archivos Modelo:
             </h2>
+            {status === 'INREVIEW' && isAuthorizedMod && (
+              <SubtaskUploadFiles
+                id={subTask.id}
+                type="MATERIAL"
+                className="cardSubtaskProcess-files-models-upload"
+              />
+            )}
             <SubtaskFile
               files={subTask.files}
               typeFile="MATERIAL"

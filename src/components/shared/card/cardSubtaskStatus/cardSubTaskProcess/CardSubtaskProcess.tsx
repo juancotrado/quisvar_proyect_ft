@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import { axiosInstance } from '../../../../../services/axiosInstance';
 import { SocketContext } from '../../../../../context/SocketContex';
 import Button from '../../../button/Button';
-import { FileInfo, FilesSubtask, SubTask } from '../../../../../types/types';
+import { SubTask } from '../../../../../types/types';
 import { isOpenModal$ } from '../../../../../services/sharingSubject';
 import SubtaskFile from '../../../../subtasks/subtaskFiles/SubtaskFile';
 import SubtaskUploadFiles from '../../../../subtasks/subtaskUploadFiles/SubtaskUploadFiles';
@@ -28,9 +28,9 @@ const CardSubtaskProcess = ({
   const socket = useContext(SocketContext);
   const { userSession } = useSelector((state: RootState) => state);
   const { status } = subTask;
-  const [files, setFiles] = useState<FileInfo[] | null>(null);
+  const [files, setFiles] = useState<File[] | null>(null);
 
-  const addFiles = (newFiles: FileInfo[]) => {
+  const addFiles = (newFiles: File[]) => {
     // const transformFiles = newFiles.map(file => ({
     //   name: file.name,
     //   size: file.size,
@@ -42,7 +42,7 @@ const CardSubtaskProcess = ({
     }
     setFiles([...files, ...newFiles]);
   };
-  const deleteFiles = (delFiles: FileInfo) => {
+  const deleteFiles = (delFiles: File) => {
     const newFiles = files?.filter(file => file !== delFiles);
     if (!newFiles) return;
     setFiles(newFiles);
@@ -96,6 +96,7 @@ const CardSubtaskProcess = ({
                   <div
                     key={file.lastModified + file.name + file.size}
                     className="cardSubtaskProcess-files-name-contain"
+                    title={file.name}
                   >
                     <figure className="cardSubtaskProcess-files-icon">
                       <img src="/svg/file-download.svg" alt="W3Schools" />

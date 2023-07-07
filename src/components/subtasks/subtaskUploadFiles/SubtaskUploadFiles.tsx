@@ -6,7 +6,7 @@ import './subtaskUploadFiles.css';
 interface SubtaskUploadFilesProps {
   type: fyleType;
   id: number;
-  addFiles?: (values: FileInfo[]) => void;
+  addFiles?: (values: File[]) => void;
 }
 
 const SubtaskUploadFiles = ({
@@ -17,14 +17,12 @@ const SubtaskUploadFiles = ({
   const socket = useContext(SocketContext);
 
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
+    const files = e.target.files as unknown as File[];
     if (!files) return;
-    if (type === 'REVIEW' && addFiles) {
-      const fileList: FileInfo[] = Array.from(files);
-      addFiles(fileList);
-      return;
-    }
+    if (type === 'REVIEW' && addFiles) return addFiles(files);
+
     const formdata = new FormData();
+    // files.forEach(file => formdata.append('files', file));
     for (const i in files) {
       formdata.append('files', files[i]);
     }

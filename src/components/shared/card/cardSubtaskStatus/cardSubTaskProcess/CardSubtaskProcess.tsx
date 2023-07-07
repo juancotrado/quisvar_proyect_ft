@@ -112,33 +112,38 @@ const CardSubtaskProcess = ({
             </div>
           </div>
         )}
-        <div className="cardSubtaskProcess-review-contain">
-          {subTask.feedBacks.length &&
-            subTask.feedBacks.map((feedBacks: Feedback) => (
+        {subTask.feedBacks.length !== 0 && (
+          <div className="cardSubtaskProcess-review-contain">
+            {subTask.feedBacks.map((feedBacks: Feedback) => (
               <div
                 key={feedBacks.id}
                 className="cardSubtaskProcess-review-card"
               >
-                <TextArea
-                  // label="Agregar Comentario"
-                  label={status === 'INREVIEW' ? 'Agregar Comentario' : ''}
-                  onBlur={e =>
-                    getDataFeedback({
-                      comment: e.target.value,
-                      id: feedBacks.id,
-                    })
-                  }
-                  defaultValue={feedBacks.comment || ''}
-                  disabled={feedBacks.comment ? true : false}
-                />
                 <SubtaskFile
                   files={feedBacks.files}
                   typeFile="REVIEW"
                   showDeleteBtn={false}
                 />
+                {((isAuthorizedUser && feedBacks.comment) ||
+                  (status === 'INREVIEW' && isAuthorizedMod)) && (
+                  <TextArea
+                    label={
+                      !feedBacks.comment ? 'Agregar Comentario' : 'Comentario'
+                    }
+                    onBlur={e =>
+                      getDataFeedback({
+                        comment: e.target.value,
+                        id: feedBacks.id,
+                      })
+                    }
+                    defaultValue={feedBacks.comment || ''}
+                    disabled={feedBacks.comment ? true : false}
+                  />
+                )}
               </div>
             ))}
-        </div>
+          </div>
+        )}
         {areAuthorizedUsers && (
           <div className="cardSubtaskProcess-btns">
             {status === 'PROCESS' &&

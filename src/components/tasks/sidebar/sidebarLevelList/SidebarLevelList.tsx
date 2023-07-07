@@ -2,7 +2,7 @@ import { DataTask, TypeTask } from '../../../../types/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
 import { Input } from '../../..';
-import React, { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import DotsOption from '../../../shared/dots/DotsOption';
 
@@ -14,19 +14,26 @@ interface IndexTaskContainerProps {
 const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
   const { userSession } = useSelector((state: RootState) => state);
   const [name, setName] = useState<string>();
+  const [unique, setUnique] = useState(data.unique);
   const [openEditData, setOpenEditData] = useState<boolean>(false);
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
 
-  const toggleInput = ({ target }: React.ChangeEvent<HTMLInputElement>) => {
+  const toggleInput = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const { value } = target;
     setName(value);
   };
 
+  const toggleInputChecked = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    const { checked } = target;
+    setUnique(checked);
+  };
   const handleForm = async () => {
-    await axiosInstance.patch(`/${type}/${data.id}`, { name }).then(() => {
-      setOpenEditData(false);
-      onSave?.();
-    });
+    await axiosInstance
+      .patch(`/${type}/${data.id}`, { name, unique })
+      .then(() => {
+        setOpenEditData(false);
+        onSave?.();
+      });
   };
 
   const handleDelete = async (id: number) => {
@@ -50,12 +57,29 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
           />
         )}
         {openEditData ? (
-          <Input
-            defaultValue={data.name}
-            type="text"
-            className="input-task"
-            onChange={toggleInput}
-          />
+          <div
+            className="aside-edit-area-container"
+            onClick={e => e.stopPropagation()}
+          >
+            <Input
+              defaultValue={data.name}
+              type="text"
+              className="input-task"
+              onChange={toggleInput}
+            />
+            {type !== 'task3' && (
+              <div className="aside-unique-container">
+                <label htmlFor="unique">Unico:</label>
+                <input
+                  name="unique"
+                  type="checkbox"
+                  defaultChecked={data.unique}
+                  className="aside-checkbox-edit"
+                  onChange={toggleInputChecked}
+                />
+              </div>
+            )}
+          </div>
         ) : (
           <>
             <span
@@ -70,8 +94,10 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
             {!data.unique && (
               <img src="/svg/down.svg" className="aside-dropdown-arrow" />
             )}
-            <input type="checkbox" className="aside-dropdown-check" />
           </>
+        )}
+        {!openEditData && (
+          <input type="checkbox" className="aside-dropdown-check" />
         )}
       </div>
       {role !== 'EMPLOYEE' && (

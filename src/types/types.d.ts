@@ -154,9 +154,10 @@ export interface Task2 extends DataTask {
 // }
 export interface SubTask {
   id: number;
-  status: string;
+  status: statusType;
   name: string;
   item?: string;
+  feedBacks: feedBacks[];
   percentage: number;
   description: string;
   price: string;
@@ -168,6 +169,28 @@ export interface SubTask {
   users: Users[];
   createdAt?: Date;
 }
+export interface Feedback {
+  id: number;
+  comment: string | null;
+  status: boolean;
+  createdAt: string;
+  updatedAt: string;
+  subTasksId: number;
+  files: Files[];
+}
+
+export interface DataFeedback {
+  id: number;
+  comment: string;
+}
+
+type statusType =
+  | 'UNRESOLVED'
+  | 'PROCESS'
+  | 'INREVIEW'
+  | 'DENIED'
+  | 'DONE'
+  | 'LIQUIDATION';
 
 export type TypeTask = 'task' | 'indextask' | 'task2' | 'task3';
 export interface SubtaskIncludes extends SubTask {

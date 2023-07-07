@@ -1,20 +1,20 @@
 import { useContext } from 'react';
 import { URL, axiosInstance } from '../../../services/axiosInstance';
-import { SubTask } from '../../../types/types';
+import { Files, SubTask } from '../../../types/types';
 import ButtonDelete from '../../shared/button/ButtonDelete';
 import { SocketContext } from '../../../context/SocketContex';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import './SubtaskFile.css';
 interface SubtaskFileProps {
-  subTask: SubTask;
+  files: Files[];
   typeFile: 'REVIEW' | 'MATERIAL' | 'SUCCESSFUL';
   showDeleteBtn?: boolean;
   showDeleteBtnByUserAuth?: boolean;
 }
 
 const SubtaskFile = ({
-  subTask,
+  files,
   typeFile,
   showDeleteBtn,
   showDeleteBtnByUserAuth,
@@ -47,7 +47,7 @@ const SubtaskFile = ({
 
   return (
     <div className="subtaskFile">
-      {subTask.files
+      {files
         ?.filter(({ type }) => type === typeFile)
         .map(file => (
           <div key={file.id} className="subtaskFile-contain">
@@ -59,11 +59,11 @@ const SubtaskFile = ({
               className="subtaskFile-anchor"
               download={true}
             >
-              {file.type !== 'MATERIAL' && (
+              {/* {file.type !== 'MATERIAL' && (
                 <span className="subtaskFile-username">
-                  {file.user.profile.firstName} :
+                  {file.user?.profile?.firstName} :
                 </span>
-              )}
+              )} */}
               <img
                 src="/svg/file-download.svg"
                 alt="W3Schools"

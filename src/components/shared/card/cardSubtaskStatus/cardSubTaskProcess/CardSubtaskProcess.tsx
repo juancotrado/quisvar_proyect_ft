@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import { axiosInstance } from '../../../../../services/axiosInstance';
 import { SocketContext } from '../../../../../context/SocketContex';
 import Button from '../../../button/Button';
-import { SubTask } from '../../../../../types/types';
+import { DataFeedback, Feedback, SubTask } from '../../../../../types/types';
 import { isOpenModal$ } from '../../../../../services/sharingSubject';
 import SubtaskFile from '../../../../subtasks/subtaskFiles/SubtaskFile';
 import SubtaskUploadFiles from '../../../../subtasks/subtaskUploadFiles/SubtaskUploadFiles';
@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../store';
 import './cardSubTaskProcess.css';
 import SubTaskStatusLabel from '../../../../subtasks/subTaskStatusLabel/SubTaskStatusLabel';
-import { InputRange } from '../../../..';
+import { InputRange, TextArea } from '../../../..';
 import { useForm } from 'react-hook-form';
 import ButtonDelete from '../../../button/ButtonDelete';
 interface CardSubtaskProcess {
@@ -29,17 +29,9 @@ const CardSubtaskProcess = ({
   const { userSession } = useSelector((state: RootState) => state);
   const { status } = subTask;
   const [files, setFiles] = useState<File[] | null>(null);
-
+  const [dataFeedback, setDataFeedback] = useState<DataFeedback | null>(null);
   const addFiles = (newFiles: File[]) => {
-    // const transformFiles = newFiles.map(file => ({
-    //   name: file.name,
-    //   size: file.size,
-    //   id: uuidv4(),
-    // }));
-    if (!files) {
-      setFiles(newFiles);
-      return;
-    }
+    if (!files) return setFiles(newFiles);
     setFiles([...files, ...newFiles]);
   };
   const deleteFiles = (delFiles: File) => {
@@ -73,55 +65,80 @@ const CardSubtaskProcess = ({
     const transforToHours = Math.floor(untilDateTime / 1000 / 60 / 60);
     return transforToHours;
   };
-  getTimeOut();
+  const getDataFeedback = (data: DataFeedback) => setDataFeedback(data);
   return (
     <div className="cardSubtaskProcess">
       <section className="cardSubtaskProcess-left-details">
-        <div className="cardSubtaskProcess-files-content">
-          {((status !== 'INREVIEW' && isAuthorizedUser) ||
-            (isAuthorizedMod && status === 'INREVIEW')) && (
+        {isAuthorizedUser && status !== 'INREVIEW' && (
+          <div className="cardSubtaskProcess-files-content">
             <SubtaskUploadFiles
               id={subTask.id}
               type="REVIEW"
               addFiles={addFiles}
             />
-          )}
-          <div className="cardSubtaskProcess-files-view">
-            <h2 className="cardSubtaskProcess-files-title">
-              Archivos Cargados, listos para enviar:
-            </h2>
-            <div className="cardSubtaskProcess-files-contain">
-              {files &&
-                files.map(file => (
-                  <div
-                    key={file.lastModified + file.name + file.size}
-                    className="cardSubtaskProcess-files-name-contain"
-                    title={file.name}
-                  >
-                    <figure className="cardSubtaskProcess-files-icon">
-                      <img src="/svg/file-download.svg" alt="W3Schools" />
-                      <div className="cardSubtaskProcess-files-btn">
-                        <ButtonDelete
-                          icon="trash-red"
-                          customOnClick={() => deleteFiles(file)}
-                          className="cardSubtaskProcess-files-btn-delete"
-                        />
-                      </div>
-                    </figure>
-                    <span className="cardSubtaskProcess-files-name">
-                      {file.name}
-                    </span>
-                  </div>
-                ))}
-            </div>
-            {/* <SubtaskFile
+            <div className="cardSubtaskProcess-files-view">
+              <h2 className="cardSubtaskProcess-files-title">
+                Archivos Cargados, listos para enviar:
+              </h2>
+              <div className="cardSubtaskProcess-files-contain">
+                {files &&
+                  Array.from(files).map(file => (
+                    <div
+                      key={file.lastModified + file.name + file.size}
+                      className="cardSubtaskProcess-files-name-contain"
+                      title={file.name}
+                    >
+                      <figure className="cardSubtaskProcess-files-icon">
+                        <img src="/svg/file-download.svg" alt="W3Schools" />
+                        <div className="cardSubtaskProcess-files-btn">
+                          <ButtonDelete
+                            icon="trash-red"
+                            customOnClick={() => deleteFiles(file)}
+                            className="cardSubtaskProcess-files-btn-delete"
+                          />
+                        </div>
+                      </figure>
+                      <span className="cardSubtaskProcess-files-name">
+                        {file.name}
+                      </span>
+                    </div>
+                  ))}
+              </div>
+              {/* <SubtaskFile
               showDeleteBtnByUserAuth={true}
               subTask={subTask}
               typeFile="REVIEW"
             /> */}
+            </div>
           </div>
+        )}
+        <div className="cardSubtaskProcess-review-contain">
+          {subTask.feedBacks.length &&
+            subTask.feedBacks.map((feedBacks: Feedback) => (
+              <div
+                key={feedBacks.id}
+                className="cardSubtaskProcess-review-card"
+              >
+                <TextArea
+                  // label="Agregar Comentario"
+                  label={status === 'INREVIEW' ? 'Agregar Comentario' : ''}
+                  onBlur={e =>
+                    getDataFeedback({
+                      comment: e.target.value,
+                      id: feedBacks.id,
+                    })
+                  }
+                  defaultValue={feedBacks.comment || ''}
+                  disabled={feedBacks.comment ? true : false}
+                />
+                <SubtaskFile
+                  files={feedBacks.files}
+                  typeFile="REVIEW"
+                  showDeleteBtn={false}
+                />
+              </div>
+            ))}
         </div>
-
         {areAuthorizedUsers && (
           <div className="cardSubtaskProcess-btns">
             {status === 'PROCESS' &&
@@ -151,6 +168,7 @@ const CardSubtaskProcess = ({
                   option="DENY"
                   subtaskId={subTask.id}
                   subtaskStatus={status}
+                  dataFeedback={dataFeedback}
                   text="Desaprobar"
                 />
                 <SubtaskChangeStatusBtn
@@ -190,7 +208,7 @@ const CardSubtaskProcess = ({
               Archivos Modelo:
             </h2>
             <SubtaskFile
-              subTask={subTask}
+              files={subTask.files}
               typeFile="MATERIAL"
               showDeleteBtn={false}
             />

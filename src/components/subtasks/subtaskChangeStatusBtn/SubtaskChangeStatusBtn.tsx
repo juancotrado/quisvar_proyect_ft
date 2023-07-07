@@ -8,7 +8,7 @@ import { axiosInstance } from '../../../services/axiosInstance';
 import { isOpenModal$ } from '../../../services/sharingSubject';
 import { SocketContext } from '../../../context/SocketContex';
 import './subtaskChangeStatusBtn.css';
-import { FileInfo } from '../../../types/types';
+import { DataFeedback, FileInfo } from '../../../types/types';
 
 interface SubtaskChangeStatusBtn {
   subtaskStatus: string;
@@ -19,6 +19,7 @@ interface SubtaskChangeStatusBtn {
   percentageRange?: number;
   type?: 'button' | 'submit' | 'reset' | undefined;
   files?: File[];
+  dataFeedback?: DataFeedback | null;
 }
 
 const SubtaskChangeStatusBtn = ({
@@ -27,6 +28,7 @@ const SubtaskChangeStatusBtn = ({
   option,
   text,
   requirePdf = false,
+  dataFeedback,
   percentageRange = 0,
   type,
   files,
@@ -65,6 +67,13 @@ const SubtaskChangeStatusBtn = ({
         subTasksId: subtaskId,
       };
       await axiosInstance.post(`/feedbacks`, feedbackBody);
+    }
+    if (option === 'DENY') {
+      if (dataFeedback && !dataFeedback.comment)
+        return SnackbarUtilities.warning(
+          'Asegurese de escribir un comentario antes'
+        );
+      await axiosInstance.patch(`/feedbacks`, dataFeedback);
     }
     const resStatus = await axiosInstance.patch(
       `/subtasks/status/${subtaskId}`,

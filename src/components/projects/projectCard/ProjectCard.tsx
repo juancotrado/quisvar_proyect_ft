@@ -59,7 +59,11 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
       }, 3000);
     });
   };
-
+  const handleDuplicate = async (id: number) => {
+    await axiosInstance
+      .post(`/duplicates/project/${id}`)
+      .then(() => onSave?.(project.specialityId));
+  };
   const optionsData: Option[] = [
     {
       name: 'Editar',
@@ -71,7 +75,7 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
       name: 'Duplicar',
       type: 'button',
       icon: 'duplicate',
-      function: handleEdit,
+      function: () => handleDuplicate(project.id),
     },
     {
       name: 'Comprimir',
@@ -91,6 +95,7 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
       .delete(`/projects/${id}`)
       .then(() => onSave?.(project.specialityId));
   };
+
   const handleCloseButton = () => {
     setIsAlertOpen(!isAlertOpen);
   };

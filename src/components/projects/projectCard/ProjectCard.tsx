@@ -6,9 +6,10 @@ import { _date } from '../../../utils/formatDate';
 import { ProjectType } from '../../../types/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import { URL, axiosInstance } from '../../../services/axiosInstance';
 import DropDownSelector from '../../shared/select/DropDownSelector';
+import DotsOption from '../../shared/dots/DotsOption';
 
 interface ProjectCardProps {
   editProject: (value: ProjectType) => void;
@@ -20,6 +21,7 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
   const { userSession } = useSelector((state: RootState) => state);
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
   const { profile } = project.moderator;
+  const [openEditData, setOpenEditData] = useState<boolean>(false);
   // const { handleSubmit, register, reset, setValue } = useForm<AreaForm>();
   const navigate = useNavigate();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -57,7 +59,6 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
       }, 3000);
     });
   };
-
   return (
     <div className="project-card">
       <figure className="project-card-figure">
@@ -72,7 +73,32 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
             <p className="project-card-date">{`Fecha Límite: ${_date(
               project.untilDate
             )}`}</p>
-            {role !== 'EMPLOYEE' && (
+            <DotsOption
+              data={[
+                {
+                  name: openEditData ? 'Cancelar' : 'Editar',
+                  type: openEditData ? 'submit' : 'button',
+                  icon: openEditData ? 'close' : 'pencil',
+                  function: () => {
+                    setOpenEditData(!openEditData);
+                  },
+                },
+                {
+                  name: openEditData ? 'Guardar' : 'Eliminar',
+                  type: openEditData ? 'submit' : 'button',
+                  icon: openEditData ? 'save' : 'trash-red',
+                  function: () => {
+                    setOpenEditData(!openEditData);
+                  },
+                },
+                {
+                  name: 'Comprimir',
+                  type: 'button',
+                  icon: 'file-zipper',
+                },
+              ]}
+            />
+            {/* {role !== 'EMPLOYEE' && (
               <>
                 {project.unique && (
                   <ButtonDelete
@@ -99,7 +125,7 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
                   onClick={handleEdit}
                 />
               </>
-            )}
+            )} */}
           </div>
         </div>
         <h4 className="project-card-cordinator">

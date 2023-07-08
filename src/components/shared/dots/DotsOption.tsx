@@ -13,11 +13,15 @@ export interface Option {
 interface DotsOptionProps {
   data: Option[];
   className?: string;
+  persist?: boolean;
 }
 
-const DotsOption = ({ data, className }: DotsOptionProps) => {
+const DotsOption = ({ data, className, persist }: DotsOptionProps) => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const handleClick = (value: (() => void) | undefined) => {
+    value && value();
+    persist === true ? setIsOpen(false) : null;
+  };
   return (
     <Outside onClickOutside={() => setIsOpen(false)}>
       <div onClick={e => e.stopPropagation()}>
@@ -31,7 +35,7 @@ const DotsOption = ({ data, className }: DotsOptionProps) => {
                 <button
                   key={index}
                   className="option-list"
-                  onClick={option.function}
+                  onClick={() => handleClick(option.function)}
                   type={option.type}
                 >
                   {option.icon && (

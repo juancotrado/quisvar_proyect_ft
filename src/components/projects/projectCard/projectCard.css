@@ -30,6 +30,7 @@
   font-size: 1rem;
   text-transform: uppercase;
   font-weight: 700;
+  padding: 0.3rem 0;
 }
 
 .project-card-date {
@@ -39,13 +40,14 @@
 }
 
 .project-card-cordinator {
-  font-size: 0.9rem;
+  font-size: 0.8rem;
   color: var(--color-quaternay);
 }
 
 .project-card-description {
-  color: var(--color-quaternay);
-  font-size: 0.9rem;
+  color: var(--color-primary);
+  font-weight: 800;
+  font-size: 1rem;
 }
 
 .project-card-footer {

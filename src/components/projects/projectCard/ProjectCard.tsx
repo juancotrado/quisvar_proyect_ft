@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom';
 import './projectCard.css';
-import ButtonDelete from '../../shared/button/ButtonDelete';
+import { motion } from 'framer-motion';
 import Button from '../../shared/button/Button';
 import { _date } from '../../../utils/formatDate';
 import { ProjectType } from '../../../types/types';
@@ -10,7 +10,15 @@ import { useRef, useState } from 'react';
 import { URL, axiosInstance } from '../../../services/axiosInstance';
 import DropDownSelector from '../../shared/select/DropDownSelector';
 import DotsOption from '../../shared/dots/DotsOption';
+import Portal from '../../portal/Portal';
+import { dropIn } from '../../../animations/animations';
 
+type Option = {
+  name: string;
+  type: 'button' | 'submit' | 'reset' | undefined;
+  icon: string;
+  function: () => void;
+};
 interface ProjectCardProps {
   editProject: (value: ProjectType) => void;
   project: ProjectType;
@@ -19,19 +27,11 @@ interface ProjectCardProps {
 
 const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
   const { userSession } = useSelector((state: RootState) => state);
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
   const { profile } = project.moderator;
-  const [openEditData, setOpenEditData] = useState<boolean>(false);
-  // const { handleSubmit, register, reset, setValue } = useForm<AreaForm>();
   const navigate = useNavigate();
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
-  // const onSubmitArea: SubmitHandler<AreaForm> = values => {
-  //   axiosInstance.post('/workareas', values).then(() => {
-  //     handleSave();
-  //     setAddArea(false);
-  //   });
-  // };
 
   const handleSave = () => {
     onSave?.(project.specialityId);
@@ -59,6 +59,46 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
       }, 3000);
     });
   };
+
+  const optionsData: Option[] = [
+    {
+      name: 'Editar',
+      type: 'button',
+      icon: 'pencil',
+      function: handleEdit,
+    },
+    {
+      name: 'Duplicar',
+      type: 'button',
+      icon: 'duplicate',
+      function: handleEdit,
+    },
+    {
+      name: 'Comprimir',
+      type: 'button',
+      icon: 'file-zipper',
+      function: handleArchiver,
+    },
+    {
+      name: 'Eliminar',
+      type: 'button',
+      icon: 'trash-red',
+      function: () => setIsAlertOpen(true),
+    },
+  ];
+  const handleDelete = async (id: number) => {
+    await axiosInstance
+      .delete(`/projects/${id}`)
+      .then(() => onSave?.(project.specialityId));
+  };
+  const handleCloseButton = () => {
+    setIsAlertOpen(!isAlertOpen);
+  };
+  const handleSendDelete = async () => {
+    handleDelete(project.id);
+    setIsAlertOpen(false);
+    return;
+  };
   return (
     <div className="project-card">
       <figure className="project-card-figure">
@@ -73,70 +113,22 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
             <p className="project-card-date">{`Fecha Límite: ${_date(
               project.untilDate
             )}`}</p>
-            <DotsOption
-              data={[
-                {
-                  name: openEditData ? 'Cancelar' : 'Editar',
-                  type: openEditData ? 'submit' : 'button',
-                  icon: openEditData ? 'close' : 'pencil',
-                  function: () => {
-                    setOpenEditData(!openEditData);
-                  },
-                },
-                {
-                  name: openEditData ? 'Guardar' : 'Eliminar',
-                  type: openEditData ? 'submit' : 'button',
-                  icon: openEditData ? 'save' : 'trash-red',
-                  function: () => {
-                    setOpenEditData(!openEditData);
-                  },
-                },
-                {
-                  name: 'Comprimir',
-                  type: 'button',
-                  icon: 'file-zipper',
-                },
-              ]}
-            />
-            {/* {role !== 'EMPLOYEE' && (
-              <>
-                {project.unique && (
-                  <ButtonDelete
-                    icon="trash"
-                    url={`/projects/${project.id}`}
-                    className="project-delete-icon"
-                    onSave={handleSave}
-                    imageStyle="project-size-img"
-                  />
-                )}
-                {project.areas.length === 0 && (
-                  <ButtonDelete
-                    icon="trash"
-                    url={`/projects/${project.id}`}
-                    className="project-delete-icon"
-                    onSave={handleSave}
-                    imageStyle="project-size-img"
-                  />
-                )}
-                <Button
-                  icon="pencil"
-                  className="project-edit-icon"
-                  imageStyle="project-size-img"
-                  onClick={handleEdit}
-                />
-              </>
-            )} */}
+            {role !== 'EMPLOYEE' && (
+              <DotsOption data={optionsData} persist={true} />
+            )}
           </div>
         </div>
-        <h4 className="project-card-cordinator">
-          COORDINADOR: {profile.firstName} {profile.lastName}
-        </h4>
-        <p className="project-card-description">
-          CUI: {project.CUI ? project.CUI : '123456'}{' '}
-          {project.name
-            ? project.name
-            : 'CREACION DEL SERVICIO DE PRÁCTICA DEPORTIVA Y/O RECREATIVA EN LA COMUNIDAD CAMPESINA DE KALAHUALA DISTRITO DE ASILLO DE LA PROVINCIA DE AZANGARO DEL DEPARTAMENTO DE PUNO.'}
-        </p>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <h4 className="project-card-cordinator">
+            COORDINADOR: {profile.firstName} {profile.lastName}
+          </h4>
+          <p className="project-card-description">
+            CUI: {project.CUI ? project.CUI : '123456'}{' '}
+            {project.name
+              ? project.name
+              : 'CREACION DEL SERVICIO DE PRÁCTICA DEPORTIVA Y/O RECREATIVA EN LA COMUNIDAD CAMPESINA DE KALAHUALA DISTRITO DE ASILLO DE LA PROVINCIA DE AZANGARO DEL DEPARTAMENTO DE PUNO.'}
+          </p>
+        </div>
         <div className="project-card-footer">
           {project.unique ? (
             <div className="project-card-footer-area">
@@ -165,13 +157,40 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
               />
             </div>
           )}
-          <div className="project-card-footer-archiver">
-            <Button
-              text={'comprimir'}
-              className="project-btn-footer"
-              onClick={handleArchiver}
-            />
-          </div>
+          {isAlertOpen && (
+            <Portal wrapperId="modal">
+              <div
+                className="alert-modal-main"
+                role="dialog"
+                onClick={handleCloseButton}
+              >
+                <motion.div
+                  className="alert-modal-children"
+                  variants={dropIn}
+                  onClick={e => e.stopPropagation()}
+                  initial="hidden"
+                  animate="visible"
+                  exit="leave"
+                >
+                  <img src="/svg/trashdark.svg" />
+                  <h3>{`¿Estas seguro que deseas eliminar este registro?`}</h3>
+                  <div className="container-btn">
+                    <Button
+                      text="No, cancelar"
+                      onClick={handleCloseButton}
+                      className="btn-alert "
+                    />
+                    <Button
+                      className=" btn-alert  btn-delete"
+                      text="Si, estoy seguro"
+                      type="button"
+                      onClick={handleSendDelete}
+                    />
+                  </div>
+                </motion.div>
+              </div>
+            </Portal>
+          )}
         </div>
       </div>
     </div>

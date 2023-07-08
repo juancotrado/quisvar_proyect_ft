@@ -5,6 +5,7 @@ import { Input } from '../../..';
 import { ChangeEvent, useState } from 'react';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import DotsOption from '../../../shared/dots/DotsOption';
+import useArchiver from '../../../../hooks/useArchiver';
 
 type NewTypeTask = 'tasks' | 'indextasks' | 'tasks2' | 'tasks3';
 interface IndexTaskContainerProps {
@@ -17,6 +18,9 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
   const [name, setName] = useState<string>();
   const [unique, setUnique] = useState(data.unique);
   const [openEditData, setOpenEditData] = useState<boolean>(false);
+
+  const { handleArchiver } = useArchiver(data.id, type);
+
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
   const toggleInput = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const { value } = target;
@@ -124,40 +128,10 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
                 name: 'Comprimir',
                 type: 'button',
                 icon: 'file-zipper',
+                function: handleArchiver,
               },
             ]}
           />
-          {/* <Button
-            type="button"
-            icon={openEditData ? 'close' : 'pencil'}
-            className="delete-indextask"
-            onClick={() => {
-              setOpenEditData(!openEditData);
-            }}
-          /> */}
-          {/* {openEditData ? (
-            <Button
-              type="button"
-              icon="save"
-              className="delete-indextask"
-              onClick={e => {
-                e.stopPropagation();
-                handleForm();
-              }}
-            />
-          ) : (
-            <>
-              {data?.subTasks?.length === 0 && (
-                <ButtonDelete
-                  type="button"
-                  icon="trash-red"
-                  className="delete-indextask"
-                  url={`/${type}/${data.id}`}
-                  onSave={onSave}
-                />
-              )}
-            </>
-          )} */}
         </div>
       )}
     </div>

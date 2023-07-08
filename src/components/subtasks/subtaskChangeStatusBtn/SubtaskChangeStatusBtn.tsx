@@ -8,7 +8,7 @@ import { axiosInstance } from '../../../services/axiosInstance';
 import { isOpenModal$ } from '../../../services/sharingSubject';
 import { SocketContext } from '../../../context/SocketContex';
 import './subtaskChangeStatusBtn.css';
-import { DataFeedback, FileInfo, StatusType } from '../../../types/types';
+import { DataFeedback, StatusType } from '../../../types/types';
 
 interface SubtaskChangeStatusBtn {
   subtaskStatus: StatusType;
@@ -17,7 +17,7 @@ interface SubtaskChangeStatusBtn {
   text: string;
   percentageRange?: number;
   type?: 'button' | 'submit' | 'reset' | undefined;
-  files?: File[];
+  files?: File[] | null;
   dataFeedback?: DataFeedback | null;
 }
 

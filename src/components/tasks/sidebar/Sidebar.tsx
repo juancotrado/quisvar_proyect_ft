@@ -126,7 +126,7 @@ const Sidebar = ({
                                             <SidebarLevelList
                                               data={task3}
                                               onSave={onUpdate}
-                                              type="tasks2"
+                                              type="tasks3"
                                             />
                                           </li>
                                         ))}

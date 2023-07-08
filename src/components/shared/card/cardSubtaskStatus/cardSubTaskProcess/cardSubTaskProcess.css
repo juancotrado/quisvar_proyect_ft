@@ -10,6 +10,7 @@
   flex: 2;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   gap: 0.8rem;
   align-items: center;
 }
@@ -67,6 +68,7 @@
 .cardSubtaskProcess-files-models {
   display: flex;
   flex-direction: column;
+  width: 100%;
   gap: 0.5rem;
 }
 .cardSubtaskProcess-files-models-title {

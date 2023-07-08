@@ -12,6 +12,7 @@ import DropDownSelector from '../../shared/select/DropDownSelector';
 import DotsOption from '../../shared/dots/DotsOption';
 import Portal from '../../portal/Portal';
 import { dropIn } from '../../../animations/animations';
+import useArchiver from '../../../hooks/useArchiver';
 
 type Option = {
   name: string;
@@ -30,8 +31,11 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
   const { profile } = project.moderator;
+  const { handleArchiver } = useArchiver(project.id, 'projects');
+
   const navigate = useNavigate();
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  // const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleSave = () => {
     onSave?.(project.specialityId);
@@ -41,29 +45,12 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
     editProject(project);
   };
 
-  const handleArchiver = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current);
-    }
-    const body = {
-      projectName: project.name,
-    };
-    axiosInstance.post('/projects/archiver', body).then(res => {
-      window.location.href = `${URL}/static/${res.data.url}`;
-      timeoutRef.current = setTimeout(() => {
-        axiosInstance
-          .delete(`/projects/archiver/?projectName=${project.name}`)
-          .then(res => {
-            console.log(res.data);
-          });
-      }, 3000);
-    });
-  };
   const handleDuplicate = async (id: number) => {
     await axiosInstance
       .post(`/duplicates/project/${id}`)
       .then(() => onSave?.(project.specialityId));
   };
+
   const optionsData: Option[] = [
     {
       name: 'Editar',

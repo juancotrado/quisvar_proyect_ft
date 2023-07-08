@@ -32,7 +32,11 @@ const CardSubtaskProcess = ({
   const [dataFeedback, setDataFeedback] = useState<DataFeedback | null>(null);
   const addFiles = (newFiles: File[]) => {
     if (!files) return setFiles(newFiles);
-    setFiles([...files, ...newFiles]);
+    const concatFiles = [...files, ...newFiles];
+    const uniqueFiles = Array.from(
+      new Set(concatFiles.map(file => file.name))
+    ).map(name => concatFiles.find(file => file.name === name)) as File[];
+    setFiles(uniqueFiles);
   };
   const deleteFiles = (delFiles: File) => {
     if (files) {
@@ -91,13 +95,13 @@ const CardSubtaskProcess = ({
               type="REVIEW"
               addFiles={addFiles}
             />
-            <div className="cardSubtaskProcess-files-view">
-              <h2 className="cardSubtaskProcess-files-title">
-                Archivos Cargados, listos para enviar:
-              </h2>
-              <div className="cardSubtaskProcess-files-contain">
-                {files &&
-                  Array.from(files).map(file => (
+            {files && (
+              <div className="cardSubtaskProcess-files-view">
+                <h2 className="cardSubtaskProcess-files-title">
+                  Archivos Cargados, listos para enviar:
+                </h2>
+                <div className="cardSubtaskProcess-files-contain">
+                  {Array.from(files).map(file => (
                     <div
                       key={file.lastModified + file.name + file.size}
                       className="cardSubtaskProcess-files-name-contain"
@@ -118,13 +122,9 @@ const CardSubtaskProcess = ({
                       </span>
                     </div>
                   ))}
+                </div>
               </div>
-              {/* <SubtaskFile
-              showDeleteBtnByUserAuth={true}
-              subTask={subTask}
-              typeFile="REVIEW"
-            /> */}
-            </div>
+            )}
           </div>
         )}
         {subTask.feedBacks.length !== 0 && (
@@ -170,7 +170,7 @@ const CardSubtaskProcess = ({
                   onClick={handleReloadSubTask}
                 />
               )}
-            {status !== 'INREVIEW' && isAuthorizedUser && files && (
+            {status !== 'INREVIEW' && isAuthorizedUser && (
               <SubtaskChangeStatusBtn
                 option="ASIG"
                 subtaskId={subTask.id}

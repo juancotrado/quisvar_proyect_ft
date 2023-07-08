@@ -35,10 +35,14 @@ const SubtaskFile = ({
   const normalizeUrlFile = (url: string, status: string) => {
     if (!url) return;
     const valueReplace =
-      status === 'SUCCESSFUL' ? './uploads' : './file_review';
+      status === 'SUCCESSFUL'
+        ? './uploads'
+        : status === 'REVIEW'
+        ? './file_review'
+        : './file_model';
     const newValueReplace =
       status === 'SUCCESSFUL'
-        ? 'uploads'
+        ? 'static'
         : status === 'REVIEW'
         ? 'review'
         : 'models';

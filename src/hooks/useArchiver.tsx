@@ -1,6 +1,12 @@
 import { useEffect, useRef } from 'react';
 import { URL, axiosInstance } from '../services/axiosInstance';
-type TypeArchiver = 'projects' | 'tasks' | 'indextasks' | 'tasks2' | 'tasks3';
+type TypeArchiver =
+  | 'projects'
+  | 'routes'
+  | 'tasks'
+  | 'indextasks'
+  | 'tasks2'
+  | 'tasks3';
 const useArchiver = (id: number, type: TypeArchiver) => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 

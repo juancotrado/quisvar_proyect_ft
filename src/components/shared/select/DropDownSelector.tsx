@@ -11,6 +11,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { AreaForm } from '../../../types/types';
 import { axiosInstance } from '../../../services/axiosInstance';
 import { useNavigate } from 'react-router-dom';
+import useArchiver from '../../../hooks/useArchiver';
 
 type typeObj = { [key: string]: any };
 
@@ -46,6 +47,7 @@ const LabelChip = ({
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
   const navigate = useNavigate();
   const { handleSubmit, register } = useForm<Pick<AreaForm, 'name'>>();
+  const { handleArchiver } = useArchiver(itemKey, 'routes');
 
   const onSubmitEditArea: SubmitHandler<Pick<AreaForm, 'name'>> = values => {
     axiosInstance.put(`/${update}/${itemKey}`, values).then(() => {
@@ -91,6 +93,12 @@ const LabelChip = ({
               function: () => setIsEditable(!isEditable),
               icon: isEditable ? 'close' : 'pencil',
               type: 'button',
+            },
+            {
+              name: 'Comprimir',
+              type: 'button',
+              icon: 'file-zipper',
+              function: handleArchiver,
             },
           ]}
         />

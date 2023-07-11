@@ -166,6 +166,9 @@ export interface SubTask {
   createdAt?: Date;
   updatedAt?: Date;
   taskId: number;
+  indexTaskId: number;
+  task_2_Id: number;
+  task_3_Id: number;
   users: Users[];
   createdAt?: Date;
 }

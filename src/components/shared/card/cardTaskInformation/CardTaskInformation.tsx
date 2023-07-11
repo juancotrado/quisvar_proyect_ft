@@ -53,6 +53,19 @@ const CardTaskInformation = ({
     await axiosInstance.delete(`/subtasks/${id}`).then(res => {
       socket.emit('client:delete-subTask', res.data);
       isOpenModal$.setSubject = false;
+
+      if (res.data.length === 0)
+        return socket.emit('client:delete-subTask', [
+          {
+            id: null,
+            taskId: subTask.taskId,
+            indexTaskId: subTask.indexTaskId,
+            task_2_Id: subTask.task_2_Id,
+            task_3_Id: subTask.task_3_Id,
+          },
+        ]);
+
+      socket.emit('client:delete-subTask', res.data);
     });
   };
   const handleCloseButton = () => {

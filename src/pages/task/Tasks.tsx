@@ -27,6 +27,9 @@ const initValuesSubTask: SubTask = {
   hours: 0,
   files: [],
   taskId: 0,
+  indexTaskId: 0,
+  task_2_Id: 0,
+  task_3_Id: 0,
   users: [],
 };
 const path = {
@@ -111,11 +114,7 @@ const Tasks = () => {
     };
   }, [socket, subTasks]);
   useEffect(() => {
-    socket.on('server:delete-subTask', (newSubTask: SubTask) => {
-      if (!subTasks) return;
-      const newSubTasks = subTasks?.filter(
-        subTask => subTask.id !== newSubTask.id
-      );
+    socket.on('server:delete-subTask', (newSubTasks: SubTask[]) => {
       setSubTasks(newSubTasks);
     });
 

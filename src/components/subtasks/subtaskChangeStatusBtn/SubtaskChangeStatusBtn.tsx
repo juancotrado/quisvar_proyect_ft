@@ -42,44 +42,43 @@ const SubtaskChangeStatusBtn = ({
     return statusBody[category]?.[role]?.[state];
   };
   const handleChangeStatus = async () => {
-    const role = userSession.role === 'EMPLOYEE' ? 'EMPLOYEE' : 'SUPERADMIN';
-    const percentage = Number(percentageRange);
-    const body = { ...getStatus(option, role, subtaskStatus), percentage };
-
-    console.log('status', subtaskStatus);
-    if (!body) return;
-    if (!files?.length && subtaskStatus !== 'INREVIEW')
-      return SnackbarUtilities.warning(
-        'Asegurese de subir una archivo  antes.'
-      );
-    if (files?.length && subtaskStatus !== 'INREVIEW') {
-      const formdata = new FormData();
-      const hasPdf = Array.from(files).some(
-        file => file.type === 'application/pdf'
-      );
-      if (!hasPdf)
-        return SnackbarUtilities.warning(
-          'Asegurese de subir una archivo PDF antes.'
+    if (subtaskStatus === 'PROCESS' || subtaskStatus === 'DENIED') {
+      if (files?.length) {
+        const formdata = new FormData();
+        const hasPdf = Array.from(files).some(
+          file => file.type === 'application/pdf'
         );
-      for (const file of files) {
-        formdata.append('files', file);
+        if (!hasPdf)
+          return SnackbarUtilities.warning(
+            'Asegurese de subir una archivo PDF antes.'
+          );
+        for (const file of files) {
+          formdata.append('files', file);
+        }
+        await axiosInstance.post(
+          `/files/uploads/${subtaskId}/?status=REVIEW`,
+          formdata
+        );
+        const feedbackBody = {
+          subTasksId: subtaskId,
+        };
+        await axiosInstance.post(`/feedbacks`, feedbackBody);
+      } else {
+        return SnackbarUtilities.warning(
+          'Asegurese de subir una archivo  antes.'
+        );
       }
-      await axiosInstance.post(
-        `/files/uploads/${subtaskId}/?status=REVIEW`,
-        formdata
-      );
-      const feedbackBody = {
-        subTasksId: subtaskId,
-      };
-      await axiosInstance.post(`/feedbacks`, feedbackBody);
     }
     if (option === 'DENY') {
-      if (dataFeedback && !dataFeedback.comment)
+      if (!dataFeedback?.comment)
         return SnackbarUtilities.warning(
           'Asegurese de escribir un comentario antes'
         );
       await axiosInstance.patch(`/feedbacks`, dataFeedback);
     }
+    const role = userSession.role === 'EMPLOYEE' ? 'EMPLOYEE' : 'SUPERADMIN';
+    const percentage = Number(percentageRange);
+    const body = { ...getStatus(option, role, subtaskStatus), percentage };
     const resStatus = await axiosInstance.patch(
       `/subtasks/status/${subtaskId}`,
       body

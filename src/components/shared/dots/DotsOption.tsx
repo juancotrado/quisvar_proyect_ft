@@ -20,7 +20,7 @@ const DotsOption = ({ data, className, persist }: DotsOptionProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleClick = (value: (() => void) | undefined) => {
     value && value();
-    persist === true ? setIsOpen(false) : null;
+    persist && setIsOpen(false);
   };
   return (
     <Outside onClickOutside={() => setIsOpen(false)}>

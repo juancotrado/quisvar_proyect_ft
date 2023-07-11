@@ -4,8 +4,9 @@ import {
 } from '../../../../services/sharingSubject';
 import './cardTaskInformation.css';
 import Button from '../../button/Button';
-import { useContext } from 'react';
-import { SubTask } from '../../../../types/types';
+import { useContext, useState } from 'react';
+import { motion } from 'framer-motion';
+import { Option, SubTask } from '../../../../types/types';
 import { SocketContext } from '../../../../context/SocketContex';
 import { axiosInstance } from '../../../../services/axiosInstance';
 
@@ -14,7 +15,9 @@ import {
   CardSubtaskHold,
   CardSubtaskProcess,
 } from '../../../index';
-import ButtonDelete from '../../button/ButtonDelete';
+import DotsOption from '../../dots/DotsOption';
+import Portal from '../../../portal/Portal';
+import { dropIn } from '../../../../animations/animations';
 interface CardTaskInformationProps {
   subTask: SubTask;
   isAuthorizedMod: boolean;
@@ -27,17 +30,38 @@ const CardTaskInformation = ({
   openModalEdit,
 }: CardTaskInformationProps) => {
   const socket = useContext(SocketContext);
-
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
   const closeModal = () => {
     isTaskInformation$.setSubject = false;
     isOpenModal$.setSubject = false;
   };
-
-  const handleSubTaskDelete = () => {
-    axiosInstance.delete(`/subtasks/${subTask.id}`).then(res => {
+  const optionsData: Option[] = [
+    {
+      name: 'Editar',
+      type: 'button',
+      icon: 'pencil',
+      function: openModalEdit,
+    },
+    {
+      name: 'Eliminar',
+      type: 'button',
+      icon: 'trash-red',
+      function: () => setIsAlertOpen(true),
+    },
+  ];
+  const handleDelete = async (id: number) => {
+    await axiosInstance.delete(`/subtasks/${id}`).then(res => {
       socket.emit('client:delete-subTask', res.data);
       isOpenModal$.setSubject = false;
     });
+  };
+  const handleCloseButton = () => {
+    setIsAlertOpen(!isAlertOpen);
+  };
+  const handleSendDelete = async () => {
+    handleDelete(subTask.id);
+    setIsAlertOpen(false);
+    return;
   };
 
   const { status } = subTask;
@@ -59,17 +83,7 @@ const CardTaskInformation = ({
         </h3>
         {isAuthorizedMod && status === 'UNRESOLVED' && (
           <div className="subtask-btn-actions">
-            <Button
-              icon="pencil"
-              className="subtask-edit-icon"
-              onClick={openModalEdit}
-            />
-            <ButtonDelete
-              icon="trash-red"
-              url={`/subtasks/${subTask.id}`}
-              customOnClick={handleSubTaskDelete}
-              className="subtask-btn-delete"
-            />
+            <DotsOption data={optionsData} persist={true} />
           </div>
         )}
       </div>
@@ -86,6 +100,40 @@ const CardTaskInformation = ({
       )}
       {status === 'DONE' && (
         <CardSubtaskDone subTask={subTask} isAuthorizedMod={isAuthorizedMod} />
+      )}
+      {isAlertOpen && (
+        <Portal wrapperId="modal">
+          <div
+            className="alert-modal-main"
+            role="dialog"
+            onClick={handleCloseButton}
+          >
+            <motion.div
+              className="alert-modal-children"
+              variants={dropIn}
+              onClick={e => e.stopPropagation()}
+              initial="hidden"
+              animate="visible"
+              exit="leave"
+            >
+              <img src="/svg/trashdark.svg" />
+              <h3>{`¿Estas seguro que deseas eliminar este registro?`}</h3>
+              <div className="container-btn">
+                <Button
+                  text="No, cancelar"
+                  onClick={handleCloseButton}
+                  className="btn-alert "
+                />
+                <Button
+                  className=" btn-alert  btn-delete"
+                  text="Si, estoy seguro"
+                  type="button"
+                  onClick={handleSendDelete}
+                />
+              </div>
+            </motion.div>
+          </div>
+        </Portal>
       )}
     </div>
   );

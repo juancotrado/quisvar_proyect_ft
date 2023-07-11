@@ -300,3 +300,9 @@ export interface ReviewList {
     user: User;
   }[];
 }
+export interface Option {
+  name: string;
+  type: 'button' | 'submit' | 'reset' | undefined;
+  icon: string;
+  function?: () => void;
+}

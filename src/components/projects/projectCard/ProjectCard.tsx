@@ -3,23 +3,17 @@ import './projectCard.css';
 import { motion } from 'framer-motion';
 import Button from '../../shared/button/Button';
 import { _date } from '../../../utils/formatDate';
-import { ProjectType } from '../../../types/types';
+import { Option, ProjectType } from '../../../types/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
-import { useRef, useState } from 'react';
-import { URL, axiosInstance } from '../../../services/axiosInstance';
+import { useState } from 'react';
+import { axiosInstance } from '../../../services/axiosInstance';
 import DropDownSelector from '../../shared/select/DropDownSelector';
 import DotsOption from '../../shared/dots/DotsOption';
 import Portal from '../../portal/Portal';
 import { dropIn } from '../../../animations/animations';
 import useArchiver from '../../../hooks/useArchiver';
 
-type Option = {
-  name: string;
-  type: 'button' | 'submit' | 'reset' | undefined;
-  icon: string;
-  function: () => void;
-};
 interface ProjectCardProps {
   editProject: (value: ProjectType) => void;
   project: ProjectType;

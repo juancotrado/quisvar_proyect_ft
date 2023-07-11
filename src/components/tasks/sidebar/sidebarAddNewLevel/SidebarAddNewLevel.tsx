@@ -3,6 +3,8 @@ import Button from '../../../shared/button/Button';
 import { Input } from '../../..';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { axiosInstance } from '../../../../services/axiosInstance';
+import DotsOption from '../../../shared/dots/DotsOption';
+import { Option } from '../../../../types/types';
 
 type TaskForm = { name: string; idValue: number; unique: boolean };
 
@@ -41,6 +43,20 @@ const SidebarAddNewLevel = ({ idValue, onSave, keyNameId }: AddTaskProps) => {
   };
 
   const handleAddlevel = () => setAddLevel(!addLevel);
+  // const [openEditData, setOpenEditData] = useState<boolean>(false);
+  const optionsData: Option[] = [
+    {
+      name: 'Cancelar',
+      type: 'button',
+      icon: 'close',
+      function: () => setAddLevel(!addLevel),
+    },
+    {
+      name: 'Guardar',
+      type: 'submit',
+      icon: 'save',
+    },
+  ];
 
   return (
     <form
@@ -48,27 +64,37 @@ const SidebarAddNewLevel = ({ idValue, onSave, keyNameId }: AddTaskProps) => {
       className="aside-add-index-task"
     >
       {addLevel ? (
-        <Input {...register('name')} name="name" className="input-task" />
+        <>
+          <Input {...register('name')} name="name" className="input-task" />
+          <div className="aside-unique-container">
+            <label htmlFor="unique">Unico:</label>
+            <input {...register('unique')} type="checkbox" name="unique" />
+          </div>
+        </>
       ) : (
         <span>AÑADIR NIVEL</span>
       )}
-      {addLevel && (
+      {/*{addLevel && (
         <>
           {!isLastLevel && (
             <input {...register('unique')} type="checkbox" name="unique" />
           )}
-
           <Button icon="save" className="add-btn-indextask" />
         </>
+      )}*/}
+      {!addLevel ? (
+        <Button
+          type="button"
+          // icon={addLevel ? 'close' : 'plus'}
+          icon={'plus'}
+          className="add-btn-indextask"
+          whileHover={{ rotate: 90 }}
+          whileTap={{ scale: 1.1 }}
+          onClick={handleAddlevel}
+        />
+      ) : (
+        <DotsOption data={optionsData} />
       )}
-      <Button
-        type="button"
-        icon={addLevel ? 'close' : 'plus'}
-        className="add-btn-indextask"
-        whileHover={{ rotate: 90 }}
-        whileTap={{ scale: 1.1 }}
-        onClick={handleAddlevel}
-      />
     </form>
   );
 };

@@ -75,9 +75,9 @@ const CardRegisterSubTask = ({
       if (typeTask == 'task3') bodyForCreate = { ...body, task_3_Id: taskId };
       axiosInstance.post('/subtasks', bodyForCreate).then(res => {
         socket.emit('client:create-subTask', res.data);
-        isOpenModal$.setSubject = false;
       });
     }
+    isOpenModal$.setSubject = false;
   };
 
   const handleAddUser = (user: DataUser) => {

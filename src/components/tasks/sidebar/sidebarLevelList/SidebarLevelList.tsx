@@ -40,6 +40,13 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
       });
   };
 
+  const handleDuplicate = async (id: number) => {
+    // console.log(data)
+    setOpenEditData(false);
+    await axiosInstance
+      .post(`/duplicates/${type}/${id}`)
+      .then(() => onSave?.());
+  };
   const handleDelete = async (id: number) => {
     setOpenEditData(false);
     await axiosInstance.delete(`/${type}/${id}`).then(() => onSave?.());
@@ -117,18 +124,24 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
                 },
               },
               {
+                name: 'Comprimir',
+                type: 'button',
+                icon: 'file-zipper',
+                function: handleArchiver,
+              },
+              {
+                name: 'Duplicar',
+                type: 'button',
+                icon: 'duplicate',
+                function: () => handleDuplicate(data.id),
+              },
+              {
                 name: openEditData ? 'Guardar' : 'Eliminar',
                 type: openEditData ? 'submit' : 'button',
                 icon: openEditData ? 'save' : 'trash-red',
                 function: openEditData
                   ? () => handleForm()
                   : () => handleDelete(data.id),
-              },
-              {
-                name: 'Comprimir',
-                type: 'button',
-                icon: 'file-zipper',
-                function: handleArchiver,
               },
             ]}
           />

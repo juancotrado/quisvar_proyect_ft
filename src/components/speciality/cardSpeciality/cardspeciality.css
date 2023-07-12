@@ -19,11 +19,14 @@
 }
 .speciality-edit {
   position: absolute;
-  padding: 0.2rem;
+  padding: 0.1rem;
   display: flex;
-  justify-content: end;
+  justify-content: center;
+  align-items: center;
   gap: 0.5rem;
   bottom: 5px;
+  top: 0;
+  right: 0;
 }
 .speciality-delete-icon {
   border: none;
@@ -52,27 +55,20 @@
 .speciality-selected {
   background-color: #d9d9d9;
 }
-/* .gradient{
-  width: 1.5rem;
-  height: 1rem;
-  position: absolute;
-  right: 4.5rem;
-  bottom: .3rem;
-  background: linear-gradient(to right, #2A2B32, #000000);
-} */
 .editable-title {
-  font-size: 1rem;
-  font-weight: 700;
+  font-size: 0.9rem;
+  font-weight: 800;
   width: 100%;
   text-transform: uppercase;
   align-self: flex-start;
 }
 .editable-form {
   position: relative;
+  font-size: 0.9rem;
   width: 100%;
+  margin-right: 1rem;
 }
 .editable-color {
-  /* background-color: var(--color-menu); */
   background-color: transparent;
   color: var(--color-quaternay);
   overflow-y: auto;

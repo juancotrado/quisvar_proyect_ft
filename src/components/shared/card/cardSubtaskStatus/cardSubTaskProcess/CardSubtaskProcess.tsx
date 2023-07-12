@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import { axiosInstance } from '../../../../../services/axiosInstance';
 import { SocketContext } from '../../../../../context/SocketContex';
 import Button from '../../../button/Button';
-import { DataFeedback, Feedback, SubTask } from '../../../../../types/types';
+import { DataFeedback, SubTask } from '../../../../../types/types';
 import { isOpenModal$ } from '../../../../../services/sharingSubject';
 import SubtaskFile from '../../../../subtasks/subtaskFiles/SubtaskFile';
 import SubtaskUploadFiles from '../../../../subtasks/subtaskUploadFiles/SubtaskUploadFiles';
@@ -11,9 +11,10 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../store';
 import './cardSubTaskProcess.css';
 import SubTaskStatusLabel from '../../../../subtasks/subTaskStatusLabel/SubTaskStatusLabel';
-import { InputRange, TextArea } from '../../../..';
+import { InputRange } from '../../../..';
 import { useForm } from 'react-hook-form';
 import ButtonDelete from '../../../button/ButtonDelete';
+import SubtasksShippingHistory from '../../../../subtasks/subtasksShippingHistory/SubtasksShippingHistory';
 interface CardSubtaskProcess {
   subTask: SubTask;
   isAuthorizedMod: boolean;
@@ -128,36 +129,12 @@ const CardSubtaskProcess = ({
           </div>
         )}
         {subTask.feedBacks.length !== 0 && (
-          <div className="cardSubtaskProcess-review-contain">
-            {subTask.feedBacks.map((feedBack: Feedback) => (
-              <div key={feedBack.id} className="cardSubtaskProcess-review-card">
-                <h3 className="cardSubtaskProcess-review-card-time">
-                  {getDatetimeCreated(feedBack.createdAt)}:
-                </h3>
-                <SubtaskFile
-                  files={feedBack.files}
-                  typeFile="REVIEW"
-                  showDeleteBtn={false}
-                />
-                {((isAuthorizedUser && feedBack.comment) ||
-                  isAuthorizedMod) && (
-                  <TextArea
-                    label={
-                      !feedBack.comment ? 'Agregar Comentario' : 'Comentario'
-                    }
-                    onBlur={e =>
-                      getDataFeedback({
-                        comment: e.target.value.trim(),
-                        id: feedBack.id,
-                      })
-                    }
-                    defaultValue={feedBack.comment || ''}
-                    disabled={feedBack.comment ? true : false}
-                  />
-                )}
-              </div>
-            ))}
-          </div>
+          <SubtasksShippingHistory
+            feedBacks={subTask.feedBacks}
+            isAuthorizedMod={isAuthorizedMod}
+            isAuthorizedUser={isAuthorizedUser}
+            getDataFeedback={getDataFeedback}
+          />
         )}
         {areAuthorizedUsers && (
           <div className="cardSubtaskProcess-btns">

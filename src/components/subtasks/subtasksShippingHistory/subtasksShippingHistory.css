@@ -1,0 +1,24 @@
+.SubtasksShippingHistory-review-contain {
+  width: 100%;
+  display: grid;
+  gap: 1rem;
+  height: 20rem;
+  overflow-y: scroll;
+  padding: 1rem;
+  border: 2px solid var(--color-secondary);
+}
+.SubtasksShippingHistory-review-card {
+  width: 100%;
+  border-radius: 0.3rem;
+  padding: 0.85rem;
+  display: grid;
+  gap: 1rem;
+  box-shadow: 0px 1.5px 4px rgba(0, 0, 0, 0.2);
+}
+.SubtasksShippingHistory-review-card-time {
+  font-size: 0.9rem;
+  color: var(--color-primary);
+}
+.SubtasksShippingHistory-files-accept {
+  background-color: aliceblue;
+}

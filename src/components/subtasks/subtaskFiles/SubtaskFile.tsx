@@ -8,7 +8,7 @@ import { RootState } from '../../../store';
 import './SubtaskFile.css';
 interface SubtaskFileProps {
   files: Files[];
-  typeFile: 'REVIEW' | 'MATERIAL' | 'SUCCESSFUL';
+  typeFile?: 'REVIEW' | 'MATERIAL' | 'SUCCESSFUL';
   showDeleteBtn?: boolean;
   showDeleteBtnByUserAuth?: boolean;
 }
@@ -48,11 +48,14 @@ const SubtaskFile = ({
         : 'models';
     return url.replace(valueReplace, newValueReplace);
   };
-
   return (
     <div className="subtaskFile">
       {files
-        ?.filter(({ type }) => type === typeFile)
+        ?.filter(({ type }) =>
+          !typeFile
+            ? ['REVIEW', 'SUCCESSFUL'].includes(type)
+            : type === typeFile
+        )
         .map(file => (
           <div key={file.id} className="subtaskFile-contain">
             <a

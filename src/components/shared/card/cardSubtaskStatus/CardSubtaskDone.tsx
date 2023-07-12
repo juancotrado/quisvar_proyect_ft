@@ -6,6 +6,7 @@ import { SubTask } from '../../../../types/types';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
 import SubtaskFile from '../../../subtasks/subtaskFiles/SubtaskFile';
 import SubTaskStatusLabel from '../../../subtasks/subTaskStatusLabel/SubTaskStatusLabel';
+import SubtasksShippingHistory from '../../../subtasks/subtasksShippingHistory/SubtasksShippingHistory';
 
 interface CardSubtaskDone {
   subTask: SubTask;
@@ -13,26 +14,14 @@ interface CardSubtaskDone {
 }
 
 const CardSubtaskDone = ({ subTask, isAuthorizedMod }: CardSubtaskDone) => {
-  const socket = useContext(SocketContext);
   const { status } = subTask;
-
+  const feedBacksReverse = subTask.feedBacks.reverse();
   return (
     <div className="subtask-content-area">
       <section className="subtask-files">
-        <div className="subtask-files-content">
-          <div className="subtask-add-files-done">
-            <div className="subtask-done-files">
-              <div style={{ width: '30%', padding: '0.5rem' }}>
-                <h2>Archivos:</h2>
-              </div>
-              <SubtaskFile
-                showDeleteBtn={false}
-                files={subTask.files}
-                typeFile="SUCCESSFUL"
-              />
-            </div>
-          </div>
-        </div>
+        {subTask.feedBacks.length !== 0 && (
+          <SubtasksShippingHistory feedBacks={feedBacksReverse} />
+        )}
       </section>
       <section className="subtask-details">
         <SubTaskStatusLabel status={status} />

@@ -16,15 +16,6 @@ const CardSubtaskDone = ({ subTask, isAuthorizedMod }: CardSubtaskDone) => {
   const socket = useContext(SocketContext);
   const { status } = subTask;
 
-  const handleReloadSubTask = () => {
-    axiosInstance
-      .patch(`/subtasks/asigned/${subTask.id}?status=decline`)
-      .then(res => {
-        socket.emit('client:update-subTask', res.data);
-        isOpenModal$.setSubject = false;
-      });
-  };
-
   return (
     <div className="subtask-content-area">
       <section className="subtask-files">
@@ -61,13 +52,6 @@ const CardSubtaskDone = ({ subTask, isAuthorizedMod }: CardSubtaskDone) => {
           <h3>Total Horas: 24 horas</h3>
           <h2>Precio: S/. {subTask.price}</h2>
         </div>
-        {isAuthorizedMod && (
-          <Button
-            text="RESTABLECER"
-            className="btn-declinar"
-            onClick={handleReloadSubTask}
-          />
-        )}
       </section>
     </div>
   );

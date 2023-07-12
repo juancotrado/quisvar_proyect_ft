@@ -1,10 +1,9 @@
-import { SpecialityType } from '../../../types/types';
-import Button from '../../shared/button/Button';
-import ButtonDelete from '../../shared/button/ButtonDelete';
+import { Option, SpecialityType } from '../../../types/types';
 import './cardspeciality.css';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { axiosInstance } from '../../../services/axiosInstance';
+import DotsOption from '../../shared/dots/DotsOption';
 
 interface CardSpecialityProps {
   data: SpecialityType;
@@ -46,50 +45,64 @@ const CardSpeciality = ({
     onUpdate?.();
     setIsEditable(false);
   };
+  const handleDelete = async (id: number) => {
+    setIsEditable(false);
+    await axiosInstance.delete(`/specialities/${id}`).then(() => onDelete?.());
+  };
+  const optionsData: Option[] = [
+    {
+      name: isEditable ? 'Cancelar' : 'Editar',
+      type: isEditable ? 'button' : 'button',
+      icon: isEditable ? 'close' : 'pencil',
+      function: () => {
+        setIsEditable(!isEditable);
+      },
+    },
+    {
+      name: isEditable ? 'Guardar' : 'Eliminar',
+      type: isEditable ? 'submit' : 'button',
+      icon: isEditable ? 'save' : 'trash-red',
+      function: () => {
+        !isEditable && handleDelete(data.id);
+      },
+    },
+  ];
   return (
     <div
       className={`speciality-card ${selected ? 'speciality-selected' : ''}`}
       onClick={handleProject}
       title={data.name}
     >
-      <div className="speciality-main-title">
+      <form
+        className="speciality-main-title"
+        onSubmit={handleSubmit(onSubmit)}
+        // onClick={e => e.stopPropagation()}
+      >
         {role !== 'EMPLOYEE' && (
-          <div className="speciality-edit" onClick={e => e.stopPropagation()}>
-            {numberProjects == 0 && !isEditable && (
-              <ButtonDelete
-                icon="trash-red"
-                url={`/specialities/${data.id}`}
-                className="speciality-delete-icon"
-                onSave={onDelete}
-              />
-            )}
-            <Button
-              icon={isEditable ? 'close' : 'pencil'}
-              className="speciality-edit-icon"
-              onClick={() => setIsEditable(!isEditable)}
-            />
+          <div className="speciality-edit">
+            <DotsOption data={optionsData} variant />
           </div>
         )}
         {isEditable ? (
-          <form
-            className="editable-form"
-            onSubmit={handleSubmit(onSubmit)}
-            onClick={e => e.stopPropagation()}
-          >
+          <div className="editable-form">
             <textarea
               {...register('name')}
               name="name"
               defaultValue={data.name}
               className="editable-title editable-color"
+              onClick={event => {
+                if (isEditable) {
+                  event.stopPropagation();
+                }
+              }}
             />
-            <Button icon="save" className="editable-submit" />
-          </form>
+          </div>
         ) : (
           <>
             <h2 className="editable-title">{data.name}</h2>
           </>
         )}
-      </div>
+      </form>
       <span className=" card-quantity ">
         Proyectos Disponibles: {numberProjects}
       </span>

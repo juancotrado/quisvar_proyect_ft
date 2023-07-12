@@ -14,9 +14,15 @@ interface DotsOptionProps {
   data: Option[];
   className?: string;
   persist?: boolean;
+  variant?: boolean;
 }
 
-const DotsOption = ({ data, className, persist }: DotsOptionProps) => {
+const DotsOption = ({
+  data,
+  className,
+  persist,
+  variant = false,
+}: DotsOptionProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleClick = (value: (() => void) | undefined) => {
     value && value();
@@ -27,7 +33,11 @@ const DotsOption = ({ data, className, persist }: DotsOptionProps) => {
       <div onClick={e => e.stopPropagation()}>
         <div className={` dots-content`}>
           <span onClick={() => setIsOpen(!isOpen)}>
-            <img className="menu-icon-dot" src="/svg/menusmall.svg" alt="" />
+            <img
+              className="menu-icon-dot"
+              src={`/svg/${variant ? 'dots-color' : 'menusmall'}.svg`}
+              alt=""
+            />
           </span>
           <div className={`${className} dot-options`}>
             {isOpen &&

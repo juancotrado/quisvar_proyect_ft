@@ -3,7 +3,6 @@ import './cardAddSpeciality.css';
 import { SpecialityType } from '../../../types/types';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { axiosInstance } from '../../../services/axiosInstance';
-import Button from '../../shared/button/Button';
 
 interface CardAddSpecialityProps {
   onSave?: () => void;
@@ -40,8 +39,8 @@ const CardAddSpeciality = ({ onSave }: CardAddSpecialityProps) => {
       ) : (
         <div className="text-area-card">
           <textarea
-            className="text-areas"
-            {...register('name')}
+            className="text-areas "
+            {...register('name', { required: true })}
             name="name"
             placeholder="Ingrese nueva especialidad"
           />
@@ -57,11 +56,9 @@ const CardAddSpeciality = ({ onSave }: CardAddSpecialityProps) => {
               >
                 <img src="svg/close.svg" />
               </button>
-              <Button
-                type="submit"
-                icon="save"
-                className="editable-add-submit"
-              />
+              <button className="editable-add-submit" type="submit">
+                <img src="svg/save.svg" />
+              </button>
             </div>
           )}
         </div>

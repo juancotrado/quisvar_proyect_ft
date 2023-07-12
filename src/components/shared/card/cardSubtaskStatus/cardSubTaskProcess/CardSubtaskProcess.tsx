@@ -72,19 +72,7 @@ const CardSubtaskProcess = ({
     const transforToHours = Math.floor(untilDateTime / 1000 / 60 / 60);
     return transforToHours;
   };
-  const getDatetimeCreated = (dateTime: string) => {
-    const date = new Date(dateTime);
-    const options: Intl.DateTimeFormatOptions = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    };
-    const localeDate = date.toLocaleDateString('es-PE', options);
-    const localeTime = date.toLocaleTimeString('en-US');
 
-    return `Enviado el ${localeDate} a las ${localeTime}`;
-  };
   const getDataFeedback = (data: DataFeedback) => setDataFeedback(data);
   return (
     <div className="cardSubtaskProcess">

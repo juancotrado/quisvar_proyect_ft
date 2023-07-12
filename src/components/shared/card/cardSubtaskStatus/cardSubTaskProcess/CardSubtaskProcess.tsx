@@ -140,7 +140,7 @@ const CardSubtaskProcess = ({
                   showDeleteBtn={false}
                 />
                 {((isAuthorizedUser && feedBack.comment) ||
-                  (status === 'INREVIEW' && isAuthorizedMod)) && (
+                  isAuthorizedMod) && (
                   <TextArea
                     label={
                       !feedBack.comment ? 'Agregar Comentario' : 'Comentario'

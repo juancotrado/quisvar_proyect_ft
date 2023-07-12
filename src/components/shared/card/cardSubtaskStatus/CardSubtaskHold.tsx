@@ -44,14 +44,6 @@ const CardSubtaskHold = ({ subTask, isAuthorizedMod }: CardSubtaskHold) => {
     if (!getId) setUsersData([...usersData, user]);
   };
 
-  const handleReloadSubTask = () => {
-    axiosInstance
-      .patch(`/subtasks/asigned/${subTask.id}?status=decline`)
-      .then(res => {
-        socket.emit('client:update-subTask', res.data);
-        isOpenModal$.setSubject = false;
-      });
-  };
   const handleAddUserByTask = () => {
     axiosInstance
       .patch(`/subtasks/assignUser/${subTask.id}`, usersData)
@@ -145,13 +137,7 @@ const CardSubtaskHold = ({ subTask, isAuthorizedMod }: CardSubtaskHold) => {
           <h2>Precio: S/. {subTask.price}</h2>
           <h3>Total Horas: 24 horas</h3>
         </div>
-        {isAuthorizedMod && (
-          <Button
-            text="RESTABLECER"
-            className="btn-declinar"
-            onClick={handleReloadSubTask}
-          />
-        )}
+
         {status === 'UNRESOLVED' && isAuthorizedMod && addBtn && (
           <Button
             text="LISTO"

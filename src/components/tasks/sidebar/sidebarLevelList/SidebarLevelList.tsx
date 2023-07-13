@@ -114,7 +114,6 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
       {role !== 'EMPLOYEE' && (
         <div className="menu-index-task">
           <DotsOption
-            className="asd"
             data={[
               {
                 name: openEditData ? 'Cancelar' : 'Editar',

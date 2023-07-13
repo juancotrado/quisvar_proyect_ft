@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { FocusEvent, useContext, useEffect, useState } from 'react';
 import { axiosInstance } from '../../../../../services/axiosInstance';
 import { SocketContext } from '../../../../../context/SocketContex';
 import Button from '../../../button/Button';
@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../store';
 import './cardSubTaskProcess.css';
 import SubTaskStatusLabel from '../../../../subtasks/subTaskStatusLabel/SubTaskStatusLabel';
-import { InputRange } from '../../../..';
+import { Input, InputRange } from '../../../..';
 import { useForm } from 'react-hook-form';
 import ButtonDelete from '../../../button/ButtonDelete';
 import SubtasksShippingHistory from '../../../../subtasks/subtasksShippingHistory/SubtasksShippingHistory';
@@ -24,13 +24,26 @@ const CardSubtaskProcess = ({
   subTask,
   isAuthorizedMod,
 }: CardSubtaskProcess) => {
-  const { watch, register } = useForm();
-  const percentage = watch('percentage');
   const socket = useContext(SocketContext);
   const { userSession } = useSelector((state: RootState) => state);
   const { status } = subTask;
   const [files, setFiles] = useState<File[] | null>(null);
   const [dataFeedback, setDataFeedback] = useState<DataFeedback | null>(null);
+  const [porcetageForUser, setPorcetageForUser] = useState({});
+
+  useEffect(() => {
+    let porcetageValue = {};
+    subTask.users.map(user => {
+      const { id } = user.user;
+      const { percentage } = user;
+      porcetageValue = {
+        ...porcetageValue,
+        ['user' + id]: { userId: id, percentage },
+      };
+    });
+    setPorcetageForUser(porcetageValue);
+  }, []);
+
   const addFiles = (newFiles: File[]) => {
     if (!files) return setFiles(newFiles);
     const concatFiles = [...files, ...newFiles];
@@ -73,7 +86,15 @@ const CardSubtaskProcess = ({
     return transforToHours;
   };
 
+  const handlePorcentge = (e: FocusEvent<HTMLInputElement>) => {
+    const { value, name } = e.target;
+    setPorcetageForUser({
+      ...porcetageForUser,
+      ['user' + name]: { userId: +name, percentage: +value },
+    });
+  };
   const getDataFeedback = (data: DataFeedback) => setDataFeedback(data);
+  console.log(porcetageForUser);
   return (
     <div className="cardSubtaskProcess">
       <section className="cardSubtaskProcess-left-details">
@@ -140,10 +161,10 @@ const CardSubtaskProcess = ({
                 option="ASIG"
                 subtaskId={subTask.id}
                 subtaskStatus={status}
-                percentageRange={percentage || subTask.percentage}
                 type="submit"
                 text="Mandar a Revisar"
-                files={files}
+                porcentagesForUser={Object.values(porcetageForUser)}
+                // files={files}
               />
             )}
             {status === 'INREVIEW' && isAuthorizedMod && (
@@ -159,7 +180,6 @@ const CardSubtaskProcess = ({
                   option="ASIG"
                   subtaskId={subTask.id}
                   subtaskStatus={status}
-                  percentageRange={percentage || subTask.percentage}
                   text="Aprobar"
                 />
               </>
@@ -178,7 +198,7 @@ const CardSubtaskProcess = ({
           >
             Tiempo restante: {getTimeOut()} hrs
           </p>
-          {areAuthorizedUsers && (
+          {/* {areAuthorizedUsers && (
             <InputRange
               {...register('percentage')}
               maxRange={100}
@@ -186,7 +206,15 @@ const CardSubtaskProcess = ({
               defaultValue={subTask.percentage}
               disabled={isAuthorizedMod ? true : false}
             />
-          )}
+          )} */}
+          {subTask.users.map(user => (
+            <Input
+              key={user.user.id}
+              onBlur={handlePorcentge}
+              name={String(user.user.id)}
+              defaultValue={user.percentage}
+            />
+          ))}
           <div className="cardSubtaskProcess-files-models">
             <h2 className="cardSubtaskProcess-files-models-title">
               Archivos Modelo:

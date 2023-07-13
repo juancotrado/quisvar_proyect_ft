@@ -44,6 +44,7 @@ export interface TaskCreateType {
 }
 
 export type Users = {
+  percentage: number;
   assignedAt: Date;
   untilDate: Date;
   user: User;

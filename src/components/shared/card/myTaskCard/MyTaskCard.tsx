@@ -1,6 +1,6 @@
 import './mytaskcard.css';
-import { SubtaskIncludes, TypeTask } from '../../../types/types';
-import { _date } from '../../../utils/formatDate';
+import { SubtaskIncludes, TypeTask } from '../../../../types/types';
+import { _date } from '../../../../utils/formatDate';
 import { useNavigate } from 'react-router-dom';
 
 interface TaskCardProps {

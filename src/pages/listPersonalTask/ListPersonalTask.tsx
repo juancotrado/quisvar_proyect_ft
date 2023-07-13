@@ -3,7 +3,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
 import { motion } from 'framer-motion';
 import list_icon from '/svg/task_list.svg';
-import MyTaskCard from '../../components/shared/card/MyTaskCard';
+import MyTaskCard from '../../components/shared/card/myTaskCard/MyTaskCard';
 import { SubTask, SubtaskIncludes } from '../../types/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';

@@ -78,27 +78,11 @@
 .subtask-first {
   height: 40%;
 }
-.subtask-asign-btn {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
+
 .subtask-third {
   height: 10%;
 }
-.subtask-add-files {
-  width: 100%;
-  height: 100%;
-  border-radius: var(--radius-input);
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  position: relative;
-  background-color: var(--color-menu);
-  padding: 0.5rem;
-}
+
 .subtask-add-files h2 {
   font-size: 0.87rem;
   color: var(--color-primary);
@@ -110,14 +94,6 @@
   /* position: absolute; */
   bottom: 5px;
   font-size: 0.87rem;
-}
-.subtask-models {
-  width: 50%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 }
 
 .subtask-details {
@@ -181,12 +157,6 @@
   flex-direction: column;
 }
 
-.subtask-dropdown label {
-  font-size: 0.9rem;
-  font-weight: 700;
-  color: var(--color-primary);
-}
-
 .subtask-delete-icon {
   background-color: white;
   padding: 0;
@@ -211,13 +181,6 @@
 }
 /**************************************/
 
-.subtask-files-content {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-}
 .subtask-lists-users {
   display: flex;
   flex-direction: column;

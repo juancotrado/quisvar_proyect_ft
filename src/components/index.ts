@@ -16,8 +16,8 @@ import Sidebar from './tasks/sidebar/Sidebar';
 import SubTaskCard from './shared/card/subTaskCard/SubTaskCard';
 import CardTaskInformation from './shared/card/cardTaskInformation/CardTaskInformation';
 import InputRange from './shared/inputRange/InputRange';
-import CardSubtaskDone from './shared/card/cardSubtaskStatus/CardSubtaskDone';
-import CardSubtaskHold from './shared/card/cardSubtaskStatus/CardSubtaskHold';
+import CardSubtaskDone from './shared/card/cardSubtaskStatus/cardSubtaskDone/CardSubtaskDone';
+import CardSubtaskHold from './shared/card/cardSubtaskStatus/cardSubtaskHold/CardSubtaskHold';
 import CardSubtaskProcess from './shared/card/cardSubtaskStatus/cardSubTaskProcess/CardSubtaskProcess';
 
 export {

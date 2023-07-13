@@ -1,5 +1,5 @@
 import { TextArea } from '../..';
-import { DataFeedback, Feedback } from '../../../types/types';
+import { DataFeedback, Feedback, Profile } from '../../../types/types';
 import SubtaskFile from '../subtaskFiles/SubtaskFile';
 import './subtasksShippingHistory.css';
 
@@ -27,7 +27,12 @@ const SubtasksShippingHistory = ({
     const localeDate = date.toLocaleDateString('es-PE', options);
     const localeTime = date.toLocaleTimeString('en-US');
 
-    return `Enviado el ${localeDate} a las ${localeTime}`;
+    return ` ${localeDate} a las ${localeTime}`;
+  };
+
+  const getUserName = (profile: Profile) => {
+    const { firstName, lastName } = profile;
+    return firstName + ' ' + lastName;
   };
   const firstId = feedBacks[0].id;
   const isStatusDone = !getDataFeedback;
@@ -43,6 +48,9 @@ const SubtasksShippingHistory = ({
           }`}
         >
           <h3 className="SubtasksShippingHistory-review-card-time">
+            Enviado por{' '}
+            <strong>{getUserName(feedBack.files[0].user.profile)}</strong>
+            {' el'}
             {getDatetimeCreated(feedBack.createdAt)}:
           </h3>
           <SubtaskFile files={feedBack.files} showDeleteBtn={false} />

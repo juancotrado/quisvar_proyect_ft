@@ -23,7 +23,21 @@
   gap: 1.5rem;
   padding: 1rem;
 }
-
+.cardSubtaskProcess-porcentage-container {
+  display: flex;
+  align-items: center;
+}
+.cardSubtaskProcess-porcentage-user {
+  flex: 3;
+}
+.cardSubtaskProcess-porcentage-input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  flex: 1;
+}
 .cardSubtaskProcess-files-title {
   font-size: 0.87rem;
   color: var(--color-primary);

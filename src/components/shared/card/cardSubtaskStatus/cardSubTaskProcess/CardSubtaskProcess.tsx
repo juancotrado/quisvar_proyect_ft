@@ -202,22 +202,22 @@ const CardSubtaskProcess = ({
           >
             Tiempo restante: {getTimeOut()} hrs
           </p>
-          {/* {areAuthorizedUsers && (
-            <InputRange
-              {...register('percentage')}
-              maxRange={100}
-              newPercentage={percentage}
-              defaultValue={subTask.percentage}
-              disabled={isAuthorizedMod ? true : false}
-            />
-          )} */}
+
           {subTask.users.map(user => (
-            <Input
-              key={user.user.id}
-              onBlur={handlePorcentge}
-              name={String(user.user.id)}
-              defaultValue={user.percentage}
-            />
+            <div className="cardSubtaskProcess-porcentage-container">
+              <span className="cardSubtaskProcess-porcentage-user">
+                {user.user.profile.firstName} {user.user.profile.lastName}:
+              </span>
+              <div className="cardSubtaskProcess-porcentage-input">
+                <Input
+                  key={user.user.id}
+                  onBlur={handlePorcentge}
+                  name={String(user.user.id)}
+                  defaultValue={user.percentage}
+                />
+                %
+              </div>
+            </div>
           ))}
           <div className="cardSubtaskProcess-files-models">
             <h2 className="cardSubtaskProcess-files-models-title">

@@ -122,7 +122,7 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
                 <Button
                   key={area.id}
                   text="Ver más"
-                  className="project-btn-footer"
+                  className="project-btn-view"
                   onClick={() => navigate(`/tareas/${area.id}`)}
                 />
               ))}

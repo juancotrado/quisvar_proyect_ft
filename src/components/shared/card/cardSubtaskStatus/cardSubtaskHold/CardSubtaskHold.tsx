@@ -12,6 +12,7 @@ import SubtaskUploadFiles from '../../../../subtasks/subtaskUploadFiles/SubtaskU
 import SubtaskChangeStatusBtn from '../../../../subtasks/subtaskChangeStatusBtn/SubtaskChangeStatusBtn';
 import SubTaskStatusLabel from '../../../../subtasks/subTaskStatusLabel/SubTaskStatusLabel';
 import './cardSubtaskHold.css';
+import formatDate from '../../../../../utils/formatDate';
 
 type DataUser = { id: number; name: string };
 interface CardSubtaskHold {
@@ -25,7 +26,6 @@ const CardSubtaskHold = ({ subTask, isAuthorizedMod }: CardSubtaskHold) => {
   const [usersData, setUsersData] = useState<DataUser[]>([]);
 
   const { listUsers } = useSelector((state: RootState) => state);
-
   const users = useMemo(
     () =>
       listUsers
@@ -68,7 +68,7 @@ const CardSubtaskHold = ({ subTask, isAuthorizedMod }: CardSubtaskHold) => {
         {isAuthorizedMod ? (
           <div className="cardSubtaskHold-files-content">
             <div className="cardSubtaskHold-add-files">
-              <div className="cardSubtaskHold-models">
+              {/* <div className="cardSubtaskHold-models">
                 <h2 className="cardSubtaskHold-models-title">
                   Archivo modelo:
                 </h2>
@@ -77,7 +77,8 @@ const CardSubtaskHold = ({ subTask, isAuthorizedMod }: CardSubtaskHold) => {
                   typeFile="MATERIAL"
                   showDeleteBtn={isAuthorizedMod}
                 />
-              </div>
+              </div> */}
+              <span>Subir Archivos</span>
               <SubtaskUploadFiles id={subTask.id} type="MATERIAL" />
             </div>
             <div className="cardSubtaskHold-add-users">
@@ -116,13 +117,11 @@ const CardSubtaskHold = ({ subTask, isAuthorizedMod }: CardSubtaskHold) => {
             </div>
           </div>
         ) : (
-          <div className="cardSubtaskHold-asign-btn">
-            <SubtaskChangeStatusBtn
-              option="ASIG"
-              type="assigned"
-              subtaskId={subTask.id}
-              subtaskStatus={status}
-              text="Asignarme"
+          <div className="cardSubtaskHold-files-content">
+            <SubtaskFile
+              files={subTask.files}
+              typeFile="MATERIAL"
+              showDeleteBtn={isAuthorizedMod}
             />
           </div>
         )}
@@ -130,8 +129,16 @@ const CardSubtaskHold = ({ subTask, isAuthorizedMod }: CardSubtaskHold) => {
       <section className="cardSubtaskHold-details">
         <SubTaskStatusLabel status={status} />
         <div className="cardSubtaskHold-info">
-          <p className="cardSubtaskHold-info-date">Creación: 21/01/23</p>
-          {!isAuthorizedMod && (
+          {subTask.createdAt && (
+            <p className="cardSubtaskHold-info-date">
+              {formatDate(new Date(subTask.createdAt), {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric',
+              })}
+            </p>
+          )}
+          {isAuthorizedMod && (
             <div className="cardSubtaskHold-files-models">
               <h2 className="cardSubtaskHold-files-models-title">
                 Archivos Modelo:
@@ -139,7 +146,7 @@ const CardSubtaskHold = ({ subTask, isAuthorizedMod }: CardSubtaskHold) => {
               <SubtaskFile
                 files={subTask.files}
                 typeFile="MATERIAL"
-                showDeleteBtn={false}
+                showDeleteBtn={isAuthorizedMod}
               />
             </div>
           )}
@@ -150,8 +157,17 @@ const CardSubtaskHold = ({ subTask, isAuthorizedMod }: CardSubtaskHold) => {
         {status === 'UNRESOLVED' && isAuthorizedMod && addBtn && (
           <Button
             text="LISTO"
-            className="subtask-add-btn"
+            className="card-subtask-add-btn"
             onClick={handleAddUserByTask}
+          />
+        )}
+        {!isAuthorizedMod && (
+          <SubtaskChangeStatusBtn
+            option="ASIG"
+            type="assigned"
+            subtaskId={subTask.id}
+            subtaskStatus={status}
+            text="Asignarme"
           />
         )}
       </section>

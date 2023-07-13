@@ -3,7 +3,7 @@ import './DotsOption.css';
 import Outside from '../../portal/Outside';
 
 export interface Option {
-  name: string;
+  name?: string;
   icon?: string;
   url?: string;
   function?: () => void;

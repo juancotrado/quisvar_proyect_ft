@@ -8,6 +8,10 @@
   margin-top: 3rem;
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  color: var(--color-primary);
+  font-weight: 700;
+  font-size: 1.3rem;
 }
 .tasks-section-container {
   margin: 3rem 0;
@@ -37,7 +41,6 @@
 
 section {
   display: flex;
-  border-radius: var(--radius-button);
   flex-grow: 1;
   width: 100%;
   gap: 2rem;

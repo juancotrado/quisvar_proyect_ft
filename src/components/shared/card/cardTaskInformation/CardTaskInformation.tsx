@@ -111,9 +111,7 @@ const CardTaskInformation = ({
           isAuthorizedMod={isAuthorizedMod}
         />
       )}
-      {status === 'DONE' && (
-        <CardSubtaskDone subTask={subTask} isAuthorizedMod={isAuthorizedMod} />
-      )}
+      {status === 'DONE' && <CardSubtaskDone subTask={subTask} />}
       {isAlertOpen && (
         <Portal wrapperId="modal">
           <div

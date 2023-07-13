@@ -1,11 +1,11 @@
 import { useContext } from 'react';
 import { URL, axiosInstance } from '../../../services/axiosInstance';
-import { Files, SubTask } from '../../../types/types';
-import ButtonDelete from '../../shared/button/ButtonDelete';
+import { Files } from '../../../types/types';
 import { SocketContext } from '../../../context/SocketContex';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import './SubtaskFile.css';
+import Button from '../../shared/button/Button';
 interface SubtaskFileProps {
   files: Files[];
   typeFile?: 'REVIEW' | 'MATERIAL' | 'SUCCESSFUL';
@@ -83,9 +83,10 @@ const SubtaskFile = ({
             {(showDeleteBtnByUserAuth
               ? userSession.profile.id === file.user.profile.id
               : showDeleteBtn) && (
-              <ButtonDelete
+              <Button
                 icon="trash-red"
-                customOnClick={() => deleteFile(file.id)}
+                onClick={() => deleteFile(file.id)}
+                // customOnClick={() => deleteFile(file.id)}
                 className="subtaskFile-btn-delete"
               />
             )}

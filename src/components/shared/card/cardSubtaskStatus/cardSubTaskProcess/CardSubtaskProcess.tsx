@@ -42,7 +42,7 @@ const CardSubtaskProcess = ({
       };
     });
     setPorcetageForUser(porcetageValue);
-  }, []);
+  }, [subTask.users]);
 
   const addFiles = (newFiles: File[]) => {
     if (!files) return setFiles(newFiles);
@@ -204,16 +204,19 @@ const CardSubtaskProcess = ({
           </p>
 
           {subTask.users.map(user => (
-            <div className="cardSubtaskProcess-porcentage-container">
+            <div
+              key={user.user.id}
+              className="cardSubtaskProcess-porcentage-container"
+            >
               <span className="cardSubtaskProcess-porcentage-user">
                 {user.user.profile.firstName} {user.user.profile.lastName}:
               </span>
               <div className="cardSubtaskProcess-porcentage-input">
                 <Input
-                  key={user.user.id}
                   onBlur={handlePorcentge}
                   name={String(user.user.id)}
                   defaultValue={user.percentage}
+                  className="input-percentage-value"
                 />
                 %
               </div>

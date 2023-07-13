@@ -42,6 +42,7 @@ const path = {
 const Tasks = () => {
   const { id } = useParams();
   const { state } = useLocation();
+  const [data, setData] = useState<SubTask>();
   const [workArea, setWorkArea] = useState<WorkArea | null>(null);
   const [subTasks, setSubTasks] = useState<SubTask[] | null>(null);
   const [typeTask, setTypeTask] = useState<TypeTask>();
@@ -67,6 +68,7 @@ const Tasks = () => {
       axiosInstance.get(url).then(res => {
         setTaskId(res.data.id);
         setTypeTask(type);
+        setData(res.data);
         setSubTasks(res.data.subTasks);
         socket.emit('join', res.data.id + type);
         isOpenModal$.setSubject = false;
@@ -155,6 +157,7 @@ const Tasks = () => {
           <h1 className="main-title">
             LISTA DE <span className="main-title-span">TAREAS</span>
           </h1>
+          {data && data.name}
           {isAuthorizedMod && subTasks && (
             <Button
               text="Agregar"

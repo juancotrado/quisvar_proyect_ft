@@ -15,8 +15,8 @@ interface SubtaskChangeStatusBtn {
   subtaskId: number;
   option: 'ASIG' | 'DENY';
   text: string;
-  percentageRange?: number;
-  type?: 'button' | 'submit' | 'reset' | undefined;
+  type: 'sendToReview' | 'deprecated' | 'approved' | 'assigned';
+  porcentagesForUser?: { userid: number; percentage: number }[];
   files?: File[] | null;
   dataFeedback?: DataFeedback | null;
 }
@@ -26,10 +26,10 @@ const SubtaskChangeStatusBtn = ({
   subtaskId,
   option,
   text,
-  dataFeedback,
-  percentageRange = 0,
   type,
+  dataFeedback,
   files,
+  porcentagesForUser,
 }: SubtaskChangeStatusBtn) => {
   const { userSession } = useSelector((state: RootState) => state);
   const socket = useContext(SocketContext);
@@ -41,44 +41,10 @@ const SubtaskChangeStatusBtn = ({
   ): { status: string } | undefined => {
     return statusBody[category]?.[role]?.[state];
   };
-  const handleChangeStatus = async () => {
-    if (subtaskStatus === 'PROCESS' || subtaskStatus === 'DENIED') {
-      if (files?.length) {
-        const formdata = new FormData();
-        const hasPdf = Array.from(files).some(
-          file => file.type === 'application/pdf'
-        );
-        if (!hasPdf)
-          return SnackbarUtilities.warning(
-            'Asegurese de subir una archivo PDF antes.'
-          );
-        for (const file of files) {
-          formdata.append('files', file);
-        }
-        await axiosInstance.post(
-          `/files/uploads/${subtaskId}/?status=REVIEW`,
-          formdata
-        );
-        const feedbackBody = {
-          subTasksId: subtaskId,
-        };
-        await axiosInstance.post(`/feedbacks`, feedbackBody);
-      } else {
-        return SnackbarUtilities.warning(
-          'Asegurese de subir una archivo  antes.'
-        );
-      }
-    }
-    if (option === 'DENY') {
-      if (!dataFeedback?.comment)
-        return SnackbarUtilities.warning(
-          'Asegurese de escribir un comentario antes'
-        );
-      await axiosInstance.patch(`/feedbacks`, dataFeedback);
-    }
+
+  const handleEditStatus = async () => {
     const role = userSession.role === 'EMPLOYEE' ? 'EMPLOYEE' : 'SUPERADMIN';
-    const percentage = Number(percentageRange);
-    const body = { ...getStatus(option, role, subtaskStatus), percentage };
+    const body = getStatus(option, role, subtaskStatus);
     const resStatus = await axiosInstance.patch(
       `/subtasks/status/${subtaskId}`,
       body
@@ -87,12 +53,102 @@ const SubtaskChangeStatusBtn = ({
 
     isOpenModal$.setSubject = false;
   };
+  const handleSendToReview = async () => {
+    if (!files?.length)
+      return SnackbarUtilities.warning(
+        'Asegurese de subir una archivo  antes.'
+      );
+
+    const hasPdf = Array.from(files).some(
+      file => file.type === 'application/pdf'
+    );
+    if (!hasPdf)
+      return SnackbarUtilities.warning(
+        'Asegurese de subir una archivo PDF antes.'
+      );
+    const message = validateValuesPorcentage();
+    if (message) return SnackbarUtilities.warning(message);
+    const formdata = new FormData();
+    for (const file of files) {
+      formdata.append('files', file);
+    }
+    await axiosInstance.post(
+      `/files/uploads/${subtaskId}/?status=REVIEW`,
+      formdata
+    );
+    const feedbackBody = {
+      subTasksId: subtaskId,
+    };
+    await axiosInstance.post(`/feedbacks`, feedbackBody);
+    await axiosInstance.patch(
+      `/subtasks/percentage/${subtaskId}`,
+      porcentagesForUser
+    );
+    await handleEditStatus();
+  };
+
+  const handleDeprecated = async () => {
+    if (!dataFeedback?.comment)
+      return SnackbarUtilities.warning(
+        'Asegurese de escribir un comentario antes'
+      );
+    const message = validateValuesPorcentage();
+    if (message) return SnackbarUtilities.warning(message);
+    await axiosInstance.patch(
+      `/subtasks/percentage/${subtaskId}`,
+      porcentagesForUser
+    );
+    await axiosInstance.patch(`/feedbacks`, dataFeedback);
+    await handleEditStatus();
+  };
+
+  const validateValuesPorcentage = () => {
+    if (!porcentagesForUser) return 'Data de Porcentajes no enviada';
+
+    const sumOfPercentages = porcentagesForUser.reduce(
+      (acc, { percentage }) => percentage + acc,
+      0
+    );
+    if (sumOfPercentages > 100)
+      return 'La suma de todos los porcentajes no debe exceder del 100%';
+    if (sumOfPercentages <= 0)
+      return 'No deje los campos del porcentaje en vacio';
+    return null;
+  };
+
+  const handleApproved = async () => {
+    const message = validateValuesPorcentage();
+    if (message) return SnackbarUtilities.warning(message);
+    await axiosInstance.patch(
+      `/subtasks/percentage/${subtaskId}`,
+      porcentagesForUser
+    );
+    await handleEditStatus();
+  };
+  const selectFuctionType = () => {
+    switch (type) {
+      case 'approved':
+        handleApproved();
+        break;
+      case 'assigned':
+        handleEditStatus();
+        break;
+      case 'deprecated':
+        handleDeprecated();
+        break;
+      case 'sendToReview':
+        handleSendToReview();
+        break;
+      default:
+        break;
+    }
+  };
   return (
     <Button
       text={text}
       className={`SubtaskChangeStatusBtn ${option}`}
-      onClick={handleChangeStatus}
-      type={type ? type : undefined}
+      onClick={selectFuctionType}
+      type={'button'}
     />
   );
 };

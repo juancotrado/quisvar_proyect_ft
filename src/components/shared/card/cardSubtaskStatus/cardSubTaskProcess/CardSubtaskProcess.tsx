@@ -161,10 +161,10 @@ const CardSubtaskProcess = ({
                 option="ASIG"
                 subtaskId={subTask.id}
                 subtaskStatus={status}
-                type="submit"
+                type="sendToReview"
                 text="Mandar a Revisar"
+                files={files}
                 porcentagesForUser={Object.values(porcetageForUser)}
-                // files={files}
               />
             )}
             {status === 'INREVIEW' && isAuthorizedMod && (
@@ -174,12 +174,16 @@ const CardSubtaskProcess = ({
                   subtaskId={subTask.id}
                   subtaskStatus={status}
                   dataFeedback={dataFeedback}
+                  type="deprecated"
                   text="Desaprobar"
+                  porcentagesForUser={Object.values(porcetageForUser)}
                 />
                 <SubtaskChangeStatusBtn
                   option="ASIG"
+                  type="approved"
                   subtaskId={subTask.id}
                   subtaskStatus={status}
+                  porcentagesForUser={Object.values(porcetageForUser)}
                   text="Aprobar"
                 />
               </>

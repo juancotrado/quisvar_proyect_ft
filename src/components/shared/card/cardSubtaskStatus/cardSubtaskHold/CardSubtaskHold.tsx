@@ -119,6 +119,7 @@ const CardSubtaskHold = ({ subTask, isAuthorizedMod }: CardSubtaskHold) => {
           <div className="cardSubtaskHold-asign-btn">
             <SubtaskChangeStatusBtn
               option="ASIG"
+              type="assigned"
               subtaskId={subTask.id}
               subtaskStatus={status}
               text="Asignarme"

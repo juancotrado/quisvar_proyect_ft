@@ -80,7 +80,6 @@ const LabelChip = ({
       )}
       {role !== 'EMPLOYEE' && (
         <DotsOption
-          className="dots-options"
           data={[
             {
               name: isEditable ? 'Guardar' : 'Eliminar',

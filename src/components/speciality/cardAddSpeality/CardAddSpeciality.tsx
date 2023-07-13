@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import './cardAddSpeciality.css';
-import { SpecialityType } from '../../../types/types';
+import { Option, SpecialityType } from '../../../types/types';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { axiosInstance } from '../../../services/axiosInstance';
+import DotsOption from '../../shared/dots/DotsOption';
 
 interface CardAddSpecialityProps {
   onSave?: () => void;
@@ -26,6 +27,23 @@ const CardAddSpeciality = ({ onSave }: CardAddSpecialityProps) => {
     onSave?.();
   };
 
+  const optionsData: Option[] = [
+    {
+      name: 'Cancelar',
+      type: 'button',
+      icon: 'close',
+      function: () => {
+        handleActive();
+        reset();
+      },
+    },
+    {
+      name: 'Guardar',
+      type: 'submit',
+      icon: 'save',
+    },
+  ];
+
   return (
     <form className="speciality-add-card" onSubmit={handleSubmit(onSubmit)}>
       {isActive ? (
@@ -39,27 +57,15 @@ const CardAddSpeciality = ({ onSave }: CardAddSpecialityProps) => {
       ) : (
         <div className="text-area-card">
           <textarea
-            className="text-areas "
-            {...register('name', { required: true })}
+            className="text-areas"
+            {...register('name', {
+              validate: value => value.trim() !== '',
+            })}
             name="name"
             placeholder="Ingrese nueva especialidad"
           />
           {!isActive && (
-            <div className="text-area-btns">
-              <button
-                className="close-add-card"
-                type="button"
-                onClick={() => {
-                  handleActive();
-                  reset();
-                }}
-              >
-                <img src="svg/close.svg" />
-              </button>
-              <button className="editable-add-submit" type="submit">
-                <img src="svg/save.svg" />
-              </button>
-            </div>
+            <DotsOption data={optionsData} className="option-position" />
           )}
         </div>
       )}

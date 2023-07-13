@@ -33,7 +33,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: var(--color-menu);
+  background-color: white;
   color: var(--color-quaternay);
   border: 0.15rem dashed var(--color-quaternay);
   width: 100%;
@@ -55,6 +55,9 @@
 }
 .text-area-btns {
   height: 100%;
+}
+.option-position {
+  top: -100%;
 }
 .close-add-card {
   position: absolute;

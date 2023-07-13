@@ -54,7 +54,11 @@
   display: flex;
   justify-content: space-between;
 }
-
+.project-btn-view {
+  background-color: var(--color-primary);
+  color: white;
+  padding: 0.1rem;
+}
 .project-card-footer-area {
   display: flex;
   padding: 0.2rem;

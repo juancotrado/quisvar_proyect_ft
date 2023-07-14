@@ -67,6 +67,9 @@ const CardSubtaskHold = ({ subTask, isAuthorizedMod }: CardSubtaskHold) => {
       <section className="cardSubtaskHold-left-details">
         {isAuthorizedMod ? (
           <div className="cardSubtaskHold-files-content">
+            <h4 className="cardSubtaskHold-title-information">
+              Subir Archivos:
+            </h4>
             <div className="cardSubtaskHold-add-files">
               {/* <div className="cardSubtaskHold-models">
                 <h2 className="cardSubtaskHold-models-title">
@@ -78,22 +81,30 @@ const CardSubtaskHold = ({ subTask, isAuthorizedMod }: CardSubtaskHold) => {
                   showDeleteBtn={isAuthorizedMod}
                 />
               </div> */}
-              <span>Subir Archivos</span>
+
               <SubtaskUploadFiles id={subTask.id} type="MATERIAL" />
             </div>
             <div className="cardSubtaskHold-add-users">
-              <DropDownSimple
-                label="Asignar Usuario"
-                data={users}
-                textField="name"
-                itemKey="id"
-                valueInput={(name, id) =>
-                  handleAddUser({ id: parseInt(id), name })
-                }
-                placeholder="Seleccione Usuario"
-              />
+              <div>
+                <h4 className="cardSubtaskHold-title-information">
+                  Buscar Usuario:
+                </h4>
+                <DropDownSimple
+                  // label="Asignar Usuario"
+                  data={users}
+                  textField="name"
+                  itemKey="id"
+                  valueInput={(name, id) =>
+                    handleAddUser({ id: parseInt(id), name })
+                  }
+                  placeholder="Seleccione Usuario"
+                />
+              </div>
               {usersData && (
                 <div className="cardSubtaskHold-lists-users">
+                  <h4 className="cardSubtaskHold-title-information">
+                    Lista de Usuarios Asignados:
+                  </h4>
                   {usersData.map((_user, index) => (
                     <div key={_user.id} className="cardSubtaskHold-list-user">
                       <span className="-cardSubtaskHold-user-info">
@@ -118,6 +129,9 @@ const CardSubtaskHold = ({ subTask, isAuthorizedMod }: CardSubtaskHold) => {
           </div>
         ) : (
           <div className="cardSubtaskHold-files-content">
+            <h2 className="cardSubtaskHold-files-models-title">
+              Archivos Modelo:
+            </h2>
             <SubtaskFile
               files={subTask.files}
               typeFile="MATERIAL"
@@ -131,6 +145,7 @@ const CardSubtaskHold = ({ subTask, isAuthorizedMod }: CardSubtaskHold) => {
         <div className="cardSubtaskHold-info">
           {subTask.createdAt && (
             <p className="cardSubtaskHold-info-date">
+              <b>Fecha de inicio: </b>
               {formatDate(new Date(subTask.createdAt), {
                 day: '2-digit',
                 month: 'long',
@@ -138,6 +153,9 @@ const CardSubtaskHold = ({ subTask, isAuthorizedMod }: CardSubtaskHold) => {
               })}
             </p>
           )}
+          <h2 className={'cardSubtaskHold-info-price'}>
+            <b>Precio:</b> S/. {subTask.price}
+          </h2>
           {isAuthorizedMod && (
             <div className="cardSubtaskHold-files-models">
               <h2 className="cardSubtaskHold-files-models-title">
@@ -150,9 +168,6 @@ const CardSubtaskHold = ({ subTask, isAuthorizedMod }: CardSubtaskHold) => {
               />
             </div>
           )}
-          <h2 className={'cardSubtaskHold-info-price'}>
-            Precio: S/. {subTask.price}
-          </h2>
         </div>
         {status === 'UNRESOLVED' && isAuthorizedMod && addBtn && (
           <Button
@@ -168,6 +183,7 @@ const CardSubtaskHold = ({ subTask, isAuthorizedMod }: CardSubtaskHold) => {
             subtaskId={subTask.id}
             subtaskStatus={status}
             text="Asignarme"
+            className="card-subtask-add-btn"
           />
         )}
       </section>

@@ -20,8 +20,8 @@ const spring = {
 };
 
 interface DateRange {
-  initial: String;
-  until: String;
+  initial: string;
+  until: string;
 }
 
 type Options = { id: number; name: string };
@@ -77,7 +77,6 @@ const ListPersonalTask = () => {
     axiosInstance
       .get(`/reports/user/?initial=${initial}&until=${until}`)
       .then(res => handleEditExcel(res.data));
-    // console.log(values);
   };
   const handleEditExcel = async (data: SubTask[]) => {
     // Cargar la plantilla desde un archivo

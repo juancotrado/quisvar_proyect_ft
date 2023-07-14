@@ -5,6 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import DotsOption from '../../../shared/dots/DotsOption';
 import { Option } from '../../../../types/types';
+import './sidebarAddNewLevel.css';
 
 type TaskForm = { name: string; idValue: number; unique: boolean };
 
@@ -93,7 +94,11 @@ const SidebarAddNewLevel = ({ idValue, onSave, keyNameId }: AddTaskProps) => {
           onClick={handleAddlevel}
         />
       ) : (
-        <DotsOption data={optionsData} />
+        <DotsOption
+          notPositionRelative
+          data={optionsData}
+          className="sidebarAddNewLevel-menu-dots-option"
+        />
       )}
     </form>
   );

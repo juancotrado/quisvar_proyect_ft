@@ -89,7 +89,7 @@ const CardTaskInformation = ({
       />
       <div className="subtask-header">
         <h3 className="subtask-info-title">
-          TAREA:{' '}
+          Título de la tarea:{' '}
           <b>
             {subTask.item}. {subTask.name}
           </b>

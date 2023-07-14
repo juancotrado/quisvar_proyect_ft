@@ -13,6 +13,7 @@ import { DataFeedback, StatusType } from '../../../types/types';
 interface SubtaskChangeStatusBtn {
   subtaskStatus: StatusType;
   subtaskId: number;
+  className?: string;
   option: 'ASIG' | 'DENY';
   text: string;
   type: 'sendToReview' | 'deprecated' | 'approved' | 'assigned';
@@ -28,6 +29,7 @@ const SubtaskChangeStatusBtn = ({
   text,
   type,
   dataFeedback,
+  className,
   files,
   porcentagesForUser,
 }: SubtaskChangeStatusBtn) => {
@@ -146,7 +148,7 @@ const SubtaskChangeStatusBtn = ({
   return (
     <Button
       text={text}
-      className={`SubtaskChangeStatusBtn ${option}`}
+      className={`${className} SubtaskChangeStatusBtn ${option}`}
       onClick={selectFuctionType}
       type={'button'}
     />

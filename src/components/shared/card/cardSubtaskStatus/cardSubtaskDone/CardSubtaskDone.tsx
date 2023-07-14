@@ -3,6 +3,7 @@ import SubtaskFile from '../../../../subtasks/subtaskFiles/SubtaskFile';
 import SubTaskStatusLabel from '../../../../subtasks/subTaskStatusLabel/SubTaskStatusLabel';
 import SubtasksShippingHistory from '../../../../subtasks/subtasksShippingHistory/SubtasksShippingHistory';
 import './cardSubtaskDone.css';
+import formatDate from '../../../../../utils/formatDate';
 
 interface CardSubtaskDone {
   subTask: SubTask;
@@ -20,10 +21,20 @@ const CardSubtaskDone = ({ subTask }: CardSubtaskDone) => {
       </section>
       <section className="cardSubtaskDone-details">
         <SubTaskStatusLabel status={status} />
-
         <div className="cardSubtaskDone-info">
-          <p className="cardSubtaskDone-info-date">Creación: 21/01/23</p>
-
+          {subTask.createdAt && (
+            <p className="cardSubtaskHold-info-date">
+              <b>Fecha de inicio: </b>
+              {formatDate(new Date(subTask.createdAt), {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric',
+              })}
+            </p>
+          )}
+          <h2 className={'cardSubtaskProcess-info-price'}>
+            Precio: S/. {subTask.price}
+          </h2>
           <div className="cardSubtaskDone-files-models">
             <h2 className="cardSubtaskDone-files-models-title">
               Archivos Modelo:
@@ -34,9 +45,6 @@ const CardSubtaskDone = ({ subTask }: CardSubtaskDone) => {
               showDeleteBtn={false}
             />
           </div>
-          <h2 className={'cardSubtaskProcess-info-price'}>
-            Precio: S/. {subTask.price}
-          </h2>
         </div>
       </section>
     </div>

@@ -13,8 +13,10 @@ import './cardSubTaskProcess.css';
 import SubTaskStatusLabel from '../../../../subtasks/subTaskStatusLabel/SubTaskStatusLabel';
 import { Input, InputRange } from '../../../..';
 import { useForm } from 'react-hook-form';
+import { motion } from 'framer-motion';
 import ButtonDelete from '../../../button/ButtonDelete';
 import SubtasksShippingHistory from '../../../../subtasks/subtasksShippingHistory/SubtasksShippingHistory';
+import formatDate from '../../../../../utils/formatDate';
 interface CardSubtaskProcess {
   subTask: SubTask;
   isAuthorizedMod: boolean;
@@ -94,7 +96,7 @@ const CardSubtaskProcess = ({
     });
   };
   const getDataFeedback = (data: DataFeedback) => setDataFeedback(data);
-  console.log(porcetageForUser);
+  debugger;
   return (
     <div className="cardSubtaskProcess">
       <section className="cardSubtaskProcess-left-details">
@@ -145,6 +147,30 @@ const CardSubtaskProcess = ({
             getDataFeedback={getDataFeedback}
           />
         )}
+        {status === 'PROCESS' &&
+          isAuthorizedMod &&
+          subTask.feedBacks.length === 0 && (
+            <div className="waiting-screen">
+              <motion.img
+                animate={{
+                  scale: [0.5, 1, 1, 0.5, 0.5],
+                  rotate: [0, 0, 180, 180, 0],
+                  borderRadius: ['0%', '0%', '50%', '50%', '0%'],
+                }}
+                transition={{
+                  duration: 2,
+                  ease: 'easeInOut',
+                  times: [0, 0.4, 1, 1.6, 2],
+                  repeat: Infinity,
+                  repeatDelay: 1,
+                }}
+                className="waiting-screen-image"
+                src="svg/sand_clock.svg"
+                alt=""
+              />
+              <h2>Esperando al envio de archivos...</h2>
+            </div>
+          )}
         {areAuthorizedUsers && (
           <div className="cardSubtaskProcess-btns">
             {status === 'PROCESS' &&
@@ -194,7 +220,6 @@ const CardSubtaskProcess = ({
       <section className="cardSubtaskProcess-details">
         <SubTaskStatusLabel status={status} />
         <div className="cardSubtaskProcess-info">
-          <p className="cardSubtaskProcess-info-date">Creación: 21/01/23</p>
           <p
             className={`cardSubtaskProcess-info-untilDate ${
               getTimeOut() <= 0 && 'expired-time '
@@ -202,14 +227,34 @@ const CardSubtaskProcess = ({
           >
             Tiempo restante: {getTimeOut()} hrs
           </p>
+          {subTask.createdAt && (
+            <p className="cardSubtaskHold-info-date">
+              <b>Fecha de inicio: </b>
+              {formatDate(new Date(subTask.createdAt), {
+                day: '2-digit',
+                month: 'long',
+                year: 'numeric',
+              })}
+            </p>
+          )}
 
-          {subTask.users.map(user => (
+          <h3 className="cardSubtaskProcess-info-hours">
+            <b>Total horas:</b> 24 horas
+          </h3>
+          <h2 className={'cardSubtaskProcess-info-price'}>
+            Precio: S/. {subTask.price}
+          </h2>
+        </div>
+        <div className="cardSubtaskProcess-porcentage-container-main">
+          <h4>Lista de porcentaje de avance:</h4>
+          {subTask.users.map((user, index) => (
             <div
               key={user.user.id}
               className="cardSubtaskProcess-porcentage-container"
             >
               <span className="cardSubtaskProcess-porcentage-user">
-                {user.user.profile.firstName} {user.user.profile.lastName}:
+                {index + 1}
+                {')'} {user.user.profile.firstName} {user.user.profile.lastName}
               </span>
               <div className="cardSubtaskProcess-porcentage-input">
                 <Input
@@ -222,30 +267,25 @@ const CardSubtaskProcess = ({
               </div>
             </div>
           ))}
-          <div className="cardSubtaskProcess-files-models">
-            <h2 className="cardSubtaskProcess-files-models-title">
-              Archivos Modelo:
-            </h2>
-            {status === 'INREVIEW' && isAuthorizedMod && (
-              <SubtaskUploadFiles
-                id={subTask.id}
-                type="MATERIAL"
-                className="cardSubtaskProcess-files-models-upload"
-              />
-            )}
-            <SubtaskFile
-              files={subTask.files}
-              typeFile="MATERIAL"
-              showDeleteBtn={false}
-            />
-          </div>
-          <h3 className="cardSubtaskProcess-info-hours">
-            Total Horas: 24 horas
-          </h3>
-          <h2 className={'cardSubtaskProcess-info-price'}>
-            Precio: S/. {subTask.price}
-          </h2>
         </div>
+        <div className="cardSubtaskProcess-files-models">
+          <h2 className="cardSubtaskProcess-files-models-title">
+            Archivos Modelo:
+          </h2>
+          {status === 'INREVIEW' && isAuthorizedMod && (
+            <SubtaskUploadFiles
+              id={subTask.id}
+              type="MATERIAL"
+              className="cardSubtaskProcess-files-models-upload"
+            />
+          )}
+          <SubtaskFile
+            files={subTask.files}
+            typeFile="MATERIAL"
+            showDeleteBtn={false}
+          />
+        </div>
+
         {isAuthorizedMod && (
           <Button
             text="RESTABLECER"

@@ -6,7 +6,7 @@ import { ChangeEvent, useState } from 'react';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import DotsOption from '../../../shared/dots/DotsOption';
 import useArchiver from '../../../../hooks/useArchiver';
-
+import './sidebarLevelList.css';
 type NewTypeTask = 'tasks' | 'indextasks' | 'tasks2' | 'tasks3';
 interface IndexTaskContainerProps {
   data: DataTask;
@@ -41,7 +41,6 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
   };
 
   const handleDuplicate = async (id: number) => {
-    // console.log(data)
     setOpenEditData(false);
     await axiosInstance
       .post(`/duplicates/${type}/${id}`)
@@ -112,8 +111,10 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
         )}
       </div>
       {role !== 'EMPLOYEE' && (
-        <div className="menu-index-task">
+        <div className="aside-menu-index-task">
           <DotsOption
+            className="aside-menu-dots-option"
+            notPositionRelative
             data={[
               {
                 name: openEditData ? 'Cancelar' : 'Editar',

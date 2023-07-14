@@ -19,6 +19,12 @@
   height: 100%;
   overflow-y: auto;
 }
+.main-title-index {
+  color: black;
+  font-size: 1.3rem;
+  margin-left: 2rem;
+  font-style: italic;
+}
 .title-list {
   padding: 0.2rem 1rem;
   border-radius: var(--radius-button);

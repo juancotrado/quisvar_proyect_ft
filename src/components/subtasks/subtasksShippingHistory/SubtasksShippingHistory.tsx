@@ -7,7 +7,7 @@ interface SubtasksShippingHistoryProps {
   feedBacks: Feedback[];
   getDataFeedback?: (data: DataFeedback) => void;
   isAuthorizedUser?: boolean;
-  isAuthorizedMod?: Boolean;
+  isAuthorizedMod?: boolean;
 }
 
 const SubtasksShippingHistory = ({

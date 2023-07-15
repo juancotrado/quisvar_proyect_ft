@@ -96,7 +96,7 @@ const CardSubtaskProcess = ({
     });
   };
   const getDataFeedback = (data: DataFeedback) => setDataFeedback(data);
-  debugger;
+
   return (
     <div className="cardSubtaskProcess">
       <section className="cardSubtaskProcess-left-details">

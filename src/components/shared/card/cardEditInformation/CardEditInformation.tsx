@@ -20,8 +20,6 @@ const CardEditInformation = ({ isOpen, onClose }: any) => {
   }, [reset, userSession]);
 
   const onSubmit = async (values: User) => {
-    console.log(userSession);
-
     if (userSession?.id !== undefined) {
       const saveData = {
         firstName: values.profile.firstName,

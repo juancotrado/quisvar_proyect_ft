@@ -19,6 +19,7 @@ import InputRange from './shared/inputRange/InputRange';
 import CardSubtaskDone from './shared/card/cardSubtaskStatus/cardSubtaskDone/CardSubtaskDone';
 import CardSubtaskHold from './shared/card/cardSubtaskStatus/cardSubtaskHold/CardSubtaskHold';
 import CardSubtaskProcess from './shared/card/cardSubtaskStatus/cardSubTaskProcess/CardSubtaskProcess';
+import TaskCounter from './shared/taskCounter/TaskCounter';
 
 export {
   Alert,
@@ -42,4 +43,5 @@ export {
   Sidebar,
   SubTaskCard,
   CardTaskInformation,
+  TaskCounter,
 };

@@ -45,7 +45,6 @@ const CardRegisterSubTask = ({
         : [],
     [listUsers]
   );
-  console.log('subTask', subTask);
   useEffect(() => {
     if (!subTask) return;
     reset({

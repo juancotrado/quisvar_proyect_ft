@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { TypeTask, WorkArea } from '../../../types/types';
 import './sidebar.css';
-import { CardRegisterArea } from '../..';
+import { CardRegisterArea, TaskCounter } from '../..';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import SidebarAddNewLevel from './sidebarAddNewLevel/SidebarAddNewLevel';
@@ -43,6 +43,7 @@ const Sidebar = ({
           <h2 className="aside-title">{`${item !== '0' ? item + '.' : ''} ${
             project.unique ? project.description : name
           }`}</h2>
+          <TaskCounter tasks={workArea.indexTasks} />
           <span className={`${profileUser || 'aside-coordinator-off'}`}>
             {profileUser
               ? `${profileUser.firstName} ${profileUser.lastName}`

@@ -107,7 +107,7 @@ const Tasks = () => {
       const newSubTasks = subTasks?.map(subTask =>
         subTask.id == newSubTask.id ? newSubTask : subTask
       );
-      setSubTask(newSubTask);
+      if (subTask.id === newSubTask.id) setSubTask(newSubTask);
       setSubTasks(newSubTasks);
     });
 

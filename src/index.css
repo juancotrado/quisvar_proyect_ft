@@ -8,14 +8,14 @@
   --color-done: #57d9a3;
   --color-menu: #f7f7f7;
   --color-primary-gradiant: #a0dcf5;
-  --size-title: 2rem;
-  --size-subtitle: 1.1rem;
-  --size-input: 1rem;
-  --size-label: 1.1rem;
-  --size-button: 1.2rem;
-  --size-paragraph: 0.7rem;
-  --radius-button: 12px;
-  --radius-input: 10px;
+  --size-title: 1.6rem;
+  --size-subtitle: 0.9rem;
+  --size-input: 0.8rem;
+  --size-label: 0.8rem;
+  --size-button: 0.9rem;
+  --size-paragraph: 0.5rem;
+  --radius-button: 9px;
+  --radius-input: 8px;
   --header-height: 4.5rem;
 }
 

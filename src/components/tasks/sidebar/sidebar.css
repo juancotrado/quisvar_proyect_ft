@@ -86,7 +86,7 @@
   position: relative;
   padding: 0.5rem;
   color: var(--color-secondary);
-  font-size: 1rem;
+  font-size: var(--size-label);
   align-items: center;
   gap: 0.6rem;
   font-weight: 700;

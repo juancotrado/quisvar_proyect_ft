@@ -85,6 +85,7 @@ type Profile = {
 export interface ProjectType {
   id: number;
   description?: string;
+  location?: string;
   CUI: string;
   name: string;
   unique?: boolean;

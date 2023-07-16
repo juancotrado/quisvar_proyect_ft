@@ -78,32 +78,19 @@ const CardRegisterProject = ({
     setValue('name', dataForm.name);
     setValue('description', dataForm.description);
     setValue('typeSpeciality', dataForm.typeSpeciality);
+    setValue('location', dataForm.location);
     setValue('userId', dataForm.userId);
     setValue('startDate', _date(new Date(dataForm.startDate)));
     setValue('untilDate', _date(new Date(dataForm.untilDate)));
   }, [dataForm]);
 
   const onSubmit: SubmitHandler<ProjectForm> = values => {
-    const {
-      startDate,
-      untilDate,
-      userId,
-      description,
-      typeSpeciality,
-      name,
-      unique,
-      CUI,
-    } = values;
+    const { startDate, untilDate, ..._values } = values;
     const _data = {
+      ..._values,
       startDate: new Date(startDate),
       untilDate: new Date(untilDate),
       specialityId,
-      userId,
-      unique,
-      description,
-      typeSpeciality,
-      name,
-      CUI,
     };
     if (dataForm.id) {
       axiosInstance
@@ -141,25 +128,30 @@ const CardRegisterProject = ({
         <hr></hr>
         <div className="col-input-top">
           <Input
-            label="CUI"
+            label="CUI:"
             {...register('CUI')}
             name="CUI"
             required={true}
             placeholder="CUI"
-            className="input1"
           />
           <Input
-            label="Distrito"
-            {...register('description')}
-            name="description"
+            label="Distrito:"
+            {...register('location')}
+            name="location"
             type="text"
             placeholder="Distrito"
-            className="input2"
           />
         </div>
+        <Input
+          label="Nombre Corto:"
+          {...register('name')}
+          name="name"
+          type="text"
+          placeholder="Nombre Corto "
+        />
         <div className="col-input">
           <Select
-            label="Tipo"
+            label="Tipo:"
             required={true}
             {...register('typeSpeciality')}
             name="typeSpeciality"
@@ -168,7 +160,7 @@ const CardRegisterProject = ({
             textField="name"
           />
           <Select
-            label="Coordinador"
+            label="Coordinador:"
             required={true}
             {...register('userId', { valueAsNumber: true })}
             name="userId"
@@ -179,13 +171,13 @@ const CardRegisterProject = ({
         </div>
         <div className="col-input">
           <Input
-            label="Fecha Inicio"
+            label="Fecha Inicio:"
             {...register('startDate')}
             name="startDate"
             type="date"
           />
           <Input
-            label="Fecha Limite"
+            label="Fecha Limite:"
             {...register('untilDate')}
             name="untilDate"
             type="date"
@@ -210,10 +202,10 @@ const CardRegisterProject = ({
           </div>
         )}
         <TextArea
-          label="Nombre del Proyeto"
-          {...register('name')}
-          name="name"
-          placeholder="Nombre"
+          label="Nombre Completo del Proyecto:"
+          {...register('description')}
+          name="description"
+          placeholder="Nombre completo del Proyecto"
         />
         <Button
           type="submit"

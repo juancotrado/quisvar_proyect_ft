@@ -43,7 +43,7 @@ const Sidebar = ({
           <h2 className="aside-title">{`${item !== '0' ? item + '.' : ''} ${
             project.unique ? project.description : name
           }`}</h2>
-          <TaskCounter tasks={workArea.indexTasks} />
+          <TaskCounter nivelTask={workArea} />
           <span className={`${profileUser || 'aside-coordinator-off'}`}>
             {profileUser
               ? `${profileUser.firstName} ${profileUser.lastName}`

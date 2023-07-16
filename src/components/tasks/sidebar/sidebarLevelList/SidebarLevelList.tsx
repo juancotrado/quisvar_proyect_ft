@@ -1,7 +1,7 @@
-import { DataTask } from '../../../../types/types';
+import { DataTask, IndexTask, Task, Task2 } from '../../../../types/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
-import { Input } from '../../..';
+import { Input, TaskCounter } from '../../..';
 import { ChangeEvent, useState } from 'react';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import DotsOption from '../../../shared/dots/DotsOption';
@@ -9,7 +9,7 @@ import useArchiver from '../../../../hooks/useArchiver';
 import './sidebarLevelList.css';
 type NewTypeTask = 'tasks' | 'indextasks' | 'tasks2' | 'tasks3';
 interface IndexTaskContainerProps {
-  data: DataTask;
+  data: IndexTask | Task | Task2 | DataTask;
   onSave?: () => void;
   type: NewTypeTask;
 }
@@ -101,6 +101,9 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
             >
               {data.item}. {data.name}
             </span>
+
+            <TaskCounter nivelTask={data} />
+
             {!data.unique && (
               <img src="/svg/down.svg" className="aside-dropdown-arrow" />
             )}

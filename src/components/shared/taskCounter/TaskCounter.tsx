@@ -1,17 +1,35 @@
-import { IndexTask, StatusType, Task } from '../../../types/types';
+import { StatusType, SubTask } from '../../../types/types';
 import './TaskCounter.css';
 interface TaskCounter {
-  tasks: IndexTask[];
+  nivelTask: any;
   className?: string;
 }
-const TaskCounter = ({ tasks, className }: TaskCounter) => {
-  const countSubTasks = (tasks: IndexTask[] | Task[], status: StatusType) => {
+
+const TaskCounter = ({ nivelTask, className }: TaskCounter) => {
+  const selectTaskCounter = (status: StatusType[]) => {
+    if (nivelTask?.unique) {
+      return nivelTask.subTasks.filter((subTask: SubTask) =>
+        status.includes(subTask.status)
+      ).length;
+    }
+    const tasks = nivelTask.indexTasks
+      ? nivelTask.indexTasks
+      : nivelTask.tasks
+      ? nivelTask.tasks
+      : nivelTask.tasks_2
+      ? nivelTask.tasks_2
+      : nivelTask.tasks_3;
+
+    return countSubTasks(tasks, status);
+  };
+
+  const countSubTasks = (tasks: any, status: StatusType[]) => {
     let count = 0;
 
     for (const task of tasks) {
       if (task.unique) {
-        count += task.subTasks.filter(
-          subTask => subTask.status === status
+        count += task.subTasks.filter((subTask: SubTask) =>
+          status.includes(subTask.status)
         ).length;
       }
       if (task.tasks && task.tasks.length > 0) {
@@ -30,11 +48,13 @@ const TaskCounter = ({ tasks, className }: TaskCounter) => {
     return count;
   };
 
-  // Obtén los conteos para cada estado
-  const unresolvedCount = countSubTasks(tasks, 'UNRESOLVED');
-  const inReviewAndProcessCount =
-    countSubTasks(tasks, 'INREVIEW') + countSubTasks(tasks, 'PROCESS');
-  const doneCount = countSubTasks(tasks, 'DONE');
+  const unresolvedCount = selectTaskCounter(['UNRESOLVED']);
+  const inReviewAndProcessCount = selectTaskCounter([
+    'PROCESS',
+    'INREVIEW',
+    'DENIED',
+  ]);
+  const doneCount = selectTaskCounter(['DONE']);
   return (
     <div className={`task-counter-container ${className}`}>
       <span className="task-counter-unresolved">({unresolvedCount})</span>

@@ -2,7 +2,6 @@
   background-color: var(--color-primary);
   color: white;
   position: absolute;
-  /* top: var(--header-height); */
   top: 2rem;
   left: -11rem;
   width: 13rem;

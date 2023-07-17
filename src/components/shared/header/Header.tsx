@@ -13,13 +13,16 @@ const Header = () => {
   const navigate = useNavigate();
   const socket = useContext(SocketContext);
   const [isOpen, setIsOpen] = useState(false);
+
+  const [isOpenMoreInfo, setIsOpenMoreInfo] = useState(false);
   const handleToggleRef = useRef<Subscription>(new Subscription());
   const { userSession } = useSelector((state: RootState) => state);
 
   useEffect(() => {
-    handleToggleRef.current = toggle$.getSubject.subscribe((value: boolean) =>
-      setIsOpen(value)
-    );
+    handleToggleRef.current = toggle$.getSubject.subscribe((value: boolean) => {
+      setIsOpen(value);
+      setIsOpenMoreInfo(value);
+    });
     return () => {
       handleToggleRef.current.unsubscribe();
     };
@@ -33,9 +36,9 @@ const Header = () => {
   const closeModal = () => {
     setOpenModalInfo(false);
   };
-  const toggleMenu = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleMenu = () => setIsOpen(!isOpen);
+  const toggleMenuMoreInfo = () => setIsOpenMoreInfo(!isOpenMoreInfo);
+
   const handleNotification = () => {
     navigate('lista-de-notificaciones');
   };
@@ -75,7 +78,7 @@ const Header = () => {
       id: 2,
       name: '/svg/question-circle.svg',
       link: '/dashboard',
-      action: handleLogout,
+      action: toggleMenuMoreInfo,
     },
     {
       id: 3,
@@ -85,6 +88,21 @@ const Header = () => {
     },
   ];
 
+  const menuMoreInfo = [
+    {
+      id: 1,
+      name: 'Descargar videos',
+      icon: '/svg/file-video-solid.svg',
+      // action: () => (window.location.href = '/public/tutorials/Downlo.mp4'),
+      action: () => window.open('/public/tutorials/Downlo.mp4', '_blank'),
+    },
+    {
+      id: 1,
+      name: 'Ver PDF',
+      icon: '/svg/file-pdf-solid.svg',
+      action: openModal,
+    },
+  ];
   const menu = [
     {
       id: 1,
@@ -154,6 +172,7 @@ const Header = () => {
                   className="icon"
                 />
               )}
+              {icon.id === 2 && isOpenMoreInfo && <Menu data={menuMoreInfo} />}
               {icon.id === 3 && isOpen && <Menu data={menu} />}
             </li>
           ))}

@@ -61,6 +61,7 @@ const Sidebar = ({
             projectId={workArea.projectId}
             dataWorkArea={workAreaInfo}
             onSave={onUpdate}
+            isUnique={project.unique}
           />
         )}
       </div>

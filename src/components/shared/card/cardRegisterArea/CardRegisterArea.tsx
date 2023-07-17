@@ -16,6 +16,7 @@ interface CardRegisterAreaProps {
   onClose?: () => void;
   projectId?: number;
   dataWorkArea?: WorkAreaForm | null;
+  isUnique?: boolean;
 }
 
 type CoordinatorType = {
@@ -35,6 +36,7 @@ const CardRegisterArea = ({
   onSave,
   projectId,
   onClose,
+  isUnique,
 }: CardRegisterAreaProps) => {
   const [data, setData] = useState<WorkAreaForm>(InitialValues);
   const { listUsers } = useSelector((state: RootState) => state);
@@ -94,12 +96,14 @@ const CardRegisterArea = ({
       <span className="close-icon" onClick={onClose}>
         <img src="/svg/close.svg" alt="pencil" />
       </span>
-      <InputText
-        {...register('name')}
-        placeholder="nombre"
-        className="input-project"
-        label="Nombre del área"
-      />
+      {isUnique && (
+        <InputText
+          {...register('name')}
+          placeholder="nombre"
+          className="input-project"
+          label="Nombre del área"
+        />
+      )}
       <DropDownSimple
         label="Coordinador"
         type="search"

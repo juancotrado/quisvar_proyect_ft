@@ -114,7 +114,7 @@ const Tasks = () => {
     return () => {
       socket.off('server:update-subTask');
     };
-  }, [socket, subTasks]);
+  }, [socket, subTasks, subTask]);
   useEffect(() => {
     socket.on('server:delete-subTask', (newSubTasks: SubTask[]) => {
       setSubTasks(newSubTasks);

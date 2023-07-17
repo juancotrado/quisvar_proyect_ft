@@ -88,19 +88,26 @@ const Header = () => {
     },
   ];
 
+  const selectPdfForUserRol = () => {
+    if (userSession.role === 'EMPLOYEE')
+      return window.open('/public/tutorials/MANUAL_DE_USUARIO.pdf', '_blank');
+    return window.open(
+      '/public/tutorials/MANUAL_DE_ADMINISTRADOR.pdf',
+      '_blank'
+    );
+  };
   const menuMoreInfo = [
     {
       id: 1,
-      name: 'Descargar videos',
+      name: 'Ver Video tutorial',
       icon: '/svg/file-video-solid.svg',
-      // action: () => (window.location.href = '/public/tutorials/Downlo.mp4'),
       action: () => window.open('/public/tutorials/Downlo.mp4', '_blank'),
     },
     {
       id: 1,
       name: 'Ver PDF',
       icon: '/svg/file-pdf-solid.svg',
-      action: openModal,
+      action: selectPdfForUserRol,
     },
   ];
   const menu = [

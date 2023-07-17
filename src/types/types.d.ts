@@ -123,11 +123,7 @@ export interface WorkArea {
   user: User;
   projectId: number;
   indexTasks: IndexTask[];
-  project: {
-    name: string;
-    description?: string;
-    unique?: boolean;
-  };
+  project: ProjectType;
 }
 export type WorkAreaForm = Omit<WorkArea, 'indexTasks' | 'user' | 'project'>;
 

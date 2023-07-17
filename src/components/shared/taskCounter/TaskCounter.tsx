@@ -57,9 +57,17 @@ const TaskCounter = ({ nivelTask, className }: TaskCounter) => {
   const doneCount = selectTaskCounter(['DONE']);
   return (
     <div className={`task-counter-container ${className}`}>
-      <span className="task-counter-unresolved">({unresolvedCount})</span>
-      <span className="task-counter-process">({inReviewAndProcessCount})</span>
-      <span className="task-counter-done">({doneCount})</span>
+      {unresolvedCount !== 0 && (
+        <span className="task-counter-unresolved">({unresolvedCount})</span>
+      )}
+      {inReviewAndProcessCount !== 0 && (
+        <span className="task-counter-process">
+          ({inReviewAndProcessCount})
+        </span>
+      )}
+      {doneCount !== 0 && (
+        <span className="task-counter-done">({doneCount})</span>
+      )}
     </div>
   );
 };

@@ -41,7 +41,7 @@ const Sidebar = ({
       <div className="aside-container-title">
         <div className="aside-title-info">
           <h2 className="aside-title">{`${item !== '0' ? item + '.' : ''} ${
-            project.unique ? project.description : name
+            project.unique ? project.location : name
           }`}</h2>
           <TaskCounter nivelTask={workArea} />
           <span className={`${profileUser || 'aside-coordinator-off'}`}>
@@ -61,6 +61,7 @@ const Sidebar = ({
             projectId={workArea.projectId}
             dataWorkArea={workAreaInfo}
             onSave={onUpdate}
+            isUnique={project.unique}
           />
         )}
       </div>

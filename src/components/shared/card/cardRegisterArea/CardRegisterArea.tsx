@@ -96,7 +96,7 @@ const CardRegisterArea = ({
       <span className="close-icon" onClick={onClose}>
         <img src="/svg/close.svg" alt="pencil" />
       </span>
-      {isUnique && (
+      {!isUnique && (
         <InputText
           {...register('name')}
           placeholder="nombre"

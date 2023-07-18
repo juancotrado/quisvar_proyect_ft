@@ -1,4 +1,5 @@
-import { DataTask, IndexTask, Task, Task2 } from '../../../../types/types';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import type { DataTask, IndexTask, Task, Task2 } from '../../../../types/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
 import { Input, TaskCounter } from '../../..';
@@ -17,16 +18,24 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
   const { userSession } = useSelector((state: RootState) => state);
   const [name, setName] = useState<string>();
   const [unique, setUnique] = useState(data.unique);
+  const [errors, setErrors] = useState<{ [key: string]: any }>({});
   const [openEditData, setOpenEditData] = useState<boolean>(false);
-
   const { handleArchiver } = useArchiver(data.id, type);
-
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
   const toggleInput = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const { value } = target;
-    setName(value);
+    const regex = /^[^/?@|<>":'\\]+$/;
+    if (!regex.test(value))
+      setErrors({
+        name: {
+          message: 'Ingresar nombre que no contenga lo siguiente ^/?@|<>": ',
+        },
+      });
+    else {
+      setName(value);
+      setErrors({ value: '' });
+    }
   };
-
   const toggleInputChecked = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const { checked } = target;
     setUnique(checked);
@@ -74,8 +83,10 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
             <Input
               defaultValue={data.name}
               type="text"
+              name="name"
               className="input-task"
               onChange={toggleInput}
+              errors={errors}
             />
             {type !== 'tasks3' && data.subTasks.length === 0 && (
               <div className="aside-unique-container">

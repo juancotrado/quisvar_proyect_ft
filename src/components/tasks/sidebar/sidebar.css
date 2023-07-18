@@ -11,28 +11,34 @@
   border-right: 3px solid var(--color-primary);
   box-shadow: 0px 1.5px 4px rgba(0, 0, 0, 0.2);
 }
+
 .aside-slice {
   position: relative;
   overflow-y: auto;
   overflow-x: hidden;
   height: calc(100vh - var(--header-height) - 90px);
 }
+
 .aside-show {
   left: 0;
 }
+
 .index-task-section {
   display: flex;
   align-items: center;
 }
+
 .aside-title-info {
   margin: 1rem 0;
   font-size: 0.9rem;
 }
+
 .aside-coordinator-off {
   color: var(--color-unresolved);
   font-weight: 500;
   font-size: 0.8rem;
 }
+
 .aside-add-index-task {
   display: flex;
   font-size: 0.8rem;
@@ -46,6 +52,7 @@
   border-radius: var(--radius-input);
   /* background-color: var(--color-menu); */
 }
+
 .add-btn-indextask {
   width: 1rem;
   padding: 0;
@@ -60,12 +67,15 @@
   align-items: center;
   position: relative;
 }
+
 .menu-index-task img {
   height: 1.2rem;
 }
+
 .aside-name-index {
   flex-grow: 1;
 }
+
 .delete-indextask {
   padding: 0;
   gap: 0;
@@ -73,6 +83,7 @@
   height: 3rem;
   border: none;
 }
+
 .aside-title {
   color: var(--color-secondary);
   text-align: left;
@@ -81,6 +92,7 @@
   max-height: 2.4rem;
   margin-right: 0.5rem;
 }
+
 .aside-dropdown-section {
   flex-grow: 1;
   display: flex;
@@ -94,22 +106,27 @@
   border-radius: 0.5rem;
   gap: 0.5rem;
 }
+
 .indextask {
   background-color: var(--background-indextasks, white);
 }
+
 .aside-dropdown-section-active {
   background-color: #d9d9d9;
   border-radius: 0.5rem;
 }
+
 .area-menu-button {
   width: 1.5rem;
   height: 1.5rem;
   transition: 0.5s ease-out;
   cursor: pointer;
 }
+
 .area-menu-button:hover {
   transform: rotate(-90deg);
 }
+
 .area-menu-button:active {
   scale: 0.9;
 }
@@ -120,9 +137,11 @@
   align-items: center;
   justify-content: space-between;
 }
+
 .aside-dropdown-icon {
   width: 1.5rem;
 }
+
 .aside-dropdown-check {
   position: absolute;
   min-width: 90%;
@@ -130,6 +149,7 @@
   opacity: 0;
   cursor: pointer;
 }
+
 .aside-dropdown-arrow {
   width: 1.5rem;
 
@@ -143,6 +163,7 @@
   --rotate: rotate(180deg);
   --background-indextasks: #d9d9d9;
 }
+
 .index-task-section:has(:checked) + .aside-dropdown-content {
   grid-template-rows: 1fr;
 }
@@ -152,6 +173,7 @@
   grid-template-rows: var(--rows, 0fr);
   transition: 0.3s grid-template-rows;
 }
+
 .aside-dropdown-sub-list-item:has(:checked) {
   --rotate: rotate(180deg);
   --background: #d9d9d9;
@@ -160,16 +182,19 @@
 .aside-dropdown-sub-list-item:has(:checked) + .aside-dropdown-content {
   grid-template-rows: 1fr;
 }
+
 .aside-dropdown-sub {
   overflow: hidden;
   width: 95%;
   margin-left: auto;
   margin-top: 0.2rem;
 }
+
 .aside-dropdown-sub-list {
   display: flex;
   flex-direction: column;
 }
+
 .aside-dropdown-sub-list-item {
   display: flex;
   align-items: center;
@@ -180,18 +205,22 @@
   font-weight: 600;
   cursor: pointer;
 }
+
 .aside-dropdown-sub-list-span {
   padding: 0.7rem;
   border-radius: 0.5rem;
   margin-left: 1rem;
   background-color: var(--background, white);
 }
+
 .aside-dropdown-sub-list-span-active {
   background-color: #d9d9d9;
 }
+
 .aside-dropdown-sub-list span {
   flex-grow: 1;
 }
+
 .input-task {
   flex-grow: 1;
   height: 2rem;
@@ -199,6 +228,7 @@
   border-radius: var(--radius-input);
   background-color: var(--color-menu);
 }
+
 .delete-task {
   padding: 0;
   gap: 0;
@@ -206,6 +236,7 @@
   height: 2rem;
   border: none;
 }
+
 .aside-slide {
   position: absolute;
   top: 50%;
@@ -216,6 +247,7 @@
   align-items: center;
   cursor: pointer;
 }
+
 .aside-slide-icon {
   width: 2rem;
   transform: rotate(270deg);
@@ -223,12 +255,15 @@
   cursor: pointer;
   position: absolute;
 }
+
 .trapecio {
   height: 8rem;
 }
+
 .aside-slide-icon-rotate {
   transform: rotate(90deg);
 }
+
 .aside-slide-check {
   position: absolute;
   width: 100%;
@@ -236,11 +271,14 @@
   opacity: 0;
   cursor: pointer;
 }
+
 .aside-edit-area-container {
   display: flex;
   align-items: center;
   gap: 1rem;
+  flex-grow: 1;
 }
+
 .aside-checkbox-edit {
   background-color: white;
   height: 18px;
@@ -250,9 +288,11 @@
   border: 1px solid #aaaaaa;
   border-radius: 0.3rem;
 }
+
 .aside-checkbox-edit:checked {
   background-color: var(--color-primary);
 }
+
 .aside-checkbox-edit:focus {
   outline: none;
 }
@@ -265,6 +305,7 @@
   align-items: center;
   font-size: 0.8rem;
 }
+
 /* .aside-menu-index-task {
   position: absolute;
 } */

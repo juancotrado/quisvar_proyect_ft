@@ -35,7 +35,7 @@ const ListPersonalTask = () => {
   const { id } = userSession;
   const [subTask, setSubTask] = useState<SubtaskIncludes[] | null>(null);
 
-  const { register, reset, handleSubmit } = useForm<DateRange>();
+  // const { register, reset, handleSubmit } = useForm<DateRange>();
 
   useEffect(() => {
     axiosInstance.get(`/users/${id}/subTasks`).then(res => {
@@ -231,25 +231,27 @@ const ListPersonalTask = () => {
               ))}
         </div>
       </div>
-      {isOn && (
-        <div>
-          <form onSubmit={handleSubmit(onSubmitDateRange)}>
-            <Input
-              type="date"
-              {...register('initial')}
-              name="initial"
-              label="Inicio"
-            ></Input>
-            <Input
-              type="date"
-              {...register('until')}
-              name="until"
-              label="Fin"
-            ></Input>
-            <Button text="Generar Reporte" />
-          </form>
-        </div>
-      )}
+      {/* <div>
+        {isOn && (
+          <div>
+            <form onSubmit={handleSubmit(onSubmitDateRange)}>
+              <Input
+                type="date"
+                {...register('initial')}
+                name="initial"
+                label="Inicio"
+              ></Input>
+              <Input
+                type="date"
+                {...register('until')}
+                name="until"
+                label="Fin"
+              ></Input>
+              <Button text="Generar Reporte" />
+            </form>
+          </div>
+        )}
+      </div> */}
     </div>
   );
 };

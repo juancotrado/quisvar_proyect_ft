@@ -24,7 +24,12 @@ const urlPost = {
 
 const SidebarAddNewLevel = ({ idValue, onSave, keyNameId }: AddTaskProps) => {
   const [addLevel, setAddLevel] = useState<boolean>(false);
-  const { handleSubmit, register, reset } = useForm<TaskForm>();
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm<TaskForm>();
   const isLastLevel = keyNameId === 'task_2_Id';
 
   useEffect(() => {
@@ -66,7 +71,18 @@ const SidebarAddNewLevel = ({ idValue, onSave, keyNameId }: AddTaskProps) => {
     >
       {addLevel ? (
         <>
-          <Input {...register('name')} name="name" className="input-task" />
+          <Input
+            {...register('name', {
+              pattern: {
+                value: /^[^/?@|<>":'\\]+$/,
+                message:
+                  'Ingresar nombre que no contenga lo siguiente ^/?@|<>": ',
+              },
+            })}
+            name="name"
+            errors={errors}
+            className="input-task"
+          />
           <div className="aside-unique-container">
             <label htmlFor="unique">Unico:</label>
             <input {...register('unique')} type="checkbox" name="unique" />

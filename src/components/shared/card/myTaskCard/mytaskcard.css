@@ -8,12 +8,14 @@
   border-left: 1.75rem var(--color-secondary) solid;
   flex-direction: column;
 }
+
 .task-text {
   display: flex;
   justify-content: center;
   font-weight: 600;
   font-size: small;
 }
+
 .task-header h3 {
   font-size: 1rem;
   font-weight: 700;
@@ -21,6 +23,7 @@
   text-transform: uppercase;
   align-self: flex-start;
 }
+
 .my-icon-card {
   /* background-color: var(--color-primary); */
   position: absolute;
@@ -34,27 +37,34 @@
   height: 1.5rem;
   padding: 0.3rem;
 }
+
 .my-icon-card-process {
   background-color: var(--color-process);
   color: var(--color-process);
 }
+
 .my-icon-card-denied {
   background-color: var(--color-unresolved);
   color: var(--color-unresolved);
 }
+
 .my-icon-card-done {
   background-color: var(--color-done);
   color: var(--color-done);
 }
+
 .my-icon-card-process-color {
   color: var(--color-process);
 }
+
 .my-icon-card-denied-color {
   color: var(--color-unresolved);
 }
+
 .my-icon-card-done-color {
   color: var(--color-done);
 }
+
 .my-task-content {
   background-color: #fff;
   width: 100%;
@@ -67,35 +77,44 @@
   text-align: justify;
   position: relative;
 }
+
 .footer-my-task {
   display: flex;
   justify-content: space-between;
   gap: 3.35rem;
   border-top: 1px var(--color-secondary) solid;
 }
+
 .footer-my-task span {
   text-decoration: underline;
   padding: 0.2rem 0.5rem 0rem 0rem;
   font-size: small;
   cursor: pointer;
 }
+
 .footer-my-task h3 {
   font-size: small;
 }
+
 .task-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 0.4rem;
 }
+
 .task-header h2 {
   font-size: medium;
 }
+
 .task-header span {
   font-size: small;
 }
+
 .task-header span {
   font-weight: 600;
 }
+
 .hold {
   color: var(--color-denied);
 }

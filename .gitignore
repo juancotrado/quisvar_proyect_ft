@@ -12,6 +12,8 @@ dist
 dist-ssr
 *.local
 .scannerWork
+*public/tutorials/ADMIN_GUIDE.mkv
+*public/tutorials/USER_GUIDE.mkv
 
 # Editor directories and files
 .VSCodeCounter

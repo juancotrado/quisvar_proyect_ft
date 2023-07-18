@@ -96,15 +96,20 @@ const Header = () => {
       '_blank'
     );
   };
+  const selectVideoForUserRol = () => {
+    if (userSession.role === 'EMPLOYEE')
+      return window.open('/public/tutorials/USER_GUIDE.mkv', '_blank');
+    return window.open('/public/tutorials/ADMIN_GUIDE.mkv', '_blank');
+  };
   const menuMoreInfo = [
     {
       id: 1,
       name: 'Ver Video tutorial',
       icon: '/svg/file-video-solid.svg',
-      action: () => window.open('/public/tutorials/Downlo.mp4', '_blank'),
+      action: selectVideoForUserRol,
     },
     {
-      id: 1,
+      id: 3,
       name: 'Ver PDF',
       icon: '/svg/file-pdf-solid.svg',
       action: selectPdfForUserRol,

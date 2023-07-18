@@ -62,7 +62,8 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
             />
             {errors[name]?.type === 'required'
               ? 'Por favor llene el campo.'
-              : `Formato de ${label} invalido.`}
+              : // : `Formato de ${label} invalido.`
+                errors.name.message}
           </span>
         )}
       </div>

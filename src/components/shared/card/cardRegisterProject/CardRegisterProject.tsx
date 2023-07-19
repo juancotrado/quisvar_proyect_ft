@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useSelector } from 'react-redux';
 import { Input, Select, TextArea } from '../../..';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
@@ -8,11 +7,13 @@ import Modal from '../../../portal/Modal';
 import Button from '../../button/Button';
 import './CardRegisterProject.css';
 import { useEffect, useMemo, useState } from 'react';
-import { RootState } from '../../../../store';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ProjectForm } from '../../../../types/types';
 import { spring } from '../../../../animations/animations';
 import { motion } from 'framer-motion';
+import useListUsers from '../../../../hooks/useListUsers';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../store';
 const InitialValues: ProjectForm = {
   id: 0,
   name: '',
@@ -44,7 +45,8 @@ const CardRegisterProject = ({
   specialityId,
 }: CardRegisterProjectProps) => {
   const [dataForm, setDataForm] = useState<ProjectForm>(InitialValues);
-  const { listUsers, listStage } = useSelector((state: RootState) => state);
+  const { listStage } = useSelector((state: RootState) => state);
+  const { users: coordinators } = useListUsers(['ADMIN', 'MOD']);
   const {
     handleSubmit,
     register,
@@ -57,19 +59,6 @@ const CardRegisterProject = ({
     setIsOn(!isOn);
     setValue('unique', !isOn);
   };
-  const stages = useMemo(() => (listStage ? listStage : []), [listStage]);
-  const coordinators = useMemo(
-    () =>
-      listUsers
-        ? listUsers
-            .map(({ profile, ...props }) => ({
-              name: `${profile.firstName} ${profile.lastName}`,
-              ...props,
-            }))
-            .filter(({ role }) => role !== 'EMPLOYEE')
-        : [],
-    [listUsers]
-  );
 
   useEffect(() => {
     if (project) {
@@ -108,6 +97,7 @@ const CardRegisterProject = ({
     }
   };
 
+  const stages = useMemo(() => (listStage ? listStage : []), [listStage]);
   const successfulShipment = () => {
     if (!specialityId) return;
     onSave?.(specialityId);

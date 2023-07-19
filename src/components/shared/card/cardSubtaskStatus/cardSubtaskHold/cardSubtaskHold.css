@@ -117,6 +117,7 @@
   justify-content: space-between;
 }
 .cardSubtaskHold-user-delete {
+  cursor: pointer;
   width: 1rem;
 }
 .cardSubtaskHold-asign-btn {
@@ -126,7 +127,7 @@
   justify-content: center;
   align-items: flex-end;
 }
-.card-subtask-add-btn {
+.cardSubtaskHold-add-btn {
   background-color: var(--color-primary);
   color: white;
   align-items: center;

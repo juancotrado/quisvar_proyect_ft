@@ -1,9 +1,6 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useContext, useEffect } from 'react';
 import { Input, TextArea } from '../../..';
 import './cardRegisterSubTask.css';
-import DropDownSimple from '../../select/DropDownSimple';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../store';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { SocketContext } from '../../../../context/SocketContex';
@@ -23,28 +20,16 @@ interface CardRegisterSubTaskProps {
   taskId: number | null;
   typeTask?: TypeTask;
 }
-type DataUser = { id: number; name: string };
 
 const CardRegisterSubTask = ({
   subTask,
   taskId,
   typeTask,
 }: CardRegisterSubTaskProps) => {
-  const { listUsers } = useSelector((state: RootState) => state);
-  const [usersData, setUsersData] = useState<DataUser[]>([]);
   const { handleSubmit, register, setValue, watch, reset } =
     useForm<SubTaskForm>();
   const socket = useContext(SocketContext);
-  const users = useMemo(
-    () =>
-      listUsers
-        ? listUsers.map(({ profile, ...props }) => ({
-            name: `${profile.firstName} ${profile.lastName}`,
-            ...props,
-          }))
-        : [],
-    [listUsers]
-  );
+
   useEffect(() => {
     if (!subTask) return;
     reset({
@@ -58,9 +43,6 @@ const CardRegisterSubTask = ({
   const onSubmit: SubmitHandler<SubTaskForm> = data => {
     const body = { ...data, hours: data.days * 24 };
     if (subTask?.id) {
-      if (usersData.length) {
-        return;
-      }
       axiosInstance.patch(`/subtasks/${subTask.id}`, body).then(res => {
         socket.emit('client:update-subTask', res.data);
       });
@@ -76,16 +58,6 @@ const CardRegisterSubTask = ({
       });
     }
     isOpenModal$.setSubject = false;
-  };
-
-  const handleAddUser = (user: DataUser) => {
-    const getId = usersData.find(list => list.id == user.id);
-    if (!getId) setUsersData([...usersData, user]);
-  };
-
-  const handleRemoveUser = (user: DataUser) => {
-    const filterValue = usersData.filter(list => list.id !== user.id);
-    setUsersData(filterValue);
   };
 
   const handleSetPrice = (hours: number) => {
@@ -116,64 +88,14 @@ const CardRegisterSubTask = ({
           onClick={closeFunctions}
         />
       </div>
-      <hr></hr>
       <Input label="Nombre" {...register('name')} name="name" type="text" />
       <TextArea
         label="Descripción"
         {...register('description')}
         name="description"
       />
-      {/* <div className="col-input col-files">
-          <div className="manual-file">
-            <div className="input-file">
-              <InputFile
-                getFiles={files => console.log(files)}
-                label="Manuales"
-              />
-            </div>
-            <div className="list-file"><div>awassss</div></div>
-          </div>
-          <div className="manual-file">
-            <div className="input-file">
-              <InputFile
-                getFiles={files => console.log(files)}
-                label="Manuales"
-              />
-            </div>
-            <div className="list-file"><div>awassss</div></div>
-          </div>
-        </div> */}
+
       <div className="col-input">
-        {false && (
-          <div className="col-users">
-            <DropDownSimple
-              data={users}
-              textField="name"
-              itemKey="id"
-              label="Usuarios"
-              valueInput={(name, id) =>
-                handleAddUser({ id: parseInt(id), name })
-              }
-            />
-            {usersData &&
-              usersData.map((_user, index) => (
-                <div key={_user.id} className="col-list-user">
-                  <span className="user-info">
-                    {index + 1}
-                    {') '}
-                    {_user.name}
-                  </span>
-                  <button
-                    type="button"
-                    className="delete-list-user"
-                    onClick={() => handleRemoveUser(_user)}
-                  >
-                    <img src="/svg/close.svg" />
-                  </button>
-                </div>
-              ))}
-          </div>
-        )}
         <div className="col-hours-subtask">
           <Input
             label="Dias"

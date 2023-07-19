@@ -65,13 +65,13 @@ export interface FilesSubtask {
 }
 
 export type fyleType = 'MATERIAL' | 'SUCCESSFUL' | 'REVIEW';
-type UserRoleType = 'ADMIN' | 'EMPLOYEE' | 'MOD';
+export type UserRoleType = 'ADMIN' | 'EMPLOYEE' | 'MOD';
 export type User = {
   id: number;
   email: string;
   password: string;
   profile: Profile;
-  role?: UserRoleType;
+  role: UserRoleType;
   status?: boolean;
 };
 type Profile = {

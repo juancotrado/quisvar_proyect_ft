@@ -2,11 +2,13 @@ import { configureStore } from '@reduxjs/toolkit';
 import userSession from './slices/userSession.slice';
 import listUsers from './slices/listUsers.slice';
 import modAuth from './slices/modAuth.slice';
+import listStage from './slices/listStages.slice';
 const store = configureStore({
   reducer: {
     userSession,
     listUsers,
     modAuth,
+    listStage,
   },
 });
 // Infer the RootState and AppDispatch types from the store itself

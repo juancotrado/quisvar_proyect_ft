@@ -44,7 +44,7 @@ const CardRegisterProject = ({
   specialityId,
 }: CardRegisterProjectProps) => {
   const [dataForm, setDataForm] = useState<ProjectForm>(InitialValues);
-  const { listUsers } = useSelector((state: RootState) => state);
+  const { listUsers, listStage } = useSelector((state: RootState) => state);
   const {
     handleSubmit,
     register,
@@ -57,7 +57,7 @@ const CardRegisterProject = ({
     setIsOn(!isOn);
     setValue('unique', !isOn);
   };
-
+  const stages = useMemo(() => (listStage ? listStage : []), [listStage]);
   const coordinators = useMemo(
     () =>
       listUsers
@@ -86,6 +86,7 @@ const CardRegisterProject = ({
     setValue('typeSpeciality', dataForm.typeSpeciality);
     setValue('location', dataForm.location);
     setValue('userId', dataForm.userId);
+    setValue('stageId', dataForm.stageId);
     setValue('startDate', _date(new Date(dataForm.startDate)));
     setValue('untilDate', _date(new Date(dataForm.untilDate)));
   }, [dataForm]);
@@ -162,20 +163,31 @@ const CardRegisterProject = ({
             errors={errors}
           />
         </div>
-        <Input
-          label="Nombre Corto:"
-          {...register('name', {
-            pattern: {
-              value: /^[^/?@|<>":'\\]+$/,
-              message:
-                'Ingresar nombre que no contenga lo siguiente ^/?@|<>": ',
-            },
-          })}
-          name="name"
-          type="text"
-          placeholder="Nombre Corto "
-          errors={errors}
-        />
+        <div className="col-input">
+          <Input
+            label="Nombre Corto:"
+            {...register('name', {
+              pattern: {
+                value: /^[^/?@|<>":'\\]+$/,
+                message:
+                  'Ingresar nombre que no contenga lo siguiente ^/?@|<>": ',
+              },
+            })}
+            name="name"
+            type="text"
+            placeholder="Nombre Corto "
+            errors={errors}
+          />
+          <Select
+            label="Etapa:"
+            required={true}
+            {...register('stageId', { valueAsNumber: true })}
+            name="stageId"
+            data={stages}
+            itemKey="id"
+            textField="name"
+          />
+        </div>
         <div className="col-input">
           <Select
             label="Tipo:"

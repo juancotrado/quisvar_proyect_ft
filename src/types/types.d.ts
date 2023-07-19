@@ -65,13 +65,13 @@ export interface FilesSubtask {
 }
 
 export type fyleType = 'MATERIAL' | 'SUCCESSFUL' | 'REVIEW';
-type UserRoleType = 'ADMIN' | 'EMPLOYEE' | 'MOD';
+
 export type User = {
   id: number;
   email: string;
   password: string;
   profile: Profile;
-  role?: UserRoleType;
+  role?: string;
   status?: boolean;
 };
 type Profile = {
@@ -91,6 +91,8 @@ export interface ProjectType {
   unique?: boolean;
   status: boolean;
   typeSpeciality: string;
+  stageId?: number;
+  stage?: Stage;
   startDate: Date;
   untilDate: Date;
   moderator: {
@@ -306,4 +308,9 @@ export interface Option {
   type: 'button' | 'submit' | 'reset' | undefined;
   icon: string;
   function?: () => void;
+}
+
+export interface Stage {
+  id: number;
+  name: string;
 }

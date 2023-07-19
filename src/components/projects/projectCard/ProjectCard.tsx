@@ -27,8 +27,6 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
   const { profile } = project.moderator;
   const { handleArchiver } = useArchiver(project.id, 'projects');
 
-  console.log(project);
-
   const navigate = useNavigate();
 
   // const timeoutRef = useRef<NodeJS.Timeout | null>(null);

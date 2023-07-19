@@ -6,15 +6,22 @@ import { useEffect, useState } from 'react';
 import CardSpeciality from '../../components/speciality/cardSpeciality/CardSpeciality';
 import CardAddSpeciality from '../../components/speciality/cardAddSpeality/CardAddSpeciality';
 import './specialities.css';
-import ProjectCard from '../../components/projects/projectCard/ProjectCard';
 import { CardRegisterProject } from '../../components';
 import Button from '../../components/shared/button/Button';
 import { isOpenModal$ } from '../../services/sharingSubject';
+import ProjectGroup from '../../components/projects/ProjectGroup';
 
 const Specialities = () => {
   const { userSession } = useSelector((state: RootState) => state);
   const [projects, setProjects] = useState<ProjectType[] | null>(null);
   const [project, setProject] = useState<ProjectType | null>(null);
+  const [groupProject, setGroupProject] = useState<
+    | {
+        id: number;
+        projects: ProjectType[];
+      }[]
+    | null
+  >(null);
   const [specialityId, setSpecialityId] = useState<number | null>(null);
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
   const [specialities, setSpecialities] = useState<SpecialityType[] | null>(
@@ -35,10 +42,13 @@ const Specialities = () => {
   const getProjects = async (id: number) => {
     setSpecialityId(id);
     await axiosInstance.get(`specialities/${id}`).then(res => {
-      setProjects(res.data.projects);
+      setGroupProject(res.data.groups);
+      // setProjects(res.data.projects);
     });
   };
 
+  // const patito = groupProject?.map(group => group.projects.map(p => p.stage));
+  // console.log(patito);
   const addNewProject = () => {
     isOpenModal$.setSubject = true;
     setProject(null);
@@ -69,7 +79,7 @@ const Specialities = () => {
         <h1 className="speciality-title">
           <span className="speciality-title-span">ESPECIALIDADES</span>
         </h1>
-        {role !== 'EMPLOYEE' && projects && (
+        {role !== 'EMPLOYEE' && (
           <Button
             text="Agregar"
             icon="plus"
@@ -97,19 +107,39 @@ const Specialities = () => {
             <CardAddSpeciality onSave={getSpecialities} />
           )}
         </div>
-        {projects?.length ? (
+        {groupProject && groupProject.length ? (
           <div className="speciality-project-container">
-            {projects &&
-              projects.map(project => (
-                <ProjectCard
-                  key={project.id}
-                  project={project}
-                  editProject={editProject}
-                  onSave={getProjects}
-                />
-              ))}
+            {groupProject.map(group => (
+              <ProjectGroup
+                key={group.id}
+                group={group.projects}
+                editProject={editProject}
+              />
+              // <div key={group.id}>
+              //   <span>{group.id}</span>
+              //   {group.projects.map(project => (
+              //     <ProjectCard
+              //       key={project.id}
+              //       project={project}
+              //       editProject={editProject}
+              //       onSave={getProjects}
+              //     />
+              //   ))}
+              // </div>
+            ))}
           </div>
         ) : (
+          // <div className="speciality-project-container">
+          //   {projects &&
+          //     projects.map(project => (
+          //       <ProjectCard
+          //         key={project.id}
+          //         project={project}
+          //         editProject={editProject}
+          //         onSave={getProjects}
+          //       />
+          //     ))}
+          // </div>
           <div className="speciality-project-aditional">
             <p className="speciality-project-paragraph">{getText()}</p>
           </div>

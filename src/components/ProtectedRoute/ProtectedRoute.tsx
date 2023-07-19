@@ -9,6 +9,7 @@ import { SocketProvider } from '../../context/SocketContex';
 import { Subscription } from 'rxjs';
 import { getListUsers } from '../../store/slices/listUsers.slice';
 import './protecdRoute.css';
+import { getListStage } from '../../store/slices/listStages.slice';
 
 export const ProtectedRoute = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -19,6 +20,7 @@ export const ProtectedRoute = () => {
   useEffect(() => {
     dispatch(getUserSession());
     dispatch(getListUsers());
+    dispatch(getListStage());
   }, [dispatch]);
 
   const handleErrorToken = useRef<Subscription>(new Subscription());

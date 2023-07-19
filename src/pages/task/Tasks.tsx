@@ -1,5 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-// import React from 'react';
 import './tasks.css';
 import { useLocation, useParams } from 'react-router-dom';
 import { useContext, useEffect, useState } from 'react';
@@ -136,7 +134,8 @@ const Tasks = () => {
     };
   }, [socket, subTasks]);
 
-  const isAuthorizedMod = userSessionId === workArea?.userId;
+  const isAuthorizedMod =
+    userSessionId === workArea?.userId || role === 'ADMIN';
 
   const getText = () => {
     if (subTasks === null)

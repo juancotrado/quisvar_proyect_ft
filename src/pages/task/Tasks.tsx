@@ -1,6 +1,6 @@
 import './tasks.css';
 import { useLocation, useParams } from 'react-router-dom';
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
 import { SubTask, TypeTask, WorkArea } from '../../types/types';
 import { Sidebar, SubTaskCard } from '../../components';
@@ -11,8 +11,9 @@ import {
 } from '../../services/sharingSubject';
 import Button from '../../components/shared/button/Button';
 import CardRegisterAndInformation from '../../components/shared/card/cardRegisterAndInformation/CardRegisterAndInformation';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store';
+import { setModAuth } from '../../store/slices/modAuth.slice';
 
 const initValuesSubTask: SubTask = {
   id: 0,
@@ -47,50 +48,57 @@ const Tasks = () => {
   const [subTask, setSubTask] = useState<SubTask>(initValuesSubTask);
   const [taskId, setTaskId] = useState<number | null>(null);
   const socket = useContext(SocketContext);
+  const dispatch: AppDispatch = useDispatch();
+
   const { id: userSessionId, role } = useSelector(
     (state: RootState) => state.userSession
   );
-
-  useEffect(() => {
-    getWorkAreas();
-  }, []);
-
-  const getWorkAreas = async () => {
+  const getWorkAreas = useCallback(async () => {
     axiosInstance.get(`/workareas/${id}`).then(res => {
       setWorkArea(res.data);
+      debugger;
+      const isAuthorizedMod =
+        userSessionId === res.data.userId || role === 'ADMIN';
+      dispatch(setModAuth(isAuthorizedMod));
     });
-  };
+  }, [dispatch, id, role, userSessionId]);
 
-  const querySubTask = (url: string, type: TypeTask) => {
-    return new Promise<SubTask[]>(resolve => {
-      axiosInstance.get(url).then(res => {
-        setTaskId(res.data.id);
-        setTypeTask(type);
-        setData(res.data);
-        setSubTasks(res.data.subTasks);
-        socket.emit('join', res.data.id + type);
-        isOpenModal$.setSubject = false;
-        resolve(res.data.subTasks);
+  useEffect(() => {
+    if (userSessionId !== 0) {
+      getWorkAreas();
+    }
+  }, [userSessionId, getWorkAreas]);
+
+  const querySubTask = useCallback(
+    (url: string, type: TypeTask) => {
+      return new Promise<SubTask[]>(resolve => {
+        axiosInstance.get(url).then(res => {
+          setTaskId(res.data.id);
+          setTypeTask(type);
+          setData(res.data);
+          setSubTasks(res.data.subTasks);
+          socket.emit('join', res.data.id + type);
+          isOpenModal$.setSubject = false;
+          resolve(res.data.subTasks);
+        });
       });
-    });
-  };
+    },
+    [socket]
+  );
 
-  const settingSubTasks = (id: number, type: TypeTask) => {
-    return querySubTask(`/${path[type]}/${id}`, type);
-  };
+  const settingSubTasks = useCallback(
+    (id: number, type: TypeTask) => {
+      return querySubTask(`/${path[type]}/${id}`, type);
+    },
+    [querySubTask]
+  );
 
   const getSubtask = (subTask: SubTask) => {
     setSubTask(subTask);
     isTaskInformation$.setSubject = true;
   };
 
-  useEffect(() => {
-    if (state?.taskIdProp && state?.subTaskIdProp) {
-      openMySubTask();
-    }
-  }, []);
-
-  const openMySubTask = async () => {
+  const openMySubTask = useCallback(async () => {
     const { taskIdProp, subTaskType, subTaskIdProp } = state;
     const subTasksSelected = await settingSubTasks(taskIdProp, subTaskType);
     const subTaskSelect = subTasksSelected?.find(
@@ -98,7 +106,14 @@ const Tasks = () => {
     );
     if (!subTaskSelect) return;
     getSubtask(subTaskSelect);
-  };
+  }, [settingSubTasks, state]);
+
+  useEffect(() => {
+    if (state?.taskIdProp && state?.subTaskIdProp) {
+      openMySubTask();
+    }
+  }, [openMySubTask, state?.taskIdProp, state?.subTaskIdProp]);
+
   useEffect(() => {
     socket.on('server:update-subTask', (newSubTask: SubTask) => {
       if (!subTasks) return;
@@ -215,7 +230,6 @@ const Tasks = () => {
         {
           <CardRegisterAndInformation
             subTask={subTask}
-            isAuthorizedMod={isAuthorizedMod}
             taskId={taskId}
             typeTask={typeTask}
           />

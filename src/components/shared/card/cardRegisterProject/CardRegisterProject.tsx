@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useSelector } from 'react-redux';
 import { Input, Select, TextArea } from '../../..';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
@@ -7,12 +6,12 @@ import { _date } from '../../../../utils/formatDate';
 import Modal from '../../../portal/Modal';
 import Button from '../../button/Button';
 import './CardRegisterProject.css';
-import { useEffect, useMemo, useState } from 'react';
-import { RootState } from '../../../../store';
+import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ProjectForm } from '../../../../types/types';
 import { spring } from '../../../../animations/animations';
 import { motion } from 'framer-motion';
+import useListUsers from '../../../../hooks/useListUsers';
 const InitialValues: ProjectForm = {
   id: 0,
   name: '',
@@ -44,7 +43,8 @@ const CardRegisterProject = ({
   specialityId,
 }: CardRegisterProjectProps) => {
   const [dataForm, setDataForm] = useState<ProjectForm>(InitialValues);
-  const { listUsers } = useSelector((state: RootState) => state);
+  const { users: coordinators } = useListUsers(['ADMIN', 'MOD']);
+
   const {
     handleSubmit,
     register,
@@ -57,19 +57,6 @@ const CardRegisterProject = ({
     setIsOn(!isOn);
     setValue('unique', !isOn);
   };
-
-  const coordinators = useMemo(
-    () =>
-      listUsers
-        ? listUsers
-            .map(({ profile, ...props }) => ({
-              name: `${profile.firstName} ${profile.lastName}`,
-              ...props,
-            }))
-            .filter(({ role }) => role !== 'EMPLOYEE')
-        : [],
-    [listUsers]
-  );
 
   useEffect(() => {
     if (project) {

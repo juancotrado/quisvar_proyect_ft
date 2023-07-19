@@ -2,14 +2,13 @@
 import { motion } from 'framer-motion';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import './CardRegisterArea.css';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { container } from '../../../../animations/animations';
 import InputText from '../../Input/Input';
 import DropDownSimple from '../../select/DropDownSimple';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../store';
 import { WorkAreaForm } from '../../../../types/types';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import useListUsers from '../../../../hooks/useListUsers';
 
 interface CardRegisterAreaProps {
   onSave?: (name: string) => void;
@@ -39,9 +38,9 @@ const CardRegisterArea = ({
   isUnique,
 }: CardRegisterAreaProps) => {
   const [data, setData] = useState<WorkAreaForm>(InitialValues);
-  const { listUsers } = useSelector((state: RootState) => state);
   const [coordinator, setCoordinator] = useState<CoordinatorType>();
   const { handleSubmit, register, setValue } = useForm<WorkAreaForm>();
+  const { users } = useListUsers(['MOD', 'ADMIN']);
 
   useEffect(() => {
     if (dataWorkArea) {
@@ -55,19 +54,6 @@ const CardRegisterArea = ({
     setValue('projectId', data.projectId);
     setValue('userId', data.userId);
   }, [data]);
-
-  const users = useMemo(
-    () =>
-      listUsers
-        ? listUsers
-            .map(({ profile, ...props }) => ({
-              name: `${profile.firstName} ${profile.lastName}`,
-              ...props,
-            }))
-            .filter(u => u.role !== 'EMPLOYEE')
-        : [],
-    [listUsers]
-  );
 
   const onSubmit: SubmitHandler<WorkAreaForm> = values => {
     const userId = coordinator?.id || data.userId;

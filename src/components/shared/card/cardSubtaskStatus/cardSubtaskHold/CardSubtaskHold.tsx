@@ -1,4 +1,4 @@
-import { useContext, useState, useMemo } from 'react';
+import { useContext, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../store';
 import { axiosInstance } from '../../../../../services/axiosInstance';
@@ -13,6 +13,7 @@ import SubtaskChangeStatusBtn from '../../../../subtasks/subtaskChangeStatusBtn/
 import SubTaskStatusLabel from '../../../../subtasks/subTaskStatusLabel/SubTaskStatusLabel';
 import './cardSubtaskHold.css';
 import formatDate from '../../../../../utils/formatDate';
+import useListUsers from '../../../../../hooks/useListUsers';
 
 type DataUser = { id: number; name: string };
 interface CardSubtaskHold {
@@ -21,23 +22,15 @@ interface CardSubtaskHold {
 
 const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
   const socket = useContext(SocketContext);
-  const { modAuth: isAuthorizedMod } = useSelector((state: RootState) => state);
+  const {
+    modAuth: isAuthorizedMod,
+
+    userSession,
+  } = useSelector((state: RootState) => state);
   const [addBtn, setAddBtn] = useState(false);
   const [usersData, setUsersData] = useState<DataUser[]>([]);
 
-  const { listUsers } = useSelector((state: RootState) => state);
-  const users = useMemo(
-    () =>
-      listUsers
-        ? listUsers
-            .filter(({ role }) => role === 'EMPLOYEE')
-            .map(({ profile, ...props }) => ({
-              name: `${profile.firstName} ${profile.lastName}`,
-              ...props,
-            }))
-        : [],
-    [listUsers]
-  );
+  const { users } = useListUsers(['EMPLOYEE']);
   const { status } = subTask;
   const handleAddUser = (user: DataUser) => {
     setAddBtn(true);
@@ -158,21 +151,21 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
             </div>
           )}
         </div>
-        {status === 'UNRESOLVED' && isAuthorizedMod && addBtn && (
+        {isAuthorizedMod && addBtn && (
           <Button
             text="LISTO"
-            className="card-subtask-add-btn"
+            className="cardSubtaskHold-add-btn"
             onClick={handleAddUserByTask}
           />
         )}
-        {!isAuthorizedMod && (
+        {userSession.role === 'EMPLOYEE' && (
           <SubtaskChangeStatusBtn
             option="ASIG"
             type="assigned"
             subtaskId={subTask.id}
             subtaskStatus={status}
             text="Asignarme"
-            className="card-subtask-add-btn"
+            className="cardSubtaskHold-add-btn"
           />
         )}
       </section>

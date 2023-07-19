@@ -56,7 +56,6 @@ const Tasks = () => {
   const getWorkAreas = useCallback(async () => {
     axiosInstance.get(`/workareas/${id}`).then(res => {
       setWorkArea(res.data);
-      debugger;
       const isAuthorizedMod =
         userSessionId === res.data.userId || role === 'ADMIN';
       dispatch(setModAuth(isAuthorizedMod));

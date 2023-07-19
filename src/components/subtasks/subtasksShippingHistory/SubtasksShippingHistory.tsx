@@ -1,21 +1,22 @@
+import { useSelector } from 'react-redux';
 import { TextArea } from '../..';
 import { DataFeedback, Feedback, Profile } from '../../../types/types';
 import SubtaskFile from '../subtaskFiles/SubtaskFile';
 import './subtasksShippingHistory.css';
+import { RootState } from '../../../store';
 
 interface SubtasksShippingHistoryProps {
   feedBacks: Feedback[];
   getDataFeedback?: (data: DataFeedback) => void;
   isAuthorizedUser?: boolean;
-  isAuthorizedMod?: boolean;
 }
 
 const SubtasksShippingHistory = ({
   feedBacks,
   getDataFeedback,
   isAuthorizedUser,
-  isAuthorizedMod,
 }: SubtasksShippingHistoryProps) => {
+  const { modAuth } = useSelector((state: RootState) => state);
   const getDatetimeCreated = (dateTime: string) => {
     const date = new Date(dateTime);
     const options: Intl.DateTimeFormatOptions = {
@@ -55,7 +56,7 @@ const SubtasksShippingHistory = ({
           </h3>
           <SubtaskFile files={feedBack.files} showDeleteBtn={false} />
           {getDataFeedback &&
-            ((isAuthorizedUser && feedBack.comment) || isAuthorizedMod) && (
+            ((isAuthorizedUser && feedBack.comment) || modAuth) && (
               <TextArea
                 label={!feedBack.comment ? 'Agregar Comentario' : 'Comentario'}
                 onBlur={e =>

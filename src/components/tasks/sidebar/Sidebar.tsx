@@ -20,7 +20,7 @@ const Sidebar = ({
   onUpdate,
   isShowInitValue,
 }: SidebarProps) => {
-  const { userSession } = useSelector((state: RootState) => state);
+  const { userSession, modAuth } = useSelector((state: RootState) => state);
   const [isShow, setIsShow] = useState<boolean>(isShowInitValue);
   const [openEditArea, setOpenEditArea] = useState<boolean>(false);
   const { name, project, item, indexTasks, user, ...areaData } = workArea;
@@ -132,7 +132,7 @@ const Sidebar = ({
                                             />
                                           </li>
                                         ))}
-                                        {role !== 'EMPLOYEE' && (
+                                        {modAuth && (
                                           <SidebarAddNewLevel
                                             idValue={task2.id}
                                             keyNameId="task_2_Id"
@@ -144,7 +144,7 @@ const Sidebar = ({
                                   )}
                                 </li>
                               ))}
-                              {role !== 'EMPLOYEE' && (
+                              {modAuth && (
                                 <SidebarAddNewLevel
                                   idValue={task.id}
                                   keyNameId="taskId"
@@ -156,7 +156,7 @@ const Sidebar = ({
                         )}
                       </li>
                     ))}
-                    {role !== 'EMPLOYEE' && (
+                    {modAuth && (
                       <SidebarAddNewLevel
                         idValue={indexTask.id}
                         keyNameId="indexTaskId"
@@ -168,7 +168,7 @@ const Sidebar = ({
               )}
             </li>
           ))}
-          {role !== 'EMPLOYEE' && (
+          {modAuth && (
             <SidebarAddNewLevel
               idValue={workArea.id}
               keyNameId="workAreaId"

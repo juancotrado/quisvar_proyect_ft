@@ -11,13 +11,11 @@ import { Subscription } from 'rxjs';
 
 interface CardRegisterAndInformationProps {
   subTask: SubTask;
-  isAuthorizedMod: boolean;
   taskId: number | null;
   typeTask?: TypeTask;
 }
 
 const CardRegisterAndInformation = ({
-  isAuthorizedMod,
   subTask,
   taskId,
   typeTask,
@@ -47,11 +45,7 @@ const CardRegisterAndInformation = ({
   return (
     <Modal size={50}>
       {isTaskInformation ? (
-        <CardTaskInformation
-          isAuthorizedMod={isAuthorizedMod}
-          subTask={subTask}
-          openModalEdit={openModalEdit}
-        />
+        <CardTaskInformation subTask={subTask} openModalEdit={openModalEdit} />
       ) : (
         <CardRegisterSubTask
           subTask={subTaskToEdit}

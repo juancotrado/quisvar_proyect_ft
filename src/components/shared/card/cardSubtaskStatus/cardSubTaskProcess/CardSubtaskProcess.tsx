@@ -11,23 +11,20 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../store';
 import './cardSubTaskProcess.css';
 import SubTaskStatusLabel from '../../../../subtasks/subTaskStatusLabel/SubTaskStatusLabel';
-import { Input, InputRange } from '../../../..';
-import { useForm } from 'react-hook-form';
+import { Input } from '../../../..';
 import { motion } from 'framer-motion';
 import ButtonDelete from '../../../button/ButtonDelete';
 import SubtasksShippingHistory from '../../../../subtasks/subtasksShippingHistory/SubtasksShippingHistory';
 import formatDate from '../../../../../utils/formatDate';
 interface CardSubtaskProcess {
   subTask: SubTask;
-  isAuthorizedMod: boolean;
 }
 
-const CardSubtaskProcess = ({
-  subTask,
-  isAuthorizedMod,
-}: CardSubtaskProcess) => {
+const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
   const socket = useContext(SocketContext);
-  const { userSession } = useSelector((state: RootState) => state);
+  const { userSession, modAuth: isAuthorizedMod } = useSelector(
+    (state: RootState) => state
+  );
   const { status } = subTask;
   const [files, setFiles] = useState<File[] | null>(null);
   const [dataFeedback, setDataFeedback] = useState<DataFeedback | null>(null);
@@ -142,7 +139,6 @@ const CardSubtaskProcess = ({
         {subTask.feedBacks.length !== 0 && (
           <SubtasksShippingHistory
             feedBacks={subTask.feedBacks}
-            isAuthorizedMod={isAuthorizedMod}
             isAuthorizedUser={isAuthorizedUser}
             getDataFeedback={getDataFeedback}
           />

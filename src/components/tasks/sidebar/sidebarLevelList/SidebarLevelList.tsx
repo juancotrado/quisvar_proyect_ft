@@ -15,7 +15,8 @@ interface IndexTaskContainerProps {
   type: NewTypeTask;
 }
 const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
-  const { userSession } = useSelector((state: RootState) => state);
+  const { userSession, modAuth } = useSelector((state: RootState) => state);
+
   const [name, setName] = useState<string>();
   const [unique, setUnique] = useState(data.unique);
   const [errors, setErrors] = useState<{ [key: string]: any }>({});
@@ -124,7 +125,7 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
           <input type="checkbox" className="aside-dropdown-check" />
         )}
       </div>
-      {role !== 'EMPLOYEE' && (
+      {modAuth && (
         <div className="aside-menu-index-task">
           <DotsOption
             className="aside-menu-dots-option"

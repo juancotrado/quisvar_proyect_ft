@@ -18,18 +18,19 @@ import {
 import DotsOption from '../../dots/DotsOption';
 import Portal from '../../../portal/Portal';
 import { dropIn } from '../../../../animations/animations';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../store';
 interface CardTaskInformationProps {
   subTask: SubTask;
-  isAuthorizedMod: boolean;
   openModalEdit: () => void;
 }
 
 const CardTaskInformation = ({
   subTask,
-  isAuthorizedMod,
   openModalEdit,
 }: CardTaskInformationProps) => {
   const socket = useContext(SocketContext);
+  const { modAuth } = useSelector((state: RootState) => state);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const closeModal = () => {
     isTaskInformation$.setSubject = false;
@@ -94,23 +95,16 @@ const CardTaskInformation = ({
             {subTask.item}. {subTask.name}
           </b>
         </h3>
-        {isAuthorizedMod && status === 'UNRESOLVED' && (
+        {modAuth && status === 'UNRESOLVED' && (
           <div className="subtask-btn-actions">
             <DotsOption data={optionsData} persist={true} />
           </div>
         )}
       </div>
-      {status === 'UNRESOLVED' && (
-        <CardSubtaskHold subTask={subTask} isAuthorizedMod={isAuthorizedMod} />
-      )}
+      {status === 'UNRESOLVED' && <CardSubtaskHold subTask={subTask} />}
       {(status === 'PROCESS' ||
         status === 'INREVIEW' ||
-        status === 'DENIED') && (
-        <CardSubtaskProcess
-          subTask={subTask}
-          isAuthorizedMod={isAuthorizedMod}
-        />
-      )}
+        status === 'DENIED') && <CardSubtaskProcess subTask={subTask} />}
       {status === 'DONE' && <CardSubtaskDone subTask={subTask} />}
       {isAlertOpen && (
         <Portal wrapperId="modal">

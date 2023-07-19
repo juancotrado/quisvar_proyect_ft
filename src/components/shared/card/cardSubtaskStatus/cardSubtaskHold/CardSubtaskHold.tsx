@@ -17,11 +17,11 @@ import formatDate from '../../../../../utils/formatDate';
 type DataUser = { id: number; name: string };
 interface CardSubtaskHold {
   subTask: SubTask;
-  isAuthorizedMod: boolean;
 }
 
-const CardSubtaskHold = ({ subTask, isAuthorizedMod }: CardSubtaskHold) => {
+const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
   const socket = useContext(SocketContext);
+  const { modAuth: isAuthorizedMod } = useSelector((state: RootState) => state);
   const [addBtn, setAddBtn] = useState(false);
   const [usersData, setUsersData] = useState<DataUser[]>([]);
 
@@ -71,17 +71,6 @@ const CardSubtaskHold = ({ subTask, isAuthorizedMod }: CardSubtaskHold) => {
               Subir Archivos:
             </h4>
             <div className="cardSubtaskHold-add-files">
-              {/* <div className="cardSubtaskHold-models">
-                <h2 className="cardSubtaskHold-models-title">
-                  Archivo modelo:
-                </h2>
-                <SubtaskFile
-                  files={subTask.files}
-                  typeFile="MATERIAL"
-                  showDeleteBtn={isAuthorizedMod}
-                />
-              </div> */}
-
               <SubtaskUploadFiles id={subTask.id} type="MATERIAL" />
             </div>
             <div className="cardSubtaskHold-add-users">

@@ -59,7 +59,6 @@ const CardRegisterSubTask = ({
     const body = { ...data, hours: data.days * 24 };
     if (subTask?.id) {
       if (usersData.length) {
-        console.log({ ...data, usersData });
         return;
       }
       axiosInstance.patch(`/subtasks/${subTask.id}`, body).then(res => {

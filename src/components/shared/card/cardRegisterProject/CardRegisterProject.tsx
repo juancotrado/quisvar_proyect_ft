@@ -45,7 +45,13 @@ const CardRegisterProject = ({
 }: CardRegisterProjectProps) => {
   const [dataForm, setDataForm] = useState<ProjectForm>(InitialValues);
   const { listUsers } = useSelector((state: RootState) => state);
-  const { handleSubmit, register, setValue, reset } = useForm<ProjectForm>();
+  const {
+    handleSubmit,
+    register,
+    setValue,
+    reset,
+    formState: { errors },
+  } = useForm<ProjectForm>();
   const [isOn, setIsOn] = useState(false);
   const toggleSwitch = () => {
     setIsOn(!isOn);
@@ -129,25 +135,46 @@ const CardRegisterProject = ({
         <div className="col-input-top">
           <Input
             label="CUI:"
-            {...register('CUI')}
+            {...register('CUI', {
+              pattern: {
+                value: /^[^/?@|<>":'\\]+$/,
+                message:
+                  'Ingresar nombre que no contenga lo siguiente ^/?@|<>": ',
+              },
+            })}
             name="CUI"
             required={true}
             placeholder="CUI"
+            errors={errors}
           />
           <Input
             label="Distrito:"
-            {...register('location')}
+            {...register('location', {
+              pattern: {
+                value: /^[^/?@|<>":'\\]+$/,
+                message:
+                  'Ingresar nombre que no contenga lo siguiente ^/?@|<>": ',
+              },
+            })}
             name="location"
             type="text"
             placeholder="Distrito"
+            errors={errors}
           />
         </div>
         <Input
           label="Nombre Corto:"
-          {...register('name')}
+          {...register('name', {
+            pattern: {
+              value: /^[^/?@|<>":'\\]+$/,
+              message:
+                'Ingresar nombre que no contenga lo siguiente ^/?@|<>": ',
+            },
+          })}
           name="name"
           type="text"
           placeholder="Nombre Corto "
+          errors={errors}
         />
         <div className="col-input">
           <Select
@@ -203,9 +230,16 @@ const CardRegisterProject = ({
         )}
         <TextArea
           label="Nombre Completo del Proyecto:"
-          {...register('description')}
+          {...register('description', {
+            pattern: {
+              value: /^[^/?@|<>":'\\]+$/,
+              message:
+                'Ingresar nombre que no contenga lo siguiente ^/?@|<>": ',
+            },
+          })}
           name="description"
           placeholder="Nombre completo del Proyecto"
+          errors={errors}
         />
         <Button
           type="submit"

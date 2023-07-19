@@ -27,6 +27,8 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
   const { profile } = project.moderator;
   const { handleArchiver } = useArchiver(project.id, 'projects');
 
+  console.log(project);
+
   const navigate = useNavigate();
 
   // const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -92,9 +94,7 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
       </figure>
       <div className="project-card-main">
         <div className="projec-card-header">
-          <h3 className="project-card-subtitle">
-            TIPO: {project.typeSpeciality}
-          </h3>
+          <h3 className="project-card-subtitle">NOMBRE: {project.name}</h3>
           <div className="project-card-option">
             <p className="project-card-date">{`Fecha Límite: ${_date(
               project.untilDate
@@ -106,13 +106,15 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
         </div>
         <div style={{ display: 'flex', justifyContent: 'space-between' }}>
           <h4 className="project-card-cordinator">
-            COORDINADOR: {profile.firstName} {profile.lastName}
+            {/* COORDINADOR: {profile.firstName} {profile.lastName} */}
+            DESCRIPCION: {project.description}
           </h4>
           <p className="project-card-description">
-            CUI: {project.CUI ? project.CUI : '123456'}{' '}
+            CUI: {project.CUI ? project.CUI : '123456'}
+            {/* {' '}
             {project.name
               ? project.name
-              : 'CREACION DEL SERVICIO DE PRÁCTICA DEPORTIVA Y/O RECREATIVA EN LA COMUNIDAD CAMPESINA DE KALAHUALA DISTRITO DE ASILLO DE LA PROVINCIA DE AZANGARO DEL DEPARTAMENTO DE PUNO.'}
+              : 'CREACION DEL SERVICIO DE PRÁCTICA DEPORTIVA Y/O RECREATIVA EN LA COMUNIDAD CAMPESINA DE KALAHUALA DISTRITO DE ASILLO DE LA PROVINCIA DE AZANGARO DEL DEPARTAMENTO DE PUNO.'} */}
           </p>
         </div>
         <div className="project-card-footer">
@@ -143,6 +145,10 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
               />
             </div>
           )}
+          <div className="project-aditional-info">
+            {project.location && <h4>Ubicacion: {project.location}</h4>}
+            {/* <h4>Descripcion: {project.description}</h4> */}
+          </div>
           {isAlertOpen && (
             <Portal wrapperId="modal">
               <div

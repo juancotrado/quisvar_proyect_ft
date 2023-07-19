@@ -63,7 +63,8 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
             {errors[name]?.type === 'required'
               ? 'Por favor llene el campo.'
               : // : `Formato de ${label} invalido.`
-                errors.name.message}
+                errors[name].message}
+            {/* {errors[name] && <span>El campo solo puede tener letras o numeros</span>} */}
           </span>
         )}
       </div>

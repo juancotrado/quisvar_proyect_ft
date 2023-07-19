@@ -26,9 +26,10 @@ const userSessionSlice = createSlice({
   reducers: {
     setUserSessionGlobal: (_state, action: PayloadAction<User>) =>
       action.payload,
+    resetSession: () => INITIAL_STATE,
   },
 });
-export const { setUserSessionGlobal } = userSessionSlice.actions;
+export const { setUserSessionGlobal, resetSession } = userSessionSlice.actions;
 export default userSessionSlice.reducer;
 export const getUserSession = () => (dispatch: AppDispatch) => {
   axiosInstance

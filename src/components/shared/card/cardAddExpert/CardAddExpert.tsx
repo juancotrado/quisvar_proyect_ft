@@ -3,25 +3,42 @@ import Outside from '../../../portal/Outside';
 import './CardAddExpert.css';
 import InputText from '../../Input/Input';
 import Button from '../../button/Button';
+import { PersonalBussines } from '../../../../types/types';
 
-const CardAddExpert = () => {
+interface CardAddExpertProps {
+  personalBussines?: (value: PersonalBussines[]) => void;
+}
+
+const CardAddExpert = ({ personalBussines }: CardAddExpertProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [rows, setRows] = useState([
-    { input1: '', input2: '', input3: '', input4: '' },
+    { name: '', career: '', zip: '', phone: '' },
   ]);
   const handleAddRow = () => {
     setRows(prevRows => [
       ...prevRows,
-      { input1: '', input2: '', input3: '', input4: '' },
+      { name: '', career: '', zip: '', phone: '' },
     ]);
   };
-  const handleChange = (index: number, field: string, value: string) => {
+  const handleChange = (
+    index: number,
+    { target }: React.FocusEvent<HTMLInputElement>
+  ) => {
+    const { value, name, type } = target;
+
+    const newValue = type === 'number' ? +value : value;
+
     setRows(prevRows =>
-      prevRows.map((row, i) => (i === index ? { ...row, [field]: value } : row))
+      prevRows.map((row, i) =>
+        i === index ? { ...row, [name]: newValue } : row
+      )
     );
   };
   const handleQuery = () => {
     console.log(rows);
+
+    personalBussines?.(rows);
+    setIsOpen(false);
   };
   const handleDeleteRow = (index: number) => {
     setRows(prevRows => prevRows.filter((row, i) => i !== index));
@@ -45,24 +62,28 @@ const CardAddExpert = () => {
           {rows.map((row, index) => (
             <div key={index} className="card-add-expert-row">
               <InputText
+                name="name"
                 type="text"
-                value={row.input1}
-                onChange={e => handleChange(index, 'input1', e.target.value)}
+                defaultValue={row.name}
+                onBlur={e => handleChange(index, e)}
               />
               <InputText
+                name="career"
                 type="text"
-                value={row.input2}
-                onChange={e => handleChange(index, 'input2', e.target.value)}
+                defaultValue={row.career}
+                onBlur={e => handleChange(index, e)}
               />
               <InputText
-                type="text"
-                value={row.input3}
-                onChange={e => handleChange(index, 'input3', e.target.value)}
+                name="zip"
+                type="number"
+                defaultValue={row.zip}
+                onBlur={e => handleChange(index, e)}
               />
               <InputText
+                name="phone"
                 type="text"
-                value={row.input4}
-                onChange={e => handleChange(index, 'input4', e.target.value)}
+                defaultValue={row.phone}
+                onBlur={e => handleChange(index, e)}
               />
               {index !== 0 && (
                 <button

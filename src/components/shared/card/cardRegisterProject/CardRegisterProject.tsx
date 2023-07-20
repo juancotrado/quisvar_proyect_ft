@@ -8,7 +8,7 @@ import Button from '../../button/Button';
 import './CardRegisterProject.css';
 import { useEffect, useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ProjectForm, Ubigeo } from '../../../../types/types';
+import { PersonalBussines, ProjectForm, Ubigeo } from '../../../../types/types';
 import { spring } from '../../../../animations/animations';
 import { motion } from 'framer-motion';
 import useListUsers from '../../../../hooks/useListUsers';
@@ -24,6 +24,9 @@ const InitialValues: ProjectForm = {
   CUI: '',
   description: '',
   typeSpeciality: '0',
+  department: '0',
+  province: '0',
+  district: '0',
   startDate: _date(new Date()),
   untilDate: _date(new Date()),
   status: false,
@@ -50,6 +53,7 @@ const CardRegisterProject = ({
 }: CardRegisterProjectProps) => {
   const [dataForm, setDataForm] = useState<ProjectForm>(InitialValues);
   const { listStage } = useSelector((state: RootState) => state);
+  const [addExpert, setAddExpert] = useState<PersonalBussines[]>();
   const { users: coordinators } = useListUsers(['ADMIN', 'MOD']);
   const {
     handleSubmit,
@@ -78,6 +82,9 @@ const CardRegisterProject = ({
     setValue('name', dataForm.name);
     setValue('description', dataForm.description);
     setValue('typeSpeciality', dataForm.typeSpeciality);
+    setValue('department', dataForm.department);
+    setValue('province', dataForm.province);
+    setValue('district', dataForm.district);
     setValue('location', dataForm.location);
     setValue('userId', dataForm.userId);
     setValue('stageId', dataForm.stageId);
@@ -89,6 +96,7 @@ const CardRegisterProject = ({
     const { startDate, untilDate, ..._values } = values;
     const _data = {
       ..._values,
+      specialists: addExpert,
       startDate: new Date(startDate),
       untilDate: new Date(untilDate),
       specialityId,
@@ -118,6 +126,7 @@ const CardRegisterProject = ({
   const [department] = useState<Ubigeo[]>(departamentos);
   const [province, setProvince] = useState<Ubigeo[]>([]);
   const [district, setDistrict] = useState<Ubigeo[]>([]);
+  console.log(province);
 
   useEffect(() => {
     if (department) {
@@ -248,9 +257,9 @@ const CardRegisterProject = ({
             textField="name"
           />
           <div style={{ width: '100%' }}>
-            <CardAddExpert />
+            <CardAddExpert personalBussines={e => setAddExpert(e)} />
           </div>
-          {/* <Select
+          <Select
             label="Coordinador:"
             required={true}
             {...register('userId', { valueAsNumber: true })}
@@ -258,7 +267,7 @@ const CardRegisterProject = ({
             data={coordinators}
             itemKey="id"
             textField="name"
-          /> */}
+          />
         </div>
         <div className="col-input">
           <Input

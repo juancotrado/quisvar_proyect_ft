@@ -39,6 +39,7 @@ const SidebarSpeciality = ({
                       <SidebarSpecialityLvlList
                         data={speciality}
                         type="speciality"
+                        onSave={onSave}
                       />
                     </li>
                   ))}

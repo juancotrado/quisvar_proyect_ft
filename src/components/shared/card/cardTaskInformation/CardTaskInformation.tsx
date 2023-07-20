@@ -105,7 +105,9 @@ const CardTaskInformation = ({
       {(status === 'PROCESS' ||
         status === 'INREVIEW' ||
         status === 'DENIED') && <CardSubtaskProcess subTask={subTask} />}
-      {status === 'DONE' && <CardSubtaskDone subTask={subTask} />}
+      {(status === 'DONE' || status === 'LIQUIDATION') && (
+        <CardSubtaskDone subTask={subTask} />
+      )}
       {isAlertOpen && (
         <Portal wrapperId="modal">
           <div

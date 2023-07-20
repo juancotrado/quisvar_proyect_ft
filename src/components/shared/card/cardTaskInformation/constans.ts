@@ -3,7 +3,8 @@ export const statusText = {
   PROCESS: 'HACIENDO',
   INREVIEW: 'POR REVISAR',
   DENIED: 'POR CORREGIR',
-  DONE: 'HECHO',
+  DONE: 'SIN LIQUIDAR',
+  LIQUIDATION: 'LIQUIDADO',
 };
 interface StatusBody {
   [category: string]: {
@@ -30,6 +31,9 @@ export const statusBody: StatusBody = {
     SUPERADMIN: {
       INREVIEW: {
         status: 'DONE',
+      },
+      DONE: {
+        status: 'LIQUIDATION',
       },
     },
   },

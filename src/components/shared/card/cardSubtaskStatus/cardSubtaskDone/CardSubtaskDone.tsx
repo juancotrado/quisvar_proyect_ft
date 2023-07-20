@@ -4,6 +4,9 @@ import SubTaskStatusLabel from '../../../../subtasks/subTaskStatusLabel/SubTaskS
 import SubtasksShippingHistory from '../../../../subtasks/subtasksShippingHistory/SubtasksShippingHistory';
 import './cardSubtaskDone.css';
 import formatDate from '../../../../../utils/formatDate';
+import SubtaskChangeStatusBtn from '../../../../subtasks/subtaskChangeStatusBtn/SubtaskChangeStatusBtn';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../../store';
 
 interface CardSubtaskDone {
   subTask: SubTask;
@@ -11,12 +14,22 @@ interface CardSubtaskDone {
 
 const CardSubtaskDone = ({ subTask }: CardSubtaskDone) => {
   const { status } = subTask;
+  const { modAuth } = useSelector((state: RootState) => state);
   const feedBacksReverse = subTask.feedBacks.reverse();
   return (
     <div className="cardSubtaskDone">
       <section className="cardSubtaskDone-left-details ">
         {subTask.feedBacks.length !== 0 && (
           <SubtasksShippingHistory feedBacks={feedBacksReverse} />
+        )}
+        {status === 'DONE' && modAuth && (
+          <SubtaskChangeStatusBtn
+            option="ASIG"
+            subtaskId={subTask.id}
+            subtaskStatus={status}
+            text="Liquidar"
+            type="liquidate"
+          />
         )}
       </section>
       <section className="cardSubtaskDone-details">

@@ -198,7 +198,10 @@ const Tasks = () => {
               <h3>Haciendo</h3>
               {subTasks
                 .filter(
-                  ({ status }) => status !== 'UNRESOLVED' && status !== 'DONE'
+                  ({ status }) =>
+                    status === 'PROCESS' ||
+                    status === 'INREVIEW' ||
+                    status === 'DENIED'
                 )
                 .map(subTask => (
                   <SubTaskCard
@@ -211,7 +214,9 @@ const Tasks = () => {
             <div className="container-task container-done">
               <h3>Hecho</h3>
               {subTasks
-                .filter(({ status }) => status === 'DONE')
+                .filter(
+                  ({ status }) => status === 'DONE' || status === 'LIQUIDATION'
+                )
                 .map(subTask => (
                   <SubTaskCard
                     key={subTask.id}

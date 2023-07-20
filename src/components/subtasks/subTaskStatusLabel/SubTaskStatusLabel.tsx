@@ -2,7 +2,7 @@ import { statusText } from '../../shared/card/cardTaskInformation/constans';
 import './subTaskStatusLabel.css';
 
 interface SubTaskStatusLabelProps {
-  status: string;
+  status: keyof typeof statusText;
 }
 
 const SubTaskStatusLabel = ({ status }: SubTaskStatusLabelProps) => {
@@ -11,7 +11,7 @@ const SubTaskStatusLabel = ({ status }: SubTaskStatusLabelProps) => {
       <label
         className={`subTaskStatusLabel-text subTaskStatusLabel-${status} `}
       >
-        {statusText[status as keyof typeof statusText]}
+        {statusText[status]}
       </label>
     </div>
   );

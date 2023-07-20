@@ -16,7 +16,7 @@ interface SubtaskChangeStatusBtn {
   className?: string;
   option: 'ASIG' | 'DENY';
   text: string;
-  type: 'sendToReview' | 'deprecated' | 'approved' | 'assigned';
+  type: 'sendToReview' | 'deprecated' | 'approved' | 'assigned' | 'liquidate';
   porcentagesForUser?: { userid: number; percentage: number }[];
   files?: File[] | null;
   dataFeedback?: DataFeedback | null;
@@ -52,9 +52,9 @@ const SubtaskChangeStatusBtn = ({
       body
     );
     socket.emit('client:update-subTask', resStatus.data);
-
     isOpenModal$.setSubject = false;
   };
+
   const handleSendToReview = async () => {
     if (!files?.length)
       return SnackbarUtilities.warning(
@@ -140,6 +140,9 @@ const SubtaskChangeStatusBtn = ({
         break;
       case 'sendToReview':
         handleSendToReview();
+        break;
+      case 'liquidate':
+        handleEditStatus();
         break;
       default:
         break;

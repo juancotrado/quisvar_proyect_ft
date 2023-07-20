@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { axiosInstance } from '../../services/axiosInstance';
-import { ProjectType, SpecialityType } from '../../types/types';
+import { ProjectType, SectorType, SpecialityType } from '../../types/types';
 import { useEffect, useState } from 'react';
 import CardSpeciality from '../../components/speciality/cardSpeciality/CardSpeciality';
 import CardAddSpeciality from '../../components/speciality/cardAddSpeality/CardAddSpeciality';
@@ -10,6 +10,7 @@ import { CardRegisterProject } from '../../components';
 import Button from '../../components/shared/button/Button';
 import { isOpenModal$ } from '../../services/sharingSubject';
 import ProjectGroup from '../../components/projects/ProjectGroup';
+import SidebarSpeciality from '../../components/specialities/sidebarSpeciality/SidebarSpeciality';
 
 const Specialities = () => {
   const { userSession } = useSelector((state: RootState) => state);
@@ -24,9 +25,7 @@ const Specialities = () => {
   >(null);
   const [specialityId, setSpecialityId] = useState<number | null>(null);
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
-  const [specialities, setSpecialities] = useState<SpecialityType[] | null>(
-    null
-  );
+  const [specialities, setSpecialities] = useState<SectorType[] | null>(null);
   const [selectedSpecialityId, setSelectedSpecialityId] = useState<
     number | null
   >(null);
@@ -152,6 +151,7 @@ const Specialities = () => {
           onSave={getProjects}
         />
       )}
+      {specialities && <SidebarSpeciality sectors={specialities} />}
     </div>
   );
 };

@@ -14,6 +14,12 @@ interface SidebarProps {
   isShowInitValue: boolean;
 }
 
+const convertType = {
+  task: 'tasks',
+  indextask: 'indextasks',
+  task2: 'tasks2',
+  task3: 'tasks3',
+};
 const Sidebar = ({
   workArea,
   settingSubTasks,
@@ -27,12 +33,13 @@ const Sidebar = ({
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
   const profileUser = user?.profile;
   const workAreaInfo = { ...areaData, name };
-
+  const [indexSelected, setIndexSelected] = useState('');
   const handleEditArea = () => setOpenEditArea(!openEditArea);
   const handleShow = () => setIsShow(!isShow);
 
   const handleTaks = (id: number, type: TypeTask, isUnique?: boolean) => {
     if (!isUnique) return;
+    setIndexSelected(convertType[type] + '-' + id);
     settingSubTasks(id, type);
   };
 
@@ -76,6 +83,7 @@ const Sidebar = ({
               }
             >
               <SidebarLevelList
+                indexSelected={indexSelected}
                 data={indexTask}
                 onSave={onUpdate}
                 type="indextasks"
@@ -90,6 +98,7 @@ const Sidebar = ({
                         onClick={() => handleTaks(task.id, 'task', task.unique)}
                       >
                         <SidebarLevelList
+                          indexSelected={indexSelected}
                           data={task}
                           onSave={onUpdate}
                           type="tasks"
@@ -106,6 +115,7 @@ const Sidebar = ({
                                   }
                                 >
                                   <SidebarLevelList
+                                    indexSelected={indexSelected}
                                     data={task2}
                                     onSave={onUpdate}
                                     type="tasks2"
@@ -126,6 +136,7 @@ const Sidebar = ({
                                             }
                                           >
                                             <SidebarLevelList
+                                              indexSelected={indexSelected}
                                               data={task3}
                                               onSave={onUpdate}
                                               type="tasks3"

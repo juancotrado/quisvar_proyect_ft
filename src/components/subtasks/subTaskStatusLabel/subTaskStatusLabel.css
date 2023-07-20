@@ -28,3 +28,6 @@
 .subTaskStatusLabel-DONE {
   background-color: var(--color-done);
 }
+.subTaskStatusLabel-LIQUIDATION {
+  background-color: var(--color-liquidation);
+}

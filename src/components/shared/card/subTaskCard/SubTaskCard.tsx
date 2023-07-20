@@ -9,6 +9,13 @@ interface SubTaskCardProps {
   getSubtask: (value: SubTask) => void;
 }
 
+const textInfo = {
+  INREVIEW: 'Por Revisar',
+  DENIED: 'Revisado, por corregir',
+  DONE: 'Sin liquidar',
+  LIQUIDATION: 'Liquidado',
+};
+
 const SubTaskCard = ({ subTask, getSubtask }: SubTaskCardProps) => {
   const hanldeViewMore = () => {
     getSubtask(subTask);
@@ -16,8 +23,7 @@ const SubTaskCard = ({ subTask, getSubtask }: SubTaskCardProps) => {
 
   const usersAsigned = subTask.users?.map(user => user.user.profile.firstName);
   const { status } = subTask;
-  const proccessInfoShow =
-    status !== 'UNRESOLVED' && status !== 'DONE' && status !== 'PROCESS';
+  const proccessInfoShow = status !== 'UNRESOLVED' && status !== 'PROCESS';
   const formatted = (+subTask.price).toFixed(2);
   return (
     <div
@@ -26,9 +32,7 @@ const SubTaskCard = ({ subTask, getSubtask }: SubTaskCardProps) => {
       }`}
     >
       {proccessInfoShow && (
-        <span className="subTask-proccess-info">
-          {status === 'INREVIEW' ? 'Por Revisar' : 'Revisado, por corregir'}
-        </span>
+        <span className="subTask-proccess-info">{textInfo[status]}</span>
       )}
       <span className={`subTask-icon subTask-${status}`}>
         <img

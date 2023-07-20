@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { axiosInstance } from '../../services/axiosInstance';
-import { ProjectType, SectorType } from '../../types/types';
+import { GroupProject, ProjectType, SectorType } from '../../types/types';
 import { useEffect, useState } from 'react';
 import './specialities.css';
 import { CardRegisterProject } from '../../components';
@@ -13,13 +13,7 @@ import SidebarSpeciality from '../../components/specialities/sidebarSpeciality/S
 const Specialities = () => {
   const { userSession } = useSelector((state: RootState) => state);
   const [project, setProject] = useState<ProjectType | null>(null);
-  const [groupProject, setGroupProject] = useState<
-    | {
-        id: number;
-        projects: ProjectType[];
-      }[]
-    | null
-  >(null);
+  const [groupProject, setGroupProject] = useState<GroupProject[] | null>(null);
   const [specialityId, setSpecialityId] = useState<number | null>(null);
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
   const [sectors, setSectors] = useState<SectorType[] | null>(null);
@@ -74,57 +68,19 @@ const Specialities = () => {
         )}
       </div>
       <div className="speciality-main">
-        {/* <div className="speciality-card-container">
-          {specialities &&
-            specialities.map(_speciality => (
-              <CardSpeciality
-                key={_speciality.id}
-                data={_speciality}
-                onDelete={getSpecialities}
-                onUpdate={getSpecialities}
-                role={role}
-                getProjects={getProjects}
-                selected={selectedSpecialityId === _speciality.id}
-                onSelect={() => handleSpecialitySelect(_speciality.id)}
-              />
-            ))}
-          {role !== 'EMPLOYEE' && (
-            <CardAddSpeciality onSave={getSpecialities} />
-          )}
-        </div> */}
         {groupProject && groupProject.length ? (
           <div className="speciality-project-container">
-            {groupProject.map(group => (
-              <ProjectGroup
-                key={group.id}
-                group={group.projects}
-                editProject={editProject}
-              />
-              // <div key={group.id}>
-              //   <span>{group.id}</span>
-              //   {group.projects.map(project => (
-              //     <ProjectCard
-              //       key={project.id}
-              //       project={project}
-              //       editProject={editProject}
-              //       onSave={getProjects}
-              //     />
-              //   ))}
-              // </div>
-            ))}
+            {specialityId &&
+              groupProject.map(group => (
+                <ProjectGroup
+                  key={group.id}
+                  group={group.projects}
+                  editProject={editProject}
+                  onSave={() => getProjects(specialityId)}
+                />
+              ))}
           </div>
         ) : (
-          // <div className="speciality-project-container">
-          //   {projects &&
-          //     projects.map(project => (
-          //       <ProjectCard
-          //         key={project.id}
-          //         project={project}
-          //         editProject={editProject}
-          //         onSave={getProjects}
-          //       />
-          //     ))}
-          // </div>
           <div className="speciality-project-aditional">
             <p className="speciality-project-paragraph">{getText()}</p>
           </div>

@@ -11,6 +11,10 @@ export interface SectorType {
   name: string;
   specialities: SpecialityType[];
 }
+export interface GroupProject {
+  id: number;
+  projects: ProjectType[];
+}
 export interface TaskType {
   id: number;
   name: string;

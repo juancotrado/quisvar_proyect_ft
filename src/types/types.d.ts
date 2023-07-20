@@ -68,10 +68,16 @@ export interface FilesSubtask {
   name: string;
   size: number;
 }
+export type typeSidebarSpecility = 'sector' | 'speciality';
 
 export type fyleType = 'MATERIAL' | 'SUCCESSFUL' | 'REVIEW';
 
 export type UserRoleType = 'ADMIN' | 'EMPLOYEE' | 'MOD';
+
+export interface GruopProject {
+  id: number;
+  projects: ProjectType[];
+}
 export type User = {
   id: number;
   email: string;

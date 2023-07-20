@@ -73,7 +73,7 @@ const SidebarLevelList = ({
         isFirstLevel ? 'index-task-section' : 'sidebarLevelList-sub-list-item'
       }`}
     >
-      <div className={`sidebarLevelList-section `}>
+      <div className={`sidebarLevelList-section`}>
         {isFirstLevel && (
           <img
             src="/svg/reports.svg"

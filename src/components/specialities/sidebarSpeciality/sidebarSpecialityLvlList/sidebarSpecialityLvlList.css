@@ -1,0 +1,63 @@
+.SidebarSpecialityLvlList-sub-list-item:has(:checked) {
+  --rotate: rotate(180deg);
+  --background: #d9d9d9;
+}
+
+.SidebarSpecialityLvlList-sub-list-item:has(:checked)
+  + .sidebarSpeciality-dropdown-content {
+  grid-template-rows: 1fr;
+}
+.SidebarSpecialityLvlList-sub-list-item {
+  display: flex;
+  align-items: center;
+  color: var(--color-secondary);
+  border-left: 0.2rem solid var(--color-secondary);
+  text-transform: capitalize;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.not-border-left {
+  border-left: none;
+}
+.SidebarSpecialityLvlList-section {
+  flex-grow: 1;
+  display: flex;
+  position: relative;
+  padding: 0.5rem;
+  color: var(--color-secondary);
+  font-size: var(--size-label);
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 700;
+  border-radius: 0.5rem;
+  gap: 0.5rem;
+}
+.SidebarSpecialityLvlList-icon {
+  width: 1.5rem;
+}
+.SidebarSpecialityLvlList-sub-list-span {
+  flex-grow: 1;
+  padding: 0.7rem;
+  border-radius: 0.5rem;
+  margin-left: 1rem;
+}
+
+.not-margin-left {
+  margin-left: 0;
+}
+
+.SidebarSpecialityLvlList-dropdown-check {
+  position: absolute;
+  min-width: 90%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.SidebarSpecialityLvlList-dropdown-arrow {
+  width: 1.5rem;
+  margin-left: auto;
+  transform: var(--rotate, 0);
+  transition: 0.2s transform;
+}

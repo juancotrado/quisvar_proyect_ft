@@ -6,6 +6,11 @@ export interface SpecialityType {
     projects: number;
   };
 }
+export interface SectorType {
+  id: number;
+  name: string;
+  specialities: SpecialityType[];
+}
 export interface TaskType {
   id: number;
   name: string;

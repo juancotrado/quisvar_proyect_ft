@@ -1,7 +1,7 @@
 .select-container {
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
+  /* gap: 0.3rem; */
   width: 100%;
 }
 .select-label {
@@ -12,7 +12,7 @@
   font-size: var(--size-label);
 }
 .select-field {
-  height: 2.8rem;
+  height: 2.5rem;
   width: 100%;
   border: 2px solid var(--color-quaternay);
   border-radius: var(--radius-input);

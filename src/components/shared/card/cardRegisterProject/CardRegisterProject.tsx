@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { Input, Select, TextArea } from '../../..';
+import { CardAddExpert, Input, Select, TextArea } from '../../..';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
 import { _date } from '../../../../utils/formatDate';
@@ -247,7 +247,10 @@ const CardRegisterProject = ({
             itemKey="name"
             textField="name"
           />
-          <Select
+          <div style={{ width: '100%' }}>
+            <CardAddExpert />
+          </div>
+          {/* <Select
             label="Coordinador:"
             required={true}
             {...register('userId', { valueAsNumber: true })}
@@ -255,7 +258,7 @@ const CardRegisterProject = ({
             data={coordinators}
             itemKey="id"
             textField="name"
-          />
+          /> */}
         </div>
         <div className="col-input">
           <Input

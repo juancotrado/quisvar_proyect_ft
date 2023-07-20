@@ -333,3 +333,9 @@ export interface Ubigeo {
   nivel_ubigeo: string;
   id_padre_ubigeo: string;
 }
+export interface PersonalBussines {
+  name: string;
+  career: string;
+  zip: int;
+  phone: string;
+}

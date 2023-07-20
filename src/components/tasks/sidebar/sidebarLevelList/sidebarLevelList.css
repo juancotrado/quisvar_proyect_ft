@@ -1,6 +1,108 @@
 /* .sidebarLevelList {
 } */
-.aside-menu-dots-option {
+.sidebarLevelList-menu-dots-option {
   top: auto;
   right: 2rem;
+}
+.sidebarLevelList-sub-list-span-active {
+  background-color: #d9d9d9;
+}
+
+.sidebarLevelList-sub-list-span {
+  flex-grow: 1;
+  padding: 0.7rem;
+  border-radius: 0.5rem;
+  margin-left: 1rem;
+}
+
+.not-margin-left {
+  margin-left: 0;
+}
+
+.sidebarLevelList-sub-list-item:has(:checked) {
+  --rotate: rotate(180deg);
+  --background: #d9d9d9;
+}
+
+.sidebarLevelList-sub-list-item:has(:checked) + .aside-dropdown-content {
+  grid-template-rows: 1fr;
+}
+.sidebarLevelList-sub-list-item {
+  display: flex;
+  align-items: center;
+  color: var(--color-secondary);
+  border-left: 0.2rem solid var(--color-secondary);
+  text-transform: capitalize;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.sidebarLevelList-icon {
+  width: 1.5rem;
+}
+.sidebarLevelLists-edit-area-container {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-grow: 1;
+}
+.sidebarLevelLists-unique-container {
+  display: flex;
+  gap: 0.3rem;
+  font-weight: 600;
+  height: 100%;
+  align-items: center;
+  font-size: 0.8rem;
+}
+
+.sidebarLevelLists-input {
+  flex-grow: 1;
+  height: 2rem;
+  padding: 0 0.5rem;
+  border-radius: var(--radius-input);
+  background-color: var(--color-menu);
+}
+.sidebarLevelList-section {
+  flex-grow: 1;
+  display: flex;
+  position: relative;
+  padding: 0.5rem;
+  color: var(--color-secondary);
+  font-size: var(--size-label);
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 700;
+  border-radius: 0.5rem;
+  gap: 0.5rem;
+}
+
+.sidebarLevelList-checkbox-edit {
+  background-color: white;
+  height: 18px;
+  width: 18px;
+  appearance: none;
+  transition: 0.5s ease;
+  border: 1px solid #aaaaaa;
+  border-radius: 0.3rem;
+}
+.sidebarLevelList-dropdown-check {
+  position: absolute;
+  min-width: 90%;
+  height: 100%;
+  opacity: 0;
+  cursor: pointer;
+}
+.sidebarLevelList-checkbox-edit:checked {
+  background-color: var(--color-primary);
+}
+
+.sidebarLevelList-checkbox-edit:focus {
+  outline: none;
+}
+
+.sidebarLevelList-dropdown-arrow {
+  width: 1.5rem;
+  margin-left: auto;
+  transform: var(--rotate, 0);
+  transition: 0.2s transform;
 }

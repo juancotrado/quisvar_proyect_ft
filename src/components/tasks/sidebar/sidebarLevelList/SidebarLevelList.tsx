@@ -13,16 +13,21 @@ interface IndexTaskContainerProps {
   data: IndexTask | Task | Task2 | DataTask;
   onSave?: () => void;
   type: NewTypeTask;
+  indexSelected: string;
 }
-const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
-  const { userSession, modAuth } = useSelector((state: RootState) => state);
+const SidebarLevelList = ({
+  data,
+  onSave,
+  type,
+  indexSelected,
+}: IndexTaskContainerProps) => {
+  const { modAuth } = useSelector((state: RootState) => state);
 
   const [name, setName] = useState<string>();
   const [unique, setUnique] = useState(data.unique);
   const [errors, setErrors] = useState<{ [key: string]: any }>({});
   const [openEditData, setOpenEditData] = useState<boolean>(false);
   const { handleArchiver } = useArchiver(data.id, type);
-  const role = userSession?.role ? userSession.role : 'EMPLOYEE';
   const toggleInput = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const { value } = target;
     const regex = /^[^/?@|<>":'\\]+$/;
@@ -65,38 +70,38 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
   return (
     <div
       className={`${
-        isFirstLevel ? 'index-task-section' : 'aside-dropdown-sub-list-item'
+        isFirstLevel ? 'index-task-section' : 'sidebarLevelList-sub-list-item'
       }`}
     >
-      <div className={`aside-dropdown-section ${type}`}>
+      <div className={`sidebarLevelList-section `}>
         {isFirstLevel && (
           <img
             src="/svg/reports.svg"
             alt="reportes"
-            className="aside-dropdown-icon"
+            className="sidebarLevelList-icon"
           />
         )}
         {openEditData ? (
           <div
-            className="aside-edit-area-container"
+            className="sidebarLevelList-edit-area-container"
             onClick={e => e.stopPropagation()}
           >
             <Input
               defaultValue={data.name}
               type="text"
               name="name"
-              className="input-task"
+              className="sidebarLevelLists-input"
               onChange={toggleInput}
               errors={errors}
             />
             {type !== 'tasks3' && data.subTasks.length === 0 && (
-              <div className="aside-unique-container">
+              <div className="sidebarLevelLists-unique-container">
                 <label htmlFor="unique">Unico:</label>
                 <input
                   name="unique"
                   type="checkbox"
                   defaultChecked={data.unique}
-                  className="aside-checkbox-edit"
+                  className="sidebarLevelList-checkbox-edit"
                   onChange={toggleInputChecked}
                 />
               </div>
@@ -105,10 +110,11 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
         ) : (
           <>
             <span
-              className={`${
-                isFirstLevel
-                  ? 'aside-name-index'
-                  : 'aside-dropdown-sub-list-span'
+              className={`sidebarLevelList-sub-list-span  ${
+                isFirstLevel && 'not-margin-left'
+              }   ${
+                type + '-' + data.id === indexSelected &&
+                'sidebarLevelList-sub-list-span-active'
               }`}
             >
               {data.item}. {data.name}
@@ -117,18 +123,21 @@ const SidebarLevelList = ({ data, onSave, type }: IndexTaskContainerProps) => {
             <TaskCounter nivelTask={data} />
 
             {!data.unique && (
-              <img src="/svg/down.svg" className="aside-dropdown-arrow" />
+              <img
+                src="/svg/down.svg"
+                className="sidebarLevelList-dropdown-arrow"
+              />
             )}
           </>
         )}
         {!openEditData && (
-          <input type="checkbox" className="aside-dropdown-check" />
+          <input type="checkbox" className="sidebarLevelList-dropdown-check" />
         )}
       </div>
       {modAuth && (
-        <div className="aside-menu-index-task">
+        <div className="sidebarLevelList-menu-index-task">
           <DotsOption
-            className="aside-menu-dots-option"
+            className="sidebarLevelList-menu-dots-option"
             notPositionRelative
             data={[
               {

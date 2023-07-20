@@ -3,12 +3,15 @@ import { motion } from 'framer-motion';
 import Outside from '../../portal/Outside';
 import { useEffect, useMemo, useState } from 'react';
 import { container } from '../../../animations/animations';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store';
 type typeObj = { [key: string]: any };
 interface DropDownStageProps {
   data: typeObj[] | string[];
   textField: string;
   itemKey: string;
   label?: string;
+  addButton?: () => void;
   valueInput?: (event: string, index: string) => void;
 }
 const DropDownStage = ({
@@ -16,11 +19,15 @@ const DropDownStage = ({
   textField,
   itemKey,
   label,
+  addButton,
   valueInput,
 }: DropDownStageProps) => {
   const [isActive, setIsActive] = useState(false);
   const [options, setOptions] = useState<typeObj[] | null>();
   const [title, setTitle] = useState(label);
+  const { userSession } = useSelector((state: RootState) => state);
+  const role = userSession?.role ? userSession.role : 'EMPLOYEE';
+
   useEffect(() => {
     if (data !== undefined) {
       const transformData = data.map((_item, index) => {
@@ -32,7 +39,8 @@ const DropDownStage = ({
       });
       setOptions(transformData);
     }
-  }, [data, itemKey, textField]);
+    setTitle(label);
+  }, [data, itemKey, textField, label]);
 
   const toogleIsActive = () => {
     setIsActive(!isActive);
@@ -84,6 +92,11 @@ const DropDownStage = ({
                   {item[textField]}
                 </li>
               ))}
+              {role !== 'EMPLOYEE' && addButton && (
+                <li className="dropdown-element-list " onClick={addButton}>
+                  Añadir más +
+                </li>
+              )}
             </motion.ul>
           )}
         </div>

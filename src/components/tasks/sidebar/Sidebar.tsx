@@ -6,7 +6,6 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import SidebarAddNewLevel from './sidebarAddNewLevel/SidebarAddNewLevel';
 import SidebarLevelList from './sidebarLevelList/SidebarLevelList';
-
 interface SidebarProps {
   workArea: WorkArea;
   onUpdate?: () => void;

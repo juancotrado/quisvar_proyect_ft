@@ -24,7 +24,6 @@
 .SidebarSpecialityLvlList-section {
   flex-grow: 1;
   display: flex;
-  position: relative;
   padding: 0.5rem;
   color: var(--color-secondary);
   font-size: var(--size-label);
@@ -37,13 +36,16 @@
 .SidebarSpecialityLvlList-icon {
   width: 1.5rem;
 }
-.SidebarSpecialityLvlList-sub-list-span {
+.SidebarSpecialityLvlList-sub-list-name {
   flex-grow: 1;
   padding: 0.7rem;
   border-radius: 0.5rem;
   margin-left: 1rem;
 }
-
+.SidebarSpecialityLvlList-sub-list-span {
+  color: var(--color-primary);
+  font-weight: 800;
+}
 .not-margin-left {
   margin-left: 0;
 }
@@ -51,7 +53,6 @@
 .SidebarSpecialityLvlList-dropdown-check {
   position: absolute;
   min-width: 90%;
-  height: 100%;
   opacity: 0;
   cursor: pointer;
 }
@@ -60,4 +61,20 @@
   margin-left: auto;
   transform: var(--rotate, 0);
   transition: 0.2s transform;
+}
+
+.SidebarSpecialityLvlList-inputs {
+  width: 100%;
+  display: flex;
+  gap: 0.5rem;
+  flex-direction: column;
+  box-shadow: 0px 1.5px 4px rgba(0, 0, 0, 0.2);
+  padding: 0.5rem;
+}
+.SidebarSpecialityLvlList-input {
+  flex-grow: 1;
+  height: 2rem;
+  padding: 0 0.5rem;
+  border-radius: var(--radius-input);
+  background-color: var(--color-menu);
 }

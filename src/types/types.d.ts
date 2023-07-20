@@ -2,14 +2,25 @@ import { IndexTask, FileInfo } from './types.d';
 export interface SpecialityType {
   id: number;
   name: string;
+  cod: string;
   _count?: {
     projects: number;
   };
+}
+
+export interface DataSidebarSpeciality {
+  id: number;
+  name: string;
+  cod?: string;
 }
 export interface SectorType {
   id: number;
   name: string;
   specialities: SpecialityType[];
+}
+export interface GroupProject {
+  id: number;
+  projects: ProjectType[];
 }
 export interface TaskType {
   id: number;
@@ -68,10 +79,16 @@ export interface FilesSubtask {
   name: string;
   size: number;
 }
+export type typeSidebarSpecility = 'sector' | 'speciality';
 
 export type fyleType = 'MATERIAL' | 'SUCCESSFUL' | 'REVIEW';
 
 export type UserRoleType = 'ADMIN' | 'EMPLOYEE' | 'MOD';
+
+export interface GruopProject {
+  id: number;
+  projects: ProjectType[];
+}
 export type User = {
   id: number;
   email: string;

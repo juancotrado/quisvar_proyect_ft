@@ -91,18 +91,9 @@ const SidebarAddNewLevel = ({ idValue, onSave, keyNameId }: AddTaskProps) => {
       ) : (
         <span>AÑADIR NIVEL</span>
       )}
-      {/*{addLevel && (
-        <>
-          {!isLastLevel && (
-            <input {...register('unique')} type="checkbox" name="unique" />
-          )}
-          <Button icon="save" className="add-btn-indextask" />
-        </>
-      )}*/}
       {!addLevel ? (
         <Button
           type="button"
-          // icon={addLevel ? 'close' : 'plus'}
           icon={'plus'}
           className="add-btn-indextask"
           whileHover={{ rotate: 90 }}

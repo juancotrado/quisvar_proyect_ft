@@ -2,12 +2,21 @@ import { useState } from 'react';
 import './sidebarSpeciality.css';
 import { SectorType } from '../../../types/types';
 import SidebarSpecialityLvlList from './sidebarSpecialityLvlList/SidebarSpecialityLvlList';
+import SidebarSpecialityAddLvl from './sidebarSpecialityAddLvl/SidebarSpecialityAddLvl';
 interface SidebarSpecialityProps {
   sectors: SectorType[];
+  getProjects: (id: number) => void;
+  onSave?: () => void;
 }
-const SidebarSpeciality = ({ sectors }: SidebarSpecialityProps) => {
+const SidebarSpeciality = ({
+  sectors,
+  getProjects,
+  onSave,
+}: SidebarSpecialityProps) => {
   const [isShow, setIsShow] = useState<boolean>(false);
   const handleShow = () => setIsShow(!isShow);
+
+  const handleProjects = (especialityId: number) => getProjects(especialityId);
 
   return (
     <aside
@@ -25,13 +34,19 @@ const SidebarSpeciality = ({ sectors }: SidebarSpecialityProps) => {
                     <li
                       key={speciality.id}
                       className="sidebarSpeciality-dropdown-sub-list"
+                      onClick={() => handleProjects(speciality.id)}
                     >
                       <SidebarSpecialityLvlList
                         data={speciality}
                         type="speciality"
+                        onSave={onSave}
                       />
                     </li>
                   ))}
+                  <SidebarSpecialityAddLvl
+                    onSave={onSave}
+                    idValue={sector.id}
+                  />
                 </ul>
               </div>
             </li>

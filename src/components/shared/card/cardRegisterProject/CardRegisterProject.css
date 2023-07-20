@@ -14,7 +14,16 @@
   padding: 0.5rem;
   font-size: var(--size-input);
 }
-
+.close-add-card {
+  position: absolute;
+  background-color: #ffffff00;
+  width: 1.2rem;
+  height: 1.2rem;
+  right: 0.5rem;
+  top: 0.5rem;
+  transition: ease 0.5s;
+  cursor: pointer;
+}
 .close-icon-project {
   position: absolute;
   top: 2rem;

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './sidebarSpeciality.css';
-import { SectorType, typeSidebarSpecility } from '../../../types/types';
+import { SectorType } from '../../../types/types';
 import SidebarSpecialityLvlList from './sidebarSpecialityLvlList/SidebarSpecialityLvlList';
 interface SidebarSpecialityProps {
   sectors: SectorType[];

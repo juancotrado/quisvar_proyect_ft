@@ -8,12 +8,16 @@ import Button from '../../button/Button';
 import './CardRegisterProject.css';
 import { useEffect, useMemo, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ProjectForm } from '../../../../types/types';
+import { ProjectForm, Ubigeo } from '../../../../types/types';
 import { spring } from '../../../../animations/animations';
 import { motion } from 'framer-motion';
 import useListUsers from '../../../../hooks/useListUsers';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
+import provincias from '../../../../utils/ubigeo/provincias.json';
+import distritos from '../../../../utils/ubigeo/distritos.json';
+import departamentos from '../../../../utils/ubigeo/departamentos.json';
+
 const InitialValues: ProjectForm = {
   id: 0,
   name: '',
@@ -51,6 +55,7 @@ const CardRegisterProject = ({
     handleSubmit,
     register,
     setValue,
+    watch,
     reset,
     formState: { errors },
   } = useForm<ProjectForm>();
@@ -110,6 +115,31 @@ const CardRegisterProject = ({
     setIsOn(false);
     isOpenModal$.setSubject = false;
   };
+  const [department] = useState<Ubigeo[]>(departamentos);
+  const [province, setProvince] = useState<Ubigeo[]>([]);
+  const [district, setDistrict] = useState<Ubigeo[]>([]);
+
+  useEffect(() => {
+    if (department) {
+      const selectedDepartment = departamentos.filter(
+        ubigeo => ubigeo.nombre_ubigeo === watch('department')
+      );
+      const provinciasData =
+        provincias[selectedDepartment[0]?.id_ubigeo as keyof typeof provincias];
+      setProvince(provinciasData);
+    }
+  }, [watch('department')]);
+
+  useEffect(() => {
+    if (province) {
+      const selectedDistrict = province.filter(
+        ubigeo => ubigeo.nombre_ubigeo === watch('province')
+      );
+      const distritosData =
+        distritos[selectedDistrict[0]?.id_ubigeo as keyof typeof distritos];
+      setDistrict(distritosData);
+    }
+  }, [watch('province')]);
 
   return (
     <Modal size={45}>
@@ -176,6 +206,35 @@ const CardRegisterProject = ({
             data={stages}
             itemKey="id"
             textField="name"
+          />
+        </div>
+        <div className="col-input">
+          <Select
+            label="Departamento:"
+            required={true}
+            {...register('department')}
+            name="department"
+            data={department}
+            itemKey="nombre_ubigeo"
+            textField="nombre_ubigeo"
+          />
+          <Select
+            label="Provincia:"
+            required={true}
+            {...register('province')}
+            name="province"
+            data={province}
+            itemKey="nombre_ubigeo"
+            textField="nombre_ubigeo"
+          />
+          <Select
+            label="Distrito:"
+            required={true}
+            {...register('district')}
+            name="district"
+            data={district}
+            itemKey="nombre_ubigeo"
+            textField="nombre_ubigeo"
           />
         </div>
         <div className="col-input">

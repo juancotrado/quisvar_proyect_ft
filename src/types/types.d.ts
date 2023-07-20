@@ -106,6 +106,9 @@ export interface ProjectType {
   areas: AreasType[];
   specialityId: number;
   unique?: boolean;
+  department?: string;
+  province?: string;
+  district?: string;
 }
 
 type AreasType = {
@@ -314,4 +317,14 @@ export interface Option {
 export interface Stage {
   id: number;
   name: string;
+}
+export interface Ubigeo {
+  id_ubigeo: string;
+  nombre_ubigeo: string;
+  codigo_ubigeo: string;
+  etiqueta_ubigeo: string;
+  buscador_ubigeo: string;
+  numero_hijos_ubigeo: string;
+  nivel_ubigeo: string;
+  id_padre_ubigeo: string;
 }

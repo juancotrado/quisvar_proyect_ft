@@ -1,13 +1,19 @@
 import { useState } from 'react';
 import './sidebarSpeciality.css';
-import { SectorType } from '../../../types/types';
+import { SectorType, typeSidebarSpecility } from '../../../types/types';
 import SidebarSpecialityLvlList from './sidebarSpecialityLvlList/SidebarSpecialityLvlList';
 interface SidebarSpecialityProps {
   sectors: SectorType[];
+  getProjects: (id: number) => void;
 }
-const SidebarSpeciality = ({ sectors }: SidebarSpecialityProps) => {
+const SidebarSpeciality = ({
+  sectors,
+  getProjects,
+}: SidebarSpecialityProps) => {
   const [isShow, setIsShow] = useState<boolean>(false);
   const handleShow = () => setIsShow(!isShow);
+
+  const handleProjects = (especialityId: number) => getProjects(especialityId);
 
   return (
     <aside
@@ -25,6 +31,7 @@ const SidebarSpeciality = ({ sectors }: SidebarSpecialityProps) => {
                     <li
                       key={speciality.id}
                       className="sidebarSpeciality-dropdown-sub-list"
+                      onClick={() => handleProjects(speciality.id)}
                     >
                       <SidebarSpecialityLvlList
                         data={speciality}

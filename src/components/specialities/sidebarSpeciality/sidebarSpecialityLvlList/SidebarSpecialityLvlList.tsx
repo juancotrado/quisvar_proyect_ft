@@ -1,15 +1,20 @@
+import {
+  SectorType,
+  SpecialityType,
+  typeSidebarSpecility,
+} from '../../../../types/types';
 import './sidebarSpecialityLvlList.css';
 
-type NewTypeTask = 'sector' | 'speciality';
 interface SidebarSpecialityLvlListProps {
-  data: any;
-  type: NewTypeTask;
+  data: SectorType | SpecialityType;
+  type: typeSidebarSpecility;
 }
 const SidebarSpecialityLvlList = ({
   data,
   type,
 }: SidebarSpecialityLvlListProps) => {
   const isFirstLevel = type === 'sector';
+  const isLastLevel = type === 'speciality';
 
   return (
     <div
@@ -32,16 +37,18 @@ const SidebarSpecialityLvlList = ({
         >
           {data.name}
         </span>
-        <img
-          src="/svg/down.svg"
-          className="SidebarSpecialityLvlList-dropdown-arrow"
-        />
-        {
-          <input
-            type="checkbox"
-            className="SidebarSpecialityLvlList-dropdown-check"
-          />
-        }
+        {!isLastLevel && (
+          <>
+            <img
+              src="/svg/down.svg"
+              className="SidebarSpecialityLvlList-dropdown-arrow"
+            />
+            <input
+              type="checkbox"
+              className="SidebarSpecialityLvlList-dropdown-check"
+            />
+          </>
+        )}
       </div>
     </div>
   );

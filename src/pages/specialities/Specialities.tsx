@@ -94,7 +94,11 @@ const Specialities = () => {
         />
       )}
       {sectors && (
-        <SidebarSpeciality sectors={sectors} getProjects={getProjects} />
+        <SidebarSpeciality
+          sectors={sectors}
+          getProjects={getProjects}
+          onSave={getSpecialities}
+        />
       )}
     </div>
   );

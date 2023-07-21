@@ -83,6 +83,7 @@ const CardRegisterProject = ({
     setValue('description', dataForm.description);
     setValue('typeSpeciality', dataForm.typeSpeciality);
     setValue('department', dataForm.department);
+    setValue('company', dataForm.company);
     setValue('province', dataForm.province);
     setValue('district', dataForm.district);
     setValue('location', dataForm.location);
@@ -101,6 +102,8 @@ const CardRegisterProject = ({
       untilDate: new Date(untilDate),
       specialityId,
     };
+    console.log(_data);
+
     if (dataForm.id) {
       axiosInstance
         .put(`projects/${dataForm.id}`, _data)
@@ -126,7 +129,6 @@ const CardRegisterProject = ({
   const [department] = useState<Ubigeo[]>(departamentos);
   const [province, setProvince] = useState<Ubigeo[]>([]);
   const [district, setDistrict] = useState<Ubigeo[]>([]);
-  console.log(province);
 
   useEffect(() => {
     if (department) {
@@ -151,7 +153,7 @@ const CardRegisterProject = ({
   }, [watch('province')]);
 
   return (
-    <Modal size={45}>
+    <Modal size={60}>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="card-register-project"
@@ -163,36 +165,22 @@ const CardRegisterProject = ({
         <h2>{project ? 'ACTUALIZAR PROYECTO' : 'REGISTRAR PROYECTO'}</h2>
         <hr></hr>
         <div className="col-input-top">
-          <Input
-            label="CUI:"
-            {...register('CUI', {
-              pattern: {
-                value: /^[^/?@|<>":'\\]+$/,
-                message:
-                  'Ingresar nombre que no contenga lo siguiente ^/?@|<>": ',
-              },
-            })}
-            name="CUI"
-            required={true}
-            placeholder="CUI"
-            errors={errors}
-          />
-          <Input
-            label="Distrito:"
-            {...register('location', {
-              pattern: {
-                value: /^[^/?@|<>":'\\]+$/,
-                message:
-                  'Ingresar nombre que no contenga lo siguiente ^/?@|<>": ',
-              },
-            })}
-            name="location"
-            type="text"
-            placeholder="Distrito"
-            errors={errors}
-          />
-        </div>
-        <div className="col-input">
+          <div className="edit-this">
+            <Input
+              label="CUI:"
+              {...register('CUI', {
+                pattern: {
+                  value: /^[^/?@|<>":'\\]+$/,
+                  message:
+                    'Ingresar nombre que no contenga lo siguiente ^/?@|<>": ',
+                },
+              })}
+              name="CUI"
+              required={true}
+              placeholder="CUI"
+              errors={errors}
+            />
+          </div>
           <Input
             label="Nombre Corto:"
             {...register('name', {
@@ -207,6 +195,31 @@ const CardRegisterProject = ({
             placeholder="Nombre Corto "
             errors={errors}
           />
+        </div>
+        <TextArea
+          label="Nombre Completo del Proyecto:"
+          {...register('description', {
+            pattern: {
+              value: /^[^/?@|<>":'\\]+$/,
+              message:
+                'Ingresar nombre que no contenga lo siguiente ^/?@|<>": ',
+            },
+          })}
+          name="description"
+          placeholder="Nombre completo del Proyecto"
+          errors={errors}
+        />
+        <div className="col-input">
+          <Select
+            label="Tipo:"
+            required={true}
+            {...register('typeSpeciality')}
+            name="typeSpeciality"
+            data={typeSpecialities}
+            itemKey="name"
+            textField="name"
+          />
+
           <Select
             label="Etapa:"
             required={true}
@@ -216,7 +229,17 @@ const CardRegisterProject = ({
             itemKey="id"
             textField="name"
           />
+          <Select
+            label="Coordinador:"
+            required={true}
+            {...register('userId', { valueAsNumber: true })}
+            name="userId"
+            data={coordinators}
+            itemKey="id"
+            textField="name"
+          />
         </div>
+
         <div className="col-input">
           <Select
             label="Departamento:"
@@ -244,29 +267,6 @@ const CardRegisterProject = ({
             data={district}
             itemKey="nombre_ubigeo"
             textField="nombre_ubigeo"
-          />
-        </div>
-        <div className="col-input">
-          <Select
-            label="Tipo:"
-            required={true}
-            {...register('typeSpeciality')}
-            name="typeSpeciality"
-            data={typeSpecialities}
-            itemKey="name"
-            textField="name"
-          />
-          <div style={{ width: '100%' }}>
-            <CardAddExpert personalBussines={e => setAddExpert(e)} />
-          </div>
-          <Select
-            label="Coordinador:"
-            required={true}
-            {...register('userId', { valueAsNumber: true })}
-            name="userId"
-            data={coordinators}
-            itemKey="id"
-            textField="name"
           />
         </div>
         <div className="col-input">
@@ -301,19 +301,46 @@ const CardRegisterProject = ({
             </div>
           </div>
         )}
-        <TextArea
-          label="Nombre Completo del Proyecto:"
-          {...register('description', {
-            pattern: {
-              value: /^[^/?@|<>":'\\]+$/,
-              message:
-                'Ingresar nombre que no contenga lo siguiente ^/?@|<>": ',
-            },
-          })}
-          name="description"
-          placeholder="Nombre completo del Proyecto"
-          errors={errors}
-        />
+        <div className="col-input">
+          <Input
+            label="Empresa contratista:"
+            {...register('company', {
+              pattern: {
+                value: /^[^/?@|<>":'\\]+$/,
+                message:
+                  'Ingresar nombre que no contenga lo siguiente ^/?@|<>": ',
+              },
+            })}
+            name="company"
+            type="text"
+            placeholder="Compañia"
+            errors={errors}
+          />
+        </div>
+
+        <div className="col-input">
+          <div style={{ width: '100%' }}>
+            <CardAddExpert
+              personalBussines={e => setAddExpert(e)}
+              project={project?.specialists}
+            />
+          </div>
+          <Input
+            label="Distrito:"
+            {...register('location', {
+              pattern: {
+                value: /^[^/?@|<>":'\\]+$/,
+                message:
+                  'Ingresar nombre que no contenga lo siguiente ^/?@|<>": ',
+              },
+            })}
+            name="location"
+            type="text"
+            placeholder="Distrito"
+            errors={errors}
+          />
+        </div>
+
         <Button
           type="submit"
           text={`${project ? 'Actualizar' : 'Registrar'}`}

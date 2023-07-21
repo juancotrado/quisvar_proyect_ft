@@ -114,6 +114,7 @@ export interface ProjectType {
   unique?: boolean;
   status: boolean;
   typeSpeciality: string;
+  company?: string;
   stageId?: number;
   stage?: Stage;
   startDate: Date;
@@ -131,6 +132,7 @@ export interface ProjectType {
   department?: string;
   province?: string;
   district?: string;
+  specialists?: PersonalBussines[];
 }
 
 type AreasType = {

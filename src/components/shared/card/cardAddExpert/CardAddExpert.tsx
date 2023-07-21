@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Outside from '../../../portal/Outside';
 import './CardAddExpert.css';
 import InputText from '../../Input/Input';
@@ -7,9 +7,10 @@ import { PersonalBussines } from '../../../../types/types';
 
 interface CardAddExpertProps {
   personalBussines?: (value: PersonalBussines[]) => void;
+  project?: PersonalBussines[];
 }
 
-const CardAddExpert = ({ personalBussines }: CardAddExpertProps) => {
+const CardAddExpert = ({ personalBussines, project }: CardAddExpertProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [rows, setRows] = useState([
     { name: '', career: '', zip: '', phone: '' },
@@ -20,6 +21,14 @@ const CardAddExpert = ({ personalBussines }: CardAddExpertProps) => {
       { name: '', career: '', zip: '', phone: '' },
     ]);
   };
+  useEffect(() => {
+    console.log(project);
+    if (project && project.length > 0) {
+      setRows(project);
+    } else {
+      setRows([{ name: '', career: '', zip: '', phone: '' }]);
+    }
+  }, [project]);
   const handleChange = (
     index: number,
     { target }: React.FocusEvent<HTMLInputElement>
@@ -35,8 +44,6 @@ const CardAddExpert = ({ personalBussines }: CardAddExpertProps) => {
     );
   };
   const handleQuery = () => {
-    console.log(rows);
-
     personalBussines?.(rows);
     setIsOpen(false);
   };

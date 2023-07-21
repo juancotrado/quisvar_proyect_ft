@@ -82,7 +82,9 @@
   font-size: var(--size-input);
   flex: 1;
 }
-
+.edit-this {
+  width: 25%;
+}
 .col-unique {
   text-transform: capitalize;
   padding: 0.5rem 0;

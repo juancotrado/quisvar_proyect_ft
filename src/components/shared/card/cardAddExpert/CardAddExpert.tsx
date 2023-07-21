@@ -4,31 +4,38 @@ import './CardAddExpert.css';
 import InputText from '../../Input/Input';
 import Button from '../../button/Button';
 import { PersonalBussines } from '../../../../types/types';
+interface DataLabels {
+  [key: string]: string;
+}
 
+interface DataInitialValues {
+  [key: string]: string;
+}
 interface CardAddExpertProps {
   personalBussines?: (value: PersonalBussines[]) => void;
   project?: PersonalBussines[];
+  data?: {
+    labels: DataLabels;
+    initialValues: DataInitialValues;
+  };
 }
-
-const CardAddExpert = ({ personalBussines, project }: CardAddExpertProps) => {
+const CardAddExpert = ({
+  personalBussines,
+  project,
+  data,
+}: CardAddExpertProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [rows, setRows] = useState([
-    { name: '', career: '', zip: '', phone: '' },
-  ]);
+  const [rows, setRows] = useState([data?.initialValues]);
   const handleAddRow = () => {
-    setRows(prevRows => [
-      ...prevRows,
-      { name: '', career: '', zip: '', phone: '' },
-    ]);
+    setRows(prevRows => [...prevRows, data?.initialValues]);
   };
   useEffect(() => {
-    console.log(project);
     if (project && project.length > 0) {
       setRows(project);
     } else {
-      setRows([{ name: '', career: '', zip: '', phone: '' }]);
+      setRows([data?.initialValues]);
     }
-  }, [project]);
+  }, [project, data?.initialValues]);
   const handleChange = (
     index: number,
     { target }: React.FocusEvent<HTMLInputElement>
@@ -61,37 +68,23 @@ const CardAddExpert = ({ personalBussines, project }: CardAddExpertProps) => {
       {isOpen && (
         <div className={`card-add-expert-modal ${isOpen ? 'show' : ''}`}>
           <div className="card-add-header-title">
-            <label>Nombre</label>
-            <label>Carrera</label>
-            <label>Zip</label>
-            <label>Phone</label>
+            {data &&
+              Object.entries(data.labels).map(
+                ([key, value]) => value && <label key={key}>{value}</label>
+              )}
           </div>
           {rows.map((row, index) => (
             <div key={index} className="card-add-expert-row">
-              <InputText
-                name="name"
-                type="text"
-                defaultValue={row.name}
-                onBlur={e => handleChange(index, e)}
-              />
-              <InputText
-                name="career"
-                type="text"
-                defaultValue={row.career}
-                onBlur={e => handleChange(index, e)}
-              />
-              <InputText
-                name="zip"
-                type="number"
-                defaultValue={row.zip}
-                onBlur={e => handleChange(index, e)}
-              />
-              <InputText
-                name="phone"
-                type="text"
-                defaultValue={row.phone}
-                onBlur={e => handleChange(index, e)}
-              />
+              {data &&
+                Object.entries(data.labels).map(([key]) => (
+                  <InputText
+                    key={key}
+                    name={key}
+                    type={key === 'zip' ? 'number' : 'text'}
+                    defaultValue={row[key as keyof typeof row]}
+                    onBlur={e => handleChange(index, e)}
+                  />
+                ))}
               {index !== 0 && (
                 <button
                   type="button"

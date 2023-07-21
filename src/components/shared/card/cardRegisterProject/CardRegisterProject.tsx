@@ -151,7 +151,24 @@ const CardRegisterProject = ({
       setDistrict(distritosData);
     }
   }, [watch('province')]);
-
+  const data = {
+    labels: {
+      name: 'NOMBRE',
+      dni: 'DNI',
+      cip: 'CIP/CAP',
+      career: 'CARGO',
+      phone: 'TELEFONO',
+      pdf: 'PDF',
+    },
+    initialValues: {
+      name: '',
+      dni: '',
+      cip: '',
+      career: '',
+      phone: '',
+      pdf: '',
+    },
+  };
   return (
     <Modal size={60}>
       <form
@@ -323,6 +340,7 @@ const CardRegisterProject = ({
             <CardAddExpert
               personalBussines={e => setAddExpert(e)}
               project={project?.specialists}
+              data={data}
             />
           </div>
           <Input

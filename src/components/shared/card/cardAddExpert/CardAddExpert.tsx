@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import Outside from '../../../portal/Outside';
 import './CardAddExpert.css';
 import InputText from '../../Input/Input';
 import Button from '../../button/Button';
 import { PersonalBussines } from '../../../../types/types';
+import { v4 as uuidv4 } from 'uuid';
 interface DataLabels {
   [key: string]: string;
 }
@@ -25,17 +25,22 @@ const CardAddExpert = ({
   data,
 }: CardAddExpertProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [rows, setRows] = useState([data?.initialValues]);
-  const handleAddRow = () => {
-    setRows(prevRows => [...prevRows, data?.initialValues]);
+  const init = {
+    ...data?.initialValues,
+    id: uuidv4(),
   };
-  useEffect(() => {
-    if (project && project.length > 0) {
-      setRows(project);
-    } else {
-      setRows([data?.initialValues]);
-    }
-  }, [project, data?.initialValues]);
+  const [rows, setRows] = useState([init]);
+  const handleAddRow = () => {
+    setRows([...rows, init]);
+  };
+  // useEffect(() => {
+  //   if (project && project.length > 0) {
+  //     setRows(project);
+  //   } else {
+  //     setRows([init]);
+  //   }
+  // }, [project]);
+
   const handleChange = (
     index: number,
     { target }: React.FocusEvent<HTMLInputElement>
@@ -54,11 +59,15 @@ const CardAddExpert = ({
     personalBussines?.(rows);
     setIsOpen(false);
   };
-  const handleDeleteRow = (index: number) => {
-    setRows(prevRows => prevRows.filter((row, i) => i !== index));
+  const handleDeleteRow = (id: string) => {
+    const deleteRow = rows.filter(row => row.id !== id);
+    setRows(deleteRow);
   };
+
+  console.log(rows);
+
   return (
-    <Outside onClickOutside={() => setIsOpen(false)}>
+    <div>
       <Button
         className="card-add-expert-btn"
         text="Agregar Experto"
@@ -74,21 +83,22 @@ const CardAddExpert = ({
               )}
           </div>
           {rows.map((row, index) => (
-            <div key={index} className="card-add-expert-row">
+            <div key={row.id} className="card-add-expert-row">
+              <h1>{index}</h1>
               {data &&
-                Object.entries(data.labels).map(([key]) => (
+                Object.entries(data.initialValues).map(([key]) => (
                   <InputText
                     key={key}
                     name={key}
                     type={key === 'zip' ? 'number' : 'text'}
-                    defaultValue={row[key as keyof typeof row]}
+                    defaultValue={row ? row[key as keyof typeof row] : ''}
                     onBlur={e => handleChange(index, e)}
                   />
                 ))}
               {index !== 0 && (
                 <button
                   type="button"
-                  onClick={() => handleDeleteRow(index)}
+                  onClick={() => handleDeleteRow(row.id)}
                   className="card-add-expert-delete"
                 >
                   <img
@@ -102,20 +112,20 @@ const CardAddExpert = ({
           <div className="card-add-btn-options">
             <Button
               type="button"
-              text="Agregar"
-              className="send-button"
+              text="Agregar otro Experto +"
+              className="card-register-project-button-show-bussiness"
               onClick={handleAddRow}
             />
-            <Button
-              type="button"
-              text="Consultar"
-              className="send-button"
-              onClick={handleQuery}
-            />
           </div>
+          <Button
+            type="button"
+            text="Consultar"
+            className="send-button"
+            onClick={handleQuery}
+          />
         </div>
       )}
-    </Outside>
+    </div>
   );
 };
 

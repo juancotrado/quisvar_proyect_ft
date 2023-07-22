@@ -10,9 +10,7 @@
   margin-top: 1.6rem;
 }
 .card-add-expert-modal {
-  position: fixed;
-  top: 25%;
-  left: 0;
+  margin-top: 2rem;
   width: 100%;
   min-height: 10%;
   padding: 2rem;
@@ -22,7 +20,7 @@
   justify-content: center;
   z-index: 9999;
   border: 3px solid var(--color-secondary);
-  border-radius: var(--radius-input);
+  /* border-radius: var(--radius-input); */
 }
 .show {
   display: flex;
@@ -34,19 +32,21 @@
   margin-bottom: 0.8rem;
   justify-content: space-around;
   width: 100%;
+  position: relative;
 }
 .card-add-btn-options {
   display: flex;
   width: 100%;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 .card-add-header-title {
   width: 100%;
   display: flex;
   gap: 1rem;
   justify-content: space-around;
+  font-size: var(--size-input);
 }
 .card-add-expert-delete {
   position: absolute;
-  right: 0.8rem;
+  right: -1.3rem;
 }

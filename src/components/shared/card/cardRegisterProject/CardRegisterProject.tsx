@@ -380,6 +380,7 @@ const CardRegisterProject = ({
               <CardAddExpert
                 personalBussines={e => setAddExpert(e)}
                 project={project?.specialists}
+                data={data}
               />
             </div>
           </div>

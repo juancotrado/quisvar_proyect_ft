@@ -51,7 +51,7 @@ const CardRegisterProject = ({
   const [consortium, setConsortium] = useState<ConsortiumForm | null>(null);
   const [provinces, setProvinces] = useState<Ubigeo[]>([]);
   const [districts, setDistricts] = useState<Ubigeo[]>([]);
-  const [isUniqueCorp, setIsUniqueCorp] = useState(project?.company || true);
+  const [isUniqueCorp, setIsUniqueCorp] = useState(true);
   const stages = useMemo(() => (listStage ? listStage : []), [listStage]);
   const refDescriptioProject = useRef<HTMLDivElement>(null);
   const refDescriptionCompany = useRef<HTMLDivElement>(null);
@@ -90,7 +90,7 @@ const CardRegisterProject = ({
     const idDepartament = findDepartament?.id_ubigeo;
     const provinciasData =
       provincesJson[idDepartament as keyof typeof provincesJson];
-    const findProvice = provinciasData.find(
+    const findProvice = provinciasData?.find(
       ubigeo => ubigeo.nombre_ubigeo === province
     );
     const idProvince = findProvice?.id_ubigeo;
@@ -116,6 +116,7 @@ const CardRegisterProject = ({
       setValue('stageId', project.stageId);
       setValue('startDate', _date(new Date(project.startDate)));
       setValue('untilDate', _date(new Date(project.untilDate)));
+      setIsUniqueCorp(!!project.company);
     }
   }, [project, setValue]);
 
@@ -337,13 +338,13 @@ const CardRegisterProject = ({
           ref={refDescriptionCompany}
           className="card-register-project-container-details"
         >
-          <button
+          {/* <button
             type="button"
             onClick={() => handleClickScroll(refDescriptioProject)}
           >
             patito3
-          </button>
-          <h2>{'DATOS DE EMPRESA /CONSORCIO'}</h2>
+          </button> */}
+          <h2>{`DATOS DE ${isUniqueCorp ? 'EMPRESA' : 'CONSORCIO'} `}</h2>
           <hr></hr>
           {!project && (
             <div className="col-unique">
@@ -365,7 +366,9 @@ const CardRegisterProject = ({
               </div>
             </div>
           )}
-          <span className="switch-status-label">Datos del Consorcio:</span>
+          <span className="switch-status-label">
+            Datos Generales {isUniqueCorp ? 'de la Empresa' : 'del Consorcio'} :
+          </span>
           {isUniqueCorp ? (
             <CardRegisterCompany
               onSave={_company => setCompany(_company)}

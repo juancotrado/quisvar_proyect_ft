@@ -15,9 +15,9 @@ const InitialValues: ExpertType = {
 
 const HeadersExperts = {
   name: 'Nombre Completo',
+  dni: 'DNI',
   career: 'Ocupación',
   cip: 'CIP',
-  dni: 'DNI',
   phone: 'Teléfono',
   pdf: 'PDF',
 };
@@ -127,7 +127,7 @@ const CardRegisterExpert = ({ onSave, experts }: CardRegisterExpertProps) => {
                 />
                 <Input
                   name={`cip-e-${expert.id}`}
-                  placeholder="Ocupación"
+                  placeholder="CIP"
                   required
                   onBlur={e => toggleOnChange(expert.id, e, 'cip')}
                   disabled={readOnly}
@@ -136,7 +136,7 @@ const CardRegisterExpert = ({ onSave, experts }: CardRegisterExpertProps) => {
                 />
                 <Input
                   name={`phone-e-${expert.id}`}
-                  placeholder="Ocupación"
+                  placeholder="Teléfono / Celular"
                   required
                   onBlur={e => toggleOnChange(expert.id, e, 'phone')}
                   disabled={readOnly}
@@ -144,7 +144,8 @@ const CardRegisterExpert = ({ onSave, experts }: CardRegisterExpertProps) => {
                   defaultValue={expert.phone}
                 />
 
-                {expert.pdf ? (
+                <span className="col-span-1">{expert.pdf}</span>
+                {/* {expert.pdf ? (
                   <span className="col-span-1">{expert.pdf}</span>
                 ) : (
                   <Input
@@ -156,7 +157,7 @@ const CardRegisterExpert = ({ onSave, experts }: CardRegisterExpertProps) => {
                     classNameMain="col-span-1"
                     // defaultValue={expert.phone}
                   />
-                )}
+                )} */}
                 {!expert.pdf && (
                   <Button
                     className="cardRegisterConsortium-button-add-company button-icon"

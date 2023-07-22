@@ -130,9 +130,9 @@ export interface ProjectType {
   areas: AreasType[];
   specialityId: number;
   unique?: boolean;
-  department?: string;
-  province?: string;
-  district?: string;
+  department: string;
+  province: string;
+  district: string;
   specialists?: PersonalBussines[];
 }
 

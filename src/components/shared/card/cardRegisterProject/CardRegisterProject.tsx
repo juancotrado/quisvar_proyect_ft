@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { Input, Select, TextArea } from '../../..';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
@@ -20,29 +19,12 @@ import { motion } from 'framer-motion';
 import useListUsers from '../../../../hooks/useListUsers';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
-import provincias from '../../../../utils/ubigeo/provincias.json';
-import distritos from '../../../../utils/ubigeo/distritos.json';
-import departamentos from '../../../../utils/ubigeo/departamentos.json';
+import provincesJson from '../../../../utils/ubigeo/provincias.json';
+import distritosJson from '../../../../utils/ubigeo/distritos.json';
+import departamentsJson from '../../../../utils/ubigeo/departamentos.json';
 import CardRegisterCompany from '../cardRegisterCompany/CardRegisterCompany';
 import CardRegisterConsortium from '../cardRegisterConsortium/CardRegisterConsortium';
 import CardRegisterExpert from '../cardAddExpert/CardRegisterExpert';
-
-const InitialValues: ProjectForm = {
-  id: 0,
-  name: '',
-  CUI: '',
-  description: '',
-  typeSpeciality: '0',
-  stageId: 0,
-  department: '0',
-  province: '0',
-  district: '0',
-  startDate: _date(new Date()),
-  untilDate: _date(new Date()),
-  status: false,
-  userId: 0,
-  specialityId: 0,
-};
 
 const typeSpecialities = [
   { id: 1, name: 'Represas' },
@@ -61,17 +43,15 @@ const CardRegisterProject = ({
   onSave,
   specialityId,
 }: CardRegisterProjectProps) => {
-  const [dataForm, setDataForm] = useState<ProjectForm>(InitialValues);
   const { listStage } = useSelector((state: RootState) => state);
   const [isOn, setIsOn] = useState(false);
   const { users: coordinators } = useListUsers(['ADMIN', 'MOD']);
   const [company, setCompany] = useState<CompanyForm | null>(null);
   const [specialist, setSpecialist] = useState<ExpertForm[] | null>(null);
   const [consortium, setConsortium] = useState<ConsortiumForm | null>(null);
-  const [province, setProvince] = useState<Ubigeo[]>([]);
-  const [district, setDistrict] = useState<Ubigeo[]>([]);
+  const [provinces, setProvinces] = useState<Ubigeo[]>([]);
+  const [districts, setDistricts] = useState<Ubigeo[]>([]);
   const [isUniqueCorp, setIsUniqueCorp] = useState(project?.company || true);
-  const [department] = useState<Ubigeo[]>(departamentos);
   const stages = useMemo(() => (listStage ? listStage : []), [listStage]);
   const refDescriptioProject = useRef<HTMLDivElement>(null);
   const refDescriptionCompany = useRef<HTMLDivElement>(null);
@@ -80,34 +60,64 @@ const CardRegisterProject = ({
     handleSubmit,
     register,
     setValue,
-    watch,
     reset,
     formState: { errors },
   } = useForm<ProjectForm>();
 
-  useEffect(() => {
-    if (project) {
-      setDataForm(project);
-    } else {
-      setDataForm(InitialValues);
-    }
-  }, [project]);
+  const handleGetProvinces = (value: string) => {
+    const findDepartament = departamentsJson.find(
+      ubigeo => ubigeo.nombre_ubigeo === value
+    );
+    const idDepartament = findDepartament?.id_ubigeo;
+    const provinciasData =
+      provincesJson[idDepartament as keyof typeof provincesJson];
+    setProvinces(provinciasData);
+  };
+  const handleGetDistricts = (value: string) => {
+    const findProvice = provinces.find(
+      ubigeo => ubigeo.nombre_ubigeo === value
+    );
+    const idProvince = findProvice?.id_ubigeo;
+    const districsData =
+      distritosJson[idProvince as keyof typeof distritosJson];
+    setDistricts(districsData);
+  };
+
+  const setJurisdictionSelectData = (departament: string, province: string) => {
+    const findDepartament = departamentsJson.find(
+      ubigeo => ubigeo.nombre_ubigeo === departament
+    );
+    const idDepartament = findDepartament?.id_ubigeo;
+    const provinciasData =
+      provincesJson[idDepartament as keyof typeof provincesJson];
+    const findProvice = provinciasData.find(
+      ubigeo => ubigeo.nombre_ubigeo === province
+    );
+    const idProvince = findProvice?.id_ubigeo;
+    const districsData =
+      distritosJson[idProvince as keyof typeof distritosJson];
+    setProvinces(provinciasData);
+    setDistricts(districsData);
+  };
 
   useEffect(() => {
-    setValue('CUI', dataForm.CUI);
-    setValue('name', dataForm.name);
-    setValue('description', dataForm.description);
-    setValue('typeSpeciality', dataForm.typeSpeciality);
-    setValue('department', dataForm.department);
-    setValue('company', dataForm.company);
-    setValue('province', dataForm.province);
-    setValue('district', dataForm.district);
-    setValue('location', dataForm.location);
-    setValue('userId', dataForm.userId);
-    setValue('stageId', dataForm.stageId);
-    setValue('startDate', _date(new Date(dataForm.startDate)));
-    setValue('untilDate', _date(new Date(dataForm.untilDate)));
-  }, [dataForm]);
+    if (project) {
+      setJurisdictionSelectData(project.department, project.province);
+      setValue('CUI', project.CUI);
+      setValue('name', project.name);
+      setValue('description', project.description);
+      setValue('typeSpeciality', project.typeSpeciality);
+      setValue('company', project.company);
+      setValue('department', project.department);
+      setValue('province', project.province);
+      setValue('district', project.district);
+      setValue('location', project.location);
+      setValue('userId', project.userId);
+      setValue('stageId', project.stageId);
+      setValue('startDate', _date(new Date(project.startDate)));
+      setValue('untilDate', _date(new Date(project.untilDate)));
+    }
+  }, [project, setValue]);
 
   const onSubmit: SubmitHandler<ProjectForm> = values => {
     const { startDate, untilDate, ..._values } = values;
@@ -120,9 +130,9 @@ const CardRegisterProject = ({
       consortiumInfo: consortium,
       specialityId,
     };
-    if (dataForm.id) {
+    if (project && project.id) {
       axiosInstance
-        .put(`projects/${dataForm.id}`, _data)
+        .put(`projects/${project.id}`, _data)
         .then(successfulShipment);
     } else {
       axiosInstance.post('projects', _data).then(successfulShipment);
@@ -138,32 +148,13 @@ const CardRegisterProject = ({
   };
 
   const closeFunctions = () => {
+    reset({});
+    setDistricts([]);
+    setProvinces([]);
     setIsOn(false);
     setIsUniqueCorp(true);
     isOpenModal$.setSubject = false;
   };
-
-  useEffect(() => {
-    if (department) {
-      const selectedDepartment = departamentos.filter(
-        ubigeo => ubigeo.nombre_ubigeo === watch('department')
-      );
-      const provinciasData =
-        provincias[selectedDepartment[0]?.id_ubigeo as keyof typeof provincias];
-      setProvince(provinciasData);
-    }
-  }, [watch('department')]);
-
-  useEffect(() => {
-    if (province) {
-      const selectedDistrict = province.filter(
-        ubigeo => ubigeo.nombre_ubigeo === watch('province')
-      );
-      const distritosData =
-        distritos[selectedDistrict[0]?.id_ubigeo as keyof typeof distritos];
-      setDistrict(distritosData);
-    }
-  }, [watch('province')]);
 
   const handleClickScroll = (ref: RefObject<HTMLDivElement>) => {
     ref.current?.scrollIntoView({ behavior: 'smooth' });
@@ -296,17 +287,19 @@ const CardRegisterProject = ({
               required={true}
               {...register('department')}
               name="department"
-              data={department}
+              data={departamentsJson}
               itemKey="nombre_ubigeo"
               textField="nombre_ubigeo"
+              onChange={e => handleGetProvinces(e.target.value)}
             />
             <Select
               label="Provincia:"
               required={true}
               {...register('province')}
               name="province"
-              data={province}
+              data={provinces}
               itemKey="nombre_ubigeo"
+              onChange={e => handleGetDistricts(e.target.value)}
               textField="nombre_ubigeo"
             />
             <Select
@@ -314,7 +307,7 @@ const CardRegisterProject = ({
               required={true}
               {...register('district')}
               name="district"
-              data={district}
+              data={districts}
               itemKey="nombre_ubigeo"
               textField="nombre_ubigeo"
             />

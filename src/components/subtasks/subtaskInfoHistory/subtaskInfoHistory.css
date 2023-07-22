@@ -1,0 +1,41 @@
+.SubtaskInfoHistory-container-feedback {
+  display: flex;
+  padding: 0.3rem;
+  gap: 0.3em;
+}
+
+.SubtaskInfoHistory-container-feedback-files-container {
+  width: 100%;
+  height: 100%;
+}
+
+.SubtaskInfoHistory-no-feedback {
+  width: 40%;
+  height: 100%;
+}
+
+.SubtaskInfoHistory-container-feedback-textarea-container {
+  height: 100%;
+  background-color: red;
+}
+
+.SubtaskInfoHistory-container-feedback-files {
+  /* max-width: 40%; */
+  max-height: 8rem;
+}
+
+.SubtaskInfoHistory-container-feedback-textarea {
+  border: 1px solid var(--color-secondary);
+  background-color: var(--color-menu);
+  flex-grow: 1;
+}
+
+.SubtaskInfoHistory-review-card-time {
+  font-size: 0.9rem;
+  cursor: pointer;
+  color: var(--color-primary);
+}
+
+.SubtaskInfoHistory-files-accept {
+  background-color: aliceblue;
+}

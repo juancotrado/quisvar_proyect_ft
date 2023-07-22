@@ -4,10 +4,11 @@ import { TextareaHTMLAttributes, forwardRef } from 'react';
 interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   name?: string;
+  className?: string;
   errors?: { [key: string]: any };
 }
 const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
-  ({ label, name, errors, ...props }, ref) => {
+  ({ label, name, className, errors, ...props }, ref) => {
     return (
       <div className="input-container">
         {label && (
@@ -20,7 +21,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           {...props}
           name={name}
           rows={5}
-          className={`input-container-textarea ${
+          className={`${className} input-container-textarea ${
             errors && name && errors[name] && 'input-text-area-error'
           }`}
         />

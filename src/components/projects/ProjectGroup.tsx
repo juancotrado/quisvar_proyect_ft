@@ -29,10 +29,9 @@ const ProjectGroup = ({ group, editProject, onSave }: ProjectGroup) => {
   useEffect(() => {
     getStageList();
   }, [group]);
-
   useEffect(() => {
     getStageFiltering();
-  }, []);
+  }, [group]);
 
   const getStageList = () => {
     const list = group.map(({ stage }) => (stage ? stage : [])).flat();
@@ -41,8 +40,10 @@ const ProjectGroup = ({ group, editProject, onSave }: ProjectGroup) => {
   };
 
   const getStageFiltering = () => {
-    if (stageList && listStage) {
-      const patito = [...stageList, ...listStage];
+    const list = group.map(({ stage }) => (stage ? stage : [])).flat();
+    const newList = list.length ? list : null;
+    if (newList && listStage) {
+      const patito = [...newList, ...listStage];
       const patito2 = patito.map(p => JSON.stringify(p));
       const newValue: { [key: string]: any } = {};
       for (const value of patito2) newValue[value] = newValue[value] + 1 || 1;

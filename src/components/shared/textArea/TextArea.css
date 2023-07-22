@@ -5,18 +5,23 @@
   gap: 0.3rem;
   position: relative;
 }
+
 .input-label {
   width: 100%;
   font-size: var(--size-label);
   font-family: 'Montserrat', sans-serif;
 }
+
 .input-text-area-error {
   border-color: #df0000 !important;
 }
+
 .input-container-textarea {
   width: 100%;
   font-size: var(--size-input);
-  border: 2px solid var(--color-quaternay);
-  border-radius: var(--radius-input);
+  font-weight: 500;
+  background-color: var(--color-menu);
+  border-bottom: 2px solid var(--color-quaternay);
+  /* border-radius: var(--radius-input); */
   padding: 0.5rem;
 }

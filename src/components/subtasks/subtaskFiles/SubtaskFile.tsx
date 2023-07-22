@@ -10,6 +10,7 @@ interface SubtaskFileProps {
   files: Files[];
   typeFile?: 'REVIEW' | 'MATERIAL' | 'SUCCESSFUL';
   showDeleteBtn?: boolean;
+  className?: string;
   showDeleteBtnByUserAuth?: boolean;
 }
 
@@ -17,6 +18,7 @@ const SubtaskFile = ({
   files,
   typeFile,
   showDeleteBtn,
+  className,
   showDeleteBtnByUserAuth,
 }: SubtaskFileProps) => {
   const { userSession } = useSelector((state: RootState) => state);
@@ -49,7 +51,7 @@ const SubtaskFile = ({
     return url.replace(valueReplace, newValueReplace);
   };
   return (
-    <div className="subtaskFile">
+    <div className={` subtaskFile ${className}`}>
       {files
         ?.filter(({ type }) =>
           !typeFile

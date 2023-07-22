@@ -6,6 +6,14 @@
   align-items: center;
 }
 
+.CardRegister-input-form {
+  border-bottom: 2px solid var(--color-secondary);
+  padding: 0.4rem;
+  background-color: var(--color-menu);
+  /* width: 100%; */
+  /* border-radius: var(--radius-input) var(--radius-input) 0 0; */
+}
+
 .input-select {
   height: 3.5rem;
   width: 100%;
@@ -14,6 +22,7 @@
   padding: 0.5rem;
   font-size: var(--size-input);
 }
+
 .close-add-card {
   position: absolute;
   background-color: #ffffff00;
@@ -24,6 +33,7 @@
   transition: ease 0.5s;
   cursor: pointer;
 }
+
 .close-icon-project {
   position: absolute;
   top: 2rem;
@@ -46,27 +56,69 @@
   font-family: 'Montserrat', sans-serif;
 }
 
+.switch-status-label {
+  font-size: var(--size-label);
+  text-transform: uppercase;
+}
+
 .input-select {
   color: #203881;
   font-size: var(--size-label);
 }
 
-.card-register-project {
+/* .card-register-project {
   width: 100%;
   height: 100%;
-  padding: 30px;
+  padding: 30px 0;
   display: flex;
   flex-direction: column;
   gap: 10px;
   border-radius: var(--radius-button);
   background-color: white;
+} */
+
+.card-register-project {
+  max-height: var(--register-height);
+  background-color: white;
+  /* padding: 30px 0; */
+  /* display: grid;
+  grid-template-rows: repeat(2, minmax(0, 1fr)); */
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  padding: 20px;
+  border: 2rem solid #fff;
+  border-radius: var(--radius-button);
 }
+
+.card-register-project-container-details {
+  /* min-height: var(--register-height); */
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.card-register-project-button-show-bussiness {
+  color: var(--color-primary);
+  border: none;
+}
+
+/* .patito-prueba2 {
+  height: var(--register-height);
+}
+
+.patito-prueba3 {
+  height: var(--register-height);
+  background-color: white;
+} */
 
 .col-input {
   display: flex;
   justify-content: space-between;
   gap: 2rem;
 }
+
 .col-input-top {
   display: flex;
   justify-content: flex-start;
@@ -82,9 +134,11 @@
   font-size: var(--size-input);
   flex: 1;
 }
+
 .edit-this {
   width: 25%;
 }
+
 .col-unique {
   text-transform: capitalize;
   padding: 0.5rem 0;
@@ -123,6 +177,7 @@
   margin: auto;
   transition: color ease 0.5s, background-color ease 0.5s;
 }
+
 .send-button:hover {
   background-color: var(--color-quaternay);
   color: #fff;

@@ -92,10 +92,10 @@ const SidebarSpecialityLvlList = ({
           <h4
             className={`SidebarSpecialityLvlList-sub-list-name  ${
               isFirstLevel && 'not-margin-left'
-            }   `}
+            } ${isLastLevel && 'letter-small'}   `}
           >
             <span className="SidebarSpecialityLvlList-sub-list-span">
-              {data.cod && `(${data.cod}) -`}
+              {data.cod && `${data.cod} `}
             </span>{' '}
             {data.name}
           </h4>
@@ -110,6 +110,7 @@ const SidebarSpecialityLvlList = ({
             <input
               type="checkbox"
               className="SidebarSpecialityLvlList-dropdown-check"
+              defaultChecked
             />
           </>
         )}

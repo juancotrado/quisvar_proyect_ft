@@ -22,6 +22,7 @@
   border-left: none;
 }
 .SidebarSpecialityLvlList-section {
+  position: relative;
   flex-grow: 1;
   display: flex;
   padding: 0.5rem;
@@ -42,9 +43,15 @@
   border-radius: 0.5rem;
   margin-left: 1rem;
 }
+.letter-small {
+  font-size: 0.7rem;
+  font-weight: 600;
+}
 .SidebarSpecialityLvlList-sub-list-span {
+  display: block;
   color: var(--color-primary);
-  font-weight: 800;
+  font-weight: 700;
+  font-size: 1.3rem;
 }
 .not-margin-left {
   margin-left: 0;
@@ -52,9 +59,10 @@
 
 .SidebarSpecialityLvlList-dropdown-check {
   position: absolute;
-  min-width: 90%;
+  min-width: 100%;
   opacity: 0;
   cursor: pointer;
+  height: 100%;
 }
 .SidebarSpecialityLvlList-dropdown-arrow {
   width: 1.5rem;

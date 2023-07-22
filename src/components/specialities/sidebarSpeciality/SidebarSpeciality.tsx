@@ -13,16 +13,10 @@ const SidebarSpeciality = ({
   getProjects,
   onSave,
 }: SidebarSpecialityProps) => {
-  const [isShow, setIsShow] = useState<boolean>(false);
-  const handleShow = () => setIsShow(!isShow);
-
   const handleProjects = (especialityId: number) => getProjects(especialityId);
 
   return (
-    <aside
-      className={`sidebarSpeciality ${isShow && 'sidebarSpeciality-show'}`}
-    >
-      <h2 className="sidebarSpeciality-title">Sector :</h2>
+    <aside className={`sidebarSpeciality `}>
       <div className="sidebarSpeciality-slice">
         <ul className="aside-dropdown">
           {sectors.map(sector => (
@@ -52,20 +46,6 @@ const SidebarSpeciality = ({
             </li>
           ))}
         </ul>
-      </div>
-      <div className="sidebarSpeciality-slide" onClick={handleShow}>
-        <img
-          src="/svg/down-white.svg"
-          alt="reportes"
-          className={`sidebarSpeciality-slide-icon ${
-            isShow && 'sidebarSpeciality-slide-icon-rotate'
-          }`}
-        />
-        <img
-          src="/svg/trapecio2.svg"
-          alt="trapecio"
-          className="sidebarSpeciality-trapecio"
-        />
       </div>
     </aside>
   );

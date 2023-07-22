@@ -9,6 +9,7 @@ import Button from '../../components/shared/button/Button';
 import { isOpenModal$ } from '../../services/sharingSubject';
 import ProjectGroup from '../../components/projects/ProjectGroup';
 import SidebarSpeciality from '../../components/specialities/sidebarSpeciality/SidebarSpeciality';
+import CardSpeciality from '../../components/speciality/cardSpeciality/CardSpeciality';
 
 const Specialities = () => {
   const { userSession } = useSelector((state: RootState) => state);
@@ -68,6 +69,13 @@ const Specialities = () => {
         )}
       </div>
       <div className="speciality-main">
+        {sectors && (
+          <SidebarSpeciality
+            sectors={sectors}
+            getProjects={getProjects}
+            onSave={getSpecialities}
+          />
+        )}
         {groupProject && groupProject.length ? (
           <div className="speciality-project-container">
             {specialityId &&
@@ -91,13 +99,6 @@ const Specialities = () => {
           specialityId={specialityId}
           project={project}
           onSave={getProjects}
-        />
-      )}
-      {sectors && (
-        <SidebarSpeciality
-          sectors={sectors}
-          getProjects={getProjects}
-          onSave={getSpecialities}
         />
       )}
     </div>

@@ -6,13 +6,14 @@ services:
     entrypoint: /bin/sh
     restart: always
     ports:
-      - 8000:8000
+      - 8001:8001
     environment:
       VIRTUAL_HOST: quisvar.com, www.quisvar.com
     working_dir: /srv/app
     volumes:
       - ./:/srv/app
     tty: true
+    command: 'npm run dev'
 
 networks:
   default:

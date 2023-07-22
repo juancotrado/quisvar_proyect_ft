@@ -46,7 +46,7 @@ const CardRegisterConsortium = ({
     });
     const newForm = { ...form, companies: _companies };
     setForm(newForm);
-    !readOnly && onSave?.(form);
+    !readOnly && onSave?.(newForm);
     setReadOnly(!readOnly);
   };
 

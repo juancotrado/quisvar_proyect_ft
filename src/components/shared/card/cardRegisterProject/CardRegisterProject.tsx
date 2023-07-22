@@ -63,16 +63,14 @@ const CardRegisterProject = ({
 }: CardRegisterProjectProps) => {
   const [dataForm, setDataForm] = useState<ProjectForm>(InitialValues);
   const { listStage } = useSelector((state: RootState) => state);
+  const [isOn, setIsOn] = useState(false);
   const { users: coordinators } = useListUsers(['ADMIN', 'MOD']);
   const [company, setCompany] = useState<CompanyForm | null>(null);
-  const [listSpecialist, setListSpecialist] = useState<ExpertForm[] | null>(
-    null
-  );
+  const [specialist, setSpecialist] = useState<ExpertForm[] | null>(null);
   const [consortium, setConsortium] = useState<ConsortiumForm | null>(null);
-  const [isOn, setIsOn] = useState(false);
-  const [isUniqueCorp, setIsUniqueCorp] = useState(project?.company || true);
   const [province, setProvince] = useState<Ubigeo[]>([]);
   const [district, setDistrict] = useState<Ubigeo[]>([]);
+  const [isUniqueCorp, setIsUniqueCorp] = useState(project?.company || true);
   const [department] = useState<Ubigeo[]>(departamentos);
   const stages = useMemo(() => (listStage ? listStage : []), [listStage]);
   const refDescriptioProject = useRef<HTMLDivElement>(null);
@@ -115,11 +113,11 @@ const CardRegisterProject = ({
     const { startDate, untilDate, ..._values } = values;
     const _data = {
       ..._values,
-      listSpecialist,
       startDate: new Date(startDate),
       untilDate: new Date(untilDate),
-      company,
-      consortium,
+      specialistsInfo: specialist,
+      companyInfo: company,
+      consortiumInfo: consortium,
       specialityId,
     };
     if (dataForm.id) {
@@ -180,6 +178,7 @@ const CardRegisterProject = ({
     setIsUniqueCorp(!isUniqueCorp);
     isUniqueCorp ? setCompany(null) : setConsortium(null);
   };
+
   return (
     <Modal size={50}>
       <form
@@ -387,7 +386,7 @@ const CardRegisterProject = ({
           )}
           <div className="col-input">
             <CardRegisterExpert
-              onSave={_experts => setListSpecialist(_experts)}
+              onSave={_experts => setSpecialist(_experts)}
               experts={project?.specialists}
             />
           </div>

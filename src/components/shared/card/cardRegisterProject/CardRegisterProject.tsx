@@ -8,7 +8,13 @@ import Button from '../../button/Button';
 import './CardRegisterProject.css';
 import { RefObject, useEffect, useMemo, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { PersonalBussines, ProjectForm, Ubigeo } from '../../../../types/types';
+import {
+  CompanyForm,
+  ConsortiumForm,
+  PersonalBussines,
+  ProjectForm,
+  Ubigeo,
+} from '../../../../types/types';
 import { spring } from '../../../../animations/animations';
 import { motion } from 'framer-motion';
 import useListUsers from '../../../../hooks/useListUsers';
@@ -17,6 +23,8 @@ import { RootState } from '../../../../store';
 import provincias from '../../../../utils/ubigeo/provincias.json';
 import distritos from '../../../../utils/ubigeo/distritos.json';
 import departamentos from '../../../../utils/ubigeo/departamentos.json';
+import CardRegisterCompany from '../cardRegisterCompany/CardRegisterCompany';
+import CardRegisterConsortium from '../cardRegisterConsortium/CardRegisterConsortium';
 
 const InitialValues: ProjectForm = {
   id: 0,
@@ -54,8 +62,19 @@ const CardRegisterProject = ({
 }: CardRegisterProjectProps) => {
   const [dataForm, setDataForm] = useState<ProjectForm>(InitialValues);
   const { listStage } = useSelector((state: RootState) => state);
-  const [addExpert, setAddExpert] = useState<PersonalBussines[]>();
   const { users: coordinators } = useListUsers(['ADMIN', 'MOD']);
+  const [addExpert, setAddExpert] = useState<PersonalBussines[]>();
+  const [company, setCompany] = useState<CompanyForm | null>(null);
+  const [consortium, setConsortium] = useState<ConsortiumForm | null>(null);
+  const [isOn, setIsOn] = useState(false);
+  const [isUniqueCorp, setIsUniqueCorp] = useState(true);
+  const [province, setProvince] = useState<Ubigeo[]>([]);
+  const [district, setDistrict] = useState<Ubigeo[]>([]);
+  const [department] = useState<Ubigeo[]>(departamentos);
+  const stages = useMemo(() => (listStage ? listStage : []), [listStage]);
+  const refDescriptioProject = useRef<HTMLDivElement>(null);
+  const refDescriptionCompany = useRef<HTMLDivElement>(null);
+
   const {
     handleSubmit,
     register,
@@ -64,11 +83,6 @@ const CardRegisterProject = ({
     reset,
     formState: { errors },
   } = useForm<ProjectForm>();
-  const [isOn, setIsOn] = useState(false);
-  const toggleSwitch = () => {
-    setIsOn(!isOn);
-    setValue('unique', !isOn);
-  };
 
   useEffect(() => {
     if (project) {
@@ -94,8 +108,6 @@ const CardRegisterProject = ({
     setValue('untilDate', _date(new Date(dataForm.untilDate)));
   }, [dataForm]);
 
-  const refDescriptioProject = useRef<HTMLDivElement>(null);
-  const refDescriptionCompany = useRef<HTMLDivElement>(null);
   const onSubmit: SubmitHandler<ProjectForm> = values => {
     const { startDate, untilDate, ..._values } = values;
     const _data = {
@@ -103,10 +115,10 @@ const CardRegisterProject = ({
       specialists: addExpert,
       startDate: new Date(startDate),
       untilDate: new Date(untilDate),
+      company,
+      consortium,
       specialityId,
     };
-    console.log(_data);
-
     if (dataForm.id) {
       axiosInstance
         .put(`projects/${dataForm.id}`, _data)
@@ -116,7 +128,6 @@ const CardRegisterProject = ({
     }
   };
 
-  const stages = useMemo(() => (listStage ? listStage : []), [listStage]);
   const successfulShipment = () => {
     if (!specialityId) return;
     onSave?.(specialityId);
@@ -127,11 +138,9 @@ const CardRegisterProject = ({
 
   const closeFunctions = () => {
     setIsOn(false);
+    setIsUniqueCorp(true);
     isOpenModal$.setSubject = false;
   };
-  const [department] = useState<Ubigeo[]>(departamentos);
-  const [province, setProvince] = useState<Ubigeo[]>([]);
-  const [district, setDistrict] = useState<Ubigeo[]>([]);
 
   useEffect(() => {
     if (department) {
@@ -158,6 +167,7 @@ const CardRegisterProject = ({
   const handleClickScroll = (ref: RefObject<HTMLDivElement>) => {
     ref.current?.scrollIntoView({ behavior: 'smooth' });
   };
+
   const data = {
     labels: {
       name: 'NOMBRE',
@@ -175,6 +185,16 @@ const CardRegisterProject = ({
       phone: '',
       pdf: '',
     },
+  };
+
+  const toggleSwitch = () => {
+    setIsOn(!isOn);
+    setValue('unique', !isOn);
+  };
+
+  const toggleSwitchCorp = () => {
+    setIsUniqueCorp(!isUniqueCorp);
+    isUniqueCorp ? setCompany(null) : setConsortium(null);
   };
   return (
     <Modal size={50}>
@@ -336,32 +356,6 @@ const CardRegisterProject = ({
             className="card-register-project-button-show-bussiness"
             onClick={() => handleClickScroll(refDescriptionCompany)}
           />
-          {/* <div className="col-input">
-          <Input
-            label="Empresa contratista:"
-            {...register('company', {
-              pattern: {
-                value: /^[^/?@|<>":'\\]+$/,
-                message:
-                  'Ingresar nombre que no contenga lo siguiente ^/?@|<>": ',
-              },
-            })}
-            name="company"
-            type="text"
-            placeholder="Compañia"
-            errors={errors}
-          />
-        </div>
-
-        <div className="col-input">
-          <div style={{ width: '100%' }}>
-            <CardAddExpert
-              personalBussines={e => setAddExpert(e)}
-              project={project?.specialists}
-              data={data}
-            />
-          </div>
-        </div> */}
         </div>
         <div
           ref={refDescriptionCompany}
@@ -375,6 +369,40 @@ const CardRegisterProject = ({
           </button>
           <h2>{'DATOS DE EMPRESA /CONSORCIO'}</h2>
           <hr></hr>
+          {!project && (
+            <div className="col-unique">
+              <span className="switch-status-label">
+                ¿EL proyecto tendrá una única empresa?
+              </span>
+              <div
+                className="switch-status"
+                data-ison={isUniqueCorp}
+                onClick={toggleSwitchCorp}
+              >
+                <motion.div
+                  className={`handle-statuts ${isUniqueCorp && 'handle-on'}`}
+                  layout
+                  transition={spring}
+                >
+                  <div>{isUniqueCorp ? 'si' : 'no'} </div>
+                </motion.div>
+              </div>
+            </div>
+          )}
+          <span className="switch-status-label">
+            Datos de la empresa individual:
+          </span>
+          {isUniqueCorp ? (
+            <CardRegisterCompany
+              onSave={_company => setCompany(_company)}
+              company={project?.company}
+            />
+          ) : (
+            <CardRegisterConsortium
+              onSave={_consortium => setConsortium(_consortium)}
+              consortium={project?.consortium}
+            />
+          )}
           <div className="col-input">
             <div style={{ width: '100%' }}>
               <CardAddExpert

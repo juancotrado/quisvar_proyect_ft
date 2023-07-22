@@ -114,7 +114,8 @@ export interface ProjectType {
   unique?: boolean;
   status: boolean;
   typeSpeciality: string;
-  company?: string;
+  company?: CompanyType;
+  consortium?: ConsortiumType;
   stageId?: number;
   stage?: Stage;
   startDate: Date;
@@ -366,3 +367,21 @@ export interface Companyes {
   ruc: string;
   percentage: number;
 }
+
+export type CompanyType = {
+  id: number;
+  ruc: string;
+  name: string;
+  manager: string;
+  percentage?: number;
+};
+
+export type ConsortiumType = {
+  id: number;
+  manager: string;
+  name: string;
+  companies: CompanyType[];
+};
+
+export type CompanyForm = Omit<CompanyType, 'id'>;
+export type ConsortiumForm = Omit<ConsortiumType, 'id'>;

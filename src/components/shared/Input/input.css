@@ -84,8 +84,7 @@
 
 .input-disabled {
   color: var(--color-primary);
-  font-weight: 500;
   cursor: not-allowed;
   background-color: var(--color-menu);
-  border: 2px solid var(--color-primary);
+  border-bottom: 2px solid var(--color-primary);
 }

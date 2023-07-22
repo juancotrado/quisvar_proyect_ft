@@ -353,8 +353,16 @@ export interface Ubigeo {
   id_padre_ubigeo: string;
 }
 export interface PersonalBussines {
-  name: string;
-  career: string;
-  zip: int;
+  dni: string;
   phone: string;
+  name: string;
+  cip: number;
+  career: string;
+  pdf: string;
+}
+export interface Companyes {
+  maneger: string;
+  name: string;
+  ruc: string;
+  percentage: number;
 }

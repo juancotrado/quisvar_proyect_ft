@@ -10,11 +10,15 @@ interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   col?: boolean;
   type?: string;
   disabled?: boolean;
+  classNameMain?: string;
   errors?: { [key: string]: any };
 }
 
 const InputText = forwardRef<HTMLInputElement, InputTextProps>(
-  ({ name, label, col, errors, type, disabled, ...props }, ref) => {
+  (
+    { name, label, col, errors, type, disabled, classNameMain, ...props },
+    ref
+  ) => {
     const [isShow, setIsShow] = useState(false);
     const viewPassword = () => setIsShow(!isShow);
 
@@ -23,7 +27,7 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
       typeAux = isShow ? 'text' : 'password';
     }
     return (
-      <div className={`input-main ${col && 'input-col'}`}>
+      <div className={`input-main ${col && 'input-col'} ${classNameMain}`}>
         {label && (
           <label
             htmlFor={name}

@@ -9,7 +9,6 @@ import Button from '../../components/shared/button/Button';
 import { isOpenModal$ } from '../../services/sharingSubject';
 import ProjectGroup from '../../components/projects/ProjectGroup';
 import SidebarSpeciality from '../../components/specialities/sidebarSpeciality/SidebarSpeciality';
-import CardSpeciality from '../../components/speciality/cardSpeciality/CardSpeciality';
 
 const Specialities = () => {
   const { userSession } = useSelector((state: RootState) => state);
@@ -59,7 +58,7 @@ const Specialities = () => {
         <h1 className="speciality-title">
           <span className="speciality-title-span">PROYECTOS</span>
         </h1>
-        {role !== 'EMPLOYEE' && (
+        {role !== 'EMPLOYEE' && groupProject && (
           <Button
             text="Agregar"
             icon="plus"

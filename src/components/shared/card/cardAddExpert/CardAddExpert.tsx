@@ -13,7 +13,7 @@ interface DataInitialValues {
 }
 interface CardAddExpertProps {
   personalBussines?: (value: PersonalBussines[]) => void;
-  project?: PersonalBussines[];
+  experts?: PersonalBussines[];
   data?: {
     labels: DataLabels;
     initialValues: DataInitialValues;
@@ -21,7 +21,7 @@ interface CardAddExpertProps {
 }
 const CardAddExpert = ({
   personalBussines,
-  project,
+  experts,
   data,
 }: CardAddExpertProps) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,26 +33,23 @@ const CardAddExpert = ({
   const handleAddRow = () => {
     setRows([...rows, init]);
   };
-  // useEffect(() => {
-  //   if (project && project.length > 0) {
-  //     setRows(project);
-  //   } else {
-  //     setRows([init]);
-  //   }
-  // }, [project]);
+  useEffect(() => {
+    if (experts && experts.length > 0) {
+      console.log(experts);
+
+      setRows(experts.map(expert => ({ id: uuidv4(), ...expert })));
+    }
+  }, [experts]);
 
   const handleChange = (
     index: number,
     { target }: React.FocusEvent<HTMLInputElement>
   ) => {
     const { value, name, type } = target;
-
     const newValue = type === 'number' ? +value : value;
 
-    setRows(prevRows =>
-      prevRows.map((row, i) =>
-        i === index ? { ...row, [name]: newValue } : row
-      )
+    setRows(
+      rows.map((row, i) => (i === index ? { ...row, [name]: newValue } : row))
     );
   };
   const handleQuery = () => {
@@ -63,9 +60,6 @@ const CardAddExpert = ({
     const deleteRow = rows.filter(row => row.id !== id);
     setRows(deleteRow);
   };
-
-  console.log(rows);
-
   return (
     <div>
       <Button
@@ -90,7 +84,7 @@ const CardAddExpert = ({
                   <InputText
                     key={key}
                     name={key}
-                    type={key === 'zip' ? 'number' : 'text'}
+                    type={key === 'cip' ? 'number' : 'text'}
                     defaultValue={row ? row[key as keyof typeof row] : ''}
                     onBlur={e => handleChange(index, e)}
                   />

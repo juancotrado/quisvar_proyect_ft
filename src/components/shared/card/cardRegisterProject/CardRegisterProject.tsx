@@ -110,9 +110,13 @@ const CardRegisterProject = ({
 
   const onSubmit: SubmitHandler<ProjectForm> = values => {
     const { startDate, untilDate, ..._values } = values;
+    const newDataExpert = addExpert?.map(value => {
+      const { id, ...data } = value;
+      return data;
+    });
     const _data = {
       ..._values,
-      specialists: addExpert,
+      listSpecialists: newDataExpert,
       startDate: new Date(startDate),
       untilDate: new Date(untilDate),
       company,
@@ -407,7 +411,7 @@ const CardRegisterProject = ({
             <div style={{ width: '100%' }}>
               <CardAddExpert
                 personalBussines={e => setAddExpert(e)}
-                project={project?.specialists}
+                experts={project?.specialists}
                 data={data}
               />
             </div>

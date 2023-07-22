@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import './sidebarSpeciality.css';
 import { SectorType } from '../../../types/types';
 import SidebarSpecialityLvlList from './sidebarSpecialityLvlList/SidebarSpecialityLvlList';

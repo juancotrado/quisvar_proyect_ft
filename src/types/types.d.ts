@@ -380,8 +380,19 @@ export type ConsortiumType = {
   id: number;
   manager: string;
   name: string;
-  companies: CompanyType[];
+  companies: CompanyForm[];
+};
+
+export type ExpertType = {
+  id: number;
+  career: string;
+  name: string;
+  phone: string;
+  cip: number;
+  dni: string;
+  pdf?: string;
 };
 
 export type CompanyForm = Omit<CompanyType, 'id'>;
 export type ConsortiumForm = Omit<ConsortiumType, 'id'>;
+export type ExpertForm = Omit<ExpertType, 'id'>;

@@ -28,6 +28,10 @@
   color: #000;
 }
 
+.btn-disabled {
+  cursor: not-allowed;
+}
+
 .alert-modal-main {
   display: flex;
   position: fixed;

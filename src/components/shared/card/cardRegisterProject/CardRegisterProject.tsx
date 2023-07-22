@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { CardAddExpert, Input, Select, TextArea } from '../../..';
+import { Input, Select, TextArea } from '../../..';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { isOpenModal$ } from '../../../../services/sharingSubject';
 import { _date } from '../../../../utils/formatDate';
@@ -11,7 +11,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   CompanyForm,
   ConsortiumForm,
-  PersonalBussines,
+  ExpertForm,
   ProjectForm,
   Ubigeo,
 } from '../../../../types/types';
@@ -25,6 +25,7 @@ import distritos from '../../../../utils/ubigeo/distritos.json';
 import departamentos from '../../../../utils/ubigeo/departamentos.json';
 import CardRegisterCompany from '../cardRegisterCompany/CardRegisterCompany';
 import CardRegisterConsortium from '../cardRegisterConsortium/CardRegisterConsortium';
+import CardRegisterExpert from '../cardAddExpert/CardRegisterExpert';
 
 const InitialValues: ProjectForm = {
   id: 0,
@@ -63,11 +64,13 @@ const CardRegisterProject = ({
   const [dataForm, setDataForm] = useState<ProjectForm>(InitialValues);
   const { listStage } = useSelector((state: RootState) => state);
   const { users: coordinators } = useListUsers(['ADMIN', 'MOD']);
-  const [addExpert, setAddExpert] = useState<PersonalBussines[]>();
   const [company, setCompany] = useState<CompanyForm | null>(null);
+  const [listSpecialist, setListSpecialist] = useState<ExpertForm[] | null>(
+    null
+  );
   const [consortium, setConsortium] = useState<ConsortiumForm | null>(null);
   const [isOn, setIsOn] = useState(false);
-  const [isUniqueCorp, setIsUniqueCorp] = useState(true);
+  const [isUniqueCorp, setIsUniqueCorp] = useState(project?.company || true);
   const [province, setProvince] = useState<Ubigeo[]>([]);
   const [district, setDistrict] = useState<Ubigeo[]>([]);
   const [department] = useState<Ubigeo[]>(departamentos);
@@ -110,13 +113,9 @@ const CardRegisterProject = ({
 
   const onSubmit: SubmitHandler<ProjectForm> = values => {
     const { startDate, untilDate, ..._values } = values;
-    const newDataExpert = addExpert?.map(value => {
-      const { id, ...data } = value;
-      return data;
-    });
     const _data = {
       ..._values,
-      listSpecialists: newDataExpert,
+      listSpecialist,
       startDate: new Date(startDate),
       untilDate: new Date(untilDate),
       company,
@@ -170,25 +169,6 @@ const CardRegisterProject = ({
 
   const handleClickScroll = (ref: RefObject<HTMLDivElement>) => {
     ref.current?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const data = {
-    labels: {
-      name: 'NOMBRE',
-      dni: 'DNI',
-      cip: 'CIP/CAP',
-      career: 'CARGO',
-      phone: 'TELEFONO',
-      pdf: 'PDF',
-    },
-    initialValues: {
-      name: '',
-      dni: '',
-      cip: '',
-      career: '',
-      phone: '',
-      pdf: '',
-    },
   };
 
   const toggleSwitch = () => {
@@ -393,9 +373,7 @@ const CardRegisterProject = ({
               </div>
             </div>
           )}
-          <span className="switch-status-label">
-            Datos de la empresa individual:
-          </span>
+          <span className="switch-status-label">Datos del Consorcio:</span>
           {isUniqueCorp ? (
             <CardRegisterCompany
               onSave={_company => setCompany(_company)}
@@ -408,13 +386,10 @@ const CardRegisterProject = ({
             />
           )}
           <div className="col-input">
-            <div style={{ width: '100%' }}>
-              <CardAddExpert
-                personalBussines={e => setAddExpert(e)}
-                experts={project?.specialists}
-                data={data}
-              />
-            </div>
+            <CardRegisterExpert
+              onSave={_experts => setListSpecialist(_experts)}
+              experts={project?.specialists}
+            />
           </div>
         </div>
         <Button

@@ -6,6 +6,7 @@ interface ButtonProps extends HTMLMotionProps<'button'> {
   type?: 'button' | 'submit' | 'reset';
   icon?: string;
   imageStyle?: string;
+
   onClick: (e: React.MouseEvent<HTMLElement>) => void;
 }
 const Button = ({
@@ -15,14 +16,16 @@ const Button = ({
   type,
   imageStyle = '',
   icon,
+  disabled,
   ...otherProps
 }: ButtonProps) => {
   return (
     <motion.button
       // whileHover={{ scale: 1.02 }}
+      disabled={disabled}
       whileTap={{ scale: 0.99 }}
       onClick={onClick}
-      className={`btn-main ${className}`}
+      className={`btn-main ${className} ${disabled && 'btn-disabled'}`}
       type={type}
       {...otherProps}
     >

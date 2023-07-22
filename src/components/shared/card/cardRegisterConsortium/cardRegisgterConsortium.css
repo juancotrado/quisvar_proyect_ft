@@ -1,0 +1,104 @@
+.cardRegisterConsortium-container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cardRegisterConsortium-button-send {
+  border: none;
+  background-color: var(--color-secondary);
+  color: #fff;
+  border-radius: 0.3rem;
+  font-weight: 400;
+}
+
+.container-grid-consortium {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+}
+
+.justify-end {
+  justify-content: end;
+  align-items: end;
+}
+
+.justify-start {
+  justify-content: start;
+  align-items: center;
+}
+
+.cardRegisterConsortium-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cardRegisterConsortium-list-li {
+  display: flex;
+  width: 100%;
+  gap: 1rem;
+}
+
+.cardRegisterConsortium-button-send {
+  border: none;
+  background-color: var(--color-secondary);
+  color: #fff;
+  border-radius: 0.3rem;
+  font-weight: 400;
+}
+
+.cardRegisterConsortium-button-cancel {
+  background-color: var(--color-unresolved);
+  border: none;
+}
+
+.headers-company {
+  font-size: 0.8rem;
+  color: var(--color-secondary);
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.cardRegisterConsortium-button-add-company {
+  border: none;
+  color: var(--color-primary);
+  padding: 0;
+}
+
+.button-icon {
+  width: 1.5rem;
+  height: 1.5rem;
+  margin: auto;
+}
+
+.col-span-1 {
+  width: 14%;
+  /* grid-column: span 1 / span 1 */
+}
+
+.col-span-2 {
+  width: 30%;
+  /* grid-column: span 2 / span 2 */
+}
+
+.col-span-3 {
+  width: 48%;
+  /* grid-column: span 3 / span 3 */
+}
+
+.col-span-4 {
+  width: 62%;
+  /* grid-column: span 4 / span 4 */
+}
+
+.col-span-5 {
+  width: 80%;
+  /* grid-column: span 5 / span 5 */
+}
+
+.col-span-6 {
+  width: 100%;
+  /* grid-column: span 6 / span 6 */
+}

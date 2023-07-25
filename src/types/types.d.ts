@@ -3,6 +3,7 @@ export interface SpecialityType {
   id: number;
   name: string;
   cod: string;
+  createdAt: Date;
   _count?: {
     projects: number;
   };

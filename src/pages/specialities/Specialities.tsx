@@ -23,9 +23,8 @@ const Specialities = () => {
   }, []);
 
   const getSpecialities = async () => {
-    await axiosInstance.get('/sector').then(res => {
-      setSectors(res.data);
-    });
+    const response = await axiosInstance.get('/sector');
+    setSectors(response.data);
   };
   const getProjects = async (id: number) => {
     setSpecialityId(id);
@@ -34,6 +33,9 @@ const Specialities = () => {
     });
   };
 
+  const settingSectors = (sectors: SectorType[]) => {
+    setSectors(sectors);
+  };
   const addNewProject = () => {
     isOpenModal$.setSubject = true;
     setProject(null);
@@ -73,6 +75,7 @@ const Specialities = () => {
             sectors={sectors}
             getProjects={getProjects}
             onSave={getSpecialities}
+            settingSectors={settingSectors}
           />
         )}
         {groupProject && groupProject.length ? (

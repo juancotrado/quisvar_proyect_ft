@@ -24,12 +24,15 @@ const Specialities = () => {
 
   const getSpecialities = async () => {
     await axiosInstance.get('/sector').then(res => {
+      // console.log({sector: res.data});
+
       setSectors(res.data);
     });
   };
   const getProjects = async (id: number) => {
     setSpecialityId(id);
     await axiosInstance.get(`typespecialities/${id}`).then(res => {
+      console.log({ groups: res.data.groups });
       setGroupProject(res.data.groups);
     });
   };

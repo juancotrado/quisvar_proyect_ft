@@ -3,6 +3,12 @@ export interface SpecialityType {
   id: number;
   name: string;
   cod: string;
+  typeSpecialities?: TypeSpecialities[];
+}
+export interface TypeSpecialities {
+  id: number;
+  name: string;
+  cod: string;
   _count?: {
     projects: number;
   };

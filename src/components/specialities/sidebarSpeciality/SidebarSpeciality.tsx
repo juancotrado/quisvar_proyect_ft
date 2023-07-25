@@ -13,6 +13,7 @@ const SidebarSpeciality = ({
   onSave,
 }: SidebarSpecialityProps) => {
   const handleProjects = (especialityId: number) => getProjects(especialityId);
+  console.log(sectors[0].specialities);
 
   return (
     <aside className={`sidebarSpeciality `}>
@@ -27,13 +28,33 @@ const SidebarSpeciality = ({
                     <li
                       key={speciality.id}
                       className="sidebarSpeciality-dropdown-sub-list"
-                      onClick={() => handleProjects(speciality.id)}
+                      // onClick={() => handleProjects(speciality.id)}
                     >
                       <SidebarSpecialityLvlList
                         data={speciality}
-                        type="speciality"
+                        type="sector"
                         onSave={onSave}
                       />
+                      <div className="sidebarSpeciality-dropdown-content">
+                        <ul className="sidebarSpeciality-dropdown-sub">
+                          {speciality.typeSpecialities &&
+                            speciality.typeSpecialities.map(typespeciality => (
+                              <li
+                                key={typespeciality.id}
+                                className="sidebarSpeciality-dropdown-sub-list"
+                                onClick={() =>
+                                  handleProjects(typespeciality.id)
+                                }
+                              >
+                                <SidebarSpecialityLvlList
+                                  data={typespeciality}
+                                  type="speciality"
+                                  onSave={onSave}
+                                />
+                              </li>
+                            ))}
+                        </ul>
+                      </div>
                     </li>
                   ))}
                   <SidebarSpecialityAddLvl

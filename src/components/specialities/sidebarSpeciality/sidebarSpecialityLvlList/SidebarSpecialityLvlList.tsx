@@ -30,7 +30,7 @@ const SidebarSpecialityLvlList = ({
   const [openEditData, setOpenEditData] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>(INIT_VALUES);
   const isFirstLevel = type === 'sector';
-  const isLastLevel = type === 'speciality';
+  const isLastLevel = type === 'typespeciality';
 
   useEffect(() => {
     if (isLastLevel) {
@@ -115,32 +115,32 @@ const SidebarSpecialityLvlList = ({
             />
           </>
         )}
-        {isLastLevel && (
-          <DotsOption
-            className="sidebarLevelList-menu-dots-option"
-            notPositionRelative
-            data={[
-              {
-                name: openEditData ? 'Cancelar' : 'Editar',
-                type: openEditData ? 'submit' : 'button',
-                icon: openEditData ? 'close' : 'pencil',
-                function: () => {
-                  setOpenEditData(!openEditData);
-                },
-              },
-
-              {
-                name: openEditData ? 'Guardar' : 'Eliminar',
-                type: openEditData ? 'submit' : 'button',
-                icon: openEditData ? 'save' : 'trash-red',
-                function: openEditData
-                  ? () => handleForm()
-                  : () => handleDelete(data.id),
-              },
-            ]}
-          />
-        )}
       </div>
+      {!isFirstLevel && (
+        <DotsOption
+          className="sidebarLevelList-menu-dots-option"
+          notPositionRelative
+          data={[
+            {
+              name: openEditData ? 'Cancelar' : 'Editar',
+              type: openEditData ? 'submit' : 'button',
+              icon: openEditData ? 'close' : 'pencil',
+              function: () => {
+                setOpenEditData(!openEditData);
+              },
+            },
+
+            {
+              name: openEditData ? 'Guardar' : 'Eliminar',
+              type: openEditData ? 'submit' : 'button',
+              icon: openEditData ? 'save' : 'trash-red',
+              function: openEditData
+                ? () => handleForm()
+                : () => handleDelete(data.id),
+            },
+          ]}
+        />
+      )}
     </div>
   );
 };

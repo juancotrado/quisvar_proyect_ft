@@ -43,8 +43,6 @@
 
 .sidebarSpeciality-slice {
   position: relative;
-  overflow-y: auto;
-  overflow-x: hidden;
 }
 
 .sidebarSpeciality-dropdown-content {

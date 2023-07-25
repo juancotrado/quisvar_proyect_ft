@@ -23,13 +23,13 @@ const Specialities = () => {
   }, []);
 
   const getSpecialities = async () => {
-    await axiosInstance.get('/specialities').then(res => {
+    await axiosInstance.get('/sector').then(res => {
       setSectors(res.data);
     });
   };
   const getProjects = async (id: number) => {
     setSpecialityId(id);
-    await axiosInstance.get(`specialities/${id}`).then(res => {
+    await axiosInstance.get(`typespecialities/${id}`).then(res => {
       setGroupProject(res.data.groups);
     });
   };

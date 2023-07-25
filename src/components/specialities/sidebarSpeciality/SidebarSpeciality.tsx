@@ -62,7 +62,8 @@ const SidebarSpeciality = ({
                     >
                       <SidebarSpecialityLvlList
                         data={speciality}
-                        type="speciality"
+                        type="specialities"
+                        onSave={onSave}
                       />
                       <div className="sidebarSpeciality-dropdown-content">
                         <ul className="sidebarSpeciality-dropdown-sub">
@@ -74,7 +75,7 @@ const SidebarSpeciality = ({
                             >
                               <SidebarSpecialityLvlList
                                 data={typespeciality}
-                                type="typespeciality"
+                                type="typespecialities"
                                 onSave={onSave}
                               />
                             </li>

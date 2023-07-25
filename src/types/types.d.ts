@@ -86,7 +86,10 @@ export interface FilesSubtask {
   name: string;
   size: number;
 }
-export type typeSidebarSpecility = 'sector' | 'speciality' | 'typespeciality';
+export type typeSidebarSpecility =
+  | 'sector'
+  | 'specialities'
+  | 'typespecialities';
 
 export type fyleType = 'MATERIAL' | 'SUCCESSFUL' | 'REVIEW';
 

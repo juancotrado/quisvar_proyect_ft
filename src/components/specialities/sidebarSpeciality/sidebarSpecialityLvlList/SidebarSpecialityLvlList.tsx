@@ -15,12 +15,12 @@ interface SidebarSpecialityLvlListProps {
 }
 interface FormData {
   name: string;
-  // cod: string;
+  cod?: string;
 }
 
 const INIT_VALUES: FormData = {
   name: '',
-  // cod: '',
+  cod: '',
 };
 const SidebarSpecialityLvlList = ({
   data,
@@ -30,7 +30,7 @@ const SidebarSpecialityLvlList = ({
   const [openEditData, setOpenEditData] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>(INIT_VALUES);
   const isFirstLevel = type === 'sector';
-  const isLastLevel = type === 'typespeciality';
+  const isLastLevel = type === 'typespecialities';
 
   useEffect(() => {
     if (isLastLevel) {
@@ -43,15 +43,13 @@ const SidebarSpecialityLvlList = ({
     setFormData({ ...formData, [name]: value });
   };
   const handleForm = async () => {
-    if (!isLastLevel) return;
-
-    await axiosInstance.put(`/typespecialities/${data.id}`, formData);
+    await axiosInstance.put(`/${type}/${data.id}`, formData);
     setOpenEditData(false);
     onSave?.();
   };
   const handleDelete = async (id: number) => {
     setOpenEditData(false);
-    await axiosInstance.delete(`/typespecialities/${id}`);
+    await axiosInstance.delete(`/${type}/${id}`);
     onSave?.();
   };
 
@@ -81,38 +79,41 @@ const SidebarSpecialityLvlList = ({
               className="SidebarSpecialityLvlList-input"
               onBlur={handleBlurInput}
             />
-            {/* <Input
-              defaultValue={data?.cod}
-              label="Nombre Corto:"
-              name="cod"
-              className="SidebarSpecialityLvlList-input"
-              onBlur={handleBlurInput}
-            /> */}
+            {type === 'specialities' && (
+              <Input
+                defaultValue={data?.cod}
+                label="Nombre Corto:"
+                name="cod"
+                className="SidebarSpecialityLvlList-input"
+                onBlur={handleBlurInput}
+              />
+            )}
           </div>
         ) : (
-          <h4
-            className={`SidebarSpecialityLvlList-sub-list-name  ${
-              isFirstLevel && 'not-margin-left'
-            } ${isLastLevel && 'letter-small'}   `}
-          >
-            <span className="SidebarSpecialityLvlList-sub-list-span">
-              {data.cod && `${data.cod} `}
-            </span>{' '}
-            {data.name}
-          </h4>
-        )}
-
-        {!isLastLevel && (
           <>
-            <img
-              src="/svg/down.svg"
-              className="SidebarSpecialityLvlList-dropdown-arrow"
-            />
-            <input
-              type="checkbox"
-              className="SidebarSpecialityLvlList-dropdown-check"
-              defaultChecked
-            />
+            <h4
+              className={`SidebarSpecialityLvlList-sub-list-name  ${
+                isFirstLevel && 'not-margin-left'
+              } ${isLastLevel && 'letter-small'}   `}
+            >
+              <span className="SidebarSpecialityLvlList-sub-list-span">
+                {data.cod && `${data.cod} `}
+              </span>{' '}
+              {data.name}
+            </h4>
+            {!isLastLevel && (
+              <>
+                <img
+                  src="/svg/down.svg"
+                  className="SidebarSpecialityLvlList-dropdown-arrow"
+                />
+                <input
+                  type="checkbox"
+                  className="SidebarSpecialityLvlList-dropdown-check"
+                  defaultChecked
+                />
+              </>
+            )}
           </>
         )}
       </div>

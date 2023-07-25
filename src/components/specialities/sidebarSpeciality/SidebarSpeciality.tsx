@@ -79,6 +79,11 @@ const SidebarSpeciality = ({
                               />
                             </li>
                           ))}
+                          <SidebarSpecialityAddLvl
+                            onSave={onSave}
+                            idValue={speciality.id}
+                            keyNameId="specialitiesId"
+                          />
                         </ul>
                       </div>
                     </li>
@@ -86,6 +91,7 @@ const SidebarSpeciality = ({
                   <SidebarSpecialityAddLvl
                     onSave={onSave}
                     idValue={sector.id}
+                    keyNameId="sectorId"
                   />
                 </ul>
               </div>

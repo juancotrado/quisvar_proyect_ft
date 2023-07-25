@@ -10,17 +10,25 @@ type DataForm = { name: string; cod: string };
 interface SidebarSpecialityAddLvlProps {
   idValue: number;
   onSave?: () => void;
+  keyNameId: 'sectorId' | 'specialitiesId';
 }
+
+const urlPost = {
+  sectorId: '/specialities',
+  specialitiesId: '/typespecialities',
+};
 const SidebarSpecialityAddLvl = ({
   onSave,
+  keyNameId,
   idValue,
 }: SidebarSpecialityAddLvlProps) => {
   const [addLevel, setAddLevel] = useState<boolean>(false);
   const { handleSubmit, register, reset } = useForm<DataForm>();
 
   const onSubmitData: SubmitHandler<DataForm> = async data => {
-    const newData = { ...data, sectorId: idValue };
-    await axiosInstance.post('/specialities', newData);
+    const url = urlPost[keyNameId];
+    const newData = { ...data, [keyNameId]: idValue };
+    await axiosInstance.post(url, newData);
     setAddLevel(false);
     onSave?.();
     reset();
@@ -53,12 +61,14 @@ const SidebarSpecialityAddLvl = ({
               name="name"
               className="sidebarSpecialityAddLvl-input"
             />
-            <Input
-              label="Nombre Corto:"
-              {...register('cod')}
-              name="cod"
-              className="sidebarSpecialityAddLvl-input"
-            />
+            {keyNameId === 'sectorId' && (
+              <Input
+                label="Nombre Corto:"
+                {...register('cod')}
+                name="cod"
+                className="sidebarSpecialityAddLvl-input"
+              />
+            )}
           </div>
           <DotsOption
             notPositionRelative
@@ -71,9 +81,7 @@ const SidebarSpecialityAddLvl = ({
           className="sidebarSpecialityAddLvl-add-content"
           onClick={handleAddlevel}
         >
-          <span className="sidebarSpecialityAddLvl-add-span">
-            AÑADIR ESPECIALIDAD
-          </span>
+          <span className="sidebarSpecialityAddLvl-add-span">AÑADIR NIVEL</span>
           <Button
             type="button"
             icon={'plus'}

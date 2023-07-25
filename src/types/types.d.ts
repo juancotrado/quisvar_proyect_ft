@@ -4,6 +4,12 @@ export interface SpecialityType {
   name: string;
   cod: string;
   createdAt: Date;
+  typeSpecialities?: TypeSpecialities[];
+}
+export interface TypeSpecialities {
+  id: number;
+  name: string;
+  cod: string;
   _count?: {
     projects: number;
   };
@@ -80,7 +86,7 @@ export interface FilesSubtask {
   name: string;
   size: number;
 }
-export type typeSidebarSpecility = 'sector' | 'speciality';
+export type typeSidebarSpecility = 'sector' | 'speciality' | 'typespeciality';
 
 export type fyleType = 'MATERIAL' | 'SUCCESSFUL' | 'REVIEW';
 

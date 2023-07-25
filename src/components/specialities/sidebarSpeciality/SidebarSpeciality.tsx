@@ -40,7 +40,7 @@ const SidebarSpeciality = ({
   return (
     <aside className={`sidebarSpeciality `}>
       <Select
-        label="Tipo:"
+        label="Año de Especialidad:"
         required={true}
         name="typeSpeciality"
         data={yearData}
@@ -59,13 +59,28 @@ const SidebarSpeciality = ({
                     <li
                       key={speciality.id}
                       className="sidebarSpeciality-dropdown-sub-list"
-                      onClick={() => handleProjects(speciality.id)}
                     >
                       <SidebarSpecialityLvlList
                         data={speciality}
                         type="speciality"
-                        onSave={onSave}
                       />
+                      <div className="sidebarSpeciality-dropdown-content">
+                        <ul className="sidebarSpeciality-dropdown-sub">
+                          {speciality.typeSpecialities?.map(typespeciality => (
+                            <li
+                              key={typespeciality.id}
+                              className="sidebarSpeciality-dropdown-sub-list"
+                              onClick={() => handleProjects(typespeciality.id)}
+                            >
+                              <SidebarSpecialityLvlList
+                                data={typespeciality}
+                                type="typespeciality"
+                                onSave={onSave}
+                              />
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
                     </li>
                   ))}
                   <SidebarSpecialityAddLvl

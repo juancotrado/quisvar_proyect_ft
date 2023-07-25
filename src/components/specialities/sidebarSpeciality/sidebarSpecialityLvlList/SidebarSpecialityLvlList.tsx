@@ -15,12 +15,12 @@ interface SidebarSpecialityLvlListProps {
 }
 interface FormData {
   name: string;
-  cod: string;
+  // cod: string;
 }
 
 const INIT_VALUES: FormData = {
   name: '',
-  cod: '',
+  // cod: '',
 };
 const SidebarSpecialityLvlList = ({
   data,
@@ -34,9 +34,9 @@ const SidebarSpecialityLvlList = ({
 
   useEffect(() => {
     if (isLastLevel) {
-      setFormData({ name: data.name, cod: data.cod || '' });
+      setFormData({ name: data.name || '' });
     }
-  }, [data.cod, data.name, isLastLevel]);
+  }, [data.name, isLastLevel]);
 
   const handleBlurInput = (e: FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -44,13 +44,14 @@ const SidebarSpecialityLvlList = ({
   };
   const handleForm = async () => {
     if (!isLastLevel) return;
-    await axiosInstance.put(`/specialities/${data.id}`, formData);
+
+    await axiosInstance.put(`/typespecialities/${data.id}`, formData);
     setOpenEditData(false);
     onSave?.();
   };
   const handleDelete = async (id: number) => {
     setOpenEditData(false);
-    await axiosInstance.delete(`/specialities/${id}`);
+    await axiosInstance.delete(`/typespecialities/${id}`);
     onSave?.();
   };
 
@@ -80,13 +81,13 @@ const SidebarSpecialityLvlList = ({
               className="SidebarSpecialityLvlList-input"
               onBlur={handleBlurInput}
             />
-            <Input
+            {/* <Input
               defaultValue={data?.cod}
               label="Nombre Corto:"
               name="cod"
               className="SidebarSpecialityLvlList-input"
               onBlur={handleBlurInput}
-            />
+            /> */}
           </div>
         ) : (
           <h4

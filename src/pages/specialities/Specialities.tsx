@@ -29,7 +29,6 @@ const Specialities = () => {
   const getProjects = async (id: number) => {
     setTypeSpecialityId(id);
     await axiosInstance.get(`typespecialities/${id}`).then(res => {
-      console.log({ groups: res.data.groups });
       setGroupProject(res.data.groups);
     });
   };

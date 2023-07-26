@@ -25,9 +25,7 @@ const useArchiver = (id: number, type: TypeArchiver) => {
       const normalizePath = res.data.url.replace('./uploads', 'static');
       window.location.href = `${URL}/${normalizePath}`;
       timeoutRef.current = setTimeout(() => {
-        axiosInstance.delete(`/archiver/?path=${res.data.url}`).then(res => {
-          console.log(res.data);
-        });
+        axiosInstance.delete(`/archiver/?path=${res.data.url}`);
       }, 3000);
     });
   };

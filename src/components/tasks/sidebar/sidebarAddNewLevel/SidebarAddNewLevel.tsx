@@ -44,12 +44,12 @@ const SidebarAddNewLevel = ({ idValue, onSave, keyNameId }: AddTaskProps) => {
   }, [idValue, isLastLevel, keyNameId, reset]);
 
   const onSubmitTask: SubmitHandler<TaskForm> = async values => {
-    // const url = urlPost[keyNameId as keyof typeof urlPost];
-    // await axiosInstance.post(url, values).then(() => {
-    //   onSave?.();
-    //   setAddLevel(false);
-    //   reset();
-    // });
+    const url = urlPost[keyNameId as keyof typeof urlPost];
+    await axiosInstance.post(url, values).then(() => {
+      onSave?.();
+      setAddLevel(false);
+      reset();
+    });
   };
 
   const handleAddlevel = () => setAddLevel(!addLevel);

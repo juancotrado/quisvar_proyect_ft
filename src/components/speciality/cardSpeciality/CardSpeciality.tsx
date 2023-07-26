@@ -40,7 +40,7 @@ const CardSpeciality = ({
       .put(`/specialities/${data.id}`, { name: values.name })
       .then(closeSubmit);
   };
-  const numberProjects = data._count?.projects;
+  // const numberProjects = data.typeSpecialities?._count?.projects
   const closeSubmit = () => {
     onUpdate?.();
     setIsEditable(false);
@@ -104,7 +104,7 @@ const CardSpeciality = ({
         )}
       </form>
       <span className=" card-quantity ">
-        Proyectos Disponibles: {numberProjects}
+        {/* Proyectos Disponibles: {numberProjects} */}
       </span>
     </div>
   );

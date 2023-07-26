@@ -1,5 +1,5 @@
 import { ChangeEvent, useContext } from 'react';
-import { FileInfo, fyleType } from '../../../types/types';
+import { fyleType } from '../../../types/types';
 import { axiosInstance } from '../../../services/axiosInstance';
 import { SocketContext } from '../../../context/SocketContex';
 import './subtaskUploadFiles.css';

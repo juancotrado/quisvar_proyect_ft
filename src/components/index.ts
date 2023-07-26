@@ -20,7 +20,6 @@ import CardSubtaskDone from './shared/card/cardSubtaskStatus/cardSubtaskDone/Car
 import CardSubtaskHold from './shared/card/cardSubtaskStatus/cardSubtaskHold/CardSubtaskHold';
 import CardSubtaskProcess from './shared/card/cardSubtaskStatus/cardSubTaskProcess/CardSubtaskProcess';
 import TaskCounter from './shared/taskCounter/TaskCounter';
-import CardAddExpert from './shared/card/cardAddExpert/CardAddExpert';
 
 export {
   Alert,
@@ -28,7 +27,6 @@ export {
   Input,
   InputRange,
   ProtectedRoute,
-  CardAddExpert,
   CardRegisterUser,
   CardRegisterArea,
   CardRegisterTask,

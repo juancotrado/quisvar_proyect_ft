@@ -24,7 +24,6 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
   const { userSession } = useSelector((state: RootState) => state);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
-  const { profile } = project.moderator;
   const { handleArchiver } = useArchiver(project.id, 'projects');
 
   const navigate = useNavigate();

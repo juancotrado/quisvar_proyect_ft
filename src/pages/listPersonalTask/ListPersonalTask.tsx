@@ -36,14 +36,14 @@ const ListPersonalTask = () => {
   const { id } = userSession;
   const [subTask, setSubTask] = useState<SubtaskIncludes[] | null>(null);
 
-  const { register, reset, handleSubmit } = useForm<DateRange>();
+  const { register, handleSubmit } = useForm<DateRange>();
 
   useEffect(() => {
     axiosInstance.get(`/users/${id}/subTasks`).then(res => {
       setSubTask(res.data);
       specialitiesList();
     });
-  }, [userSession]);
+  }, [userSession, id]);
 
   const toggleSwitch = () => {
     setIsOn(!isOn);

@@ -6,6 +6,10 @@ import { axiosInstance } from '../../../../services/axiosInstance';
 import DotsOption from '../../../shared/dots/DotsOption';
 import { Option } from '../../../../types/types';
 import './sidebarAddNewLevel.css';
+import {
+  validateWhiteSpace,
+  validateCorrectTyping,
+} from '../../../../utils/customValidatesForm';
 
 type TaskForm = { name: string; idValue: number; unique: boolean };
 
@@ -40,12 +44,12 @@ const SidebarAddNewLevel = ({ idValue, onSave, keyNameId }: AddTaskProps) => {
   }, [idValue, isLastLevel, keyNameId, reset]);
 
   const onSubmitTask: SubmitHandler<TaskForm> = async values => {
-    const url = urlPost[keyNameId as keyof typeof urlPost];
-    await axiosInstance.post(url, values).then(() => {
-      onSave?.();
-      setAddLevel(false);
-      reset();
-    });
+    // const url = urlPost[keyNameId as keyof typeof urlPost];
+    // await axiosInstance.post(url, values).then(() => {
+    //   onSave?.();
+    //   setAddLevel(false);
+    //   reset();
+    // });
   };
 
   const handleAddlevel = () => setAddLevel(!addLevel);
@@ -73,11 +77,8 @@ const SidebarAddNewLevel = ({ idValue, onSave, keyNameId }: AddTaskProps) => {
         <>
           <Input
             {...register('name', {
-              pattern: {
-                value: /^[^/?@|<>":'\\]+$/,
-                message:
-                  'Ingresar nombre que no contenga lo siguiente ^/?@|<>": ',
-              },
+              required: 'Este campo es obligatorio',
+              validate: { validateWhiteSpace, validateCorrectTyping },
             })}
             name="name"
             errors={errors}

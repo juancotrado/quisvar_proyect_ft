@@ -14,7 +14,7 @@ const Specialities = () => {
   const { userSession } = useSelector((state: RootState) => state);
   const [project, setProject] = useState<ProjectType | null>(null);
   const [groupProject, setGroupProject] = useState<GroupProject[] | null>(null);
-  const [specialityId, setSpecialityId] = useState<number | null>(null);
+  const [typeSpecialityId, setTypeSpecialityId] = useState<number | null>(null);
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
   const [sectors, setSectors] = useState<SectorType[] | null>(null);
 
@@ -27,7 +27,7 @@ const Specialities = () => {
     setSectors(response.data);
   };
   const getProjects = async (id: number) => {
-    setSpecialityId(id);
+    setTypeSpecialityId(id);
     await axiosInstance.get(`typespecialities/${id}`).then(res => {
       console.log({ groups: res.data.groups });
       setGroupProject(res.data.groups);
@@ -81,13 +81,13 @@ const Specialities = () => {
         )}
         {groupProject && groupProject.length ? (
           <div className="speciality-project-container">
-            {specialityId &&
+            {typeSpecialityId &&
               groupProject.map(group => (
                 <ProjectGroup
                   key={group.id}
                   group={group.projects}
                   editProject={editProject}
-                  onSave={() => getProjects(specialityId)}
+                  onSave={() => getProjects(typeSpecialityId)}
                 />
               ))}
           </div>
@@ -97,9 +97,9 @@ const Specialities = () => {
           </div>
         )}
       </div>
-      {specialityId && (
+      {typeSpecialityId && (
         <CardRegisterProject
-          specialityId={specialityId}
+          typeSpecialityId={typeSpecialityId}
           project={project}
           onSave={getProjects}
         />

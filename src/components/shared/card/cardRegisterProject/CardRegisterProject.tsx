@@ -35,13 +35,13 @@ const typeSpecialities = [
 interface CardRegisterProjectProps {
   onSave?: (value: number) => void;
   project?: ProjectForm | null;
-  specialityId?: number;
+  typeSpecialityId?: number;
 }
 
 const CardRegisterProject = ({
   project,
   onSave,
-  specialityId,
+  typeSpecialityId,
 }: CardRegisterProjectProps) => {
   const { listStage } = useSelector((state: RootState) => state);
   const [isOn, setIsOn] = useState(false);
@@ -129,7 +129,7 @@ const CardRegisterProject = ({
       specialistsInfo: specialist,
       companyInfo: company,
       consortiumInfo: consortium,
-      specialityId,
+      typeSpecialityId,
     };
     if (project && project.id) {
       axiosInstance
@@ -141,8 +141,8 @@ const CardRegisterProject = ({
   };
 
   const successfulShipment = () => {
-    if (!specialityId) return;
-    onSave?.(specialityId);
+    if (!typeSpecialityId) return;
+    onSave?.(typeSpecialityId);
     setIsOn(false);
     isOpenModal$.setSubject = false;
     reset();

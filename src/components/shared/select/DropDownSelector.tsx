@@ -71,6 +71,7 @@ const LabelChip = ({
         </>
       ) : (
         <span
+          className="dropdown-span"
           onClick={() => {
             navigate(`/${navigateRoute}/${itemKey}`);
           }}

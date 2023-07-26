@@ -12,6 +12,7 @@ import Button from '../../components/shared/button/Button';
 import * as ExcelJS from 'exceljs';
 import { Input } from '../../components';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import formatDate from '../../utils/formatDate';
 
 const spring = {
   type: 'spring',
@@ -35,7 +36,7 @@ const ListPersonalTask = () => {
   const { id } = userSession;
   const [subTask, setSubTask] = useState<SubtaskIncludes[] | null>(null);
 
-  // const { register, reset, handleSubmit } = useForm<DateRange>();
+  const { register, reset, handleSubmit } = useForm<DateRange>();
 
   useEffect(() => {
     axiosInstance.get(`/users/${id}/subTasks`).then(res => {
@@ -74,11 +75,26 @@ const ListPersonalTask = () => {
   };
   const onSubmitDateRange: SubmitHandler<DateRange> = data => {
     const { initial, until } = data;
+    const dateInitial = formatDate(new Date(initial), {
+      day: 'numeric',
+      weekday: 'long',
+      month: 'long',
+      year: 'numeric',
+    });
+    const dateUntil = formatDate(new Date(until), {
+      day: 'numeric',
+      weekday: 'long',
+      month: 'long',
+      year: 'numeric',
+    });
+
+    const rangeDate = dateInitial + ' al ' + dateUntil;
+    console.log(dateInitial, dateUntil);
     axiosInstance
       .get(`/reports/user/?initial=${initial}&until=${until}`)
-      .then(res => handleEditExcel(res.data));
+      .then(res => handleEditExcel(res.data, rangeDate));
   };
-  const handleEditExcel = async (data: SubTask[]) => {
+  const handleEditExcel = async (data: SubTask[], rangeDate: string) => {
     // Cargar la plantilla desde un archivo
     const { firstName, lastName, dni, phone } = userSession.profile;
     const response = await fetch('/templates/report_template.xlsx');
@@ -88,6 +104,9 @@ const ListPersonalTask = () => {
 
     // Obtener la hoja de cálculo
     const worksheet = workbook.getWorksheet('PERIDO 18');
+    workbook.addWorksheet('sheet', {
+      properties: { tabColor: { argb: 'FF00FF00' } },
+    });
     // worksheet.autoFilter = {
     //   from: 'A1',
     //   to: 'C1',
@@ -107,6 +126,7 @@ const ListPersonalTask = () => {
     worksheet.getCell('B5').value = firstName + ' ' + lastName;
     worksheet.getCell('H3').value = dni;
     worksheet.getCell('H4').value = phone;
+    worksheet.getCell('L1').value = rangeDate;
     const longitud = data.length + 16;
     data.forEach(el => {
       const priceFinal = +el.price * (el.percentage / 100);
@@ -231,7 +251,7 @@ const ListPersonalTask = () => {
               ))}
         </div>
       </div>
-      {/* <div>
+      <div>
         {isOn && (
           <div>
             <form onSubmit={handleSubmit(onSubmitDateRange)}>
@@ -251,7 +271,7 @@ const ListPersonalTask = () => {
             </form>
           </div>
         )}
-      </div> */}
+      </div>
     </div>
   );
 };

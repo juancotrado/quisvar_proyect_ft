@@ -6,6 +6,8 @@ import SidebarSpecialityAddLvl from './sidebarSpecialityAddLvl/SidebarSpeciality
 import { Select } from '../..';
 import { yearData } from '../const';
 import { axiosInstance } from '../../../services/axiosInstance';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store';
 interface SidebarSpecialityProps {
   settingSectors: (value: SectorType[]) => void;
   sectors: SectorType[];
@@ -19,6 +21,8 @@ const SidebarSpeciality = ({
   onSave,
 }: SidebarSpecialityProps) => {
   const handleProjects = (especialityId: number) => getProjects(especialityId);
+  const { role } = useSelector((state: RootState) => state.userSession);
+
   const handleFilterForYear = async (e: FocusEvent<HTMLSelectElement>) => {
     const { data } = await axiosInstance.get<SectorType[]>('/sector');
     const { value } = e.target;
@@ -80,20 +84,24 @@ const SidebarSpeciality = ({
                               />
                             </li>
                           ))}
-                          <SidebarSpecialityAddLvl
-                            onSave={onSave}
-                            idValue={speciality.id}
-                            keyNameId="specialitiesId"
-                          />
+                          {role !== 'EMPLOYEE' && (
+                            <SidebarSpecialityAddLvl
+                              onSave={onSave}
+                              idValue={speciality.id}
+                              keyNameId="specialitiesId"
+                            />
+                          )}{' '}
                         </ul>
                       </div>
                     </li>
                   ))}
-                  <SidebarSpecialityAddLvl
-                    onSave={onSave}
-                    idValue={sector.id}
-                    keyNameId="sectorId"
-                  />
+                  {role !== 'EMPLOYEE' && (
+                    <SidebarSpecialityAddLvl
+                      onSave={onSave}
+                      idValue={sector.id}
+                      keyNameId="sectorId"
+                    />
+                  )}{' '}
                 </ul>
               </div>
             </li>

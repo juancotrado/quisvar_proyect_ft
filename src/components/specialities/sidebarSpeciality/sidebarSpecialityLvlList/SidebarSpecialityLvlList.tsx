@@ -7,6 +7,8 @@ import './sidebarSpecialityLvlList.css';
 import DotsOption from '../../../shared/dots/DotsOption';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { Input } from '../../..';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../store';
 
 interface SidebarSpecialityLvlListProps {
   data: DataSidebarSpeciality;
@@ -31,6 +33,7 @@ const SidebarSpecialityLvlList = ({
   const [formData, setFormData] = useState<FormData>(INIT_VALUES);
   const isFirstLevel = type === 'sector';
   const isLastLevel = type === 'typespecialities';
+  const { role } = useSelector((state: RootState) => state.userSession);
 
   useEffect(() => {
     if (isLastLevel) {
@@ -117,7 +120,7 @@ const SidebarSpecialityLvlList = ({
           </>
         )}
       </div>
-      {!isFirstLevel && (
+      {!isFirstLevel && role !== 'EMPLOYEE' && (
         <DotsOption
           className="sidebarLevelList-menu-dots-option"
           notPositionRelative

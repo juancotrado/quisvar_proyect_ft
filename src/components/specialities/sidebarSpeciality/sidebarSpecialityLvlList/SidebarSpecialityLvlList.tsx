@@ -9,6 +9,10 @@ import { axiosInstance } from '../../../../services/axiosInstance';
 import { Input } from '../../..';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
+import {
+  validateCorrectTyping,
+  validateWhiteSpace,
+} from '../../../../utils/customValidatesForm';
 
 interface SidebarSpecialityLvlListProps {
   data: DataSidebarSpeciality;
@@ -34,7 +38,7 @@ const SidebarSpecialityLvlList = ({
   const isFirstLevel = type === 'sector';
   const isLastLevel = type === 'typespecialities';
   const { role } = useSelector((state: RootState) => state.userSession);
-
+  const [errors, setErrors] = useState<{ [key: string]: any }>({});
   useEffect(() => {
     if (isLastLevel) {
       setFormData({ name: data.name || '' });
@@ -43,7 +47,22 @@ const SidebarSpecialityLvlList = ({
 
   const handleBlurInput = (e: FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    if (typeof validateCorrectTyping(value) === 'string') {
+      setErrors({
+        name: {
+          message: validateCorrectTyping(value),
+        },
+      });
+    } else if (typeof validateWhiteSpace(value) === 'string') {
+      setErrors({
+        name: {
+          message: validateWhiteSpace(value),
+        },
+      });
+    } else {
+      setErrors({ value: '' });
+      setFormData({ ...formData, [name]: value });
+    }
   };
   const handleForm = async () => {
     await axiosInstance.put(`/${type}/${data.id}`, formData);
@@ -81,14 +100,16 @@ const SidebarSpecialityLvlList = ({
               name="name"
               className="SidebarSpecialityLvlList-input"
               onBlur={handleBlurInput}
+              errors={errors}
             />
             {type === 'specialities' && (
               <Input
                 defaultValue={data?.cod}
-                label="Nombre Corto:"
+                label="Nombre Cortos:"
                 name="cod"
                 className="SidebarSpecialityLvlList-input"
                 onBlur={handleBlurInput}
+                errors={errors}
               />
             )}
           </div>

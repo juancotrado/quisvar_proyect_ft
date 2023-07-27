@@ -4,6 +4,7 @@ import './login.css';
 import { axiosInstance } from '../../services/axiosInstance';
 import InputText from '../../components/shared/Input/Input';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { validateEmail } from '../../utils/customValidatesForm';
 
 interface UserForm {
   email: string;
@@ -49,8 +50,7 @@ const Login = () => {
               placeholder="Email"
               {...register('email', {
                 required: true,
-                pattern:
-                  /[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,5}/i,
+                validate: validateEmail,
               })}
               type="text"
               errors={errors}

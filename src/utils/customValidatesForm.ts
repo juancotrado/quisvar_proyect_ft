@@ -12,3 +12,8 @@ export const validateCorrectTyping = (value: string) => {
     ? 'Ingresar nombre que no contenga lo siguiente ^/?@|<>": '
     : true;
 };
+export const validateEmail = (value: string) => {
+  const regex =
+    /[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,5}/i;
+  return !regex.test(value) ? 'Ingresar un email valido' : true;
+};

@@ -5,6 +5,10 @@ import { Input } from '../../..';
 import Button from '../../../shared/button/Button';
 import DotsOption, { Option } from '../../../shared/dots/DotsOption';
 import { axiosInstance } from '../../../../services/axiosInstance';
+import {
+  validateCorrectTyping,
+  validateWhiteSpace,
+} from '../../../../utils/customValidatesForm';
 
 type DataForm = { name: string; cod: string };
 interface SidebarSpecialityAddLvlProps {
@@ -23,7 +27,12 @@ const SidebarSpecialityAddLvl = ({
   idValue,
 }: SidebarSpecialityAddLvlProps) => {
   const [addLevel, setAddLevel] = useState<boolean>(false);
-  const { handleSubmit, register, reset } = useForm<DataForm>();
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm<DataForm>();
 
   const onSubmitData: SubmitHandler<DataForm> = async data => {
     const url = urlPost[keyNameId];
@@ -57,16 +66,22 @@ const SidebarSpecialityAddLvl = ({
           <div className="sidebarSpecialityAddLvl-inputs">
             <Input
               label="Nombre:"
-              {...register('name')}
+              {...register('name', {
+                validate: { validateWhiteSpace, validateCorrectTyping },
+              })}
               name="name"
               className="sidebarSpecialityAddLvl-input"
+              errors={errors}
             />
             {keyNameId === 'sectorId' && (
               <Input
                 label="Nombre Corto:"
-                {...register('cod')}
+                {...register('cod', {
+                  validate: { validateWhiteSpace, validateCorrectTyping },
+                })}
                 name="cod"
                 className="sidebarSpecialityAddLvl-input"
+                errors={errors}
               />
             )}
           </div>

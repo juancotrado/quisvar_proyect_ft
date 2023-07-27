@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Input } from '../../..';
 import './cardRegisterCompany.css';
-import Button from '../../button/Button';
+// import Button from '../../button/Button';
 import { CompanyForm } from '../../../../types/types';
 
 const InitialValues: CompanyForm = {
@@ -39,13 +39,13 @@ const CardRegisterCompany = ({
     const { value, name, type } = target;
     const _value = type == 'number' ? +value : value;
     const newForm = { ...form, [name]: _value };
+    !readOnly && onSave?.(newForm);
     setForm(newForm);
   };
 
-  const toggleSave = () => {
-    !readOnly && onSave?.(form);
-    setReadOnly(!readOnly);
-  };
+  // const toggleSave = () => {
+  //   setReadOnly(!readOnly);
+  // };
 
   return (
     <div className="cardRegisterCompany-container">
@@ -97,7 +97,7 @@ const CardRegisterCompany = ({
           />
         )}
       </div>
-      <div className=" container-grid-company justify-end">
+      {/* <div className=" container-grid-company justify-end">
         <Button
           type="button"
           className={`cardRegisterCompany-button-send ${
@@ -106,7 +106,7 @@ const CardRegisterCompany = ({
           text={`${readOnly ? 'Editar Cambios' : 'Guardar Datos'}`}
           onClick={toggleSave}
         />
-      </div>
+      </div> */}
     </div>
   );
 };

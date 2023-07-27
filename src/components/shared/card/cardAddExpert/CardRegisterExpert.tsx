@@ -19,7 +19,7 @@ const HeadersExperts = {
   career: 'Ocupación',
   cip: 'CIP',
   phone: 'Teléfono',
-  pdf: 'PDF',
+  // pdf: 'PDF',
 };
 
 interface CardRegisterExpertProps {
@@ -29,7 +29,7 @@ interface CardRegisterExpertProps {
 
 const CardRegisterExpert = ({ onSave, experts }: CardRegisterExpertProps) => {
   const [readOnly, setReadOnly] = useState(false);
-  const [idCount, setIdCount] = useState(1);
+  const [idCount, setIdCount] = useState(2);
   const [expertList, setExpertList] = useState<ExpertType[]>([]);
 
   useEffect(() => {
@@ -42,18 +42,20 @@ const CardRegisterExpert = ({ onSave, experts }: CardRegisterExpertProps) => {
       setReadOnly(true);
       setIdCount(_experts.length);
     } else {
-      setExpertList([]);
+      const InitialExpert = { ...InitialValues, id: 1 };
+      setExpertList([InitialExpert]);
     }
   }, [experts]);
 
-  const toggleSave = () => {
-    const _experts = expertList.map(({ id, ...data }) => {
-      id;
-      return data;
-    });
-    !readOnly && onSave?.(_experts);
-    setReadOnly(!readOnly);
-  };
+  // const toggleSave = () => {
+  //   const _experts = expertList.map(({ id, ...data }) => {
+  //     id;
+  //     return data;
+  //   });
+  //   console.log(_experts);
+  //   !readOnly && onSave?.(_experts);
+  //   setReadOnly(!readOnly);
+  // };
 
   const handleAddExpert = () => {
     const newExpert: ExpertType = { ...InitialValues, id: idCount };
@@ -75,12 +77,18 @@ const CardRegisterExpert = ({ onSave, experts }: CardRegisterExpertProps) => {
     if (field == 'dni') expertList[_index].dni = value;
     if (field == 'phone') expertList[_index].phone = value;
     const _experts = [...expertList];
+    const _newExperts = _experts.map(({ id, ...data }) => {
+      id;
+      return data;
+    });
+    onSave?.(_newExperts);
     setExpertList(_experts);
   };
 
   const handleDeleteCompany = (id: number) => {
     const fliterExpert = expertList.filter(expert => expert.id !== id);
     setExpertList(fliterExpert);
+    onSave?.(fliterExpert);
   };
 
   return (
@@ -129,6 +137,7 @@ const CardRegisterExpert = ({ onSave, experts }: CardRegisterExpertProps) => {
                   name={`cip-e-${expert.id}`}
                   placeholder="CIP"
                   required
+                  type="number"
                   onBlur={e => toggleOnChange(expert.id, e, 'cip')}
                   disabled={readOnly}
                   classNameMain="col-span-1"
@@ -180,7 +189,7 @@ const CardRegisterExpert = ({ onSave, experts }: CardRegisterExpertProps) => {
           onClick={handleAddExpert}
         />
       </div>
-      <div className=" container-grid-consortium justify-end">
+      {/* <div className=" container-grid-consortium justify-end">
         <Button
           type="button"
           className={`cardRegisterConsortium-button-send ${
@@ -189,7 +198,7 @@ const CardRegisterExpert = ({ onSave, experts }: CardRegisterExpertProps) => {
           text={`${readOnly ? 'Editar Cambios' : 'Guardar Datos'}`}
           onClick={toggleSave}
         />
-      </div>
+      </div> */}
     </div>
   );
 };

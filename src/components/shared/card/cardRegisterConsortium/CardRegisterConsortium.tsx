@@ -10,6 +10,13 @@ const InitialValues: ConsortiumForm = {
   companies: [],
 };
 
+const InitialValuesCompany: CompanyType = {
+  id: 0,
+  manager: '',
+  name: '',
+  ruc: '',
+  percentage: 0,
+};
 interface CardRegisterConsortiumProps {
   onSave?: (value: ConsortiumForm) => void;
   consortium?: ConsortiumForm;
@@ -20,7 +27,7 @@ const CardRegisterConsortium = ({
   consortium,
 }: CardRegisterConsortiumProps) => {
   const [form, setForm] = useState<ConsortiumForm>(InitialValues);
-  const [idCount, setIdCount] = useState(1);
+  const [idCount, setIdCount] = useState(2);
   const [readOnly, setReadOnly] = useState(false);
   const [companiesList, setCompaniesList] = useState<CompanyType[]>([]);
 
@@ -35,36 +42,41 @@ const CardRegisterConsortium = ({
       setIdCount(_companies.length);
       setCompaniesList(_companies);
     } else {
+      const InitialCompany = { ...InitialValuesCompany, id: 1 };
+      setCompaniesList([InitialCompany]);
       setForm(InitialValues);
     }
   }, [consortium]);
 
-  const toggleSave = () => {
-    const _companies = companiesList.map(({ id, ...data }) => {
-      id;
-      return data;
-    });
-    const newForm = { ...form, companies: _companies };
-    setForm(newForm);
-    !readOnly && onSave?.(newForm);
-    setReadOnly(!readOnly);
-  };
+  // const toggleSave = () => {
+  //   const _companies = companiesList.map(({ id, ...data }) => {
+  //     id;
+  //     return data;
+  //   });
+  //   const newForm = { ...form, companies: _companies };
+  //   setForm(newForm);
+  //   // !readOnly &&
+  //   onSave?.(newForm);
+  //   // setReadOnly(!readOnly);
+  // };
 
   const handleChange = ({ target }: React.FocusEvent<HTMLInputElement>) => {
     const { value, name, type } = target;
     const _value = type == 'number' ? +value : value;
     const newForm = { ...form, [name]: _value };
+    onSave?.({ ...newForm, companies: parseList(companiesList) });
     setForm(newForm);
   };
 
+  const parseList = (list: CompanyType[]) => {
+    return list.map(({ id, ...data }) => {
+      id;
+      return data;
+    });
+  };
+
   const handleAddCompany = () => {
-    const newCompany: CompanyType = {
-      id: idCount,
-      manager: '',
-      name: '',
-      ruc: '',
-      percentage: 0,
-    };
+    const newCompany: CompanyType = { ...InitialValuesCompany, id: idCount };
     setIdCount(idCount + 1);
     const newListConsortium = [...companiesList, newCompany];
     setCompaniesList(newListConsortium);
@@ -83,12 +95,15 @@ const CardRegisterConsortium = ({
     if (field == 'name') companiesList[_index].name = value;
     const _consortium = [...companiesList];
     setCompaniesList(_consortium);
+    onSave?.({ ...form, companies: parseList(_consortium) });
   };
 
   const handleDeleteCompany = (id: number) => {
     const filterCompany = companiesList.filter(company => company.id !== id);
     setCompaniesList(filterCompany);
+    onSave?.({ ...form, companies: parseList(filterCompany) });
   };
+
   return (
     <div className="cardRegisterConsortium-container">
       <div className="container-grid-consortium">
@@ -186,7 +201,7 @@ const CardRegisterConsortium = ({
           onClick={handleAddCompany}
         />
       </div>
-      <div className=" container-grid-consortium justify-end">
+      {/* <div className=" container-grid-consortium justify-end">
         <Button
           type="button"
           className={`cardRegisterConsortium-button-send ${
@@ -195,7 +210,7 @@ const CardRegisterConsortium = ({
           text={`${readOnly ? 'Editar Cambios' : 'Guardar Datos'}`}
           onClick={toggleSave}
         />
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -26,12 +26,6 @@ import CardRegisterCompany from '../cardRegisterCompany/CardRegisterCompany';
 import CardRegisterConsortium from '../cardRegisterConsortium/CardRegisterConsortium';
 import CardRegisterExpert from '../cardAddExpert/CardRegisterExpert';
 
-const typeSpecialities = [
-  { id: 1, name: 'Represas' },
-  { id: 2, name: 'Irrigaciones' },
-  { id: 2, name: 'Tipo de especialidad numero 3' },
-];
-
 interface CardRegisterProjectProps {
   onSave?: (value: number) => void;
   project?: ProjectForm | null;
@@ -263,16 +257,6 @@ const CardRegisterProject = ({
           )}
           <div className="col-input">
             <Select
-              label="Tipo:"
-              required={true}
-              {...register('typeSpeciality')}
-              name="typeSpeciality"
-              data={typeSpecialities}
-              itemKey="name"
-              textField="name"
-            />
-
-            <Select
               label="Etapa:"
               required={true}
               {...register('stageId', { valueAsNumber: true })}
@@ -280,6 +264,18 @@ const CardRegisterProject = ({
               data={stages}
               itemKey="id"
               textField="name"
+            />
+            <Input
+              label="Fecha Inicio:"
+              {...register('startDate')}
+              name="startDate"
+              type="date"
+            />
+            <Input
+              label="Fecha Limite:"
+              {...register('untilDate')}
+              name="untilDate"
+              type="date"
             />
           </div>
           <div className="col-input">
@@ -313,20 +309,6 @@ const CardRegisterProject = ({
               textField="nombre_ubigeo"
             />
           </div>
-          <div className="col-input">
-            <Input
-              label="Fecha Inicio:"
-              {...register('startDate')}
-              name="startDate"
-              type="date"
-            />
-            <Input
-              label="Fecha Limite:"
-              {...register('untilDate')}
-              name="untilDate"
-              type="date"
-            />
-          </div>
           <Button
             type="button"
             text="Ver más información de Empresa/Consorcio +"
@@ -346,7 +328,7 @@ const CardRegisterProject = ({
           </button> */}
           <h2>{`DATOS DE ${isUniqueCorp ? 'EMPRESA' : 'CONSORCIO'} `}</h2>
           <hr></hr>
-          {!project && (
+          {!project?.company && !project?.consortium && (
             <div className="col-unique">
               <span className="switch-status-label">
                 ¿EL proyecto tendrá una única empresa?

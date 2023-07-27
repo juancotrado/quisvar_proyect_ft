@@ -19,6 +19,8 @@ export interface DataSidebarSpeciality {
   id: number;
   name: string;
   cod?: string;
+  specialities?: SpecialityType[];
+  typeSpecialities?: TypeSpecialities[];
 }
 export interface SectorType {
   id: number;

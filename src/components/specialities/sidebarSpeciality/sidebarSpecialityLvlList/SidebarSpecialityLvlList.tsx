@@ -134,7 +134,10 @@ const SidebarSpecialityLvlList = ({
                 <input
                   type="checkbox"
                   className="SidebarSpecialityLvlList-dropdown-check"
-                  defaultChecked
+                  defaultChecked={
+                    !!data.specialities?.length ||
+                    !!data.typeSpecialities?.length
+                  }
                 />
               </>
             )}

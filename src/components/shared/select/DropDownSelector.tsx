@@ -12,6 +12,10 @@ import { AreaForm } from '../../../types/types';
 import { axiosInstance } from '../../../services/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 import useArchiver from '../../../hooks/useArchiver';
+import {
+  validateCorrectTyping,
+  validateWhiteSpace,
+} from '../../../utils/customValidatesForm';
 
 type typeObj = { [key: string]: any };
 
@@ -236,7 +240,12 @@ const DropDownSelector = ({
                     {addArea ? (
                       <>
                         <Input
-                          {...register('name')}
+                          {...register('name', {
+                            validate: {
+                              validateWhiteSpace,
+                              validateCorrectTyping,
+                            },
+                          })}
                           name="name"
                           className="dropdown-input-add"
                         />

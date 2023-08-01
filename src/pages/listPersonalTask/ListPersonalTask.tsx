@@ -4,7 +4,12 @@ import { axiosInstance } from '../../services/axiosInstance';
 import { motion } from 'framer-motion';
 import list_icon from '/svg/task_list.svg';
 import MyTaskCard from '../../components/shared/card/myTaskCard/MyTaskCard';
-import { SubTask, SubtaskIncludes } from '../../types/types';
+import {
+  ProjectReport,
+  ProjectType,
+  SubTask,
+  SubtaskIncludes,
+} from '../../types/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import SelectOptions from '../../components/shared/select/Select';
@@ -94,7 +99,7 @@ const ListPersonalTask = () => {
       .get(`/reports/user/?initial=${initial}&until=${until}`)
       .then(res => handleEditExcel(res.data, rangeDate));
   };
-  const handleEditExcel = async (data: SubTask[], rangeDate: string) => {
+  const handleEditExcel = async (data: ProjectReport[], rangeDate: string) => {
     // Cargar la plantilla desde un archivo
     const { firstName, lastName, dni, phone } = userSession.profile;
     const response = await fetch('/templates/report_template.xlsx');
@@ -127,22 +132,54 @@ const ListPersonalTask = () => {
     worksheet.getCell('H3').value = dni;
     worksheet.getCell('H4').value = phone;
     worksheet.getCell('L1').value = rangeDate;
-    const longitud = data.length + 16;
-    data.forEach(el => {
-      const priceFinal = +el.price * (el.percentage / 100);
-      worksheet.insertRow(12, [
-        el.item,
-        el.name,
-        el.price,
-        el.percentage,
-        '',
-        '',
-        priceFinal,
-      ]);
-    });
 
-    worksheet.getCell(String('J' + longitud)).value = dni;
-    worksheet.getCell(String('J' + longitud + 1)).value =
+    let rowNumber = 12;
+    data.forEach(project => {
+      worksheet.insertRow(rowNumber, [
+        '',
+        project.name.toUpperCase(),
+        '',
+        '',
+        '',
+        '',
+        '',
+      ]).font = {
+        bold: true,
+        color: { argb: 'F50000' },
+      };
+      worksheet.getRow(rowNumber).fill = {
+        type: 'pattern',
+        pattern: 'solid',
+        fgColor: { argb: 'D9E1F2' },
+      };
+      rowNumber++;
+      project.subtasks.forEach(subTask => {
+        const priceFinal = +subTask.price * (subTask.percentage / 100);
+        worksheet.insertRow(rowNumber, [
+          subTask.item,
+          subTask.name.toUpperCase(),
+          subTask.price,
+          subTask.percentage + '%',
+          '',
+          '',
+          priceFinal,
+        ]);
+        worksheet.getCell('B' + rowNumber).font = {
+          bold: true,
+          color: { argb: '4472C4' },
+        };
+        rowNumber++;
+      });
+    });
+    const endLine = rowNumber;
+
+    // console.log(String('J' + endLine));
+    // console.log(String('J' + endLine + 3));
+    worksheet.getCell(String('G' + (endLine + 1))).value = {
+      formula: `SUM(G12:G${endLine})`,
+    };
+    worksheet.getCell(String('J' + (endLine + 3))).value = dni;
+    worksheet.getCell(String('J' + (endLine + 4))).value =
       firstName + ' ' + lastName;
 
     // worksheet.addTable({

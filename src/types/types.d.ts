@@ -22,6 +22,14 @@ export interface DataSidebarSpeciality {
   specialities?: SpecialityType[];
   typeSpecialities?: TypeSpecialities[];
 }
+
+export interface ProjectReport {
+  id: number;
+  name: string;
+  CUI: string;
+  description: string;
+  subtasks: SubTask[];
+}
 export interface SectorType {
   id: number;
   name: string;

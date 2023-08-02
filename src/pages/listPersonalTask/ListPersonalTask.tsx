@@ -4,12 +4,7 @@ import { axiosInstance } from '../../services/axiosInstance';
 import { motion } from 'framer-motion';
 import list_icon from '/svg/task_list.svg';
 import MyTaskCard from '../../components/shared/card/myTaskCard/MyTaskCard';
-import {
-  ProjectReport,
-  ProjectType,
-  SubTask,
-  SubtaskIncludes,
-} from '../../types/types';
+import { ProjectReport, SubtaskIncludes } from '../../types/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import SelectOptions from '../../components/shared/select/Select';
@@ -108,112 +103,87 @@ const ListPersonalTask = () => {
     await workbook.xlsx.load(buffer);
 
     // Obtener la hoja de cálculo
-    const worksheet = workbook.getWorksheet('PERIDO 18');
-    workbook.addWorksheet('sheet', {
-      properties: { tabColor: { argb: 'FF00FF00' } },
-    });
-    // worksheet.autoFilter = {
-    //   from: 'A1',
-    //   to: 'C1',
-    // };
-    // worksheet.columns = [
-    //   { header: 'Id', key: 'id', width: 10 },
-    //   { header: 'Name', key: 'name', width: 32 },
-    //   { header: 'D.O.B.', key: 'dob', width: 10, outlineLevel: 1 },
-    //   { header: 'Price', key: 'price', width: 10, outlineLevel: 1 },
-    // ];
-    // worksheet.insertRow(2, {
-    //   id: 2,
-    //   name: 'John Doe',
-    //   dob: new Date(1970, 1, 1),
-    //   price: 10,
-    // });
-    worksheet.getCell('B5').value = firstName + ' ' + lastName;
-    worksheet.getCell('H3').value = dni;
-    worksheet.getCell('H4').value = phone;
-    worksheet.getCell('L1').value = rangeDate;
+    const wk = workbook.getWorksheet('PERIDO 18');
+    const wk1 = workbook.addWorksheet('sheet');
+    // Insertar contenido en las celdas
+    wk1.getCell('A1').value = 'Contenido en A1';
+    wk1.getCell('A10').value = 'Contenido en A10';
+
+    // Configurar un salto de página después de la fila 10 (A10)
+    wk1.getRow(10).addPageBreak(1, 4);
+
+    wk.getCell('B5').value = firstName + ' ' + lastName;
+    wk.getCell('H3').value = +dni;
+    wk.getCell('H4').value = +phone;
+    wk.getCell('L1').value = rangeDate;
 
     let rowNumber = 12;
     data.forEach(project => {
-      worksheet.insertRow(rowNumber, [
-        '',
+      const projectRow = wk.insertRow(rowNumber, [
+        project.district,
         project.name.toUpperCase(),
-        '',
-        '',
-        '',
-        '',
-        '',
-      ]).font = {
+      ]);
+
+      projectRow.font = {
         bold: true,
         color: { argb: 'F50000' },
       };
-      worksheet.getRow(rowNumber).fill = {
+      projectRow.fill = {
         type: 'pattern',
         pattern: 'solid',
         fgColor: { argb: 'D9E1F2' },
       };
       rowNumber++;
       project.subtasks.forEach(subTask => {
-        const priceFinal = +subTask.price * (subTask.percentage / 100);
-        worksheet.insertRow(rowNumber, [
+        const insertedRows = wk.insertRow(rowNumber, [
           subTask.item,
           subTask.name.toUpperCase(),
-          subTask.price,
-          subTask.percentage + '%',
-          '',
-          '',
-          priceFinal,
+          +subTask.price,
+          1,
+          subTask.percentage / 100,
         ]);
-        worksheet.getCell('B' + rowNumber).font = {
+
+        insertedRows.getCell('B').font = {
           bold: true,
           color: { argb: '4472C4' },
         };
+        insertedRows.getCell('G').value = {
+          formula: `=+C${rowNumber}*D${rowNumber}*E${rowNumber}`,
+          date1904: false,
+        };
+        insertedRows.getCell('G').numFmt =
+          '_-"S/"* #,##0.00_-;-"S/"* #,##0.00_-;_-"S/"* "-"??_-;_-@_-';
+        insertedRows.getCell('C').numFmt =
+          '_-"S/"* #,##0.00_-;-"S/"* #,##0.00_-;_-"S/"* "-"??_-;_-@_-';
+        insertedRows.getCell('D').numFmt = '0%';
+        insertedRows.getCell('E').numFmt = '0%';
         rowNumber++;
       });
     });
     const endLine = rowNumber;
 
-    // console.log(String('J' + endLine));
-    // console.log(String('J' + endLine + 3));
-    worksheet.getCell(String('G' + (endLine + 1))).value = {
+    const sumTotalCell = 'G' + (endLine + 1);
+    wk.getCell(sumTotalCell).value = {
       formula: `SUM(G12:G${endLine})`,
+      date1904: false,
     };
-    worksheet.getCell(String('J' + (endLine + 3))).value = dni;
-    worksheet.getCell(String('J' + (endLine + 4))).value =
-      firstName + ' ' + lastName;
+    wk.getCell('X3').value = {
+      formula: `=ROUND(${sumTotalCell}*0.3, 0)`,
+      date1904: false,
+    };
+    wk.mergeCells(`U${endLine + 3}:Y${endLine + 3}`);
+    wk.mergeCells(`U${endLine + 4}:Y${endLine + 4}`);
+    const dniFinishcell = wk.getCell(`U${endLine + 3}`);
+    dniFinishcell.value = 'DNI: ' + dni;
+    dniFinishcell.font = {
+      bold: true,
+    };
+    dniFinishcell.border = {
+      top: { style: 'thin' },
+    };
+    wk.getCell(`U${endLine + 4}`).value = firstName + ' ' + lastName;
 
-    // worksheet.addTable({
-    //   name: 'MyTable',
-    //   ref: 'A20',
-    //   headerRow: true,
-    //   totalsRow: true,
-    //   style: {
-    //     theme: 'TableStyleDark3',
-    //     showRowStripes: true,
-    //   },
-    //   columns: [
-    //     { name: 'Date', totalsRowLabel: 'Totals:', filterButton: true },
-    //     { name: 'Amount', totalsRowFunction: 'sum', filterButton: false },
-    //   ],
-    //   rows: [
-    //     [new Date('2019-07-20'), 70.1],
-    //     [new Date('2019-07-21'), 70.6],
-    //     [new Date('2019-07-22'), 70.1],
-    //   ],
-    // });
-
-    // const table = worksheet.getTable('GozuDeMrd');
-    // const table2 = worksheet.getTable('MyTable');
-
-    // console.log(table);
-    // console.log(table2);
-    // table.addRow(['gozu de mrd', 100.1,'gozu de mrd','gozu de mrd','gozu de mrd','gozu de mrd','gozu de mrd'], 3);
-    // Editar la hoja de cálculo con tus datos
-
-    // worksheet.getCell('B1').value = 'Jhon Carlos Castillo Atencio';
-
-    // worksheet.addRow({id: 2, name: 'Jane Doe', dob: new Date(1965,1,7)});;
-    // worksheet.mergeCells('H3:J3');hghhgfg
+    wk.pageSetup.printArea = 'A1:AA' + (endLine + 7);
 
     // Guardar los cambios en un nuevo archivo o en la misma plantilla
     const editedBuffer = await workbook.xlsx.writeBuffer();

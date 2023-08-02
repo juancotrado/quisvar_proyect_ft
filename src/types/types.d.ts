@@ -29,6 +29,7 @@ export interface ProjectReport {
   CUI: string;
   description: string;
   subtasks: SubTask[];
+  district: string;
 }
 export interface SectorType {
   id: number;

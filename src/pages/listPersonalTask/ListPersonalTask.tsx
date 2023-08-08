@@ -12,7 +12,7 @@ import Button from '../../components/shared/button/Button';
 import * as ExcelJS from 'exceljs';
 import { Input } from '../../components';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import formatDate from '../../utils/formatDate';
+import formatDate, { parseUTC } from '../../utils/formatDate';
 
 const spring = {
   type: 'spring',
@@ -141,6 +141,9 @@ const ListPersonalTask = () => {
           +subTask.price,
           1,
           subTask.percentage / 100,
+          subTask.status == 'DONE' ? 0.3 : 0.7,
+          null,
+          parseUTC(subTask.untilDate),
         ]);
 
         insertedRows.getCell('B').font = {
@@ -148,7 +151,7 @@ const ListPersonalTask = () => {
           color: { argb: '4472C4' },
         };
         insertedRows.getCell('G').value = {
-          formula: `=+C${rowNumber}*D${rowNumber}*E${rowNumber}`,
+          formula: `=+C${rowNumber}*D${rowNumber}*E${rowNumber}*F${rowNumber}`,
           date1904: false,
         };
         insertedRows.getCell('G').numFmt =
@@ -157,6 +160,7 @@ const ListPersonalTask = () => {
           '_-"S/"* #,##0.00_-;-"S/"* #,##0.00_-;_-"S/"* "-"??_-;_-@_-';
         insertedRows.getCell('D').numFmt = '0%';
         insertedRows.getCell('E').numFmt = '0%';
+        insertedRows.getCell('F').numFmt = '0%';
         rowNumber++;
       });
     });

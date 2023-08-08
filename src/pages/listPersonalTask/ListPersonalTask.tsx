@@ -75,29 +75,33 @@ const ListPersonalTask = () => {
   };
   const onSubmitDateRange: SubmitHandler<DateRange> = data => {
     const { initial, until } = data;
-    const dateInitial = formatDate(new Date(initial), {
+    const initialDate = formatDate(new Date(initial), {
       day: 'numeric',
       weekday: 'long',
       month: 'long',
       year: 'numeric',
     });
-    const dateUntil = formatDate(new Date(until), {
+    const untilDate = formatDate(new Date(until), {
       day: 'numeric',
       weekday: 'long',
       month: 'long',
       year: 'numeric',
     });
 
-    const rangeDate = dateInitial + ' al ' + dateUntil;
-    console.log(dateInitial, dateUntil);
+    const rangeDate = initialDate + ' al ' + untilDate;
+    console.log(initialDate, untilDate);
     axiosInstance
       .get(`/reports/user/?initial=${initial}&until=${until}`)
-      .then(res => handleEditExcel(res.data, rangeDate));
+      .then(res => handleEditExcel(res.data, initialDate, untilDate));
   };
-  const handleEditExcel = async (data: ProjectReport[], rangeDate: string) => {
+  const handleEditExcel = async (
+    data: ProjectReport[],
+    initialDate: string,
+    untilDate: string
+  ) => {
     // Cargar la plantilla desde un archivo
     const { firstName, lastName, dni, phone } = userSession.profile;
-    const response = await fetch('/templates/report_template.xlsx');
+    const response = await fetch('/templates/report_templateV2.xlsx');
     const buffer = await response.arrayBuffer();
     const workbook = new ExcelJS.Workbook();
     await workbook.xlsx.load(buffer);
@@ -112,14 +116,16 @@ const ListPersonalTask = () => {
     // Configurar un salto de página después de la fila 10 (A10)
     wk1.getRow(10).addPageBreak(1, 4);
 
-    wk.getCell('B5').value = firstName + ' ' + lastName;
-    wk.getCell('H3').value = +dni;
-    wk.getCell('H4').value = +phone;
-    wk.getCell('L1').value = rangeDate;
+    wk.getCell('E10').value = firstName + ' ' + lastName;
+    wk.getCell('D14').value = +dni;
+    wk.getCell('D15').value = +phone;
+    wk.getCell('E4').value = initialDate;
+    wk.getCell('E5').value = untilDate;
 
-    let rowNumber = 12;
+    let rowNumber = 28;
     data.forEach(project => {
       const projectRow = wk.insertRow(rowNumber, [
+        null,
         project.district,
         project.name.toUpperCase(),
       ]);
@@ -136,9 +142,12 @@ const ListPersonalTask = () => {
       rowNumber++;
       project.subtasks.forEach(subTask => {
         const insertedRows = wk.insertRow(rowNumber, [
+          null,
           subTask.item,
           subTask.name.toUpperCase(),
+          null,
           +subTask.price,
+          subTask.status,
           1,
           subTask.percentage / 100,
           subTask.status == 'DONE' ? 0.3 : 0.7,
@@ -146,48 +155,54 @@ const ListPersonalTask = () => {
           parseUTC(subTask.untilDate),
         ]);
 
-        insertedRows.getCell('B').font = {
+        insertedRows.getCell('C').font = {
           bold: true,
           color: { argb: '4472C4' },
         };
-        insertedRows.getCell('G').value = {
-          formula: `=+C${rowNumber}*D${rowNumber}*E${rowNumber}*F${rowNumber}`,
+        insertedRows.getCell('J').value = {
+          formula: `=+E${rowNumber}*G${rowNumber}*H${rowNumber}*I${rowNumber}`,
           date1904: false,
         };
-        insertedRows.getCell('G').numFmt =
+        insertedRows.getCell('J').numFmt =
           '_-"S/"* #,##0.00_-;-"S/"* #,##0.00_-;_-"S/"* "-"??_-;_-@_-';
-        insertedRows.getCell('C').numFmt =
+        insertedRows.getCell('E').numFmt =
           '_-"S/"* #,##0.00_-;-"S/"* #,##0.00_-;_-"S/"* "-"??_-;_-@_-';
-        insertedRows.getCell('D').numFmt = '0%';
-        insertedRows.getCell('E').numFmt = '0%';
-        insertedRows.getCell('F').numFmt = '0%';
+        insertedRows.getCell('G').numFmt = '0%';
+        insertedRows.getCell('H').numFmt = '0%';
+        insertedRows.getCell('I').numFmt = '0%';
         rowNumber++;
       });
     });
     const endLine = rowNumber;
 
-    const sumTotalCell = 'G' + (endLine + 1);
-    wk.getCell(sumTotalCell).value = {
-      formula: `SUM(G12:G${endLine})`,
-      date1904: false,
-    };
-    wk.getCell('X3').value = {
-      formula: `=ROUND(${sumTotalCell}*0.3, 0)`,
-      date1904: false,
-    };
-    wk.mergeCells(`U${endLine + 3}:Y${endLine + 3}`);
-    wk.mergeCells(`U${endLine + 4}:Y${endLine + 4}`);
-    const dniFinishcell = wk.getCell(`U${endLine + 3}`);
+    // const sumTotalCell = 'G' + (endLine + 1);
+    // wk.getCell(sumTotalCell).value = {
+    //   formula: `SUM(G12:G${endLine})`,
+    //   date1904: false,
+    // };
+    // wk.getCell('X3').value = {
+    //   formula: `=ROUND(${sumTotalCell}*0.3, 0)`,
+    //   date1904: false,
+    // };
+    wk.mergeCells(`I${endLine + 10}:J${endLine + 10}`);
+    wk.mergeCells(`I${endLine + 11}:J${endLine + 11}`);
+    const dniFinishcell = wk.getCell(`I${endLine + 10}`);
     dniFinishcell.value = 'DNI: ' + dni;
     dniFinishcell.font = {
       bold: true,
     };
     dniFinishcell.border = {
-      top: { style: 'thin' },
+      top: { style: 'medium' },
     };
-    wk.getCell(`U${endLine + 4}`).value = firstName + ' ' + lastName;
+    dniFinishcell.alignment = { vertical: 'middle', horizontal: 'center' };
+    const fullNameCell = wk.getCell(`I${endLine + 11}`);
+    fullNameCell.value = firstName + ' ' + lastName;
+    fullNameCell.alignment = {
+      vertical: 'middle',
+      horizontal: 'center',
+    };
 
-    wk.pageSetup.printArea = 'A1:AA' + (endLine + 7);
+    wk.pageSetup.printArea = 'A1:L' + (endLine + 13);
 
     // Guardar los cambios en un nuevo archivo o en la misma plantilla
     const editedBuffer = await workbook.xlsx.writeBuffer();

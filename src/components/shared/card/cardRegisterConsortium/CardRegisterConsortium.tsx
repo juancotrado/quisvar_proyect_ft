@@ -34,7 +34,6 @@ const CardRegisterConsortium = ({
   useEffect(() => {
     if (consortium) {
       setForm(consortium);
-      setReadOnly(true);
       const _companies = consortium.companies.map((data, id) => ({
         id,
         ...data,

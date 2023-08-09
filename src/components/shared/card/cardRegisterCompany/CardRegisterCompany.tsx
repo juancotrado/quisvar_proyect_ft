@@ -27,7 +27,6 @@ const CardRegisterCompany = ({
   useEffect(() => {
     if (company) {
       setForm(company);
-      setReadOnly(true);
     } else {
       setForm(InitialValues);
     }

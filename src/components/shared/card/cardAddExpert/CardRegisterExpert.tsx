@@ -39,7 +39,6 @@ const CardRegisterExpert = ({ onSave, experts }: CardRegisterExpertProps) => {
         ...data,
       }));
       setExpertList(_experts);
-      setReadOnly(true);
       setIdCount(_experts.length);
     } else {
       const InitialExpert = { ...InitialValues, id: 1 };

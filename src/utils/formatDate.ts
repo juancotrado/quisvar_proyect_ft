@@ -1,5 +1,7 @@
 const ZONE_LOCALE = 'es-PE';
-const CONFIG_DATE_TIME_FORMAT: Intl.DateTimeFormatOptions = {};
+const CONFIG_DATE_TIME_FORMAT: Intl.DateTimeFormatOptions = {
+  timeZone: 'GMT',
+};
 
 const formatDate = (
   date: Date,

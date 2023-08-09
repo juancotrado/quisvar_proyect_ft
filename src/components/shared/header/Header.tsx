@@ -151,7 +151,7 @@ const Header = () => {
           <figure className="header-figure">
             <img
               className="nav-logo"
-              src="/img/quisvar_logo.png"
+              src="/img/logo_img.png"
               onClick={handleHome}
               alt="logo QuisVar"
             />

@@ -38,12 +38,12 @@ const Login = () => {
       <figure className="login-figure">
         <img alt="" src="/img/image_example.png" className="login-figure-img" />
         <div className="login-contain-logo">
-          <img src="/img/quisvar_logo2.png" alt="" />
+          <img src="/img/dhyrium_logo.png" alt="" />
         </div>
       </figure>
       <div className="login-form">
         <form onSubmit={handleSubmit(sendForm)} className="form">
-          <img src="/img/quisvar_logo2.png" alt="" />
+          <img src="/img/dhyrium_logo.png" alt="" />
           <div className="form-group">
             <InputText
               label="Correo"

@@ -45,4 +45,11 @@ export const getValueByType = (value: string, type: string) => {
   return value;
 };
 
+export const getTimeOut = (assignedAt: string, untilDate: string) => {
+  if (!assignedAt || !untilDate) return 0;
+  const untilDateTime =
+    new Date(untilDate).getTime() - new Date(assignedAt).getTime();
+  const transformToHours = Math.floor(untilDateTime / 1000 / 60 / 60);
+  return transformToHours;
+};
 export default formatDate;

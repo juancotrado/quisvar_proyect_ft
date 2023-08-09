@@ -81,8 +81,8 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
     if (!assignedAt || !untilDate) return 0;
     const untilDateTime =
       new Date(untilDate).getTime() - new Date(assignedAt).getTime();
-    const transforToHours = Math.floor(untilDateTime / 1000 / 60 / 60);
-    return transforToHours;
+    const transformToHours = Math.floor(untilDateTime / 1000 / 60 / 60);
+    return transformToHours;
   };
 
   const handlePorcentge = (e: FocusEvent<HTMLInputElement>) => {

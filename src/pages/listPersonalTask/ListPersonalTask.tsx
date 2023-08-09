@@ -12,7 +12,7 @@ import Button from '../../components/shared/button/Button';
 import * as ExcelJS from 'exceljs';
 import { Input } from '../../components';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import formatDate, { parseUTC } from '../../utils/formatDate';
+import formatDate, { getTimeOut, parseUTC } from '../../utils/formatDate';
 
 const spring = {
   type: 'spring',
@@ -88,10 +88,8 @@ const ListPersonalTask = () => {
       year: 'numeric',
     });
 
-    const rangeDate = initialDate + ' al ' + untilDate;
-    console.log(initialDate, untilDate);
     axiosInstance
-      .get(`/reports/user/?initial=${initial}&until=${until}`)
+      .get(`/reports/user/?initial=${initial}&until=${until}&status=DONE`)
       .then(res => handleEditExcel(res.data, initialDate, untilDate));
   };
   const handleEditExcel = async (
@@ -101,7 +99,7 @@ const ListPersonalTask = () => {
   ) => {
     // Cargar la plantilla desde un archivo
     const { firstName, lastName, dni, phone } = userSession.profile;
-    const response = await fetch('/templates/report_templateV2.xlsx');
+    const response = await fetch('/templates/report_templateV4.xlsx');
     const buffer = await response.arrayBuffer();
     const workbook = new ExcelJS.Workbook();
     await workbook.xlsx.load(buffer);
@@ -134,59 +132,115 @@ const ListPersonalTask = () => {
         bold: true,
         color: { argb: 'F50000' },
       };
-      projectRow.fill = {
-        type: 'pattern',
-        pattern: 'solid',
-        fgColor: { argb: 'D9E1F2' },
+      projectRow.getCell('B').border = {
+        left: { style: 'medium' },
+        right: { style: 'medium' },
       };
+      projectRow.getCell('J').border = {
+        left: { style: 'thin' },
+        right: { style: 'medium' },
+      };
+      projectRow.getCell('D').border = {
+        left: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+      projectRow.getCell('F').border = {
+        left: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+      projectRow.getCell('H').border = {
+        left: { style: 'thin' },
+        right: { style: 'thin' },
+      };
+      for (let col = 2; col <= 10; col++) {
+        const projectCell = projectRow.getCell(col);
+        projectCell.fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: 'D9E1F2' },
+        };
+      }
+      projectRow.getCell;
       rowNumber++;
       project.subtasks.forEach(subTask => {
-        const insertedRows = wk.insertRow(rowNumber, [
+        const subtaskRow = wk.insertRow(rowNumber, [
           null,
           subTask.item,
           subTask.name.toUpperCase(),
-          null,
           +subTask.price,
-          subTask.status,
-          1,
+          parseUTC(subTask.assignedAt),
+          parseUTC(subTask.untilDate),
           subTask.percentage / 100,
           subTask.status == 'DONE' ? 0.3 : 0.7,
           null,
-          parseUTC(subTask.untilDate),
+          getTimeOut(subTask.assignedAt, subTask.untilDate) + ' Horas',
         ]);
+        // wk.mergeCells(`C${rowNumber}:D${rowNumber}`);
+        subtaskRow.getCell('B').border = {
+          left: { style: 'medium' },
+          right: { style: 'medium' },
+        };
+        subtaskRow.getCell('J').border = {
+          left: { style: 'thin' },
+          right: { style: 'medium' },
+        };
 
-        insertedRows.getCell('C').font = {
+        subtaskRow.getCell('D').border = {
+          left: { style: 'thin' },
+          right: { style: 'thin' },
+        };
+        subtaskRow.getCell('F').border = {
+          left: { style: 'thin' },
+          right: { style: 'thin' },
+        };
+        subtaskRow.getCell('H').border = {
+          left: { style: 'thin' },
+          right: { style: 'thin' },
+        };
+        subtaskRow.getCell('C').font = {
           bold: true,
           color: { argb: '4472C4' },
         };
-        insertedRows.getCell('J').value = {
-          formula: `=+E${rowNumber}*G${rowNumber}*H${rowNumber}*I${rowNumber}`,
+        subtaskRow.getCell('I').value = {
+          formula: `=+D${rowNumber}*G${rowNumber}`,
           date1904: false,
         };
-        insertedRows.getCell('J').numFmt =
+        subtaskRow.getCell('I').numFmt =
           '_-"S/"* #,##0.00_-;-"S/"* #,##0.00_-;_-"S/"* "-"??_-;_-@_-';
-        insertedRows.getCell('E').numFmt =
+        subtaskRow.getCell('D').numFmt =
           '_-"S/"* #,##0.00_-;-"S/"* #,##0.00_-;_-"S/"* "-"??_-;_-@_-';
-        insertedRows.getCell('G').numFmt = '0%';
-        insertedRows.getCell('H').numFmt = '0%';
-        insertedRows.getCell('I').numFmt = '0%';
+        subtaskRow.getCell('G').numFmt = '0%';
+        subtaskRow.getCell('H').numFmt = '0%';
         rowNumber++;
       });
     });
     const endLine = rowNumber;
 
-    // const sumTotalCell = 'G' + (endLine + 1);
-    // wk.getCell(sumTotalCell).value = {
-    //   formula: `SUM(G12:G${endLine})`,
-    //   date1904: false,
-    // };
-    // wk.getCell('X3').value = {
-    //   formula: `=ROUND(${sumTotalCell}*0.3, 0)`,
-    //   date1904: false,
-    // };
-    wk.mergeCells(`I${endLine + 10}:J${endLine + 10}`);
-    wk.mergeCells(`I${endLine + 11}:J${endLine + 11}`);
-    const dniFinishcell = wk.getCell(`I${endLine + 10}`);
+    const sumTotalCell = 'I' + (endLine + 2);
+    wk.getCell(sumTotalCell).value = {
+      formula: `SUM(I28:G${endLine})`,
+      date1904: false,
+    };
+    const salaryAdvanceCell = 'I' + (endLine + 3);
+    wk.getCell(salaryAdvanceCell).value = {
+      formula: `${sumTotalCell}*30/100`,
+      date1904: false,
+    };
+    wk.getCell('I' + (endLine + 6)).value = {
+      formula: `${salaryAdvanceCell}-I${endLine + 4}-I${endLine + 5}`,
+      date1904: false,
+    };
+    wk.getCell(`I${endLine + 7}`).value = {
+      formula: `${sumTotalCell}-${salaryAdvanceCell}`,
+      date1904: false,
+    };
+    wk.getCell('H18').value = {
+      formula: `=${salaryAdvanceCell}`,
+      date1904: false,
+    };
+    wk.mergeCells(`H${endLine + 10}:I${endLine + 10}`);
+    wk.mergeCells(`H${endLine + 11}:I${endLine + 11}`);
+    const dniFinishcell = wk.getCell(`H${endLine + 10}`);
     dniFinishcell.value = 'DNI: ' + dni;
     dniFinishcell.font = {
       bold: true,
@@ -195,14 +249,14 @@ const ListPersonalTask = () => {
       top: { style: 'medium' },
     };
     dniFinishcell.alignment = { vertical: 'middle', horizontal: 'center' };
-    const fullNameCell = wk.getCell(`I${endLine + 11}`);
+    const fullNameCell = wk.getCell(`H${endLine + 11}`);
     fullNameCell.value = firstName + ' ' + lastName;
     fullNameCell.alignment = {
       vertical: 'middle',
       horizontal: 'center',
     };
 
-    wk.pageSetup.printArea = 'A1:L' + (endLine + 13);
+    wk.pageSetup.printArea = 'A1:K' + (endLine + 13);
 
     // Guardar los cambios en un nuevo archivo o en la misma plantilla
     const editedBuffer = await workbook.xlsx.writeBuffer();

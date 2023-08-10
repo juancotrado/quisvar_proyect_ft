@@ -10,9 +10,10 @@ import { RootState } from '../../store';
 import SelectOptions from '../../components/shared/select/Select';
 import Button from '../../components/shared/button/Button';
 import * as ExcelJS from 'exceljs';
-import { Input } from '../../components';
+import { CardGenerateReport, Input } from '../../components';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import formatDate, { getTimeOut, parseUTC } from '../../utils/formatDate';
+import { isOpenModal$ } from '../../services/sharingSubject';
 
 const spring = {
   type: 'spring',
@@ -29,14 +30,14 @@ type Options = { id: number; name: string };
 
 const ListPersonalTask = () => {
   const [isOn, setIsOn] = useState(false);
-  // const [dateRange, setDateRange] = useState<DateRange | null>(null);
+  //const [dateRange, setDateRange] = useState<DateRange | null>(null);
   const { userSession } = useSelector((state: RootState) => state);
   const [specialities, setSpecialities] = useState<Options[] | null>(null);
   const [projects, setProjects] = useState<Options[]>();
   const { id } = userSession;
   const [subTask, setSubTask] = useState<SubtaskIncludes[] | null>(null);
 
-  const { register, handleSubmit } = useForm<DateRange>();
+  //const { register, handleSubmit } = useForm<DateRange>();
 
   useEffect(() => {
     axiosInstance.get(`/users/${id}/subTasks`).then(res => {
@@ -270,7 +271,9 @@ const ListPersonalTask = () => {
     a.click();
     URL.revokeObjectURL(editedUrl);
   };
-
+  const showModal = () => {
+    isOpenModal$.setSubject = true;
+  };
   return (
     <div className="my-container-list ">
       <div className="my-title-list">
@@ -331,27 +334,30 @@ const ListPersonalTask = () => {
               ))}
         </div>
       </div>
-      <div>
+      <div className="generate-report">
         {isOn && (
-          <div>
-            <form onSubmit={handleSubmit(onSubmitDateRange)}>
-              <Input
-                type="date"
-                {...register('initial')}
-                name="initial"
-                label="Inicio"
-              ></Input>
-              <Input
-                type="date"
-                {...register('until')}
-                name="until"
-                label="Fin"
-              ></Input>
-              <Button text="Generar Reporte" />
-            </form>
-          </div>
+          // <CardGenerateReport />
+          <Button onClick={showModal} text="Generar Reporte" />
+          // <div>
+          //   <form onSubmit={handleSubmit(onSubmitDateRange)}>
+          //     <Input
+          //       type="date"
+          //       {...register('initial')}
+          //       name="initial"
+          //       label="Inicio"
+          //     ></Input>
+          //     <Input
+          //       type="date"
+          //       {...register('until')}
+          //       name="until"
+          //       label="Fin"
+          //     ></Input>
+          //     <Button text="Generar Reporte" />
+          //   </form>
+          // </div>
         )}
       </div>
+      <CardGenerateReport />
     </div>
   );
 };

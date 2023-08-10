@@ -7,6 +7,7 @@ import formatDate from '../../../../../utils/formatDate';
 import SubtaskChangeStatusBtn from '../../../../subtasks/subtaskChangeStatusBtn/SubtaskChangeStatusBtn';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../store';
+import { Input } from '../../../..';
 
 interface CardSubtaskDone {
   subTask: SubTask;
@@ -48,6 +49,30 @@ const CardSubtaskDone = ({ subTask }: CardSubtaskDone) => {
           <h2 className={'cardSubtaskProcess-info-price'}>
             Precio: S/. {subTask.price}
           </h2>
+          <div className="cardSubtaskProcess-porcentage-container-main">
+            <h4>Lista de porcentaje de avance:</h4>
+            {subTask.users.map((user, index) => (
+              <div
+                key={user.user.id}
+                className="cardSubtaskProcess-porcentage-container"
+              >
+                <span className="cardSubtaskProcess-porcentage-user">
+                  {index + 1}
+                  {')'} {user.user.profile.firstName}{' '}
+                  {user.user.profile.lastName}
+                </span>
+                <div className="cardSubtaskProcess-porcentage-input">
+                  <Input
+                    name={String(user.user.id)}
+                    defaultValue={user.percentage}
+                    className="input-percentage-value"
+                    readOnly={true}
+                  />
+                  %
+                </div>
+              </div>
+            ))}
+          </div>
           <div className="cardSubtaskDone-files-models">
             <h2 className="cardSubtaskDone-files-models-title">
               Archivos Modelo:

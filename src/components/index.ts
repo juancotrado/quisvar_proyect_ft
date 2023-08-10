@@ -20,6 +20,7 @@ import CardSubtaskDone from './shared/card/cardSubtaskStatus/cardSubtaskDone/Car
 import CardSubtaskHold from './shared/card/cardSubtaskStatus/cardSubtaskHold/CardSubtaskHold';
 import CardSubtaskProcess from './shared/card/cardSubtaskStatus/cardSubTaskProcess/CardSubtaskProcess';
 import TaskCounter from './shared/taskCounter/TaskCounter';
+import CardGenerateReport from './shared/card/cardGenerateReport/CardGenerateReport';
 
 export {
   Alert,
@@ -33,6 +34,7 @@ export {
   CardRegisterProject,
   CardEditUser,
   CardEditInformation,
+  CardGenerateReport,
   CardSubtaskHold,
   CardSubtaskProcess,
   CardSubtaskDone,

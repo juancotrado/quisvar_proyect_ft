@@ -14,7 +14,24 @@ export interface TypeSpecialities {
     projects: number;
   };
 }
+export interface ReportForm {
+  initialDate: string;
+  untilDate: string;
+  manager: string;
+  concept: string;
+  charge: string;
+  remote: string;
+  title: string;
+  advancePorcentage: string;
+}
 
+export interface ExcelData extends ReportForm {
+  firstName: string;
+  lastName: string;
+  dni: string;
+  phone: string;
+  totalDays: number;
+}
 export interface DataSidebarSpeciality {
   id: number;
   name: string;

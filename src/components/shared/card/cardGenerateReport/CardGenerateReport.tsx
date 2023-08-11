@@ -8,23 +8,57 @@ import {
   validateCorrectTyping,
   validateWhiteSpace,
 } from '../../../../utils/customValidatesForm';
+import formatDate, { getTimeOut } from '../../../../utils/formatDate';
+import { axiosInstance } from '../../../../services/axiosInstance';
+import { ReportForm } from '../../../../types/types';
+import { excelReport } from '../../../../utils/generateExcel';
+import { RootState } from '../../../../store';
+import { useSelector } from 'react-redux';
 
 const CardGenerateReport = () => {
+  const { userSession } = useSelector((state: RootState) => state);
+
   const {
     handleSubmit,
     register,
-    // setValue,
     reset,
     formState: { errors },
-  } = useForm();
+  } = useForm<ReportForm>();
 
   const showModal = () => {
     reset({});
     isOpenModal$.setSubject = false;
   };
-  const onSubmit: SubmitHandler<any> = values => {
-    reset();
-    console.log(values);
+  const onSubmit: SubmitHandler<ReportForm> = data => {
+    const { firstName, lastName, dni, phone } = userSession.profile;
+    const initialDate = formatDate(new Date(data.initialDate), {
+      day: 'numeric',
+      weekday: 'long',
+      month: 'long',
+      year: 'numeric',
+    });
+    const untilDate = formatDate(new Date(data.untilDate), {
+      day: 'numeric',
+      weekday: 'long',
+      month: 'long',
+      year: 'numeric',
+    });
+    const totalDays = getTimeOut(data.initialDate, data.untilDate) / 24;
+    const infoData = {
+      ...data,
+      initialDate,
+      untilDate,
+      firstName,
+      lastName,
+      dni,
+      phone,
+      totalDays,
+    };
+    axiosInstance
+      .get(
+        `/reports/user/?initial=${data.initialDate}&until=${data.untilDate}&status=DONE`
+      )
+      .then(res => excelReport(res.data, infoData));
   };
   return (
     <Modal size={50}>
@@ -40,8 +74,8 @@ const CardGenerateReport = () => {
         <div className="col-input">
           <Input
             label="Fecha Inicio:"
-            {...register('startDate')}
-            name="startDate"
+            {...register('initialDate')}
+            name="initialDate"
             type="date"
           />
           <Input
@@ -62,17 +96,7 @@ const CardGenerateReport = () => {
           placeholder="Nombre del gerente"
           errors={errors}
         />
-        <Input
-          label="Usuario asignado:"
-          {...register('user', {
-            required: 'Este campo es obligatorio',
-            validate: { validateWhiteSpace, validateCorrectTyping },
-          })}
-          name="user"
-          type="text"
-          placeholder="Nombre del usuario"
-          errors={errors}
-        />
+
         <Input
           label="Concepto:"
           {...register('concept', {
@@ -109,11 +133,11 @@ const CardGenerateReport = () => {
           />
           <Input
             label="Porcentaje:"
-            {...register('percentage', {
+            {...register('advancePorcentage', {
               required: 'Este campo es obligatorio',
               validate: { validateWhiteSpace, validateCorrectTyping },
             })}
-            name="percentage"
+            name="advancePorcentage"
             type="number"
             placeholder="Nombre Corto "
             errors={errors}

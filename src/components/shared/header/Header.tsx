@@ -58,7 +58,7 @@ const Header = () => {
 
   const itemsAdmin = [
     { id: 1, title: 'Inicio', link: '/home' },
-    { id: 2, title: 'Reportes', link: '/reportes' },
+    { id: 2, title: 'Reportes', link: '/mis-tareas' },
     { id: 3, title: 'Especialidades', link: '/especialidades' },
   ];
   const itemsEmployee = [

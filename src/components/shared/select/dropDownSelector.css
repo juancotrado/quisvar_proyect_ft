@@ -1,6 +1,6 @@
 .dropdown-selector-container-main {
   width: 100%;
-  min-width: 10rem;
+  min-width: 9rem;
   height: fit-content;
 }
 .dropdown-span {
@@ -16,13 +16,12 @@
 
 .dropdown-selector-input-container {
   color: #fff;
-  font-size: 0.9rem;
+  font-size: 0.75rem;
   background-color: var(--color-secondary);
   display: flex;
   cursor: pointer;
   justify-content: space-between;
   padding: 0.3rem;
-  gap: 0.5rem;
   align-items: center;
   width: 100%;
   height: 100%;

@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import './projectCard.css';
 import { motion } from 'framer-motion';
 import Button from '../../shared/button/Button';
-import { _date } from '../../../utils/formatDate';
+// import { _date } from '../../../utils/formatDate';
 import { Option, ProjectType } from '../../../types/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
@@ -86,41 +86,34 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
   };
   return (
     <div className="project-card">
-      <figure className="project-card-figure">
-        <img src="/svg/project_icon.svg" alt="" />
-      </figure>
-      <div className="project-card-main">
-        <div className="projec-card-header">
-          <h3 className="project-card-subtitle">NOMBRE: {project.name}</h3>
-          <div className="project-card-option">
-            <p className="project-card-date">{`Fecha Límite: ${_date(
-              project.untilDate
-            )}`}</p>
-            {role !== 'EMPLOYEE' && (
-              <DotsOption data={optionsData} persist={true} />
-            )}
-          </div>
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <h4 className="project-card-cordinator">
-            {/* COORDINADOR: {profile.firstName} {profile.lastName} */}
-            DESCRIPCION: {project.description}
-          </h4>
+      <div className="project-card-info-main">
+        <figure className="project-card-figure">
+          <img src="/svg/project_icon.svg" alt="project_icon" />
+        </figure>
+        <div>
           <p className="project-card-description">
             CUI: {project.CUI ? project.CUI : '123456'}
-            {/* {' '}
-            {project.name
-              ? project.name
-              : 'CREACION DEL SERVICIO DE PRÁCTICA DEPORTIVA Y/O RECREATIVA EN LA COMUNIDAD CAMPESINA DE KALAHUALA DISTRITO DE ASILLO DE LA PROVINCIA DE AZANGARO DEL DEPARTAMENTO DE PUNO.'} */}
           </p>
+          <h3 className="project-card-cordinator">Nombre: {project.name}</h3>
         </div>
+      </div>
+      <div className="project-card-date">
+        <p className="project-card-cordinator">
+          <b>Descripción:</b> {project.description}
+        </p>
+        <p>
+          <b>Ubicacion:</b> {project.department} / {project.province} /{' '}
+          {project.district}
+        </p>
+      </div>
+      <div className="project-card-footer-option">
         <div className="project-card-footer">
           {project.unique ? (
             <div className="project-card-footer-area">
               {project.areas.map(area => (
                 <Button
                   key={area.id}
-                  text="Ver más"
+                  text="Ver única Área"
                   className="project-btn-view"
                   onClick={() => navigate(`/tareas/${area.id}`)}
                 />
@@ -142,10 +135,6 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
               />
             </div>
           )}
-          <div className="project-aditional-info">
-            {project.location && <h4>Ubicacion: {project.location}</h4>}
-            {/* <h4>Descripcion: {project.description}</h4> */}
-          </div>
           {isAlertOpen && (
             <Portal wrapperId="modal">
               <div
@@ -179,6 +168,11 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
                 </motion.div>
               </div>
             </Portal>
+          )}
+        </div>
+        <div className="project-card-option">
+          {role !== 'EMPLOYEE' && (
+            <DotsOption data={optionsData} persist={true} />
           )}
         </div>
       </div>

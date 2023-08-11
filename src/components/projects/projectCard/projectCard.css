@@ -1,16 +1,24 @@
 .project-card {
   width: 100%;
-  height: 7rem;
-  background-color: white;
-  display: flex;
+  /* display: flex; */
+  justify-content: space-between;
+  height: fit-content;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   align-items: center;
-  gap: 2rem;
-  padding: 0 2rem;
+  padding: 0.3rem 1rem;
   border-radius: 0.5rem;
 }
 
 .project-card-figure {
-  width: 3rem;
+  width: 1.5rem;
+}
+
+.project-card-info-main {
+  display: flex;
+  grid-column: span 2 / span 2;
+  /* width: 40%; */
+  gap: 1rem;
 }
 
 .project-card-main {
@@ -23,6 +31,7 @@
   display: flex;
   justify-content: space-between;
 }
+
 .project-aditional-info {
   display: flex;
   flex-direction: column;
@@ -33,6 +42,7 @@
   height: 60px;
   overflow-y: auto;
 }
+
 .project-card-subtitle {
   color: var(--color-secondary);
   font-size: 1rem;
@@ -42,9 +52,17 @@
 }
 
 .project-card-date {
-  color: var(--color-primary);
-  font-size: 0.9rem;
+  color: var(--color-secondary);
+  font-size: 0.7rem;
+  width: 90%;
+  grid-column: span 2 / span 2;
   font-weight: 600;
+}
+
+.project-card-footer-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .project-card-cordinator {
@@ -53,35 +71,42 @@
   overflow: hidden;
   text-overflow: ellipsis;
   display: -webkit-box;
-  -webkit-line-clamp: 1; /* Número máximo de líneas */
+  -webkit-line-clamp: 1;
+  /* Número máximo de líneas */
   -webkit-box-orient: vertical;
-  max-height: 1rem;
-  width: 50%;
+  max-height: 1.3rem;
+  width: 100%;
 }
 
 .project-card-description {
   color: var(--color-primary);
   font-weight: 800;
-  font-size: 1rem;
+  font-size: 0.8rem;
 }
 
 .project-card-footer {
   display: flex;
+  grid-column: span 1 / span 1;
   justify-content: space-between;
 }
+
 .project-btn-view {
   background-color: var(--color-primary);
   color: white;
-  padding: 0.1rem;
+  font-weight: 500;
+  padding: 0.25rem;
 }
+
 .project-card-footer-area {
   display: flex;
   padding: 0.2rem;
+  width: 100%;
   gap: 0.5rem;
   flex-wrap: wrap;
   align-items: center;
   font-size: 0.75rem;
 }
+
 .area-btn-add {
   font-size: 0.8rem;
   font-weight: 700;
@@ -92,9 +117,11 @@
   transition: ease 0.4s;
   border: none;
 }
+
 .project-btn-container {
   position: relative;
 }
+
 .btn-delete-area {
   position: absolute;
   top: -0.5rem;
@@ -108,6 +135,7 @@
   border: 1px solid gray;
   transition: 0.3s ease;
 }
+
 .btn-delete-area:hover {
   scale: 1.1;
   transform: rotate(-90deg);
@@ -116,6 +144,7 @@
 .btn-delete-area:active {
   scale: 0.9;
 }
+
 .project-btn-footer {
   font-size: 0.7rem;
   font-weight: 600;
@@ -140,8 +169,8 @@
 
 .project-card-option {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: end;
+  align-items: end;
   gap: 0.5rem;
 }
 
@@ -150,9 +179,11 @@
   border: 0px;
   border-radius: 50%;
 }
+
 .project-size-img {
   width: 0.9rem;
 }
+
 .project-delete-icon {
   font-size: 0.5rem;
   background-color: var(--color-unresolved);
@@ -179,13 +210,16 @@
 .form-add-area button {
   border-radius: 0 0.5rem 0.5rem 0;
 }
+
 .form-input-area {
   height: 1.8rem;
   background-color: transparent;
 }
+
 .btn-red {
   background-color: #f56565;
 }
+
 .btn-red:hover {
   background-color: var(--color-unresolved);
 }

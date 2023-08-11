@@ -75,6 +75,11 @@ const MyTaskCard = ({ subTask }: TaskCardProps) => {
             }
           />
         </span>
+        <span>
+          {subTask.item} {subTask.name}
+        </span>
+        <span>S/.{subTask.price}</span>
+        <h3>Fecha: {`${subTask.createdAt && _date(subTask.createdAt)}`}</h3>
         <span
           className={`task-text ${
             subTask.status === 'DONE'
@@ -89,16 +94,6 @@ const MyTaskCard = ({ subTask }: TaskCardProps) => {
           {subTask.status === 'INREVIEW' && 'POR REVISAR'}
           {subTask.status === 'DONE' && 'HECHO'}
         </span>
-        <div className="task-header">
-          <div>
-            <span>{subTask.item}</span>
-            <h2>{subTask.name}</h2>
-          </div>
-          <span>S/.{subTask.price}</span>
-        </div>
-      </div>
-      <div className="footer-my-task">
-        <h3>Fecha: {`${subTask.createdAt && _date(subTask.createdAt)}`}</h3>
         <span onClick={handleNavigate}>
           <b>Ver más</b>
         </span>

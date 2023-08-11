@@ -86,7 +86,7 @@ const CardGenerateReport = () => {
           />
         </div>
         <Input
-          label="Gerente de estudios:"
+          label="Coordinador de proyecto:"
           {...register('manager', {
             required: 'Este campo es obligatorio',
             validate: { validateWhiteSpace, validateCorrectTyping },
@@ -147,7 +147,7 @@ const CardGenerateReport = () => {
           label="Titulo del Informe:"
           {...register('title', {
             required: 'Este campo es obligatorio',
-            validate: { validateWhiteSpace, validateCorrectTyping },
+            validate: { validateWhiteSpace },
           })}
           name="title"
           placeholder="Titulo del proyecto"

@@ -23,11 +23,13 @@ import { RootState } from '../../../../store';
 interface CardTaskInformationProps {
   subTask: SubTask;
   openModalEdit: () => void;
+  adminId: number | undefined;
 }
 
 const CardTaskInformation = ({
   subTask,
   openModalEdit,
+  adminId,
 }: CardTaskInformationProps) => {
   const socket = useContext(SocketContext);
   const { modAuth } = useSelector((state: RootState) => state);
@@ -104,7 +106,9 @@ const CardTaskInformation = ({
       {status === 'UNRESOLVED' && <CardSubtaskHold subTask={subTask} />}
       {(status === 'PROCESS' ||
         status === 'INREVIEW' ||
-        status === 'DENIED') && <CardSubtaskProcess subTask={subTask} />}
+        status === 'DENIED') && (
+        <CardSubtaskProcess subTask={subTask} adminId={adminId} />
+      )}
       {(status === 'DONE' || status === 'LIQUIDATION') && (
         <CardSubtaskDone subTask={subTask} />
       )}

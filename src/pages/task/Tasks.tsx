@@ -236,6 +236,7 @@ const Tasks = () => {
             subTask={subTask}
             taskId={taskId}
             typeTask={typeTask}
+            adminId={workArea?.userId}
           />
         }
       </div>

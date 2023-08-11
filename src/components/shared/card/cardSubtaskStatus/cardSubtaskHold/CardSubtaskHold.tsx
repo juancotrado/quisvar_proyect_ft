@@ -30,7 +30,7 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
   const [addBtn, setAddBtn] = useState(false);
   const [usersData, setUsersData] = useState<DataUser[]>([]);
 
-  const { users } = useListUsers(['EMPLOYEE']);
+  const { users } = useListUsers();
   const { status } = subTask;
   const handleAddUser = (user: DataUser) => {
     setAddBtn(true);

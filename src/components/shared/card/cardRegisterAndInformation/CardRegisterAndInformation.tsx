@@ -13,12 +13,14 @@ interface CardRegisterAndInformationProps {
   subTask: SubTask;
   taskId: number | null;
   typeTask?: TypeTask;
+  adminId: number | undefined;
 }
 
 const CardRegisterAndInformation = ({
   subTask,
   taskId,
   typeTask,
+  adminId,
 }: CardRegisterAndInformationProps) => {
   const [isTaskInformation, setIsTaskInformation] = useState<boolean>(true);
   const [subTaskToEdit, setSubTaskToEdit] = useState<SubTask | null>(null);
@@ -45,7 +47,11 @@ const CardRegisterAndInformation = ({
   return (
     <Modal size={50}>
       {isTaskInformation ? (
-        <CardTaskInformation subTask={subTask} openModalEdit={openModalEdit} />
+        <CardTaskInformation
+          subTask={subTask}
+          openModalEdit={openModalEdit}
+          adminId={adminId}
+        />
       ) : (
         <CardRegisterSubTask
           subTask={subTaskToEdit}

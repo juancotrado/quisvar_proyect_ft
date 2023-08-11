@@ -18,9 +18,10 @@ import SubtasksShippingHistory from '../../../../subtasks/subtasksShippingHistor
 import formatDate from '../../../../../utils/formatDate';
 interface CardSubtaskProcess {
   subTask: SubTask;
+  adminId: number | undefined;
 }
 
-const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
+const CardSubtaskProcess = ({ subTask, adminId }: CardSubtaskProcess) => {
   const socket = useContext(SocketContext);
   const { userSession, modAuth: isAuthorizedMod } = useSelector(
     (state: RootState) => state
@@ -145,6 +146,7 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
         )}
         {status === 'PROCESS' &&
           isAuthorizedMod &&
+          adminId !== subTask.users[0].user.id &&
           subTask.feedBacks.length === 0 && (
             <div className="waiting-screen">
               <motion.img
@@ -184,7 +186,12 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
                 subtaskId={subTask.id}
                 subtaskStatus={status}
                 type="sendToReview"
-                text="Mandar a Revisar"
+                text={
+                  adminId === subTask.users[0].user.id
+                    ? 'Enviar'
+                    : 'Mandar a Revisar'
+                }
+                isAssignedAdminTask={adminId === subTask.users[0].user.id}
                 files={files}
                 porcentagesForUser={Object.values(porcetageForUser)}
               />

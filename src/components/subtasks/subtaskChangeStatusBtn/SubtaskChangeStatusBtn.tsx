@@ -11,6 +11,7 @@ import './subtaskChangeStatusBtn.css';
 import { DataFeedback, StatusType } from '../../../types/types';
 
 interface SubtaskChangeStatusBtn {
+  isAssignedAdminTask?: boolean;
   subtaskStatus: StatusType;
   subtaskId: number;
   className?: string;
@@ -31,6 +32,7 @@ const SubtaskChangeStatusBtn = ({
   dataFeedback,
   className,
   files,
+  isAssignedAdminTask,
   porcentagesForUser,
 }: SubtaskChangeStatusBtn) => {
   const { userSession } = useSelector((state: RootState) => state);
@@ -47,11 +49,20 @@ const SubtaskChangeStatusBtn = ({
   const handleEditStatus = async () => {
     const role = userSession.role === 'EMPLOYEE' ? 'EMPLOYEE' : 'SUPERADMIN';
     const body = getStatus(option, role, subtaskStatus);
-    const resStatus = await axiosInstance.patch(
-      `/subtasks/status/${subtaskId}`,
-      body
-    );
-    socket.emit('client:update-subTask', resStatus.data);
+    if (isAssignedAdminTask) {
+      const resStatus = await axiosInstance.patch(
+        `/subtasks/status/${subtaskId}`,
+        { status: 'DONE' }
+      );
+      socket.emit('client:update-subTask', resStatus.data);
+    } else {
+      const resStatus = await axiosInstance.patch(
+        `/subtasks/status/${subtaskId}`,
+        body
+      );
+      socket.emit('client:update-subTask', resStatus.data);
+    }
+
     isOpenModal$.setSubject = false;
   };
 
@@ -74,10 +85,12 @@ const SubtaskChangeStatusBtn = ({
     for (const file of files) {
       formdata.append('files', file);
     }
+
     await axiosInstance.post(
       `/files/uploads/${subtaskId}/?status=REVIEW`,
       formdata
     );
+
     const feedbackBody = {
       subTasksId: subtaskId,
     };

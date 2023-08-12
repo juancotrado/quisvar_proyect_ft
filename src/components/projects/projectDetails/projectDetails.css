@@ -1,0 +1,49 @@
+.project-details-container {
+  width: 100%;
+  grid-column: span 6 / span 6;
+  display: flex;
+  flex-direction: column;
+  padding: 0.3rem 0;
+  font-size: 0.7rem;
+  font-weight: 500;
+  border-radius: var(--radius-input);
+  background-color: var(--color-menu);
+}
+
+.project-grid-title {
+  display: grid;
+  background-color: var(--color-secondary);
+  color: #fff;
+  font-weight: 600;
+  padding: 0.3rem;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+}
+
+.project-grid-area {
+  background-color: #fff;
+}
+
+.project-grid-title li {
+  text-align: center;
+  width: 100%;
+}
+
+.project-grid-container {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+}
+
+.project-grid-container li {
+  text-align: center;
+  width: 100%;
+}
+
+.project-grid-col-span-2 {
+  grid-column: span 2 / span 2;
+  width: 100%;
+}
+
+.project-grid-col-span-total {
+  grid-column: span 8 / span 8;
+  width: 100%;
+}

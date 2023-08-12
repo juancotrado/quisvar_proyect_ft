@@ -21,6 +21,11 @@
   gap: 1rem;
 }
 
+.projec-card-see-more {
+  color: var(--color-unresolved);
+  font-weight: bold;
+}
+
 .project-card-main {
   display: flex;
   width: 100%;

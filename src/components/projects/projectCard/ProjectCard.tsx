@@ -13,6 +13,7 @@ import DotsOption from '../../shared/dots/DotsOption';
 import Portal from '../../portal/Portal';
 import { dropIn } from '../../../animations/animations';
 import useArchiver from '../../../hooks/useArchiver';
+import ProjectDetails from '../projectDetails/ProjectDetails';
 
 interface ProjectCardProps {
   editProject: (value: ProjectType) => void;
@@ -22,6 +23,7 @@ interface ProjectCardProps {
 
 const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
   const { userSession } = useSelector((state: RootState) => state);
+  const [projectId, setProjectId] = useState<number | null>(null);
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const role = userSession?.role ? userSession.role : 'EMPLOYEE';
   const { handleArchiver } = useArchiver(project.id, 'projects');
@@ -105,6 +107,23 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
           <b>Ubicacion:</b> {project.department} / {project.province} /{' '}
           {project.district}
         </p>
+        {projectId ? (
+          <button
+            className="projec-card-see-more"
+            type="button"
+            onClick={() => setProjectId(null)}
+          >
+            Ver menos
+          </button>
+        ) : (
+          <button
+            className="projec-card-see-more"
+            type="button"
+            onClick={() => setProjectId(project.id)}
+          >
+            Ver más detalles
+          </button>
+        )}
       </div>
       <div className="project-card-footer-option">
         <div className="project-card-footer">
@@ -176,6 +195,7 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
           )}
         </div>
       </div>
+      {projectId && <ProjectDetails projectId={projectId} />}
     </div>
   );
 };

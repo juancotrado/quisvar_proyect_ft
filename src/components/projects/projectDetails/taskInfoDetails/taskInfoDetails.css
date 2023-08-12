@@ -1,0 +1,47 @@
+.task-info-details-container {
+  display: grid;
+  font-size: 0.65rem;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.task-info-details-container li {
+  padding: 0.1rem 0;
+  border: 1px solid var(--color-menu);
+}
+
+.task-info-details-unresolved {
+  color: #fff;
+
+  background-color: var(--color-unresolved);
+}
+
+.task-info-details-process {
+  background-color: var(--color-process);
+}
+
+.task-info-details-inreview {
+  background-color: #fa7c27;
+}
+
+.task-info-details-done {
+  background-color: var(--color-done);
+}
+
+.task-info-details-denied {
+  background-color: #00319b;
+  color: #fff;
+}
+
+.task-info-details-liquidation {
+  background-color: #015c24;
+  color: #fff;
+}
+
+.col-span-3 {
+  grid-column: span 3 / span 3;
+  width: 100%;
+  text-transform: uppercase;
+  padding: 0.2rem;
+  color: #fff;
+  background-color: var(--color-primary);
+}

@@ -1,0 +1,12 @@
+.template-details-grid-col-span-2 {
+  grid-column: span 2 / span 2;
+  width: 100%;
+}
+
+.template-detail-name {
+  overflow-x: hidden;
+  text-align: left;
+  width: 100%;
+  display: flex;
+  align-items: start;
+}

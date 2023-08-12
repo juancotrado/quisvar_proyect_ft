@@ -433,6 +433,48 @@ export type ExpertType = {
   pdf?: string;
 };
 
+export interface ProjectDetailsPrice extends DetailsPrice {
+  areas: AreaDetailsPrice[];
+}
+
+export interface AreaDetailsPrice extends DetailsPrice {
+  item: string;
+  indexTasks: IndexTasksDetailsPrice[];
+}
+export interface IndexTasksDetailsPrice extends DetailsPrice {
+  item: string;
+  tasks: TasksDetailsPrice[];
+}
+export interface TasksDetailsPrice extends DetailsPrice {
+  item: string;
+  tasks_2: Tasks_lvl_2DetailsPrice[];
+}
+export interface Tasks_lvl_2DetailsPrice extends DetailsPrice {
+  item: string;
+  tasks_3: Tasks_lvl_3DetailsPrice[];
+}
+export interface Tasks_lvl_3DetailsPrice extends DetailsPrice {
+  item: string;
+}
+interface DetailsPrice {
+  balance: number;
+  item?: string;
+  id: number;
+  name: string;
+  price: number;
+  spending: number;
+  taskInfo: TypeTaskInfoDetails;
+}
+
+export type TypeTaskInfoDetails = {
+  DENIED: number;
+  DONE: number;
+  INREVIEW: number;
+  LIQUIDATION: number;
+  PROCESS: number;
+  TOTAL: number;
+  UNRESOLVED: number;
+};
 export type CompanyForm = Omit<CompanyType, 'id'>;
 export type ConsortiumForm = Omit<ConsortiumType, 'id'>;
 export type ExpertForm = Omit<ExpertType, 'id'>;

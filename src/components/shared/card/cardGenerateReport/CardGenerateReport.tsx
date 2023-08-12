@@ -93,7 +93,7 @@ const CardGenerateReport = () => {
           })}
           name="manager"
           type="text"
-          placeholder="Nombre del gerente"
+          placeholder="Nombre del coordinador"
           errors={errors}
         />
 
@@ -139,7 +139,7 @@ const CardGenerateReport = () => {
             })}
             name="advancePorcentage"
             type="number"
-            placeholder="Nombre Corto "
+            placeholder="%"
             errors={errors}
           />
         </div>
@@ -150,7 +150,7 @@ const CardGenerateReport = () => {
             validate: { validateWhiteSpace },
           })}
           name="title"
-          placeholder="Titulo del proyecto"
+          placeholder="Titulo del Informe"
           errors={errors}
         />
         <Button type="submit" text="Generar" className="send-button" />

@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { DataFeedback, Feedback, Profile } from '../../../types/types';
 import { motion } from 'framer-motion';
-import formatDate from '../../../utils/formatDate';
 import { TextArea } from '../..';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
@@ -29,24 +28,19 @@ const SubtaskInfoHistory = ({
     const { firstName, lastName } = profile;
     return firstName + ' ' + lastName;
   };
-
   const getDatetimeCreated = (dateTime: string) => {
-    const date = formatDate(new Date(dateTime), {
-      day: 'numeric',
+    const date = new Date(dateTime);
+    const options: Intl.DateTimeFormatOptions = {
       weekday: 'long',
-      month: 'long',
       year: 'numeric',
-    });
-    const time = formatDate(new Date(dateTime), {
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-      hour12: true,
-    });
+      month: 'long',
+      day: 'numeric',
+    };
+    const localeDate = date.toLocaleDateString('es-PE', options);
+    const localeTime = date.toLocaleTimeString('en-US');
 
-    return ` ${date} a las ${time}`;
+    return ` ${localeDate} a las ${localeTime}`;
   };
-
   return (
     <div className={`SubtaskInfoHistory-review-card ${className}`}>
       <motion.h3

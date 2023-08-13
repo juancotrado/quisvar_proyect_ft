@@ -227,7 +227,7 @@ export interface SubTask {
   feedBacks: feedBacks[];
   percentage: number;
   description: string;
-  untilDate: string;
+  untilDate?: string;
   price: string;
   hours: number;
   files: Files[];
@@ -238,7 +238,7 @@ export interface SubTask {
   task_2_Id: number;
   task_3_Id: number;
   users: Users[];
-  assignedAt: string;
+  assignedAt?: string;
   createdAt?: Date;
 }
 export interface Feedback {

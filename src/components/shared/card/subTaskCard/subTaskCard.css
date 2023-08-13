@@ -5,7 +5,6 @@
   border-radius: var(--radius-button);
   width: 100%;
   box-shadow: 0px 1.5px 4px rgba(0, 0, 0, 0.2);
-  position: relative;
   border-left: 1.5rem solid var(--color-tertiary);
 }
 

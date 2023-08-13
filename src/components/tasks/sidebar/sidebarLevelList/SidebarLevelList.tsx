@@ -46,24 +46,20 @@ const SidebarLevelList = ({
     const { checked } = target;
     setUnique(checked);
   };
-  const handleForm = async () => {
-    await axiosInstance
-      .patch(`/${type}/${data.id}`, { name, unique })
-      .then(() => {
-        setOpenEditData(false);
-        onSave?.();
-      });
+  const handleForm = () => {
+    axiosInstance.patch(`/${type}/${data.id}`, { name, unique }).then(() => {
+      setOpenEditData(false);
+      onSave?.();
+    });
   };
 
-  const handleDuplicate = async (id: number) => {
+  const handleDuplicate = (id: number) => {
     setOpenEditData(false);
-    await axiosInstance
-      .post(`/duplicates/${type}/${id}`)
-      .then(() => onSave?.());
+    axiosInstance.post(`/duplicates/${type}/${id}`).then(() => onSave?.());
   };
-  const handleDelete = async (id: number) => {
+  const handleDelete = (id: number) => {
     setOpenEditData(false);
-    await axiosInstance.delete(`/${type}/${id}`).then(() => onSave?.());
+    axiosInstance.delete(`/${type}/${id}`).then(() => onSave?.());
   };
 
   const isFirstLevel = type === 'indextasks';

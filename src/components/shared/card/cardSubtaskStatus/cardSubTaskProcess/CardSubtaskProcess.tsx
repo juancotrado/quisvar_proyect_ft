@@ -32,16 +32,11 @@ const CardSubtaskProcess = ({ subTask, adminId }: CardSubtaskProcess) => {
   const [porcetageForUser, setPorcetageForUser] = useState({});
 
   useEffect(() => {
-    let porcetageValue = {};
-    subTask.users.map(user => {
-      const { id } = user.user;
-      const { percentage } = user;
-      porcetageValue = {
-        ...porcetageValue,
-        ['user' + id]: { userId: id, percentage },
-      };
-    });
-    setPorcetageForUser(porcetageValue);
+    const porcentageForUser = subTask.users.map(({ user, percentage }) => [
+      'user' + user.id,
+      { userId: user.id, percentage },
+    ]);
+    setPorcetageForUser(Object.fromEntries(porcentageForUser));
   }, [subTask.users]);
 
   const addFiles = (newFiles: File[]) => {

@@ -76,7 +76,6 @@ const excelReport = async (data: ProjectReport[], infoData: ExcelData) => {
         fgColor: { argb: 'D9E1F2' },
       };
     }
-    projectRow.getCell;
     rowNumber++;
     project.subtasks.forEach(subTask => {
       const subtaskRow = wk.insertRow(rowNumber, [
@@ -84,12 +83,13 @@ const excelReport = async (data: ProjectReport[], infoData: ExcelData) => {
         subTask.item,
         subTask.name.toUpperCase(),
         +subTask.price,
-        parseUTC(subTask.assignedAt),
-        parseUTC(subTask.untilDate),
+        parseUTC(subTask.assignedAt || ''),
+        parseUTC(subTask.untilDate || ''),
         subTask.percentage / 100,
         +infoData.advancePorcentage / 100,
         null,
-        getTimeOut(subTask.assignedAt, subTask.untilDate) + ' Horas',
+        getTimeOut(subTask.assignedAt || '', subTask.untilDate || '') +
+          ' Horas',
       ]);
       subtaskRow.getCell('B').border = {
         left: { style: 'medium' },

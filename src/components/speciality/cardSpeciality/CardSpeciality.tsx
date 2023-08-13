@@ -27,11 +27,7 @@ const CardSpeciality = ({
   const [isEditable, setIsEditable] = useState(false);
   const { handleSubmit, register } = useForm<SpecialityType>();
   const handleProject = () => {
-    if (selected) {
-      onSelect();
-    } else {
-      onSelect();
-    }
+    onSelect();
     getProjects(data.id);
   };
 
@@ -52,7 +48,7 @@ const CardSpeciality = ({
   const optionsData: Option[] = [
     {
       name: isEditable ? 'Cancelar' : 'Editar',
-      type: isEditable ? 'button' : 'button',
+      type: 'button',
       icon: isEditable ? 'close' : 'pencil',
       function: () => {
         setIsEditable(!isEditable);

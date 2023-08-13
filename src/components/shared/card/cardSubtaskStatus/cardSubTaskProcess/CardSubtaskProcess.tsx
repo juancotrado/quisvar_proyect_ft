@@ -65,7 +65,7 @@ const CardSubtaskProcess = ({ subTask, adminId }: CardSubtaskProcess) => {
   };
 
   const isAuthorizedUser = subTask?.users?.some(
-    ({ user }) => user.profile.userId === userSession?.id
+    ({ user }) => user.id === userSession?.id
   );
 
   const areAuthorizedUsers = isAuthorizedMod || isAuthorizedUser;
@@ -89,7 +89,6 @@ const CardSubtaskProcess = ({ subTask, adminId }: CardSubtaskProcess) => {
     });
   };
   const getDataFeedback = (data: DataFeedback) => setDataFeedback(data);
-
   return (
     <div className="cardSubtaskProcess">
       <section className="cardSubtaskProcess-left-details">
@@ -187,6 +186,7 @@ const CardSubtaskProcess = ({ subTask, adminId }: CardSubtaskProcess) => {
                     : 'Mandar a Revisar'
                 }
                 isAssignedAdminTask={adminId === subTask.users[0].user.id}
+                isAuthorizedUser={isAuthorizedUser}
                 files={files}
                 porcentagesForUser={Object.values(porcetageForUser)}
               />

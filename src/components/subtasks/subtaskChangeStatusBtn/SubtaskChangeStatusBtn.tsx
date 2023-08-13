@@ -21,6 +21,7 @@ interface SubtaskChangeStatusBtn {
   porcentagesForUser?: { userid: number; percentage: number }[];
   files?: File[] | null;
   dataFeedback?: DataFeedback | null;
+  isAuthorizedUser?: boolean;
 }
 
 const SubtaskChangeStatusBtn = ({
@@ -34,6 +35,7 @@ const SubtaskChangeStatusBtn = ({
   files,
   isAssignedAdminTask,
   porcentagesForUser,
+  isAuthorizedUser,
 }: SubtaskChangeStatusBtn) => {
   const { userSession } = useSelector((state: RootState) => state);
   const socket = useContext(SocketContext);
@@ -47,7 +49,7 @@ const SubtaskChangeStatusBtn = ({
   };
 
   const handleEditStatus = async () => {
-    const role = userSession.role === 'EMPLOYEE' ? 'EMPLOYEE' : 'SUPERADMIN';
+    const role = isAuthorizedUser ? 'EMPLOYEE' : 'SUPERADMIN';
     const body = getStatus(option, role, subtaskStatus);
     if (isAssignedAdminTask) {
       const resStatus = await axiosInstance.patch(

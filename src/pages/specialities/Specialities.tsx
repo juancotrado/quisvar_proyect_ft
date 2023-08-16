@@ -78,7 +78,7 @@ const Specialities = () => {
             settingSectors={settingSectors}
           />
         )}
-        {groupProject && groupProject.length ? (
+        {groupProject?.length ? (
           <div className="speciality-project-container">
             {typeSpecialityId &&
               groupProject.map(group => (

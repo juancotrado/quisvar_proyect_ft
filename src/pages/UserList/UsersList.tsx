@@ -55,16 +55,15 @@ const UsersList = () => {
           <div className="header-list-edit">EDITAR</div>
         </div>
         <div className="user-container-list">
-          {users &&
-            users.map(user => (
-              <UserInfo
-                key={user.id}
-                user={user}
-                onUpdateStatus={getUsers}
-                onUpdate={() => editUser(user)}
-                onDelete={() => getUsers()}
-              />
-            ))}
+          {users?.map(user => (
+            <UserInfo
+              key={user.id}
+              user={user}
+              onUpdateStatus={getUsers}
+              onUpdate={() => editUser(user)}
+              onDelete={() => getUsers()}
+            />
+          ))}
         </div>
       </div>
       <CardRegisterUser

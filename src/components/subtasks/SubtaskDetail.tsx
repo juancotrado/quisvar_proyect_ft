@@ -59,32 +59,28 @@ const SubtaskDetail = ({ subtask }: SubtaskDetail) => {
           <div className="subtask-details-content">
             <h5>
               {/* area */}
-              {subtask.indexTask && subtask.indexTask.workArea.project.name}
-              {subtask.task && subtask.task.indexTask.workArea.project.name}
-              {subtask.task_lvl_2 &&
-                subtask.task_lvl_2.task.indexTask.workArea.project.name}
-              {subtask.task_lvl_3 &&
-                subtask.task_lvl_3.task_2.task.indexTask.workArea.project.name}
+              {subtask.indexTask?.workArea.project.name}
+              {subtask.task?.indexTask.workArea.project.name}
+              {subtask.task_lvl_2?.task.indexTask.workArea.project.name}
+              {subtask.task_lvl_3?.task_2.task.indexTask.workArea.project.name}
             </h5>
             <span className="subtask-project">
               {/* area */}
-              {subtask.indexTask && subtask.indexTask.workArea.name}
-              {subtask.task && subtask.task.indexTask.workArea.name}
-              {subtask.task_lvl_2 &&
-                subtask.task_lvl_2.task.indexTask.workArea.name}
-              {subtask.task_lvl_3 &&
-                subtask.task_lvl_3.task_2.task.indexTask.workArea.name}
+              {subtask.indexTask?.workArea.name}
+              {subtask.task?.indexTask.workArea.name}
+              {subtask.task_lvl_2?.task.indexTask.workArea.name}
+              {subtask.task_lvl_3?.task_2.task.indexTask.workArea.name}
             </span>
             <h5 className="subtask-project">
               <b>
-                {subtask.indexTask && subtask.indexTask.item}
-                {subtask.task && subtask.task.item}
-                {subtask.task_lvl_2 && subtask.task_lvl_2.item}
-                {subtask.task_lvl_3 && subtask.task_lvl_3.item}{' '}
-                {subtask.indexTask && subtask.indexTask.name}
-                {subtask.task && subtask.task.name}
-                {subtask.task_lvl_2 && subtask.task_lvl_2.name}
-                {subtask.task_lvl_3 && subtask.task_lvl_3.name}
+                {subtask.indexTask?.item}
+                {subtask.task?.item}
+                {subtask.task_lvl_2?.item}
+                {subtask.task_lvl_3?.item}
+                {subtask.indexTask?.name}
+                {subtask.task?.name}
+                {subtask.task_lvl_2?.name}
+                {subtask.task_lvl_3?.name}
               </b>
             </h5>
           </div>

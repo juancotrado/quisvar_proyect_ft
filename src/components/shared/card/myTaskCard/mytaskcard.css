@@ -97,26 +97,6 @@
   font-size: small;
 }
 
-.task-header {
-  display: flex;
-  background-color: red;
-  justify-content: space-between;
-  align-items: center;
-  gap: 0.4rem;
-}
-
-.task-header h2 {
-  font-size: medium;
-}
-
-.task-header span {
-  font-size: small;
-}
-
-.task-header span {
-  font-weight: 600;
-}
-
 .hold {
   color: var(--color-denied);
 }

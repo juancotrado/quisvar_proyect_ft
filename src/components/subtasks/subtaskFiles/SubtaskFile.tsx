@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { URL, axiosInstance } from '../../../services/axiosInstance';
-import { Files } from '../../../types/types';
+import { FileType, Files } from '../../../types/types';
 import { SocketContext } from '../../../context/SocketContex';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
@@ -8,12 +8,21 @@ import './SubtaskFile.css';
 import Button from '../../shared/button/Button';
 interface SubtaskFileProps {
   files: Files[];
-  typeFile?: 'REVIEW' | 'MATERIAL' | 'SUCCESSFUL';
+  typeFile?: FileType;
   showDeleteBtn?: boolean;
   className?: string;
   showDeleteBtnByUserAuth?: boolean;
 }
-
+const statusMapping = {
+  SUCCESSFUL: './uploads',
+  REVIEW: './file_review',
+  MATERIAL: './file_model',
+};
+const statusToValueMapping = {
+  SUCCESSFUL: 'static',
+  REVIEW: 'review',
+  MATERIAL: 'models',
+};
 const SubtaskFile = ({
   files,
   typeFile,
@@ -34,20 +43,10 @@ const SubtaskFile = ({
       .then(res => socket.emit('client:update-subTask', res.data));
   };
 
-  const normalizeUrlFile = (url: string, status: string) => {
+  const normalizeUrlFile = (url: string, status: FileType) => {
     if (!url) return;
-    const valueReplace =
-      status === 'SUCCESSFUL'
-        ? './uploads'
-        : status === 'REVIEW'
-        ? './file_review'
-        : './file_model';
-    const newValueReplace =
-      status === 'SUCCESSFUL'
-        ? 'static'
-        : status === 'REVIEW'
-        ? 'review'
-        : 'models';
+    const valueReplace = statusMapping[status];
+    const newValueReplace = statusToValueMapping[status];
     return url.replace(valueReplace, newValueReplace);
   };
   return (
@@ -68,11 +67,6 @@ const SubtaskFile = ({
               className="subtaskFile-anchor"
               download={true}
             >
-              {/* {file.type !== 'MATERIAL' && (
-                <span className="subtaskFile-username">
-                  {file.user?.profile?.firstName} :
-                </span>
-              )} */}
               <img
                 src="/svg/file-download.svg"
                 alt="W3Schools"

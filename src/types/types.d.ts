@@ -119,8 +119,6 @@ export type typeSidebarSpecility =
   | 'specialities'
   | 'typespecialities';
 
-export type fyleType = 'MATERIAL' | 'SUCCESSFUL' | 'REVIEW';
-
 export type UserRoleType = 'ADMIN' | 'EMPLOYEE' | 'MOD';
 
 export interface GruopProject {
@@ -302,13 +300,14 @@ export interface SubtaskIncludes extends SubTask {
   };
 }
 
+type FileType = 'MATERIAL' | 'SUCCESSFUL' | 'REVIEW';
 interface Files {
   id: number;
   name: string;
   userId: number;
   user: User;
   dir: string;
-  type: string;
+  type: FileType;
   subTasksId: number;
 }
 export interface AreaForm {

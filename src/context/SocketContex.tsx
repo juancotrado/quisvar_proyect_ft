@@ -1,4 +1,4 @@
-import { createContext } from 'react';
+import { createContext, JSX } from 'react';
 import useSocket from '../hooks/useSocket';
 import { Socket } from 'socket.io-client';
 

@@ -40,9 +40,9 @@ const ListPersonalTask = () => {
   };
 
   const specialitiesList = async () => {
-    return await axiosInstance
-      .get(`/specialities`)
-      .then(res => setSpecialities(res.data));
+    return await axiosInstance;
+    // .get(`/specialities`)
+    // .then(res => setSpecialities(res.data));
   };
 
   const handleProjectsList = async ({

@@ -23,6 +23,7 @@ interface employeeList {
 }
 const CardGenerateReport = () => {
   const { userSession } = useSelector((state: RootState) => state);
+  const { users } = useListUsers();
   const {
     handleSubmit,
     register,
@@ -30,13 +31,13 @@ const CardGenerateReport = () => {
     formState: { errors },
   } = useForm<ReportForm>();
   const [employee, setEmployee] = useState<employeeList>();
+
   const showModal = () => {
     setEmployee({ id: 0, name: '' });
     reset({});
     isOpenModal$.setSubject = false;
   };
   const onSubmit: SubmitHandler<ReportForm> = data => {
-    const { firstName, lastName, dni, phone } = userSession.profile;
     const initialDate = formatDate(new Date(data.initialDate), {
       day: 'numeric',
       weekday: 'long',
@@ -50,25 +51,29 @@ const CardGenerateReport = () => {
       year: 'numeric',
     });
     const totalDays = getTimeOut(data.initialDate, data.untilDate) / 24;
-    const infoData = {
-      ...data,
-      initialDate,
-      untilDate,
-      firstName,
-      lastName,
-      dni,
-      phone,
-      totalDays,
-    };
+    const idGenerate =
+      userSession.role === 'EMPLOYEE' ? userSession.id : employee?.id;
     axiosInstance
       .get(
-        `/reports/user/?initial=${data.initialDate}&until=${data.untilDate}&status=DONE`
+        `/reports/user/${idGenerate}?initial=${data.initialDate}&until=${data.untilDate}&status=DONE`
       )
-      .then(res => excelReport(res.data, infoData));
+      .then(res => {
+        const { firstName, lastName, dni, phone } = res.data.user.profile;
+        const infoData = {
+          ...data,
+          initialDate,
+          untilDate,
+          totalDays,
+          firstName,
+          lastName,
+          dni,
+          phone,
+        };
+        excelReport(res.data.subtask, infoData);
+      });
     setEmployee({ id: 0, name: '' });
   };
-  const { users } = useListUsers();
-  const employees = users.filter(user => user.role === 'EMPLOYEE');
+
   return (
     <Modal size={50}>
       <form
@@ -81,13 +86,14 @@ const CardGenerateReport = () => {
           {userSession.role !== 'EMPLOYEE' && (
             <div className="search-employee">
               <DropDownSimple
-                data={employees}
+                data={users}
                 itemKey="id"
                 textField="name"
                 name="employees"
+                selector
                 className="report-employee-list"
                 placeholder="Para otros"
-                value={employee?.name}
+                defaultInput={employee?.name}
                 valueInput={(name, id) =>
                   setEmployee({ id: parseInt(id), name })
                 }

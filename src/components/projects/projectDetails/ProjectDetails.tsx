@@ -29,24 +29,24 @@ const ProjectDetails = ({ projectId }: ProjectDetailsProps) => {
       <ul className="project-grid-title">
         <li>Item</li>
         <li className="project-grid-col-span-2">Nombre</li>
-        <li>Gasto</li>
         <li>Saldo</li>
+        <li>Gasto</li>
         <li>Total</li>
         <li className="project-grid-col-span-2">Estado Tareas</li>
       </ul>
       {detailsProjects && (
-        <ul className="project-grid-container">
+        <ul className="project-grid-container project-detail-project">
           <TemplateDetail data={detailsProjects} />
           {detailsProjects.areas.map(area => (
-            <div key={area.id} className="project-grid-col-span-total ">
-              <ul className="project-grid-container project-grid-area">
+            <div key={area.id} className="project-grid-col-span-total  ">
+              <ul className="project-detail-area project-grid-container  ">
                 <TemplateDetail data={area} />
                 {area.indexTasks.map(indexTask => (
                   <div
                     key={indexTask.id}
-                    className="project-grid-col-span-total "
+                    className="project-grid-col-span-total"
                   >
-                    <ul className="project-grid-container project-grid-area">
+                    <ul className="project-detail-area project-grid-container">
                       <TemplateDetail data={indexTask} />
                       {indexTask.tasks.map(task => (
                         <div
@@ -55,7 +55,7 @@ const ProjectDetails = ({ projectId }: ProjectDetailsProps) => {
                         >
                           <ul
                             key={task.id}
-                            className="project-grid-container project-grid-area"
+                            className=" project-detail-indextask project-grid-container "
                           >
                             <TemplateDetail data={task} />
                             {task.tasks_2.map(task_2 => (
@@ -65,17 +65,17 @@ const ProjectDetails = ({ projectId }: ProjectDetailsProps) => {
                               >
                                 <ul
                                   key={task_2.id}
-                                  className="project-grid-container project-grid-area"
+                                  className="project-detail-task project-grid-container"
                                 >
                                   <TemplateDetail data={task_2} />
                                   {task_2.tasks_3.map(task_3 => (
                                     <div
                                       key={task_3.id}
-                                      className="project-grid-col-span-total "
+                                      className="project-detail-task-2 project-grid-col-span-total "
                                     >
                                       <ul
                                         key={task_3.id}
-                                        className="project-grid-container project-grid-area"
+                                        className="project-detail-task-3 project-grid-container"
                                       >
                                         <TemplateDetail data={task_3} />
                                       </ul>

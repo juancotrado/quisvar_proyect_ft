@@ -102,6 +102,7 @@ const DropDownSimple = ({
             >
               {optionsFiltered?.map(item => (
                 <li
+                  className="dropdown-option"
                   key={item[itemKey]}
                   onClick={() => {
                     setQuery(selector ? item[textField] : '');

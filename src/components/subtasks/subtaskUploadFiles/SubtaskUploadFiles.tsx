@@ -1,10 +1,10 @@
 import { ChangeEvent, useContext } from 'react';
-import { fyleType } from '../../../types/types';
+import { FileType } from '../../../types/types';
 import { axiosInstance } from '../../../services/axiosInstance';
 import { SocketContext } from '../../../context/SocketContex';
 import './subtaskUploadFiles.css';
 interface SubtaskUploadFilesProps {
-  type: fyleType;
+  type: FileType;
   id: number;
   addFiles?: (values: File[]) => void;
   className?: string;

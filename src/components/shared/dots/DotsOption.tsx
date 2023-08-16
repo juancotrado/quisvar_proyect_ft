@@ -27,7 +27,7 @@ const DotsOption = ({
 }: DotsOptionProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleClick = (value: (() => void) | undefined) => {
-    value && value();
+    value?.();
     persist && setIsOpen(false);
   };
   return (

@@ -113,18 +113,17 @@ const ListPersonalTask = () => {
           </div>
         </div>
         <div className="cards">
-          {subTask &&
-            subTask
-              ?.filter(({ status }) =>
-                !isOn
-                  ? ['INREVIEW', 'PROCESS', 'DENIED'].includes(status)
-                  : status === 'DONE'
-              )
-              .map(subTask => (
-                <div key={subTask.id} className="sub-cards">
-                  <MyTaskCard subTask={subTask} />
-                </div>
-              ))}
+          {subTask
+            ?.filter(({ status }) =>
+              !isOn
+                ? ['INREVIEW', 'PROCESS', 'DENIED'].includes(status)
+                : status === 'DONE'
+            )
+            .map(subTask => (
+              <div key={subTask.id} className="sub-cards">
+                <MyTaskCard subTask={subTask} />
+              </div>
+            ))}
         </div>
       </div>
       <div className="generate-report">

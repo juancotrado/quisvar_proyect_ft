@@ -3,7 +3,6 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { User } from '../../types/types';
 import { AppDispatch } from '..';
 import { axiosInstance } from '../../services/axiosInstance';
-// type State = Users | null;
 
 const INITIAL_STATE: User = {
   id: 0,

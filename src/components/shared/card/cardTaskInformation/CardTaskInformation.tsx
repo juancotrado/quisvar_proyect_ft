@@ -77,7 +77,6 @@ const CardTaskInformation = ({
   const handleSendDelete = async () => {
     handleDelete(subTask.id);
     setIsAlertOpen(false);
-    return;
   };
 
   const { status } = subTask;

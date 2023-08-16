@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-// import Input from '../../components/shared/Input/Input';
 import './notificationsList.css';
 import SubtaskDetail from '../../components/subtasks/SubtaskDetail';
 import { axiosInstance } from '../../services/axiosInstance';
@@ -28,10 +27,9 @@ const NotificationsList = () => {
         </div>
       </div>
       <div className="notify-card-container">
-        {subTasks &&
-          subTasks.map(subtask => (
-            <SubtaskDetail key={subtask.id} subtask={subtask} />
-          ))}
+        {subTasks?.map(subtask => (
+          <SubtaskDetail key={subtask.id} subtask={subtask} />
+        ))}
       </div>
     </div>
   );

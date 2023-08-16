@@ -44,7 +44,7 @@ const SidebarAddNewLevel = ({ idValue, onSave, keyNameId }: AddTaskProps) => {
   }, [idValue, isLastLevel, keyNameId, reset]);
 
   const onSubmitTask: SubmitHandler<TaskForm> = async values => {
-    const url = urlPost[keyNameId as keyof typeof urlPost];
+    const url = urlPost[keyNameId];
     await axiosInstance.post(url, values).then(() => {
       onSave?.();
       setAddLevel(false);
@@ -53,7 +53,6 @@ const SidebarAddNewLevel = ({ idValue, onSave, keyNameId }: AddTaskProps) => {
   };
 
   const handleAddlevel = () => setAddLevel(!addLevel);
-  // const [openEditData, setOpenEditData] = useState<boolean>(false);
   const optionsData: Option[] = [
     {
       name: 'Cancelar',

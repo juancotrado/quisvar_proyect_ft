@@ -1,7 +1,7 @@
 export const validateWhiteSpace = (value: string) => {
   return !value.trim()
     ? 'Este campo no puede estar vacío'
-    : value[0] === ' '
+    : value[0].startsWith(' ')
     ? 'No deje espacios al inicio'
     : true;
 };

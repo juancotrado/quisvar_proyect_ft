@@ -56,7 +56,7 @@ const CardRegisterArea = ({
   }, [data]);
 
   const onSubmit: SubmitHandler<WorkAreaForm> = values => {
-    const userId = coordinator?.id || data.userId;
+    const userId = coordinator?.id ?? data.userId;
     const workareaData = { ...values, userId, projectId };
     axiosInstance.put(`/workareas/${values.id}`, workareaData).then(() => {
       onSave?.(coordinator ? coordinator.name : handleGetUserById());

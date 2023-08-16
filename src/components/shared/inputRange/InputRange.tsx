@@ -4,8 +4,8 @@ import {
   useImperativeHandle,
   Ref,
   useEffect,
+  InputHTMLAttributes,
 } from 'react';
-import { InputHTMLAttributes } from 'react';
 
 import './inputRange.css';
 

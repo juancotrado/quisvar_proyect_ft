@@ -12,13 +12,11 @@ const TaskCounter = ({ nivelTask, className }: TaskCounter) => {
         status.includes(subTask.status)
       ).length;
     }
-    const tasks = nivelTask.indexTasks
-      ? nivelTask.indexTasks
-      : nivelTask.tasks
-      ? nivelTask.tasks
-      : nivelTask.tasks_2
-      ? nivelTask.tasks_2
-      : nivelTask.tasks_3;
+    const tasks =
+      nivelTask.indexTasks ??
+      nivelTask.tasks ??
+      nivelTask.tasks_2 ??
+      nivelTask.tasks_3;
 
     return countSubTasks(tasks, status);
   };

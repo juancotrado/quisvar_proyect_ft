@@ -168,7 +168,7 @@ const Tasks = () => {
         <div className="tasks-head">
           <h1 className="main-title">
             LISTA DE <span className="main-title-span">TAREAS</span>{' '}
-            <span className="main-title-index">{data && data.name}</span>
+            <span className="main-title-index">{data?.name}</span>
           </h1>
 
           {isAuthorizedMod && subTasks && (

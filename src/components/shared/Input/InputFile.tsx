@@ -39,13 +39,13 @@ const InputFile = ({
     event.stopPropagation();
     setDragActive(false);
     const { files } = event.dataTransfer;
-    if (files && files[0]) handleFile(files);
+    if (files?.[0]) handleFile(files);
   };
 
   const handleInputChange = (event: ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
     const { files } = event.target;
-    if (files && files[0]) handleFile(files);
+    if (files?.[0]) handleFile(files);
   };
 
   const handleInputRef = () => inputRef.current?.click();

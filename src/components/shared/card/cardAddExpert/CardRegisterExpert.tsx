@@ -28,7 +28,7 @@ interface CardRegisterExpertProps {
 }
 
 const CardRegisterExpert = ({ onSave, experts }: CardRegisterExpertProps) => {
-  const [readOnly, setReadOnly] = useState(false);
+  const [readOnly] = useState(false);
   const [idCount, setIdCount] = useState(2);
   const [expertList, setExpertList] = useState<ExpertType[]>([]);
 
@@ -45,16 +45,6 @@ const CardRegisterExpert = ({ onSave, experts }: CardRegisterExpertProps) => {
       setExpertList([InitialExpert]);
     }
   }, [experts]);
-
-  // const toggleSave = () => {
-  //   const _experts = expertList.map(({ id, ...data }) => {
-  //     id;
-  //     return data;
-  //   });
-  //   console.log(_experts);
-  //   !readOnly && onSave?.(_experts);
-  //   setReadOnly(!readOnly);
-  // };
 
   const handleAddExpert = () => {
     const newExpert: ExpertType = { ...InitialValues, id: idCount };
@@ -77,7 +67,6 @@ const CardRegisterExpert = ({ onSave, experts }: CardRegisterExpertProps) => {
     if (field == 'phone') expertList[_index].phone = value;
     const _experts = [...expertList];
     const _newExperts = _experts.map(({ id, ...data }) => {
-      id;
       return data;
     });
     onSave?.(_newExperts);
@@ -153,19 +142,7 @@ const CardRegisterExpert = ({ onSave, experts }: CardRegisterExpertProps) => {
                 />
 
                 <span className="col-span-1">{expert.pdf}</span>
-                {/* {expert.pdf ? (
-                  <span className="col-span-1">{expert.pdf}</span>
-                ) : (
-                  <Input
-                    name={`pdf-e-${expert.id}`}
-                    required
-                    type="file"
-                    // onBlur={e => toggleOnChange(expert.id, e, 'phone')}
-                    disabled={readOnly}
-                    classNameMain="col-span-1"
-                    // defaultValue={expert.phone}
-                  />
-                )} */}
+
                 {!expert.pdf && (
                   <Button
                     className="cardRegisterConsortium-button-add-company button-icon"
@@ -188,16 +165,6 @@ const CardRegisterExpert = ({ onSave, experts }: CardRegisterExpertProps) => {
           onClick={handleAddExpert}
         />
       </div>
-      {/* <div className=" container-grid-consortium justify-end">
-        <Button
-          type="button"
-          className={`cardRegisterConsortium-button-send ${
-            readOnly && 'cardRegisterConsortium-button-cancel'
-          }  `}
-          text={`${readOnly ? 'Editar Cambios' : 'Guardar Datos'}`}
-          onClick={toggleSave}
-        />
-      </div> */}
     </div>
   );
 };

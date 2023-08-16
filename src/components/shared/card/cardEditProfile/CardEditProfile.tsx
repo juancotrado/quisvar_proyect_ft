@@ -4,7 +4,6 @@ import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import Modal from '../../../portal/Modal';
 import Button from '../../button/Button';
-// import { isOpenModal$ } from '../../../../services/sharingSubject';
 
 interface CardEdtiUserProps {
   onSave?: () => void;
@@ -34,16 +33,7 @@ const InitialValues = {
 const CardEditUser = ({ dataUser, onSave }: CardEdtiUserProps) => {
   const [data, setData] = useState<User>(InitialValues);
   const debounceRef = useRef<NodeJS.Timeout>();
-  // const data = {
-  //   //endpoint data answer
-  //   email: 'diego@gmail.com',
-  //   password: 'diego123',
-  //   firstName: 'Diego',
-  //   lastName: 'Milito',
-  //   dni: '01010101',
-  //   celular: '987654321',
-  //   area: 'Salud',
-  // };
+
   useEffect(() => {
     if (dataUser) {
       setData(dataUser);

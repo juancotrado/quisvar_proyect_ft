@@ -47,18 +47,6 @@ const CardRegisterConsortium = ({
     }
   }, [consortium]);
 
-  // const toggleSave = () => {
-  //   const _companies = companiesList.map(({ id, ...data }) => {
-  //     id;
-  //     return data;
-  //   });
-  //   const newForm = { ...form, companies: _companies };
-  //   setForm(newForm);
-  //   // !readOnly &&
-  //   onSave?.(newForm);
-  //   // setReadOnly(!readOnly);
-  // };
-
   const handleChange = ({ target }: React.FocusEvent<HTMLInputElement>) => {
     const { value, name, type } = target;
     const _value = type == 'number' ? +value : value;
@@ -141,55 +129,54 @@ const CardRegisterConsortium = ({
           </span>
           <span className="col-span-1 headers-company">% Participación</span>
         </li>
-        {companiesList &&
-          companiesList.map(company => (
-            <li key={company.id} className="cardRegisterConsortium-list-li">
-              <Input
-                name={`ruc-c-${company.id}`}
-                placeholder="RUC"
-                required
-                onBlur={e => toggleOnChange(company.id, e, 'ruc')}
-                disabled={readOnly}
-                classNameMain="col-span-1"
-                defaultValue={company.ruc}
-              />
-              <Input
-                name={`name-c-${company.id}`}
-                placeholder="Nombre de la Empresa "
-                required
-                onBlur={e => toggleOnChange(company.id, e, 'name')}
-                disabled={readOnly}
-                classNameMain="col-span-2"
-                defaultValue={company.name}
-              />
-              <Input
-                name={`manager-c-${company.id}`}
-                placeholder="Representante Invidual"
-                required
-                onBlur={e => toggleOnChange(company.id, e, 'manager')}
-                disabled={readOnly}
-                classNameMain="col-span-2"
-                defaultValue={company.manager}
-              />
-              <Input
-                name={`percentage-c-${company.id}`}
-                placeholder="% "
-                required
-                type="number"
-                onBlur={e => toggleOnChange(company.id, e, 'percentage')}
-                disabled={readOnly}
-                classNameMain="col-span-1"
-                defaultValue={company.percentage}
-              />
-              <Button
-                className="cardRegisterConsortium-button-add-company button-icon"
-                type="button"
-                icon="close"
-                disabled={readOnly}
-                onClick={() => handleDeleteCompany(company.id)}
-              />
-            </li>
-          ))}
+        {companiesList.map(company => (
+          <li key={company.id} className="cardRegisterConsortium-list-li">
+            <Input
+              name={`ruc-c-${company.id}`}
+              placeholder="RUC"
+              required
+              onBlur={e => toggleOnChange(company.id, e, 'ruc')}
+              disabled={readOnly}
+              classNameMain="col-span-1"
+              defaultValue={company.ruc}
+            />
+            <Input
+              name={`name-c-${company.id}`}
+              placeholder="Nombre de la Empresa "
+              required
+              onBlur={e => toggleOnChange(company.id, e, 'name')}
+              disabled={readOnly}
+              classNameMain="col-span-2"
+              defaultValue={company.name}
+            />
+            <Input
+              name={`manager-c-${company.id}`}
+              placeholder="Representante Invidual"
+              required
+              onBlur={e => toggleOnChange(company.id, e, 'manager')}
+              disabled={readOnly}
+              classNameMain="col-span-2"
+              defaultValue={company.manager}
+            />
+            <Input
+              name={`percentage-c-${company.id}`}
+              placeholder="% "
+              required
+              type="number"
+              onBlur={e => toggleOnChange(company.id, e, 'percentage')}
+              disabled={readOnly}
+              classNameMain="col-span-1"
+              defaultValue={company.percentage}
+            />
+            <Button
+              className="cardRegisterConsortium-button-add-company button-icon"
+              type="button"
+              icon="close"
+              disabled={readOnly}
+              onClick={() => handleDeleteCompany(company.id)}
+            />
+          </li>
+        ))}
       </ul>
       <div className=" container-grid-consortium justify-start">
         <Button

@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Input } from '../../..';
 import './cardRegisterCompany.css';
-// import Button from '../../button/Button';
 import { CompanyForm } from '../../../../types/types';
 
 const InitialValues: CompanyForm = {
@@ -41,10 +40,6 @@ const CardRegisterCompany = ({
     !readOnly && onSave?.(newForm);
     setForm(newForm);
   };
-
-  // const toggleSave = () => {
-  //   setReadOnly(!readOnly);
-  // };
 
   return (
     <div className="cardRegisterCompany-container">

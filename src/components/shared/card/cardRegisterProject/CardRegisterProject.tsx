@@ -125,7 +125,7 @@ const CardRegisterProject = ({
       consortiumInfo: consortium,
       typeSpecialityId,
     };
-    if (project && project.id) {
+    if (project?.id) {
       axiosInstance
         .put(`projects/${project.id}`, _data)
         .then(successfulShipment);

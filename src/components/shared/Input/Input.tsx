@@ -1,8 +1,7 @@
 import Eye from '/svg/eye.svg';
 import EyeClose from '/svg/eyeClose.svg';
 import './input.css';
-import { InputHTMLAttributes, useState } from 'react';
-import { forwardRef } from 'react';
+import { InputHTMLAttributes, useState, forwardRef } from 'react';
 
 interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   name?: string;
@@ -66,9 +65,7 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
             />
             {errors[name]?.type === 'required'
               ? 'Por favor llene el campo.'
-              : // : `Formato de ${label} invalido.`
-                errors[name].message}
-            {/* {errors[name] && <span>El campo solo puede tener letras o numeros</span>} */}
+              : errors[name].message}
           </span>
         )}
       </div>

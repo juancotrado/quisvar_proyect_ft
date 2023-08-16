@@ -40,8 +40,8 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
     editProject(project);
   };
 
-  const handleDuplicate = async (id: number) => {
-    await axiosInstance
+  const handleDuplicate = (id: number) => {
+    axiosInstance
       .post(`/duplicates/project/${id}`)
       .then(() => onSave?.(project.specialityId));
   };

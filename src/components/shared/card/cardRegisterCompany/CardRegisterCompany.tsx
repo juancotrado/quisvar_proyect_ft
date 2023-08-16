@@ -32,7 +32,7 @@ const CardRegisterCompany = ({
     }
   }, [company]);
 
-  const [readOnly, setReadOnly] = useState(false);
+  const [readOnly] = useState(false);
 
   const handleChange = ({ target }: React.FocusEvent<HTMLInputElement>) => {
     const { value, name, type } = target;

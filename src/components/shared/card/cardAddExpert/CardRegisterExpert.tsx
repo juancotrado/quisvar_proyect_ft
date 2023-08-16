@@ -28,7 +28,7 @@ interface CardRegisterExpertProps {
 }
 
 const CardRegisterExpert = ({ onSave, experts }: CardRegisterExpertProps) => {
-  const [readOnly, setReadOnly] = useState(false);
+  const [readOnly] = useState(false);
   const [idCount, setIdCount] = useState(2);
   const [expertList, setExpertList] = useState<ExpertType[]>([]);
 
@@ -77,7 +77,6 @@ const CardRegisterExpert = ({ onSave, experts }: CardRegisterExpertProps) => {
     if (field == 'phone') expertList[_index].phone = value;
     const _experts = [...expertList];
     const _newExperts = _experts.map(({ id, ...data }) => {
-      id;
       return data;
     });
     onSave?.(_newExperts);

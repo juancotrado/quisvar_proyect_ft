@@ -28,7 +28,7 @@ const CardRegisterConsortium = ({
 }: CardRegisterConsortiumProps) => {
   const [form, setForm] = useState<ConsortiumForm>(InitialValues);
   const [idCount, setIdCount] = useState(2);
-  const [readOnly, setReadOnly] = useState(false);
+  const [readOnly] = useState(false);
   const [companiesList, setCompaniesList] = useState<CompanyType[]>([]);
 
   useEffect(() => {

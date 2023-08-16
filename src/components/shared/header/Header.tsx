@@ -132,9 +132,7 @@ const Header = () => {
       id: 3,
       name: 'Acerca de',
       icon: '/svg/question-circle.svg',
-      action: () => {
-        null;
-      },
+      action: null,
     },
     {
       id: 4,

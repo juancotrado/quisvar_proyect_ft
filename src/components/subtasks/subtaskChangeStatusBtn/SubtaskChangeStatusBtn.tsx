@@ -1,7 +1,5 @@
-import { useSelector } from 'react-redux';
 import Button from '../../shared/button/Button';
 import { statusBody } from '../../shared/card/cardTaskInformation/constans';
-import { RootState } from '../../../store';
 import { SnackbarUtilities } from '../../../utils/SnackbarManager';
 import { useContext } from 'react';
 import { axiosInstance } from '../../../services/axiosInstance';
@@ -37,7 +35,6 @@ const SubtaskChangeStatusBtn = ({
   porcentagesForUser,
   isAuthorizedUser,
 }: SubtaskChangeStatusBtn) => {
-  const { userSession } = useSelector((state: RootState) => state);
   const socket = useContext(SocketContext);
 
   const getStatus = (

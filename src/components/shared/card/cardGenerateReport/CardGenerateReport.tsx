@@ -14,10 +14,11 @@ import { ReportForm } from '../../../../types/types';
 import { excelReport } from '../../../../utils/generateExcel';
 import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
+import useListUsers from '../../../../hooks/useListUsers';
+import DropDownSimple from '../../select/DropDownSimple';
 
 const CardGenerateReport = () => {
   const { userSession } = useSelector((state: RootState) => state);
-
   const {
     handleSubmit,
     register,
@@ -60,6 +61,8 @@ const CardGenerateReport = () => {
       )
       .then(res => excelReport(res.data, infoData));
   };
+  const { users } = useListUsers();
+  const employees = users.filter(user => user.role === 'EMPLOYEE');
   return (
     <Modal size={50}>
       <form
@@ -67,7 +70,20 @@ const CardGenerateReport = () => {
         className="card-generate-report"
         autoComplete="off"
       >
-        <h2>Generar Reporte</h2>
+        <div className="report-title">
+          <h2>Generar Reporte</h2>
+          {userSession.role !== 'EMPLOYEE' && (
+            <div>
+              <p>Usuarios</p>
+              <DropDownSimple
+                data={employees}
+                itemKey="id"
+                textField="name"
+                name="employees"
+              />
+            </div>
+          )}
+        </div>
         <span className="close-add-card" onClick={showModal}>
           <img src="/svg/close.svg" alt="pencil" />
         </span>

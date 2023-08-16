@@ -90,8 +90,9 @@
 
 .my-title-content {
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
+  width: 100%;
 }
 
 .my-project-list {
@@ -110,4 +111,8 @@
 
 .span-list-task {
   font-size: small;
+}
+.my-title-apart {
+  display: flex;
+  align-items: center;
 }

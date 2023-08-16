@@ -9,3 +9,8 @@
   border: 2rem solid #fff;
   border-radius: var(--radius-button);
 }
+.report-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

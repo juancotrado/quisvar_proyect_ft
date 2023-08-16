@@ -71,8 +71,13 @@ const ListPersonalTask = () => {
     <div className="my-container-list ">
       <div className="my-title-list">
         <div className="my-title-content">
-          <img className="task-icon" src={list_icon} alt="task-list" />
-          <h2>Mis tareas</h2>
+          <div className="my-title-apart">
+            <img className="task-icon" src={list_icon} alt="task-list" />
+            <h2>Mis tareas</h2>
+          </div>
+          <div className="generate-report">
+            {isOn && <Button onClick={showModal} text="Generar Reporte" />}
+          </div>
         </div>
         {specialities && (
           <div className="my-project-list">
@@ -127,9 +132,7 @@ const ListPersonalTask = () => {
               ))}
         </div>
       </div>
-      <div className="generate-report">
-        {isOn && <Button onClick={showModal} text="Generar Reporte" />}
-      </div>
+
       <CardGenerateReport />
     </div>
   );

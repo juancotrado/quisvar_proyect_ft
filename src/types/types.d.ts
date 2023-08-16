@@ -443,17 +443,21 @@ export interface AreaDetailsPrice extends DetailsPrice {
 export interface IndexTasksDetailsPrice extends DetailsPrice {
   item: string;
   tasks: TasksDetailsPrice[];
+  subTasks: DetailsSubtasks[];
 }
 export interface TasksDetailsPrice extends DetailsPrice {
   item: string;
   tasks_2: Tasks_lvl_2DetailsPrice[];
+  subTasks: DetailsSubtasks[];
 }
 export interface Tasks_lvl_2DetailsPrice extends DetailsPrice {
   item: string;
   tasks_3: Tasks_lvl_3DetailsPrice[];
+  subTasks: DetailsSubtasks[];
 }
 export interface Tasks_lvl_3DetailsPrice extends DetailsPrice {
   item: string;
+  subTasks: DetailsSubtasks[];
 }
 interface DetailsPrice {
   balance: number;
@@ -463,6 +467,30 @@ interface DetailsPrice {
   price: number;
   spending: number;
   taskInfo: TypeTaskInfoDetails;
+}
+
+interface DetailsSubtasks {
+  id: number;
+  balance: number;
+  description?: string;
+  item: string;
+  name: string;
+  percentage: number;
+  price: string;
+  spending: number;
+  status: string;
+  users: {
+    percentage: number;
+    user: {
+      id: number;
+      profile: {
+        dni: string;
+        firstName: string;
+        lastName: string;
+        phone: string;
+      };
+    };
+  }[];
 }
 
 export type TypeTaskInfoDetails = {

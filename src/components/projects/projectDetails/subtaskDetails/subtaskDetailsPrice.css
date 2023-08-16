@@ -1,0 +1,26 @@
+.subtask-deatils-container-main {
+  grid-column: span 8 / span 8;
+  width: 100%;
+  border-top: 2px solid var(--color-primary);
+  border-bottom: 2px solid var(--color-primary);
+}
+.subtask-details-price-grid-container-title {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  background-color: var(--color-primary);
+  padding: 0.2rem 0;
+  color: #fff;
+}
+
+.subtask-details-price-grid-container {
+  display: grid;
+  grid-template-columns: repeat(9, minmax(0, 1fr));
+  /* padding: 0.2rem 0; */
+  background-color: rgb(221, 221, 221);
+}
+
+.subtask-deatils-price-item {
+  border-right: 1px solid #8a8a8a;
+  padding: 0 0.2rem;
+  border-bottom: 1px solid #8a8a8a;
+}

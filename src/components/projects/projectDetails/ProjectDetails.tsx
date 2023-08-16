@@ -3,6 +3,7 @@ import { axiosInstance } from '../../../services/axiosInstance';
 import './projectDetails.css';
 import { ProjectDetailsPrice } from '../../../types/types';
 import TemplateDetail from './templateDetail/TemplateDetail';
+import SubtaskDetailsPrice from './subtaskDetails/SubtaskDetailsPrice';
 interface ProjectDetailsProps {
   projectId: number | null;
 }
@@ -35,8 +36,8 @@ const ProjectDetails = ({ projectId }: ProjectDetailsProps) => {
         <ul className="project-grid-container project-detail-project">
           <TemplateDetail data={detailsProjects} />
           {detailsProjects.areas.map(area => (
-            <div key={area.id} className="project-grid-col-span-total  ">
-              <ul className="project-detail-area project-grid-container  ">
+            <div key={area.id} className="project-grid-col-span-total">
+              <ul className="project-detail-area project-grid-container">
                 <TemplateDetail data={area} />
                 {area.indexTasks.map(indexTask => (
                   <div
@@ -85,6 +86,9 @@ const ProjectDetails = ({ projectId }: ProjectDetailsProps) => {
                         </div>
                       ))}
                     </ul>
+                    {indexTask.subTasks && indexTask.subTasks.length !== 0 && (
+                      <SubtaskDetailsPrice subTasks={indexTask.subTasks} />
+                    )}
                   </div>
                 ))}
               </ul>

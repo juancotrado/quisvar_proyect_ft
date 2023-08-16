@@ -39,7 +39,7 @@
 
 .project-grid-container li {
   margin: auto;
-  border-bottom: 1px solid var(--color-menu);
+  /* border-bottom: 1px solid var(--color-menu); */
   height: 100%;
   width: 100%;
 }

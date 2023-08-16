@@ -16,7 +16,11 @@ import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
 import useListUsers from '../../../../hooks/useListUsers';
 import DropDownSimple from '../../select/DropDownSimple';
-
+import { useState } from 'react';
+interface employeeList {
+  id: number;
+  name: string;
+}
 const CardGenerateReport = () => {
   const { userSession } = useSelector((state: RootState) => state);
   const {
@@ -25,8 +29,9 @@ const CardGenerateReport = () => {
     reset,
     formState: { errors },
   } = useForm<ReportForm>();
-
+  const [employee, setEmployee] = useState<employeeList>();
   const showModal = () => {
+    setEmployee({ id: 0, name: '' });
     reset({});
     isOpenModal$.setSubject = false;
   };
@@ -60,6 +65,7 @@ const CardGenerateReport = () => {
         `/reports/user/?initial=${data.initialDate}&until=${data.untilDate}&status=DONE`
       )
       .then(res => excelReport(res.data, infoData));
+    setEmployee({ id: 0, name: '' });
   };
   const { users } = useListUsers();
   const employees = users.filter(user => user.role === 'EMPLOYEE');
@@ -73,13 +79,18 @@ const CardGenerateReport = () => {
         <div className="report-title">
           <h2>Generar Reporte</h2>
           {userSession.role !== 'EMPLOYEE' && (
-            <div>
-              <p>Usuarios</p>
+            <div className="search-employee">
               <DropDownSimple
                 data={employees}
                 itemKey="id"
                 textField="name"
                 name="employees"
+                className="report-employee-list"
+                placeholder="Para otros"
+                value={employee?.name}
+                valueInput={(name, id) =>
+                  setEmployee({ id: parseInt(id), name })
+                }
               />
             </div>
           )}

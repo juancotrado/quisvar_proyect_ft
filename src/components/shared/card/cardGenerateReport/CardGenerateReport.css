@@ -14,3 +14,16 @@
   justify-content: space-between;
   align-items: center;
 }
+.search-employee {
+  display: flex;
+  flex-direction: row-reverse;
+  width: 50%;
+}
+.add-report-employee {
+  border-radius: 50px;
+  width: 2rem;
+  height: 2rem;
+}
+.report-employee-list {
+  width: 100%;
+}

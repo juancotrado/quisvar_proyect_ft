@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Input } from '../../..';
 import './cardRegisterCompany.css';
-// import Button from '../../button/Button';
 import { CompanyForm } from '../../../../types/types';
 
 const InitialValues: CompanyForm = {
@@ -32,7 +31,7 @@ const CardRegisterCompany = ({
     }
   }, [company]);
 
-  const [readOnly, setReadOnly] = useState(false);
+  const [readOnly] = useState(false);
 
   const handleChange = ({ target }: React.FocusEvent<HTMLInputElement>) => {
     const { value, name, type } = target;
@@ -41,10 +40,6 @@ const CardRegisterCompany = ({
     !readOnly && onSave?.(newForm);
     setForm(newForm);
   };
-
-  // const toggleSave = () => {
-  //   setReadOnly(!readOnly);
-  // };
 
   return (
     <div className="cardRegisterCompany-container">

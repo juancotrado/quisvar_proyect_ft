@@ -2,7 +2,6 @@ import { useNavigate } from 'react-router-dom';
 import './projectCard.css';
 import { motion } from 'framer-motion';
 import Button from '../../shared/button/Button';
-// import { _date } from '../../../utils/formatDate';
 import { Option, ProjectType } from '../../../types/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
@@ -30,8 +29,6 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
 
   const navigate = useNavigate();
 
-  // const timeoutRef = useRef<NodeJS.Timeout | null>(null);
-
   const handleSave = () => {
     onSave?.(project.specialityId);
   };
@@ -40,8 +37,8 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
     editProject(project);
   };
 
-  const handleDuplicate = async (id: number) => {
-    await axiosInstance
+  const handleDuplicate = (id: number) => {
+    axiosInstance
       .post(`/duplicates/project/${id}`)
       .then(() => onSave?.(project.specialityId));
   };
@@ -81,10 +78,9 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
   const handleCloseButton = () => {
     setIsAlertOpen(!isAlertOpen);
   };
-  const handleSendDelete = async () => {
+  const handleSendDelete = () => {
     handleDelete(project.id);
     setIsAlertOpen(false);
-    return;
   };
   return (
     <div className="project-card">

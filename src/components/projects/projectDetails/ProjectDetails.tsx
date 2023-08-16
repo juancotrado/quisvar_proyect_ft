@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
 import { axiosInstance } from '../../../services/axiosInstance';
 import './projectDetails.css';
@@ -13,17 +12,15 @@ const ProjectDetails = ({ projectId }: ProjectDetailsProps) => {
     useState<ProjectDetailsPrice | null>(null);
 
   useEffect(() => {
+    const getProjectDetails = () => {
+      projectId &&
+        axiosInstance
+          .get(`projects/price/${projectId}`)
+          .then(res => setDetailsProjects(res.data));
+    };
     getProjectDetails();
   }, [projectId]);
 
-  const getProjectDetails = () => {
-    projectId &&
-      axiosInstance
-        .get(`projects/price/${projectId}`)
-        .then(res => setDetailsProjects(res.data));
-  };
-  console.log(detailsProjects?.areas);
-  //   console.log(detailsProjects);
   return (
     <div className="project-details-container">
       <ul className="project-grid-title">

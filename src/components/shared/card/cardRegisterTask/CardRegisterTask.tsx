@@ -3,18 +3,6 @@ import './CardRegisterTask.css';
 import { Input, TextArea } from '../../..';
 
 const CardRegisterTask = () => {
-  // const data1 = [
-  //   //endpoint data answer
-  //   { name: 'Proyecto Carreteras 1' },
-  //   { name: 'Proyecto Carreteras 2' },
-  //   { name: 'Proyecto Carreteras 3' },
-  // ];
-  // const data2 = [
-  //   //endpoint data answer
-  //   { name: 'Salud' },
-  //   { name: 'Saneamiento' },
-  //   { name: 'Carreteras' },
-  // ];
   return (
     <div className="card-register-user">
       <h1>REGISTRO DE TAREAS</h1>

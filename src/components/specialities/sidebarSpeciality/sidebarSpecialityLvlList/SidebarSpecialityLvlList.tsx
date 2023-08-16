@@ -64,15 +64,17 @@ const SidebarSpecialityLvlList = ({
       setFormData({ ...formData, [name]: value });
     }
   };
-  const handleForm = async () => {
-    await axiosInstance.put(`/${type}/${data.id}`, formData);
-    setOpenEditData(false);
-    onSave?.();
+  const handleForm = () => {
+    axiosInstance.put(`/${type}/${data.id}`, formData).then(() => {
+      setOpenEditData(false);
+      onSave?.();
+    });
   };
-  const handleDelete = async (id: number) => {
-    setOpenEditData(false);
-    await axiosInstance.delete(`/${type}/${id}`);
-    onSave?.();
+  const handleDelete = (id: number) => {
+    axiosInstance.delete(`/${type}/${id}`).then(() => {
+      setOpenEditData(false);
+      onSave?.();
+    });
   };
 
   return (

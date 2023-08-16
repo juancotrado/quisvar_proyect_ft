@@ -5,32 +5,24 @@
   justify-content: center;
   align-items: center;
 }
-.input-select {
-  height: 3.5rem;
-  width: 100%;
-  border: 1px solid var(--color-secondary);
-  border-radius: 5px;
-  padding: 0.5rem;
-  font-size: var(--size-input);
-}
+
 .select-area {
   display: grid;
   gap: 2rem;
   width: 100%;
 }
+
 .input-label {
   width: 100%;
   height: 25px;
   color: #203881;
   font-size: var(--size-label);
 }
-.input-select {
-  color: #203881;
-  font-size: var(--size-label);
-}
+
 select:focus {
   outline: none;
 }
+
 .card-edit-profile {
   width: 100%;
   height: 100%;
@@ -43,17 +35,20 @@ select:focus {
   background-color: white;
   text-align: center;
 }
+
 .col {
   display: flex;
   justify-content: space-between;
   gap: 2rem;
 }
+
 .btn-build {
   width: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .btn {
   width: 50%;
   height: 3.5rem;
@@ -66,6 +61,7 @@ select:focus {
   transition: background-color 0.5s ease;
   margin-top: 30px;
 }
+
 .btn:hover {
   background-color: var(--color-secondary);
 }

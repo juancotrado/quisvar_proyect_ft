@@ -14,15 +14,6 @@
   /* border-radius: var(--radius-input) var(--radius-input) 0 0; */
 }
 
-.input-select {
-  height: 3.5rem;
-  width: 100%;
-  border: 1px solid var(--color-secondary);
-  border-radius: 5px;
-  padding: 0.5rem;
-  font-size: var(--size-input);
-}
-
 .close-add-card {
   position: absolute;
   background-color: #ffffff00;
@@ -60,28 +51,10 @@
   text-transform: uppercase;
 }
 
-.input-select {
-  color: #203881;
-  font-size: var(--size-label);
-}
-
-/* .card-register-project {
-  width: 100%;
-  height: 100%;
-  padding: 30px 0;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  border-radius: var(--radius-button);
-  background-color: white;
-} */
-
 .card-register-project {
   max-height: var(--register-height);
   background-color: white;
-  /* padding: 30px 0; */
-  /* display: grid;
-  grid-template-rows: repeat(2, minmax(0, 1fr)); */
+
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -92,7 +65,6 @@
 }
 
 .card-register-project-container-details {
-  /* min-height: var(--register-height); */
   display: flex;
   flex-direction: column;
   gap: 0.8rem;

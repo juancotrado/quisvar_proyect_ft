@@ -10,7 +10,7 @@ const Outside = ({ onClickOutside, children }: OutsideProps) => {
   const ref = useRef<HTMLDivElement>(null);
   const handleEvent = ({ target }: MouseEvent) => {
     if (ref.current && !ref.current.contains(target as Node)) {
-      onClickOutside && onClickOutside();
+      onClickOutside?.();
     }
   };
 

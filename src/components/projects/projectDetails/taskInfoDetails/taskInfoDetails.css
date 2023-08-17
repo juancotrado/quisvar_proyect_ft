@@ -34,12 +34,3 @@
   background-color: #015c24;
   color: #fff;
 }
-
-.col-span-3 {
-  grid-column: span 3 / span 3;
-  width: 100%;
-  text-transform: uppercase;
-  padding: 0.2rem;
-  color: #fff;
-  background-color: var(--color-primary);
-}

@@ -23,7 +23,7 @@ type Options = { id: number; name: string };
 const ListPersonalTask = () => {
   const [isOn, setIsOn] = useState(false);
   const { userSession } = useSelector((state: RootState) => state);
-  const [specialities, setSpecialities] = useState<Options[] | null>(null);
+  const [specialities] = useState<Options[] | null>(null);
   const [projects, setProjects] = useState<Options[]>();
   const { id } = userSession;
   const [subTask, setSubTask] = useState<SubtaskIncludes[] | null>(null);

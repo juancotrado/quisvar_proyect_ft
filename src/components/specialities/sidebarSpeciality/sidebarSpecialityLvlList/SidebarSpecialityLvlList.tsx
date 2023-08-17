@@ -40,10 +40,8 @@ const SidebarSpecialityLvlList = ({
   const { role } = useSelector((state: RootState) => state.userSession);
   const [errors, setErrors] = useState<{ [key: string]: any }>({});
   useEffect(() => {
-    if (isLastLevel) {
-      setFormData({ name: data.name || '' });
-    }
-  }, [data.name, isLastLevel]);
+    setFormData({ name: data.name || '', cod: data.cod || '' });
+  }, [data.cod, data.name]);
 
   const handleBlurInput = (e: FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -96,14 +94,6 @@ const SidebarSpecialityLvlList = ({
             className="SidebarSpecialityLvlList-inputs"
             onClick={e => e.stopPropagation()}
           >
-            <Input
-              defaultValue={data.name}
-              label="Nombre:"
-              name="name"
-              className="SidebarSpecialityLvlList-input"
-              onBlur={handleBlurInput}
-              errors={errors}
-            />
             {type === 'specialities' && (
               <Input
                 defaultValue={data?.cod}
@@ -114,6 +104,14 @@ const SidebarSpecialityLvlList = ({
                 errors={errors}
               />
             )}
+            <Input
+              defaultValue={data.name}
+              label="Nombre:"
+              name="name"
+              className="SidebarSpecialityLvlList-input"
+              onBlur={handleBlurInput}
+              errors={errors}
+            />
           </div>
         ) : (
           <>

@@ -17,7 +17,7 @@ import { useSelector } from 'react-redux';
 import useListUsers from '../../../../hooks/useListUsers';
 import DropDownSimple from '../../select/DropDownSimple';
 import { useState } from 'react';
-interface employeeList {
+interface EmployeeList {
   id: number;
   name: string;
 }
@@ -30,7 +30,7 @@ const CardGenerateReport = () => {
     reset,
     formState: { errors },
   } = useForm<ReportForm>();
-  const [employee, setEmployee] = useState<employeeList>();
+  const [employee, setEmployee] = useState<EmployeeList>();
 
   const showModal = () => {
     setEmployee({ id: 0, name: '' });

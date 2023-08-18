@@ -16,7 +16,7 @@ const formatDate = (
 
 export const parseDate = (value: string, sing: string, replace: string) => {
   const toArray = value.split(sing);
-  const reverseValue = toArray.reverse().join();
+  const reverseValue = [...toArray].reverse().join();
   const parseValue = reverseValue.replace(/,/g, replace);
   return parseValue; //retorna: yyyy/mm/dd
 };

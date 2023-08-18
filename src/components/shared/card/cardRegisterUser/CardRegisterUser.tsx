@@ -84,8 +84,7 @@ const CardRegisterUser = ({ user, onSave }: CardRegisterUserProps) => {
         <InputText
           {...register('email', {
             required: true,
-            pattern:
-              /[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,5}/i,
+            pattern: /^[\w]+(\.[\w]+)*@[\w]+(\.[\w]+)*\.[a-zA-Z]{2,5}$/i,
           })}
           errors={errors}
           placeholder="Correo"

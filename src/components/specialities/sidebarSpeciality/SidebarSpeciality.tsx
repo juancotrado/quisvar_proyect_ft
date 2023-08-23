@@ -1,4 +1,4 @@
-import { FocusEvent } from 'react';
+import { FocusEvent, useState } from 'react';
 import './sidebarSpeciality.css';
 import { SectorType } from '../../../types/types';
 import SidebarSpecialityLvlList from './sidebarSpecialityLvlList/SidebarSpecialityLvlList';
@@ -14,6 +14,7 @@ interface SidebarSpecialityProps {
   getProjects: (id: number) => void;
   onSave?: () => void;
 }
+
 const SidebarSpeciality = ({
   settingSectors,
   sectors,
@@ -22,7 +23,7 @@ const SidebarSpeciality = ({
 }: SidebarSpecialityProps) => {
   const handleProjects = (especialityId: number) => getProjects(especialityId);
   const { role } = useSelector((state: RootState) => state.userSession);
-
+  const [indexSelected, setIndexSelected] = useState('');
   const handleFilterForYear = async (e: FocusEvent<HTMLSelectElement>) => {
     const { data } = await axiosInstance.get<SectorType[]>('/sector');
     const { value } = e.target;
@@ -40,7 +41,10 @@ const SidebarSpeciality = ({
       .filter(sector => sector.specialities.length);
     settingSectors(filterForYear);
   };
-
+  const handleTaks = (name: string, especialties?: number) => {
+    if (especialties === undefined) return;
+    setIndexSelected(name + '-' + especialties);
+  };
   return (
     <aside className={`sidebarSpeciality `}>
       <Select
@@ -56,18 +60,24 @@ const SidebarSpeciality = ({
         <ul className="aside-dropdown">
           {sectors.map(sector => (
             <li key={sector.id} className="sidebarSpeciality-dropdown-list">
-              <SidebarSpecialityLvlList data={sector} type="sector" />
+              <SidebarSpecialityLvlList
+                data={sector}
+                type="sector"
+                indexSelected={indexSelected}
+              />
               <div className="sidebarSpeciality-dropdown-content">
                 <ul className="sidebarSpeciality-dropdown-sub">
                   {sector.specialities.map(speciality => (
                     <li
                       key={speciality.id}
                       className="sidebarSpeciality-dropdown-sub-list"
+                      // onClick={() => handleTaks(sector.id, 0)}
                     >
                       <SidebarSpecialityLvlList
                         data={speciality}
                         type="specialities"
                         onSave={onSave}
+                        indexSelected={indexSelected}
                       />
                       <div className="sidebarSpeciality-dropdown-content">
                         <ul className="sidebarSpeciality-dropdown-sub">
@@ -75,12 +85,19 @@ const SidebarSpeciality = ({
                             <li
                               key={typespeciality.id}
                               className="sidebarSpeciality-dropdown-sub-list"
-                              onClick={() => handleProjects(typespeciality.id)}
+                              onClick={() => {
+                                handleProjects(typespeciality.id);
+                                handleTaks(
+                                  typespeciality.name,
+                                  typespeciality.id
+                                );
+                              }}
                             >
                               <SidebarSpecialityLvlList
                                 data={typespeciality}
                                 type="typespecialities"
                                 onSave={onSave}
+                                indexSelected={indexSelected}
                               />
                             </li>
                           ))}

@@ -17,6 +17,7 @@ import {
 interface SidebarSpecialityLvlListProps {
   data: DataSidebarSpeciality;
   type: typeSidebarSpecility;
+  indexSelected: string;
   onSave?: () => void;
 }
 interface FormData {
@@ -32,6 +33,7 @@ const SidebarSpecialityLvlList = ({
   data,
   type,
   onSave,
+  indexSelected,
 }: SidebarSpecialityLvlListProps) => {
   const [openEditData, setOpenEditData] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>(INIT_VALUES);
@@ -81,7 +83,12 @@ const SidebarSpecialityLvlList = ({
         isFirstLevel && 'not-border-left'
       }`}
     >
-      <div className="SidebarSpecialityLvlList-section">
+      <div
+        className={`SidebarSpecialityLvlList-section  ${
+          data.name + '-' + data.id === indexSelected &&
+          'sidebarLevelList-sub-list-span-active'
+        }`}
+      >
         {isFirstLevel && (
           <img
             src="/svg/reports.svg"
@@ -91,7 +98,7 @@ const SidebarSpecialityLvlList = ({
         )}
         {openEditData ? (
           <div
-            className="SidebarSpecialityLvlList-inputs"
+            className={`SidebarSpecialityLvlList-inputs`}
             onClick={e => e.stopPropagation()}
           >
             {type === 'specialities' && (

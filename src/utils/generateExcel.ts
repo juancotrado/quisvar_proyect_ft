@@ -14,6 +14,28 @@ interface formatExcelStyle {
   positions: string;
   format: string;
 }
+
+const reportLvl = {
+  indexTasks: 'Area',
+  areas: 'proyecto',
+  tasks: 'Nivel 1',
+  tasks_2: 'Nivel2',
+  tasks_3: 'nivel3',
+};
+const reportColorFirst = {
+  areas: 'D9E1F2',
+  indexTasks: 'FF666F88',
+  tasks: 'FF788199',
+  tasks_2: 'FF8990A2',
+  tasks_3: 'FFA3A8B7',
+};
+const reportColorSecond = {
+  areas: 'FF666F88',
+  indexTasks: 'FF788199',
+  tasks: 'FF8990A2',
+  tasks_2: 'FFA3A8B7',
+  tasks_3: 'FFB5BAC9',
+};
 const moneyFormat =
   '_-"S/"* #,##0.00_-;-"S/"* #,##0.00_-;_-"S/"* "-"??_-;_-@_-';
 const excelReport = async (data: ProjectReport[], infoData: ExcelData) => {
@@ -184,8 +206,10 @@ const excelReport = async (data: ProjectReport[], infoData: ExcelData) => {
   wk.pageSetup.printArea = 'A1:K' + (endLine + 13);
   exportExcel('userReport', workbook);
 };
-
-const excelContracReport = async (project: Report) => {
+const excelSimpleReport = async (
+  data: Report,
+  option: 'indexTasks' | 'areas' | 'tasks' | 'tasks' | 'tasks_3'
+) => {
   const response = await fetch('/templates/report_template_project.xlsx');
   const buffer = await response.arrayBuffer();
   const workbook = new ExcelJS.Workbook();
@@ -194,22 +218,22 @@ const excelContracReport = async (project: Report) => {
   const wk = workbook.getWorksheet('REPORTE');
   let rowNumber = 21;
   const { DENIED, DONE, INREVIEW, LIQUIDATION, PROCESS, UNRESOLVED } =
-    project.taskInfo;
+    data.taskInfo;
   const totalProcesstask = PROCESS + DENIED + INREVIEW;
   const projectRow = wk.insertRow(rowNumber, [
     '',
-    'Proyecto',
-    project.name,
-    project.balance,
-    project.spending,
-    project.price,
+    reportLvl[option],
+    data.name,
+    data.balance,
+    data.spending,
+    data.price,
     UNRESOLVED,
     totalProcesstask,
     DONE,
     LIQUIDATION,
   ]);
   rowNumber++;
-  fillRows(projectRow, 2, 10, 'D9E1F2');
+  fillRows(projectRow, 2, 10, reportColorFirst[option]);
   borderProjectStyle(projectRow);
   formatExcelStyle({ row: projectRow, positions: 'DEF', format: moneyFormat });
   fontExcelStyle({
@@ -220,13 +244,18 @@ const excelContracReport = async (project: Report) => {
     size: 9,
     name: 'Century Gothic',
   });
-  if (project.areas) {
-    rowNumber = recursionProject(wk, project.areas, rowNumber, 'FF666F88');
-  }
+  const dataReport = data[option] as Report[];
+  rowNumber = recursionProject(
+    wk,
+    dataReport,
+    rowNumber,
+    reportColorSecond[option]
+  );
   wk.pageSetup.printArea = 'A1:K' + (rowNumber + 13);
 
   exportExcel('project-report', workbook);
 };
+
 const fillRows = (
   row: ExcelJS.Row,
   posInit: number,
@@ -355,4 +384,4 @@ const exportExcel = async (name: string, workbook: ExcelJS.Workbook) => {
   a.click();
   URL.revokeObjectURL(editedUrl);
 };
-export { excelReport, excelContracReport };
+export { excelReport, excelSimpleReport };

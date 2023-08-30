@@ -13,7 +13,7 @@ import Portal from '../../portal/Portal';
 import { dropIn } from '../../../animations/animations';
 import useArchiver from '../../../hooks/useArchiver';
 import ProjectDetails from '../projectDetails/ProjectDetails';
-import { excelContracReport } from '../../../utils/generateExcel';
+import { excelSimpleReport } from '../../../utils/generateExcel';
 
 interface ProjectCardProps {
   editProject: (value: ProjectType) => void;
@@ -47,7 +47,7 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
   const handleReports = () => {
     axiosInstance
       .get(`projects/price/${project.id}`)
-      .then(res => excelContracReport(res.data));
+      .then(res => excelSimpleReport(res.data, 'areas'));
   };
 
   const optionsData: Option[] = [

@@ -325,7 +325,30 @@ export interface UserForm {
   dni: string;
   phone: string;
 }
-
+export interface Report {
+  price: number;
+  spending: number;
+  balance: number;
+  taskInfo: TaskInfo;
+  id: number;
+  name: string;
+  areas?: Report[];
+  item?: string;
+  indexTasks?: Report[];
+  subTasks?: SubTask[];
+  tasks?: Report[];
+  tasks_2?: Report[];
+  tasks_3?: Report[];
+}
+export interface TaskInfo {
+  UNRESOLVED: number;
+  PROCESS: number;
+  INREVIEW: number;
+  DENIED: number;
+  DONE: number;
+  LIQUIDATION: number;
+  TOTAL: number;
+}
 interface ReviewListIndexTask {
   id: number;
   item: string;

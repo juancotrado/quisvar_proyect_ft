@@ -1,10 +1,23 @@
-import { ProjectReport, ExcelData } from '../types/types';
+import { ProjectReport, ExcelData, Report } from '../types/types';
 import * as ExcelJS from 'exceljs';
 import { getTimeOut, parseUTC } from './formatDate';
-
+interface FontExcelStyle {
+  row: ExcelJS.Row;
+  positions: string;
+  color: string;
+  isBold: boolean;
+  size: number;
+  name: string;
+}
+interface formatExcelStyle {
+  row: ExcelJS.Row;
+  positions: string;
+  format: string;
+}
+const moneyFormat =
+  '_-"S/"* #,##0.00_-;-"S/"* #,##0.00_-;_-"S/"* "-"??_-;_-@_-';
 const excelReport = async (data: ProjectReport[], infoData: ExcelData) => {
   // Cargar la plantilla desde un archivo
-  // const { firstName, lastName, dni, phone, initialDate, untilDate } = infoData;
   const response = await fetch('/templates/report_templateV4.xlsx');
   const buffer = await response.arrayBuffer();
   const workbook = new ExcelJS.Workbook();
@@ -119,10 +132,8 @@ const excelReport = async (data: ProjectReport[], infoData: ExcelData) => {
         formula: `=+D${rowNumber}*G${rowNumber}`,
         date1904: false,
       };
-      subtaskRow.getCell('I').numFmt =
-        '_-"S/"* #,##0.00_-;-"S/"* #,##0.00_-;_-"S/"* "-"??_-;_-@_-';
-      subtaskRow.getCell('D').numFmt =
-        '_-"S/"* #,##0.00_-;-"S/"* #,##0.00_-;_-"S/"* "-"??_-;_-@_-';
+      subtaskRow.getCell('I').numFmt = moneyFormat;
+      subtaskRow.getCell('D').numFmt = moneyFormat;
       subtaskRow.getCell('G').numFmt = '0%';
       subtaskRow.getCell('H').numFmt = '0%';
       rowNumber++;
@@ -171,7 +182,168 @@ const excelReport = async (data: ProjectReport[], infoData: ExcelData) => {
   };
 
   wk.pageSetup.printArea = 'A1:K' + (endLine + 13);
+  exportExcel('userReport', workbook);
+};
 
+const excelContracReport = async (project: Report) => {
+  const response = await fetch('/templates/report_template_project.xlsx');
+  const buffer = await response.arrayBuffer();
+  const workbook = new ExcelJS.Workbook();
+  await workbook.xlsx.load(buffer);
+  // Obtener la hoja de cálculo
+  const wk = workbook.getWorksheet('REPORTE');
+  let rowNumber = 21;
+  const { DENIED, DONE, INREVIEW, LIQUIDATION, PROCESS, UNRESOLVED } =
+    project.taskInfo;
+  const totalProcesstask = PROCESS + DENIED + INREVIEW;
+  const projectRow = wk.insertRow(rowNumber, [
+    '',
+    'Proyecto',
+    project.name,
+    project.balance,
+    project.spending,
+    project.price,
+    UNRESOLVED,
+    totalProcesstask,
+    DONE,
+    LIQUIDATION,
+  ]);
+  rowNumber++;
+  fillRows(projectRow, 2, 10, 'D9E1F2');
+  borderProjectStyle(projectRow);
+  formatExcelStyle({ row: projectRow, positions: 'DEF', format: moneyFormat });
+  fontExcelStyle({
+    row: projectRow,
+    positions: 'BCDEFGHIJ',
+    color: 'FF000000',
+    isBold: true,
+    size: 9,
+    name: 'Century Gothic',
+  });
+  if (project.areas) {
+    rowNumber = recursionProject(wk, project.areas, rowNumber, 'FF666F88');
+  }
+  wk.pageSetup.printArea = 'A1:K' + (rowNumber + 13);
+
+  exportExcel('project-report', workbook);
+};
+const fillRows = (
+  row: ExcelJS.Row,
+  posInit: number,
+  posFinish: number,
+  color: string
+) => {
+  for (let col = posInit; col <= posFinish; col++) {
+    const projectCell = row.getCell(col);
+    projectCell.fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: color },
+    };
+  }
+};
+const borderProjectStyle = (row: ExcelJS.Row) => {
+  row.getCell('B').border = {
+    left: { style: 'medium' },
+    right: { style: 'medium' },
+  };
+  row.getCell('D').border = {
+    left: { style: 'thin' },
+    right: { style: 'thin' },
+  };
+  row.getCell('F').border = {
+    left: { style: 'thin' },
+    right: { style: 'thin' },
+  };
+  row.getCell('H').border = {
+    left: { style: 'thin' },
+    right: { style: 'thin' },
+  };
+  row.getCell('J').border = {
+    left: { style: 'thin' },
+    right: { style: 'medium' },
+  };
+};
+const fontExcelStyle = ({
+  row,
+  positions,
+  color,
+  isBold,
+  size,
+  name,
+}: FontExcelStyle) => {
+  const splitPositions = positions.split('');
+  splitPositions.forEach(pos => {
+    row.getCell(pos).font = {
+      color: { argb: color },
+      bold: isBold,
+      size,
+      name,
+    };
+  });
+};
+const formatExcelStyle = ({ row, positions, format }: formatExcelStyle) => {
+  const splitPositions = positions.split('');
+  splitPositions.forEach(pos => {
+    row.getCell(pos).numFmt = format;
+  });
+};
+const recursionProject = (
+  wk: ExcelJS.Worksheet,
+  dataRows: Report[],
+  rowNumber: number,
+  colorARGB: string
+) => {
+  dataRows.forEach(dataRow => {
+    const { DENIED, DONE, INREVIEW, LIQUIDATION, PROCESS, UNRESOLVED } =
+      dataRow.taskInfo;
+    const totalProcesstask = PROCESS + DENIED + INREVIEW;
+    const row = wk.insertRow(rowNumber, [
+      null,
+      dataRow.item,
+      dataRow.name,
+      dataRow.balance,
+      dataRow.spending,
+      dataRow.price,
+      UNRESOLVED,
+      totalProcesstask,
+      DONE,
+      LIQUIDATION,
+    ]);
+    borderProjectStyle(row);
+    fillRows(row, 2, 10, colorARGB);
+    formatExcelStyle({ row, positions: 'DEF', format: moneyFormat });
+    fontExcelStyle({
+      row,
+      positions: 'BCDEFGHIJ',
+      color: 'FFFFFF',
+      isBold: true,
+      size: 8,
+      name: 'Century Gothic',
+    });
+    rowNumber++;
+    let newDataRow: { data: Report[]; color: string } | null = null;
+    if (dataRow.indexTasks?.length) {
+      newDataRow = { data: dataRow.indexTasks, color: 'FF788199' };
+    }
+    if (dataRow.tasks?.length)
+      newDataRow = { data: dataRow.tasks, color: 'FF8990A2' };
+    if (dataRow.tasks_2?.length)
+      newDataRow = { data: dataRow.tasks_2, color: 'FFA3A8B7' };
+    if (dataRow.tasks_3?.length)
+      newDataRow = { data: dataRow.tasks_3, color: 'FFB5BAC9' };
+    if (newDataRow) {
+      rowNumber = recursionProject(
+        wk,
+        newDataRow.data,
+        rowNumber,
+        newDataRow.color
+      );
+    }
+  });
+  return rowNumber;
+};
+const exportExcel = async (name: string, workbook: ExcelJS.Workbook) => {
   const editedBuffer = await workbook.xlsx.writeBuffer();
   const editedBlob = new Blob([editedBuffer], {
     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -179,9 +351,8 @@ const excelReport = async (data: ProjectReport[], infoData: ExcelData) => {
   const editedUrl = URL.createObjectURL(editedBlob);
   const a = document.createElement('a');
   a.href = editedUrl;
-  a.download = 'edited-data.xlsx';
+  a.download = name;
   a.click();
   URL.revokeObjectURL(editedUrl);
 };
-
-export { excelReport };
+export { excelReport, excelContracReport };

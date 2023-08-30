@@ -13,6 +13,7 @@ import Portal from '../../portal/Portal';
 import { dropIn } from '../../../animations/animations';
 import useArchiver from '../../../hooks/useArchiver';
 import ProjectDetails from '../projectDetails/ProjectDetails';
+import { excelSimpleReport } from '../../../utils/generateExcel';
 
 interface ProjectCardProps {
   editProject: (value: ProjectType) => void;
@@ -43,6 +44,12 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
       .then(() => onSave?.(project.specialityId));
   };
 
+  const handleReports = () => {
+    axiosInstance
+      .get(`projects/price/${project.id}`)
+      .then(res => excelSimpleReport(res.data, 'areas'));
+  };
+
   const optionsData: Option[] = [
     {
       name: 'Editar',
@@ -61,6 +68,12 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
       type: 'button',
       icon: 'file-zipper',
       function: handleArchiver,
+    },
+    {
+      name: 'Reporte',
+      type: 'button',
+      icon: 'file-zipper',
+      function: handleReports,
     },
     {
       name: 'Eliminar',

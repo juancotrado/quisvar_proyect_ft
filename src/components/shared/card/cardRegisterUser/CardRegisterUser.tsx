@@ -8,6 +8,7 @@ import Button from '../../button/Button';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import InputText from '../../Input/Input';
 import { UserForm, User } from '../../../../types/types';
+import { validateEmail } from '../../../../utils/customValidatesForm';
 interface CardRegisterUserProps {
   onSave?: () => void;
   user?: User | null;
@@ -84,13 +85,12 @@ const CardRegisterUser = ({ user, onSave }: CardRegisterUserProps) => {
         <InputText
           {...register('email', {
             required: true,
-            pattern: /^[\w]+(\.[\w]+)*@[\w]+(\.[\w]+)*\.[a-zA-Z]{2,5}$/i,
+            validate: validateEmail,
           })}
           errors={errors}
           placeholder="Correo"
           label="Correo"
           name="email"
-          disabled={user ? true : false}
         />
         {!user && (
           <InputText
@@ -123,7 +123,6 @@ const CardRegisterUser = ({ user, onSave }: CardRegisterUserProps) => {
             label="DNI"
             errors={errors}
             type="number"
-            disabled={user ? true : false}
           />
           <InputText
             {...register('phone')}

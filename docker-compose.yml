@@ -2,10 +2,10 @@ version: '3.3'
 
 services:
   builder:
-    # image: node:alpine
-    build:
-      context: ./
-      dockerfile: Dockerfile
+    image: node:alpine
+    # build:
+    #   context: ./
+    #   dockerfile: Dockerfile
     container_name: project_frontend
     entrypoint: /bin/sh
     restart: always

@@ -23,7 +23,9 @@ interface EmployeeList {
 }
 const CardGenerateReport = () => {
   const { userSession } = useSelector((state: RootState) => state);
+  const [coordinator, setCoordinator] = useState('');
   const { users } = useListUsers();
+  const { users: modedators } = useListUsers(['MOD', 'ADMIN']);
   const {
     handleSubmit,
     register,
@@ -61,6 +63,7 @@ const CardGenerateReport = () => {
         const { firstName, lastName, dni, phone } = res.data.user.profile;
         const infoData = {
           ...data,
+          manager: coordinator,
           initialDate,
           untilDate,
           totalDays,
@@ -71,7 +74,6 @@ const CardGenerateReport = () => {
         };
         excelReport(res.data.subtask, infoData);
       });
-    setEmployee({ id: 0, name: '' });
   };
 
   return (
@@ -118,7 +120,7 @@ const CardGenerateReport = () => {
             type="date"
           />
         </div>
-        <Input
+        {/* <Input
           label="Coordinador de proyecto:"
           {...register('manager', {
             required: 'Este campo es obligatorio',
@@ -128,8 +130,20 @@ const CardGenerateReport = () => {
           type="text"
           placeholder="Nombre del coordinador"
           errors={errors}
+        /> */}
+        <DropDownSimple
+          data={modedators}
+          itemKey="id"
+          label="Coordinador de proyecto:"
+          textField="name"
+          type="search"
+          name="employees"
+          selector
+          className="report-employee-list"
+          placeholder="Para otros"
+          defaultInput={employee?.name}
+          valueInput={name => setCoordinator(name)}
         />
-
         <Input
           label="Concepto:"
           {...register('concept', {

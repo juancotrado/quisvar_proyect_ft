@@ -12,7 +12,6 @@ import DotsOption from '../../shared/dots/DotsOption';
 import Portal from '../../portal/Portal';
 import { dropIn } from '../../../animations/animations';
 import useArchiver from '../../../hooks/useArchiver';
-import ProjectDetails from '../projectDetails/ProjectDetails';
 import { excelSimpleReport } from '../../../utils/generateExcel';
 
 interface ProjectCardProps {
@@ -106,33 +105,39 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
             CUI: {project.CUI ? project.CUI : '123456'}
           </p>
           <h3 className="project-card-cordinator">Nombre: {project.name}</h3>
+          <div className="project-card-date">
+            <p className="project-card-cordinator">
+              <b>Descripción:</b> {project.description}
+            </p>
+            <p>
+              <b>Ubicacion:</b> {project.department} / {project.province} /{' '}
+              {project.district}
+            </p>
+            {projectId ? (
+              <button
+                className="projec-card-see-more"
+                type="button"
+                onClick={() => {
+                  navigate(``);
+                  setProjectId(null);
+                }}
+              >
+                Ver menos
+              </button>
+            ) : (
+              <button
+                className="projec-card-see-more"
+                type="button"
+                onClick={() => {
+                  navigate(`proyecto/${project.id}`);
+                  setProjectId(project.id);
+                }}
+              >
+                Ver más detalles
+              </button>
+            )}
+          </div>
         </div>
-      </div>
-      <div className="project-card-date">
-        <p className="project-card-cordinator">
-          <b>Descripción:</b> {project.description}
-        </p>
-        <p>
-          <b>Ubicacion:</b> {project.department} / {project.province} /{' '}
-          {project.district}
-        </p>
-        {projectId ? (
-          <button
-            className="projec-card-see-more"
-            type="button"
-            onClick={() => setProjectId(null)}
-          >
-            Ver menos
-          </button>
-        ) : (
-          <button
-            className="projec-card-see-more"
-            type="button"
-            onClick={() => setProjectId(project.id)}
-          >
-            Ver más detalles
-          </button>
-        )}
       </div>
       <div className="project-card-footer-option">
         <div className="project-card-footer">
@@ -204,7 +209,6 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
           )}
         </div>
       </div>
-      {projectId && <ProjectDetails projectId={projectId} />}
     </div>
   );
 };

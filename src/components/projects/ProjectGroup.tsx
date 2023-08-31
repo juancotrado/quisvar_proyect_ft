@@ -88,76 +88,78 @@ const ProjectGroup = ({ group, editProject, onSave }: ProjectGroup) => {
           onSave={toggleSaveChanges}
         />
       ))}
-      <div className="projectGroup-head-options">
-        {stageList && (
-          <DropDownStage
-            data={stageList}
-            label="Seleccionar Etapa"
-            itemKey="id"
-            textField="name"
-            valueInput={(_a, b) => setStageId(parseInt(b))}
-            addButton={() => {
-              setOpenModal(true);
-            }}
-          />
-        )}
-      </div>
-      <CardAddStage
-        isOpen={openModal}
-        size={30}
-        onChangeStatus={() => setOpenModal(!openModal)}
-      >
-        <div className="projectGroup-add-stage-container">
-          <div className="projectGroup-container-close-stage">
-            <span className="projectGroup-title-stage">
-              Añadir Nueva Etapa al proyecto
-            </span>
-            <Button
-              icon="close"
-              className="projectGroup-close-button-stage"
-              onClick={() => setOpenModal(!openModal)}
-            />
-          </div>
-          <div className="projectGroup-add-stage-list">
-            <span className="projectGroup-add-stage-list-label">
-              Seleccionar Etapa Origen:
-            </span>
-            {stageList && (
-              <DropDownStage
-                data={stageList}
-                label="Seleccionar Etapa"
-                itemKey="id"
-                textField="name"
-                valueInput={(_a, b) => setOldStageId(parseInt(b))}
-              />
-            )}
-          </div>
-          <div className="projectGroup-add-stage-list">
-            <span className="projectGroup-add-stage-list-label">
-              Seleccionar Etapa Nueva:
-            </span>
-            {filterStage && (
-              <DropDownStage
-                data={filterStage}
-                label="Seleccionar Etapa"
-                itemKey="id"
-                textField="name"
-                valueInput={(_a, b) => setNewStageId(parseInt(b))}
-              />
-            )}
-          </div>
-          <div className="projectGroup-container-send-stage">
-            <Button
-              text="Crear Nueva Etapa"
-              className="projectGroup-send-button-stage"
-              onClick={() => {
-                toggleNewProject();
-                setOpenModal(!openModal);
+      <div className="projectGroup-option-container">
+        <div className="projectGroup-head-options">
+          {stageList && (
+            <DropDownStage
+              data={stageList}
+              label="Seleccionar Etapa"
+              itemKey="id"
+              textField="name"
+              valueInput={(_a, b) => setStageId(parseInt(b))}
+              addButton={() => {
+                setOpenModal(true);
               }}
             />
-          </div>
+          )}
         </div>
-      </CardAddStage>
+        <CardAddStage
+          isOpen={openModal}
+          size={30}
+          onChangeStatus={() => setOpenModal(!openModal)}
+        >
+          <div className="projectGroup-add-stage-container">
+            <div className="projectGroup-container-close-stage">
+              <span className="projectGroup-title-stage">
+                Añadir Nueva Etapa al proyecto
+              </span>
+              <Button
+                icon="close"
+                className="projectGroup-close-button-stage"
+                onClick={() => setOpenModal(!openModal)}
+              />
+            </div>
+            <div className="projectGroup-add-stage-list">
+              <span className="projectGroup-add-stage-list-label">
+                Seleccionar Etapa Origen:
+              </span>
+              {stageList && (
+                <DropDownStage
+                  data={stageList}
+                  label="Seleccionar Etapa"
+                  itemKey="id"
+                  textField="name"
+                  valueInput={(_a, b) => setOldStageId(parseInt(b))}
+                />
+              )}
+            </div>
+            <div className="projectGroup-add-stage-list">
+              <span className="projectGroup-add-stage-list-label">
+                Seleccionar Etapa Nueva:
+              </span>
+              {filterStage && (
+                <DropDownStage
+                  data={filterStage}
+                  label="Seleccionar Etapa"
+                  itemKey="id"
+                  textField="name"
+                  valueInput={(_a, b) => setNewStageId(parseInt(b))}
+                />
+              )}
+            </div>
+            <div className="projectGroup-container-send-stage">
+              <Button
+                text="Crear Nueva Etapa"
+                className="projectGroup-send-button-stage"
+                onClick={() => {
+                  toggleNewProject();
+                  setOpenModal(!openModal);
+                }}
+              />
+            </div>
+          </div>
+        </CardAddStage>
+      </div>
     </div>
   );
 };

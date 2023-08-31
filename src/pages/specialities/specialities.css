@@ -3,7 +3,12 @@
   overflow-y: hidden;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  max-width: 1820px;
+  margin-left: auto;
+  margin-right: auto;
 }
+
 .speciality-head {
   display: flex;
   justify-content: space-between;
@@ -23,22 +28,26 @@
 .speciality-title-span {
   color: var(--color-primary);
 }
+
 .speciality-add {
   background-color: #ffffff00;
   gap: 0.4rem;
   color: var(--color-primary);
 }
+
 .speciality-add:hover {
   background-color: #ffffff;
   gap: 0.4rem;
   color: var(--color-tertiary);
 }
+
 .speciality-main {
   height: calc(100vh - var(--header-height) - 103px);
   display: flex;
   align-items: flex-start;
   padding-bottom: 2rem;
 }
+
 .speciality-card-container {
   width: 30%;
   display: flex;
@@ -48,18 +57,21 @@
   overflow-y: auto;
   height: 100%;
 }
+
 .speciality-project-aditional {
   width: 100%;
   height: 100%;
 }
+
 .speciality-project-paragraph {
   text-align: center;
   font-size: 1.5rem;
   margin-top: 20%;
   color: var(--color-secondary);
 }
+
 .speciality-project-container {
-  width: 100%;
+  width: 40rem;
   padding: 0 1rem 0 1rem;
   gap: 1rem;
   overflow-y: auto;

@@ -13,6 +13,7 @@ import Portal from '../../portal/Portal';
 import { dropIn } from '../../../animations/animations';
 import useArchiver from '../../../hooks/useArchiver';
 import { excelSimpleReport } from '../../../utils/generateExcel';
+import formatDate from '../../../utils/formatDate';
 
 interface ProjectCardProps {
   editProject: (value: ProjectType) => void;
@@ -44,9 +45,32 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
   };
 
   const handleReports = () => {
-    axiosInstance
-      .get(`projects/price/${project.id}`)
-      .then(res => excelSimpleReport(res.data, 'areas'));
+    axiosInstance.get(`projects/price/${project.id}`).then(res => {
+      const { department, district, province, startDate, untilDate, ...data } =
+        res.data;
+      const { firstName, lastName } = res.data.moderator.profile;
+      const initialDate = formatDate(new Date(startDate), {
+        day: 'numeric',
+        weekday: 'long',
+        month: 'long',
+        year: 'numeric',
+      });
+      const finishDate = formatDate(new Date(untilDate), {
+        day: 'numeric',
+        weekday: 'long',
+        month: 'long',
+        year: 'numeric',
+      });
+      const infoData = {
+        department,
+        district,
+        province,
+        initialDate,
+        finishDate,
+        fullName: firstName + ' ' + lastName,
+      };
+      excelSimpleReport(data, infoData, 'areas');
+    });
   };
 
   const optionsData: Option[] = [

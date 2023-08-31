@@ -14,7 +14,14 @@ interface formatExcelStyle {
   positions: string;
   format: string;
 }
-
+interface InfoDataReport {
+  department: string;
+  district: string;
+  province: string;
+  initialDate: string;
+  finishDate: string;
+  fullName: string;
+}
 const reportLvl = {
   indexTasks: 'Area',
   areas: 'proyecto',
@@ -35,6 +42,20 @@ const reportColorSecond = {
   tasks: 'FF8990A2',
   tasks_2: 'FFA3A8B7',
   tasks_3: 'FFB5BAC9',
+};
+const reporTitle = {
+  areas: 'INFORME PARCIAL DEL PROYECTO',
+  indexTasks: 'INFORME PARCIAL DEL AREA',
+  tasks: 'INFORME PARCIAL DEL NIVEL',
+  tasks_2: 'INFORME PARCIAL DEL NIVEL',
+  tasks_3: 'INFORME PARCIAL DEL PROYECTO',
+};
+const reportCoordinator = {
+  areas: 'CC  COORDINADOR DEL PROYECTO : ',
+  indexTasks: 'CC  COORDINADOR DEL AREA : ',
+  tasks: 'CC  COORDINADOR DEL AREA :',
+  tasks_2: 'CC  COORDINADOR DEL AREA :',
+  tasks_3: 'CC  COORDINADOR DEL AREA :',
 };
 const moneyFormat =
   '_-"S/"* #,##0.00_-;-"S/"* #,##0.00_-;_-"S/"* "-"??_-;_-@_-';
@@ -208,6 +229,7 @@ const excelReport = async (data: ProjectReport[], infoData: ExcelData) => {
 };
 const excelSimpleReport = async (
   data: Report,
+  infoData: InfoDataReport,
   option: 'indexTasks' | 'areas' | 'tasks' | 'tasks' | 'tasks_3'
 ) => {
   const response = await fetch('/templates/report_template_project.xlsx');
@@ -216,6 +238,15 @@ const excelSimpleReport = async (
   await workbook.xlsx.load(buffer);
   // Obtener la hoja de cálculo
   const wk = workbook.getWorksheet('REPORTE');
+
+  wk.getCell('C1').value = reporTitle[option];
+  wk.getCell('C5').value = reportCoordinator[option];
+  wk.getCell('D5').value = infoData.fullName;
+  wk.getCell('D7').value = infoData.department;
+  wk.getCell('D8').value = infoData.province;
+  wk.getCell('D9').value = infoData.district;
+  wk.getCell('D11').value = infoData.initialDate;
+  wk.getCell('D12').value = infoData.finishDate;
   let rowNumber = 21;
   const { DENIED, DONE, INREVIEW, LIQUIDATION, PROCESS, UNRESOLVED } =
     data.taskInfo;
@@ -251,7 +282,7 @@ const excelSimpleReport = async (
     rowNumber,
     reportColorSecond[option]
   );
-  wk.pageSetup.printArea = 'A1:K' + (rowNumber + 13);
+  wk.pageSetup.printArea = 'A1:K' + (rowNumber + 3);
 
   exportExcel('project-report', workbook);
 };

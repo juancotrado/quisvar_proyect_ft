@@ -17,6 +17,7 @@ import {
   validateWhiteSpace,
 } from '../../../utils/customValidatesForm';
 import { excelSimpleReport } from '../../../utils/generateExcel';
+import formatDate from '../../../utils/formatDate';
 
 type typeObj = { [key: string]: any };
 
@@ -59,10 +60,32 @@ const LabelChip = ({
     // console.log('areaId', itemKey);
 
     axiosInstance.get(`projects/price/${valuesQuery?.projectId}`).then(res => {
-      const findArea = res.data.areas.find(
-        (area: Report) => area.id === itemKey
-      );
-      excelSimpleReport(findArea, 'indexTasks');
+      const { department, district, province, startDate, untilDate, ...data } =
+        res.data;
+      const initialDate = formatDate(new Date(startDate), {
+        day: 'numeric',
+        weekday: 'long',
+        month: 'long',
+        year: 'numeric',
+      });
+      const finishDate = formatDate(new Date(untilDate), {
+        day: 'numeric',
+        weekday: 'long',
+        month: 'long',
+        year: 'numeric',
+      });
+
+      const findArea = data.areas.find((area: Report) => area.id === itemKey);
+      const { firstName, lastName } = findArea.user.profile;
+      const infoData = {
+        department,
+        district,
+        province,
+        initialDate,
+        finishDate,
+        fullName: firstName + ' ' + lastName,
+      };
+      excelSimpleReport(findArea, infoData, 'indexTasks');
     });
   };
 

@@ -186,7 +186,7 @@ const excelReport = async (data: ProjectReport[], infoData: ExcelData) => {
 
   const sumTotalCell = 'I' + (endLine + 2);
   wk.getCell(sumTotalCell).value = {
-    formula: `SUM(I28:G${endLine})`,
+    formula: `SUM(I28:I${endLine})`,
     date1904: false,
   };
   const salaryAdvanceCell = 'I' + (endLine + 3);

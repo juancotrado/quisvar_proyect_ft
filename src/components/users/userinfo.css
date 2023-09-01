@@ -1,11 +1,11 @@
 .user-container {
   display: grid;
-  grid-template-columns: repeat(7, minmax(0, 1fr));
+  grid-template-columns: repeat(9, minmax(0, 1fr));
   width: 100%;
   height: 3.7rem;
   background-color: #fff;
   border-radius: 0.3rem;
-  border-bottom: 0.25rem solid var(--color-quaternay);
+  border-bottom: 0.15rem solid var(--color-quaternay);
 }
 
 .col-span {
@@ -50,8 +50,8 @@
 }
 
 .switch-status {
-  width: 4rem;
-  height: 2rem;
+  width: 2rem;
+  height: 1rem;
   padding: 0.2rem;
   text-transform: uppercase;
   color: #fff;
@@ -70,7 +70,7 @@
   display: flex;
   font-size: 0.5rem;
   align-items: center;
-  width: 1.5rem;
+  width: 0.5rem;
   height: 100%;
   background-color: var(--color-unresolved);
   border-radius: 30rem;
@@ -97,8 +97,8 @@
   height: 2.5rem;
 }
 .role-delete-icon {
-  width: 2.4rem;
-  height: 2.4rem;
+  width: 1.7rem;
+  aspect-ratio: 1;
   padding: 0;
   margin: 0;
   background-color: var(--color-unresolved);
@@ -114,4 +114,20 @@
   background-color: var(--color-menu);
   height: 1.7rem;
   width: 95%;
+}
+.cardSubtaskProcess-files-name-contain {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+.cardSubtaskProcess-files-btn {
+  position: absolute;
+  right: -10px;
+  top: -10px;
+}
+.cardSubtaskProcess-files-btn-delete {
+  border: none;
+  background-color: transparent;
+  padding: 0;
 }

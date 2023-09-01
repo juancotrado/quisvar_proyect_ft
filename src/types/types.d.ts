@@ -138,6 +138,8 @@ export type User = {
   profile: Profile;
   role: UserRoleType;
   status?: boolean;
+  hasContract: boolean;
+  hasCv: boolean;
 };
 type Profile = {
   id: number;

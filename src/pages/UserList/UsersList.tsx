@@ -65,6 +65,9 @@ const UsersList = () => {
           <div className="header-list-status">ESTADO</div>
           <div className="header-list-dni">CARGO</div>
           <div className="header-list-phone">CELULAR</div>
+          <div className="header-list-phone">CV</div>
+          <div className="header-list-phone">CONTRATO</div>
+
           <div className="header-list-edit">EDITAR</div>
         </div>
         <div className="user-container-list">
@@ -72,9 +75,8 @@ const UsersList = () => {
             <UserInfo
               key={user.id}
               user={user}
-              onUpdateStatus={getUsers}
+              getUsers={getUsers}
               onUpdate={() => editUser(user)}
-              onDelete={() => getUsers()}
             />
           ))}
         </div>

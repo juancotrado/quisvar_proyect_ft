@@ -5,11 +5,12 @@ import ButtonDelete from '../shared/button/ButtonDelete';
 import './userinfo.css';
 import { useState } from 'react';
 import SelectOptions from '../shared/select/Select';
-import { axiosInstance } from '../../services/axiosInstance';
+import { URL, axiosInstance } from '../../services/axiosInstance';
 import { spring } from '../../animations/animations';
 import { getListByRole, verifyByRole } from '../../utils/roles';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
+import UploadFile from '../shared/uploadFile/UploadFile';
 
 // const roleList = [
 //   { id: 'SUPER_ADMIN', value: 'GERENTE GENERAL' },
@@ -23,15 +24,9 @@ import { RootState } from '../../store';
 interface UserInfoProps {
   user: User;
   onUpdate?: () => void;
-  onUpdateStatus?: () => void;
-  onDelete?: () => void;
+  getUsers?: () => void;
 }
-const UserInfo = ({
-  user,
-  onUpdate,
-  onUpdateStatus,
-  onDelete,
-}: UserInfoProps) => {
+const UserInfo = ({ user, onUpdate, getUsers }: UserInfoProps) => {
   const [isOn, setIsOn] = useState(user.status);
   const [openRole, setOpenRole] = useState(false);
   const { userSession } = useSelector((state: RootState) => state);
@@ -42,7 +37,7 @@ const UserInfo = ({
 
   const handleChangeStatus = async () => {
     const _data = { status: !isOn, id: user.id };
-    await axiosInstance.patch(`users/${user.id}`, _data).then(onUpdateStatus);
+    await axiosInstance.patch(`users/${user.id}`, _data).then(getUsers);
   };
 
   const handleChangeRole = async ({
@@ -51,9 +46,7 @@ const UserInfo = ({
     const role = target.value;
     const _dataRole = { role, id: user.id };
     setOpenRole(false);
-    await axiosInstance
-      .patch(`users/${user.id}`, _dataRole)
-      .then(onUpdateStatus);
+    await axiosInstance.patch(`users/${user.id}`, _dataRole).then(getUsers);
   };
   const roleLimit = verifyByRole(user.role, userSession.role);
   return (
@@ -114,6 +107,57 @@ const UserInfo = ({
       </div>
       <div className="col-span phone-container">{profile.description}</div>
       <div className="col-span phone-container">{profile.phone}</div>
+      {!user.hasCv ? (
+        <UploadFile
+          text="Subir Archivo"
+          onSave={getUsers}
+          uploadName="fileUser"
+          URL={`/files/uploadFileUser/${user.id}?isContract=false`}
+        />
+      ) : (
+        <div className="col-span">
+          <figure className="cardSubtaskProcess-files-icon">
+            <a href={`${URL}/file-user/cvs/${user.id}.pdf`} target="_blank">
+              <img src="/svg/file-download.svg" alt="W3Schools" />
+              <div className="cardSubtaskProcess-files-btn">
+                <ButtonDelete
+                  icon="trash-red"
+                  onSave={getUsers}
+                  url={`/removeFileUser/${user.id}?isContract=false`}
+                  className="cardSubtaskProcess-files-btn-delete"
+                />
+              </div>
+            </a>
+          </figure>
+        </div>
+      )}
+      {!user.hasContract ? (
+        <UploadFile
+          text="Subir Archivo"
+          uploadName="fileUser"
+          onSave={getUsers}
+          URL={`/files/uploadFileUser/${user.id}?isContract=true`}
+        />
+      ) : (
+        <div className="col-span">
+          <figure className="cardSubtaskProcess-files-icon">
+            <a
+              href={`${URL}/file-user/contracts/${user.id}.pdf`}
+              target="_blank"
+            >
+              <img src="/svg/file-download.svg" alt="W3Schools" />
+            </a>
+            <div className="cardSubtaskProcess-files-btn">
+              <ButtonDelete
+                icon="trash-red"
+                url={`/files/removeFileUser/${user.id}?isContract=true`}
+                onSave={getUsers}
+                className="cardSubtaskProcess-files-btn-delete"
+              />
+            </div>
+          </figure>
+        </div>
+      )}
       {roleLimit && (
         <div className="col-span actions-container">
           <Button icon="pencil" className="role-btn" onClick={onUpdate} />
@@ -122,7 +166,7 @@ const UserInfo = ({
             disabled={user.id === userSession.id}
             url={`/users/${user.id}`}
             className="role-delete-icon"
-            onSave={onDelete}
+            onSave={getUsers}
           />
         </div>
       )}

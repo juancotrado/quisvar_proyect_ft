@@ -36,7 +36,7 @@ const Login = () => {
   return (
     <div className="login">
       <figure className="login-figure">
-        <img alt="" src="/img/image_example.png" className="login-figure-img" />
+        <img alt="" src="/img/room.jpg" className="login-figure-img" />
         <div className="login-contain-logo">
           <img src="/img/dhyrium_logo.png" alt="" />
         </div>

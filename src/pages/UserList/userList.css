@@ -8,7 +8,24 @@
   display: flex;
   justify-content: center;
 }
-
+.userList-upload {
+  width: 16rem;
+}
+.userList-general-files {
+  position: relative;
+}
+.userList-general-files-contain {
+  position: absolute;
+  width: 0;
+  overflow-y: auto;
+  height: 7rem;
+}
+.isShowGeneralFiles {
+  width: 20rem;
+  padding: 1rem;
+  background-color: var(--color-menu);
+  border: 0.3rem solid white;
+}
 .user-container-list {
   display: flex;
   flex-direction: column;

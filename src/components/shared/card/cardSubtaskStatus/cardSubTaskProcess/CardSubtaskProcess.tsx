@@ -260,6 +260,7 @@ const CardSubtaskProcess = ({ subTask, adminId }: CardSubtaskProcess) => {
                   name={String(user.user.id)}
                   defaultValue={user.percentage}
                   className="input-percentage-value"
+                  disabled={!areAuthorizedUsers}
                 />
                 %
               </div>

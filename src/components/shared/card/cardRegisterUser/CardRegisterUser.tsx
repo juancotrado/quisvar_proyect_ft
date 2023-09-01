@@ -8,8 +8,10 @@ import Button from '../../button/Button';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import InputText from '../../Input/Input';
 import { UserForm, User } from '../../../../types/types';
+import { validateEmail } from '../../../../utils/customValidatesForm';
 interface CardRegisterUserProps {
   onSave?: () => void;
+  onClose?: () => void;
   user?: User | null;
 }
 
@@ -21,15 +23,22 @@ const InitialValues: UserForm = {
   lastName: '',
   dni: '',
   phone: '',
+  degree: '',
+  description: '',
+  job: '',
 };
 
-const CardRegisterUser = ({ user, onSave }: CardRegisterUserProps) => {
+const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
   const [data, setData] = useState<UserForm>(InitialValues);
+  const [errorPassword, setErrorPassword] = useState<{
+    [key: string]: { [key: string]: string };
+  }>();
   const {
     register,
     handleSubmit,
     setValue,
     reset,
+    watch,
     formState: { errors },
   } = useForm<UserForm>({
     defaultValues: InitialValues,
@@ -52,6 +61,9 @@ const CardRegisterUser = ({ user, onSave }: CardRegisterUserProps) => {
     setValue('firstName', data.firstName);
     setValue('lastName', data.lastName);
     setValue('phone', data.phone);
+    setValue('job', data.job);
+    setValue('degree', data.degree);
+    setValue('description', data.description);
   }, [data]);
 
   const onSubmit: SubmitHandler<UserForm> = async values => {
@@ -69,7 +81,18 @@ const CardRegisterUser = ({ user, onSave }: CardRegisterUserProps) => {
 
   const closeFunctions = () => {
     isOpenModal$.setSubject = false;
+    onClose?.();
+    setErrorPassword({});
     reset();
+  };
+
+  const verifyPasswords = ({ target }: React.FocusEvent<HTMLInputElement>) => {
+    const error = {
+      verifyPassword: { message: 'Las contraseñas no coinciden' },
+    };
+    watch('password') !== target.value
+      ? setErrorPassword(error)
+      : setErrorPassword({});
   };
 
   return (
@@ -81,29 +104,14 @@ const CardRegisterUser = ({ user, onSave }: CardRegisterUserProps) => {
         <h1>
           {user ? 'EDITAR DATOS DE USUARIO' : 'REGISTRO DE NUEVO USUARIO'}
         </h1>
-        <InputText
-          {...register('email', {
-            required: true,
-            pattern:
-              /[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*@[a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,5}/i,
-          })}
-          errors={errors}
-          placeholder="Correo"
-          label="Correo"
-          name="email"
-          disabled={user ? true : false}
-        />
-        {!user && (
-          <InputText
-            {...register('password', { required: true })}
-            errors={errors}
-            placeholder="Contraseña"
-            type="password"
-            autoComplete="no"
-            label="Contraseña"
-          />
-        )}
         <div className="col-input">
+          <InputText
+            {...register('dni', { required: true, maxLength: 9 })}
+            placeholder="N°"
+            label="DNI"
+            errors={errors}
+            type="number"
+          />
           <InputText
             {...register('firstName', { required: true })}
             placeholder="Nombres"
@@ -118,13 +126,38 @@ const CardRegisterUser = ({ user, onSave }: CardRegisterUserProps) => {
           />
         </div>
         <div className="col-input">
+          {!user && (
+            <InputText
+              {...register('password', { required: true })}
+              errors={errors}
+              placeholder="Contraseña"
+              type="password"
+              autoComplete="no"
+              label="Contraseña"
+            />
+          )}
+          {!user && (
+            <InputText
+              errors={errorPassword}
+              name="verifyPassword"
+              onBlur={e => verifyPasswords(e)}
+              placeholder="Confirmar contraseña"
+              type="password"
+              autoComplete="no"
+              label="Confirmar contraseña"
+            />
+          )}
+        </div>
+        <div className="col-input">
           <InputText
-            {...register('dni', { required: true, maxLength: 9 })}
-            placeholder="N°"
-            label="DNI"
+            {...register('email', {
+              required: true,
+              validate: validateEmail,
+            })}
             errors={errors}
-            type="number"
-            disabled={user ? true : false}
+            placeholder="Correo"
+            label="Correo"
+            name="email"
           />
           <InputText
             {...register('phone')}
@@ -132,6 +165,29 @@ const CardRegisterUser = ({ user, onSave }: CardRegisterUserProps) => {
             label="Celular"
             type="number"
             errors={errors}
+          />
+        </div>
+        <div className="col-input">
+          <InputText
+            {...register('job')}
+            placeholder="Profesión"
+            type="text"
+            label="Profesión"
+            errors={errors}
+          />
+          <InputText
+            {...register('degree')}
+            placeholder="Grado"
+            type="text"
+            errors={errors}
+            label="Grado"
+          />
+          <InputText
+            {...register('description')}
+            placeholder="Cargo"
+            type="text"
+            errors={errors}
+            label="Cargo"
           />
         </div>
         <div className="btn-build">

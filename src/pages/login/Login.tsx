@@ -4,10 +4,10 @@ import './login.css';
 import { axiosInstance } from '../../services/axiosInstance';
 import InputText from '../../components/shared/Input/Input';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { validateEmail } from '../../utils/customValidatesForm';
+import { validateDNI } from '../../utils/customValidatesForm';
 
 interface UserForm {
-  email: string;
+  dni: string;
   password: string;
 }
 const Login = () => {
@@ -47,10 +47,10 @@ const Login = () => {
           <div className="form-group">
             <InputText
               label="Correo"
-              placeholder="Email"
-              {...register('email', {
+              placeholder="DNI"
+              {...register('dni', {
                 required: true,
-                validate: validateEmail,
+                validate: validateDNI,
               })}
               type="text"
               errors={errors}

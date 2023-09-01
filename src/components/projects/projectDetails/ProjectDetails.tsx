@@ -4,6 +4,7 @@ import './projectDetails.css';
 import { ProjectDetailsPrice } from '../../../types/types';
 import TemplateDetail from './templateDetail/TemplateDetail';
 import SubtaskDetailsPrice from './subtaskDetails/SubtaskDetailsPrice';
+import TemplateScrolling from './templateDetail/TemplateScrolling';
 interface ProjectDetailsProps {
   projectId: number | null;
 }
@@ -35,65 +36,99 @@ const ProjectDetails = ({ projectId }: ProjectDetailsProps) => {
       {detailsProjects && (
         <ul className="project-grid-container project-detail-project">
           <TemplateDetail data={detailsProjects} />
-          {detailsProjects.areas.map(area => (
-            <div key={area.id} className="project-grid-col-span-total">
-              <ul className="project-detail-area project-grid-container">
+          <TemplateScrolling
+            className="project-grid-col-span-total"
+            tag="Ver más"
+            size={detailsProjects.areas.length !== 0}
+          >
+            {detailsProjects.areas.map(area => (
+              <ul
+                key={area.id}
+                className="project-detail-area project-grid-container"
+              >
                 <TemplateDetail data={area} />
-                {area.indexTasks.map(indexTask => (
-                  <div
-                    key={indexTask.id}
-                    className="project-grid-col-span-total"
-                  >
-                    <ul className="project-detail-area project-grid-container">
-                      <TemplateDetail data={indexTask} />
-                      {indexTask.tasks.map(task => (
-                        <div
-                          key={task.id}
-                          className="project-grid-col-span-total "
+                <TemplateScrolling
+                  className="project-grid-col-span-total"
+                  tag="Ver más"
+                  size={area.indexTasks.length !== 0}
+                >
+                  {area.indexTasks.map(indexTask => (
+                    <div
+                      key={indexTask.id}
+                      className="project-grid-col-span-total"
+                    >
+                      <ul className="project-detail-area project-grid-container">
+                        <TemplateDetail data={indexTask} />
+                        <TemplateScrolling
+                          className="project-grid-col-span-total"
+                          tag="Ver más"
+                          size={indexTask.tasks.length !== 0}
                         >
-                          <ul
-                            key={task.id}
-                            className=" project-detail-indextask project-grid-container "
-                          >
-                            <TemplateDetail data={task} />
-                            {task.tasks_2.map(task_2 => (
-                              <div
-                                key={task_2.id}
-                                className="project-grid-col-span-total "
+                          {indexTask.tasks.map(task => (
+                            <div
+                              key={task.id}
+                              className="project-grid-col-span-total "
+                            >
+                              <ul
+                                key={task.id}
+                                className=" project-detail-indextask project-grid-container "
                               >
-                                <ul
-                                  key={task_2.id}
-                                  className="project-detail-task project-grid-container"
+                                <TemplateDetail data={task} />
+                                <TemplateScrolling
+                                  className="project-grid-col-span-total"
+                                  tag="Ver más"
+                                  size={task.tasks_2.length !== 0}
                                 >
-                                  <TemplateDetail data={task_2} />
-                                  {task_2.tasks_3.map(task_3 => (
+                                  {task.tasks_2.map(task_2 => (
                                     <div
-                                      key={task_3.id}
-                                      className="project-detail-task-2 project-grid-col-span-total "
+                                      key={task_2.id}
+                                      className="project-grid-col-span-total "
                                     >
-                                      <ul
-                                        key={task_3.id}
-                                        className="project-detail-task-3 project-grid-container"
-                                      >
-                                        <TemplateDetail data={task_3} />
+                                      <ul className="project-detail-task project-grid-container">
+                                        <TemplateDetail data={task_2} />
+                                        <TemplateScrolling
+                                          className="project-grid-col-span-total"
+                                          tag="Ver más"
+                                          size={task_2.tasks_3.length !== 0}
+                                        >
+                                          {task_2.tasks_3.map(task_3 => (
+                                            <div
+                                              key={task_3.id}
+                                              className="project-detail-task-2 project-grid-col-span-total "
+                                            >
+                                              <ul className="project-detail-task-3 project-grid-container">
+                                                <TemplateDetail data={task_3} />
+                                              </ul>
+                                            </div>
+                                          ))}
+                                        </TemplateScrolling>
                                       </ul>
                                     </div>
                                   ))}
-                                </ul>
-                              </div>
-                            ))}
-                          </ul>
-                        </div>
-                      ))}
-                    </ul>
-                    {indexTask.subTasks && indexTask.subTasks.length !== 0 && (
-                      <SubtaskDetailsPrice subTasks={indexTask.subTasks} />
-                    )}
-                  </div>
-                ))}
+                                </TemplateScrolling>
+                              </ul>
+                            </div>
+                          ))}
+                        </TemplateScrolling>
+                      </ul>
+                      {indexTask.subTasks &&
+                        indexTask.subTasks.length !== 0 && (
+                          <TemplateScrolling
+                            className="project-grid-col-span-total"
+                            size={true}
+                            tag="Ver tareas"
+                          >
+                            <SubtaskDetailsPrice
+                              subTasks={indexTask.subTasks}
+                            />
+                          </TemplateScrolling>
+                        )}
+                    </div>
+                  ))}
+                </TemplateScrolling>
               </ul>
-            </div>
-          ))}
+            ))}
+          </TemplateScrolling>
         </ul>
       )}
     </div>

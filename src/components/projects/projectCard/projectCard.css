@@ -4,14 +4,14 @@
   justify-content: space-between;
   height: fit-content;
   display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   align-items: center;
   padding: 0.3rem 1rem;
   border-radius: 0.5rem;
 }
 
 .project-card-figure {
-  width: 1.5rem;
+  width: 3rem;
 }
 
 .project-card-info-main {
@@ -66,8 +66,9 @@
 
 .project-card-footer-option {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  height: 100%;
+  align-items: start;
+  justify-content: flex-end;
 }
 
 .project-card-cordinator {
@@ -92,7 +93,7 @@
 .project-card-footer {
   display: flex;
   grid-column: span 1 / span 1;
-  justify-content: space-between;
+  justify-content: end;
 }
 
 .project-btn-view {
@@ -174,6 +175,7 @@
 
 .project-card-option {
   display: flex;
+  padding-top: 0.5rem;
   justify-content: end;
   align-items: end;
   gap: 0.5rem;

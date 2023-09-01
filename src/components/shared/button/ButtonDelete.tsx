@@ -55,7 +55,9 @@ const ButtonDelete = ({
           <img
             src={`/svg/${icon}.svg`}
             alt={`${icon}`}
-            className={imageStyle}
+            className={`${
+              text ? 'btn-main-text' : 'btn-main-img'
+            } ${imageStyle} `}
           />
         )}
         {text}

@@ -42,7 +42,7 @@ const SidebarSpecialityLvlList = ({
   const { role } = useSelector((state: RootState) => state.userSession);
   const [errors, setErrors] = useState<{ [key: string]: any }>({});
   useEffect(() => {
-    setFormData({ name: data.name || '', cod: data.cod || '' });
+    setFormData({ name: data.name ?? '', cod: data.cod ?? '' });
   }, [data.cod, data.name]);
 
   const handleBlurInput = (e: FocusEvent<HTMLInputElement>) => {

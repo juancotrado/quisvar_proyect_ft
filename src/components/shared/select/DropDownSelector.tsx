@@ -8,7 +8,7 @@ import { RootState } from '../../../store';
 import { useSelector } from 'react-redux';
 import { Input } from '../..';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { AreaForm } from '../../../types/types';
+import { AreaForm, Report } from '../../../types/types';
 import { axiosInstance } from '../../../services/axiosInstance';
 import { useNavigate } from 'react-router-dom';
 import useArchiver from '../../../hooks/useArchiver';
@@ -16,6 +16,8 @@ import {
   validateCorrectTyping,
   validateWhiteSpace,
 } from '../../../utils/customValidatesForm';
+import { excelSimpleReport } from '../../../utils/generateExcel';
+import formatDate from '../../../utils/formatDate';
 
 type typeObj = { [key: string]: any };
 
@@ -33,6 +35,7 @@ interface DropDownSelectorProps {
 }
 
 const LabelChip = ({
+  valuesQuery,
   navigateRoute,
   defaultValue,
   itemKey,
@@ -43,6 +46,7 @@ const LabelChip = ({
   defaultValue: string;
   itemKey: number;
   update?: string;
+  valuesQuery?: { [key: string]: string | number | boolean };
   onDelete?: () => void;
   onSave?: () => void;
 }) => {
@@ -52,6 +56,38 @@ const LabelChip = ({
   const navigate = useNavigate();
   const { handleSubmit, register } = useForm<Pick<AreaForm, 'name'>>();
   const { handleArchiver } = useArchiver(itemKey, 'routes');
+  const handleReports = () => {
+    // console.log('areaId', itemKey);
+
+    axiosInstance.get(`projects/price/${valuesQuery?.projectId}`).then(res => {
+      const { department, district, province, startDate, untilDate, ...data } =
+        res.data;
+      const initialDate = formatDate(new Date(startDate), {
+        day: 'numeric',
+        weekday: 'long',
+        month: 'long',
+        year: 'numeric',
+      });
+      const finishDate = formatDate(new Date(untilDate), {
+        day: 'numeric',
+        weekday: 'long',
+        month: 'long',
+        year: 'numeric',
+      });
+
+      const findArea = data.areas.find((area: Report) => area.id === itemKey);
+      const { firstName, lastName } = findArea.user.profile;
+      const infoData = {
+        department,
+        district,
+        province,
+        initialDate,
+        finishDate,
+        fullName: firstName + ' ' + lastName,
+      };
+      excelSimpleReport(findArea, infoData, 'indexTasks');
+    });
+  };
 
   const onSubmitEditArea: SubmitHandler<Pick<AreaForm, 'name'>> = values => {
     axiosInstance.put(`/${update}/${itemKey}`, values).then(() => {
@@ -103,6 +139,12 @@ const LabelChip = ({
               type: 'button',
               icon: 'file-zipper',
               function: handleArchiver,
+            },
+            {
+              name: 'Reporte',
+              type: 'button',
+              icon: 'file-zipper',
+              function: handleReports,
             },
           ]}
         />
@@ -225,6 +267,7 @@ const DropDownSelector = ({
                     update={post}
                     navigateRoute={navigateRoute}
                     defaultValue={`${item[textField]}`}
+                    valuesQuery={valuesQuery}
                     itemKey={item[itemKey]}
                     onSave={() => onSave?.()}
                   />

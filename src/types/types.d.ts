@@ -119,7 +119,13 @@ export type typeSidebarSpecility =
   | 'specialities'
   | 'typespecialities';
 
-export type UserRoleType = 'ADMIN' | 'EMPLOYEE' | 'MOD';
+export type UserRoleType =
+  | 'SUPER_ADMIN'
+  | 'ADMIN'
+  | 'ASSISTANT'
+  | 'SUPER_MOD'
+  | 'MOD'
+  | 'EMPLOYEE';
 
 export interface GruopProject {
   id: number;
@@ -136,6 +142,9 @@ export type User = {
 type Profile = {
   id: number;
   firstName: string;
+  degree: string;
+  description: string;
+  job: string;
   lastName: string;
   dni: string;
   phone: string;
@@ -324,8 +333,34 @@ export interface UserForm {
   lastName: string;
   dni: string;
   phone: string;
+  degree: string;
+  description: string;
+  job: string;
 }
-
+export interface Report {
+  price: number;
+  spending: number;
+  balance: number;
+  taskInfo: TaskInfo;
+  id: number;
+  name: string;
+  areas?: Report[];
+  item?: string;
+  indexTasks?: Report[];
+  subTasks?: SubTask[];
+  tasks?: Report[];
+  tasks_2?: Report[];
+  tasks_3?: Report[];
+}
+export interface TaskInfo {
+  UNRESOLVED: number;
+  PROCESS: number;
+  INREVIEW: number;
+  DENIED: number;
+  DONE: number;
+  LIQUIDATION: number;
+  TOTAL: number;
+}
 interface ReviewListIndexTask {
   id: number;
   item: string;

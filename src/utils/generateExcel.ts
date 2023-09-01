@@ -1,10 +1,66 @@
-import { ProjectReport, ExcelData } from '../types/types';
+import { ProjectReport, ExcelData, Report } from '../types/types';
 import * as ExcelJS from 'exceljs';
 import { getTimeOut, parseUTC } from './formatDate';
-
+interface FontExcelStyle {
+  row: ExcelJS.Row;
+  positions: string;
+  color: string;
+  isBold: boolean;
+  size: number;
+  name: string;
+}
+interface formatExcelStyle {
+  row: ExcelJS.Row;
+  positions: string;
+  format: string;
+}
+interface InfoDataReport {
+  department: string;
+  district: string;
+  province: string;
+  initialDate: string;
+  finishDate: string;
+  fullName: string;
+}
+const reportLvl = {
+  indexTasks: 'Area',
+  areas: 'proyecto',
+  tasks: 'Nivel 1',
+  tasks_2: 'Nivel2',
+  tasks_3: 'nivel3',
+};
+const reportColorFirst = {
+  areas: 'D9E1F2',
+  indexTasks: 'FF666F88',
+  tasks: 'FF788199',
+  tasks_2: 'FF8990A2',
+  tasks_3: 'FFA3A8B7',
+};
+const reportColorSecond = {
+  areas: 'FF666F88',
+  indexTasks: 'FF788199',
+  tasks: 'FF8990A2',
+  tasks_2: 'FFA3A8B7',
+  tasks_3: 'FFB5BAC9',
+};
+const reporTitle = {
+  areas: 'INFORME PARCIAL DEL PROYECTO',
+  indexTasks: 'INFORME PARCIAL DEL AREA',
+  tasks: 'INFORME PARCIAL DEL NIVEL',
+  tasks_2: 'INFORME PARCIAL DEL NIVEL',
+  tasks_3: 'INFORME PARCIAL DEL PROYECTO',
+};
+const reportCoordinator = {
+  areas: 'CC  COORDINADOR DEL PROYECTO : ',
+  indexTasks: 'CC  COORDINADOR DEL AREA : ',
+  tasks: 'CC  COORDINADOR DEL AREA :',
+  tasks_2: 'CC  COORDINADOR DEL AREA :',
+  tasks_3: 'CC  COORDINADOR DEL AREA :',
+};
+const moneyFormat =
+  '_-"S/"* #,##0.00_-;-"S/"* #,##0.00_-;_-"S/"* "-"??_-;_-@_-';
 const excelReport = async (data: ProjectReport[], infoData: ExcelData) => {
   // Cargar la plantilla desde un archivo
-  // const { firstName, lastName, dni, phone, initialDate, untilDate } = infoData;
   const response = await fetch('/templates/report_templateV4.xlsx');
   const buffer = await response.arrayBuffer();
   const workbook = new ExcelJS.Workbook();
@@ -119,10 +175,8 @@ const excelReport = async (data: ProjectReport[], infoData: ExcelData) => {
         formula: `=+D${rowNumber}*G${rowNumber}`,
         date1904: false,
       };
-      subtaskRow.getCell('I').numFmt =
-        '_-"S/"* #,##0.00_-;-"S/"* #,##0.00_-;_-"S/"* "-"??_-;_-@_-';
-      subtaskRow.getCell('D').numFmt =
-        '_-"S/"* #,##0.00_-;-"S/"* #,##0.00_-;_-"S/"* "-"??_-;_-@_-';
+      subtaskRow.getCell('I').numFmt = moneyFormat;
+      subtaskRow.getCell('D').numFmt = moneyFormat;
       subtaskRow.getCell('G').numFmt = '0%';
       subtaskRow.getCell('H').numFmt = '0%';
       rowNumber++;
@@ -132,7 +186,7 @@ const excelReport = async (data: ProjectReport[], infoData: ExcelData) => {
 
   const sumTotalCell = 'I' + (endLine + 2);
   wk.getCell(sumTotalCell).value = {
-    formula: `SUM(I28:G${endLine})`,
+    formula: `SUM(I28:I${endLine})`,
     date1904: false,
   };
   const salaryAdvanceCell = 'I' + (endLine + 3);
@@ -171,7 +225,185 @@ const excelReport = async (data: ProjectReport[], infoData: ExcelData) => {
   };
 
   wk.pageSetup.printArea = 'A1:K' + (endLine + 13);
+  exportExcel('userReport', workbook);
+};
+const excelSimpleReport = async (
+  data: Report,
+  infoData: InfoDataReport,
+  option: 'indexTasks' | 'areas' | 'tasks' | 'tasks' | 'tasks_3'
+) => {
+  const response = await fetch('/templates/report_template_project.xlsx');
+  const buffer = await response.arrayBuffer();
+  const workbook = new ExcelJS.Workbook();
+  await workbook.xlsx.load(buffer);
+  // Obtener la hoja de cálculo
+  const wk = workbook.getWorksheet('REPORTE');
 
+  wk.getCell('C1').value = reporTitle[option];
+  wk.getCell('C5').value = reportCoordinator[option];
+  wk.getCell('D5').value = infoData.fullName;
+  wk.getCell('D7').value = infoData.department;
+  wk.getCell('D8').value = infoData.province;
+  wk.getCell('D9').value = infoData.district;
+  wk.getCell('D11').value = infoData.initialDate;
+  wk.getCell('D12').value = infoData.finishDate;
+  let rowNumber = 21;
+  const { DENIED, DONE, INREVIEW, LIQUIDATION, PROCESS, UNRESOLVED } =
+    data.taskInfo;
+  const totalProcesstask = PROCESS + DENIED + INREVIEW;
+  const projectRow = wk.insertRow(rowNumber, [
+    '',
+    reportLvl[option],
+    data.name,
+    data.balance,
+    data.spending,
+    data.price,
+    UNRESOLVED,
+    totalProcesstask,
+    DONE,
+    LIQUIDATION,
+  ]);
+  rowNumber++;
+  fillRows(projectRow, 2, 10, reportColorFirst[option]);
+  borderProjectStyle(projectRow);
+  formatExcelStyle({ row: projectRow, positions: 'DEF', format: moneyFormat });
+  fontExcelStyle({
+    row: projectRow,
+    positions: 'BCDEFGHIJ',
+    color: 'FF000000',
+    isBold: true,
+    size: 9,
+    name: 'Century Gothic',
+  });
+  const dataReport = data[option] as Report[];
+  rowNumber = recursionProject(
+    wk,
+    dataReport,
+    rowNumber,
+    reportColorSecond[option]
+  );
+  wk.pageSetup.printArea = 'A1:K' + (rowNumber + 3);
+
+  exportExcel('project-report', workbook);
+};
+
+const fillRows = (
+  row: ExcelJS.Row,
+  posInit: number,
+  posFinish: number,
+  color: string
+) => {
+  for (let col = posInit; col <= posFinish; col++) {
+    const projectCell = row.getCell(col);
+    projectCell.fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: color },
+    };
+  }
+};
+const borderProjectStyle = (row: ExcelJS.Row) => {
+  row.getCell('B').border = {
+    left: { style: 'medium' },
+    right: { style: 'medium' },
+  };
+  row.getCell('D').border = {
+    left: { style: 'thin' },
+    right: { style: 'thin' },
+  };
+  row.getCell('F').border = {
+    left: { style: 'thin' },
+    right: { style: 'thin' },
+  };
+  row.getCell('H').border = {
+    left: { style: 'thin' },
+    right: { style: 'thin' },
+  };
+  row.getCell('J').border = {
+    left: { style: 'thin' },
+    right: { style: 'medium' },
+  };
+};
+const fontExcelStyle = ({
+  row,
+  positions,
+  color,
+  isBold,
+  size,
+  name,
+}: FontExcelStyle) => {
+  const splitPositions = positions.split('');
+  splitPositions.forEach(pos => {
+    row.getCell(pos).font = {
+      color: { argb: color },
+      bold: isBold,
+      size,
+      name,
+    };
+  });
+};
+const formatExcelStyle = ({ row, positions, format }: formatExcelStyle) => {
+  const splitPositions = positions.split('');
+  splitPositions.forEach(pos => {
+    row.getCell(pos).numFmt = format;
+  });
+};
+const recursionProject = (
+  wk: ExcelJS.Worksheet,
+  dataRows: Report[],
+  rowNumber: number,
+  colorARGB: string
+) => {
+  dataRows.forEach(dataRow => {
+    const { DENIED, DONE, INREVIEW, LIQUIDATION, PROCESS, UNRESOLVED } =
+      dataRow.taskInfo;
+    const totalProcesstask = PROCESS + DENIED + INREVIEW;
+    const row = wk.insertRow(rowNumber, [
+      null,
+      dataRow.item,
+      dataRow.name,
+      dataRow.balance,
+      dataRow.spending,
+      dataRow.price,
+      UNRESOLVED,
+      totalProcesstask,
+      DONE,
+      LIQUIDATION,
+    ]);
+    borderProjectStyle(row);
+    fillRows(row, 2, 10, colorARGB);
+    formatExcelStyle({ row, positions: 'DEF', format: moneyFormat });
+    fontExcelStyle({
+      row,
+      positions: 'BCDEFGHIJ',
+      color: 'FFFFFF',
+      isBold: true,
+      size: 8,
+      name: 'Century Gothic',
+    });
+    rowNumber++;
+    let newDataRow: { data: Report[]; color: string } | null = null;
+    if (dataRow.indexTasks?.length) {
+      newDataRow = { data: dataRow.indexTasks, color: 'FF788199' };
+    }
+    if (dataRow.tasks?.length)
+      newDataRow = { data: dataRow.tasks, color: 'FF8990A2' };
+    if (dataRow.tasks_2?.length)
+      newDataRow = { data: dataRow.tasks_2, color: 'FFA3A8B7' };
+    if (dataRow.tasks_3?.length)
+      newDataRow = { data: dataRow.tasks_3, color: 'FFB5BAC9' };
+    if (newDataRow) {
+      rowNumber = recursionProject(
+        wk,
+        newDataRow.data,
+        rowNumber,
+        newDataRow.color
+      );
+    }
+  });
+  return rowNumber;
+};
+const exportExcel = async (name: string, workbook: ExcelJS.Workbook) => {
   const editedBuffer = await workbook.xlsx.writeBuffer();
   const editedBlob = new Blob([editedBuffer], {
     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
@@ -179,9 +411,8 @@ const excelReport = async (data: ProjectReport[], infoData: ExcelData) => {
   const editedUrl = URL.createObjectURL(editedBlob);
   const a = document.createElement('a');
   a.href = editedUrl;
-  a.download = 'edited-data.xlsx';
+  a.download = name;
   a.click();
   URL.revokeObjectURL(editedUrl);
 };
-
-export { excelReport };
+export { excelReport, excelSimpleReport };

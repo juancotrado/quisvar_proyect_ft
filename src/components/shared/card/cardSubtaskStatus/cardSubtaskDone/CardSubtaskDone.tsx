@@ -16,7 +16,7 @@ interface CardSubtaskDone {
 const CardSubtaskDone = ({ subTask }: CardSubtaskDone) => {
   const { status } = subTask;
   const { modAuth } = useSelector((state: RootState) => state);
-  const feedBacksReverse = subTask.feedBacks.reverse();
+  const feedBacksReverse = [...subTask.feedBacks].reverse();
   return (
     <div className="cardSubtaskDone">
       <section className="cardSubtaskDone-left-details ">

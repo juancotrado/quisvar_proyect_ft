@@ -50,7 +50,7 @@ const Sidebar = ({
             project.unique ? project.name : name
           }`}</h2>
           <TaskCounter nivelTask={workArea} />
-          <span className={`${profileUser || 'aside-coordinator-off'}`}>
+          <span className={`${!!profileUser || 'aside-coordinator-off'}`}>
             {profileUser
               ? `${profileUser.firstName} ${profileUser.lastName}`
               : ' Agregar Coordinador *'}
@@ -87,7 +87,7 @@ const Sidebar = ({
                 onSave={onUpdate}
                 type="indextasks"
               />
-              {indexTask.unique || (
+              {!indexTask.unique && (
                 <div className="aside-dropdown-content">
                   <ul className="aside-dropdown-sub">
                     {indexTask.tasks.map(task => (
@@ -102,7 +102,7 @@ const Sidebar = ({
                           onSave={onUpdate}
                           type="tasks"
                         />
-                        {task.unique || (
+                        {!task.unique && (
                           <div className="aside-dropdown-content">
                             <ul className="aside-dropdown-sub">
                               {task.tasks_2.map(task2 => (
@@ -119,7 +119,7 @@ const Sidebar = ({
                                     onSave={onUpdate}
                                     type="tasks2"
                                   />
-                                  {task2.unique || (
+                                  {!task2.unique && (
                                     <div className="aside-dropdown-content">
                                       <ul className="aside-dropdown-sub">
                                         {task2.tasks_3.map(task3 => (

@@ -20,10 +20,13 @@ const Login = () => {
   } = useForm<UserForm>();
 
   const sendForm: SubmitHandler<UserForm> = data => {
-    axiosInstance.post('/auth/login', data).then(res => {
-      localStorage.setItem('token', res.data.token);
-      navigate('/home');
-    });
+    axiosInstance
+      .post('/auth/login', data)
+      .then(res => {
+        localStorage.setItem('token', res.data.token);
+        navigate('/home');
+      })
+      .catch(err => console.log(err));
   };
 
   useEffect(() => {
@@ -46,7 +49,7 @@ const Login = () => {
           <img src="/img/dhyrium_logo.png" alt="" />
           <div className="form-group">
             <InputText
-              label="Correo"
+              label="Ingrese DNI"
               placeholder="DNI"
               {...register('dni', {
                 required: true,

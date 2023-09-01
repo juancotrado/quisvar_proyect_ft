@@ -8,6 +8,7 @@ import { SocketContext } from '../../../context/SocketContex';
 import { CardEditInformation, Menu } from '../..';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
+import { assitant_perms } from '../../../utils/roles';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -42,10 +43,6 @@ const Header = () => {
   const handleNotification = () => {
     navigate('lista-de-notificaciones');
   };
-  const handleList = () => {
-    setIsOpen(false);
-    navigate('lista-de-usuarios');
-  };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -60,6 +57,7 @@ const Header = () => {
     { id: 1, title: 'Inicio', link: '/home' },
     { id: 2, title: 'Reportes', link: '/mis-tareas' },
     { id: 3, title: 'Especialidades', link: '/especialidades' },
+    { id: 4, title: 'Usuarios', link: '/lista-de-usuarios' },
   ];
   const itemsEmployee = [
     { id: 1, title: 'Inicio', link: '/home' },
@@ -123,12 +121,6 @@ const Header = () => {
       action: openModal,
     },
     {
-      id: 2,
-      name: 'Lista de usuarios',
-      icon: '/svg/list-user.svg',
-      action: handleList,
-    },
-    {
       id: 3,
       name: 'Acerca de',
       icon: '/svg/question-circle.svg',
@@ -141,7 +133,10 @@ const Header = () => {
       action: handleLogout,
     },
   ];
-  const itemType = userSession.role == 'ADMIN' ? itemsAdmin : itemsEmployee;
+  const itemType = assitant_perms.includes(userSession.role)
+    ? itemsAdmin
+    : itemsEmployee;
+
   return (
     <header className="header">
       <nav className="nav-container container">

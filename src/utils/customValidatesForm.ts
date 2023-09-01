@@ -16,3 +16,7 @@ export const validateEmail = (value: string) => {
   const regex = /^[\w]+(\.[\w]+)*@[\w]+(\.[\w]+)*\.[a-zA-Z]{2,5}$/i;
   return !regex.test(value) ? 'Ingresar un email valido' : true;
 };
+
+export const validateDNI = (value: string) => {
+  return value.length !== 8 ? 'Ingresar un dni' : true;
+};

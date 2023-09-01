@@ -29,7 +29,14 @@ const Button = ({
       type={type}
       {...otherProps}
     >
-      {icon && <img src={`/svg/${icon}.svg`} className={imageStyle} />}
+      {icon && (
+        <img
+          src={`/svg/${icon}.svg`}
+          className={`${
+            text ? 'btn-main-text' : 'btn-main-img'
+          } ${imageStyle} `}
+        />
+      )}
       {text}
     </motion.button>
   );

@@ -7,12 +7,18 @@ import { useState } from 'react';
 import SelectOptions from '../shared/select/Select';
 import { axiosInstance } from '../../services/axiosInstance';
 import { spring } from '../../animations/animations';
+import { getListByRole, verifyByRole } from '../../utils/roles';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
-const roleList = [
-  { id: 'EMPLOYEE', value: 'EMPLEADO' },
-  { id: 'MOD', value: 'COORDINADOR' },
-  { id: 'ADMIN', value: 'ADMINISTRADOR' },
-];
+// const roleList = [
+//   { id: 'SUPER_ADMIN', value: 'GERENTE GENERAL' },
+//   { id: 'ADMIN', value: 'GERENTE' },
+//   { id: 'ASSISTANT', value: 'ASISTENTE DE GENERENCIA' },
+//   { id: 'SUPER_MOD', value: 'COORD GENERAL' },
+//   { id: 'MOD', value: 'COORDINADOR' },
+//   { id: 'EMPLOYEE', value: 'EMPLEADO' },
+// ];
 
 interface UserInfoProps {
   user: User;
@@ -28,8 +34,8 @@ const UserInfo = ({
 }: UserInfoProps) => {
   const [isOn, setIsOn] = useState(user.status);
   const [openRole, setOpenRole] = useState(false);
+  const { userSession } = useSelector((state: RootState) => state);
   const { profile } = user;
-
   const toggleSwitch = () => {
     setIsOn(!isOn);
   };
@@ -49,13 +55,13 @@ const UserInfo = ({
       .patch(`users/${user.id}`, _dataRole)
       .then(onUpdateStatus);
   };
-
+  const roleLimit = verifyByRole(user.role, userSession.role);
   return (
     <div className="user-container">
       <div className="col-span col-span-2 email-container">
         <img src="/svg/profile_avatar.svg" alt={user.email} className="icon" />
         <div className="user-details">
-          <h4>{user.email} </h4>
+          <h4>{profile.dni} </h4>
           <p>
             {profile.lastName} {profile.firstName}
           </p>
@@ -70,47 +76,56 @@ const UserInfo = ({
             name="role"
             itemKey="id"
             textField="value"
-            data={roleList}
+            data={getListByRole(userSession.role)}
           />
         ) : (
-          <span>{roleList.find(e => e.id === user.role)?.value}</span>
+          <span className="role-title">
+            {getListByRole('SUPER_ADMIN').find(e => e.id === user.role)?.value}
+          </span>
         )}
-        <Button
-          icon="pencil"
-          className="role-btn"
-          type="button"
-          onClick={() => {
-            setOpenRole(!openRole);
-          }}
-        />
+        {roleLimit && (
+          <Button
+            icon={openRole ? 'close' : 'pencil'}
+            className="role-btn"
+            type="button"
+            onClick={() => {
+              setOpenRole(!openRole);
+            }}
+          />
+        )}
       </div>
       <div className="col-span">
-        <div
-          className="switch-status"
-          data-ison={isOn}
-          onClick={() => {
-            toggleSwitch();
-            handleChangeStatus();
-          }}
-        >
-          <motion.div
-            className={`handle-statuts ${isOn && 'handle-on'}`}
-            layout
-            transition={spring}
-          ></motion.div>
-        </div>
+        {user.id !== userSession.id && (
+          <div
+            className="switch-status"
+            data-ison={isOn}
+            onClick={() => {
+              toggleSwitch();
+              handleChangeStatus();
+            }}
+          >
+            <motion.div
+              className={`handle-statuts ${isOn && 'handle-on'}`}
+              layout
+              transition={spring}
+            ></motion.div>
+          </div>
+        )}
       </div>
-      <div className="col-span phone-container">{profile.dni}</div>
+      <div className="col-span phone-container">{profile.description}</div>
       <div className="col-span phone-container">{profile.phone}</div>
-      <div className="col-span actions-container">
-        <Button icon="pencil" className="role-btn" onClick={onUpdate} />
-        <ButtonDelete
-          icon="trash"
-          url={`/users/${user.id}`}
-          className="project-delete-icon"
-          onSave={onDelete}
-        />
-      </div>
+      {roleLimit && (
+        <div className="col-span actions-container">
+          <Button icon="pencil" className="role-btn" onClick={onUpdate} />
+          <ButtonDelete
+            icon="trash"
+            disabled={user.id === userSession.id}
+            url={`/users/${user.id}`}
+            className="role-delete-icon"
+            onSave={onDelete}
+          />
+        </div>
+      )}
     </div>
   );
 };

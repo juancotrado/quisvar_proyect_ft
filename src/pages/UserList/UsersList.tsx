@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import './userList.css';
 import { CardRegisterUser } from '../../components';
 import Button from '../../components/shared/button/Button';
@@ -10,7 +10,7 @@ import UserInfo from '../../components/users/UserInfo';
 const UsersList = () => {
   const [users, setUsers] = useState<User[] | null>(null);
   const [userData, setUserData] = useState<User | null>(null);
-
+  const [isArchived, setIsArchived] = useState(true);
   useEffect(() => {
     getUsers();
   }, []);
@@ -20,6 +20,10 @@ const UsersList = () => {
       setUsers(res.data);
     });
   };
+  const filterList = useMemo(
+    () => (users ? users?.filter(user => user.status === isArchived) : []),
+    [isArchived, users]
+  );
 
   const addUser = () => {
     setUserData(null);
@@ -46,16 +50,25 @@ const UsersList = () => {
             />
           </div>
         </div>
+        <div className="list-filter">
+          <Button
+            text={`${isArchived ? 'Ver archivados' : 'Ver en actividad'}`}
+            className={`${
+              isArchived ? 'btn-filter-unavailable' : 'btn-filter-available'
+            }`}
+            onClick={() => setIsArchived(!isArchived)}
+          />
+        </div>
         <div className="header-container-list">
           <div className="header-list-user">USUARIO</div>
           <div className="header-list-role">ROL DE TRABAJO</div>
           <div className="header-list-status">ESTADO</div>
-          <div className="header-list-dni">DNI</div>
+          <div className="header-list-dni">CARGO</div>
           <div className="header-list-phone">CELULAR</div>
           <div className="header-list-edit">EDITAR</div>
         </div>
         <div className="user-container-list">
-          {users?.map(user => (
+          {filterList.map(user => (
             <UserInfo
               key={user.id}
               user={user}
@@ -68,6 +81,9 @@ const UsersList = () => {
       </div>
       <CardRegisterUser
         user={userData}
+        onClose={() => {
+          setUserData(null);
+        }}
         onSave={() => {
           getUsers();
           setUserData(null);

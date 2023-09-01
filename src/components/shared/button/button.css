@@ -2,7 +2,7 @@
   display: flex;
   gap: 1rem;
   align-items: center;
-  border: 2px solid var(--color-primary);
+  border: 1px solid var(--color-primary);
   border-radius: var(--radius-button);
   padding: 0.35rem;
   cursor: pointer;
@@ -11,10 +11,13 @@
   transition: color 0.5s ease;
 }
 
-.btn-main img {
+.btn-main-img {
   height: 60%;
-  /* width: 1.6rem;
-  height: 1.4rem; */
+}
+
+.btn-main-text {
+  width: 1.4rem;
+  height: 1.4rem;
 }
 
 .btn-delete {

@@ -20,10 +20,13 @@ const Login = () => {
   } = useForm<UserForm>();
 
   const sendForm: SubmitHandler<UserForm> = data => {
-    axiosInstance.post('/auth/login', data).then(res => {
-      localStorage.setItem('token', res.data.token);
-      navigate('/home');
-    });
+    axiosInstance
+      .post('/auth/login', data)
+      .then(res => {
+        localStorage.setItem('token', res.data.token);
+        navigate('/home');
+      })
+      .catch(err => console.log(err));
   };
 
   useEffect(() => {
@@ -36,7 +39,7 @@ const Login = () => {
   return (
     <div className="login">
       <figure className="login-figure">
-        <img alt="" src="/img/image_example.png" className="login-figure-img" />
+        <img alt="" src="/img/room.jpg" className="login-figure-img" />
         <div className="login-contain-logo">
           <img src="/img/dhyrium_logo.png" alt="" />
         </div>
@@ -46,7 +49,7 @@ const Login = () => {
           <img src="/img/dhyrium_logo.png" alt="" />
           <div className="form-group">
             <InputText
-              label="Correo"
+              label="Ingrese DNI"
               placeholder="DNI"
               {...register('dni', {
                 required: true,

@@ -119,15 +119,15 @@ const UserInfo = ({ user, onUpdate, getUsers }: UserInfoProps) => {
           <figure className="cardSubtaskProcess-files-icon">
             <a href={`${URL}/file-user/cvs/${user.id}.pdf`} target="_blank">
               <img src="/svg/file-download.svg" alt="W3Schools" />
-              <div className="cardSubtaskProcess-files-btn">
-                <ButtonDelete
-                  icon="trash-red"
-                  onSave={getUsers}
-                  url={`/removeFileUser/${user.id}?isContract=false`}
-                  className="cardSubtaskProcess-files-btn-delete"
-                />
-              </div>
             </a>
+            <div className="cardSubtaskProcess-files-btn">
+              <ButtonDelete
+                icon="trash-red"
+                onSave={getUsers}
+                url={`/files/removeFileUser/${user.id}?isContract=false`}
+                className="cardSubtaskProcess-files-btn-delete"
+              />
+            </div>
           </figure>
         </div>
       )}

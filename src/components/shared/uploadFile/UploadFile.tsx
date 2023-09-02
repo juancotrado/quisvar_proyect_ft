@@ -28,13 +28,13 @@ const UploadFile = ({
   };
   return (
     <div className={`uploadFile ${className}`}>
+      <p className="uploadFile-text">{text}</p>
       <input
         type="file"
         multiple
         onChange={handleFileChange}
         className="uploadFile-input"
       />
-      <p className="uploadFile-text">{text}</p>
     </div>
   );
 };

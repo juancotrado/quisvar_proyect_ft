@@ -121,9 +121,9 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
   return (
     <div className="project-card">
       <div className="project-card-info-main">
-        <figure className="project-card-figure">
+        {/* <figure className="project-card-figure">
           <img src="/svg/project_icon.svg" alt="project_icon" />
-        </figure>
+        </figure> */}
         <div>
           <p className="project-card-description">
             CUI: {project.CUI ? project.CUI : '123456'}
@@ -149,16 +149,20 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
                 Ver menos
               </button>
             ) : (
-              <button
-                className="projec-card-see-more"
-                type="button"
-                onClick={() => {
-                  navigate(`proyecto/${project.id}`);
-                  setProjectId(project.id);
-                }}
-              >
-                Ver más detalles
-              </button>
+              <>
+                {!['EMPLOYEE', 'MOD'].includes(role) && (
+                  <button
+                    className="projec-card-see-more"
+                    type="button"
+                    onClick={() => {
+                      navigate(`proyecto/${project.id}`);
+                      setProjectId(project.id);
+                    }}
+                  >
+                    Ver más detalles
+                  </button>
+                )}
+              </>
             )}
           </div>
         </div>

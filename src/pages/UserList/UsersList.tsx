@@ -2,17 +2,27 @@ import { useEffect, useMemo, useState } from 'react';
 import './userList.css';
 import { CardRegisterUser } from '../../components';
 import Button from '../../components/shared/button/Button';
-import { axiosInstance } from '../../services/axiosInstance';
+import { URL, axiosInstance } from '../../services/axiosInstance';
 import { isOpenModal$ } from '../../services/sharingSubject';
 import { User } from '../../types/types';
 import UserInfo from '../../components/users/UserInfo';
+import UploadFile from '../../components/shared/uploadFile/UploadFile';
+import ButtonDelete from '../../components/shared/button/ButtonDelete';
 
+interface GeneralFile {
+  id: number;
+  name: string;
+  dir: string;
+}
 const UsersList = () => {
   const [users, setUsers] = useState<User[] | null>(null);
   const [userData, setUserData] = useState<User | null>(null);
   const [isArchived, setIsArchived] = useState(true);
+  const [isShowFiles, setIsShowFiles] = useState(false);
+  const [generalFiles, setGeneralFiles] = useState<GeneralFile[] | null>(null);
   useEffect(() => {
     getUsers();
+    getGeneralFiles();
   }, []);
 
   const getUsers = async () => {
@@ -20,6 +30,12 @@ const UsersList = () => {
       setUsers(res.data);
     });
   };
+  const getGeneralFiles = async () => {
+    await axiosInstance.get('/files/generalFiles').then(res => {
+      setGeneralFiles(res.data);
+    });
+  };
+  const handleShowFiles = () => setIsShowFiles(!isShowFiles);
   const filterList = useMemo(
     () => (users ? users?.filter(user => user.status === isArchived) : []),
     [isArchived, users]
@@ -41,6 +57,55 @@ const UsersList = () => {
           <h1 className="main-title">
             LISTA DE <span className="main-title-span">USUARIOS </span>
           </h1>
+          <div className="userList-upload">
+            <UploadFile
+              text="Subir Archivo"
+              onSave={getGeneralFiles}
+              uploadName="generalFile"
+              URL={`/files/uploadGeneralFiles`}
+            />
+          </div>
+          {generalFiles && (
+            <div className="userList-general-files">
+              <Button
+                text="ver Archivos"
+                className="btn-add"
+                onClick={handleShowFiles}
+              />
+              <div
+                className={`userList-general-files-contain ${
+                  isShowFiles && 'isShowGeneralFiles'
+                }`}
+              >
+                {generalFiles.map(file => (
+                  <div key={file.id} className="subtaskFile-contain">
+                    <a
+                      href={`${URL}/${file.dir}`}
+                      target="_blank"
+                      className="subtaskFile-anchor"
+                      download={true}
+                    >
+                      <img
+                        src="/svg/file-download.svg"
+                        alt="W3Schools"
+                        className="subtaskFile-icon"
+                      />
+                      <span className="subtaskFile-name">{file.name}</span>
+                    </a>
+
+                    <ButtonDelete
+                      icon="trash-red"
+                      onSave={getGeneralFiles}
+                      url={`/files/generalFiles/${file.id}`}
+                      // onClick={() => deleteFile(file.id)}
+                      // customOnClick={() => deleteFile(file.id)}
+                      className="subtaskFile-btn-delete"
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
           <div>
             <Button
               text="Agregar"

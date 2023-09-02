@@ -115,11 +115,13 @@ const CardSubtaskProcess = ({ subTask, adminId }: CardSubtaskProcess) => {
                         <img src="/svg/file-download.svg" alt="W3Schools" />
                         <div className="cardSubtaskProcess-files-btn">
                           <ButtonDelete
-                            icon="trash-red"
+                            icon="close"
                             customOnClick={() => deleteFiles(file)}
                             className="cardSubtaskProcess-files-btn-delete"
+                            sizeIcon={true}
                           />
                         </div>
+                        .
                       </figure>
                       <span className="cardSubtaskProcess-files-name">
                         {file.name}

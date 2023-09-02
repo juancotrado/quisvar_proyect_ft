@@ -119,7 +119,7 @@ const LabelChip = ({
           {defaultValue}
         </span>
       )}
-      {role !== 'EMPLOYEE' && (
+      {!['EMPLOYEE', 'MOD'].includes(role) && (
         <DotsOption
           data={[
             {
@@ -227,6 +227,8 @@ const DropDownSelector = ({
       onSave?.();
     });
   };
+  console.log(!['EMPLOYEE', 'MOD'].includes(role));
+
   return (
     <Outside onClickOutside={toogleClose}>
       <div className={`dropdown-selector-container-main`}>
@@ -273,7 +275,7 @@ const DropDownSelector = ({
                   />
                 </li>
               ))}
-              {post && role !== 'EMPLOYEE' && (
+              {post && !['EMPLOYEE', 'MOD'].includes(role) && (
                 <li className="dropdown-element-add ">
                   <form
                     onClick={e => e.stopPropagation()}

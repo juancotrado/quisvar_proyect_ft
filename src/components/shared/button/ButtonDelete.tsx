@@ -14,8 +14,10 @@ interface ButtonProps extends HTMLMotionProps<'button'> {
   onSave?: () => void;
   customOnClick?: () => void;
   imageStyle?: string;
+  sizeIcon?: boolean;
 }
 const ButtonDelete = ({
+  sizeIcon,
   className,
   text,
   type,
@@ -41,13 +43,15 @@ const ButtonDelete = ({
       setIsAlertOpen(false);
     });
   };
+  console.log(sizeIcon);
+
   return (
     <>
       <motion.button
         // whileHover={{ scale: 1.05 }}
         // whileTap={{ scale: 0.9 }}
         onClick={handleCloseButton}
-        className={`${className} btn-main  btn-delete `}
+        className={`${className} btn-main  btn-delete`}
         type={type}
         {...otherProps}
       >

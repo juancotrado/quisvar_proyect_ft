@@ -1,5 +1,6 @@
 .uploadFile {
   display: flex;
+  flex-direction: column;
   border: 2px dashed var(--color-primary);
   position: relative;
   justify-content: center;
@@ -7,16 +8,19 @@
   margin: 0.5rem;
   width: 100%;
 }
+
 .uploadFile-text {
-  position: absolute;
   font-size: 0.7rem;
   font-weight: 700;
   color: gray;
   text-align: center;
-  cursor: pointer;
 }
+
 .uploadFile-input {
   width: 100%;
   height: 100%;
   opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
 }

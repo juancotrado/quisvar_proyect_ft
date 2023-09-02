@@ -92,7 +92,7 @@ const DropDownStage = ({
                   {item[textField]}
                 </li>
               ))}
-              {role !== 'EMPLOYEE' && addButton && (
+              {!['EMPLOYEE', 'MOD'].includes(role) && addButton && (
                 <li className="dropdown-element-list " onClick={addButton}>
                   Añadir más +
                 </li>

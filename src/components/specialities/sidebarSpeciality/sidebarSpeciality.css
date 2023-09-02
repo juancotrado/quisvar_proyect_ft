@@ -1,8 +1,8 @@
 .sidebarSpeciality {
   height: 100%;
   /* width: 44rem; */
-  min-width: 25rem;
-  max-width: 25rem;
+  min-width: 22rem;
+  max-width: 22rem;
   background-color: white;
   padding: 0 1rem 0 0.5rem;
   transition: 0.3s left ease;

@@ -129,7 +129,7 @@ const SidebarSpecialityLvlList = ({
             >
               <span className="SidebarSpecialityLvlList-sub-list-span">
                 {data.cod && `${data.cod} `}
-              </span>{' '}
+              </span>
               {data.name}
             </h4>
             {!isLastLevel && (
@@ -141,11 +141,10 @@ const SidebarSpecialityLvlList = ({
                 <input
                   type="checkbox"
                   className="SidebarSpecialityLvlList-dropdown-check"
-                  defaultChecked={
-                    !!data.specialities?.length ||
-                    !!data.typeSpecialities?.length
-                  }
+                  defaultChecked={false}
                 />
+                {/* {!!data.specialities?.length ||
+                   !!data.typeSpecialities?.length} */}
               </>
             )}
           </>

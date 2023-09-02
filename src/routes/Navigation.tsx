@@ -14,6 +14,7 @@ import {
 import { ProtectedRoute } from '../components';
 import ProjectsList from '../pages/specialities/ProjectsList';
 import ProjectDetailsPage from '../pages/specialities/projectDetails/ProjectDetailsPage';
+import ProjectIndexPage from '../pages/specialities/projectIndex/ProjectIndexPage';
 
 const Navigation = () => {
   return (
@@ -27,10 +28,14 @@ const Navigation = () => {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/tareas/:id" element={<Tasks />} />
             <Route path="/especialidades" element={<Specialities />}>
-              <Route path="/especialidades/:id" element={<ProjectsList />}>
+              <Route path=":id" element={<ProjectsList />}>
                 <Route
-                  path="/especialidades/:id/proyecto/:projectId"
+                  path="proyecto/:projectId/detalles"
                   element={<ProjectDetailsPage />}
+                />
+                <Route
+                  path="proyecto/:projectId/indice"
+                  element={<ProjectIndexPage />}
                 />
               </Route>
             </Route>

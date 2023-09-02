@@ -153,7 +153,7 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
                 className="projec-card-see-more"
                 type="button"
                 onClick={() => {
-                  navigate(`proyecto/${project.id}`);
+                  navigate(`proyecto/${project.id}/detalles`);
                   setProjectId(project.id);
                 }}
               >

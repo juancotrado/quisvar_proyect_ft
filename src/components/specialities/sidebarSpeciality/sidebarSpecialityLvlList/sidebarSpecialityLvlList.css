@@ -41,7 +41,7 @@
 
 .SidebarSpecialityLvlList-sub-list-name {
   flex-grow: 1;
-  padding: 0.7rem;
+  padding: 0.5rem;
   border-radius: 0.5rem;
   margin-left: 1rem;
 }
@@ -55,7 +55,7 @@
   display: block;
   color: var(--color-primary);
   font-weight: 700;
-  font-size: 1.3rem;
+  font-size: 0.8rem;
 }
 
 .not-margin-left {

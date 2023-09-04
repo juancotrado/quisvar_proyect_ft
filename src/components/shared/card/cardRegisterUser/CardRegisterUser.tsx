@@ -9,6 +9,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import InputText from '../../Input/Input';
 import { UserForm, User } from '../../../../types/types';
 import { validateEmail } from '../../../../utils/customValidatesForm';
+import { Input } from '../../..';
 interface CardRegisterUserProps {
   onSave?: () => void;
   onClose?: () => void;
@@ -26,6 +27,7 @@ const InitialValues: UserForm = {
   degree: '',
   description: '',
   job: '',
+  cv: null,
 };
 
 const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
@@ -45,9 +47,9 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
   });
 
   useEffect(() => {
-    if (user) {
+    if (user?.id) {
       const { profile, ..._data } = user;
-      setData({ ...profile, ..._data });
+      setData({ ...profile, ..._data, cv: null });
     } else {
       setData(InitialValues);
     }
@@ -66,11 +68,30 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
     setValue('description', data.description);
   }, [data]);
 
-  const onSubmit: SubmitHandler<UserForm> = async values => {
+  const onSubmit: SubmitHandler<UserForm> = async data => {
+    const fileCv = data.cv?.[0] as File;
+    const formData = new FormData();
+    formData.append('fileUser', fileCv);
+    formData.append('id', data.id + '');
+    formData.append('degree', data.degree);
+    formData.append('description', data.description);
+    formData.append('dni', data.dni);
+    formData.append('email', data.email);
+    formData.append('firstName', data.firstName);
+    formData.append('job', data.job);
+    formData.append('lastName', data.lastName);
+    formData.append('password', data.password);
+    formData.append('phone', data.phone);
+
     if (data.id) {
-      axiosInstance.put(`/profile/${data.id}`, values).then(successfulShipment);
+      axiosInstance.put(`/profile/${data.id}`, data).then(successfulShipment);
     } else {
-      axiosInstance.post(`/users`, values).then(successfulShipment);
+      const headers = {
+        'Content-type': 'multipart/form-data',
+      };
+      axiosInstance
+        .post(`/users?isContract=false`, formData, { headers })
+        .then(successfulShipment);
     }
   };
 
@@ -190,6 +211,17 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
             label="Cargo"
           />
         </div>
+        {!user?.id && (
+          <div className="col-input">
+            <Input
+              type="file"
+              label="CV"
+              placeholder="cv"
+              {...register('cv', { required: true })}
+              errors={errors}
+            />
+          </div>
+        )}
         <div className="btn-build">
           <Button
             text={user ? 'GUARDAR' : 'CREAR'}

@@ -138,8 +138,8 @@ export type User = {
   profile: Profile;
   role: UserRoleType;
   status?: boolean;
-  hasContract: boolean;
-  hasCv: boolean;
+  contract: string | null;
+  cv: string | null;
 };
 type Profile = {
   id: number;
@@ -338,6 +338,7 @@ export interface UserForm {
   degree: string;
   description: string;
   job: string;
+  cv: FileList | null;
 }
 export interface Report {
   price: number;

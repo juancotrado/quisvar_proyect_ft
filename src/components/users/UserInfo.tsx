@@ -107,7 +107,7 @@ const UserInfo = ({ user, onUpdate, getUsers }: UserInfoProps) => {
       </div>
       <div className="col-span phone-container">{profile.description}</div>
       <div className="col-span phone-container">{profile.phone}</div>
-      {!user.hasCv ? (
+      {!user.cv ? (
         <UploadFile
           text="Subir Archivo"
           onSave={getUsers}
@@ -117,21 +117,21 @@ const UserInfo = ({ user, onUpdate, getUsers }: UserInfoProps) => {
       ) : (
         <div className="col-span">
           <figure className="cardSubtaskProcess-files-icon">
-            <a href={`${URL}/file-user/cvs/${user.id}.pdf`} target="_blank">
+            <a href={`${URL}/file-user/cvs/${user.cv}`} target="_blank">
               <img src="/svg/file-download.svg" alt="W3Schools" />
             </a>
             <div className="cardSubtaskProcess-files-btn">
               <ButtonDelete
                 icon="trash-red"
                 onSave={getUsers}
-                url={`/files/removeFileUser/${user.id}?isContract=false`}
+                url={`/files/removeFileUser/${user.id}/${user.cv}?isContract=false`}
                 className="cardSubtaskProcess-files-btn-delete"
               />
             </div>
           </figure>
         </div>
       )}
-      {!user.hasContract ? (
+      {!user.contract ? (
         <UploadFile
           text="Subir Archivo"
           uploadName="fileUser"
@@ -142,7 +142,7 @@ const UserInfo = ({ user, onUpdate, getUsers }: UserInfoProps) => {
         <div className="col-span">
           <figure className="cardSubtaskProcess-files-icon">
             <a
-              href={`${URL}/file-user/contracts/${user.id}.pdf`}
+              href={`${URL}/file-user/contracts/${user.contract}`}
               target="_blank"
             >
               <img src="/svg/file-download.svg" alt="W3Schools" />
@@ -150,7 +150,7 @@ const UserInfo = ({ user, onUpdate, getUsers }: UserInfoProps) => {
             <div className="cardSubtaskProcess-files-btn">
               <ButtonDelete
                 icon="trash-red"
-                url={`/files/removeFileUser/${user.id}?isContract=true`}
+                url={`/files/removeFileUser/${user.id}/${user.contract}?isContract=true`}
                 onSave={getUsers}
                 className="cardSubtaskProcess-files-btn-delete"
               />

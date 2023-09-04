@@ -68,7 +68,7 @@ const UsersList = () => {
           {generalFiles && (
             <div className="userList-general-files">
               <Button
-                text="ver Archivos"
+                text={isShowFiles ? 'Cerrar Archivos' : 'Abrir Archivos'}
                 className="btn-add"
                 onClick={handleShowFiles}
               />
@@ -97,8 +97,6 @@ const UsersList = () => {
                       icon="trash-red"
                       onSave={getGeneralFiles}
                       url={`/files/generalFiles/${file.id}`}
-                      // onClick={() => deleteFile(file.id)}
-                      // customOnClick={() => deleteFile(file.id)}
                       className="subtaskFile-btn-delete"
                     />
                   </div>

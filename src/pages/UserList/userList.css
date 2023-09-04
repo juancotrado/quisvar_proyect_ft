@@ -16,15 +16,17 @@
 }
 .userList-general-files-contain {
   position: absolute;
+  margin-top: 0.5rem;
   width: 0;
   overflow-y: auto;
   height: 7rem;
+  z-index: 6;
 }
 .isShowGeneralFiles {
   width: 20rem;
   padding: 1rem;
-  background-color: var(--color-menu);
-  border: 0.3rem solid white;
+  background-color: white;
+  border: 0.3rem solid var(--color-primary);
 }
 .user-container-list {
   display: flex;

@@ -1,4 +1,4 @@
-import { FocusEvent, useEffect, useState } from 'react';
+import { FocusEvent, MouseEvent, useEffect, useState } from 'react';
 import {
   DataSidebarSpeciality,
   typeSidebarSpecility,
@@ -41,6 +41,7 @@ const SidebarSpecialityLvlList = ({
   const isLastLevel = type === 'typespecialities';
   const { role } = useSelector((state: RootState) => state.userSession);
   const [errors, setErrors] = useState<{ [key: string]: any }>({});
+  const [isClickRight, setIsClickRight] = useState(false);
   useEffect(() => {
     setFormData({ name: data.name ?? '', cod: data.cod ?? '' });
   }, [data.cod, data.name]);
@@ -76,7 +77,10 @@ const SidebarSpecialityLvlList = ({
       onSave?.();
     });
   };
-
+  const handleClickRigth = (e: MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsClickRight(!isClickRight);
+  };
   return (
     <div
       className={`SidebarSpecialityLvlList-sub-list-item ${
@@ -88,6 +92,7 @@ const SidebarSpecialityLvlList = ({
           data.name + '-' + data.id === indexSelected &&
           'sidebarLevelList-sub-list-span-active'
         }`}
+        onContextMenu={handleClickRigth}
       >
         {isFirstLevel && (
           <img
@@ -154,6 +159,7 @@ const SidebarSpecialityLvlList = ({
         <DotsOption
           className="sidebarLevelList-menu-dots-option"
           notPositionRelative
+          isClickRight={isClickRight}
           data={[
             {
               name: openEditData ? 'Cancelar' : 'Editar',

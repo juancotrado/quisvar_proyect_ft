@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './DotsOption.css';
 import Outside from '../../portal/Outside';
 
@@ -16,6 +16,7 @@ interface DotsOptionProps {
   persist?: boolean;
   variant?: boolean;
   notPositionRelative?: boolean;
+  isClickRight?: boolean;
 }
 
 const DotsOption = ({
@@ -24,12 +25,20 @@ const DotsOption = ({
   persist,
   notPositionRelative,
   variant = false,
+  isClickRight,
 }: DotsOptionProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleClick = (value: (() => void) | undefined) => {
     value?.();
     persist && setIsOpen(false);
   };
+
+  useEffect(() => {
+    if (isClickRight !== undefined) {
+      setIsOpen(isClickRight);
+    }
+  }, [isClickRight]);
+
   return (
     <Outside onClickOutside={() => setIsOpen(false)}>
       <div

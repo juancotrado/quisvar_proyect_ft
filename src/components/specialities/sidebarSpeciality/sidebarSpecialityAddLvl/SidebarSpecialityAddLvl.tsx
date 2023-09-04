@@ -1,6 +1,6 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import './sidebarSpecialityAddLvl.css';
-import { useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { Input } from '../../..';
 import Button from '../../../shared/button/Button';
 import DotsOption, { Option } from '../../../shared/dots/DotsOption';
@@ -27,6 +27,11 @@ const SidebarSpecialityAddLvl = ({
   idValue,
 }: SidebarSpecialityAddLvlProps) => {
   const [addLevel, setAddLevel] = useState<boolean>(false);
+  const [isClickRight, setIsClickRight] = useState(false);
+  const handleClickRigth = (e: MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsClickRight(!isClickRight);
+  };
   const {
     handleSubmit,
     register,
@@ -63,9 +68,12 @@ const SidebarSpecialityAddLvl = ({
     >
       {addLevel ? (
         <>
-          <div className="sidebarSpecialityAddLvl-inputs">
+          <div
+            className="sidebarSpecialityAddLvl-inputs"
+            onContextMenu={handleClickRigth}
+          >
             <Input
-              label="Nombre:"
+              label="Nombres:"
               {...register('name', {
                 validate: { validateWhiteSpace, validateCorrectTyping },
               })}
@@ -87,6 +95,7 @@ const SidebarSpecialityAddLvl = ({
           </div>
           <DotsOption
             notPositionRelative
+            isClickRight={isClickRight}
             data={optionsData}
             className="sidebarSpecialityAddLvl-menu-dots-option"
           />

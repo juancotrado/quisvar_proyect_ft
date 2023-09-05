@@ -2,7 +2,7 @@ import Alert from './shared/alert/Alert';
 import Header from './shared/header/Header';
 import CardRegisterUser from './shared/card/cardRegisterUser/CardRegisterUser';
 import Input from './shared/Input/Input';
-import { ProtectedRoute } from './ProtectedRoute/ProtectedRoute';
+import { ProtectedRoute } from './protected/ProtectedRoute/ProtectedRoute';
 import CardRegisterArea from './shared/card/cardRegisterArea/CardRegisterArea';
 import CardRegisterTask from './shared/card/cardRegisterTask/CardRegisterTask';
 import CardRegisterProject from './shared/card/cardRegisterProject/CardRegisterProject';

@@ -16,6 +16,8 @@ import ProjectsList from '../pages/specialities/ProjectsList';
 import ProjectDetailsPage from '../pages/specialities/projectDetails/ProjectDetailsPage';
 import ProjectIndexPage from '../pages/specialities/projectIndex/ProjectIndexPage';
 import Project from '../pages/specialities/project/Project';
+import ProtectedRole from '../components/protected/ProtectedRole/ProtectedRole';
+import { assitant_perms, rolThirdLevel } from '../utils/roles';
 
 const Navigation = () => {
   return (
@@ -42,12 +44,16 @@ const Navigation = () => {
               </Route>
             </Route>
             <Route path="/mis-tareas" element={<ListPersonalTask />} />
-            <Route path="/lista-de-usuarios" element={<UsersList />} />
             <Route path="/reportes" element={<CommingSoon />} />
-            <Route
-              path="/lista-de-notificaciones"
-              element={<NotificationsList />}
-            />
+            <Route element={<ProtectedRole rols={assitant_perms} />}>
+              <Route path="/lista-de-usuarios" element={<UsersList />} />
+            </Route>
+            <Route element={<ProtectedRole rols={rolThirdLevel} />}>
+              <Route
+                path="/lista-de-notificaciones"
+                element={<NotificationsList />}
+              />
+            </Route>
           </Route>
           <Route path="/*" element={<NotFound />} />
         </Routes>

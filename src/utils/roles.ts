@@ -1,11 +1,13 @@
 import { UserRoleType } from '../types/types';
-
 export const assitant_perms: UserRoleType[] = [
   'ADMIN',
   'SUPER_ADMIN',
   'ASSISTANT',
 ];
+export const rolsFirstLevel: UserRoleType[] = ['SUPER_ADMIN', 'ADMIN'];
+export const rolSecondLevel: UserRoleType[] = [...rolsFirstLevel, 'SUPER_MOD'];
 
+export const rolThirdLevel: UserRoleType[] = [...rolSecondLevel, 'MOD'];
 export const roleList_SUPER_ADMIN = [
   { id: 'SUPER_ADMIN', value: 'GERENTE GENERAL' },
   { id: 'ADMIN', value: 'GERENTE' },

@@ -1,15 +1,15 @@
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
-import { Header } from '..';
-import { errorToken$, toggle$ } from '../../services/sharingSubject';
+import { Header } from '../..';
+import { errorToken$, toggle$ } from '../../../services/sharingSubject';
 import { useDispatch } from 'react-redux';
-import { getUserSession } from '../../store/slices/userSession.slice';
-import { AppDispatch } from '../../store';
+import { getUserSession } from '../../../store/slices/userSession.slice';
+import { AppDispatch } from '../../../store';
 import { useEffect, useRef } from 'react';
-import { SocketProvider } from '../../context/SocketContex';
+import { SocketProvider } from '../../../context/SocketContex';
 import { Subscription } from 'rxjs';
-import { getListUsers } from '../../store/slices/listUsers.slice';
+import { getListUsers } from '../../../store/slices/listUsers.slice';
 import './protecdRoute.css';
-import { getListStage } from '../../store/slices/listStages.slice';
+import { getListStage } from '../../../store/slices/listStages.slice';
 
 export const ProtectedRoute = () => {
   const dispatch: AppDispatch = useDispatch();

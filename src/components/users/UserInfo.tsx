@@ -11,6 +11,8 @@ import { getListByRole, verifyByRole } from '../../utils/roles';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import UploadFile from '../shared/uploadFile/UploadFile';
+// import { isOpenModal$ } from '../../services/sharingSubject';
+import { CardGenerateReport } from '..';
 
 // const roleList = [
 //   { id: 'SUPER_ADMIN', value: 'GERENTE GENERAL' },
@@ -49,6 +51,9 @@ const UserInfo = ({ user, onUpdate, getUsers }: UserInfoProps) => {
     await axiosInstance.patch(`users/${user.id}`, _dataRole).then(getUsers);
   };
   const roleLimit = verifyByRole(user.role, userSession.role);
+  const showModal = () => {
+    // isOpenModal$.setSubject = true;
+  };
   return (
     <div className="user-container">
       <div className="col-span col-span-2 email-container">
@@ -170,6 +175,10 @@ const UserInfo = ({ user, onUpdate, getUsers }: UserInfoProps) => {
           />
         </div>
       )}
+      <div className="col-span">
+        <Button text="imprimir" onClick={showModal} />
+      </div>
+      <CardGenerateReport />
     </div>
   );
 };

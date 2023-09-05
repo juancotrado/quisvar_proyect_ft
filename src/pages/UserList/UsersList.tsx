@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import './userList.css';
-import { CardRegisterUser } from '../../components';
+import { CardRegisterUser, Input } from '../../components';
 import Button from '../../components/shared/button/Button';
 import { URL, axiosInstance } from '../../services/axiosInstance';
 import { isOpenModal$ } from '../../services/sharingSubject';
@@ -19,6 +19,7 @@ const UsersList = () => {
   const [userData, setUserData] = useState<User | null>(null);
   const [isArchived, setIsArchived] = useState(true);
   const [isShowFiles, setIsShowFiles] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   const [generalFiles, setGeneralFiles] = useState<GeneralFile[] | null>(null);
   useEffect(() => {
     getUsers();
@@ -36,10 +37,24 @@ const UsersList = () => {
     });
   };
   const handleShowFiles = () => setIsShowFiles(!isShowFiles);
-  const filterList = useMemo(
-    () => (users ? users?.filter(user => user.status === isArchived) : []),
-    [isArchived, users]
-  );
+  const filterList = useMemo(() => {
+    if (!users) return [];
+
+    const filteredByStatus = users.filter(user => user.status === isArchived);
+
+    if (!searchTerm) return filteredByStatus;
+
+    return filteredByStatus.filter(
+      user =>
+        user.profile.firstName
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+        user.profile.lastName.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  }, [isArchived, searchTerm, users]);
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
 
   const addUser = () => {
     setUserData(null);
@@ -114,6 +129,13 @@ const UsersList = () => {
           </div>
         </div>
         <div className="list-filter">
+          <Input
+            type="text"
+            placeholder="Buscar por nombre o apellido"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            classNameMain="filter-user-input"
+          />
           <Button
             text={`${isArchived ? 'Ver archivados' : 'Ver en actividad'}`}
             className={`${
@@ -132,6 +154,7 @@ const UsersList = () => {
           <div className="header-list-phone">CONTRATO</div>
 
           <div className="header-list-edit">EDITAR</div>
+          <div className="header-list-edit">Reportes</div>
         </div>
         <div className="user-container-list">
           {filterList.map(user => (

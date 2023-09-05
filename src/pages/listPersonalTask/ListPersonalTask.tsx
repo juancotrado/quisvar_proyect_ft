@@ -10,7 +10,7 @@ import { RootState } from '../../store';
 import SelectOptions from '../../components/shared/select/Select';
 import Button from '../../components/shared/button/Button';
 import { CardGenerateReport } from '../../components';
-import { isOpenModal$ } from '../../services/sharingSubject';
+import { isOpenCardGenerateReport$ } from '../../services/sharingSubject';
 
 const spring = {
   type: 'spring',
@@ -65,7 +65,7 @@ const ListPersonalTask = () => {
   };
 
   const showModal = () => {
-    isOpenModal$.setSubject = true;
+    isOpenCardGenerateReport$.setSubject = true;
   };
   return (
     <div className="my-container-list ">

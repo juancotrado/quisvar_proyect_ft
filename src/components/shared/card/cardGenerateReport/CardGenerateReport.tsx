@@ -1,6 +1,6 @@
 import Modal from '../../../portal/Modal';
 import './CardGenerateReport.css';
-import { isOpenModal$ } from '../../../../services/sharingSubject';
+import { isOpenCardGenerateReport$ } from '../../../../services/sharingSubject';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Input, TextArea } from '../../..';
 import Button from '../../button/Button';
@@ -16,12 +16,26 @@ import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
 import useListUsers from '../../../../hooks/useListUsers';
 import DropDownSimple from '../../select/DropDownSimple';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { Subscription } from 'rxjs';
 interface EmployeeList {
   id: number;
   name: string;
 }
 const CardGenerateReport = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleIsOpen = useRef<Subscription>(new Subscription());
+
+  useEffect(() => {
+    handleIsOpen.current = isOpenCardGenerateReport$.getSubject.subscribe(
+      value => setIsOpen(value)
+    );
+    return () => {
+      handleIsOpen.current.unsubscribe();
+    };
+  }, []);
+
   const { userSession } = useSelector((state: RootState) => state);
   const [coordinator, setCoordinator] = useState('');
   const { users } = useListUsers();
@@ -37,7 +51,7 @@ const CardGenerateReport = () => {
   const showModal = () => {
     setEmployee({ id: 0, name: '' });
     reset({});
-    isOpenModal$.setSubject = false;
+    setIsOpen(false);
   };
   const onSubmit: SubmitHandler<ReportForm> = data => {
     const initialDate = formatDate(new Date(data.initialDate), {
@@ -77,7 +91,7 @@ const CardGenerateReport = () => {
   };
 
   return (
-    <Modal size={50}>
+    <Modal size={50} isOpenProp={isOpen}>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="card-generate-report"

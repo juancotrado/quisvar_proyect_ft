@@ -9,8 +9,9 @@ import { dropIn } from '../../animations/animations';
 interface ModalProps {
   children: React.ReactNode;
   size?: number;
+  isOpenProp?: boolean;
 }
-const Modal = ({ children, size }: ModalProps) => {
+const Modal = ({ children, size, isOpenProp }: ModalProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleIsOpen = useRef<Subscription>(new Subscription());
@@ -24,7 +25,11 @@ const Modal = ({ children, size }: ModalProps) => {
     };
   }, []);
 
-  if (!isOpen) return null;
+  if (isOpenProp !== undefined) {
+    if (!isOpenProp) return null;
+  } else {
+    if (!isOpen) return null;
+  }
   return (
     <Portal wrapperId="modal">
       <motion.div

@@ -1,9 +1,9 @@
 import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import './userList.css';
-import { CardRegisterUser, Input } from '../../components';
+import { CardGenerateReport, CardRegisterUser, Input } from '../../components';
 import Button from '../../components/shared/button/Button';
 import { URL, axiosInstance } from '../../services/axiosInstance';
-import { isOpenModal$ } from '../../services/sharingSubject';
+import { isOpenCardRegisterUser$ } from '../../services/sharingSubject';
 import { User } from '../../types/types';
 import UserInfo from '../../components/users/UserInfo';
 import UploadFile from '../../components/shared/uploadFile/UploadFile';
@@ -58,10 +58,10 @@ const UsersList = () => {
 
   const addUser = () => {
     setUserData(null);
-    isOpenModal$.setSubject = true;
+    isOpenCardRegisterUser$.setSubject = true;
   };
   const editUser = (value: User) => {
-    isOpenModal$.setSubject = true;
+    isOpenCardRegisterUser$.setSubject = true;
     setUserData(value);
   };
 
@@ -167,6 +167,8 @@ const UsersList = () => {
           ))}
         </div>
       </div>
+      <CardGenerateReport />
+
       <CardRegisterUser
         user={userData}
         onClose={() => {

@@ -12,7 +12,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import UploadFile from '../shared/uploadFile/UploadFile';
 // import { isOpenModal$ } from '../../services/sharingSubject';
-import { CardGenerateReport } from '..';
+import { isOpenCardGenerateReport$ } from '../../services/sharingSubject';
 
 // const roleList = [
 //   { id: 'SUPER_ADMIN', value: 'GERENTE GENERAL' },
@@ -52,7 +52,7 @@ const UserInfo = ({ user, onUpdate, getUsers }: UserInfoProps) => {
   };
   const roleLimit = verifyByRole(user.role, userSession.role);
   const showModal = () => {
-    // isOpenModal$.setSubject = true;
+    isOpenCardGenerateReport$.setSubject = true;
   };
   return (
     <div className="user-container">
@@ -178,7 +178,6 @@ const UserInfo = ({ user, onUpdate, getUsers }: UserInfoProps) => {
       <div className="col-span">
         <Button text="imprimir" onClick={showModal} />
       </div>
-      <CardGenerateReport />
     </div>
   );
 };

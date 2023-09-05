@@ -1,15 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import './CardRegisterUser.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Modal from '../../../portal/Modal';
 import { axiosInstance } from '../../../../services/axiosInstance';
-import { isOpenModal$ } from '../../../../services/sharingSubject';
+import { isOpenCardRegisterUser$ } from '../../../../services/sharingSubject';
 import Button from '../../button/Button';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import InputText from '../../Input/Input';
 import { UserForm, User } from '../../../../types/types';
 import { validateEmail } from '../../../../utils/customValidatesForm';
 import { Input } from '../../..';
+import { Subscription } from 'rxjs';
 interface CardRegisterUserProps {
   onSave?: () => void;
   onClose?: () => void;
@@ -32,6 +33,18 @@ const InitialValues: UserForm = {
 
 const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
   const [data, setData] = useState<UserForm>(InitialValues);
+  const [isOpen, setIsOpen] = useState(false);
+  const handleIsOpen = useRef<Subscription>(new Subscription());
+
+  useEffect(() => {
+    handleIsOpen.current = isOpenCardRegisterUser$.getSubject.subscribe(value =>
+      setIsOpen(value)
+    );
+    return () => {
+      handleIsOpen.current.unsubscribe();
+    };
+  }, []);
+
   const [errorPassword, setErrorPassword] = useState<{
     [key: string]: { [key: string]: string };
   }>();
@@ -97,11 +110,11 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
 
   const successfulShipment = () => {
     onSave?.();
-    isOpenModal$.setSubject = false;
+    setIsOpen(false);
   };
 
   const closeFunctions = () => {
-    isOpenModal$.setSubject = false;
+    setIsOpen(false);
     onClose?.();
     setErrorPassword({});
     reset();
@@ -117,7 +130,7 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
   };
 
   return (
-    <Modal size={50}>
+    <Modal size={50} isOpenProp={isOpen}>
       <form onSubmit={handleSubmit(onSubmit)} className="card-register-users">
         <span className="close-icon" onClick={closeFunctions}>
           <img src="/svg/close.svg" alt="pencil" />

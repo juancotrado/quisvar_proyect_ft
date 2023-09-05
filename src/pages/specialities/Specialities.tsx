@@ -1,27 +1,11 @@
-import { axiosInstance } from '../../services/axiosInstance';
-import { useEffect, useState } from 'react';
 import './specialities.css';
 import { CardRegisterProject } from '../../components';
-// import ProjectGroup from '../../components/projects/ProjectGroup';
 import SidebarSpeciality from '../../components/specialities/sidebarSpeciality/SidebarSpeciality';
 import { Outlet } from 'react-router-dom';
-import { SectorType } from '../../types/types';
+import useSector from '../../hooks/useSector';
 
 const Specialities = () => {
-  const [sectors, setSectors] = useState<SectorType[] | null>(null);
-
-  useEffect(() => {
-    getSpecialities();
-  }, []);
-
-  const getSpecialities = async () => {
-    const response = await axiosInstance.get('/sector');
-    setSectors(response.data);
-  };
-
-  const settingSectors = (sectors: SectorType[]) => {
-    setSectors(sectors);
-  };
+  const { getSpecialities, sectors, settingSectors } = useSector();
 
   return (
     <div className="speciality">

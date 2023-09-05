@@ -7,8 +7,6 @@ import './sidebarSpecialityLvlList.css';
 import DotsOption from '../../../shared/dots/DotsOption';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { Input } from '../../..';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../store';
 import {
   validateCorrectTyping,
   validateWhiteSpace,
@@ -20,6 +18,7 @@ interface SidebarSpecialityLvlListProps {
   type: typeSidebarSpecility;
   indexSelected: string;
   onSave?: () => void;
+  authUser?: boolean;
 }
 interface FormData {
   name: string;
@@ -35,12 +34,12 @@ const SidebarSpecialityLvlList = ({
   type,
   onSave,
   indexSelected,
+  authUser = true,
 }: SidebarSpecialityLvlListProps) => {
   const [openEditData, setOpenEditData] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>(INIT_VALUES);
   const isFirstLevel = type === 'sector';
   const isLastLevel = type === 'projects';
-  const { role } = useSelector((state: RootState) => state.userSession);
   const [errors, setErrors] = useState<{ [key: string]: any }>({});
   const [isClickRight, setIsClickRight] = useState(false);
   useEffect(() => {
@@ -167,7 +166,7 @@ const SidebarSpecialityLvlList = ({
           </>
         )}
       </div>
-      {!isFirstLevel && role !== 'EMPLOYEE' && (
+      {!isFirstLevel && authUser && (
         <DotsOption
           className="sidebarLevelList-menu-dots-option"
           notPositionRelative

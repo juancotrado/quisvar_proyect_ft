@@ -9,6 +9,7 @@ import { axiosInstance } from '../../../services/axiosInstance';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import { useNavigate } from 'react-router-dom';
+import { rolSecondLevel } from '../../../utils/roles';
 interface SidebarSpecialityProps {
   settingSectors: (value: SectorType[]) => void;
   sectors: SectorType[];
@@ -21,11 +22,11 @@ const SidebarSpeciality = ({
   onSave,
 }: SidebarSpecialityProps) => {
   const navigate = useNavigate();
-  // const handleProjects = (especialityId: number) => getProjects(especialityId);
   const handleProjectNavigate = (projectId: number) => {
     navigate(`proyecto/${projectId}`);
   };
   const { role } = useSelector((state: RootState) => state.userSession);
+  const authUsers = rolSecondLevel.includes(role);
   const [indexSelected, setIndexSelected] = useState('');
   const handleFilterForYear = async (e: FocusEvent<HTMLSelectElement>) => {
     const { data } = await axiosInstance.get<SectorType[]>('/sector');
@@ -44,6 +45,7 @@ const SidebarSpeciality = ({
       .filter(sector => sector.specialities.length);
     settingSectors(filterForYear);
   };
+
   const handleTaks = (name: string, especialties?: number) => {
     if (especialties === undefined) return;
     setIndexSelected(name + '-' + especialties);
@@ -64,6 +66,7 @@ const SidebarSpeciality = ({
           {sectors.map(sector => (
             <li key={sector.id} className="sidebarSpeciality-dropdown-list">
               <SidebarSpecialityLvlList
+                authUser={authUsers}
                 data={sector}
                 type="sector"
                 indexSelected={indexSelected}
@@ -76,6 +79,7 @@ const SidebarSpeciality = ({
                       className="sidebarSpeciality-dropdown-sub-list"
                     >
                       <SidebarSpecialityLvlList
+                        authUser={authUsers}
                         data={speciality}
                         type="specialities"
                         onSave={onSave}
@@ -87,15 +91,9 @@ const SidebarSpeciality = ({
                             <li
                               key={typespeciality.id}
                               className="sidebarSpeciality-dropdown-sub-list"
-                              // onClick={() => {
-                              //   handleProjects(typespeciality.id);
-                              //   handleTaks(
-                              //     typespeciality.name,
-                              //     typespeciality.id
-                              //   );
-                              // }}
                             >
                               <SidebarSpecialityLvlList
+                                authUser={authUsers}
                                 data={typespeciality}
                                 type="typespecialities"
                                 onSave={onSave}
@@ -116,6 +114,7 @@ const SidebarSpeciality = ({
                                       }}
                                     >
                                       <SidebarSpecialityLvlList
+                                        authUser={authUsers}
                                         data={project}
                                         type="projects"
                                         onSave={onSave}
@@ -123,35 +122,35 @@ const SidebarSpeciality = ({
                                       />
                                     </li>
                                   ))}
-                                  {role !== 'EMPLOYEE' && (
+                                  {authUsers && (
                                     <SidebarSpecialityAddLvl
                                       onSave={onSave}
                                       idValue={typespeciality.id}
                                       keyNameId="typespecialityId"
                                     />
-                                  )}{' '}
+                                  )}
                                 </ul>
                               </div>
                             </li>
                           ))}
-                          {role !== 'EMPLOYEE' && (
+                          {authUsers && (
                             <SidebarSpecialityAddLvl
                               onSave={onSave}
                               idValue={speciality.id}
                               keyNameId="specialitiesId"
                             />
-                          )}{' '}
+                          )}
                         </ul>
                       </div>
                     </li>
                   ))}
-                  {role !== 'EMPLOYEE' && (
+                  {authUsers && (
                     <SidebarSpecialityAddLvl
                       onSave={onSave}
                       idValue={sector.id}
                       keyNameId="sectorId"
                     />
-                  )}{' '}
+                  )}
                 </ul>
               </div>
             </li>

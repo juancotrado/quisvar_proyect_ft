@@ -29,10 +29,11 @@ const ListPersonalTask = () => {
   const [subTask, setSubTask] = useState<SubtaskIncludes[] | null>(null);
 
   useEffect(() => {
-    axiosInstance.get(`/users/${id}/subTasks`).then(res => {
-      setSubTask(res.data);
-      specialitiesList();
-    });
+    if (id)
+      axiosInstance.get(`/users/${id}/subTasks`).then(res => {
+        setSubTask(res.data);
+        specialitiesList();
+      });
   }, [userSession, id]);
 
   const toggleSwitch = () => {

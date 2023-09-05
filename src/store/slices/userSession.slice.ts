@@ -4,7 +4,7 @@ import { User } from '../../types/types';
 import { AppDispatch } from '..';
 import { axiosInstance } from '../../services/axiosInstance';
 
-const INITIAL_STATE: User = {
+export const INITIAL_STATE: User = {
   id: 0,
   email: '',
   password: '',
@@ -16,7 +16,12 @@ const INITIAL_STATE: User = {
     dni: '',
     phone: '',
     userId: 0,
+    degree: '',
+    description: '',
+    job: '',
   },
+  contract: null,
+  cv: null,
 };
 
 const userSessionSlice = createSlice({

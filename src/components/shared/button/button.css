@@ -20,16 +20,15 @@
   height: 1.4rem;
 }
 
-.btn-delete {
-  width: 0.7rem;
-  border: 2px solid var(--color-unresolved);
-}
-
 .btn-alert {
   font-size: var(--size-paragraph);
   font-weight: 400;
   border: 1px solid var(--color-tertiary);
   color: #000;
+}
+
+.btn-delete {
+  border: 2px solid var(--color-unresolved);
 }
 
 .btn-disabled {

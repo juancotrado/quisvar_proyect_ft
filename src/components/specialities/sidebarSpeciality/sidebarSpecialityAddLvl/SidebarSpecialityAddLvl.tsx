@@ -9,17 +9,19 @@ import {
   validateCorrectTyping,
   validateWhiteSpace,
 } from '../../../../utils/customValidatesForm';
+import { isOpenCardRegisteProject$ } from '../../../../services/sharingSubject';
 
 type DataForm = { name: string; cod: string };
 interface SidebarSpecialityAddLvlProps {
   idValue: number;
   onSave?: () => void;
-  keyNameId: 'sectorId' | 'specialitiesId';
+  keyNameId: 'sectorId' | 'specialitiesId' | 'typespecialityId';
 }
 
 const urlPost = {
   sectorId: '/specialities',
   specialitiesId: '/typespecialities',
+  typespecialityId: '',
 };
 const SidebarSpecialityAddLvl = ({
   onSave,
@@ -60,7 +62,17 @@ const SidebarSpecialityAddLvl = ({
       icon: 'save',
     },
   ];
-  const handleAddlevel = () => setAddLevel(!addLevel);
+  const handleAddlevel = () => {
+    console.log({ keyNameId });
+    if (keyNameId === 'typespecialityId') {
+      isOpenCardRegisteProject$.setSubject = {
+        isOpen: true,
+        typeSpecialityId: idValue,
+      };
+      return;
+    }
+    setAddLevel(!addLevel);
+  };
   return (
     <form
       onSubmit={handleSubmit(onSubmitData)}

@@ -10,6 +10,7 @@ export interface TypeSpecialities {
   id: number;
   name: string;
   cod: string;
+  projects: ProjectType[];
   _count?: {
     projects: number;
   };
@@ -117,7 +118,8 @@ export interface FilesSubtask {
 export type typeSidebarSpecility =
   | 'sector'
   | 'specialities'
-  | 'typespecialities';
+  | 'typespecialities'
+  | 'projects';
 
 export type UserRoleType =
   | 'SUPER_ADMIN'

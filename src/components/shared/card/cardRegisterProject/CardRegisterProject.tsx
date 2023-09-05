@@ -1,6 +1,6 @@
 import { Input, Select, TextArea } from '../../..';
 import { axiosInstance } from '../../../../services/axiosInstance';
-import { isOpenModal$ } from '../../../../services/sharingSubject';
+import { isOpenCardRegisteProject$ } from '../../../../services/sharingSubject';
 import { _date } from '../../../../utils/formatDate';
 import Modal from '../../../portal/Modal';
 import Button from '../../button/Button';
@@ -25,18 +25,13 @@ import departamentsJson from '../../../../utils/ubigeo/departamentos.json';
 import CardRegisterCompany from '../cardRegisterCompany/CardRegisterCompany';
 import CardRegisterConsortium from '../cardRegisterConsortium/CardRegisterConsortium';
 import CardRegisterExpert from '../cardAddExpert/CardRegisterExpert';
+import { Subscription } from 'rxjs';
 
 interface CardRegisterProjectProps {
-  onSave?: (value: number) => void;
-  project?: ProjectForm | null;
-  typeSpecialityId?: number;
+  onSave?: () => void;
 }
 
-const CardRegisterProject = ({
-  project,
-  onSave,
-  typeSpecialityId,
-}: CardRegisterProjectProps) => {
+const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
   const { listStage } = useSelector((state: RootState) => state);
   const [isOn, setIsOn] = useState(false);
   const { users: coordinators } = useListUsers(['ADMIN', 'MOD']);
@@ -49,7 +44,9 @@ const CardRegisterProject = ({
   const stages = useMemo(() => (listStage ? listStage : []), [listStage]);
   const refDescriptioProject = useRef<HTMLDivElement>(null);
   const refDescriptionCompany = useRef<HTMLDivElement>(null);
-
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [project, setProject] = useState<ProjectForm | null>(null);
+  const [typeSpecialityId, setTypeSpecialityId] = useState<number | null>(null);
   const {
     handleSubmit,
     register,
@@ -58,6 +55,39 @@ const CardRegisterProject = ({
     formState: { errors },
   } = useForm<ProjectForm>();
 
+  const handleIsOpen = useRef<Subscription>(new Subscription());
+
+  useEffect(() => {
+    handleIsOpen.current = isOpenCardRegisteProject$.getSubject.subscribe(
+      data => {
+        console.log(data);
+        setTypeSpecialityId(data.typeSpecialityId);
+        const { project } = data;
+        setIsOpenModal(data.isOpen);
+        if (project) {
+          setJurisdictionSelectData(project.department, project.province);
+          setValue('CUI', project.CUI);
+          setValue('name', project.name);
+          setValue('description', project.description);
+          setValue('typeSpeciality', project.typeSpeciality);
+          setValue('company', project.company);
+          setValue('department', project.department);
+          setValue('province', project.province);
+          setValue('district', project.district);
+          setValue('location', project.location);
+          setValue('userId', project.userId);
+          setValue('stageId', project.stageId);
+          setValue('startDate', _date(new Date(project.startDate)));
+          setValue('untilDate', _date(new Date(project.untilDate)));
+          setIsUniqueCorp(!!project.company);
+          setProject(project);
+        }
+      }
+    );
+    return () => {
+      handleIsOpen.current.unsubscribe();
+    };
+  }, [setValue]);
   const handleGetProvinces = (value: string) => {
     const findDepartament = departamentsJson.find(
       ubigeo => ubigeo.nombre_ubigeo === value
@@ -94,26 +124,6 @@ const CardRegisterProject = ({
     setDistricts(districsData);
   };
 
-  useEffect(() => {
-    if (project) {
-      setJurisdictionSelectData(project.department, project.province);
-      setValue('CUI', project.CUI);
-      setValue('name', project.name);
-      setValue('description', project.description);
-      setValue('typeSpeciality', project.typeSpeciality);
-      setValue('company', project.company);
-      setValue('department', project.department);
-      setValue('province', project.province);
-      setValue('district', project.district);
-      setValue('location', project.location);
-      setValue('userId', project.userId);
-      setValue('stageId', project.stageId);
-      setValue('startDate', _date(new Date(project.startDate)));
-      setValue('untilDate', _date(new Date(project.untilDate)));
-      setIsUniqueCorp(!!project.company);
-    }
-  }, [project, setValue]);
-
   const onSubmit: SubmitHandler<ProjectForm> = values => {
     const { startDate, untilDate, ..._values } = values;
     const _data = {
@@ -135,10 +145,9 @@ const CardRegisterProject = ({
   };
 
   const successfulShipment = () => {
-    if (!typeSpecialityId) return;
-    onSave?.(typeSpecialityId);
+    onSave?.();
     setIsOn(false);
-    isOpenModal$.setSubject = false;
+    setIsOpenModal(false);
     reset();
   };
 
@@ -148,7 +157,7 @@ const CardRegisterProject = ({
     setProvinces([]);
     setIsOn(false);
     setIsUniqueCorp(true);
-    isOpenModal$.setSubject = false;
+    setIsOpenModal(false);
   };
 
   const handleClickScroll = (ref: RefObject<HTMLDivElement>) => {
@@ -166,7 +175,7 @@ const CardRegisterProject = ({
   };
 
   return (
-    <Modal size={50}>
+    <Modal size={50} isOpenProp={isOpenModal}>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="card-register-project"

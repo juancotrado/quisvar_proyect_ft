@@ -13,6 +13,7 @@ import {
   validateCorrectTyping,
   validateWhiteSpace,
 } from '../../../../utils/customValidatesForm';
+import { isOpenCardRegisteProject$ } from '../../../../services/sharingSubject';
 
 interface SidebarSpecialityLvlListProps {
   data: DataSidebarSpeciality;
@@ -38,7 +39,7 @@ const SidebarSpecialityLvlList = ({
   const [openEditData, setOpenEditData] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>(INIT_VALUES);
   const isFirstLevel = type === 'sector';
-  const isLastLevel = type === 'typespecialities';
+  const isLastLevel = type === 'projects';
   const { role } = useSelector((state: RootState) => state.userSession);
   const [errors, setErrors] = useState<{ [key: string]: any }>({});
   const [isClickRight, setIsClickRight] = useState(false);
@@ -80,6 +81,17 @@ const SidebarSpecialityLvlList = ({
   const handleClickRigth = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
     setIsClickRight(!isClickRight);
+  };
+  const handleEdit = () => {
+    if (type === 'projects') {
+      isOpenCardRegisteProject$.setSubject = {
+        isOpen: true,
+        typeSpecialityId: null,
+        project: data,
+      };
+      return;
+    }
+    setOpenEditData(!openEditData);
   };
   return (
     <div
@@ -165,9 +177,7 @@ const SidebarSpecialityLvlList = ({
               name: openEditData ? 'Cancelar' : 'Editar',
               type: openEditData ? 'submit' : 'button',
               icon: openEditData ? 'close' : 'pencil',
-              function: () => {
-                setOpenEditData(!openEditData);
-              },
+              function: handleEdit,
             },
 
             {

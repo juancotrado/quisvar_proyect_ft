@@ -1,33 +1,29 @@
 import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import './userList.css';
-import { CardGenerateReport, CardRegisterUser, Input } from '../../components';
-import Button from '../../components/shared/button/Button';
-import { URL, axiosInstance } from '../../services/axiosInstance';
 import {
+  CardGenerateReport,
+  CardOpenFile,
+  CardRegisterUser,
+  Input,
+} from '../../components';
+import Button from '../../components/shared/button/Button';
+import { axiosInstance } from '../../services/axiosInstance';
+import {
+  isOpenCardFiles$,
   isOpenCardGenerateReport$,
   isOpenCardRegisterUser$,
 } from '../../services/sharingSubject';
 import { User } from '../../types/types';
 import UserInfo from '../../components/users/UserInfo';
-import UploadFile from '../../components/shared/uploadFile/UploadFile';
-import ButtonDelete from '../../components/shared/button/ButtonDelete';
 
-interface GeneralFile {
-  id: number;
-  name: string;
-  dir: string;
-}
 const UsersList = () => {
   const [users, setUsers] = useState<User[] | null>(null);
   const [userData, setUserData] = useState<User | null>(null);
   const [isArchived, setIsArchived] = useState(true);
-  const [isShowFiles, setIsShowFiles] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [printReportId, setPrintReportId] = useState<number>();
-  const [generalFiles, setGeneralFiles] = useState<GeneralFile[] | null>(null);
   useEffect(() => {
     getUsers();
-    getGeneralFiles();
   }, []);
 
   const getUsers = async () => {
@@ -35,12 +31,7 @@ const UsersList = () => {
       setUsers(res.data);
     });
   };
-  const getGeneralFiles = async () => {
-    await axiosInstance.get('/files/generalFiles').then(res => {
-      setGeneralFiles(res.data);
-    });
-  };
-  const handleShowFiles = () => setIsShowFiles(!isShowFiles);
+
   const filterList = useMemo(() => {
     if (!users) return [];
 
@@ -68,7 +59,9 @@ const UsersList = () => {
     setPrintReportId(value);
     isOpenCardGenerateReport$.setSubject = true;
   };
-
+  const handleOpenCardFiles = () => {
+    isOpenCardFiles$.setSubject = true;
+  };
   return (
     <div className="content-list">
       <div className="user-list">
@@ -86,54 +79,12 @@ const UsersList = () => {
             classNameMain="filter-user-input"
           />
           <div className="userList-options-right">
-            <div className="userList-upload-contain">
-              <UploadFile
-                text="Subir Archivo"
-                onSave={getGeneralFiles}
-                uploadName="generalFile"
-                URL={`/files/uploadGeneralFiles`}
-                className="userList-upload"
-              />
-            </div>
-            {generalFiles && (
-              <div className="userList-general-files">
-                <Button
-                  text={isShowFiles ? 'Cerrar Archivos' : 'Abrir Archivos'}
-                  className="userList-btn"
-                  onClick={handleShowFiles}
-                />
-                <div
-                  className={`userList-general-files-contain ${
-                    isShowFiles && 'isShowGeneralFiles'
-                  }`}
-                >
-                  {generalFiles.map(file => (
-                    <div key={file.id} className="subtaskFile-contain">
-                      <a
-                        href={`${URL}/${file.dir}`}
-                        target="_blank"
-                        className="subtaskFile-anchor"
-                        download={true}
-                      >
-                        <img
-                          src="/svg/file-download.svg"
-                          alt="W3Schools"
-                          className="subtaskFile-icon"
-                        />
-                        <span className="subtaskFile-name">{file.name}</span>
-                      </a>
+            <Button
+              text="Ver Archivos"
+              className="userList-btn"
+              onClick={handleOpenCardFiles}
+            />
 
-                      <ButtonDelete
-                        icon="trash-red"
-                        onSave={getGeneralFiles}
-                        url={`/files/generalFiles/${file.id}`}
-                        className="subtaskFile-btn-delete"
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
             <div>
               <Button
                 text="Agregar"
@@ -173,8 +124,8 @@ const UsersList = () => {
           />
         ))}
       </div>
-      {<CardGenerateReport employeeId={printReportId} />}
-
+      <CardGenerateReport employeeId={printReportId} />
+      <CardOpenFile />
       <CardRegisterUser
         user={userData}
         onClose={() => {

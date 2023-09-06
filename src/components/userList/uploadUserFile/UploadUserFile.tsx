@@ -27,19 +27,19 @@ const UploadUserFile = ({
         />
       ) : (
         <div className="col-span">
-          <figure className="cardSubtaskProcess-files-icon">
+          <figure className="uploadUserFile-files-icon">
             <a
               href={`${URL}/file-user/${typeFile}/${fileName}`}
               target="_blank"
             >
               <img src="/svg/file-download.svg" alt="W3Schools" />
             </a>
-            <div className="cardSubtaskProcess-files-btn">
+            <div className="uploadUserFile-files-btn">
               <ButtonDelete
                 icon="trash-red"
                 onSave={onSave}
                 url={`/files/removeFileUser/${userId}/${fileName}?typeFile=${typeFile}`}
-                className="cardSubtaskProcess-files-btn-delete"
+                className="uploadUserFile-files-btn-delete"
               />
             </div>
           </figure>

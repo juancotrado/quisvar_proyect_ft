@@ -104,11 +104,7 @@ const UserInfo = ({ user, onUpdate, getUsers, onPrint }: UserInfoProps) => {
               handleChangeStatus();
             }}
           >
-            <motion.div
-              className={`handle-statuts ${isOn && 'handle-on'}`}
-              layout
-              transition={spring}
-            ></motion.div>
+            <div className={`handle-statuts ${isOn && 'handle-on'}`}></div>
           </div>
         )}
       </div>

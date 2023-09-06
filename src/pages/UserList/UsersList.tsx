@@ -11,6 +11,9 @@ import { User } from '../../types/types';
 import UserInfo from '../../components/users/UserInfo';
 import UploadFile from '../../components/shared/uploadFile/UploadFile';
 import ButtonDelete from '../../components/shared/button/ButtonDelete';
+import { AppDispatch, RootState } from '../../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { getListUsers } from '../../store/slices/listUsers.slice';
 
 interface GeneralFile {
   id: number;
@@ -18,7 +21,9 @@ interface GeneralFile {
   dir: string;
 }
 const UsersList = () => {
-  const [users, setUsers] = useState<User[] | null>(null);
+  const dispatch: AppDispatch = useDispatch();
+  const { listUsers: users } = useSelector((state: RootState) => state);
+
   const [userData, setUserData] = useState<User | null>(null);
   const [isArchived, setIsArchived] = useState(true);
   const [isShowFiles, setIsShowFiles] = useState(false);
@@ -26,14 +31,11 @@ const UsersList = () => {
   const [printReportId, setPrintReportId] = useState<number>();
   const [generalFiles, setGeneralFiles] = useState<GeneralFile[] | null>(null);
   useEffect(() => {
-    getUsers();
     getGeneralFiles();
   }, []);
 
   const getUsers = async () => {
-    await axiosInstance.get('/users').then(res => {
-      setUsers(res.data);
-    });
+    dispatch(getListUsers());
   };
   const getGeneralFiles = async () => {
     await axiosInstance.get('/files/generalFiles').then(res => {

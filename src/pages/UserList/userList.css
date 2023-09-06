@@ -8,12 +8,16 @@
   display: flex;
   justify-content: center;
 }
-.userList-upload {
-  width: 16rem;
+
+.userList-upload-contain {
+  width: 15rem;
+  height: 100%;
 }
+
 .userList-general-files {
   position: relative;
 }
+
 .userList-general-files-contain {
   position: absolute;
   margin-top: 0.5rem;
@@ -22,12 +26,14 @@
   height: 7rem;
   z-index: 6;
 }
+
 .isShowGeneralFiles {
   width: 20rem;
   padding: 1rem;
   background-color: white;
-  border: 0.3rem solid var(--color-primary);
+  box-shadow: 0px 1.5px 4px rgba(0, 0, 0, 0.6);
 }
+
 .user-container-list {
   display: flex;
   flex-direction: column;
@@ -55,30 +61,49 @@
   margin-bottom: 1.5rem;
 }
 
-.list-filter {
+.userList-options {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
-  bottom: 1rem;
-}
-.btn-filter-available {
-  background-color: var(--color-done);
-  border: none;
-  color: #fff;
-}
-.filter-user-input {
-  width: 40%;
-}
-.btn-filter-unavailable {
-  background-color: var(--color-unresolved);
-  border: none;
-  color: #fff;
+  margin-bottom: 2rem;
 }
 
-.btn-add {
-  color: var(--color-primary);
+.btn-filter-available {
+  background-color: var(--color-pass);
+  color: #14804a;
+  border: 1px solid #14804a;
+}
+
+.filter-user-input {
+  width: 15rem;
+}
+
+.btn-filter-unavailable {
+  background-color: var(--color-disabled);
+  color: #5a6376;
+  border: 1px solid #5a6376;
+}
+
+.btn-filter {
   box-shadow: 0px 1.5px 4px rgba(0, 0, 0, 0.2);
-  font-size: var(--size-button);
+  font-size: 0.7rem;
+  border-radius: 5px;
+  height: 100%;
+}
+
+.userList-btn {
+  box-shadow: 0px 1.5px 4px rgba(0, 0, 0, 0.2);
+  font-size: 0.7rem;
+  border-radius: 5px;
+  color: var(--color-primary);
+  height: 100%;
+}
+
+.userList-options-right {
+  display: flex;
+  height: 100%;
+  gap: 0.5rem;
 }
 
 .icon {
@@ -134,4 +159,8 @@
 .header-list-edit {
   flex-basis: 9.5rem;
   text-align: center;
+}
+
+.userList-upload {
+  height: 100%;
 }

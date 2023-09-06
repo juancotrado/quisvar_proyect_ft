@@ -19,6 +19,8 @@
   --radius-input: 8px;
   --header-height: 4.5rem;
   --register-height: 70vh;
+  --color-disabled: #e9edf5;
+  --color-pass: #e1fcef;
 }
 
 html {
@@ -28,7 +30,7 @@ html {
 *,
 *::after,
 *::before {
-  box-sizing: inherit;
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }

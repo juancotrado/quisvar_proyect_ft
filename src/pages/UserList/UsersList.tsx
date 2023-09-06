@@ -72,63 +72,8 @@ const UsersList = () => {
           <h1 className="main-title">
             LISTA DE <span className="main-title-span">USUARIOS </span>
           </h1>
-          <div className="userList-upload">
-            <UploadFile
-              text="Subir Archivo"
-              onSave={getGeneralFiles}
-              uploadName="generalFile"
-              URL={`/files/uploadGeneralFiles`}
-            />
-          </div>
-          {generalFiles && (
-            <div className="userList-general-files">
-              <Button
-                text={isShowFiles ? 'Cerrar Archivos' : 'Abrir Archivos'}
-                className="btn-add"
-                onClick={handleShowFiles}
-              />
-              <div
-                className={`userList-general-files-contain ${
-                  isShowFiles && 'isShowGeneralFiles'
-                }`}
-              >
-                {generalFiles.map(file => (
-                  <div key={file.id} className="subtaskFile-contain">
-                    <a
-                      href={`${URL}/${file.dir}`}
-                      target="_blank"
-                      className="subtaskFile-anchor"
-                      download={true}
-                    >
-                      <img
-                        src="/svg/file-download.svg"
-                        alt="W3Schools"
-                        className="subtaskFile-icon"
-                      />
-                      <span className="subtaskFile-name">{file.name}</span>
-                    </a>
-
-                    <ButtonDelete
-                      icon="trash-red"
-                      onSave={getGeneralFiles}
-                      url={`/files/generalFiles/${file.id}`}
-                      className="subtaskFile-btn-delete"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-          <div>
-            <Button
-              text="Agregar"
-              icon="plus"
-              className="btn-add"
-              onClick={addUser}
-            />
-          </div>
         </div>
-        <div className="list-filter">
+        <div className="userList-options">
           <Input
             type="text"
             placeholder="Buscar por nombre o apellido"
@@ -136,13 +81,71 @@ const UsersList = () => {
             onChange={handleSearchChange}
             classNameMain="filter-user-input"
           />
-          <Button
-            text={`${isArchived ? 'Ver archivados' : 'Ver en actividad'}`}
-            className={`${
-              isArchived ? 'btn-filter-unavailable' : 'btn-filter-available'
-            }`}
-            onClick={() => setIsArchived(!isArchived)}
-          />
+          <div className="userList-options-right">
+            <div className="userList-upload-contain">
+              <UploadFile
+                text="Subir Archivo"
+                onSave={getGeneralFiles}
+                uploadName="generalFile"
+                URL={`/files/uploadGeneralFiles`}
+                className="userList-upload"
+              />
+            </div>
+            {generalFiles && (
+              <div className="userList-general-files">
+                <Button
+                  text={isShowFiles ? 'Cerrar Archivos' : 'Abrir Archivos'}
+                  className="userList-btn"
+                  onClick={handleShowFiles}
+                />
+                <div
+                  className={`userList-general-files-contain ${
+                    isShowFiles && 'isShowGeneralFiles'
+                  }`}
+                >
+                  {generalFiles.map(file => (
+                    <div key={file.id} className="subtaskFile-contain">
+                      <a
+                        href={`${URL}/${file.dir}`}
+                        target="_blank"
+                        className="subtaskFile-anchor"
+                        download={true}
+                      >
+                        <img
+                          src="/svg/file-download.svg"
+                          alt="W3Schools"
+                          className="subtaskFile-icon"
+                        />
+                        <span className="subtaskFile-name">{file.name}</span>
+                      </a>
+
+                      <ButtonDelete
+                        icon="trash-red"
+                        onSave={getGeneralFiles}
+                        url={`/files/generalFiles/${file.id}`}
+                        className="subtaskFile-btn-delete"
+                      />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+            <div>
+              <Button
+                text="Agregar"
+                icon="plus"
+                className="userList-btn"
+                onClick={addUser}
+              />
+            </div>
+            <Button
+              text={`${isArchived ? 'Ver archivados' : 'Ver en actividad'}`}
+              className={`btn-filter ${
+                isArchived ? 'btn-filter-unavailable' : 'btn-filter-available'
+              }`}
+              onClick={() => setIsArchived(!isArchived)}
+            />
+          </div>
         </div>
         <div className="header-container-list">
           <div className="header-list-user">USUARIO</div>

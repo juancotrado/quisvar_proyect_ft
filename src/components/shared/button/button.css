@@ -16,8 +16,8 @@
 }
 
 .btn-main-text {
-  width: 1.4rem;
-  height: 1.4rem;
+  width: 14%;
+  aspect-ratio: 1;
 }
 
 .btn-alert {

@@ -11,17 +11,20 @@
   height: 100%;
   flex: 1.5;
 }
+
 .login-figure-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
+
 .login-contain-logo {
   position: absolute;
   width: 25rem;
   left: 2rem;
   bottom: 2rem;
 }
+
 .form-group {
   display: grid;
   gap: 2rem;
@@ -33,6 +36,17 @@
   color: #203881;
   font-size: var(--size-label);
 }
+
+.login-forgot-password {
+  font-size: 0.7rem;
+  text-align: justify;
+}
+
+.login-forgot-email {
+  font-size: 0.7rem;
+  font-weight: bold;
+}
+
 .login-input {
   height: 3.5rem;
   border: 1px solid var(--color-secondary);
@@ -40,6 +54,7 @@
   padding: 0.5rem;
   font-size: var(--size-input);
 }
+
 .login-btn {
   width: 100%;
   height: 3.5rem;
@@ -51,9 +66,11 @@
   cursor: pointer;
   transition: background-color 0.5s ease;
 }
+
 .login-btn:hover {
   background-color: var(--color-secondary);
 }
+
 .form {
   display: grid;
   gap: 45px;
@@ -67,6 +84,7 @@
   backdrop-filter: blur(50px);
   box-shadow: 20px 20px 40px -6px #0003;
 }
+
 .login-form {
   flex: 1;
   height: 100%;

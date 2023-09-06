@@ -71,6 +71,16 @@ const Login = () => {
           <button type="submit" className="login-btn">
             INGRESAR
           </button>
+          <div className="login-forgot-contein">
+            <p className="login-forgot-password">
+              Si tiene dificultades en el acceso, solicite usuario y clave
+              enviando sus datos (DNI, Apellidos y Nombres) al correo
+              electronico sgte:
+            </p>
+            <span className="login-forgot-email">
+              coorporaciondhyriumsaa@gmail.com
+            </span>
+          </div>
         </form>
       </div>
     </div>

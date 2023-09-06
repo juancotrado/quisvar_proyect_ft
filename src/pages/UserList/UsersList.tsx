@@ -3,7 +3,10 @@ import './userList.css';
 import { CardGenerateReport, CardRegisterUser, Input } from '../../components';
 import Button from '../../components/shared/button/Button';
 import { URL, axiosInstance } from '../../services/axiosInstance';
-import { isOpenCardRegisterUser$ } from '../../services/sharingSubject';
+import {
+  isOpenCardGenerateReport$,
+  isOpenCardRegisterUser$,
+} from '../../services/sharingSubject';
 import { User } from '../../types/types';
 import UserInfo from '../../components/users/UserInfo';
 import UploadFile from '../../components/shared/uploadFile/UploadFile';
@@ -20,6 +23,7 @@ const UsersList = () => {
   const [isArchived, setIsArchived] = useState(true);
   const [isShowFiles, setIsShowFiles] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
+  const [printReportId, setPrintReportId] = useState<number>();
   const [generalFiles, setGeneralFiles] = useState<GeneralFile[] | null>(null);
   useEffect(() => {
     getUsers();
@@ -44,12 +48,8 @@ const UsersList = () => {
 
     if (!searchTerm) return filteredByStatus;
 
-    return filteredByStatus.filter(
-      user =>
-        user.profile.firstName
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase()) ||
-        user.profile.lastName.toLowerCase().includes(searchTerm.toLowerCase())
+    return filteredByStatus.filter(user =>
+      user.profile.dni.startsWith(searchTerm)
     );
   }, [isArchived, searchTerm, users]);
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -63,6 +63,10 @@ const UsersList = () => {
   const editUser = (value: User) => {
     isOpenCardRegisterUser$.setSubject = true;
     setUserData(value);
+  };
+  const printReport = (value: number) => {
+    setPrintReportId(value);
+    isOpenCardGenerateReport$.setSubject = true;
   };
 
   return (
@@ -131,7 +135,7 @@ const UsersList = () => {
         <div className="list-filter">
           <Input
             type="text"
-            placeholder="Buscar por nombre o apellido"
+            placeholder="Buscar por DNI"
             value={searchTerm}
             onChange={handleSearchChange}
             classNameMain="filter-user-input"
@@ -163,11 +167,12 @@ const UsersList = () => {
               user={user}
               getUsers={getUsers}
               onUpdate={() => editUser(user)}
+              onPrint={() => printReport(user.id)}
             />
           ))}
         </div>
       </div>
-      <CardGenerateReport />
+      {printReportId && <CardGenerateReport employeeId={printReportId} />}
 
       <CardRegisterUser
         user={userData}

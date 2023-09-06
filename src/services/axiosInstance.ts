@@ -2,10 +2,10 @@ import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 import { SnackbarUtilities } from '../utils/SnackbarManager';
 import { errorToken$, loader$ } from './sharingSubject';
 
-//  export const URL = 'http://localhost:8082'; //dev
+export const URL = 'http://localhost:8082'; //dev
 //export const URL = 'http://quisvar.sumak.digital'; //prod
 // export const URL = 'http://143.198.168.251:8082'; //prod
-export const URL = 'http://172.16.10.106:8081'; //docker
+// export const URL = 'http://172.16.10.207:8082'; //docker
 
 export const URL_FILES = 'http://localhost:8081/static';
 const API_BASE_URL = `${URL}/api/v1`;

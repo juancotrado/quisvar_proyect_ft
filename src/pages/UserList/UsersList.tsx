@@ -148,27 +148,25 @@ const UsersList = () => {
           </div>
         </div>
         <div className="header-container-list">
-          <div className="header-list-user">USUARIO</div>
-          <div className="header-list-role">ROL DE TRABAJO</div>
-          <div className="header-list-status">ESTADO</div>
-          <div className="header-list-dni">CARGO</div>
-          <div className="header-list-phone">CELULAR</div>
-          <div className="header-list-phone">CV</div>
-          <div className="header-list-phone">CONTRATO</div>
-
-          <div className="header-list-edit">EDITAR</div>
-          <div className="header-list-edit">Reportes</div>
+          <div className="header-list-text user-grid">USUARIO</div>
+          <div className="header-list-text">ROL DE TRABAJO</div>
+          <div className="header-list-text">ESTADO</div>
+          <div className="header-list-text">CARGO</div>
+          <div className="header-list-text">CELULAR</div>
+          <div className="header-list-text">CV</div>
+          <div className="header-list-text">DECLARACION JURADA</div>
+          <div className="header-list-text">CONTRATO</div>
+          <div className="header-list-text">EDITAR</div>
+          <div className="header-list-text">Reportes</div>
         </div>
-        <div className="user-container-list">
-          {filterList.map(user => (
-            <UserInfo
-              key={user.id}
-              user={user}
-              getUsers={getUsers}
-              onUpdate={() => editUser(user)}
-            />
-          ))}
-        </div>
+        {filterList.map(user => (
+          <UserInfo
+            key={user.id}
+            user={user}
+            getUsers={getUsers}
+            onUpdate={() => editUser(user)}
+          />
+        ))}
       </div>
       <CardGenerateReport />
 

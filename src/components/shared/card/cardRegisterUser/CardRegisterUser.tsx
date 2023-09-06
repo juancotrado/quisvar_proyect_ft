@@ -29,6 +29,7 @@ const InitialValues: UserForm = {
   description: '',
   job: '',
   cv: null,
+  declaration: null,
 };
 
 const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
@@ -62,7 +63,7 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
   useEffect(() => {
     if (user?.id) {
       const { profile, ..._data } = user;
-      setData({ ...profile, ..._data, cv: null });
+      setData({ ...profile, ..._data, cv: null, declaration: null });
     } else {
       setData(InitialValues);
     }
@@ -83,8 +84,10 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
 
   const onSubmit: SubmitHandler<UserForm> = async data => {
     const fileCv = data.cv?.[0] as File;
+    const fileDeclaration = data.declaration?.[0] as File;
     const formData = new FormData();
     formData.append('fileUser', fileCv);
+    formData.append('fileUser', fileDeclaration);
     formData.append('id', data.id + '');
     formData.append('degree', data.degree);
     formData.append('description', data.description);
@@ -95,7 +98,6 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
     formData.append('lastName', data.lastName);
     formData.append('password', data.password);
     formData.append('phone', data.phone);
-
     if (data.id) {
       axiosInstance.put(`/profile/${data.id}`, data).then(successfulShipment);
     } else {
@@ -103,7 +105,7 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
         'Content-type': 'multipart/form-data',
       };
       axiosInstance
-        .post(`/users?isContract=false`, formData, { headers })
+        .post(`/users?typeFile=cv`, formData, { headers })
         .then(successfulShipment);
     }
   };
@@ -225,15 +227,26 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
           />
         </div>
         {!user?.id && (
-          <div className="col-input">
-            <Input
-              type="file"
-              label="CV"
-              placeholder="cv"
-              {...register('cv', { required: true })}
-              errors={errors}
-            />
-          </div>
+          <>
+            <div className="col-input">
+              <Input
+                type="file"
+                label="CV"
+                placeholder="cv"
+                {...register('cv', { required: true })}
+                errors={errors}
+              />
+            </div>
+            <div className="col-input">
+              <Input
+                type="file"
+                label="Declaracion Jurada"
+                placeholder="declaration"
+                {...register('declaration', { required: true })}
+                errors={errors}
+              />
+            </div>
+          </>
         )}
         <div className="btn-build">
           <Button

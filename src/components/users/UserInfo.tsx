@@ -13,6 +13,7 @@ import { RootState } from '../../store';
 import UploadFile from '../shared/uploadFile/UploadFile';
 // import { isOpenModal$ } from '../../services/sharingSubject';
 import { isOpenCardGenerateReport$ } from '../../services/sharingSubject';
+import UploadUserFile from '../userList/uploadUserFile/UploadUserFile';
 
 // const roleList = [
 //   { id: 'SUPER_ADMIN', value: 'GERENTE GENERAL' },
@@ -112,57 +113,25 @@ const UserInfo = ({ user, onUpdate, getUsers }: UserInfoProps) => {
       </div>
       <div className="col-span phone-container">{profile.description}</div>
       <div className="col-span phone-container">{profile.phone}</div>
-      {!user.cv ? (
-        <UploadFile
-          text="Subir Archivo"
-          onSave={getUsers}
-          uploadName="fileUser"
-          URL={`/files/uploadFileUser/${user.id}?isContract=false`}
-        />
-      ) : (
-        <div className="col-span">
-          <figure className="cardSubtaskProcess-files-icon">
-            <a href={`${URL}/file-user/cvs/${user.cv}`} target="_blank">
-              <img src="/svg/file-download.svg" alt="W3Schools" />
-            </a>
-            <div className="cardSubtaskProcess-files-btn">
-              <ButtonDelete
-                icon="trash-red"
-                onSave={getUsers}
-                url={`/files/removeFileUser/${user.id}/${user.cv}?isContract=false`}
-                className="cardSubtaskProcess-files-btn-delete"
-              />
-            </div>
-          </figure>
-        </div>
-      )}
-      {!user.contract ? (
-        <UploadFile
-          text="Subir Archivo"
-          uploadName="fileUser"
-          onSave={getUsers}
-          URL={`/files/uploadFileUser/${user.id}?isContract=true`}
-        />
-      ) : (
-        <div className="col-span">
-          <figure className="cardSubtaskProcess-files-icon">
-            <a
-              href={`${URL}/file-user/contracts/${user.contract}`}
-              target="_blank"
-            >
-              <img src="/svg/file-download.svg" alt="W3Schools" />
-            </a>
-            <div className="cardSubtaskProcess-files-btn">
-              <ButtonDelete
-                icon="trash-red"
-                url={`/files/removeFileUser/${user.id}/${user.contract}?isContract=true`}
-                onSave={getUsers}
-                className="cardSubtaskProcess-files-btn-delete"
-              />
-            </div>
-          </figure>
-        </div>
-      )}
+      <UploadUserFile
+        fileName={user.cv}
+        typeFile="cv"
+        userId={user.id}
+        onSave={getUsers}
+      />
+      <UploadUserFile
+        fileName={user.declaration}
+        typeFile="declaration"
+        userId={user.id}
+        onSave={getUsers}
+      />
+      <UploadUserFile
+        fileName={user.contract}
+        typeFile="contract"
+        userId={user.id}
+        onSave={getUsers}
+      />
+
       {roleLimit && (
         <div className="col-span actions-container">
           <Button icon="pencil" className="role-btn" onClick={onUpdate} />

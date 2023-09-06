@@ -22,6 +22,7 @@ export const INITIAL_STATE: User = {
   },
   contract: null,
   cv: null,
+  declaration: null,
 };
 
 const userSessionSlice = createSlice({

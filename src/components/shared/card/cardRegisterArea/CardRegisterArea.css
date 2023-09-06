@@ -33,6 +33,7 @@
   height: 2rem;
 }
 .close-icon {
+  cursor: pointer;
   position: absolute;
   top: 0.7rem;
   right: 0.7rem;

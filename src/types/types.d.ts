@@ -142,6 +142,7 @@ export type User = {
   status?: boolean;
   contract: string | null;
   cv: string | null;
+  declaration: string | null;
 };
 type Profile = {
   id: number;
@@ -225,6 +226,7 @@ export interface Task extends DataTask {
 export interface Task2 extends DataTask {
   tasks_3: DataTask[];
 }
+export type TypeFileUser = 'contract' | 'cv' | 'declaration';
 
 // export interface SubTask {
 //   id: number;
@@ -341,6 +343,7 @@ export interface UserForm {
   description: string;
   job: string;
   cv: FileList | null;
+  declaration: FileList | null;
 }
 export interface Report {
   price: number;

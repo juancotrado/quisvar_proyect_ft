@@ -22,7 +22,10 @@ interface EmployeeList {
   id: number;
   name: string;
 }
-const CardGenerateReport = () => {
+interface CardGenerateReportProps {
+  employeeId?: number;
+}
+const CardGenerateReport = ({ employeeId }: CardGenerateReportProps) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleIsOpen = useRef<Subscription>(new Subscription());
@@ -38,7 +41,7 @@ const CardGenerateReport = () => {
 
   const { userSession } = useSelector((state: RootState) => state);
   const [coordinator, setCoordinator] = useState('');
-  const { users } = useListUsers();
+  // const { users } = useListUsers();
   const { users: modedators } = useListUsers(['MOD', 'ADMIN']);
   const {
     handleSubmit,
@@ -68,7 +71,8 @@ const CardGenerateReport = () => {
     });
     const totalDays = getTimeOut(data.initialDate, data.untilDate) / 24;
     const idGenerate =
-      userSession.role === 'EMPLOYEE' ? userSession.id : employee?.id;
+      // userSession.role === 'EMPLOYEE' ? userSession.id : employee?.id;
+      userSession.role === 'EMPLOYEE' ? userSession.id : employeeId;
     axiosInstance
       .get(
         `/reports/user/${idGenerate}?initial=${data.initialDate}&until=${data.untilDate}&status=DONE`
@@ -99,7 +103,7 @@ const CardGenerateReport = () => {
       >
         <div className="report-title">
           <h2>Generar Reporte</h2>
-          {userSession.role !== 'EMPLOYEE' && (
+          {/* {userSession.role !== 'EMPLOYEE' && (
             <div className="search-employee">
               <DropDownSimple
                 data={users}
@@ -115,7 +119,7 @@ const CardGenerateReport = () => {
                 }
               />
             </div>
-          )}
+          )} */}
         </div>
         <span className="close-add-card" onClick={showModal}>
           <img src="/svg/close.svg" alt="pencil" />

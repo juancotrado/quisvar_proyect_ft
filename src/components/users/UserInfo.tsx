@@ -28,8 +28,9 @@ interface UserInfoProps {
   user: User;
   onUpdate?: () => void;
   getUsers?: () => void;
+  onPrint?: () => void;
 }
-const UserInfo = ({ user, onUpdate, getUsers }: UserInfoProps) => {
+const UserInfo = ({ user, onUpdate, getUsers, onPrint }: UserInfoProps) => {
   const [isOn, setIsOn] = useState(user.status);
   const [openRole, setOpenRole] = useState(false);
   const { userSession } = useSelector((state: RootState) => state);
@@ -52,9 +53,9 @@ const UserInfo = ({ user, onUpdate, getUsers }: UserInfoProps) => {
     await axiosInstance.patch(`users/${user.id}`, _dataRole).then(getUsers);
   };
   const roleLimit = verifyByRole(user.role, userSession.role);
-  const showModal = () => {
-    isOpenCardGenerateReport$.setSubject = true;
-  };
+  // const showModal = () => {
+  //   isOpenCardGenerateReport$.setSubject = true;
+  // };
   return (
     <div className="user-container">
       <div className="col-span col-span-2 email-container">
@@ -145,7 +146,7 @@ const UserInfo = ({ user, onUpdate, getUsers }: UserInfoProps) => {
         </div>
       )}
       <div className="col-span">
-        <Button text="imprimir" onClick={showModal} />
+        <Button text="imprimir" onClick={onPrint} />
       </div>
     </div>
   );

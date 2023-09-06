@@ -9,6 +9,7 @@
   justify-content: space-around;
 }
 .close-icon {
+  cursor: pointer;
   position: absolute;
   top: 2rem;
   right: 2rem;

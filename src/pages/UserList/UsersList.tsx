@@ -79,6 +79,13 @@ const UsersList = () => {
           />
           <div className="userList-options-right">
             <Button
+              text={`${isArchived ? 'Ver archivados' : 'Ver en actividad'}`}
+              className={`btn-filter ${
+                isArchived ? 'btn-filter-unavailable' : 'btn-filter-available'
+              }`}
+              onClick={() => setIsArchived(!isArchived)}
+            />
+            <Button
               text="Ver Archivos"
               className="userList-btn"
               onClick={handleOpenCardFiles}
@@ -92,13 +99,6 @@ const UsersList = () => {
                 onClick={addUser}
               />
             </div>
-            <Button
-              text={`${isArchived ? 'Ver archivados' : 'Ver en actividad'}`}
-              className={`btn-filter ${
-                isArchived ? 'btn-filter-unavailable' : 'btn-filter-available'
-              }`}
-              onClick={() => setIsArchived(!isArchived)}
-            />
           </div>
         </div>
         <div className="header-container-list">

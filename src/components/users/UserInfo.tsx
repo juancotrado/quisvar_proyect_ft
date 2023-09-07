@@ -142,7 +142,7 @@ const UserInfo = ({ user, onUpdate, getUsers, onPrint }: UserInfoProps) => {
         </div>
       )}
       <div className="col-span">
-        <Button text="imprimir" onClick={onPrint} />
+        <Button className="role-btn" icon="print-report" onClick={onPrint} />
       </div>
     </div>
   );

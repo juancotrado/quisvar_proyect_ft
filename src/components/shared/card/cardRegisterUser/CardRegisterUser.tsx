@@ -236,8 +236,6 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
                 {...register('cv', { required: true })}
                 errors={errors}
               />
-            </div>
-            <div className="col-input">
               <Input
                 type="file"
                 label="Declaracion Jurada"

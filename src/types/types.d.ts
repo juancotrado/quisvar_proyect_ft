@@ -350,7 +350,7 @@ export interface Report {
   price: number;
   spending: number;
   balance: number;
-  taskInfo: TaskInfo;
+  taskInfo: Details;
   id: number;
   name: string;
   areas?: Report[];
@@ -361,7 +361,32 @@ export interface Report {
   tasks_2?: Report[];
   tasks_3?: Report[];
 }
-export interface TaskInfo {
+
+export interface Levels {
+  id: number;
+  item: string;
+  name: string;
+  level: number;
+  rootLevel: number;
+  unique: boolean;
+  stagesId: number;
+  userId: null;
+  rootId: number;
+  nextLevel?: NextLevel[];
+}
+interface NextLevel {
+  id: number;
+  item: string;
+  name: string;
+  rootId: number;
+  spending: number;
+  balance: number | number;
+  price: number | number;
+  details: Details;
+  subTasks: SubTask[];
+  nextLevel?: NextLevel[];
+}
+interface Details {
   UNRESOLVED: number;
   PROCESS: number;
   INREVIEW: number;
@@ -370,6 +395,7 @@ export interface TaskInfo {
   LIQUIDATION: number;
   TOTAL: number;
 }
+
 interface ReviewListIndexTask {
   id: number;
   item: string;

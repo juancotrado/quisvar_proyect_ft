@@ -4,7 +4,7 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 1780px;
+  max-width: 1880px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -45,6 +45,7 @@
   height: calc(100vh - var(--header-height) - 103px);
   display: flex;
   align-items: flex-start;
+  gap: 2rem;
   padding-bottom: 2rem;
 }
 

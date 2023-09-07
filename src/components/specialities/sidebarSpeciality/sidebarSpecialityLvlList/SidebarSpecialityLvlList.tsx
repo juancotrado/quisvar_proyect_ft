@@ -143,10 +143,17 @@ const SidebarSpecialityLvlList = ({
                 isFirstLevel && 'not-margin-left'
               } ${isLastLevel && 'letter-small'}   `}
             >
-              <span className="SidebarSpecialityLvlList-sub-list-span">
-                {data.cod && `${data.cod} `}
-              </span>
+              {data.cod && (
+                <span className="SidebarSpecialityLvlList-sub-list-span">
+                  {data.cod}
+                </span>
+              )}
               {data.name}
+              {data.CUI && (
+                <span className="SidebarSpecialityLvlList-sub-list-span CUI">
+                  CUI: {data.CUI}
+                </span>
+              )}
             </h4>
             {!isLastLevel && (
               <>

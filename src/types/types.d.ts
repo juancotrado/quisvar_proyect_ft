@@ -37,6 +37,7 @@ export interface DataSidebarSpeciality {
   id: number;
   name: string;
   cod?: string;
+  CUI?: string;
   specialities?: SpecialityType[];
   typeSpecialities?: TypeSpecialities[];
 }

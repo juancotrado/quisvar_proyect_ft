@@ -107,10 +107,6 @@ const SidebarSpeciality = ({
                                       className="sidebarSpeciality-dropdown-sub-list"
                                       onClick={() => {
                                         handleProjectNavigate(project.id);
-                                        // handleTaks(
-                                        //   typespeciality.name,
-                                        //   typespeciality.id
-                                        // );
                                       }}
                                     >
                                       <SidebarSpecialityLvlList

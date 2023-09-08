@@ -130,7 +130,7 @@ const UsersList = () => {
       </div>
       <CardGenerateReport employeeId={printReportId} />
       <CardOpenFile />
-      <CardViewDocs getUsers={getUsers} user={userDocs} />
+      <CardViewDocs user={userDocs} />
       <CardRegisterUser
         user={userData}
         onClose={() => {

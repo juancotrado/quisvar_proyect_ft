@@ -8,13 +8,13 @@
   color: var(--color-quaternay);
   font-weight: 600;
 }
-
+/* .vd-docs-area {
+  height: 100%;
+} */
 .vd-list-text {
-  text-align: center;
   display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.vd-docs-area {
-  height: 4rem;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+  height: 100px;
 }

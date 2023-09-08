@@ -101,7 +101,7 @@ const UserInfo = ({
       <div className="col-span phone-container">{profile.description}</div>
       <div className="col-span phone-container">{profile.phone}</div>
       <div className="col-span">
-        <Button text="ver" className="btn-show-docs" onClick={onViewDocs} />
+        <Button className="role-btn" icon="folder-icon" onClick={onViewDocs} />
       </div>
       {roleLimit && (
         <div className="col-span actions-container">

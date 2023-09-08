@@ -84,3 +84,12 @@
   border: 1px solid var(--color-unresolved);
   color: var(--color-unresolved);
 }
+.modal-btn-cancel {
+  border-radius: 5px;
+  border: 1px solid var(--color-secondary);
+  color: var(--color-secondary);
+}
+.modal-text-input {
+  width: 70%;
+  margin-bottom: 0.5rem;
+}

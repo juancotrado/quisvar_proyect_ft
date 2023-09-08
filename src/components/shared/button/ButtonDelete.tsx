@@ -103,6 +103,9 @@ const ButtonDelete = ({
               animate="visible"
               exit="leave"
             >
+              <span className="close-icon" onClick={handleCloseButton}>
+                <img src="/svg/close.svg" alt="pencil" />
+              </span>
               {!askPassword ? (
                 <>
                   <img src="/svg/trashdark.svg" className="alert-modal-trash" />
@@ -128,19 +131,26 @@ const ButtonDelete = ({
               ) : (
                 <>
                   <img src="/svg/trashdark.svg" className="alert-modal-trash" />
-                  <InputText
-                    label="Ingrese su contraseña"
-                    placeholder="Contraseña"
-                    onChange={e => setPassword(e.target.value)}
-                    type="password"
-                    style={{ flex: 1 }}
-                  />
-
-                  <Button
-                    text="Confirmar"
-                    onClick={handleVerifyPassword}
-                    className="modal-btn-confirm"
-                  />
+                  <div className="modal-text-input">
+                    <InputText
+                      label="Ingrese su contraseña"
+                      placeholder="Contraseña"
+                      onChange={e => setPassword(e.target.value)}
+                      type="password"
+                    />
+                  </div>
+                  <div className="container-btn">
+                    <Button
+                      text="Cancelar"
+                      onClick={handleCloseButton}
+                      className="modal-btn-cancel"
+                    />
+                    <Button
+                      text="Confirmar"
+                      onClick={handleVerifyPassword}
+                      className="modal-btn-confirm"
+                    />
+                  </div>
                 </>
               )}
             </motion.div>

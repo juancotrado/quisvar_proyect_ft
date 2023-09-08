@@ -12,7 +12,6 @@ import { getListUsers } from '../../../../store/slices/listUsers.slice';
 
 interface CardViewProps {
   user: User | null;
-  // getUsers: () => void;
 }
 
 const CardViewDocs = ({ user }: CardViewProps) => {
@@ -30,7 +29,6 @@ const CardViewDocs = ({ user }: CardViewProps) => {
   };
 
   useEffect(() => {
-    // getUsers();
     if (listUsers && listUsers.length > 0) {
       const filterUser = listUsers?.find(data => data.id === user?.id);
       setDocs(filterUser);
@@ -45,8 +43,6 @@ const CardViewDocs = ({ user }: CardViewProps) => {
       handleIsOpen.current.unsubscribe();
     };
   }, []);
-  // console.log(docs);
-  // console.log(user);
 
   return (
     <Modal size={50} isOpenProp={isOpen}>
@@ -55,11 +51,6 @@ const CardViewDocs = ({ user }: CardViewProps) => {
           <img src="/svg/close.svg" alt="pencil" />
         </span>
         <h1>Documentos</h1>
-        {/* <div className="vd-container-list">
-          <div className="vd-list-text">CV</div>
-          <div className="vd-list-text">DECLARACION</div>
-          <div className="vd-list-text">CONTRATO</div>
-        </div> */}
         <div className="vd-docs-area">
           <div className="vd-list-text">
             <label>Curriculum Vitae</label>

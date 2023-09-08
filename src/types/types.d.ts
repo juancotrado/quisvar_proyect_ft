@@ -362,23 +362,24 @@ export interface Report {
   tasks_3?: Report[];
 }
 
-export interface Levels {
+// export interface Level {
+//   id: number;
+//   item: string;
+//   name: string;
+//   rootId: number;
+//   level: number;
+//   rootLevel: number;
+//   unique: boolean;
+//   stagesId: number;
+//   userId: null;
+//   nextLevel?: Level[];
+// }
+export interface Level {
   id: number;
   item: string;
   name: string;
+  rootId: number;
   level: number;
-  rootLevel: number;
-  unique: boolean;
-  stagesId: number;
-  userId: null;
-  rootId: number;
-  nextLevel?: NextLevel[];
-}
-interface NextLevel {
-  id: number;
-  item: string;
-  name: string;
-  rootId: number;
   spending: number;
   balance: number | number;
   price: number | number;

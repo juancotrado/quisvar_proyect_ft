@@ -5,9 +5,9 @@ import UploadFile from '../../shared/uploadFile/UploadFile';
 import './uploadUserFile.css';
 
 interface UploadUserFileProps {
-  fileName: string | null;
+  fileName: string | null | undefined;
   onSave?: () => void;
-  userId: number;
+  userId: number | undefined;
   typeFile: TypeFileUser;
 }
 const UploadUserFile = ({

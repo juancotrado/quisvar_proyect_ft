@@ -6,6 +6,7 @@ export const isOpenModal$ = new SubjectManager<boolean>();
 export const isOpenCardRegisterUser$ = new SubjectManager<boolean>();
 export const isOpenCardGenerateReport$ = new SubjectManager<boolean>();
 export const isOpenCardFiles$ = new SubjectManager<boolean>();
+export const isOpenViewDocs$ = new SubjectManager<boolean>();
 export const isOpenCardRegisteProject$ = new SubjectManager<any>();
 export const isTaskInformation$ = new SubjectManager<boolean>();
 export const errorToken$ = new SubjectManager();

@@ -4,6 +4,7 @@ import {
   CardGenerateReport,
   CardOpenFile,
   CardRegisterUser,
+  CardViewDocs,
   Input,
 } from '../../components';
 import Button from '../../components/shared/button/Button';
@@ -11,6 +12,7 @@ import {
   isOpenCardFiles$,
   isOpenCardGenerateReport$,
   isOpenCardRegisterUser$,
+  isOpenViewDocs$,
 } from '../../services/sharingSubject';
 import { User } from '../../types/types';
 import UserInfo from '../../components/users/UserInfo';
@@ -21,7 +23,7 @@ import { getListUsers } from '../../store/slices/listUsers.slice';
 const UsersList = () => {
   const dispatch: AppDispatch = useDispatch();
   const { listUsers: users } = useSelector((state: RootState) => state);
-
+  const [userDocs, setUserDocs] = useState<User | null>(null);
   const [userData, setUserData] = useState<User | null>(null);
   const [isArchived, setIsArchived] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -60,6 +62,10 @@ const UsersList = () => {
   };
   const handleOpenCardFiles = () => {
     isOpenCardFiles$.setSubject = true;
+  };
+  const handleViewDocs = (value: User) => {
+    setUserDocs(value);
+    isOpenViewDocs$.setSubject = true;
   };
   return (
     <div className="content-list">
@@ -107,9 +113,7 @@ const UsersList = () => {
           <div className="header-list-text">ESTADO</div>
           <div className="header-list-text">CARGO</div>
           <div className="header-list-text">CELULAR</div>
-          <div className="header-list-text">CV</div>
-          <div className="header-list-text">DECLARACION JURADA</div>
-          <div className="header-list-text">CONTRATO</div>
+          <div className="header-list-text">Documentos</div>
           <div className="header-list-text">EDITAR</div>
           <div className="header-list-text">Reportes</div>
         </div>
@@ -120,11 +124,13 @@ const UsersList = () => {
             getUsers={getUsers}
             onUpdate={() => editUser(user)}
             onPrint={() => printReport(user.id)}
+            onViewDocs={() => handleViewDocs(user)}
           />
         ))}
       </div>
       <CardGenerateReport employeeId={printReportId} />
       <CardOpenFile />
+      <CardViewDocs getUsers={getUsers} user={userDocs} />
       <CardRegisterUser
         user={userData}
         onClose={() => {

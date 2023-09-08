@@ -6,6 +6,10 @@ import { useState } from 'react';
 import Button from './Button';
 import { dropIn } from '../../../animations/animations';
 import Portal from '../../portal/Portal';
+import { Input } from '../..';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store';
+import InputText from '../Input/Input';
 interface ButtonProps extends HTMLMotionProps<'button'> {
   text?: string;
   type?: 'button' | 'submit' | 'reset';
@@ -14,10 +18,11 @@ interface ButtonProps extends HTMLMotionProps<'button'> {
   onSave?: () => void;
   customOnClick?: () => void;
   imageStyle?: string;
-  sizeIcon?: boolean;
+  // sizeIcon?: boolean;
+  passwordRequired?: boolean;
 }
 const ButtonDelete = ({
-  sizeIcon,
+  // sizeIcon,
   className,
   text,
   type,
@@ -26,10 +31,14 @@ const ButtonDelete = ({
   onSave,
   imageStyle = '',
   customOnClick,
+  passwordRequired,
   ...otherProps
 }: ButtonProps) => {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
+  const [askPassword, setAskPassword] = useState<boolean>(false);
+  const [password, setPassword] = useState<string>('');
   const handleCloseButton = () => {
+    setAskPassword(false);
     setIsAlertOpen(!isAlertOpen);
   };
   const handleSendDelete = async () => {
@@ -43,7 +52,19 @@ const ButtonDelete = ({
       setIsAlertOpen(false);
     });
   };
-  console.log(sizeIcon);
+  const { userSession } = useSelector((state: RootState) => state);
+  const handleVerifyPassword = () => {
+    const data = {
+      dni: userSession.profile.dni,
+      password: password,
+    };
+    axiosInstance
+      .post('/auth/login', data)
+      .then(() => {
+        handleSendDelete();
+      })
+      .catch(err => console.log(err));
+  };
 
   return (
     <>
@@ -82,21 +103,56 @@ const ButtonDelete = ({
               animate="visible"
               exit="leave"
             >
-              <img src="/svg/trashdark.svg" />
-              <h3>{`¿Estas seguro que deseas eliminar este registro ${url}?`}</h3>
-              <div className="container-btn">
-                <Button
-                  text="No, cancelar"
-                  onClick={handleCloseButton}
-                  className="btn-alert "
-                />
-                <Button
-                  className=" btn-alert  btn-delete"
-                  text="Si, estoy seguro"
-                  type="button"
-                  onClick={handleSendDelete}
-                />
-              </div>
+              <span className="close-icon" onClick={handleCloseButton}>
+                <img src="/svg/close.svg" alt="pencil" />
+              </span>
+              {!askPassword ? (
+                <>
+                  <img src="/svg/trashdark.svg" className="alert-modal-trash" />
+                  <h3>{`¿Estas seguro que deseas eliminar este registro ${url}?`}</h3>
+                  <div className="container-btn">
+                    <Button
+                      text="No, cancelar"
+                      onClick={handleCloseButton}
+                      className="btn-alert "
+                    />
+                    <Button
+                      className=" btn-alert  btn-delete"
+                      text="Si, estoy seguro"
+                      type="button"
+                      onClick={
+                        passwordRequired
+                          ? () => setAskPassword(true)
+                          : handleSendDelete
+                      }
+                    />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <img src="/svg/trashdark.svg" className="alert-modal-trash" />
+                  <div className="modal-text-input">
+                    <InputText
+                      label="Ingrese su contraseña"
+                      placeholder="Contraseña"
+                      onChange={e => setPassword(e.target.value)}
+                      type="password"
+                    />
+                  </div>
+                  <div className="container-btn">
+                    <Button
+                      text="Cancelar"
+                      onClick={handleCloseButton}
+                      className="modal-btn-cancel"
+                    />
+                    <Button
+                      text="Confirmar"
+                      onClick={handleVerifyPassword}
+                      className="modal-btn-confirm"
+                    />
+                  </div>
+                </>
+              )}
             </motion.div>
           </div>
         </Portal>

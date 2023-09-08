@@ -22,6 +22,7 @@ import CardSubtaskProcess from './shared/card/cardSubtaskStatus/cardSubTaskProce
 import TaskCounter from './shared/taskCounter/TaskCounter';
 import CardGenerateReport from './shared/card/cardGenerateReport/CardGenerateReport';
 import CardOpenFile from './shared/card/cardOpenFile/CardOpenFile';
+import CardViewDocs from './shared/card/cardViewDocs/CardViewDocs';
 
 export {
   Alert,
@@ -40,6 +41,7 @@ export {
   CardSubtaskProcess,
   CardSubtaskDone,
   CardOpenFile,
+  CardViewDocs,
   Select,
   TextArea,
   UserDetail,

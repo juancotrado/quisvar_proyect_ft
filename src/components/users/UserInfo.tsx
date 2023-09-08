@@ -1,36 +1,28 @@
-import { motion } from 'framer-motion';
 import { User } from '../../types/types';
 import Button from '../shared/button/Button';
 import ButtonDelete from '../shared/button/ButtonDelete';
 import './userinfo.css';
 import { useState } from 'react';
 import SelectOptions from '../shared/select/Select';
-import { URL, axiosInstance } from '../../services/axiosInstance';
-import { spring } from '../../animations/animations';
+import { axiosInstance } from '../../services/axiosInstance';
 import { getListByRole, verifyByRole } from '../../utils/roles';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import UploadFile from '../shared/uploadFile/UploadFile';
-// import { isOpenModal$ } from '../../services/sharingSubject';
-import { isOpenCardGenerateReport$ } from '../../services/sharingSubject';
-import UploadUserFile from '../userList/uploadUserFile/UploadUserFile';
-
-// const roleList = [
-//   { id: 'SUPER_ADMIN', value: 'GERENTE GENERAL' },
-//   { id: 'ADMIN', value: 'GERENTE' },
-//   { id: 'ASSISTANT', value: 'ASISTENTE DE GENERENCIA' },
-//   { id: 'SUPER_MOD', value: 'COORD GENERAL' },
-//   { id: 'MOD', value: 'COORDINADOR' },
-//   { id: 'EMPLOYEE', value: 'EMPLEADO' },
-// ];
 
 interface UserInfoProps {
   user: User;
   onUpdate?: () => void;
   getUsers?: () => void;
   onPrint?: () => void;
+  onViewDocs?: () => void;
 }
-const UserInfo = ({ user, onUpdate, getUsers, onPrint }: UserInfoProps) => {
+const UserInfo = ({
+  user,
+  onUpdate,
+  getUsers,
+  onPrint,
+  onViewDocs,
+}: UserInfoProps) => {
   const [isOn, setIsOn] = useState(user.status);
   const [openRole, setOpenRole] = useState(false);
   const { userSession } = useSelector((state: RootState) => state);
@@ -53,9 +45,7 @@ const UserInfo = ({ user, onUpdate, getUsers, onPrint }: UserInfoProps) => {
     await axiosInstance.patch(`users/${user.id}`, _dataRole).then(getUsers);
   };
   const roleLimit = verifyByRole(user.role, userSession.role);
-  // const showModal = () => {
-  //   isOpenCardGenerateReport$.setSubject = true;
-  // };
+
   return (
     <div className="user-container">
       <div className="col-span col-span-2 email-container">
@@ -110,25 +100,9 @@ const UserInfo = ({ user, onUpdate, getUsers, onPrint }: UserInfoProps) => {
       </div>
       <div className="col-span phone-container">{profile.description}</div>
       <div className="col-span phone-container">{profile.phone}</div>
-      <UploadUserFile
-        fileName={user.cv}
-        typeFile="cv"
-        userId={user.id}
-        onSave={getUsers}
-      />
-      <UploadUserFile
-        fileName={user.declaration}
-        typeFile="declaration"
-        userId={user.id}
-        onSave={getUsers}
-      />
-      <UploadUserFile
-        fileName={user.contract}
-        typeFile="contract"
-        userId={user.id}
-        onSave={getUsers}
-      />
-
+      <div className="col-span">
+        <Button className="role-btn" icon="folder-icon" onClick={onViewDocs} />
+      </div>
       {roleLimit && (
         <div className="col-span actions-container">
           <Button icon="pencil" className="role-btn" onClick={onUpdate} />
@@ -138,6 +112,7 @@ const UserInfo = ({ user, onUpdate, getUsers, onPrint }: UserInfoProps) => {
             url={`/users/${user.id}`}
             className="role-delete-icon"
             onSave={getUsers}
+            passwordRequired
           />
         </div>
       )}

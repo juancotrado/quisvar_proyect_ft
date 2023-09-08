@@ -1,6 +1,6 @@
 .user-container {
   display: grid;
-  grid-template-columns: repeat(11, minmax(0, 1fr));
+  grid-template-columns: repeat(9, minmax(0, 1fr));
   width: 100%;
   height: 3.7rem;
   background-color: #fff;
@@ -138,4 +138,11 @@
   border: none;
   background-color: transparent;
   padding: 0;
+}
+.btn-show-docs {
+  justify-content: center;
+  width: 50%;
+  height: 50%;
+  color: var(--color-primary);
+  border-radius: 5px;
 }

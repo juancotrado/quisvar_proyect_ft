@@ -17,6 +17,7 @@ interface DotsOptionProps {
   variant?: boolean;
   notPositionRelative?: boolean;
   isClickRight?: boolean;
+  iconHide?: boolean;
 }
 
 const DotsOption = ({
@@ -26,6 +27,7 @@ const DotsOption = ({
   notPositionRelative,
   variant = false,
   isClickRight,
+  iconHide = false,
 }: DotsOptionProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleClick = (value: (() => void) | undefined) => {
@@ -47,7 +49,10 @@ const DotsOption = ({
         } `}
         onClick={e => e.stopPropagation()}
       >
-        <span onClick={() => setIsOpen(!isOpen)}>
+        <span
+          onClick={() => setIsOpen(!isOpen)}
+          className={`${iconHide && 'span-hide'} `}
+        >
           <img
             className="menu-icon-dot"
             src={`/svg/${variant ? 'dots-color' : 'menusmall'}.svg`}

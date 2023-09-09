@@ -20,6 +20,10 @@
   color: var(--color-secondary);
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
+.span-hide {
+  position: absolute;
+  opacity: 0;
+}
 .option-list {
   background-color: white;
   padding: 0.5rem;

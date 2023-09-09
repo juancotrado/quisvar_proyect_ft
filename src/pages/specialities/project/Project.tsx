@@ -40,7 +40,7 @@ const DropdownLevel = ({ level, onSave }: DropdownLevel) => {
         {level.nextLevel?.map(level1 => (
           <>
             <li key={level1.id} className="project-dropdown-sub-list">
-              <ProjectLevel data={level1} />
+              <ProjectLevel data={level1} onSave={onSave} />
               <DropdownLevel level={level1} onSave={onSave} />
             </li>
           </>
@@ -74,7 +74,7 @@ const Project = () => {
         <ul className="project-dropdown">
           {levels?.map(level => (
             <li key={level.id} className="project-dropdown-list">
-              <ProjectLevel data={level} />
+              <ProjectLevel data={level} onSave={getLevels} />
               <DropdownLevel level={level} onSave={getLevels} />
             </li>
           ))}

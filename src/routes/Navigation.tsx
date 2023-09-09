@@ -12,12 +12,10 @@ import {
   CommingSoon,
 } from '../pages';
 import { ProtectedRoute } from '../components';
-import ProjectsList from '../pages/specialities/ProjectsList';
-import ProjectDetailsPage from '../pages/specialities/projectDetails/ProjectDetailsPage';
-import ProjectIndexPage from '../pages/specialities/projectIndex/ProjectIndexPage';
 import Project from '../pages/specialities/project/Project';
 import ProtectedRole from '../components/protected/ProtectedRole/ProtectedRole';
 import { assitant_perms, rolThirdLevel } from '../utils/roles';
+import Stage from '../pages/stage/Stage';
 
 const Navigation = () => {
   return (
@@ -31,16 +29,8 @@ const Navigation = () => {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/tareas/:id" element={<Tasks />} />
             <Route path="/especialidades" element={<Specialities />}>
-              <Route path="proyecto/:id" element={<Project />} />
-              <Route path=":id" element={<ProjectsList />}>
-                <Route
-                  path="proyecto/:projectId/detalles"
-                  element={<ProjectDetailsPage />}
-                />
-                <Route
-                  path="proyecto/:projectId/indice"
-                  element={<ProjectIndexPage />}
-                />
+              <Route path="etapa/:stageId" element={<Stage />}>
+                <Route path="proyecto/:id" element={<Project />} />
               </Route>
             </Route>
             <Route path="/mis-tareas" element={<ListPersonalTask />} />

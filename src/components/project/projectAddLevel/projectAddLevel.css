@@ -1,0 +1,26 @@
+.projectAddLevel {
+  display: flex;
+  padding: 0.976rem 0.8125rem;
+  background-color: #ebf0fa99;
+  gap: 1rem;
+}
+.projectAddLevel-figure {
+  cursor: pointer;
+  width: 2.125rem;
+  height: 2.125rem;
+}
+.projectAddLevel-input {
+  display: flex;
+  width: 20.5rem;
+  height: 2.1875rem;
+  padding: 0.75rem 1rem;
+  border-radius: 0.25rem;
+  background: #fff;
+}
+#projectAddLevel-input::placeholder {
+  color: rgba(32, 56, 129, 0.4);
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5rem;
+}

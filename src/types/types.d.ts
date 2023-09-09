@@ -177,6 +177,7 @@ export interface ProjectType {
   _count: {
     tasks: number;
   };
+  stages: Stages[];
   userId?: number;
   areas: AreasType[];
   specialityId: number;
@@ -187,6 +188,13 @@ export interface ProjectType {
   specialists?: PersonalBussines[];
 }
 
+interface Stages {
+  id: number;
+  name: string;
+  createdAt: string;
+  updatedAt: string;
+  projectId: number;
+}
 type AreasType = {
   id: number;
   name: string;
@@ -381,8 +389,9 @@ export interface Level {
   rootId: number;
   level: number;
   spending: number;
-  balance: number | number;
-  price: number | number;
+  balance: number;
+  price: number;
+  stagesId: number;
   details: Details;
   subTasks: SubTask[];
   nextLevel?: NextLevel[];

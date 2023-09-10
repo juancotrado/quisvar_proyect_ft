@@ -23,6 +23,8 @@ import TaskCounter from './shared/taskCounter/TaskCounter';
 import CardGenerateReport from './shared/card/cardGenerateReport/CardGenerateReport';
 import CardOpenFile from './shared/card/cardOpenFile/CardOpenFile';
 import CardViewDocs from './shared/card/cardViewDocs/CardViewDocs';
+import StageAddButton from './stages/stageAddButton/StageAddButton';
+import StageItem from './stages/stageItem/StageItem';
 
 export {
   Alert,
@@ -47,6 +49,8 @@ export {
   UserDetail,
   Menu,
   Sidebar,
+  StageAddButton,
+  StageItem,
   SubTaskCard,
   CardTaskInformation,
   TaskCounter,

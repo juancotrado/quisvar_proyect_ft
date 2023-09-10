@@ -1,8 +1,16 @@
-import { useEffect, useState } from 'react';
-import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState, MouseEvent } from 'react';
+import { NavLink, Outlet, useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '../../services/axiosInstance';
 import './stage.css';
-import { ProjectType } from '../../types/types';
+import { Option, ProjectType } from '../../types/types';
+import Button from '../../components/shared/button/Button';
+import { Input, StageAddButton, StageItem } from '../../components';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import DotsOption from '../../components/shared/dots/DotsOption';
+import {
+  validateCorrectTyping,
+  validateWhiteSpace,
+} from '../../utils/customValidatesForm';
 
 interface Stages {
   id: number;
@@ -11,39 +19,88 @@ interface Stages {
   updatedAt: string;
   projectId: number;
 }
+
 const Stage = () => {
   const { stageId } = useParams();
+  const handleBtnActive = () => {
+    setBtnActive(!btnActive);
+  };
   const [project, setProject] = useState<ProjectType | null>(null);
-  const navigate = useNavigate();
+  const [btnActive, setBtnActive] = useState<boolean>(false);
   useEffect(() => {
-    console.log('stage', stageId);
     getStages();
   }, [stageId]);
   const getStages = () => {
     axiosInstance.get(`/projects/${stageId}`).then(res => setProject(res.data));
   };
-  const handleStageNavigate = (id: number) => {
-    navigate(`proyecto/${id}`);
-  };
+
   return (
     <div className="stage">
       <div className="stage-header">
         {project?.stages?.map((stage, i) => (
-          <>
-            {i !== 0 && (
-              <span className="stage-header-separation" key={stage.id}>
-                |
-              </span>
-            )}
-            <span
-              className="stage-header-span"
-              key={stage.id + 1}
-              onClick={() => handleStageNavigate(stage.id)}
-            >
-              {stage.name}
-            </span>
-          </>
+          <StageItem stage={stage} i={i} />
+          // <div key={stage.id}>
+          //   {i !== 0 && <span className="stage-header-separation">|</span>}
+          //   <div
+          //     className="stage-header-div"
+          //     key={stage.id + 1}
+          //     onClick={() => handleStageNavigate(stage.id)}
+          //     onContextMenu={handleClickRight}
+          //   >
+          //     <NavLink
+          //       to={`proyecto/${stage.id}`}
+          //       className={({ isActive }) =>
+          //         isActive ? 'stage-header-span  active' : 'stage-header-span'
+          //       }
+          //     >
+          //       {!openEdit ? (
+          //         stage.name
+          //       ) : (
+          //         <form
+          //           onSubmit={handleSubmit(onSubmitData)}
+          //           // className="projectLevel-form"
+          //         >
+          //           <Input
+          //             {...register('name', {
+          //               validate: { validateWhiteSpace, validateCorrectTyping },
+          //             })}
+          //             name="name"
+          //             placeholder={`Editar nombre del nivel`}
+          //             // className="stage-header-add-btn stage-add-btn-limit"
+          //             errors={errors}
+          //           />
+          //           <figure
+          //             className="projectLevel-figure"
+          //             onClick={handleCloseEdit}
+          //           >
+          //             <img src="/svg/icon_close.svg" alt="W3Schools" />
+          //           </figure>
+          //         </form>
+          //       )}
+          //     </NavLink>
+          //     <DotsOption
+          //       data={options}
+          //       // notPositionRelative
+          //       iconHide
+          //       isClickRight={isClickRight}
+          //     />
+          //   </div>
+          // </div>
         ))}
+
+        {!btnActive ? (
+          <Button
+            icon="add"
+            className="stage-header-add-btn"
+            onClick={handleBtnActive}
+          />
+        ) : (
+          <StageAddButton
+            stageId={stageId}
+            getStages={getStages}
+            setBtnActive={handleBtnActive}
+          />
+        )}
       </div>
       <div className="stage-title-contain">
         <figure className="stage-figure">

@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { Outlet, useNavigate, useParams } from 'react-router-dom';
+import { Outlet, useParams } from 'react-router-dom';
 import { axiosInstance } from '../../services/axiosInstance';
 import './stage.css';
 import { ProjectType } from '../../types/types';
-
+import Button from '../../components/shared/button/Button';
+import { StageAddButton, StageItem } from '../../components';
 interface Stages {
   id: number;
   name: string;
@@ -11,39 +12,43 @@ interface Stages {
   updatedAt: string;
   projectId: number;
 }
+
 const Stage = () => {
   const { stageId } = useParams();
+  const handleBtnActive = () => {
+    setBtnActive(!btnActive);
+  };
   const [project, setProject] = useState<ProjectType | null>(null);
-  const navigate = useNavigate();
+  const [btnActive, setBtnActive] = useState<boolean>(false);
   useEffect(() => {
-    console.log('stage', stageId);
+    console.log(stageId);
+
     getStages();
   }, [stageId]);
   const getStages = () => {
     axiosInstance.get(`/projects/${stageId}`).then(res => setProject(res.data));
   };
-  const handleStageNavigate = (id: number) => {
-    navigate(`proyecto/${id}`);
-  };
+
   return (
     <div className="stage">
       <div className="stage-header">
         {project?.stages?.map((stage, i) => (
-          <>
-            {i !== 0 && (
-              <span className="stage-header-separation" key={stage.id}>
-                |
-              </span>
-            )}
-            <span
-              className="stage-header-span"
-              key={stage.id + 1}
-              onClick={() => handleStageNavigate(stage.id)}
-            >
-              {stage.name}
-            </span>
-          </>
+          <StageItem stage={stage} i={i} key={stage.id} />
         ))}
+
+        {!btnActive ? (
+          <Button
+            icon="add"
+            className="stage-header-add-btn"
+            onClick={handleBtnActive}
+          />
+        ) : (
+          <StageAddButton
+            stageId={stageId}
+            getStages={getStages}
+            setBtnActive={handleBtnActive}
+          />
+        )}
       </div>
 
       <Outlet />

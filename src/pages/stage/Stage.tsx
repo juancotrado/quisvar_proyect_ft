@@ -50,15 +50,8 @@ const Stage = () => {
           />
         )}
       </div>
-      <div className="stage-title-contain">
-        <figure className="stage-figure">
-          <img src="/svg/polygon.svg" alt="W3Schools" />
-        </figure>
-        <h4 className="stage-title">{project?.name}</h4>
-      </div>
-      <div className="stage-title-levels">
-        <Outlet />
-      </div>
+
+      <Outlet />
     </div>
   );
 };

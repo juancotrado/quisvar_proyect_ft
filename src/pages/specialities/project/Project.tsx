@@ -5,6 +5,7 @@ import { axiosInstance } from '../../../services/axiosInstance';
 import { Level } from '../../../types/types';
 import ProjectLevel from '../../../components/project/projectLevel/ProjectLevel';
 import ProjectAddLevel from '../../../components/project/projectAddLevel/ProjectAddLevel';
+import MoreInfo from '../../../components/project/moreInfo/MoreInfo';
 const DATA: Level = {
   id: 0,
   item: '',
@@ -53,7 +54,7 @@ const DropdownLevel = ({ level, onSave }: DropdownLevel) => {
 
 const Project = () => {
   const { id } = useParams();
-  const [levels, setlevels] = useState<Level[] | null>(null);
+  const [levels, setlevels] = useState<Level | null>(null);
 
   useEffect(() => {
     getLevels();
@@ -70,16 +71,31 @@ const Project = () => {
   const data = getData();
   return (
     <div className="project">
-      <div className="project-dropdown-content">
-        <ul className="project-dropdown">
-          {levels?.map(level => (
-            <li key={level.id} className="project-dropdown-list">
-              <ProjectLevel data={level} onSave={getLevels} />
-              <DropdownLevel level={level} onSave={getLevels} />
-            </li>
-          ))}
-          <ProjectAddLevel data={data} onSave={getLevels} />
-        </ul>
+      <div className="project-title-contain">
+        <div className="project-contain-left">
+          <figure className="project-figure">
+            <img src="/svg/polygon.svg" alt="W3Schools" />
+          </figure>
+          <h4 className="project-title">{levels?.name}</h4>
+        </div>
+        {levels && (
+          <div className="project-contain-right">
+            <MoreInfo data={levels} />
+          </div>
+        )}
+      </div>
+      <div className="project-contain">
+        <div className="project-dropdown-content">
+          <ul className="project-dropdown">
+            {levels?.nextLevel?.map(level => (
+              <li key={level.id} className="project-dropdown-list">
+                <ProjectLevel data={level} onSave={getLevels} />
+                <DropdownLevel level={level} onSave={getLevels} />
+              </li>
+            ))}
+            <ProjectAddLevel data={data} onSave={getLevels} />
+          </ul>
+        </div>
       </div>
     </div>
   );

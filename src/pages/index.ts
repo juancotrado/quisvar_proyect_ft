@@ -8,6 +8,7 @@ import Tasks from './task/Tasks';
 import ListPersonalTask from './listPersonalTask/ListPersonalTask';
 import NotificationsList from './notificationsList/NotificationsList';
 import CommingSoon from './commingSoon/CommingSoon';
+import Procedure from './procedure/Procedure';
 export {
   CommingSoon,
   ListPersonalTask,
@@ -19,4 +20,5 @@ export {
   Tasks,
   Specialities,
   UsersList,
+  Procedure,
 };

@@ -1,6 +1,6 @@
 import { MouseEvent, useState } from 'react';
 import { Option, Stage } from '../../../types/types';
-import { NavLink, useNavigate, useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import { Input } from '../..';
 import {
   validateCorrectTyping,
@@ -13,15 +13,14 @@ import './StageItem.css';
 interface StageItemProps {
   stage: Stage;
   i: number;
-  // handleClickRight: (e:MouseEvent<HTMLDivElement>) => void
+  getStages: () => void;
 }
 interface StageName {
   name: string;
 }
-const StageItem = ({ stage, i }: StageItemProps) => {
-  // const navigate = useNavigate();
+const StageItem = ({ stage, i, getStages }: StageItemProps) => {
   const [openEdit, setOpenEdit] = useState(false);
-  const { stageId } = useParams();
+  const { id } = useParams();
   const [isClickRight, setIsClickRight] = useState(false);
   const {
     handleSubmit,
@@ -39,26 +38,19 @@ const StageItem = ({ stage, i }: StageItemProps) => {
     setIsClickRight(!isClickRight);
   };
 
-  // const handleStageNavigate = (id: number) => {
-  //   navigate(`proyecto/${id}`);
-  // };
   const onSubmitData: SubmitHandler<StageName> = async body => {
-    console.log(body);
+    console.log(stage.id, body);
 
-    axiosInstance.patch(`stages/${stageId}`, body).then(() => {
-      // onSave?.();
-      reset({});
-      handleOpenEdit();
-    });
+    axiosInstance.patch(`stages/${stage.id}`, body).then(() => getStages());
+    setOpenEdit(false);
+    reset({});
   };
-  const handleCloseEdit = () => setOpenEdit(false);
-
   const handleDeleteLevel = () => {
-    axiosInstance.delete(`stages/${stage.id}`).then(() => {
-      // onSave?.();
-      reset({});
-      handleOpenEdit();
-    });
+    console.log(stage.id);
+
+    axiosInstance.delete(`stages/${stage.id}`).then(() => getStages());
+
+    reset({});
   };
   const options: Option[] = [
     {
@@ -76,25 +68,17 @@ const StageItem = ({ stage, i }: StageItemProps) => {
       function: handleDeleteLevel,
     },
   ];
-  // console.log(openEdit);
-  // const click = () =>  {
-  //   if (!openEdit) {
-
-  //     handleStageNavigate(stage.id)
-  //   }
-  // }
   return (
     <div className="stage-header">
       {i !== 0 && <span className="stage-header-separation">|</span>}
       <div
         className="stage-header-div"
         key={stage.id + 1}
-        // onClick={click}
         onContextMenu={handleClickRight}
       >
         <NavLink
-          // to={`proyecto/${stage.id}`}
-          to={openEdit ? null : `proyecto/${stage.id}`}
+          //to={`proyecto/${stage.id}`}
+          to={openEdit ? `proyecto/${id}` : `proyecto/${stage.id}`}
           className={({ isActive }) =>
             isActive ? 'stage-header-span  active' : 'stage-header-span'
           }

@@ -21,11 +21,11 @@ const Stage = () => {
   const [project, setProject] = useState<ProjectType | null>(null);
   const [btnActive, setBtnActive] = useState<boolean>(false);
   useEffect(() => {
-    console.log(stageId);
-
     getStages();
   }, [stageId]);
   const getStages = () => {
+    console.log('asd');
+
     axiosInstance.get(`/projects/${stageId}`).then(res => setProject(res.data));
   };
 
@@ -33,7 +33,7 @@ const Stage = () => {
     <div className="stage">
       <div className="stage-header">
         {project?.stages?.map((stage, i) => (
-          <StageItem stage={stage} i={i} key={stage.id} />
+          <StageItem stage={stage} i={i} key={stage.id} getStages={getStages} />
         ))}
 
         {!btnActive ? (

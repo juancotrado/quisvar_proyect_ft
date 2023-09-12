@@ -14,7 +14,7 @@
   justify-content: space-between;
   align-items: center;
 }
-.projectLevel-sub-list-item:has(:checked) + .project-dropdown-content {
+.projectLevel-sub-list-item:has(:checked) + .dropdownLevel-dropdown-content {
   grid-template-rows: 1fr;
 }
 .projectLevel-sub-list-item {

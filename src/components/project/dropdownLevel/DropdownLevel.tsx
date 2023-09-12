@@ -12,8 +12,6 @@ interface DropdownLevel {
 const DropdownLevel = ({ level, onSave }: DropdownLevel) => {
   const firstLevel = level.level === 0;
   const existSubtask = level?.subTasks?.length;
-  // if (level?.subTasks?.length)
-  //   return <LevelSubtask subtasks={level?.subTasks} />;
   if (level.level === 10) return <div></div>;
   return (
     <div className="dropdownLevel-dropdown-content">

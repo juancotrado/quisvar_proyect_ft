@@ -36,7 +36,7 @@ const LevelSubtask = ({ subtasks }: LevelSutaskProps) => {
       </div>
       {subtasks?.map(subtask => (
         <div
-          className="levelSubtask-content"
+          className="levelSubtask-content pointer"
           onClick={() => taskNavigate(subtask.id)}
         >
           <div className="levelSubtask-item">

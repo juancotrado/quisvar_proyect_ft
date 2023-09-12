@@ -1,15 +1,23 @@
-import { Input } from '../../..';
+import { URL } from '../../../../services/axiosInstance';
 import { ListReport } from '../../../../types/types';
 import Button from '../../button/Button';
 import PaperCard from './PaperCard';
 import './paperCardList.css';
-
 interface PaperCardListProps {
   data: ListReport;
 }
+
 const PaperCardList = ({ data }: PaperCardListProps) => {
-  const { supervisor, user } = data;
-  const { profile } = user;
+  const { profile } = data.user;
+
+  const submitReport = () => {
+    const _data = {
+      id: data.id,
+      stage: '',
+    };
+    return _data;
+  };
+  // const declineReport = () => {};
   return (
     <form action="">
       <ul className="paper-card-list-container">
@@ -20,7 +28,12 @@ const PaperCardList = ({ data }: PaperCardListProps) => {
           </span>
         </li>
         <li className="paper-list p-list-col-2">
-          <a href="_blink">
+          <a
+            href={`${URL}/reports/${data.name}`}
+            target="_blank"
+            className="subtaskFile-anchor"
+            download={true}
+          >
             <PaperCard
               description={data.name.split('$').at(-1)}
               icon="pdf-red"

@@ -18,9 +18,8 @@ const UserListReport = ({ className }: UserListReportProps) => {
   const listUser = () => {
     axiosInstance
       .get(`/resource/${id}`)
-      .then(({ data }) => setListReport(data));
+      .then(({ data }) => setListReport(data.reports));
   };
-
   return (
     <div className={`${className}`}>
       <ul className="paper-card-list-container user-list-header">

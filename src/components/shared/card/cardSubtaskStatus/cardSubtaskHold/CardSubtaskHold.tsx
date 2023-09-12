@@ -22,11 +22,8 @@ interface CardSubtaskHold {
 
 const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
   const socket = useContext(SocketContext);
-  const {
-    modAuth: isAuthorizedMod,
-
-    userSession,
-  } = useSelector((state: RootState) => state);
+  const { userSession } = useSelector((state: RootState) => state);
+  const isAuthorizedMod = true;
   const [addBtn, setAddBtn] = useState(false);
   const [usersData, setUsersData] = useState<DataUser[]>([]);
 
@@ -61,18 +58,23 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
         {isAuthorizedMod ? (
           <div className="cardSubtaskHold-files-content">
             <h4 className="cardSubtaskHold-title-information">
-              Subir Archivos:
+              <figure className="cardSubtaskHold-figure">
+                <img src="/svg/paper-clip.svg" alt="W3Schools" />
+              </figure>
+              Archivos modelos:
             </h4>
             <div className="cardSubtaskHold-add-files">
               <SubtaskUploadFiles id={subTask.id} type="MATERIAL" />
             </div>
             <div className="cardSubtaskHold-add-users">
-              <div>
+              <div className="cardSubtaskHold-users-contain">
                 <h4 className="cardSubtaskHold-title-information">
-                  Buscar Usuario:
+                  <figure className="cardSubtaskHold-figure">
+                    <img src="/svg/asig-user.svg" alt="W3Schools" />
+                  </figure>
+                  Asignar Usuario:
                 </h4>
                 <DropDownSimple
-                  // label="Asignar Usuario"
                   data={users}
                   textField="name"
                   itemKey="id"
@@ -83,17 +85,21 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
                 />
               </div>
               {usersData && (
-                <div className="cardSubtaskHold-lists-users">
+                <div className="cardSubtaskHold-users-contain">
                   <h4 className="cardSubtaskHold-title-information">
+                    <figure className="cardSubtaskHold-figure">
+                      <img src="/svg/user-task.svg" alt="W3Schools" />
+                    </figure>
                     Lista de Usuarios Asignados:
                   </h4>
-                  {usersData.map((_user, index) => (
+                  {usersData.map(_user => (
                     <div key={_user.id} className="cardSubtaskHold-list-user">
-                      <span className="-cardSubtaskHold-user-info">
-                        {index + 1}
-                        {') '}
+                      <h5 className="cardSubtaskHold-user-info">
+                        <figure className="cardSubtaskHold-figure">
+                          <img src="/svg/person-add.svg" alt="W3Schools" />
+                        </figure>
                         {_user.name}
-                      </span>
+                      </h5>
                       <button
                         type="button"
                         onClick={() => handleRemoveUser(_user)}

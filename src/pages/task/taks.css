@@ -1,0 +1,26 @@
+.task {
+  position: relative;
+  flex: 1;
+}
+.task-header-title {
+  font-size: 0.75rem;
+  color: var(--color-secondary);
+  text-transform: uppercase;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%;
+  letter-spacing: 0.01125rem;
+}
+.task-header-title-span {
+  font-weight: 600;
+}
+.close-add-card {
+  position: absolute;
+  background-color: #ffffff00;
+  width: 1.2rem;
+  height: 1.2rem;
+  right: 0.5rem;
+  top: 0.5rem;
+  transition: ease 0.5s;
+  cursor: pointer;
+}

@@ -58,6 +58,7 @@ const Header = () => {
     { id: 2, title: 'Reportes', link: '/mis-tareas' },
     { id: 3, title: 'Especialidades', link: '/especialidades' },
     { id: 4, title: 'Usuarios', link: '/lista-de-usuarios' },
+    { id: 5, title: 'Tramites', link: '/tramites' },
   ];
   const itemsEmployee = [
     { id: 1, title: 'Inicio', link: '/home' },

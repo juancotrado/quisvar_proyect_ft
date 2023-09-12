@@ -1,0 +1,52 @@
+.procedureList-container {
+  display: grid;
+  grid-template-columns: 0.5fr 1fr 2fr 1fr 1fr 1fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr;
+  width: 100%;
+  height: 3.7rem;
+  background-color: #fff;
+  font-size: 0.8rem;
+  border-radius: 0.3rem;
+  /* border-bottom: 0.15rem solid var(--color-quaternay);  */
+  padding: 12px 10px;
+}
+
+.procedureList-col {
+  display: flex;
+  align-items: center;
+  justify-content: baseline;
+}
+
+.procedureList-status {
+  background: var(--orange-0, #fcf2e6);
+  padding: 1px 10px;
+  border-radius: 10px;
+  color: var(--orange-500, #aa5b00);
+}
+
+.procedureList-btn-area {
+  display: flex;
+  gap: 20px;
+}
+
+.procedure-btn-succes {
+  background-color: var(--color-primary);
+  border-radius: 10px;
+  color: white;
+}
+
+.procedure-btn-denied {
+  border-radius: 10px;
+  border: 1px solid black;
+  color: black;
+}
+
+.procedureList-radio {
+  width: 15px;
+}
+
+.procedureList-bg {
+  background-color: #f2f5fa;
+}
+.procedureList-place {
+  justify-content: center;
+}

@@ -10,17 +10,21 @@ const MoreInfo = ({ data }: MoreInfoProps) => {
     <>
       <div className="moreInfo-currency-contain">
         <div className="moreInfo-currency">
-          <span className="moreInfo-currency-money">S/.{data.price}</span>
-          <span className="moreInfo-currency-info">Saldo</span>
-        </div>
-        <div className="moreInfo-currency">
-          <span className="moreInfo-currency-money money--red">
-            -/S.{data.price}
+          <span className="moreInfo-currency-money">
+            S/.{data.price.toFixed(2)}
           </span>
           <span className="moreInfo-currency-info">Saldo</span>
         </div>
         <div className="moreInfo-currency">
-          <span className="moreInfo-currency-money">S/.{data.price}</span>
+          <span className="moreInfo-currency-money money--red">
+            -/S.{data.price.toFixed(2)}
+          </span>
+          <span className="moreInfo-currency-info">Saldo</span>
+        </div>
+        <div className="moreInfo-currency">
+          <span className="moreInfo-currency-money">
+            S/.{data.price.toFixed(2)}
+          </span>
           <span className="moreInfo-currency-info">Saldo</span>
         </div>
       </div>

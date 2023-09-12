@@ -1,6 +1,6 @@
 import { MouseEvent, useState } from 'react';
 import { Option, Stage } from '../../../types/types';
-import { NavLink, useNavigate, useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import { Input } from '../..';
 import {
   validateCorrectTyping,
@@ -9,18 +9,18 @@ import {
 import DotsOption from '../../shared/dots/DotsOption';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { axiosInstance } from '../../../services/axiosInstance';
+import './StageItem.css';
 interface StageItemProps {
   stage: Stage;
   i: number;
-  // handleClickRight: (e:MouseEvent<HTMLDivElement>) => void
+  getStages: () => void;
 }
 interface StageName {
   name: string;
 }
-const StageItem = ({ stage, i }: StageItemProps) => {
-  const navigate = useNavigate();
+const StageItem = ({ stage, i, getStages }: StageItemProps) => {
   const [openEdit, setOpenEdit] = useState(false);
-  const { stageId } = useParams();
+  const { id } = useParams();
   const [isClickRight, setIsClickRight] = useState(false);
   const {
     handleSubmit,
@@ -38,39 +38,34 @@ const StageItem = ({ stage, i }: StageItemProps) => {
     setIsClickRight(!isClickRight);
   };
 
-  const handleStageNavigate = (id: number) => {
-    navigate(`proyecto/${id}`);
-  };
   const onSubmitData: SubmitHandler<StageName> = async body => {
-    axiosInstance.patch(`stages/${stageId}`, body).then(() => {
-      // onSave?.();
-      reset({});
-      handleOpenEdit();
-    });
-  };
-  const handleCloseEdit = () => setOpenEdit(false);
+    console.log(stage.id, body);
 
+    axiosInstance.patch(`stages/${stage.id}`, body).then(() => getStages());
+    setOpenEdit(false);
+    reset({});
+  };
   const handleDeleteLevel = () => {
-    axiosInstance.delete(`stages/${stageId}`).then(() => {
-      // onSave?.();
-      reset({});
-      handleOpenEdit();
-    });
+    console.log(stage.id);
+
+    axiosInstance.delete(`stages/${stage.id}`).then(() => getStages());
+
+    reset({});
   };
   const options: Option[] = [
     {
-      name: openEdit ? 'Cancelar' : 'Editar',
-      type: openEdit ? 'submit' : 'button',
-      icon: openEdit ? 'close' : 'pencil',
+      name: 'Editar',
+      type: 'button',
+      icon: 'pencil',
       function: handleOpenEdit,
     },
 
     {
-      name: openEdit ? 'Guardar' : 'Eliminar',
-      type: openEdit ? 'submit' : 'button',
-      icon: openEdit ? 'save' : 'trash-red',
+      name: 'Eliminar',
+      type: 'button',
+      icon: 'trash-red',
 
-      function: openEdit ? () => handleSubmit(onSubmitData) : handleDeleteLevel,
+      function: handleDeleteLevel,
     },
   ];
   return (
@@ -79,11 +74,11 @@ const StageItem = ({ stage, i }: StageItemProps) => {
       <div
         className="stage-header-div"
         key={stage.id + 1}
-        onClick={() => handleStageNavigate(stage.id)}
         onContextMenu={handleClickRight}
       >
         <NavLink
-          to={`proyecto/${stage.id}`}
+          //to={`proyecto/${stage.id}`}
+          to={openEdit ? `proyecto/${id}` : `proyecto/${stage.id}`}
           className={({ isActive }) =>
             isActive ? 'stage-header-span  active' : 'stage-header-span'
           }
@@ -93,20 +88,41 @@ const StageItem = ({ stage, i }: StageItemProps) => {
           ) : (
             <form
               onSubmit={handleSubmit(onSubmitData)}
-              // className="projectLevel-form"
+              className="projectLevel-form"
             >
               <Input
                 {...register('name', {
                   validate: { validateWhiteSpace, validateCorrectTyping },
                 })}
                 name="name"
-                placeholder={`Editar nombre del nivel`}
-                // className="stage-header-add-btn stage-add-btn-limit"
+                placeholder={stage.name}
+                className="stageItem-input stage-add-input"
                 errors={errors}
+                onClick={e => e.stopPropagation()}
               />
-              <figure className="projectLevel-figure" onClick={handleCloseEdit}>
-                <img src="/svg/icon_close.svg" alt="W3Schools" />
-              </figure>
+              <div className="stageItem-icon-area">
+                <button
+                  className="stage-icon-action"
+                  onClick={handleSubmit(onSubmitData)}
+                >
+                  <img
+                    src="/svg/check-blue.svg"
+                    style={{ width: '20px', height: '20px' }}
+                  />
+                </button>
+                <button
+                  onClick={() => {
+                    handleOpenEdit();
+                    reset();
+                  }}
+                  className="stage-icon-action"
+                >
+                  <img
+                    src="/svg/cross-red.svg"
+                    style={{ width: '20px', height: '20px' }}
+                  />
+                </button>
+              </div>
             </form>
           )}
         </NavLink>

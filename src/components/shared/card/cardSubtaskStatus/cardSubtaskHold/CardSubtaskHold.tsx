@@ -22,11 +22,9 @@ interface CardSubtaskHold {
 
 const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
   const socket = useContext(SocketContext);
-  const {
-    modAuth: isAuthorizedMod,
-
-    userSession,
-  } = useSelector((state: RootState) => state);
+  const { modAuth: isAuthorizedMod, userSession } = useSelector(
+    (state: RootState) => state
+  );
   const [addBtn, setAddBtn] = useState(false);
   const [usersData, setUsersData] = useState<DataUser[]>([]);
 
@@ -72,7 +70,6 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
                   Buscar Usuario:
                 </h4>
                 <DropDownSimple
-                  // label="Asignar Usuario"
                   data={users}
                   textField="name"
                   itemKey="id"

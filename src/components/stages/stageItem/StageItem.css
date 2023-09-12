@@ -1,0 +1,14 @@
+.stageItem-input {
+  background-color: #f5f5f5;
+  /* z-index: 1; */
+}
+
+.stageItem-icon-area {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  height: 100%;
+  align-items: center;
+  /* margin-right: 0.5rem; */
+}

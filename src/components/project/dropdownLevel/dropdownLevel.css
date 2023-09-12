@@ -1,0 +1,13 @@
+.dropdownLevel-dropdown-content {
+  display: grid;
+  grid-template-rows: var(--rows, 0fr);
+  transition: 0.3s grid-template-rows;
+  overflow-y: auto;
+}
+.dropdownLevel-dropdown-sub {
+  overflow: hidden;
+  width: 97%;
+  margin-left: auto;
+  margin-top: 0.1rem;
+  margin-bottom: 0.1rem;
+}

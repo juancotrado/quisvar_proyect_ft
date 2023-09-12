@@ -9,6 +9,7 @@ import {
 } from '../../../utils/customValidatesForm';
 import DotsOption, { Option } from '../../shared/dots/DotsOption';
 import { axiosInstance } from '../../../services/axiosInstance';
+import MoreInfo from '../moreInfo/MoreInfo';
 interface ProjectLevelProps {
   data: Level;
   onSave?: () => void;
@@ -113,7 +114,8 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
             )}
           </div>
           <div className="projectLevel-contain-right">
-            <div className="projectLevel-currency-contain">
+            <MoreInfo data={data} />
+            {/* <div className="projectLevel-currency-contain">
               <div className="projectLevel-currency">
                 <span className="projecLevel-currency-money">
                   S/.{data.price}
@@ -195,7 +197,7 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
                 <figure className="projectLevel-detail-icon">
                   <img src="/svg/file-download.svg" alt="W3Schools" />
                 </figure>
-                <span className="projectLevel-detail-info">Compirmir</span>
+                <span className="projectLevel-detail-info">Comprimir</span>
               </div>
               <div className="projectLevel-detail">
                 <figure className="projectLevel-detail-icon">
@@ -213,7 +215,7 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
                   Comprimir <br /> Editables
                 </span>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>

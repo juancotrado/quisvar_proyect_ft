@@ -17,6 +17,7 @@ import Project from '../pages/specialities/project/Project';
 import ProtectedRole from '../components/protected/ProtectedRole/ProtectedRole';
 import { assitant_perms, rolThirdLevel } from '../utils/roles';
 import Stage from '../pages/stage/Stage';
+import Task from '../pages/task/Task';
 
 const Navigation = () => {
   return (
@@ -32,7 +33,9 @@ const Navigation = () => {
             <Route path="/tramites" element={<PaperWork />} />
             <Route path="/especialidades" element={<Specialities />}>
               <Route path="etapa/:stageId" element={<Stage />}>
-                <Route path="proyecto/:id" element={<Project />} />
+                <Route path="proyecto/:id" element={<Project />}>
+                  <Route path="tarea/:taskId" element={<Task />} />
+                </Route>
               </Route>
             </Route>
             <Route path="/mis-tareas" element={<ListPersonalTask />} />

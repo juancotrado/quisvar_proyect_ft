@@ -14,7 +14,7 @@
   justify-content: space-between;
   align-items: center;
 }
-.projectLevel-sub-list-item:has(:checked) + .project-dropdown-content {
+.projectLevel-sub-list-item:has(:checked) + .dropdownLevel-dropdown-content {
   grid-template-rows: 1fr;
 }
 .projectLevel-sub-list-item {
@@ -90,102 +90,4 @@
   opacity: 0;
   cursor: pointer;
   height: 100%;
-}
-.projectLevel-currency-contain {
-  display: flex;
-  gap: 1rem;
-}
-
-.projectLevel-currency {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-end;
-  width: 5rem;
-}
-.projecLevel-currency-info {
-  color: #687182;
-  font-size: 0.75rem;
-  font-weight: 400;
-  line-height: 1.125rem; /* 150% */
-  letter-spacing: 0.0225rem;
-}
-.projecLevel-currency-money {
-  color: #464f60;
-  font-variant-numeric: lining-nums tabular-nums;
-  font-size: 0.875rem;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 1.25rem; /* 142.857% */
-}
-
-.money--red {
-  color: #d12953;
-}
-.projectLevel-details-contain {
-  display: flex;
-  gap: 1rem;
-}
-.projectLevel-detail {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 0.5rem;
-}
-.projectLevel-detail-circle-text {
-  font-size: 0.75rem;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 1.125rem; /* 150% */
-  letter-spacing: 0.0225rem;
-}
-
-.projectLevel-detail-circle {
-  display: flex;
-  /* width: 2.9375rem; */
-  /* height: 3.125rem; */
-  padding: 0.0625rem 0.625rem;
-  justify-content: center;
-  align-items: center;
-  background-color: #faf0f3;
-  border-radius: 0.625rem;
-}
-.projectLevel-detail-info {
-  color: #687182;
-  text-align: center;
-  font-size: 0.5625rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 0.71875rem; /* 127.778% */
-  letter-spacing: 0.01688rem;
-}
-
-.color-unresolver {
-  color: #d12953;
-  background-color: #faf0f3;
-}
-.color-pending {
-  color: #aa5b00;
-  background-color: #fcf2e6;
-}
-.color-process {
-  color: #5a6376;
-  background-color: #e9edf5;
-}
-.color-correct {
-  color: #2264e5;
-  background-color: #ebf0fa;
-}
-.color-done {
-  color: #14804a;
-  background-color: #e1fcef;
-}
-.color-liquidation {
-  color: #4f5aed;
-  background-color: #f0f1fa;
-}
-
-.projectLevel-detail-icon {
-  width: 1rem;
 }

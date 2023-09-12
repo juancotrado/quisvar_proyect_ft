@@ -1,4 +1,4 @@
-import { useParams } from 'react-router-dom';
+import { Outlet, useParams } from 'react-router-dom';
 import './project.css';
 import { useEffect, useState } from 'react';
 import { axiosInstance } from '../../../services/axiosInstance';
@@ -36,6 +36,7 @@ const Project = () => {
       <div className="project-contain">
         {levels && <DropdownLevel level={levels} onSave={getLevels} />}
       </div>
+      <Outlet />
     </div>
   );
 };

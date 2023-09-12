@@ -8,22 +8,15 @@ const Specialities = () => {
   const { getSpecialities, sectors, settingSectors } = useSector();
 
   return (
-    <div className="speciality">
-      <div className="speciality-head">
-        <h1 className="speciality-title">
-          <span className="speciality-title-span">PROYECTOS</span>
-        </h1>
-      </div>
-      <div className="speciality-main">
-        {sectors && (
-          <SidebarSpeciality
-            sectors={sectors}
-            onSave={getSpecialities}
-            settingSectors={settingSectors}
-          />
-        )}
-        <Outlet />
-      </div>
+    <div className="speciality-main">
+      {sectors && (
+        <SidebarSpeciality
+          sectors={sectors}
+          onSave={getSpecialities}
+          settingSectors={settingSectors}
+        />
+      )}
+      <Outlet />
       <CardRegisterProject onSave={getSpecialities} />
     </div>
   );

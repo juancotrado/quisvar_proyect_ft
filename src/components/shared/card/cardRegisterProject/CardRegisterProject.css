@@ -1,4 +1,4 @@
-.content-area {
+close-add-card.content-area {
   width: 100%;
   min-height: calc(100vh - var(--header-height));
   display: flex;

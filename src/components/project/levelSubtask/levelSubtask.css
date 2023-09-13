@@ -5,7 +5,7 @@
 }
 .levelSubtask-content {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(7, minmax(0, 1fr));
   width: 100%;
   background-color: #fff;
   font-size: 0.8rem;
@@ -66,4 +66,18 @@
 .LIQUIDATION {
   color: var(--color-f0f1fa);
   background-color: var(--color-bg-f0f1fa);
+}
+.levelSubtask-add {
+  cursor: pointer;
+  width: 100%;
+  color: var(--color-secondary);
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.25rem; /* 142.857% */
+  letter-spacing: 0.0175rem;
+  text-align: left;
+}
+.levelSubtask-plus {
+  font-weight: 900;
 }

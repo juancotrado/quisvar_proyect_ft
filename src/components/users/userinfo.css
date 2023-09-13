@@ -5,6 +5,8 @@
   height: 3.7rem;
   background-color: #fff;
   font-size: 0.8rem;
+  border-radius: 0.3rem;
+  border-bottom: 0.15rem solid var(--color-quaternay);
 }
 
 .col-span {

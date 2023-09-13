@@ -2,15 +2,30 @@ import { useNavigate } from 'react-router-dom';
 import { SubTask } from '../../../types/types';
 import { statusText } from '../../shared/card/cardTaskInformation/constans';
 import './levelSubtask.css';
+import { isOpenCardRegisteTask$ } from '../../../services/sharingSubject';
+import Button from '../../shared/button/Button';
+import ButtonDelete from '../../shared/button/ButtonDelete';
 
 interface LevelSutaskProps {
   subtasks: SubTask[];
+  levelId: number;
+  onSave?: () => void;
 }
-const LevelSubtask = ({ subtasks }: LevelSutaskProps) => {
+const LevelSubtask = ({ subtasks, levelId, onSave }: LevelSutaskProps) => {
   const navigate = useNavigate();
 
   const taskNavigate = (id: number) => {
     navigate(`tarea/${id}`);
+  };
+  const handleAddTask = () => {
+    isOpenCardRegisteTask$.setSubject = { isOpen: true, levelId };
+  };
+  const handleEditTask = (subtask: SubTask) => {
+    isOpenCardRegisteTask$.setSubject = {
+      isOpen: true,
+      levelId,
+      task: subtask,
+    };
   };
   return (
     <div className="levelSubtask">
@@ -32,6 +47,9 @@ const LevelSubtask = ({ subtasks }: LevelSutaskProps) => {
         </div>
         <div className="levelSubtask-item">
           <div className="levelSubtask-header-title">USUARIO ASIGNADO</div>
+        </div>
+        <div className="levelSubtask-item">
+          <div className="levelSubtask-header-title">OPCIONES</div>
         </div>
       </div>
       {subtasks?.map(subtask => (
@@ -65,8 +83,25 @@ const LevelSubtask = ({ subtasks }: LevelSutaskProps) => {
                 : 'No Asignado aun'}
             </div>
           </div>
+          <div className="levelSubtask-item" onClick={e => e.stopPropagation()}>
+            <Button
+              icon="pencil"
+              className="role-btn"
+              onClick={() => handleEditTask(subtask)}
+            />
+            <ButtonDelete
+              icon="trash"
+              url={`/subtasks/${subtask.id}`}
+              className="role-delete-icon"
+              onSave={onSave}
+            />
+          </div>
         </div>
       ))}
+
+      <div className="levelSubtask-add" onClick={handleAddTask}>
+        <span className="levelSubtask-plus">+</span> Agregar tarea
+      </div>
     </div>
   );
 };

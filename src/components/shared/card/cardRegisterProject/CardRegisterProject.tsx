@@ -151,6 +151,7 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
   };
 
   const closeFunctions = () => {
+    setProject(null);
     reset({});
     setDistricts([]);
     setProvinces([]);

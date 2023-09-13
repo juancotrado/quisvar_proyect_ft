@@ -5,6 +5,7 @@ import { axiosInstance } from '../../../services/axiosInstance';
 import { Level } from '../../../types/types';
 import MoreInfo from '../../../components/project/moreInfo/MoreInfo';
 import DropdownLevel from '../../../components/project/dropdownLevel/DropdownLevel';
+import CardRegisterSubTask from '../../../components/shared/card/cardRegisterSubTask/CardRegisterSubTask';
 
 const Project = () => {
   const { id } = useParams();
@@ -15,7 +16,9 @@ const Project = () => {
   }, [id]);
 
   const getLevels = () => {
-    axiosInstance.get(`/stages/${id}`).then(res => setlevels(res.data));
+    axiosInstance.get(`/stages/${id}`).then(res => {
+      if (id) setlevels({ ...res.data, stagesId: +id });
+    });
   };
 
   return (
@@ -37,6 +40,8 @@ const Project = () => {
         {levels && <DropdownLevel level={levels} onSave={getLevels} />}
       </div>
       <Outlet />
+
+      <CardRegisterSubTask onSave={getLevels} />
     </div>
   );
 };

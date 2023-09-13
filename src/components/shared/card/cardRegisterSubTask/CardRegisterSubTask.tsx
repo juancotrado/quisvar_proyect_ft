@@ -1,14 +1,16 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { Input, TextArea } from '../../..';
 import './cardRegisterSubTask.css';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { SocketContext } from '../../../../context/SocketContex';
-import { isOpenModal$ } from '../../../../services/sharingSubject';
-import { SubTask, TypeTask } from '../../../../types/types';
+import { isOpenCardRegisteTask$ } from '../../../../services/sharingSubject';
 import Button from '../../button/Button';
+import Modal from '../../../portal/Modal';
+import { Subscription } from 'rxjs';
 
 type SubTaskForm = {
+  id: number | null;
   name: string;
   description?: string;
   days: number;
@@ -16,48 +18,59 @@ type SubTaskForm = {
 };
 
 interface CardRegisterSubTaskProps {
-  subTask: SubTask | null;
-  taskId: number | null;
-  typeTask?: TypeTask;
+  onSave?: () => void;
 }
 
-const CardRegisterSubTask = ({
-  subTask,
-  taskId,
-  typeTask,
-}: CardRegisterSubTaskProps) => {
+const CardRegisterSubTask = ({ onSave }: CardRegisterSubTaskProps) => {
   const { handleSubmit, register, setValue, watch, reset } =
     useForm<SubTaskForm>();
   const socket = useContext(SocketContext);
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [levelId, setLevelId] = useState<number | null>(null);
+  const handleIsOpen = useRef<Subscription>(new Subscription());
 
   useEffect(() => {
-    if (!subTask) return;
-    reset({
-      description: subTask.description,
-      days: subTask.hours / 24,
-      name: subTask.name,
-      price: subTask.price,
+    handleIsOpen.current = isOpenCardRegisteTask$.getSubject.subscribe(data => {
+      setIsOpenModal(data.isOpen);
+      const { task } = data;
+      if (task) {
+        reset({
+          id: task.id,
+          description: task.description,
+          days: task.hours / 24,
+          name: task.name,
+          price: task.price,
+        });
+      } else {
+        setLevelId(data.levelId);
+      }
     });
-  }, [reset, subTask]);
+    return () => {
+      handleIsOpen.current.unsubscribe();
+    };
+  }, [setValue]);
 
   const onSubmit: SubmitHandler<SubTaskForm> = data => {
-    const body = { ...data, hours: data.days * 24 };
-    if (subTask?.id) {
-      axiosInstance.patch(`/subtasks/${subTask.id}`, body).then(res => {
+    const body = {
+      name: data.name,
+      hours: data.days * 24,
+      price: data.price,
+      description: data.description,
+    };
+    if (data.id) {
+      axiosInstance.patch(`/subtasks/${data.id}`, body).then(res => {
         socket.emit('client:update-subTask', res.data);
+        onSave?.();
       });
     } else {
-      let bodyForCreate;
-      if (typeTask == 'indextask')
-        bodyForCreate = { ...body, indexTaskId: taskId };
-      if (typeTask == 'task') bodyForCreate = { ...body, taskId };
-      if (typeTask == 'task2') bodyForCreate = { ...body, task_2_Id: taskId };
-      if (typeTask == 'task3') bodyForCreate = { ...body, task_3_Id: taskId };
-      axiosInstance.post('/subtasks', bodyForCreate).then(res => {
-        socket.emit('client:create-subTask', res.data);
-      });
+      axiosInstance
+        .post('/subtasks', { ...body, levels_Id: levelId })
+        .then(res => {
+          socket.emit('client:create-subTask', res.data);
+          onSave?.();
+        });
     }
-    isOpenModal$.setSubject = false;
+    closeFunctions();
   };
 
   const handleSetPrice = (hours: number) => {
@@ -70,55 +83,58 @@ const CardRegisterSubTask = ({
   };
 
   const closeFunctions = () => {
-    isOpenModal$.setSubject = false;
+    setIsOpenModal(false);
+    reset({});
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="card-register-project"
-      autoComplete="off"
-    >
-      <div className="subtask-head-title">
-        <h2>{subTask ? 'ACTUALIZAR TAREA' : 'REGISTRAR TAREA'}</h2>
-        <Button
-          type="button"
-          icon="close"
-          className="close-add-card-subtask"
-          onClick={closeFunctions}
-        />
-      </div>
-      <Input label="Nombre" {...register('name')} name="name" type="text" />
-      <TextArea
-        label="Descripción"
-        {...register('description')}
-        name="description"
-      />
-
-      <div className="col-input">
-        <div className="col-hours-subtask">
-          <Input
-            label="Dias"
-            col={true}
-            {...register('days')}
-            type="number"
-            name="days"
-            step={0.01}
-          />
-          <Input
-            label="Precio S/."
-            col={true}
-            {...register('price', { valueAsNumber: true })}
-            step={0.01}
-            name="price"
-            disabled={true}
-            value={handleSetPrice(watch('days'))}
-            readOnly={true}
+    <Modal size={50} isOpenProp={isOpenModal}>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="card-register-project"
+        autoComplete="off"
+      >
+        <div className="subtask-head-title">
+          <h2>{levelId ? 'ACTUALIZAR TAREA' : 'REGISTRAR TAREA'}</h2>
+          <Button
+            type="button"
+            icon="close"
+            className="close-add-card-subtask"
+            onClick={closeFunctions}
           />
         </div>
-      </div>
-      <Button text="Guardar" className="btn-area" type="submit" />
-    </form>
+        <Input label="Nombre" {...register('name')} name="name" type="text" />
+        <TextArea
+          label="Descripción"
+          {...register('description')}
+          name="description"
+        />
+
+        <div className="col-input">
+          <div className="col-hours-subtask">
+            <Input
+              label="Dias"
+              col={true}
+              {...register('days')}
+              type="number"
+              name="days"
+              step={0.01}
+            />
+            <Input
+              label="Precio S/."
+              col={true}
+              {...register('price', { valueAsNumber: true })}
+              step={0.01}
+              name="price"
+              disabled={true}
+              value={handleSetPrice(watch('days'))}
+              readOnly={true}
+            />
+          </div>
+        </div>
+        <Button text="Guardar" className="btn-area" type="submit" />
+      </form>
+    </Modal>
   );
 };
 

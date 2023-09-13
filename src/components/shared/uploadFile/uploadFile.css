@@ -6,11 +6,11 @@
   justify-content: center;
   align-items: center;
   width: 100%;
+  font-size: 0.7rem;
+  font-weight: 700;
 }
 
 .uploadFile-text {
-  font-size: 0.7rem;
-  font-weight: 700;
   color: gray;
   text-align: center;
 }

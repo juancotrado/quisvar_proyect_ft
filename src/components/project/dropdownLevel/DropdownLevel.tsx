@@ -21,7 +21,11 @@ const DropdownLevel = ({ level, onSave }: DropdownLevel) => {
         }
       >
         {existSubtask ? (
-          <LevelSubtask subtasks={level?.subTasks} />
+          <LevelSubtask
+            subtasks={level?.subTasks}
+            levelId={level.id}
+            onSave={onSave}
+          />
         ) : (
           <>
             {level?.nextLevel?.map(subLevel => (

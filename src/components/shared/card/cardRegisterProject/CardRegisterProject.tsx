@@ -60,9 +60,8 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
   useEffect(() => {
     handleIsOpen.current = isOpenCardRegisteProject$.getSubject.subscribe(
       data => {
-        console.log(data);
         setTypeSpecialityId(data.typeSpecialityId);
-        const { project } = data;
+        const project = data.project as ProjectForm;
         setIsOpenModal(data.isOpen);
         if (project) {
           setJurisdictionSelectData(project.department, project.province);

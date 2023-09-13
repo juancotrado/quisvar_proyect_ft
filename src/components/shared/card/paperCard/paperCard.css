@@ -1,0 +1,57 @@
+.paper-card-container-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: 0.4rem;
+  width: 100%;
+  color: var(--color-grey);
+  /* background-color: red;
+  width: fit-content; */
+}
+.paper-card-title {
+  font-weight: 600;
+  padding: 0;
+  text-transform: uppercase;
+}
+.paper-card-container-info {
+  display: flex;
+  align-items: center;
+  padding-left: 0.5rem;
+  color: #000;
+  gap: 0.5rem;
+  font-weight: 500;
+}
+.paper-card-icon {
+  height: 1.7rem;
+  min-width: 1.7rem;
+}
+.paper-card-icon img {
+  height: 100%;
+  width: 100%;
+}
+.paper-card-description {
+  overflow: hidden;
+  max-height: 1.3rem;
+  text-overflow: ellipsis;
+}
+.paper-card-DECLINE {
+  color: var(--color-unresolved);
+  background-color: #ffd9e0;
+  width: fit-content;
+  border-radius: 5px;
+  padding: 0.2rem 0.5rem;
+}
+.paper-card-PROCESS {
+  background-color: var(--color-process);
+  color: var(--color-tertiary);
+  border-radius: 5px;
+  padding: 0.2rem 0.5rem;
+  width: fit-content;
+}
+.paper-card-DONE {
+  color: #00a000;
+  background-color: var(--color-done);
+  border-radius: 5px;
+  padding: 0.2rem 0.5rem;
+  width: fit-content;
+}

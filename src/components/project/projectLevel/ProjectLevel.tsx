@@ -28,6 +28,7 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
   const handleCloseEdit = () => setOpenEdit(false);
   const [isClickRight, setIsClickRight] = useState(false);
   const handleOpenEdit = () => {
+    reset({ name: data.name });
     setOpenEdit(!openEdit);
     setIsClickRight(false);
   };
@@ -37,20 +38,17 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
     setIsClickRight(!isClickRight);
   };
   const onSubmitData: SubmitHandler<DataForm> = async body => {
-    axiosInstance.put(`levels/${data.id}`, body).then(() => {
-      onSave?.();
-      reset({});
-      handleOpenEdit();
-    });
+    axiosInstance.put(`levels/${data.id}`, body).then(() => resetValues());
   };
   const handleDeleteLevel = () => {
-    axiosInstance.delete(`levels/${data.id}`).then(() => {
-      onSave?.();
-      reset({});
-      handleOpenEdit();
-    });
+    axiosInstance.delete(`levels/${data.id}`).then(() => resetValues());
   };
-  const { details } = data;
+
+  const resetValues = () => {
+    onSave?.();
+    reset({});
+    handleOpenEdit();
+  };
   const options: Option[] = [
     {
       name: openEdit ? 'Cancelar' : 'Editar',
@@ -64,7 +62,7 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
       type: openEdit ? 'submit' : 'button',
       icon: openEdit ? 'save' : 'trash-red',
 
-      function: openEdit ? () => handleSubmit(onSubmitData) : handleDeleteLevel,
+      function: openEdit ? handleSubmit(onSubmitData) : handleDeleteLevel,
     },
   ];
   return (
@@ -115,107 +113,6 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
           </div>
           <div className="projectLevel-contain-right">
             <MoreInfo data={data} />
-            {/* <div className="projectLevel-currency-contain">
-              <div className="projectLevel-currency">
-                <span className="projecLevel-currency-money">
-                  S/.{data.price}
-                </span>
-                <span className="projecLevel-currency-info">Saldo</span>
-              </div>
-              <div className="projectLevel-currency">
-                <span className="projecLevel-currency-money money--red">
-                  -/S.{data.price}
-                </span>
-                <span className="projecLevel-currency-info">Saldo</span>
-              </div>
-              <div className="projectLevel-currency">
-                <span className="projecLevel-currency-money">
-                  S/.{data.price}
-                </span>
-                <span className="projecLevel-currency-info">Saldo</span>
-              </div>
-            </div>
-            <div className="projectLevel-details-contain">
-              <div className="projectLevel-detail">
-                <div className="projectLevel-detail-circle color-unresolver">
-                  <span className="projectLevel-detail-circle-text">
-                    {details.UNRESOLVED}
-                  </span>
-                </div>
-                <span className="projectLevel-detail-info">
-                  Sin <br />
-                  Asignar
-                </span>
-              </div>
-              <div className="projectLevel-detail">
-                <div className="projectLevel-detail-circle color-pending ">
-                  <span className="projectLevel-detail-circle-text">
-                    {details.PROCESS}
-                  </span>
-                </div>
-                <span className="projectLevel-detail-info">Asignado</span>
-              </div>
-              <div className="projectLevel-detail">
-                <div className="projectLevel-detail-circle color-process">
-                  <span className="projectLevel-detail-circle-text">
-                    {details.INREVIEW}
-                  </span>
-                </div>
-                <span className="projectLevel-detail-info">
-                  En <br /> revision
-                </span>
-              </div>
-              <div className="projectLevel-detail">
-                <div className="projectLevel-detail-circle color-correct">
-                  <span className="projectLevel-detail-circle-text">
-                    {details.DENIED}
-                  </span>
-                </div>
-                <span className="projectLevel-detail-info">
-                  En <br /> Correción
-                </span>
-              </div>
-              <div className="projectLevel-detail">
-                <div className="projectLevel-detail-circle color-done">
-                  <span className="projectLevel-detail-circle-text">
-                    {details.DONE}
-                  </span>
-                </div>
-                <span className="projectLevel-detail-info">Hechos</span>
-              </div>
-              <div className="projectLevel-detail">
-                <div className="projectLevel-detail-circle color-liquidation">
-                  <span className="projectLevel-detail-circle-text">
-                    {details.LIQUIDATION}
-                  </span>
-                </div>
-                <span className="projectLevel-detail-info">Liquidados</span>
-              </div>
-            </div>
-            <div className="projectLevel-details-contain">
-              <div className="projectLevel-detail">
-                <figure className="projectLevel-detail-icon">
-                  <img src="/svg/file-download.svg" alt="W3Schools" />
-                </figure>
-                <span className="projectLevel-detail-info">Comprimir</span>
-              </div>
-              <div className="projectLevel-detail">
-                <figure className="projectLevel-detail-icon">
-                  <img src="/svg/file-download.svg" alt="W3Schools" />
-                </figure>
-                <span className="projectLevel-detail-info">
-                  Comprimir <br /> PDS
-                </span>
-              </div>
-              <div className="projectLevel-detail">
-                <figure className="projectLevel-detail-icon">
-                  <img src="/svg/file-download.svg" alt="W3Schools" />
-                </figure>
-                <span className="projectLevel-detail-info">
-                  Comprimir <br /> Editables
-                </span>
-              </div>
-            </div> */}
           </div>
         </div>
       </div>

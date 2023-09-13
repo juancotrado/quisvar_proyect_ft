@@ -175,6 +175,7 @@ const SidebarSpecialityLvlList = ({
       </div>
       {!isFirstLevel && authUser && (
         <DotsOption
+          notPersist={true}
           className="sidebarLevelList-menu-dots-option"
           notPositionRelative
           isClickRight={isClickRight}

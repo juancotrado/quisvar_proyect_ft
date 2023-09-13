@@ -13,7 +13,7 @@ export interface Option {
 interface DotsOptionProps {
   data: Option[];
   className?: string;
-  persist?: boolean;
+  notPersist?: boolean;
   variant?: boolean;
   notPositionRelative?: boolean;
   isClickRight?: boolean;
@@ -23,7 +23,7 @@ interface DotsOptionProps {
 const DotsOption = ({
   data,
   className,
-  persist,
+  notPersist,
   notPositionRelative,
   variant = false,
   isClickRight,
@@ -32,7 +32,7 @@ const DotsOption = ({
   const [isOpen, setIsOpen] = useState(false);
   const handleClick = (value: (() => void) | undefined) => {
     value?.();
-    persist && setIsOpen(false);
+    notPersist && setIsOpen(false);
   };
 
   useEffect(() => {

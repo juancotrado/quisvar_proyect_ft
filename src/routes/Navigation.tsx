@@ -11,6 +11,7 @@ import {
   ListPersonalTask,
   CommingSoon,
   PaperWork,
+  Attendance,
 } from '../pages';
 import { ProtectedRoute } from '../components';
 import Project from '../pages/specialities/project/Project';
@@ -31,6 +32,7 @@ const Navigation = () => {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/tareas/:id" element={<Tasks />} />
             <Route path="/tramites" element={<PaperWork />} />
+            <Route path="/asistencia" element={<Attendance />} />
             <Route path="/especialidades" element={<Specialities />}>
               <Route path="etapa/:stageId" element={<Stage />}>
                 <Route path="proyecto/:id" element={<Project />}>

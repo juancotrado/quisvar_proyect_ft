@@ -1,11 +1,11 @@
-.procedure {
+.attendance {
   max-height: calc(100vh - var(--header-height));
   overflow-y: hidden;
   display: flex;
   flex-direction: column;
 }
 
-.procedure-head {
+.attendance-head {
   display: flex;
   padding: 2rem 1rem;
   position: sticky;
@@ -15,14 +15,14 @@
   background-color: var(--color-menu);
 }
 
-.procedure-card-container {
+.attendance-card-container {
   padding: 0 1rem;
   display: grid;
   margin-top: 1rem;
   overflow-y: auto;
 }
 
-.procedure-header {
+.attendance-header {
   display: grid;
   /* grid-template-columns: repeat(6, minmax(0, 1fr)); */
   grid-template-columns: 0.5fr 1fr 2fr 1fr 1fr 1fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr;
@@ -37,18 +37,18 @@
   padding: 12px 10px;
 }
 
-.procedure-list-text {
+.attendance-list-text {
   display: flex;
   text-align: center;
   align-items: center;
   justify-content: baseline;
 }
 
-.procedure-item {
+.attendance-item {
   max-width: 3rem;
   /* Ancho máximo para ITEM, ajusta según tus necesidades */
 }
-.procedure-p {
+.attendance-p {
   height: 100%;
   border-bottom: 2px solid #57d9a3;
   padding-bottom: 0.2rem;
@@ -56,35 +56,35 @@
   justify-content: center;
 }
 
-.procedure-t {
+.attendance-t {
   border-bottom: 2px solid #ffd140;
   padding-bottom: 0.2rem;
   color: #424242;
   justify-content: center;
 }
 
-.procedure-f {
+.attendance-f {
   border-bottom: 2px solid #df00004d;
   padding-bottom: 0.2rem;
   color: #424242;
   justify-content: center;
 }
 
-.procedure-g {
+.attendance-g {
   border-bottom: 2px solid #df0000;
   padding-bottom: 0.2rem;
   color: #424242;
   justify-content: center;
 }
 
-.procedure-m {
+.attendance-m {
   border-bottom: 2px solid #c00000;
   padding-bottom: 0.2rem;
   color: #424242;
   justify-content: center;
 }
 
-.procedure-l {
+.attendance-l {
   border-bottom: 2px solid #2264e5;
   padding-bottom: 0.2rem;
   color: #424242;

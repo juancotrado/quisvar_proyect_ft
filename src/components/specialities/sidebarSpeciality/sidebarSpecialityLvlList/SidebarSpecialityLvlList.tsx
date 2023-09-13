@@ -105,13 +105,13 @@ const SidebarSpecialityLvlList = ({
         }`}
         onContextMenu={handleClickRigth}
       >
-        {isFirstLevel && (
+        {/* {isFirstLevel && (
           <img
             src="/svg/reports.svg"
             alt="reportes"
             className="SidebarSpecialityLvlList-icon"
           />
-        )}
+        )} */}
         {openEditData ? (
           <div
             className={`SidebarSpecialityLvlList-inputs`}
@@ -138,6 +138,21 @@ const SidebarSpecialityLvlList = ({
           </div>
         ) : (
           <>
+            {!isLastLevel && (
+              <>
+                <img
+                  src="/svg/down.svg"
+                  className="SidebarSpecialityLvlList-dropdown-arrow"
+                />
+                <input
+                  type="checkbox"
+                  className="SidebarSpecialityLvlList-dropdown-check"
+                  defaultChecked={false}
+                />
+                {/* {!!data.specialities?.length ||
+                   !!data.typeSpecialities?.length} */}
+              </>
+            )}
             <h4
               className={`SidebarSpecialityLvlList-sub-list-name  ${
                 isFirstLevel && 'not-margin-left'
@@ -155,21 +170,6 @@ const SidebarSpecialityLvlList = ({
                 </span>
               )}
             </h4>
-            {!isLastLevel && (
-              <>
-                <img
-                  src="/svg/down.svg"
-                  className="SidebarSpecialityLvlList-dropdown-arrow"
-                />
-                <input
-                  type="checkbox"
-                  className="SidebarSpecialityLvlList-dropdown-check"
-                  defaultChecked={false}
-                />
-                {/* {!!data.specialities?.length ||
-                   !!data.typeSpecialities?.length} */}
-              </>
-            )}
           </>
         )}
       </div>

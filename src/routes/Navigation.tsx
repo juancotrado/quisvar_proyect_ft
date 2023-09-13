@@ -10,7 +10,7 @@ import {
   NotificationsList,
   ListPersonalTask,
   CommingSoon,
-  Procedure,
+  PaperWork,
 } from '../pages';
 import { ProtectedRoute } from '../components';
 import Project from '../pages/specialities/project/Project';
@@ -30,6 +30,7 @@ const Navigation = () => {
             <Route path="/home" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/tareas/:id" element={<Tasks />} />
+            <Route path="/tramites" element={<PaperWork />} />
             <Route path="/especialidades" element={<Specialities />}>
               <Route path="etapa/:stageId" element={<Stage />}>
                 <Route path="proyecto/:id" element={<Project />}>
@@ -39,7 +40,6 @@ const Navigation = () => {
             </Route>
             <Route path="/mis-tareas" element={<ListPersonalTask />} />
             <Route path="/reportes" element={<CommingSoon />} />
-            <Route path="/tramites" element={<Procedure />} />
             <Route element={<ProtectedRole rols={assitant_perms} />}>
               <Route path="/lista-de-usuarios" element={<UsersList />} />
             </Route>

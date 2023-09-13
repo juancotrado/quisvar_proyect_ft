@@ -585,3 +585,15 @@ export type TypeTaskInfoDetails = {
 export type CompanyForm = Omit<CompanyType, 'id'>;
 export type ConsortiumForm = Omit<ConsortiumType, 'id'>;
 export type ExpertForm = Omit<ExpertType, 'id'>;
+
+export type StatusReport = 'DECLINE' | 'PROCESS' | 'DONE';
+export type StageReport = 'STEP_1' | 'STEP_2' | 'STEP_3' | 'STEP_4';
+export interface ListReport {
+  id: number;
+  name: string;
+  status: StatusReport;
+  stage: StageReport;
+  // createdAt: Date;
+  user: { id: number; profile: Profile };
+  supervisor: { comments: string | undefined; status: StatusReport };
+}

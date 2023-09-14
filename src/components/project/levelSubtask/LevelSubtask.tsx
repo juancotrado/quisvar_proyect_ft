@@ -20,12 +20,19 @@ const LevelSubtask = ({ subtasks, levelId, onSave }: LevelSutaskProps) => {
   const handleAddTask = () => {
     isOpenCardRegisteTask$.setSubject = { isOpen: true, levelId };
   };
+
   const handleEditTask = (subtask: SubTask) => {
     isOpenCardRegisteTask$.setSubject = {
       isOpen: true,
       levelId,
       task: subtask,
     };
+  };
+  const usersAsigned = (subTask: SubTask) => {
+    const userSelected = subTask.users?.map(
+      user => user.user.profile.firstName
+    );
+    return userSelected.join(', ');
   };
   return (
     <div className="levelSubtask">
@@ -78,9 +85,7 @@ const LevelSubtask = ({ subtasks, levelId, onSave }: LevelSutaskProps) => {
           </div>
           <div className="levelSubtask-item">
             <div className="levelSubtask-text">
-              {subtask.users.length
-                ? subtask.users.join(',')
-                : 'No Asignado aun'}
+              {subtask.users.length ? usersAsigned(subtask) : 'No Asignado aun'}
             </div>
           </div>
           <div className="levelSubtask-item" onClick={e => e.stopPropagation()}>

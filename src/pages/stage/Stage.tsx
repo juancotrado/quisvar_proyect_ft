@@ -24,8 +24,6 @@ const Stage = () => {
     getStages();
   }, [stageId]);
   const getStages = () => {
-    console.log('asd');
-
     axiosInstance.get(`/projects/${stageId}`).then(res => setProject(res.data));
   };
 

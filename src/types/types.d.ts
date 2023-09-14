@@ -167,7 +167,6 @@ export interface ProjectType {
   typeSpeciality: string;
   company?: CompanyType;
   consortium?: ConsortiumType;
-  stageId?: number;
   stage?: Stage;
   startDate: Date;
   untilDate: Date;
@@ -391,6 +390,9 @@ export interface Level {
   spending: number;
   balance: number;
   price: number;
+  isArea: false;
+  isInclude: false;
+  isProject: true;
   stagesId: number;
   details: Details;
   subTasks: SubTask[];

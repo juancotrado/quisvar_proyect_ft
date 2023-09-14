@@ -79,7 +79,6 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
           setValue('district', project.district);
           setValue('location', project.location);
           setValue('userId', project.userId);
-          setValue('stageId', project.stageId);
           setValue('startDate', _date(new Date(project.startDate)));
           setValue('untilDate', _date(new Date(project.untilDate)));
           setIsUniqueCorp(!!project.company);

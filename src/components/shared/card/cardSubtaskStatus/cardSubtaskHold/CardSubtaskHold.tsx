@@ -5,15 +5,14 @@ import { axiosInstance } from '../../../../../services/axiosInstance';
 import { SocketContext } from '../../../../../context/SocketContex';
 import Button from '../../../button/Button';
 import { SubTask } from '../../../../../types/types';
-import { isOpenModal$ } from '../../../../../services/sharingSubject';
 import DropDownSimple from '../../../select/DropDownSimple';
 import SubtaskFile from '../../../../subtasks/subtaskFiles/SubtaskFile';
 import SubtaskUploadFiles from '../../../../subtasks/subtaskUploadFiles/SubtaskUploadFiles';
 import SubtaskChangeStatusBtn from '../../../../subtasks/subtaskChangeStatusBtn/SubtaskChangeStatusBtn';
-import SubTaskStatusLabel from '../../../../subtasks/subTaskStatusLabel/SubTaskStatusLabel';
 import './cardSubtaskHold.css';
 import formatDate from '../../../../../utils/formatDate';
 import useListUsers from '../../../../../hooks/useListUsers';
+import { useParams } from 'react-router-dom';
 
 type DataUser = { id: number; name: string };
 interface CardSubtaskHold {
@@ -26,6 +25,7 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
   const isAuthorizedMod = true;
   const [addBtn, setAddBtn] = useState(false);
   const [usersData, setUsersData] = useState<DataUser[]>([]);
+  const { id } = useParams();
 
   const { users } = useListUsers();
   const { status } = subTask;
@@ -37,10 +37,9 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
 
   const handleAddUserByTask = () => {
     axiosInstance
-      .patch(`/subtasks/assignUser/${subTask.id}`, usersData)
+      .patch(`/subtasks/assignUser/${subTask.id}/${id}`, usersData)
       .then(res => {
         socket.emit('client:update-subTask', res.data);
-        isOpenModal$.setSubject = false;
       });
   };
 
@@ -129,7 +128,7 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
         )}
       </section>
       <section className="cardSubtaskHold-details">
-        <SubTaskStatusLabel status={status} />
+        {/* <SubTaskStatusLabel status={status} /> */}
         <div className="cardSubtaskHold-info">
           {subTask.createdAt && (
             <p className="cardSubtaskHold-info-date">

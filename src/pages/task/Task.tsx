@@ -1,11 +1,17 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import './taks.css';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { SubTask } from '../../types/types';
 import { axiosInstance } from '../../services/axiosInstance';
-import { CardSubtaskDone, CardSubtaskHold } from '../../components';
+import {
+  CardSubtaskDone,
+  CardSubtaskHold,
+  CardSubtaskProcess,
+} from '../../components';
+import { SocketContext } from '../../context/SocketContex';
 const Task = () => {
   const [task, setTask] = useState<SubTask | null>(null);
+  const socket = useContext(SocketContext);
 
   const { taskId, id, stageId } = useParams();
 
@@ -13,9 +19,19 @@ const Task = () => {
     getTask();
   }, [taskId]);
 
+  useEffect(() => {
+    socket.on('server:update-subTask', (newSubTask: SubTask) => {
+      setTask(newSubTask);
+    });
+    return () => {
+      socket.off('server:update-subTask');
+    };
+  }, [socket]);
+
   const getTask = () => {
     axiosInstance.get(`/subtasks/${taskId}`).then(res => {
       setTask(res.data);
+      socket.emit('join', `task-${res.data.id}`);
     });
   };
 
@@ -34,15 +50,14 @@ const Task = () => {
         <h4 className="task-header-title">
           Título de la tarea:
           <span className="task-header-title-span">
-            {' '}
             {task.item}. {task.name}
           </span>
         </h4>
       </div>
       {status === 'UNRESOLVED' && <CardSubtaskHold subTask={task} />}
-      {/* {(status === 'PROCESS' ||
+      {(status === 'PROCESS' ||
         status === 'INREVIEW' ||
-        status === 'DENIED') && <CardSubtaskProcess subTask={task} />} */}
+        status === 'DENIED') && <CardSubtaskProcess subTask={task} />}
       {(status === 'DONE' || status === 'LIQUIDATION') && (
         <CardSubtaskDone subTask={task} />
       )}

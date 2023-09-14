@@ -18,10 +18,10 @@ import SubtasksShippingHistory from '../../../../subtasks/subtasksShippingHistor
 import formatDate from '../../../../../utils/formatDate';
 interface CardSubtaskProcess {
   subTask: SubTask;
-  adminId: number | undefined;
 }
 
-const CardSubtaskProcess = ({ subTask, adminId }: CardSubtaskProcess) => {
+const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
+  const adminId = 0;
   const socket = useContext(SocketContext);
   const { userSession, modAuth: isAuthorizedMod } = useSelector(
     (state: RootState) => state
@@ -118,7 +118,6 @@ const CardSubtaskProcess = ({ subTask, adminId }: CardSubtaskProcess) => {
                             icon="close"
                             customOnClick={() => deleteFiles(file)}
                             className="cardSubtaskProcess-files-btn-delete"
-                            sizeIcon={true}
                           />
                         </div>
                         .
@@ -218,7 +217,7 @@ const CardSubtaskProcess = ({ subTask, adminId }: CardSubtaskProcess) => {
         )}
       </section>
       <section className="cardSubtaskProcess-details">
-        <SubTaskStatusLabel status={status} />
+        {/* <SubTaskStatusLabel status={status} /> */}
         <div className="cardSubtaskProcess-info">
           <p
             className={`cardSubtaskProcess-info-untilDate ${

@@ -8,18 +8,31 @@ import {
 } from '../../../utils/customValidatesForm';
 import { axiosInstance } from '../../../services/axiosInstance';
 import { Level } from '../../../types/types';
+import { isOpenCardRegisteTask$ } from '../../../services/sharingSubject';
+import DropDownSimple from '../../shared/select/DropDownSimple';
+import useListUsers from '../../../hooks/useListUsers';
 
 interface DataForm {
   rootId: number;
   stagesId?: number;
   name: string;
+  isProject: boolean;
+  userId: number;
 }
 interface ProjectAddLevelProps {
   data: Level;
   onSave?: () => void;
+  hasProject: boolean;
 }
 type AddLevel = 'folder' | 'area';
-const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
+const ProjectAddLevel = ({
+  data,
+  onSave,
+  hasProject,
+}: ProjectAddLevelProps) => {
+  const { users: modedators } = useListUsers(['MOD']);
+  const [idCoordinator, setIdCoordinator] = useState<number | null>(null);
+
   const [addLevel, setAddLevel] = useState<AddLevel | null>(null);
   const {
     handleSubmit,
@@ -34,13 +47,21 @@ const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
   const onSubmitData: SubmitHandler<DataForm> = async body => {
     const { id: rootId, stagesId } = data;
     body = { ...body, rootId, stagesId };
+    if (addLevel === 'area') {
+      body = { ...body, isProject: true };
+    }
+    if (data.isProject && idCoordinator) {
+      body = { ...body, userId: idCoordinator };
+    }
     axiosInstance.post('levels', body).then(() => {
-      console.log(onSave);
       onSave?.();
       reset({});
       handleHideForm();
     });
   };
+  const hadleAddTask = () =>
+    (isOpenCardRegisteTask$.setSubject = { isOpen: true, levelId: data.id });
+
   const typeImgFolder =
     addLevel === 'folder' ? 'add_folder-blue' : 'add_folder';
   const typeImgArea = addLevel === 'area' ? 'add_area-blue' : 'add_area';
@@ -50,12 +71,22 @@ const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
       <figure className="projectAddLevel-figure" onClick={hadleAddFolder}>
         <img src={`/svg/${typeImgFolder}.svg`} alt="W3Schools" />
       </figure>
-      <figure className="projectAddLevel-figure" onClick={hadleAddArea}>
-        <img src={`/svg/${typeImgArea}.svg`} alt="W3Schools" />
-      </figure>
+      {!hasProject && (
+        <figure className="projectAddLevel-figure" onClick={hadleAddArea}>
+          <img src={`/svg/${typeImgArea}.svg`} alt="W3Schools" />
+        </figure>
+      )}
+      {!data.nextLevel?.length && !data.isArea && (
+        <figure className="projectAddLevel-figure" onClick={hadleAddTask}>
+          <img src={`/svg/task-list.svg`} alt="W3Schools" />
+        </figure>
+      )}
       {addLevel && (
         <>
-          <form onSubmit={handleSubmit(onSubmitData)}>
+          <form
+            onSubmit={handleSubmit(onSubmitData)}
+            className="projectAddLevel-form"
+          >
             <Input
               {...register('name', {
                 validate: { validateWhiteSpace, validateCorrectTyping },
@@ -67,6 +98,19 @@ const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
               className="projectAddLevel-input"
               errors={errors}
             />
+            {data.isProject && (
+              <DropDownSimple
+                data={modedators}
+                itemKey="id"
+                textField="name"
+                type="search"
+                name="employees"
+                selector
+                // className="report-employee-list"
+                placeholder="Coordinador de Area"
+                valueInput={(_name, index) => setIdCoordinator(+index)}
+              />
+            )}
           </form>
           <figure
             className="projectAddLevel-figure"

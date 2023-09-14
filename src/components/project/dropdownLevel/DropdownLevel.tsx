@@ -7,9 +7,10 @@ import './dropdownLevel.css';
 interface DropdownLevel {
   level: Level;
   onSave?: () => void;
+  hasProject: boolean;
 }
 
-const DropdownLevel = ({ level, onSave }: DropdownLevel) => {
+const DropdownLevel = ({ level, onSave, hasProject }: DropdownLevel) => {
   const firstLevel = level.level === 0;
   const existSubtask = level?.subTasks?.length;
   if (level.level === 10) return <div></div>;
@@ -38,10 +39,18 @@ const DropdownLevel = ({ level, onSave }: DropdownLevel) => {
                 }
               >
                 <ProjectLevel data={subLevel} onSave={onSave} />
-                <DropdownLevel level={subLevel} onSave={onSave} />
+                <DropdownLevel
+                  level={subLevel}
+                  onSave={onSave}
+                  hasProject={hasProject}
+                />
               </li>
             ))}
-            <ProjectAddLevel data={level} onSave={onSave} />
+            <ProjectAddLevel
+              data={level}
+              onSave={onSave}
+              hasProject={hasProject}
+            />
           </>
         )}
       </ul>

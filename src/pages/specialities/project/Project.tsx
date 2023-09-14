@@ -7,12 +7,13 @@ import MoreInfo from '../../../components/project/moreInfo/MoreInfo';
 import DropdownLevel from '../../../components/project/dropdownLevel/DropdownLevel';
 import CardRegisterSubTask from '../../../components/shared/card/cardRegisterSubTask/CardRegisterSubTask';
 import { SocketContext } from '../../../context/SocketContex';
+import { findProject } from '../../../utils/tools';
 
 const Project = () => {
   const { id } = useParams();
   const socket = useContext(SocketContext);
   const [levels, setlevels] = useState<Level | null>(null);
-
+  const [hasProject, setHasProject] = useState(false);
   useEffect(() => {
     getLevels();
   }, [id]);
@@ -29,6 +30,8 @@ const Project = () => {
     axiosInstance.get(`/stages/${id}`).then(res => {
       if (id) {
         socket.emit('join', `project-${id}`);
+        const hasProject = findProject(res.data.nextLevel);
+        setHasProject(hasProject);
         setlevels({ ...res.data, stagesId: +id });
       }
     });
@@ -50,7 +53,13 @@ const Project = () => {
         )}
       </div>
       <div className="project-contain">
-        {levels && <DropdownLevel level={levels} onSave={getLevels} />}
+        {levels && (
+          <DropdownLevel
+            level={levels}
+            onSave={getLevels}
+            hasProject={hasProject}
+          />
+        )}
       </div>
       <Outlet />
 

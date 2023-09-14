@@ -8,6 +8,7 @@ import {
 } from '../../../utils/customValidatesForm';
 import { axiosInstance } from '../../../services/axiosInstance';
 import { Level } from '../../../types/types';
+import { isOpenCardRegisteTask$ } from '../../../services/sharingSubject';
 
 interface DataForm {
   rootId: number;
@@ -41,6 +42,9 @@ const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
       handleHideForm();
     });
   };
+  const hadleAddTask = () =>
+    (isOpenCardRegisteTask$.setSubject = { isOpen: true, levelId: data.id });
+
   const typeImgFolder =
     addLevel === 'folder' ? 'add_folder-blue' : 'add_folder';
   const typeImgArea = addLevel === 'area' ? 'add_area-blue' : 'add_area';
@@ -51,6 +55,9 @@ const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
       </figure>
       <figure className="projectAddLevel-figure" onClick={hadleAddArea}>
         <img src={`/svg/${typeImgArea}.svg`} alt="W3Schools" />
+      </figure>
+      <figure className="projectAddLevel-figure" onClick={hadleAddTask}>
+        <img src={`/svg/task-list.svg`} alt="W3Schools" />
       </figure>
       {addLevel && (
         <>

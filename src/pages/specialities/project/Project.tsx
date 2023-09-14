@@ -1,23 +1,36 @@
 import { Outlet, useParams } from 'react-router-dom';
 import './project.css';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { axiosInstance } from '../../../services/axiosInstance';
 import { Level } from '../../../types/types';
 import MoreInfo from '../../../components/project/moreInfo/MoreInfo';
 import DropdownLevel from '../../../components/project/dropdownLevel/DropdownLevel';
 import CardRegisterSubTask from '../../../components/shared/card/cardRegisterSubTask/CardRegisterSubTask';
+import { SocketContext } from '../../../context/SocketContex';
 
 const Project = () => {
   const { id } = useParams();
+  const socket = useContext(SocketContext);
   const [levels, setlevels] = useState<Level | null>(null);
 
   useEffect(() => {
     getLevels();
   }, [id]);
-
+  useEffect(() => {
+    socket.on('server:update-project', (Level: Level) => {
+      console.log({ Level });
+      if (id) setlevels(Level);
+    });
+    return () => {
+      socket.off('server:update-project');
+    };
+  }, [socket]);
   const getLevels = () => {
     axiosInstance.get(`/stages/${id}`).then(res => {
-      if (id) setlevels({ ...res.data, stagesId: +id });
+      if (id) {
+        socket.emit('join', `project-${id}`);
+        setlevels({ ...res.data, stagesId: +id });
+      }
     });
   };
 

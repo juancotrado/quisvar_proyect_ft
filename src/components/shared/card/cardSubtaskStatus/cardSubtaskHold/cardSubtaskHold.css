@@ -5,6 +5,7 @@
   flex-wrap: wrap;
   gap: 5px;
   display: flex;
+  height: 100%;
 }
 .cardSubtaskHold-left-details {
   flex: 1;

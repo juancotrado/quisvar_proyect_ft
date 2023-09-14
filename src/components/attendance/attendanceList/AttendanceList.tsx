@@ -37,7 +37,7 @@ const AttendanceList = ({
       <div className="attendanceList-col">{user.profile.phone}</div>
       <div className="attendanceList-col">EQUIPO 01 (101)</div>
       <div className="attendanceList-col">USUARIO 01</div>
-      <div className="attendanceList-col attendanceList-place">
+      <div className="attendanceList-col attendanceList-place attendanceList-p">
         <Input
           type="radio"
           value="PUNTUAL"
@@ -46,7 +46,7 @@ const AttendanceList = ({
           onChange={() => handleRadioChange('PUNTUAL', userId)}
         />
       </div>
-      <div className="attendanceList-col attendanceList-place">
+      <div className="attendanceList-col attendanceList-place attendanceList-t">
         <Input
           type="radio"
           value="TARDE"
@@ -55,7 +55,7 @@ const AttendanceList = ({
           onChange={() => handleRadioChange('TARDE', userId)}
         />
       </div>
-      <div className="attendanceList-col attendanceList-place">
+      <div className="attendanceList-col attendanceList-place attendanceList-f">
         <Input
           type="radio"
           value="SIMPLE"
@@ -64,7 +64,7 @@ const AttendanceList = ({
           onChange={() => handleRadioChange('SIMPLE', userId)}
         />
       </div>
-      <div className="attendanceList-col attendanceList-place">
+      <div className="attendanceList-col attendanceList-place attendanceList-g">
         <Input
           type="radio"
           value="GRAVE"
@@ -73,7 +73,7 @@ const AttendanceList = ({
           onChange={() => handleRadioChange('GRAVE', userId)}
         />
       </div>
-      <div className="attendanceList-col attendanceList-place">
+      <div className="attendanceList-col attendanceList-place attendanceList-m">
         <Input
           type="radio"
           value="MUY_GRAVE"
@@ -82,7 +82,7 @@ const AttendanceList = ({
           onChange={() => handleRadioChange('MUY_GRAVE', userId)}
         />
       </div>
-      <div className="attendanceList-col attendanceList-place">
+      <div className="attendanceList-col attendanceList-place attendanceList-l">
         <Input
           type="radio"
           value="PERMISO"

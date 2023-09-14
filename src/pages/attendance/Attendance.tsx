@@ -4,22 +4,24 @@ import './Attendance.css';
 import { RootState } from '../../store';
 import { useSelector } from 'react-redux';
 import Button from '../../components/shared/button/Button';
+import { axiosInstance } from '../../services/axiosInstance';
+import formatDate from '../../utils/formatDate';
 interface sendItemsProps {
-  id: number;
-  details: string;
+  usersId: number;
+  status: string;
 }
 const Attendance = () => {
   const [sendItems, setSendItems] = useState<sendItemsProps[]>([]);
   const { listUsers: users } = useSelector((state: RootState) => state);
-  const handleRadioChange = (details: string, id: number) => {
-    const findId = sendItems.find(item => item.id === id);
+  const handleRadioChange = (status: string, usersId: number) => {
+    const findId = sendItems.find(item => item.usersId === usersId);
     if (findId) {
       const filterList = sendItems.map(item =>
-        item.id === id ? { ...item, details } : item
+        item.usersId === usersId ? { ...item, status } : item
       );
       setSendItems(filterList);
     } else {
-      setSendItems([...sendItems, { id, details }]);
+      setSendItems([...sendItems, { usersId, status }]);
     }
   };
 
@@ -27,7 +29,18 @@ const Attendance = () => {
     () => users?.filter(user => user.status === true),
     [users]
   );
-  console.log(sendItems);
+  // const zonaHorariaPeru = 'America/Lima';
+  //   const formattedDated = new Date().toLocaleString('es-PE', { timeZone: zonaHorariaPeru });
+  //   // console.log(formattedDated);
+  const generateAttendance = async () => {
+    axiosInstance
+      .post(`/list/attendance/1`, sendItems)
+      .then(res => console.log(res));
+  };
+  const zonaHorariaPeru = 'America/Lima';
+  const fechaActual = new Date().toLocaleString('es-PE', {
+    timeZone: zonaHorariaPeru,
+  });
 
   return (
     <div className="attendance container">
@@ -38,6 +51,14 @@ const Attendance = () => {
           </h1>
         </div>
       </div>
+      <span className="attendance-date">
+        <img src="/svg/calendary-icon.svg" alt="" className="attendance-icon" />
+        <h4>{fechaActual.split(',')[0]}</h4>
+        <Button text="primer llamado" />
+        <Button text="segundo llamado" />
+        <Button text="tercer llamado" />
+        <Button text=" + " />
+      </span>
       <div className="attendance-card-container">
         <div className="attendance-header">
           <div className="attendance-list-text">ITEM</div>
@@ -63,7 +84,10 @@ const Attendance = () => {
           />
         ))}
       </div>
-      <Button text="Guardar" />
+      <div className="attendance-btn-area">
+        <Button text="Comenzar" />
+        <Button text="Guardar" onClick={generateAttendance} />
+      </div>
     </div>
   );
 };

@@ -233,7 +233,7 @@ const ProjectCard = ({ project, editProject, onSave }: ProjectCardProps) => {
         </div>
         <div className="project-card-option">
           {role !== 'EMPLOYEE' && (
-            <DotsOption data={optionsData} persist={true} />
+            <DotsOption data={optionsData} notPersist={true} />
           )}
         </div>
       </div>

@@ -2,6 +2,8 @@ import { MouseEvent, useState } from 'react';
 import { Level } from '../../../types/types';
 import './projectLevel.css';
 import { Input } from '../..';
+import colors from '../../../utils/json/colors.json';
+
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   validateCorrectTyping,
@@ -65,8 +67,17 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
       function: openEdit ? handleSubmit(onSubmitData) : handleDeleteLevel,
     },
   ];
+  const isAreaOrProject = data.isArea || data.isProject;
+  const style = {
+    borderLeft: `thick solid ${colors[data.level]}`,
+  };
   return (
-    <div className={`projectLevel-sub-list-item`}>
+    <div
+      className={`projectLevel-sub-list-item ${
+        isAreaOrProject && 'dropdownLevel-ProjectArea'
+      } ${data?.subTasks?.length && 'dropdownLevel-Subtask'}`}
+      style={style}
+    >
       <DotsOption
         className="projectLevel-menu-dots-option"
         notPositionRelative

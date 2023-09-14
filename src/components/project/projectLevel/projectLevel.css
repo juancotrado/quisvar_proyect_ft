@@ -22,13 +22,19 @@
   display: flex;
   align-items: center;
   color: var(--color-secondary);
-  background-color: rgba(235, 240, 250, 0.6);
+  background-color: #ebf0fa99;
   width: 100%;
   padding: 7px 13px;
   text-transform: capitalize;
   font-size: 0.85rem;
   font-weight: 600;
   cursor: pointer;
+}
+.dropdownLevel-ProjectArea {
+  background-color: #dbf0f9;
+}
+.dropdownLevel-Subtask {
+  background-color: #ffffff;
 }
 .projectLevel-menu-dots-option {
   left: 1rem;

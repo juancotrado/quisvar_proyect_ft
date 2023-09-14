@@ -39,7 +39,7 @@ const Project = () => {
       <div className="project-title-contain">
         <div className="project-contain-left">
           <figure className="project-figure">
-            <img src="/svg/polygon.svg" alt="W3Schools" />
+            <img src="/svg/engineering.svg" alt="W3Schools" />
           </figure>
           <h4 className="project-title">{levels?.name}</h4>
         </div>

@@ -9,6 +9,8 @@ import ListPersonalTask from './listPersonalTask/ListPersonalTask';
 import NotificationsList from './notificationsList/NotificationsList';
 import CommingSoon from './commingSoon/CommingSoon';
 import PaperWork from './paperwork/PaperWork';
+import Attendance from './attendance/Attendance';
+
 export {
   CommingSoon,
   ListPersonalTask,
@@ -21,4 +23,5 @@ export {
   Specialities,
   UsersList,
   PaperWork,
+  Attendance,
 };

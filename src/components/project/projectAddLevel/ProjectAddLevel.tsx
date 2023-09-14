@@ -50,6 +50,7 @@ const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
   const typeImgArea = addLevel === 'area' ? 'add_area-blue' : 'add_area';
   return (
     <div className="projectAddLevel">
+      {/* <div>{data.item}</div> */}
       <figure className="projectAddLevel-figure" onClick={hadleAddFolder}>
         <img src={`/svg/${typeImgFolder}.svg`} alt="W3Schools" />
       </figure>

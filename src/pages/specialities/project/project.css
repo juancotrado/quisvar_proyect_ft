@@ -44,7 +44,7 @@
   gap: 1rem;
 }
 .project-figure {
-  height: 1rem;
+  width: 1rem;
 }
 .project-header-span {
   cursor: pointer;

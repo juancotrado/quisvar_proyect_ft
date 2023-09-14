@@ -1,0 +1,92 @@
+.attendance {
+  max-height: calc(100vh - var(--header-height));
+  overflow-y: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.attendance-head {
+  display: flex;
+  padding: 2rem 1rem;
+  position: sticky;
+  top: 0;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--color-menu);
+}
+
+.attendance-card-container {
+  padding: 0 1rem;
+  display: grid;
+  margin-top: 1rem;
+  overflow-y: auto;
+}
+
+.attendance-header {
+  display: grid;
+  /* grid-template-columns: repeat(6, minmax(0, 1fr)); */
+  grid-template-columns: 0.5fr 1fr 2fr 1fr 1fr 1fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr;
+  width: 100%;
+  /* border-bottom: 0.15rem solid var(--color-quaternay); */
+  border: 0.1rem solid rgba(201, 193, 193, 0.329);
+  border-radius: 0.3rem;
+  font-size: 0.7rem;
+  color: #464f60;
+  font-weight: 600;
+  background-color: #f3f6fc;
+  padding: 12px 10px;
+}
+
+.attendance-list-text {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: baseline;
+}
+
+.attendance-item {
+  max-width: 3rem;
+  /* Ancho máximo para ITEM, ajusta según tus necesidades */
+}
+.attendance-p {
+  height: 100%;
+  border-bottom: 2px solid #57d9a3;
+  padding-bottom: 0.2rem;
+  color: #424242;
+  justify-content: center;
+}
+
+.attendance-t {
+  border-bottom: 2px solid #ffd140;
+  padding-bottom: 0.2rem;
+  color: #424242;
+  justify-content: center;
+}
+
+.attendance-f {
+  border-bottom: 2px solid #df00004d;
+  padding-bottom: 0.2rem;
+  color: #424242;
+  justify-content: center;
+}
+
+.attendance-g {
+  border-bottom: 2px solid #df0000;
+  padding-bottom: 0.2rem;
+  color: #424242;
+  justify-content: center;
+}
+
+.attendance-m {
+  border-bottom: 2px solid #c00000;
+  padding-bottom: 0.2rem;
+  color: #424242;
+  justify-content: center;
+}
+
+.attendance-l {
+  border-bottom: 2px solid #2264e5;
+  padding-bottom: 0.2rem;
+  color: #424242;
+  justify-content: center;
+}

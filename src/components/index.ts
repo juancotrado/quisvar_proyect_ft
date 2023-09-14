@@ -25,6 +25,7 @@ import CardOpenFile from './shared/card/cardOpenFile/CardOpenFile';
 import CardViewDocs from './shared/card/cardViewDocs/CardViewDocs';
 import StageAddButton from './stages/stageAddButton/StageAddButton';
 import StageItem from './stages/stageItem/StageItem';
+import AttendanceList from './attendance/attendanceList/AttendanceList';
 
 export {
   Alert,
@@ -54,4 +55,5 @@ export {
   SubTaskCard,
   CardTaskInformation,
   TaskCounter,
+  AttendanceList,
 };

@@ -11,6 +11,7 @@ import { Level } from '../../../types/types';
 import { isOpenCardRegisteTask$ } from '../../../services/sharingSubject';
 import DropDownSimple from '../../shared/select/DropDownSimple';
 import useListUsers from '../../../hooks/useListUsers';
+import colors from '../../../utils/json/colors.json';
 
 interface DataForm {
   rootId: number;
@@ -65,8 +66,11 @@ const ProjectAddLevel = ({
   const typeImgFolder =
     addLevel === 'folder' ? 'add_folder-blue' : 'add_folder';
   const typeImgArea = addLevel === 'area' ? 'add_area-blue' : 'add_area';
+  const style = {
+    borderLeft: `thick solid ${colors[data.level + 1]}`,
+  };
   return (
-    <div className="projectAddLevel">
+    <div className="projectAddLevel" style={style}>
       {/* <div>{data.item}</div> */}
       <figure className="projectAddLevel-figure" onClick={hadleAddFolder}>
         <img src={`/svg/${typeImgFolder}.svg`} alt="W3Schools" />

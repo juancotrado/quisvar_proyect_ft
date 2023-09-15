@@ -1,8 +1,10 @@
+import { useSelector } from 'react-redux';
 import { Level } from '../../../types/types';
 import LevelSubtask from '../levelSubtask/LevelSubtask';
 import ProjectAddLevel from '../projectAddLevel/ProjectAddLevel';
 import ProjectLevel from '../projectLevel/ProjectLevel';
 import './dropdownLevel.css';
+import { RootState } from '../../../store';
 
 interface DropdownLevel {
   level: Level;
@@ -11,6 +13,8 @@ interface DropdownLevel {
 }
 
 const DropdownLevel = ({ level, onSave, hasProject }: DropdownLevel) => {
+  const { modAuthProject } = useSelector((state: RootState) => state);
+
   const firstLevel = level.level === 0;
   const existSubtask = level?.subTasks?.length;
   if (level.level === 10) return <div></div>;
@@ -46,11 +50,13 @@ const DropdownLevel = ({ level, onSave, hasProject }: DropdownLevel) => {
                 />
               </li>
             ))}
-            <ProjectAddLevel
-              data={level}
-              onSave={onSave}
-              hasProject={hasProject}
-            />
+            {modAuthProject && (
+              <ProjectAddLevel
+                data={level}
+                onSave={onSave}
+                hasProject={hasProject}
+              />
+            )}
           </>
         )}
       </ul>

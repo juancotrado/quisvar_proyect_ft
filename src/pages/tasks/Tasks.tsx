@@ -13,7 +13,6 @@ import Button from '../../components/shared/button/Button';
 import CardRegisterAndInformation from '../../components/shared/card/cardRegisterAndInformation/CardRegisterAndInformation';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
-import { setModAuth } from '../../store/slices/modAuth.slice';
 
 const initValuesSubTask: SubTask = {
   id: 0,
@@ -58,7 +57,7 @@ const Tasks = () => {
       setWorkArea(res.data);
       const isAuthorizedMod =
         userSessionId === res.data.userId || role === 'ADMIN';
-      dispatch(setModAuth(isAuthorizedMod));
+      // dispatch(setModAuth(isAuthorizedMod));
     });
   }, [dispatch, id, role, userSessionId]);
 

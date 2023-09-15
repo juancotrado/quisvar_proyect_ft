@@ -19,13 +19,13 @@ const MoreInfo = ({ data }: MoreInfoProps) => {
           <span className="moreInfo-currency-money money--red">
             -/S.{data.price.toFixed(2)}
           </span>
-          <span className="moreInfo-currency-info">Saldo</span>
+          <span className="moreInfo-currency-info">Gasto</span>
         </div>
         <div className="moreInfo-currency">
           <span className="moreInfo-currency-money">
             S/.{data.price.toFixed(2)}
           </span>
-          <span className="moreInfo-currency-info">Saldo</span>
+          <span className="moreInfo-currency-info">Total</span>
         </div>
       </div>
       <div className="moreInfo-details-contain">

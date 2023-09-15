@@ -1,13 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userSession from './slices/userSession.slice';
 import listUsers from './slices/listUsers.slice';
-import modAuth from './slices/modAuth.slice';
+import modAuthProject from './slices/modAuthProject.slice';
 import listStage from './slices/listStages.slice';
 const store = configureStore({
   reducer: {
     userSession,
     listUsers,
-    modAuth,
+    modAuthProject,
     listStage,
   },
 });

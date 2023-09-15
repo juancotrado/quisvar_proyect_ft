@@ -17,6 +17,9 @@
   border-radius: 0.25rem;
   background: #fff;
 }
+.projectAddLevel-Project {
+  background-color: var(--color-ProjectAreaLvl);
+}
 #projectAddLevel-input::placeholder {
   color: rgba(32, 56, 129, 0.4);
   font-size: 1rem;

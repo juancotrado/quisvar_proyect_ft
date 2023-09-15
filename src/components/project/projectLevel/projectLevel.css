@@ -31,10 +31,10 @@
   cursor: pointer;
 }
 .dropdownLevel-ProjectArea {
-  background-color: #dbf0f9;
+  background-color: var(--color-ProjectAreaLvl);
 }
 .dropdownLevel-Subtask {
-  background-color: #ffffff;
+  background-color: var(--color-SubtaskLvl);
 }
 .projectLevel-menu-dots-option {
   left: 1rem;

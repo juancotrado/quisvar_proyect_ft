@@ -12,6 +12,8 @@ import {
 import DotsOption, { Option } from '../../shared/dots/DotsOption';
 import { axiosInstance } from '../../../services/axiosInstance';
 import MoreInfo from '../moreInfo/MoreInfo';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store';
 interface ProjectLevelProps {
   data: Level;
   onSave?: () => void;
@@ -26,6 +28,8 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
     reset,
     formState: { errors },
   } = useForm<DataForm>();
+  const { modAuthProject } = useSelector((state: RootState) => state);
+
   const [openEdit, setOpenEdit] = useState(false);
   const handleCloseEdit = () => setOpenEdit(false);
   const [isClickRight, setIsClickRight] = useState(false);
@@ -36,6 +40,7 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
   };
 
   const handleClickRigth = (e: MouseEvent<HTMLDivElement>) => {
+    if (!modAuthProject) return;
     e.preventDefault();
     setIsClickRight(!isClickRight);
   };
@@ -78,13 +83,15 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
       } ${data?.subTasks?.length && 'dropdownLevel-Subtask'}`}
       style={style}
     >
-      <DotsOption
-        className="projectLevel-menu-dots-option"
-        notPositionRelative
-        iconHide
-        isClickRight={isClickRight}
-        data={options}
-      />
+      {modAuthProject && (
+        <DotsOption
+          className="projectLevel-menu-dots-option"
+          notPositionRelative
+          iconHide
+          isClickRight={isClickRight}
+          data={options}
+        />
+      )}
       <div className={`projectLevel-section `} onContextMenu={handleClickRigth}>
         <img src="/svg/down.svg" className="projectLevel-dropdown-arrow" />
         <input
@@ -122,9 +129,11 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
               </h4>
             )}
           </div>
-          <div className="projectLevel-contain-right">
-            <MoreInfo data={data} />
-          </div>
+          {modAuthProject && (
+            <div className="projectLevel-contain-right">
+              <MoreInfo data={data} />
+            </div>
+          )}
         </div>
       </div>
     </div>

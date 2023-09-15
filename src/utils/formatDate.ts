@@ -1,6 +1,7 @@
 const ZONE_LOCALE = 'es-PE';
 const CONFIG_DATE_TIME_FORMAT: Intl.DateTimeFormatOptions = {
-  timeZone: 'GMT',
+  // timeZone: 'GMT',
+  timeZone: 'America/Lima',
 };
 
 const formatDate = (

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 // import Button from '../../shared/button/Button'
 import './AttendanceList.css';
 import { Input } from '../..';
@@ -8,13 +8,19 @@ interface AttendanceListProps {
   onRadioChange: (value: string, id: number) => void;
   user: User;
   index: number;
+  status?: string | null;
 }
 const AttendanceList = ({
   onRadioChange,
   user,
   index,
+  status = null,
 }: AttendanceListProps) => {
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
+  useEffect(() => {
+    setSelectedValue(status);
+  }, [status]);
+
   const [userId, setUserId] = useState<number>(user.id);
 
   const handleRadioChange = (value: string, id: number) => {
@@ -44,6 +50,7 @@ const AttendanceList = ({
           classNameMain="attendanceList-radio"
           checked={selectedValue === 'PUNTUAL'}
           onChange={() => handleRadioChange('PUNTUAL', userId)}
+          disabled={!!status}
         />
       </div>
       <div className="attendanceList-col attendanceList-place attendanceList-t">
@@ -53,6 +60,7 @@ const AttendanceList = ({
           classNameMain="attendanceList-radio"
           checked={selectedValue === 'TARDE'}
           onChange={() => handleRadioChange('TARDE', userId)}
+          disabled={!!status}
         />
       </div>
       <div className="attendanceList-col attendanceList-place attendanceList-f">
@@ -62,6 +70,7 @@ const AttendanceList = ({
           classNameMain="attendanceList-radio"
           checked={selectedValue === 'SIMPLE'}
           onChange={() => handleRadioChange('SIMPLE', userId)}
+          disabled={!!status}
         />
       </div>
       <div className="attendanceList-col attendanceList-place attendanceList-g">
@@ -71,6 +80,7 @@ const AttendanceList = ({
           classNameMain="attendanceList-radio"
           checked={selectedValue === 'GRAVE'}
           onChange={() => handleRadioChange('GRAVE', userId)}
+          disabled={!!status}
         />
       </div>
       <div className="attendanceList-col attendanceList-place attendanceList-m">
@@ -80,6 +90,7 @@ const AttendanceList = ({
           classNameMain="attendanceList-radio"
           checked={selectedValue === 'MUY_GRAVE'}
           onChange={() => handleRadioChange('MUY_GRAVE', userId)}
+          disabled={!!status}
         />
       </div>
       <div className="attendanceList-col attendanceList-place attendanceList-l">
@@ -89,6 +100,7 @@ const AttendanceList = ({
           classNameMain="attendanceList-radio"
           checked={selectedValue === 'PERMISO'}
           onChange={() => handleRadioChange('PERMISO', userId)}
+          disabled={!!status}
         />
       </div>
     </div>

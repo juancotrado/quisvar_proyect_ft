@@ -599,3 +599,15 @@ export interface ListReport {
   user: { id: number; profile: Profile };
   supervisor: { comments: string | undefined; status: StatusReport };
 }
+export interface userList {
+  usersId: number;
+  listId: number;
+  status: string;
+  assignedAt: string;
+}
+export interface ListAttendance {
+  createdAt: string;
+  id: number;
+  title: string;
+  users: userList[];
+}

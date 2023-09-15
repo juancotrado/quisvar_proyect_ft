@@ -9,7 +9,9 @@
   /* border-bottom: 0.15rem solid var(--color-quaternay);  */
   padding: 0 10px;
 }
-
+.attendanceList-container:hover {
+  background-color: rgba(142, 238, 255, 0.315);
+}
 .attendanceList-col {
   display: flex;
   align-items: center;

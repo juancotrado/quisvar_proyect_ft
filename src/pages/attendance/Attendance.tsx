@@ -1,18 +1,35 @@
-import { useMemo, useState } from 'react';
-import { AttendanceList } from '../../components';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { AttendanceList, Input } from '../../components';
 import './Attendance.css';
 import { RootState } from '../../store';
 import { useSelector } from 'react-redux';
 import Button from '../../components/shared/button/Button';
 import { axiosInstance } from '../../services/axiosInstance';
-import formatDate from '../../utils/formatDate';
+import { _date } from '../../utils/formatDate';
+import { ListAttendance, User } from '../../types/types';
 interface sendItemsProps {
   usersId: number;
   status: string;
 }
+const llamados = [
+  { title: 'primer llamado' },
+  { title: 'segundo llamado' },
+  { title: 'tercero llamado' },
+  { title: 'cuarto llamado' },
+  { title: 'quinto llamado' },
+  // { title: 'sexto llamado' },
+  // { title: 'setimo llamado' },
+  // { title: 'octavo llamado' },
+  // { title: 'noveno llamado' },
+];
+const today = new Date();
 const Attendance = () => {
   const [sendItems, setSendItems] = useState<sendItemsProps[]>([]);
+  const [callLists, setCallLists] = useState<ListAttendance[] | null>(null);
+  const [callList, setCallList] = useState<ListAttendance | null>(null);
+  const [date, setDate] = useState(_date(today));
   const { listUsers: users } = useSelector((state: RootState) => state);
+
   const handleRadioChange = (status: string, usersId: number) => {
     const findId = sendItems.find(item => item.usersId === usersId);
     if (findId) {
@@ -24,24 +41,60 @@ const Attendance = () => {
       setSendItems([...sendItems, { usersId, status }]);
     }
   };
-
-  const filterList = useMemo(
+  const filterUsers = useMemo(
     () => users?.filter(user => user.status === true),
     [users]
   );
-  // const zonaHorariaPeru = 'America/Lima';
-  //   const formattedDated = new Date().toLocaleString('es-PE', { timeZone: zonaHorariaPeru });
-  //   // console.log(formattedDated);
-  const generateAttendance = async () => {
+  useEffect(() => {
+    getTodayData();
+  }, []);
+  const getTodayData = () => {
     axiosInstance
-      .post(`/list/attendance/1`, sendItems)
-      .then(res => console.log(res));
-  };
-  const zonaHorariaPeru = 'America/Lima';
-  const fechaActual = new Date().toLocaleString('es-PE', {
-    timeZone: zonaHorariaPeru,
-  });
+      .get(`/list/attendance/?startDate=${_date(today)}`)
+      .then(res => {
+        console.log(res);
 
+        setCallLists(res.data);
+      });
+  };
+  const generateAttendance = () => {
+    axiosInstance
+      .post(`/list/attendance/${callList?.id}`, sendItems)
+      .then(() => getTodayData());
+  };
+
+  const getAllList = () => {
+    axiosInstance.get(`/list/attendance/`).then(res => console.log(res.data));
+  };
+  const addCall = async () => {
+    const res = await axiosInstance.get(
+      `/list/attendance/?startDate=${_date(today)}`
+    );
+    if (!(llamados.length > res.data.length)) return;
+    const body = llamados[res.data.length];
+    axiosInstance.post(`/list`, body).then(() => getTodayData());
+  };
+
+  const getDate = (e: ChangeEvent<HTMLInputElement>) => {
+    const { value } = e.target;
+    setDate(value);
+    axiosInstance.get(`/list/attendance/?startDate=${value}`).then(res => {
+      setCallLists(res.data);
+    });
+  };
+  const showAttendanceUsers = (data: ListAttendance) => {
+    setCallList(data);
+  };
+  const getStatus = (user: User) => {
+    const data = callList?.users?.filter(el => el.usersId === user.id);
+    return data?.[0]?.status;
+  };
+
+  const isCompletCallAttendance = callLists?.every(
+    list => list.users.length > 0
+  );
+  const todayVerify = date === _date(today);
+  console.log(date, '---', todayVerify);
   return (
     <div className="attendance container">
       <div className="attendance-head">
@@ -53,41 +106,86 @@ const Attendance = () => {
       </div>
       <span className="attendance-date">
         <img src="/svg/calendary-icon.svg" alt="" className="attendance-icon" />
-        <h4>{fechaActual.split(',')[0]}</h4>
-        <Button text="primer llamado" />
-        <Button text="segundo llamado" />
-        <Button text="tercer llamado" />
-        <Button text=" + " />
-      </span>
-      <div className="attendance-card-container">
-        <div className="attendance-header">
-          <div className="attendance-list-text">ITEM</div>
-          <div className="attendance-list-text">CUARTOS</div>
-          <div className="attendance-list-text">APELLIDO Y NOMBRE</div>
-          <div className="attendance-list-text">DNI</div>
-          <div className="attendance-list-text">CELULAR</div>
-          <div className="attendance-list-text">EQUIPO</div>
-          <div className="attendance-list-text">USUARIO</div>
-          <div className="attendance-list-text attendance-p">P</div>
-          <div className="attendance-list-text attendance-t">T</div>
-          <div className="attendance-list-text attendance-f">F</div>
-          <div className="attendance-list-text attendance-g">G</div>
-          <div className="attendance-list-text attendance-m">M</div>
-          <div className="attendance-list-text attendance-l">L</div>
-        </div>
-        {filterList?.map((user, index) => (
-          <AttendanceList
-            key={user.id}
-            onRadioChange={handleRadioChange}
-            user={user}
-            index={index}
-          />
+        <Input
+          type="date"
+          onChange={getDate}
+          classNameMain="attendace-date-filter"
+          max={_date(today)}
+          defaultValue={_date(today)}
+        />
+        {callLists?.map(data => (
+          <div
+            className="attendance-call-status"
+            onClick={() => {
+              showAttendanceUsers(data);
+            }}
+            key={data.id}
+          >
+            <img
+              src={`/svg/${
+                !data?.users.length
+                  ? 'arrow-pressed'
+                  : callList?.id !== data.id
+                  ? 'arrow-gray'
+                  : 'arrow-border'
+              }.svg`}
+              className="attendance-img"
+            />
+            <p className="attendance-text">{data.title}</p>
+          </div>
         ))}
-      </div>
-      <div className="attendance-btn-area">
-        <Button text="Comenzar" />
-        <Button text="Guardar" onClick={generateAttendance} />
-      </div>
+        {isCompletCallAttendance && todayVerify && (
+          <Button
+            onClick={addCall}
+            className="attendance-add-btn"
+            icon="plus"
+          />
+        )}
+      </span>
+      {callList && (
+        <>
+          <div className="attendance-card-container">
+            <div className="attendance-header">
+              <div className="attendance-list-text">ITEM</div>
+              <div className="attendance-list-text">CUARTOS</div>
+              <div className="attendance-list-text">APELLIDO Y NOMBRE</div>
+              <div className="attendance-list-text">DNI</div>
+              <div className="attendance-list-text">CELULAR</div>
+              <div className="attendance-list-text">EQUIPO</div>
+              <div className="attendance-list-text">USUARIO</div>
+              <div className="attendance-list-text attendance-p">P</div>
+              <div className="attendance-list-text attendance-t">T</div>
+              <div className="attendance-list-text attendance-f">F</div>
+              <div className="attendance-list-text attendance-g">G</div>
+              <div className="attendance-list-text attendance-m">M</div>
+              <div className="attendance-list-text attendance-l">L</div>
+            </div>
+            {filterUsers?.map((user, index) => (
+              <AttendanceList
+                key={user.id}
+                onRadioChange={handleRadioChange}
+                user={user}
+                status={getStatus(user)}
+                index={index}
+              />
+            ))}
+          </div>
+          {callList.users.length === 0 && (
+            <div className="attendance-btn-area">
+              <Button
+                text="Mandar notificacion"
+                // onClick={getAllList}
+                className="attendance-btn-notify"
+              />
+              <Button
+                text="Guardar"
+                onClick={generateAttendance}
+                className="attendance-btn-save"
+              />
+            </div>
+          )}
+        </>
+      )}
     </div>
   );
 };

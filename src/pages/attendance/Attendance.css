@@ -49,6 +49,7 @@
   max-width: 3rem;
   /* Ancho máximo para ITEM, ajusta según tus necesidades */
 }
+
 .attendance-p {
   height: 100%;
   border-bottom: 2px solid #57d9a3;
@@ -91,17 +92,76 @@
   color: #424242;
   justify-content: center;
 }
+
 .attendance-icon {
   width: 1rem;
 }
+
 .attendance-date {
   display: flex;
   gap: 0.5rem;
   align-items: center;
+  padding: 0 1rem;
 }
+
 .attendance-btn-area {
-  width: 17rem;
   display: flex;
   justify-content: space-between;
-  margin-left: 1rem;
+  padding: 0 1rem;
+}
+
+.attendace-date-filter {
+  width: 10rem;
+}
+
+.attendance-call-status {
+  width: 140px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  cursor: pointer;
+}
+
+.attendance-img {
+  width: 100%;
+}
+
+.attendance-text {
+  position: absolute;
+  color: white;
+  font-weight: 600;
+  font-size: 0.625rem;
+}
+
+.attendance-clip {
+  width: 97px;
+  height: 20px;
+  background-color: #a6a8ab;
+  clip-path: polygon(93% 0, 100% 50%, 93% 100%, 0 100%, 7% 50%, 0% 0%);
+}
+
+.attendance-clip:hover {
+  background: repeating-linear-gradient(
+    rgb(208, 166, 23) 0px,
+    rgb(208, 166, 23) 8px,
+    white 8px,
+    white 16px
+  );
+}
+.attendance-add-btn {
+  border-radius: 5px;
+  width: 1.5rem;
+}
+.attendance-btn-save {
+  border-radius: var(--radius-input);
+  background-color: var(--color-primary);
+  color: white;
+}
+.attendance-btn-notify {
+  border-radius: var(--radius-input);
+  background-color: var(--color-grey);
+  color: white;
+  border-color: var(--color-grey);
 }

@@ -1,14 +1,33 @@
 .alertNotify-content {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  padding: 1rem;
+  border-radius: 0.3125rem;
+  background: rgba(14, 156, 216, 0.06);
+  box-shadow: 16.3px -16.3px 16.3px 0px rgba(11, 119, 164, 0.06) inset,
+    0px 0.5px 1.5px 0px rgba(0, 0, 0, 0.08), 0px 2px 3px 0px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(16.299999237060547px);
   width: 22.75rem;
   height: 7.8125rem;
-  display: flex;
-  flex-direction: column;
+}
+.alerNotify-show {
+  right: 2rem;
 }
 .alertNotify-title {
-  width: 19.9375rem;
+  color: #2f3032;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.15031rem;
+  margin-bottom: 0.5rem;
 }
 .alertNotify-text {
-  width: 15.43325rem;
+  color: #1e2020;
+  font-size: 0.8125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }
 .alertNotify-body {
   width: 100%;

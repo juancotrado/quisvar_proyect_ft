@@ -9,6 +9,7 @@ import { SocketProvider } from '../../../context/SocketContex';
 import { Subscription } from 'rxjs';
 import './protecdRoute.css';
 import { getAllServices } from '../../../store/thunks/getAllInitServices..thunks';
+import AlertNotification from '../../shared/alertNotification/AlertNotification';
 
 export const ProtectedRoute = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -42,6 +43,7 @@ export const ProtectedRoute = () => {
         <div className="main-container" onClick={clossToggle}>
           <Outlet />
         </div>
+        <AlertNotification />
       </div>
     </SocketProvider>
   );

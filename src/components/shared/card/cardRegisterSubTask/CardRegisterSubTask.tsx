@@ -25,6 +25,7 @@ const CardRegisterSubTask = ({ onSave }: CardRegisterSubTaskProps) => {
   const { handleSubmit, register, setValue, watch, reset } =
     useForm<SubTaskForm>();
   const socket = useContext(SocketContext);
+
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [levelId, setLevelId] = useState<number | null>(null);
   const handleIsOpen = useRef<Subscription>(new Subscription());

@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useMemo, useState } from 'react';
 import { AttendanceList, Input, Legend } from '../../components';
 import './Attendance.css';
 import { RootState } from '../../store';
@@ -7,6 +7,7 @@ import Button from '../../components/shared/button/Button';
 import { axiosInstance } from '../../services/axiosInstance';
 import { _date } from '../../utils/formatDate';
 import { ListAttendance, User } from '../../types/types';
+import { SocketContext } from '../../context/SocketContex';
 interface sendItemsProps {
   usersId: number;
   status: string;
@@ -25,6 +26,7 @@ const Attendance = () => {
   const [callList, setCallList] = useState<ListAttendance | null>(null);
   const [date, setDate] = useState(_date(today));
   const { listUsers: users } = useSelector((state: RootState) => state);
+  const socket = useContext(SocketContext);
 
   const handleRadioChange = (status: string, usersId: number) => {
     const findId = sendItems.find(item => item.usersId === usersId);
@@ -64,6 +66,9 @@ const Attendance = () => {
   // const getAllList = () => {
   //   axiosInstance.get(`/list/attendance/`).then(res => console.log(res.data));
   // };
+  const callNotification = () => {
+    socket.emit('client:call-notification');
+  };
   const addCall = async () => {
     const res = await axiosInstance.get(
       `/list/attendance/?startDate=${_date(today)}`
@@ -171,7 +176,7 @@ const Attendance = () => {
             <div className="attendance-btn-area">
               <Button
                 text="Mandar notificacion"
-                // onClick={getAllList}
+                onClick={callNotification}
                 className="attendance-btn-notify"
               />
               <Button

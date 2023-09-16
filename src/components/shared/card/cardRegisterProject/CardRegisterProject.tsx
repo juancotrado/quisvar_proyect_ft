@@ -189,7 +189,7 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
           className="card-register-project-container-details"
         >
           <span className="close-add-card" onClick={closeFunctions}>
-            <img src="/svg/close.svg" alt="pencil" />
+            <img src="/svg/close.svg" alt="close" />
           </span>
           <h2>{project ? 'ACTUALIZAR PROYECTO' : 'REGISTRAR PROYECTO'}</h2>
           <hr></hr>

@@ -20,7 +20,7 @@ interface StageName {
 }
 const StageItem = ({ stage, i, getStages }: StageItemProps) => {
   const [openEdit, setOpenEdit] = useState(false);
-  const { id } = useParams();
+  const { stageId } = useParams();
   const [isClickRight, setIsClickRight] = useState(false);
   const {
     handleSubmit,
@@ -78,7 +78,7 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
       >
         <NavLink
           //to={`proyecto/${stage.id}`}
-          to={openEdit ? `proyecto/${id}` : `proyecto/${stage.id}`}
+          to={openEdit ? `etapa/${stageId}` : `etapa/${stage.id}`}
           className={({ isActive }) =>
             isActive ? 'stage-header-span  active' : 'stage-header-span'
           }

@@ -6,6 +6,7 @@
   gap: 5px;
   display: flex;
   height: 100%;
+  overflow: auto;
 }
 .cardSubtaskProcess-left-details {
   flex: 2;

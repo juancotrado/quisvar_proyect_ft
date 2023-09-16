@@ -11,7 +11,7 @@ import { AppDispatch, RootState } from '../../store';
 import { setModAuthProject } from '../../store/slices/modAuthProject.slice';
 
 const Stage = () => {
-  const { stageId } = useParams();
+  const { projectId } = useParams();
   const dispatch: AppDispatch = useDispatch();
   const { modAuthProject } = useSelector((state: RootState) => state);
 
@@ -26,9 +26,9 @@ const Stage = () => {
     if (id) {
       getStages();
     }
-  }, [stageId, id]);
+  }, [projectId, id]);
   const getStages = () => {
-    axiosInstance.get(`/projects/${stageId}`).then(res => {
+    axiosInstance.get(`/projects/${projectId}`).then(res => {
       const isModsAuthProject =
         rolSecondLevel.includes(role) || res.data.moderator.id === id;
       dispatch(setModAuthProject(isModsAuthProject));
@@ -53,7 +53,7 @@ const Stage = () => {
               />
             ) : (
               <StageAddButton
-                stageId={stageId}
+                stageId={projectId}
                 getStages={getStages}
                 setBtnActive={handleBtnActive}
               />

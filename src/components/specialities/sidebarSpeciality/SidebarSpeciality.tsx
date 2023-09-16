@@ -23,7 +23,7 @@ const SidebarSpeciality = ({
 }: SidebarSpecialityProps) => {
   const navigate = useNavigate();
   const handleProjectNavigate = (projectId: number) => {
-    navigate(`etapa/${projectId}`);
+    navigate(`proyecto/${projectId}`);
   };
   const { role } = useSelector((state: RootState) => state.userSession);
   const authUsers = rolSecondLevel.includes(role);

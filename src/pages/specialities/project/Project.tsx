@@ -10,29 +10,28 @@ import { SocketContext } from '../../../context/SocketContex';
 import { findProject } from '../../../utils/tools';
 
 const Project = () => {
-  const { id } = useParams();
+  const { stageId } = useParams();
   const socket = useContext(SocketContext);
   const [levels, setlevels] = useState<Level | null>(null);
   const [hasProject, setHasProject] = useState(false);
   useEffect(() => {
     getLevels();
-  }, [id]);
+  }, [stageId]);
   useEffect(() => {
     socket.on('server:update-project', (Level: Level) => {
-      console.log({ Level });
-      if (id) setlevels(Level);
+      if (stageId) setlevels(Level);
     });
     return () => {
       socket.off('server:update-project');
     };
   }, [socket]);
   const getLevels = () => {
-    axiosInstance.get(`/stages/${id}`).then(res => {
-      if (id) {
-        socket.emit('join', `project-${id}`);
+    axiosInstance.get(`/stages/${stageId}`).then(res => {
+      if (stageId) {
+        socket.emit('join', `project-${stageId}`);
         const hasProject = findProject(res.data.nextLevel);
         setHasProject(hasProject);
-        setlevels({ ...res.data, stagesId: +id });
+        setlevels({ ...res.data, stagesId: +stageId });
       }
     });
   };

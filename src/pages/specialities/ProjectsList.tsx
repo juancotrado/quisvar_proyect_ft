@@ -64,13 +64,13 @@ const ProjectsList = () => {
       <div className="project-list-detail-project">
         <Outlet />
       </div>
-      {id && (
+      {/* {id && (
         <CardRegisterProject
           typeSpecialityId={+id}
           project={project}
           onSave={getProjects}
         />
-      )}
+      )} */}
     </div>
   );
 };

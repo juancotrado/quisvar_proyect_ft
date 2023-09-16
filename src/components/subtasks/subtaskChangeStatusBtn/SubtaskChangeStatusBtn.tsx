@@ -7,6 +7,7 @@ import { isOpenModal$ } from '../../../services/sharingSubject';
 import { SocketContext } from '../../../context/SocketContex';
 import './subtaskChangeStatusBtn.css';
 import { DataFeedback, StatusType } from '../../../types/types';
+import { useParams } from 'react-router-dom';
 
 interface SubtaskChangeStatusBtn {
   isAssignedAdminTask?: boolean;
@@ -15,7 +16,13 @@ interface SubtaskChangeStatusBtn {
   className?: string;
   option: 'ASIG' | 'DENY';
   text: string;
-  type: 'sendToReview' | 'deprecated' | 'approved' | 'assigned' | 'liquidate';
+  type:
+    | 'sendToReview'
+    | 'deprecated'
+    | 'approved'
+    | 'assigned'
+    | 'liquidate'
+    | 'reset';
   porcentagesForUser?: { userid: number; percentage: number }[];
   files?: File[] | null;
   dataFeedback?: DataFeedback | null;
@@ -36,7 +43,7 @@ const SubtaskChangeStatusBtn = ({
   isAuthorizedUser,
 }: SubtaskChangeStatusBtn) => {
   const socket = useContext(SocketContext);
-
+  const { stageId } = useParams();
   const getStatus = (
     category: string,
     role: string,
@@ -56,10 +63,10 @@ const SubtaskChangeStatusBtn = ({
       socket.emit('client:update-subTask', resStatus.data);
     } else {
       const resStatus = await axiosInstance.patch(
-        `/subtasks/status/${subtaskId}`,
+        `/subtasks/status/${subtaskId}/${stageId}`,
         body
       );
-      socket.emit('client:update-subTask', resStatus.data);
+      socket.emit('client:update-projectAndTask', resStatus.data);
     }
 
     isOpenModal$.setSubject = false;
@@ -154,6 +161,9 @@ const SubtaskChangeStatusBtn = ({
         handleSendToReview();
         break;
       case 'liquidate':
+        handleEditStatus();
+        break;
+      case 'reset':
         handleEditStatus();
         break;
       default:

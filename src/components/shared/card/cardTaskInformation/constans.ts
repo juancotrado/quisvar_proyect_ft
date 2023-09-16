@@ -47,6 +47,9 @@ export const statusBody: StatusBody = {
       INREVIEW: {
         status: 'DENIED',
       },
+      PROCESS: {
+        status: 'UNRESOLVED',
+      },
     },
   },
 };

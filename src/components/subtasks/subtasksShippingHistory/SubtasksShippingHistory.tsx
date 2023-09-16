@@ -5,13 +5,16 @@ import './subtasksShippingHistory.css';
 interface SubtasksShippingHistoryProps {
   feedBacks: Feedback[];
   getDataFeedback?: (data: DataFeedback) => void;
-  isAuthorizedUser?: boolean;
+  authorize?: {
+    isAuthorizedMod: boolean;
+    isAuthorizedUser: boolean;
+  };
 }
 
 const SubtasksShippingHistory = ({
   feedBacks,
   getDataFeedback,
-  isAuthorizedUser,
+  authorize,
 }: SubtasksShippingHistoryProps) => {
   //
   const firstId = feedBacks[0].id;
@@ -29,7 +32,7 @@ const SubtasksShippingHistory = ({
             'SubtasksShippingHistory-files-accept'
           }`}
           getDataFeedback={getDataFeedback}
-          isAuthorizedUser={isAuthorizedUser}
+          authorize={authorize}
         />
       ))}
     </div>

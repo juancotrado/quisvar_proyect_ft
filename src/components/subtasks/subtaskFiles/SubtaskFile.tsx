@@ -13,16 +13,7 @@ interface SubtaskFileProps {
   className?: string;
   showDeleteBtnByUserAuth?: boolean;
 }
-const statusMapping = {
-  MODEL: './uploads/',
-  REVIEW: './file_review',
-  UPLOADS: './file_model',
-};
-const statusToValueMapping = {
-  MODEL: '',
-  REVIEW: 'review',
-  UPLOADS: 'models',
-};
+
 const SubtaskFile = ({
   files,
   typeFile,
@@ -43,11 +34,9 @@ const SubtaskFile = ({
       .then(res => socket.emit('client:update-task', res.data));
   };
 
-  const normalizeUrlFile = (url: string, status: FileType) => {
+  const normalizeUrlFile = (url: string) => {
     if (!url) return;
-    const valueReplace = statusMapping[status];
-    const newValueReplace = statusToValueMapping[status];
-    return url.replace(valueReplace, newValueReplace);
+    return url.replace('./uploads/', '');
   };
   return (
     <div className={` subtaskFile ${className}`}>
@@ -60,9 +49,7 @@ const SubtaskFile = ({
         .map(file => (
           <div key={file.id} className="subtaskFile-contain">
             <a
-              href={`${URL}/${normalizeUrlFile(file.dir, file.type)}/${
-                file.name
-              }`}
+              href={`${URL}/${normalizeUrlFile(file.dir)}/${file.name}`}
               target="_blank"
               className="subtaskFile-anchor"
               download={true}

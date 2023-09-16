@@ -29,7 +29,7 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
 
   const [addBtn, setAddBtn] = useState(false);
   const [usersData, setUsersData] = useState<DataUser[]>([]);
-  const { id } = useParams();
+  const { stageId } = useParams();
 
   const { users } = useListUsers();
   const { status } = subTask;
@@ -41,9 +41,9 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
 
   const handleAddUserByTask = () => {
     axiosInstance
-      .patch(`/subtasks/assignUser/${subTask.id}/${id}`, usersData)
+      .patch(`/subtasks/assignUser/${subTask.id}/${stageId}`, usersData)
       .then(res => {
-        socket.emit('client:update-subTask', res.data);
+        socket.emit('client:update-projectAndTask', res.data);
       });
   };
 

@@ -13,7 +13,7 @@ const Task = () => {
   const [task, setTask] = useState<SubTask | null>(null);
   const socket = useContext(SocketContext);
 
-  const { taskId, id, stageId } = useParams();
+  const { taskId, stageId, projectId } = useParams();
 
   useEffect(() => {
     getTask();
@@ -37,7 +37,7 @@ const Task = () => {
 
   const navigate = useNavigate();
   const goBack = () => {
-    navigate(`/especialidades/etapa/${stageId}/proyecto/${id}`);
+    navigate(`/especialidades/proyecto/${projectId}/etapa/${stageId}`);
   };
   if (!task) return <></>;
   const { status } = task;

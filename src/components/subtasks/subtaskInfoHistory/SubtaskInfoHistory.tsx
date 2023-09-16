@@ -11,17 +11,19 @@ interface SubtaskInfoHistoryProps {
   feedBack: Feedback;
   className?: string;
   getDataFeedback?: (data: DataFeedback) => void;
-  isAuthorizedUser?: boolean;
+  authorize?: {
+    isAuthorizedMod: boolean;
+    isAuthorizedUser: boolean;
+  };
 }
 
 const SubtaskInfoHistory = ({
   feedBack,
   className,
-  isAuthorizedUser,
+  authorize,
   getDataFeedback,
 }: SubtaskInfoHistoryProps) => {
   const [isActive, setIsActive] = useState(false);
-  const { modAuth } = useSelector((state: RootState) => state);
   const toggleIsActive = () => setIsActive(!isActive);
 
   const getUserName = (profile: Profile) => {
@@ -41,6 +43,7 @@ const SubtaskInfoHistory = ({
 
     return ` ${localeDate} a las ${localeTime}`;
   };
+  console.log(authorize?.isAuthorizedMod);
   return (
     <div className={`SubtaskInfoHistory-review-card ${className}`}>
       <motion.h3
@@ -60,7 +63,8 @@ const SubtaskInfoHistory = ({
           animate="show"
         >
           {getDataFeedback &&
-            ((isAuthorizedUser && feedBack.comment) || modAuth) && (
+            ((authorize?.isAuthorizedUser && feedBack.comment) ||
+              authorize?.isAuthorizedMod) && (
               <TextArea
                 label={!feedBack.comment ? 'Agregar Comentario' : 'Comentario'}
                 className="SubtaskInfoHistory-container-feedback-textarea"

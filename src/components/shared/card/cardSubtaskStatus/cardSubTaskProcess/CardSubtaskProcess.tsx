@@ -1,9 +1,6 @@
 import { FocusEvent, useContext, useEffect, useState } from 'react';
-import { axiosInstance } from '../../../../../services/axiosInstance';
 import { SocketContext } from '../../../../../context/SocketContex';
-import Button from '../../../button/Button';
 import { DataFeedback, SubTask } from '../../../../../types/types';
-import { isOpenModal$ } from '../../../../../services/sharingSubject';
 import SubtaskFile from '../../../../subtasks/subtaskFiles/SubtaskFile';
 import SubtaskUploadFiles from '../../../../subtasks/subtaskUploadFiles/SubtaskUploadFiles';
 import SubtaskChangeStatusBtn from '../../../../subtasks/subtaskChangeStatusBtn/SubtaskChangeStatusBtn';
@@ -22,10 +19,10 @@ interface CardSubtaskProcess {
 
 const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
   const adminId = 0;
-  const socket = useContext(SocketContext);
-  const { userSession, modAuth: isAuthorizedMod } = useSelector(
+  const { userSession, modAuthProject } = useSelector(
     (state: RootState) => state
   );
+
   const { status } = subTask;
   const [files, setFiles] = useState<File[] | null>(null);
   const [dataFeedback, setDataFeedback] = useState<DataFeedback | null>(null);
@@ -36,6 +33,7 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
       'user' + user.id,
       { userId: user.id, percentage },
     ]);
+    setFiles(null);
     setPorcetageForUser(Object.fromEntries(porcentageForUser));
   }, [subTask.users]);
 
@@ -55,19 +53,11 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
     }
   };
 
-  const handleReloadSubTask = () => {
-    axiosInstance
-      .patch(`/subtasks/asigned/${subTask.id}?status=decline`)
-      .then(res => {
-        socket.emit('client:update-subTask', res.data);
-        isOpenModal$.setSubject = false;
-      });
-  };
-
+  const isAuthorizedMod =
+    modAuthProject || userSession.id === subTask.Levels.userId;
   const isAuthorizedUser = subTask?.users?.some(
     ({ user }) => user.id === userSession?.id
   );
-
   const areAuthorizedUsers = isAuthorizedMod || isAuthorizedUser;
 
   const getTimeOut = () => {
@@ -81,7 +71,7 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
     return transformToHours;
   };
 
-  const handlePorcentge = (e: FocusEvent<HTMLInputElement>) => {
+  const handlePorcentage = (e: FocusEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setPorcetageForUser({
       ...porcetageForUser,
@@ -135,7 +125,7 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
         {subTask.feedBacks.length !== 0 && (
           <SubtasksShippingHistory
             feedBacks={subTask.feedBacks}
-            isAuthorizedUser={isAuthorizedUser}
+            authorize={{ isAuthorizedMod, isAuthorizedUser }}
             getDataFeedback={getDataFeedback}
           />
         )}
@@ -166,15 +156,6 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
           )}
         {areAuthorizedUsers && (
           <div className="cardSubtaskProcess-btns">
-            {status === 'PROCESS' &&
-              !isAuthorizedMod &&
-              subTask.files.length === 0 && (
-                <Button
-                  text={'Declinar'}
-                  className="btn-declinar"
-                  onClick={handleReloadSubTask}
-                />
-              )}
             {status !== 'INREVIEW' && isAuthorizedUser && (
               <SubtaskChangeStatusBtn
                 option="ASIG"
@@ -257,7 +238,7 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
               </span>
               <div className="cardSubtaskProcess-porcentage-input">
                 <Input
-                  onBlur={handlePorcentge}
+                  onBlur={handlePorcentage}
                   name={String(user.user.id)}
                   defaultValue={user.percentage}
                   className="input-percentage-value"
@@ -275,22 +256,24 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
           {status === 'INREVIEW' && isAuthorizedMod && (
             <SubtaskUploadFiles
               id={subTask.id}
-              type="MATERIAL"
+              type="MODEL"
               className="cardSubtaskProcess-files-models-upload"
             />
           )}
           <SubtaskFile
             files={subTask.files}
-            typeFile="MATERIAL"
+            typeFile="MODEL"
             showDeleteBtn={false}
           />
         </div>
 
         {isAuthorizedMod && (
-          <Button
-            text="RESTABLECER"
-            className="btn-declinar"
-            onClick={handleReloadSubTask}
+          <SubtaskChangeStatusBtn
+            option="DENY"
+            subtaskId={subTask.id}
+            subtaskStatus={status}
+            text="Restablecer"
+            type="reset"
           />
         )}
       </section>

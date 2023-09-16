@@ -34,8 +34,8 @@ const Navigation = () => {
             <Route path="/tramites" element={<PaperWork />} />
             <Route path="/asistencia" element={<Attendance />} />
             <Route path="/especialidades" element={<Specialities />}>
-              <Route path="etapa/:stageId" element={<Stage />}>
-                <Route path="proyecto/:id" element={<Project />}>
+              <Route path="proyecto/:projectId" element={<Stage />}>
+                <Route path="etapa/:stageId" element={<Project />}>
                   <Route path="tarea/:taskId" element={<Task />} />
                 </Route>
               </Route>

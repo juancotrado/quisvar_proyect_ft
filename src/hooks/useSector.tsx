@@ -12,8 +12,9 @@ const useSector = () => {
     if (!id) return;
     const response = await axiosInstance.get('/sector');
     const sectors: SectorType[] = response.data;
-    const sectorFilter =
-      role === 'MOD' ? filterForUserCoordinator(sectors, id) : sectors;
+    const sectorFilter = false
+      ? filterForUserCoordinator(sectors, id)
+      : sectors;
     setSectors(sectorFilter);
   }, [id, role]);
 

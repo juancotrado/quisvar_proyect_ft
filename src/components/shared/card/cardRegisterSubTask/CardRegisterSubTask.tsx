@@ -51,12 +51,7 @@ const CardRegisterSubTask = ({ onSave }: CardRegisterSubTaskProps) => {
   }, [setValue]);
 
   const onSubmit: SubmitHandler<SubTaskForm> = data => {
-    const body = {
-      name: data.name,
-      hours: data.days * 24,
-      price: data.price,
-      description: data.description,
-    };
+    const body = { ...data, days: +data.days };
     if (data.id) {
       axiosInstance.patch(`/subtasks/${data.id}`, body).then(res => {
         socket.emit('client:update-subTask', res.data);

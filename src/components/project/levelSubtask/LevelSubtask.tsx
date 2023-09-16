@@ -85,7 +85,9 @@ const LevelSubtask = ({ subtasks, levelId, onSave }: LevelSutaskProps) => {
           </div>
           <div className="levelSubtask-item">
             <div className="levelSubtask-text">
-              {subtask.users.length ? usersAsigned(subtask) : 'No Asignado aun'}
+              {subtask?.users?.length
+                ? usersAsigned(subtask)
+                : 'No Asignado aun'}
             </div>
           </div>
           <div className="levelSubtask-item" onClick={e => e.stopPropagation()}>

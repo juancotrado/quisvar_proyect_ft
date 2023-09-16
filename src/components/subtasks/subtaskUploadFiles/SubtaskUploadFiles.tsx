@@ -31,7 +31,7 @@ const SubtaskUploadFiles = ({
     axiosInstance
       .post(`/files/uploads/${id}/?status=${type}`, formdata)
       .then(res => {
-        socket.emit('client:update-subTask', res.data);
+        socket.emit('client:update-task', res.data);
       });
   };
   return (

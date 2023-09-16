@@ -14,14 +14,14 @@ interface SubtaskFileProps {
   showDeleteBtnByUserAuth?: boolean;
 }
 const statusMapping = {
-  SUCCESSFUL: './uploads',
+  MODEL: './uploads/',
   REVIEW: './file_review',
-  MATERIAL: './file_model',
+  UPLOADS: './file_model',
 };
 const statusToValueMapping = {
-  SUCCESSFUL: 'static',
+  MODEL: '',
   REVIEW: 'review',
-  MATERIAL: 'models',
+  UPLOADS: 'models',
 };
 const SubtaskFile = ({
   files,
@@ -40,7 +40,7 @@ const SubtaskFile = ({
   const deleteFile = (id: number) => {
     axiosInstance
       .delete(`/files/remove/${id}`)
-      .then(res => socket.emit('client:update-subTask', res.data));
+      .then(res => socket.emit('client:update-task', res.data));
   };
 
   const normalizeUrlFile = (url: string, status: FileType) => {

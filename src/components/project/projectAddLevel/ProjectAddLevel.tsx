@@ -33,8 +33,9 @@ const ProjectAddLevel = ({
 }: ProjectAddLevelProps) => {
   const { users: modedators } = useListUsers(['MOD']);
   const [idCoordinator, setIdCoordinator] = useState<number | null>(null);
-
   const [addLevel, setAddLevel] = useState<AddLevel | null>(null);
+  const firstLevel = !data.level;
+
   const {
     handleSubmit,
     register,
@@ -46,8 +47,8 @@ const ProjectAddLevel = ({
   const handleHideForm = () => setAddLevel(null);
 
   const onSubmitData: SubmitHandler<DataForm> = async body => {
-    const { id: rootId, stagesId } = data;
-    body = { ...body, rootId, stagesId };
+    const { id, stagesId } = data;
+    body = { ...body, rootId: firstLevel ? 0 : id, stagesId };
     if (addLevel === 'area') {
       body = { ...body, isProject: true };
     }
@@ -84,7 +85,7 @@ const ProjectAddLevel = ({
           <img src={`/svg/${typeImgArea}.svg`} alt="W3Schools" />
         </figure>
       )}
-      {!data.nextLevel?.length && !data.isArea && (
+      {!data.nextLevel?.length && !data.isArea && !data.isProject && (
         <figure className="projectAddLevel-figure" onClick={hadleAddTask}>
           <img src={`/svg/task-list.svg`} alt="W3Schools" />
         </figure>

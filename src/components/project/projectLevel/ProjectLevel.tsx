@@ -29,7 +29,6 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
     formState: { errors },
   } = useForm<DataForm>();
   const { modAuthProject } = useSelector((state: RootState) => state);
-
   const [openEdit, setOpenEdit] = useState(false);
   const handleCloseEdit = () => setOpenEdit(false);
   const [isClickRight, setIsClickRight] = useState(false);

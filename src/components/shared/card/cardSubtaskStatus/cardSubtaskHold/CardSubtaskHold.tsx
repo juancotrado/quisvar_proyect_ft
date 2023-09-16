@@ -63,7 +63,7 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
               Archivos modelos:
             </h4>
             <div className="cardSubtaskHold-add-files">
-              <SubtaskUploadFiles id={subTask.id} type="MATERIAL" />
+              <SubtaskUploadFiles id={subTask.id} type="MODEL" />
             </div>
             <div className="cardSubtaskHold-add-users">
               <div className="cardSubtaskHold-users-contain">
@@ -121,7 +121,7 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
             </h2>
             <SubtaskFile
               files={subTask.files}
-              typeFile="MATERIAL"
+              typeFile="MODEL"
               showDeleteBtn={isAuthorizedMod}
             />
           </div>
@@ -150,7 +150,7 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
               </h2>
               <SubtaskFile
                 files={subTask.files}
-                typeFile="MATERIAL"
+                typeFile="MODEL"
                 showDeleteBtn={isAuthorizedMod}
               />
             </div>

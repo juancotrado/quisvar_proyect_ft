@@ -28,7 +28,7 @@ const MoreInfo = ({ data }: MoreInfoProps) => {
           <span className="moreInfo-currency-info">Total</span>
         </div>
       </div>
-      <div className="moreInfo-details-contain">
+      {/* <div className="moreInfo-details-contain">
         <div className="moreInfo-detail">
           <div className="moreInfo-detail-circle color-unresolver">
             <span className="moreInfo-detail-circle-text">
@@ -82,7 +82,7 @@ const MoreInfo = ({ data }: MoreInfoProps) => {
           </div>
           <span className="moreInfo-detail-info">Liquidados</span>
         </div>
-      </div>
+      </div> */}
       <div className="moreInfo-details-contain">
         <div className="moreInfo-detail">
           <figure className="moreInfo-detail-icon">

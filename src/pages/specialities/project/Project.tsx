@@ -44,7 +44,7 @@ const Project = () => {
           <figure className="project-figure">
             <img src="/svg/engineering.svg" alt="W3Schools" />
           </figure>
-          <h4 className="project-title">{levels?.name}</h4>
+          <h4 className="project-title">{levels?.projectName}</h4>
         </div>
         {levels && (
           <div className="project-contain-right">

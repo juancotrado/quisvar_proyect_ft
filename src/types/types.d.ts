@@ -323,7 +323,7 @@ export interface SubtaskIncludes extends SubTask {
   };
 }
 
-type FileType = 'MATERIAL' | 'SUCCESSFUL' | 'REVIEW';
+type FileType = 'MODEL' | 'UPLOADS' | 'REVIEW';
 interface Files {
   id: number;
   name: string;
@@ -396,6 +396,8 @@ export interface Level {
   stagesId: number;
   details: Details;
   subTasks: SubTask[];
+  userId: number;
+  projectName?: string;
   nextLevel?: NextLevel[];
 }
 interface Details {

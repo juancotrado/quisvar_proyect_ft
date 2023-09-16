@@ -13,9 +13,11 @@ interface DropdownLevel {
 }
 
 const DropdownLevel = ({ level, onSave, hasProject }: DropdownLevel) => {
-  const { modAuthProject } = useSelector((state: RootState) => state);
+  const { modAuthProject, userSession } = useSelector(
+    (state: RootState) => state
+  );
 
-  const firstLevel = level.level === 0;
+  const firstLevel = !level.level;
   const existSubtask = level?.subTasks?.length;
   if (level.level === 10) return <div></div>;
   return (
@@ -50,7 +52,7 @@ const DropdownLevel = ({ level, onSave, hasProject }: DropdownLevel) => {
                 />
               </li>
             ))}
-            {modAuthProject && (
+            {(modAuthProject || userSession.id === level.userId) && (
               <ProjectAddLevel
                 data={level}
                 onSave={onSave}

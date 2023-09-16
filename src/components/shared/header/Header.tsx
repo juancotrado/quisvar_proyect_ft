@@ -58,7 +58,7 @@ const Header = () => {
     { id: 2, title: 'Reportes', link: '/mis-tareas' },
     { id: 3, title: 'Especialidades', link: '/especialidades' },
     { id: 4, title: 'Usuarios', link: '/lista-de-usuarios' },
-    { id: 5, title: 'Tramites', link: '/tramites' },
+    // { id: 5, title: 'Tramites', link: '/tramites' },
     { id: 6, title: 'Asistencia', link: '/asistencia' },
   ];
   const itemsEmployee = [

@@ -1,0 +1,21 @@
+.alertNotify-content {
+  width: 22.75rem;
+  height: 7.8125rem;
+  display: flex;
+  flex-direction: column;
+}
+.alertNotify-title {
+  width: 19.9375rem;
+}
+.alertNotify-text {
+  width: 15.43325rem;
+}
+.alertNotify-body {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+}
+.alertNotify-img {
+  width: 4.66875rem;
+  height: 4.66875rem;
+}

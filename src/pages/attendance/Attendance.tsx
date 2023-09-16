@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useMemo, useState } from 'react';
-import { AttendanceList, Input } from '../../components';
+import { AttendanceList, Input, Legend } from '../../components';
 import './Attendance.css';
 import { RootState } from '../../store';
 import { useSelector } from 'react-redux';
@@ -17,10 +17,6 @@ const llamados = [
   { title: 'tercero llamado' },
   { title: 'cuarto llamado' },
   { title: 'quinto llamado' },
-  // { title: 'sexto llamado' },
-  // { title: 'setimo llamado' },
-  // { title: 'octavo llamado' },
-  // { title: 'noveno llamado' },
 ];
 const today = new Date();
 const Attendance = () => {
@@ -41,10 +37,14 @@ const Attendance = () => {
       setSendItems([...sendItems, { usersId, status }]);
     }
   };
-  const filterUsers = useMemo(
-    () => users?.filter(user => user.status === true),
-    [users]
-  );
+
+  const filterUsers = useMemo(() => {
+    return callList?.users.length
+      ? users?.filter(
+          (user, index) => user.id === callList?.users[index]?.usersId
+        )
+      : users?.filter(user => user.status === true);
+  }, [callList?.users, users]);
   useEffect(() => {
     getTodayData();
   }, []);
@@ -52,8 +52,6 @@ const Attendance = () => {
     axiosInstance
       .get(`/list/attendance/?startDate=${_date(today)}`)
       .then(res => {
-        console.log(res);
-
         setCallLists(res.data);
       });
   };
@@ -63,9 +61,9 @@ const Attendance = () => {
       .then(() => getTodayData());
   };
 
-  const getAllList = () => {
-    axiosInstance.get(`/list/attendance/`).then(res => console.log(res.data));
-  };
+  // const getAllList = () => {
+  //   axiosInstance.get(`/list/attendance/`).then(res => console.log(res.data));
+  // };
   const addCall = async () => {
     const res = await axiosInstance.get(
       `/list/attendance/?startDate=${_date(today)}`
@@ -94,7 +92,6 @@ const Attendance = () => {
     list => list.users.length > 0
   );
   const todayVerify = date === _date(today);
-  console.log(date, '---', todayVerify);
   return (
     <div className="attendance container">
       <div className="attendance-head">
@@ -184,6 +181,7 @@ const Attendance = () => {
               />
             </div>
           )}
+          <Legend />
         </>
       )}
     </div>

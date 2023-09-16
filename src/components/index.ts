@@ -26,6 +26,7 @@ import CardViewDocs from './shared/card/cardViewDocs/CardViewDocs';
 import StageAddButton from './stages/stageAddButton/StageAddButton';
 import StageItem from './stages/stageItem/StageItem';
 import AttendanceList from './attendance/attendanceList/AttendanceList';
+import Legend from './shared/legend/Legend';
 
 export {
   Alert,
@@ -56,4 +57,5 @@ export {
   CardTaskInformation,
   TaskCounter,
   AttendanceList,
+  Legend,
 };

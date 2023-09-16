@@ -31,7 +31,7 @@ const AttendanceList = ({
   return (
     <div
       className={`attendanceList-container ${
-        index % 2 !== 0 ? 'attendanceList-bg' : ''
+        index % 2 !== 0 && 'attendanceList-bg'
       }`}
     >
       <div className="attendanceList-col attendanceList-place">{index + 1}</div>

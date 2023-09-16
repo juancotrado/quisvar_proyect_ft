@@ -2,14 +2,16 @@
   display: grid;
   grid-template-columns: 0.5fr 1fr 2fr 1fr 1fr 1fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr;
   width: 100%;
-  height: 3.7rem;
+  /* height: 3.7rem; */
   background-color: #fff;
   font-size: 0.8rem;
   border-radius: 0.3rem;
   /* border-bottom: 0.15rem solid var(--color-quaternay);  */
-  padding: 12px 10px;
+  padding: 0 10px;
 }
-
+.attendanceList-container:hover {
+  background-color: rgba(142, 238, 255, 0.315);
+}
 .attendanceList-col {
   display: flex;
   align-items: center;
@@ -48,5 +50,47 @@
   background-color: #f2f5fa;
 }
 .attendanceList-place {
+  justify-content: center;
+}
+.attendanceList-p {
+  height: 100%;
+  background-color: #57d9a3b6;
+  padding-bottom: 0.2rem;
+  color: #424242;
+  justify-content: center;
+}
+
+.attendanceList-t {
+  background-color: #ffd240ab;
+  padding-bottom: 0.2rem;
+  color: #424242;
+  justify-content: center;
+}
+
+.attendanceList-f {
+  background-color: #df00003a;
+  padding-bottom: 0.2rem;
+  color: #424242;
+  justify-content: center;
+}
+
+.attendanceList-g {
+  background-color: #df00006e;
+  padding-bottom: 0.2rem;
+  color: #424242;
+  justify-content: center;
+}
+
+.attendanceList-m {
+  background-color: #c00000a2;
+  padding-bottom: 0.2rem;
+  color: #424242;
+  justify-content: center;
+}
+
+.attendanceList-l {
+  background-color: #2263e58f;
+  padding-bottom: 0.2rem;
+  color: #424242;
   justify-content: center;
 }

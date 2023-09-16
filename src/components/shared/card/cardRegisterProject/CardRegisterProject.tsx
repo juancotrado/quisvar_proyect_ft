@@ -26,6 +26,10 @@ import CardRegisterCompany from '../cardRegisterCompany/CardRegisterCompany';
 import CardRegisterConsortium from '../cardRegisterConsortium/CardRegisterConsortium';
 import CardRegisterExpert from '../cardAddExpert/CardRegisterExpert';
 import { Subscription } from 'rxjs';
+import {
+  validateCorrectTyping,
+  validateWhiteSpace,
+} from '../../../../utils/customValidatesForm';
 
 interface CardRegisterProjectProps {
   onSave?: () => void;
@@ -194,14 +198,9 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
               <Input
                 label="CUI:"
                 {...register('CUI', {
-                  pattern: {
-                    value: /^[^/?@|<>":'\\]+$/,
-                    message:
-                      'Ingresar nombre que no contenga lo siguiente ^/?@|<>": ',
-                  },
+                  validate: { validateWhiteSpace, validateCorrectTyping },
                 })}
                 name="CUI"
-                required={true}
                 placeholder="CUI"
                 errors={errors}
               />
@@ -209,11 +208,7 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
             <Input
               label="Nombre Corto:"
               {...register('name', {
-                pattern: {
-                  value: /^[^/?@|<>":'\\]+$/,
-                  message:
-                    'Ingresar nombre que no contenga lo siguiente ^/?@|<>": ',
-                },
+                validate: { validateWhiteSpace, validateCorrectTyping },
               })}
               name="name"
               type="text"
@@ -222,7 +217,6 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
             />
             <Select
               label="Coordinador:"
-              required={true}
               {...register('userId', { valueAsNumber: true })}
               name="userId"
               data={coordinators}
@@ -243,7 +237,7 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
             placeholder="Nombre completo del Proyecto"
             errors={errors}
           />
-          {!project && (
+          {/* {!project && (
             <div className="col-unique">
               <span className="switch-status-label">
                 ¿eL proyecto tendrá area única?
@@ -262,8 +256,23 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
                 </motion.div>
               </div>
             </div>
-          )}
+          )} */}
           <div className="col-input">
+            {/* <Select
+              label="Etapa:"
+              
+              {...register('stageId', { valueAsNumber: true })}
+              name="stageId"
+              data={stages}
+              itemKey="id"
+              textField="name"
+            /> */}
+            <Input
+              label="Porcentaje"
+              name="percentage"
+              type="number"
+              placeholder="0"
+            />
             <Input
               label="Fecha Inicio:"
               {...register('startDate')}
@@ -280,7 +289,6 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
           <div className="col-input">
             <Select
               label="Departamento:"
-              required={true}
               {...register('department')}
               name="department"
               data={departamentsJson}
@@ -290,7 +298,6 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
             />
             <Select
               label="Provincia:"
-              required={true}
               {...register('province')}
               name="province"
               data={provinces}
@@ -300,7 +307,6 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
             />
             <Select
               label="Distrito:"
-              required={true}
               {...register('district')}
               name="district"
               data={districts}

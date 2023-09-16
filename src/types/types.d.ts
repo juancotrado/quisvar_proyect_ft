@@ -256,6 +256,9 @@ export interface SubTask {
   updatedAt?: Date;
   taskId: number;
   indexTaskId: number;
+  Levels: {
+    userId: number;
+  };
   task_2_Id: number;
   task_3_Id: number;
   users: Users[];

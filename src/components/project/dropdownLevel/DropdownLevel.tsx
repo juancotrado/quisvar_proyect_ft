@@ -16,7 +16,7 @@ const DropdownLevel = ({ level, onSave, hasProject }: DropdownLevel) => {
   const { modAuthProject, userSession } = useSelector(
     (state: RootState) => state
   );
-
+  const modAuthArea = modAuthProject || userSession.id === level.userId;
   const firstLevel = !level.level;
   const existSubtask = level?.subTasks?.length;
   if (level.level === 10) return <div></div>;
@@ -28,11 +28,7 @@ const DropdownLevel = ({ level, onSave, hasProject }: DropdownLevel) => {
         }
       >
         {existSubtask ? (
-          <LevelSubtask
-            subtasks={level?.subTasks}
-            levelId={level.id}
-            onSave={onSave}
-          />
+          <LevelSubtask onSave={onSave} level={level} />
         ) : (
           <>
             {level?.nextLevel?.map(subLevel => (
@@ -52,7 +48,7 @@ const DropdownLevel = ({ level, onSave, hasProject }: DropdownLevel) => {
                 />
               </li>
             ))}
-            {(modAuthProject || userSession.id === level.userId) && (
+            {modAuthArea && (
               <ProjectAddLevel
                 data={level}
                 onSave={onSave}

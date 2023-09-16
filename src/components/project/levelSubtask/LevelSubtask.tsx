@@ -1,30 +1,36 @@
 import { useNavigate } from 'react-router-dom';
-import { SubTask } from '../../../types/types';
+import { Level, SubTask } from '../../../types/types';
 import { statusText } from '../../shared/card/cardTaskInformation/constans';
 import './levelSubtask.css';
 import { isOpenCardRegisteTask$ } from '../../../services/sharingSubject';
 import Button from '../../shared/button/Button';
 import ButtonDelete from '../../shared/button/ButtonDelete';
+import { RootState } from '../../../store';
+import { useSelector } from 'react-redux';
 
 interface LevelSutaskProps {
-  subtasks: SubTask[];
-  levelId: number;
+  level: Level;
   onSave?: () => void;
 }
-const LevelSubtask = ({ subtasks, levelId, onSave }: LevelSutaskProps) => {
+const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
+  const { modAuthProject, userSession } = useSelector(
+    (state: RootState) => state
+  );
+  const modAuthArea = modAuthProject || userSession.id === level.userId;
+  const { subTasks, id } = level;
   const navigate = useNavigate();
 
   const taskNavigate = (id: number) => {
     navigate(`tarea/${id}`);
   };
   const handleAddTask = () => {
-    isOpenCardRegisteTask$.setSubject = { isOpen: true, levelId };
+    isOpenCardRegisteTask$.setSubject = { isOpen: true, levelId: id };
   };
 
   const handleEditTask = (subtask: SubTask) => {
     isOpenCardRegisteTask$.setSubject = {
       isOpen: true,
-      levelId,
+      levelId: id,
       task: subtask,
     };
   };
@@ -55,11 +61,13 @@ const LevelSubtask = ({ subtasks, levelId, onSave }: LevelSutaskProps) => {
         <div className="levelSubtask-item">
           <div className="levelSubtask-header-title">USUARIO ASIGNADO</div>
         </div>
-        <div className="levelSubtask-item">
-          <div className="levelSubtask-header-title">OPCIONES</div>
-        </div>
+        {modAuthArea && (
+          <div className="levelSubtask-item">
+            <div className="levelSubtask-header-title">OPCIONES</div>
+          </div>
+        )}
       </div>
-      {subtasks?.map(subtask => (
+      {subTasks?.map(subtask => (
         <div
           className="levelSubtask-content pointer"
           onClick={() => taskNavigate(subtask.id)}
@@ -90,25 +98,32 @@ const LevelSubtask = ({ subtasks, levelId, onSave }: LevelSutaskProps) => {
                 : 'No Asignado aun'}
             </div>
           </div>
-          <div className="levelSubtask-item" onClick={e => e.stopPropagation()}>
-            <Button
-              icon="pencil"
-              className="role-btn"
-              onClick={() => handleEditTask(subtask)}
-            />
-            <ButtonDelete
-              icon="trash"
-              url={`/subtasks/${subtask.id}`}
-              className="role-delete-icon"
-              onSave={onSave}
-            />
-          </div>
+          {modAuthArea && (
+            <div
+              className="levelSubtask-item"
+              onClick={e => e.stopPropagation()}
+            >
+              <Button
+                icon="pencil"
+                className="role-btn"
+                onClick={() => handleEditTask(subtask)}
+              />
+              <ButtonDelete
+                icon="trash"
+                url={`/subtasks/${subtask.id}`}
+                className="role-delete-icon"
+                onSave={onSave}
+              />
+            </div>
+          )}
         </div>
       ))}
 
-      <div className="levelSubtask-add" onClick={handleAddTask}>
-        <span className="levelSubtask-plus">+</span> Agregar tarea
-      </div>
+      {modAuthArea && (
+        <div className="levelSubtask-add" onClick={handleAddTask}>
+          <span className="levelSubtask-plus">+</span> Agregar tarea
+        </div>
+      )}
     </div>
   );
 };

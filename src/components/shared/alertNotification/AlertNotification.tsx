@@ -23,31 +23,31 @@ const AlertNotification = () => {
   }, [socket, showAlert]);
   return (
     <>
-      showAlert && (
-      <motion.div
-        className={`alertNotify-content  `}
-        initial={{ x: '+100%' }}
-        animate={{ x: 0 }}
-        exit={{ x: '-100%' }}
-        transition={{ duration: 0.5 }}
-      >
-        <CloseIcon onClick={handleClose} />
-        <h4 className="alertNotify-title">Se llamará lista en 5 minutos</h4>
-        <div className="alertNotify-body">
-          <figure className="alertNotify-figure">
-            <img
-              src="/img/call_assintan.png"
-              alt=""
-              className="alertNotify-img"
-            />
-          </figure>
-          <p className="alertNotify-text">
-            Send timely, precise and relevant push notifications to your users
-            for more and better engagement.
-          </p>
-        </div>
-      </motion.div>
-      )
+      {showAlert && (
+        <motion.div
+          className={`alertNotify-content  `}
+          initial={{ x: '+100%' }}
+          animate={{ x: 0 }}
+          exit={{ x: '-100%' }}
+          transition={{ duration: 0.5 }}
+        >
+          <CloseIcon onClick={handleClose} />
+          <h4 className="alertNotify-title">Se llamará lista en 5 minutos</h4>
+          <div className="alertNotify-body">
+            <figure className="alertNotify-figure">
+              <img
+                src="/img/call_assintan.png"
+                alt=""
+                className="alertNotify-img"
+              />
+            </figure>
+            <p className="alertNotify-text">
+              Send timely, precise and relevant push notifications to your users
+              for more and better engagement.
+            </p>
+          </div>
+        </motion.div>
+      )}
     </>
   );
 };

@@ -165,3 +165,18 @@
   color: white;
   border-color: var(--color-grey);
 }
+.attendance-info-area {
+  display: flex;
+  justify-content: space-between;
+  height: 12rem;
+}
+.attendance-reports {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  height: 100%;
+}
+.attendance-inputs {
+  display: flex;
+  gap: 1rem;
+}

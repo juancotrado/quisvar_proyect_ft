@@ -6,8 +6,9 @@ import { useSelector } from 'react-redux';
 import Button from '../../components/shared/button/Button';
 import { axiosInstance } from '../../services/axiosInstance';
 import { _date } from '../../utils/formatDate';
-import { ListAttendance, User } from '../../types/types';
+import { AttendanceRange, ListAttendance, User } from '../../types/types';
 import { SocketContext } from '../../context/SocketContex';
+import { generateReportRange } from './GenerateReportRange';
 interface sendItemsProps {
   usersId: number;
   status: string;
@@ -18,13 +19,18 @@ const llamados = [
   { title: 'tercero llamado' },
   { title: 'cuarto llamado' },
   { title: 'quinto llamado' },
+  { title: 'sexto llamado' },
 ];
 const today = new Date();
 const Attendance = () => {
   const [sendItems, setSendItems] = useState<sendItemsProps[]>([]);
+  // const [printData, setPrintData] = useState<AttendanceRange[]>([]);
   const [callLists, setCallLists] = useState<ListAttendance[] | null>(null);
   const [callList, setCallList] = useState<ListAttendance | null>(null);
   const [date, setDate] = useState(_date(today));
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+
   const { listUsers: users } = useSelector((state: RootState) => state);
   const socket = useContext(SocketContext);
 
@@ -97,6 +103,19 @@ const Attendance = () => {
     list => list.users.length > 0
   );
   const todayVerify = date === _date(today);
+  const exportExcel = async () => {
+    console.log(startDate, endDate);
+
+    const response = await axiosInstance.get(
+      `/list/attendance/range/?startDate=${startDate}&endDate=${endDate}`
+    );
+    const newData: AttendanceRange[] = response.data;
+    generateReportRange({
+      startDate,
+      endDate,
+      printData: newData,
+    });
+  };
   return (
     <div className="attendance container">
       <div className="attendance-head">
@@ -186,7 +205,35 @@ const Attendance = () => {
               />
             </div>
           )}
-          <Legend />
+          <div className="attendance-info-area">
+            <Legend />
+            <div className="attendance-reports">
+              <label>Generar asistencia actual</label>
+              <Button text="Generar" className="attendance-btn-save" />
+              <label>Generar asistencia por fechas</label>
+              <div className="attendance-inputs">
+                <Input
+                  label="Fecha inicio"
+                  type="date"
+                  onChange={e => setStartDate(e.target.value)}
+                  classNameMain="attendace-date-filter"
+                  max={_date(today)}
+                />
+                <Input
+                  label="Fecha fin"
+                  type="date"
+                  onChange={e => setEndDate(e.target.value)}
+                  classNameMain="attendace-date-filter"
+                  max={_date(today)}
+                />
+              </div>
+              <Button
+                text="Generar"
+                onClick={exportExcel}
+                className="attendance-btn-save"
+              />
+            </div>
+          </div>
         </>
       )}
     </div>

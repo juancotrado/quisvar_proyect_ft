@@ -616,3 +616,20 @@ export interface ListAttendance {
   title: string;
   users: userList[];
 }
+export interface userAttendance {
+  status: string;
+  usersId: number;
+  list: {
+    createdAt: string;
+  };
+}
+export interface AttendanceRange {
+  id: number;
+  profile: {
+    firstName: string;
+    lastName: string;
+    dni: string;
+    phone: string;
+  };
+  list: userAttendance[];
+}

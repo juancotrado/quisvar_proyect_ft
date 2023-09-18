@@ -1,5 +1,4 @@
-import { FocusEvent, useContext, useEffect, useState } from 'react';
-import { SocketContext } from '../../../../../context/SocketContex';
+import { FocusEvent, useEffect, useState } from 'react';
 import { DataFeedback, SubTask } from '../../../../../types/types';
 import SubtaskFile from '../../../../subtasks/subtaskFiles/SubtaskFile';
 import SubtaskUploadFiles from '../../../../subtasks/subtaskUploadFiles/SubtaskUploadFiles';
@@ -7,7 +6,6 @@ import SubtaskChangeStatusBtn from '../../../../subtasks/subtaskChangeStatusBtn/
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../store';
 import './cardSubTaskProcess.css';
-import SubTaskStatusLabel from '../../../../subtasks/subTaskStatusLabel/SubTaskStatusLabel';
 import { Input } from '../../../..';
 import { motion } from 'framer-motion';
 import ButtonDelete from '../../../button/ButtonDelete';
@@ -27,14 +25,15 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
   const [files, setFiles] = useState<File[] | null>(null);
   const [dataFeedback, setDataFeedback] = useState<DataFeedback | null>(null);
   const [porcetageForUser, setPorcetageForUser] = useState({});
-
   useEffect(() => {
-    const porcentageForUser = subTask.users.map(({ user, percentage }) => [
-      'user' + user.id,
-      { userId: user.id, percentage },
-    ]);
+    const porcentageForUserFilter = subTask.users.map(
+      ({ user, percentage }) => [
+        'user' + user.id,
+        { userId: user.id, percentage },
+      ]
+    );
     setFiles(null);
-    setPorcetageForUser(Object.fromEntries(porcentageForUser));
+    setPorcetageForUser(Object.fromEntries(porcentageForUserFilter));
   }, [subTask.users]);
 
   const addFiles = (newFiles: File[]) => {
@@ -234,12 +233,12 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
             >
               <span className="cardSubtaskProcess-porcentage-user">
                 {index + 1}
-                {')'} {user.user.profile.firstName} {user.user.profile.lastName}
+                {')'} {user.user.profile.firstName} {user.user.profile.lastName}{' '}
+                {user.percentage}
               </span>
               <div className="cardSubtaskProcess-porcentage-input">
                 <Input
                   onBlur={handlePorcentage}
-                  name={String(user.user.id)}
                   defaultValue={user.percentage}
                   className="input-percentage-value"
                   disabled={!areAuthorizedUsers}

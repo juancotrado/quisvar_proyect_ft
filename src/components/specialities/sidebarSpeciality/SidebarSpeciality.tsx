@@ -123,6 +123,7 @@ const SidebarSpeciality = ({
                                       onSave={onSave}
                                       idValue={typespeciality.id}
                                       keyNameId="typespecialityId"
+                                      nameLevel="Añadir nuevo proyecto"
                                     />
                                   )}
                                 </ul>

@@ -11,6 +11,8 @@ import {
   validateCorrectTyping,
   validateWhiteSpace,
 } from '../../../../utils/customValidatesForm';
+import colors from '../../../../utils/json/colorSidebar.json';
+
 import { isOpenCardRegisteProject$ } from '../../../../services/sharingSubject';
 
 interface SidebarSpecialityLvlListProps {
@@ -92,12 +94,11 @@ const SidebarSpecialityLvlList = ({
     }
     setOpenEditData(!openEditData);
   };
+  const style = {
+    borderLeft: `thick solid ${colors[type]}`,
+  };
   return (
-    <div
-      className={`SidebarSpecialityLvlList-sub-list-item ${
-        isFirstLevel && 'not-border-left'
-      }`}
-    >
+    <div className={`SidebarSpecialityLvlList-sub-list-item `} style={style}>
       <div
         className={`SidebarSpecialityLvlList-section  ${
           data.name + '-' + data.id === indexSelected &&
@@ -140,10 +141,6 @@ const SidebarSpecialityLvlList = ({
           <>
             {!isLastLevel && (
               <>
-                <img
-                  src="/svg/down.svg"
-                  className="SidebarSpecialityLvlList-dropdown-arrow"
-                />
                 <input
                   type="checkbox"
                   className="SidebarSpecialityLvlList-dropdown-check"
@@ -171,6 +168,12 @@ const SidebarSpecialityLvlList = ({
               )}
             </h4>
           </>
+        )}
+        {!isLastLevel && (
+          <img
+            src="/svg/down.svg"
+            className="SidebarSpecialityLvlList-dropdown-arrow"
+          />
         )}
       </div>
       {!isFirstLevel && authUser && (

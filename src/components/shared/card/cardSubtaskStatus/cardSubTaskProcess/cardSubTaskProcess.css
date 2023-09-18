@@ -187,6 +187,7 @@
 }
 
 .cardSubtaskProcess-files-btn-delete {
+  width: 0.8rem;
   border: none;
   background-color: transparent;
   padding: 0;

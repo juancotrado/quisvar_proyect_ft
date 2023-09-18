@@ -71,6 +71,7 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
         <div
           className="levelSubtask-content pointer"
           onClick={() => taskNavigate(subtask.id)}
+          key={subtask.id}
         >
           <div className="levelSubtask-item">
             <div className="levelSubtask-text">{subtask.item}</div>

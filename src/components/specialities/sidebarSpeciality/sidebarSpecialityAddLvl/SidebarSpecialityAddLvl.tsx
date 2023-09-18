@@ -10,12 +10,14 @@ import {
   validateWhiteSpace,
 } from '../../../../utils/customValidatesForm';
 import { isOpenCardRegisteProject$ } from '../../../../services/sharingSubject';
+import colors from '../../../../utils/json/colorSidebar.json';
 
 type DataForm = { name: string; cod: string };
 interface SidebarSpecialityAddLvlProps {
   idValue: number;
   onSave?: () => void;
   keyNameId: 'sectorId' | 'specialitiesId' | 'typespecialityId';
+  nameLevel?: string;
 }
 
 const urlPost = {
@@ -27,6 +29,7 @@ const SidebarSpecialityAddLvl = ({
   onSave,
   keyNameId,
   idValue,
+  nameLevel = 'Añadir Nivel',
 }: SidebarSpecialityAddLvlProps) => {
   const [addLevel, setAddLevel] = useState<boolean>(false);
   const [isClickRight, setIsClickRight] = useState(false);
@@ -73,10 +76,22 @@ const SidebarSpecialityAddLvl = ({
     }
     setAddLevel(!addLevel);
   };
+  const type =
+    keyNameId === 'sectorId'
+      ? 'specialities'
+      : keyNameId === 'specialitiesId'
+      ? 'typespecialities'
+      : keyNameId === 'typespecialityId'
+      ? 'projects'
+      : 'sector';
+  const style = {
+    borderLeft: `thick solid ${colors[type]}`,
+  };
   return (
     <form
       onSubmit={handleSubmit(onSubmitData)}
       className="sidebarSpecialityAddLvl"
+      style={style}
     >
       {addLevel ? (
         <>
@@ -117,7 +132,7 @@ const SidebarSpecialityAddLvl = ({
           className="sidebarSpecialityAddLvl-add-content"
           onClick={handleAddlevel}
         >
-          <span className="sidebarSpecialityAddLvl-add-span">AÑADIR NIVEL</span>
+          <span className="sidebarSpecialityAddLvl-add-span">{nameLevel}</span>
           <Button
             type="button"
             icon={'plus'}

@@ -621,10 +621,13 @@ export interface userAttendance {
   usersId: number;
   list: {
     createdAt: string;
+    title: string;
+    id: number;
   };
 }
 export interface AttendanceRange {
   id: number;
+  role: UserRoleType;
   profile: {
     firstName: string;
     lastName: string;

@@ -6,6 +6,14 @@ interface GenerateReportProps {
   endDate: string;
   printData: AttendanceRange[];
 }
+interface countProps {
+  PUNTUAL: number;
+  TARDE: number;
+  SIMPLE: number;
+  GRAVE: number;
+  MUY_GRAVE: number;
+  PERMISO: number;
+}
 export async function generateReportRange({
   startDate,
   endDate,
@@ -20,7 +28,7 @@ export async function generateReportRange({
   let rowNumber = 6;
 
   wk.getCell('B3').value = `LISTA PERDIODO # DEL ${startDate} AL ${endDate}`;
-  const getPrice = (counts: any) => {
+  const getPrice = (counts: countProps) => {
     const T = 0.5;
     const F = 10;
     const G = 20;
@@ -64,32 +72,32 @@ export async function generateReportRange({
     dataRows.getCell('G').fill = {
       type: 'pattern',
       pattern: 'solid',
-      fgColor: { argb: 'E2EFDA' },
+      fgColor: { argb: '87e4bd' },
     };
     dataRows.getCell('H').fill = {
       type: 'pattern',
       pattern: 'solid',
-      fgColor: { argb: 'F8CBAD' },
+      fgColor: { argb: 'fbde7d' },
     };
     dataRows.getCell('I').fill = {
       type: 'pattern',
       pattern: 'solid',
-      fgColor: { argb: 'FFCCCC' },
+      fgColor: { argb: 'eebdc1' },
     };
     dataRows.getCell('J').fill = {
       type: 'pattern',
       pattern: 'solid',
-      fgColor: { argb: 'FF0000' },
+      fgColor: { argb: 'ea8b8e' },
     };
     dataRows.getCell('K').fill = {
       type: 'pattern',
       pattern: 'solid',
-      fgColor: { argb: 'C00000' },
+      fgColor: { argb: 'd2595b' },
     };
     dataRows.getCell('L').fill = {
       type: 'pattern',
       pattern: 'solid',
-      fgColor: { argb: 'DDEBF7' },
+      fgColor: { argb: '7da4ee' },
     };
     dataRows.getCell('M').numFmt = moneyFormat;
     dataRows.getCell('M').font = {
@@ -98,7 +106,7 @@ export async function generateReportRange({
     rowNumber++;
   });
   const endLine = rowNumber;
-  wk.pageSetup.printArea = 'A1:M' + (endLine + 13);
+  wk.pageSetup.printArea = 'A1:M' + (endLine + 9);
   workbook.xlsx.writeBuffer().then(data => {
     const blob = new Blob([data], {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheet.sheet',

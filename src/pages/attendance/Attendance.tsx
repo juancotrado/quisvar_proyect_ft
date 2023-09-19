@@ -9,6 +9,7 @@ import { _date } from '../../utils/formatDate';
 import { AttendanceRange, ListAttendance, User } from '../../types/types';
 import { SocketContext } from '../../context/SocketContex';
 import { generateReportRange } from './GenerateReportRange';
+import { generateReportDaily } from './GenerateReportDaily';
 interface sendItemsProps {
   usersId: number;
   status: string;
@@ -24,7 +25,6 @@ const llamados = [
 const today = new Date();
 const Attendance = () => {
   const [sendItems, setSendItems] = useState<sendItemsProps[]>([]);
-  // const [printData, setPrintData] = useState<AttendanceRange[]>([]);
   const [callLists, setCallLists] = useState<ListAttendance[] | null>(null);
   const [callList, setCallList] = useState<ListAttendance | null>(null);
   const [date, setDate] = useState(_date(today));
@@ -68,10 +68,6 @@ const Attendance = () => {
       .post(`/list/attendance/${callList?.id}`, sendItems)
       .then(() => getTodayData());
   };
-
-  // const getAllList = () => {
-  //   axiosInstance.get(`/list/attendance/`).then(res => console.log(res.data));
-  // };
   const callNotification = () => {
     socket.emit('client:call-notification');
   };
@@ -104,8 +100,6 @@ const Attendance = () => {
   );
   const todayVerify = date === _date(today);
   const exportExcel = async () => {
-    console.log(startDate, endDate);
-
     const response = await axiosInstance.get(
       `/list/attendance/range/?startDate=${startDate}&endDate=${endDate}`
     );
@@ -113,6 +107,16 @@ const Attendance = () => {
     generateReportRange({
       startDate,
       endDate,
+      printData: newData,
+    });
+  };
+  const exportDaily = async () => {
+    const response = await axiosInstance.get(
+      `/list/attendance/range/?startDate=${date}&endDate=${date}`
+    );
+    const newData: AttendanceRange[] = response.data;
+    generateReportDaily({
+      startDate: date,
       printData: newData,
     });
   };
@@ -208,9 +212,17 @@ const Attendance = () => {
           <div className="attendance-info-area">
             <Legend />
             <div className="attendance-reports">
-              <label>Generar asistencia actual</label>
-              <Button text="Generar" className="attendance-btn-save" />
-              <label>Generar asistencia por fechas</label>
+              <label className="attendance-labels">
+                Generar asistencia actual
+              </label>
+              <Button
+                text="Generar"
+                onClick={exportDaily}
+                className="attendance-btn-report"
+              />
+              <label className="attendance-labels">
+                Generar asistencia por fechas
+              </label>
               <div className="attendance-inputs">
                 <Input
                   label="Fecha inicio"
@@ -230,7 +242,7 @@ const Attendance = () => {
               <Button
                 text="Generar"
                 onClick={exportExcel}
-                className="attendance-btn-save"
+                className="attendance-btn-report"
               />
             </div>
           </div>

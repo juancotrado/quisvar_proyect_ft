@@ -10,7 +10,6 @@ import {
   NotificationsList,
   ListPersonalTask,
   CommingSoon,
-  PaperWork,
   Attendance,
 } from '../pages';
 import { ProtectedRoute } from '../components';
@@ -19,6 +18,7 @@ import ProtectedRole from '../components/protected/ProtectedRole/ProtectedRole';
 import { assitant_perms, rolThirdLevel } from '../utils/roles';
 import Stage from '../pages/stage/Stage';
 import Task from '../pages/task/Task';
+import MailPage from '../pages/mail/MailPage';
 
 const Navigation = () => {
   return (
@@ -31,7 +31,7 @@ const Navigation = () => {
             <Route path="/home" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/tareas/:id" element={<Tasks />} />
-            <Route path="/tramites" element={<PaperWork />} />
+            <Route path="/tramites" element={<MailPage />} />
             <Route path="/asistencia" element={<Attendance />} />
             <Route path="/especialidades" element={<Specialities />}>
               <Route path="proyecto/:projectId" element={<Stage />}>

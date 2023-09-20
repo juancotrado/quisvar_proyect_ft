@@ -108,7 +108,15 @@ h3 {
 .main-title-span {
   color: var(--color-primary);
 }
-
+::-webkit-search-cancel-button {
+  background-image: url('./../public/svg/circle-xmark-solid.svg');
+  background-repeat: no-repeat;
+  background-position: center;
+  -webkit-appearance: none;
+  height: 14px;
+  cursor: pointer;
+  width: 14px;
+}
 /* custom scrollbar */
 ::-webkit-scrollbar {
   width: 5px;

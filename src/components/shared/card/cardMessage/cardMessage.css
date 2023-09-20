@@ -1,0 +1,43 @@
+.card-message-container-section {
+  display: grid;
+  height: 2rem;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  align-items: center;
+}
+.card-message-section-item {
+  display: flex;
+  align-items: center;
+  color: #171c26;
+  font-size: 0.78rem;
+  font-style: normal;
+  padding: 0 0.2rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  height: 100%;
+  background-color: var(--color-menu);
+  border-top: 1px solid #dce4f1;
+}
+.card-status-message {
+  border-radius: var(--radius-button);
+  padding: 0.1rem 0.4rem;
+  text-transform: uppercase;
+}
+.card-status-span {
+  letter-spacing: 0.0175rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+.status-true {
+  background-color: #c6e3c7;
+  color: #4aaf50;
+}
+.status-false {
+  background-color: var(--color-process);
+  color: #aa5b00;
+}
+
+.message-isOpen {
+  background-color: #fff;
+}

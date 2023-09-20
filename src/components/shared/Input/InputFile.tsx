@@ -9,12 +9,14 @@ import './inputFile.css';
 
 interface InputFileProps extends InputHTMLAttributes<HTMLInputElement> {
   getFiles?: (files: FileList) => void;
+  getFilesList?: (files: File[]) => void;
   label?: string;
   className?: string;
 }
 
 const InputFile = ({
   getFiles,
+  getFilesList,
   label,
   className,
   ...props
@@ -53,6 +55,10 @@ const InputFile = ({
   const handleFile = (files: FileList) => {
     setFileName(files[0].name);
     getFiles?.(files);
+    if (files) {
+      const fileList = Array.from(files);
+      getFilesList?.(fileList);
+    }
   };
 
   return (
@@ -76,7 +82,8 @@ const InputFile = ({
       />
       <label className="label-file-upload" htmlFor={label}>
         <div>
-          <p>{fileName ? fileName : 'Arrastra o Selecciona un archivo'} </p>
+          {/* <p>{fileName ? fileName : 'Arrastra o Selecciona un archivo'} </p> */}
+          <p>{'Arrastra o Selecciona un archivo'} </p>
           <button
             className="upload-button"
             type="button"

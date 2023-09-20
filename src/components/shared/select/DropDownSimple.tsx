@@ -15,6 +15,8 @@ interface DropDownSimpleProps extends InputHTMLAttributes<HTMLInputElement> {
   defaultInput?: string;
   label?: string;
   className?: string;
+  classNameInput?: string;
+  droper?: boolean;
   valueInput?: (event: string, index: string) => void;
   onChangeInput?: (event: ChangeEvent<HTMLInputElement>) => void;
 }
@@ -27,9 +29,11 @@ const DropDownSimple = ({
   valueInput,
   defaultInput,
   placeholder,
+  droper,
   onChangeInput,
   selector,
   className,
+  classNameInput,
   ...otherProps
 }: DropDownSimpleProps) => {
   const [options, setOptions] = useState<typeObj[] | null>();
@@ -75,7 +79,7 @@ const DropDownSimple = ({
       <div className={`${className} dropdown-container-main`}>
         <div className="dropdown-container">
           {label && <label className="select-label">{label}</label>}
-          <div className={` dropdown-input-container `}>
+          <div className={`${classNameInput} dropdown-input-container `}>
             <input
               className={`dropdown-field`}
               placeholder={!isActive ? placeholder : 'Buscar...'}
@@ -88,7 +92,10 @@ const DropDownSimple = ({
               {...otherProps}
             />
             <div onClick={toogleIsActive} className="dropdown-icon">
-              <img src="/svg/search.svg" alt="search" />
+              <img
+                src={`/svg/${droper ? 'down.svg' : 'search.svg'}`}
+                alt="search"
+              />
             </div>
           </div>
           {isActive && (

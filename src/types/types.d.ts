@@ -636,3 +636,29 @@ export interface AttendanceRange {
   };
   list: userAttendance[];
 }
+
+export interface MailType {
+  messageId: number;
+  status: boolean;
+  type: MessageSender;
+  message: MessageType;
+}
+export type MessageSender = 'SENDER' | 'RECEIVER';
+export interface MessageType {
+  id: number;
+  status: boolean;
+  title: string;
+  isOpen: boolean;
+  description: string;
+  type: 'INFORME' | 'CARTA' | 'MEMORANDUM';
+  idMessageReply: number | null;
+  idMessageResend: number | null;
+  createdAt: Date;
+  users: {
+    type: MessageSender;
+    user: {
+      id: number;
+      profile: Pick<Profile, 'firstName' | 'lastName' | 'dni' | 'phone'>;
+    };
+  }[];
+}

@@ -28,6 +28,8 @@ const AttendanceList = ({
     setUserId(id);
     onRadioChange(value, id);
   };
+  console.log(user);
+
   return (
     <div
       className={`attendanceList-container ${

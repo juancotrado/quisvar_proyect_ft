@@ -85,6 +85,7 @@ const Attendance = () => {
     setDate(value);
     axiosInstance.get(`/list/attendance/?startDate=${value}`).then(res => {
       setCallLists(res.data);
+      setCallList(null);
     });
   };
   const showAttendanceUsers = (data: ListAttendance) => {

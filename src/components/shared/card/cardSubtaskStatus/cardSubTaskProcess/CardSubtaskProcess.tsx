@@ -72,6 +72,7 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
 
   const handlePorcentage = (e: FocusEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
+    console.log('adsa', value, name);
     setPorcetageForUser({
       ...porcetageForUser,
       ['user' + name]: { userId: +name, percentage: +value },
@@ -239,7 +240,8 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
               <div className="cardSubtaskProcess-porcentage-input">
                 <Input
                   onBlur={handlePorcentage}
-                  defaultValue={user.percentage}
+                  placeholder={String(user.percentage)}
+                  name={String(user.user.id)}
                   className="input-percentage-value"
                   disabled={!areAuthorizedUsers}
                 />

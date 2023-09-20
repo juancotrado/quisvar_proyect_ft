@@ -40,39 +40,30 @@ const Project = () => {
     });
   };
 
+  const projectOptions = [
+    { id: 1, text: 'HOJA DE PRESUPUESTOS' },
+    { id: 2, text: 'DATOS GENERALES' },
+    { id: 3, text: 'BÁSICOS' },
+  ];
   return (
     <div className="project">
       <div className="project-options">
-        <Button
-          onClick={() => setOptionSelected(1)}
-          className={`project-header ${
-            optionSelected === 1 && 'project-header-selected'
-          }`}
-          text="DATOS GENERALES"
-          icon={`${optionSelected === 1 ? 'ntbook-blue' : 'ntbook-black'}`}
-          imageStyle="project-img-size"
-        />
-        <Button
-          onClick={() => setOptionSelected(2)}
-          className={`project-header ${
-            optionSelected === 2 && 'project-header-selected'
-          }`}
-          text="HOJA DE PRESUPUESTOS"
-          icon={`${optionSelected === 2 ? 'spread-blue' : 'spread-black'}`}
-          imageStyle="project-img-size"
-        />
-        <Button
-          onClick={() => setOptionSelected(3)}
-          className={`project-header ${
-            optionSelected === 3 && 'project-header-selected'
-          }`}
-          text="BÁSICOS"
-          icon={`${optionSelected === 3 ? 'brief-blue' : 'brief-black'}`}
-          imageStyle="project-img-size"
-        />
+        {projectOptions.map(option => (
+          <Button
+            onClick={() => setOptionSelected(option.id)}
+            className={`project-header-btn ${
+              optionSelected === option.id && 'project-header-btn-selected'
+            }`}
+            text={option.text}
+            icon={`${
+              optionSelected === option.id ? 'ntbook-blue' : 'ntbook-black'
+            }`}
+            imageStyle="project-img-size"
+          />
+        ))}
       </div>
-      <div className="contenido">
-        {optionSelected === 1 && (
+      <div className="project-content">
+        {optionSelected === 2 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -82,13 +73,8 @@ const Project = () => {
             <GeneralData />
           </motion.div>
         )}
-        {optionSelected === 2 && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            style={{ width: '100%' }}
-          >
+        {optionSelected === 1 && (
+          <>
             <div className="project-title-contain">
               <div className="project-contain-left">
                 <figure className="project-figure">
@@ -114,7 +100,7 @@ const Project = () => {
             <Outlet />
 
             <CardRegisterSubTask onSave={getLevels} />
-          </motion.div>
+          </>
         )}
         {optionSelected === 3 && (
           <motion.div

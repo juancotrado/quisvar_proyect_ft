@@ -27,6 +27,7 @@ import StageAddButton from './stages/stageAddButton/StageAddButton';
 import StageItem from './stages/stageItem/StageItem';
 import AttendanceList from './attendance/attendanceList/AttendanceList';
 import Legend from './shared/legend/Legend';
+import GeneralData from './shared/generalData/GeneralData';
 
 export {
   Alert,
@@ -58,4 +59,5 @@ export {
   TaskCounter,
   AttendanceList,
   Legend,
+  GeneralData,
 };

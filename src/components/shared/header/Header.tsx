@@ -54,17 +54,27 @@ const Header = () => {
   };
 
   const itemsAdmin = [
-    { id: 1, title: 'Inicio', link: '/home' },
-    { id: 2, title: 'Reportes', link: '/mis-tareas' },
-    { id: 3, title: 'Especialidades', link: '/especialidades' },
-    { id: 4, title: 'Usuarios', link: '/lista-de-usuarios' },
-    // { id: 5, title: 'Tramites', link: '/tramites' },
-    { id: 6, title: 'Asistencia', link: '/asistencia' },
+    { id: 1, title: 'Inicio', icon: 'home-bar', link: '/home' },
+    { id: 2, title: 'Reportes', icon: 'casco-bar', link: '/mis-tareas' },
+    {
+      id: 3,
+      title: 'Especialidades',
+      icon: 'casco-bar',
+      link: '/especialidades',
+    },
+    { id: 4, title: 'Usuarios', icon: 'users-bar', link: '/lista-de-usuarios' },
+    // { id: 5, title: 'Tramites', icon: '', link: '/tramites' },
+    { id: 6, title: 'Asistencia', icon: 'users-bar', link: '/asistencia' },
   ];
   const itemsEmployee = [
-    { id: 1, title: 'Inicio', link: '/home' },
-    { id: 2, title: 'Tareas', link: '/mis-tareas' },
-    { id: 3, title: 'Especialidades', link: '/especialidades' },
+    { id: 1, title: 'Inicio', icon: 'home-bar', link: '/home' },
+    { id: 2, title: 'Tareas', icon: 'casco-bar', link: '/mis-tareas' },
+    {
+      id: 3,
+      title: 'Especialidades',
+      icon: 'casco-bar',
+      link: '/especialidades',
+    },
   ];
 
   const icons = [
@@ -156,11 +166,11 @@ const Header = () => {
               <li key={item.id}>
                 <NavLink
                   to={item.link}
-                  className={({ isActive }) =>
-                    isActive ? 'item-nav-active' : 'item-nav-inactive'
-                  }
+                  // className={({ isActive }) =>
+                  //   isActive ? 'item-nav-active' : 'item-nav-inactive'
+                  // }
                 >
-                  {item.title}
+                  <img src={`/svg/${item.icon}.svg`} title={`${item.title}`} />
                 </NavLink>
               </li>
             ))}

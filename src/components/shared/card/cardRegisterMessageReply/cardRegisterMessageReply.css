@@ -1,16 +1,12 @@
 .imbox-send-container-main {
   border-radius: var(--radius-input);
   background-color: white;
-  filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07));
   color: #6e6e6e;
   font-size: 14px;
-  width: 50%;
   font-style: normal;
   font-weight: 500;
   line-height: 150%;
   letter-spacing: 0.225px;
-  overflow: auto;
-  /* overflow: auto; sdasd */
 }
 .imnbox-title {
   display: flex;
@@ -85,18 +81,30 @@
 .imbox-input-radio:checked {
   accent-color: #333;
 }
+.imbox-data-details-title {
+  width: 100%;
+  gap: 1rem;
+}
 .imbox-input-title {
   width: 100%;
   display: flex;
   gap: 0.5rem;
   align-items: center;
-  border-bottom: 1px solid #c4c4c4a2;
+  /* border-bottom: 1px solid #c4c4c4a2; */
+}
+.bold {
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--color-quaternay);
 }
 .imbox-input-content {
-  width: 100%;
   padding: 0.2rem;
+  width: 100%;
   font-weight: 500;
   border-radius: var(--radius-input);
+}
+.subtitle {
+  font-size: 13px;
 }
 .not-allowed {
   cursor: not-allowed;

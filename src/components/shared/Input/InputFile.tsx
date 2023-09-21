@@ -62,10 +62,7 @@ const InputFile = ({
   };
 
   return (
-    <div
-      className={`${className} container-file-upload`}
-      onDragEnter={handleDrag}
-    >
+    <div className={`container-file-upload`} onDragEnter={handleDrag}>
       {label && (
         <div className="container-label-upload">
           <label htmlFor={label}>{label}</label>
@@ -80,10 +77,10 @@ const InputFile = ({
         onChange={handleInputChange}
         {...props}
       />
-      <label className="label-file-upload" htmlFor={label}>
+      <label className={`${className} label-file-upload`} htmlFor={label}>
         <div>
           {/* <p>{fileName ? fileName : 'Arrastra o Selecciona un archivo'} </p> */}
-          <p>{'Arrastra o Selecciona un archivo'} </p>
+          <p>{'Cargue o Arrastra un archivo'} </p>
           <button
             className="upload-button"
             type="button"

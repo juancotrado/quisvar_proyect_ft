@@ -4,9 +4,10 @@ import './cardMessage.css';
 interface CardMessageProps {
   message: MessageType;
   type: MessageSender;
+  onClick: () => void;
 }
 
-const CardMessage = ({ message, type }: CardMessageProps) => {
+const CardMessage = ({ message, type, onClick }: CardMessageProps) => {
   const contactUser = message.users.find(user => user.type !== type);
   const parseDate = (date: Date) =>
     formatDate(new Date(date), {
@@ -22,7 +23,7 @@ const CardMessage = ({ message, type }: CardMessageProps) => {
       className={`card-message-container-section ${
         message.isOpen && 'message-isOpen'
       } pointer`}
-      // onClick={() => taskNavigate(subtask.id)}
+      onClick={onClick}
     >
       <div className="card-message-section-item">
         <span className="card-status-span ">{message.type}</span>

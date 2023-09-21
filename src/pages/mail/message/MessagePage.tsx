@@ -98,7 +98,7 @@ const MessagePage = () => {
       <CardRegisterMessageReply
         message={message}
         senderId={userSession.id}
-        receiverId={}
+        receiverId={receiver?.user.id}
       />
       <div>mas detalles</div>
       <span>{messageId}</span>

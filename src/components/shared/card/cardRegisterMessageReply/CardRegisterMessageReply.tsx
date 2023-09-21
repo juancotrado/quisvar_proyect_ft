@@ -53,12 +53,15 @@ const CardRegisterMessageReply = ({
   const { handleSubmit, register, setValue } = useForm<MessageSendType>();
   const [fileUploadFiles, setFileUploadFiles] = useState<File[]>([]);
   const { userSession } = useSelector((state: RootState) => state);
+  const [isReply, setIsReply] = useState(false);
   const { users } = useListUsers(RolePerm);
-  const receiverUser = users.find(us => us.id === receiverId);
-  const listUser = receiverUser ? [receiverUser, ...users] : users;
+  const receiverUser = users.filter(us => us.id === receiverId);
   const contacts = useMemo(
-    () => listUser.filter(user => user.id !== userSession.id),
-    [userSession, listUser]
+    () =>
+      users.filter(
+        user => user.id !== userSession.id && user.id !== receiverId
+      ),
+    [userSession, users]
   );
   const [userPick, setUserPick] = useState<receiverType | null>(null);
   useEffect(() => {
@@ -90,21 +93,18 @@ const CardRegisterMessageReply = ({
     const values = {
       ...data,
       senderId,
-      receiverId,
-      idMessageReply,
-      idMessageResend,
+      receiverId: userPick?.id,
     };
     const headers = {
       'Content-type': 'multipart/form-data',
     };
-    console.log(values);
     const formData = new FormData();
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
     formData.append('data', JSON.stringify(values));
     formData.append('senderId', `${senderId}`);
-    // axiosInstance
-    //   .post(`/mail`, formData, { headers })
-    //   .then(res => console.log(res.data));
+    axiosInstance
+      .post(`/mail`, formData, { headers })
+      .then(res => console.log(res.data));
   };
   return (
     <div className="imbox-send-container-main">
@@ -152,32 +152,60 @@ const CardRegisterMessageReply = ({
           className="imbox-file-area"
           getFilesList={files => addFiles(files)}
         />
-        <DropDownSimple
-          classNameInput="imbox-receiver-choice-dropdown-input"
-          type="search"
-          data={contacts}
-          textField="name"
-          itemKey="id"
-          selector
-          droper
-          valueInput={(value, id) => setUserPick({ id: +id, value })}
-        />
         <div className="imbox-btn-submit-container">
-          {userPick?.id === receiverId ? (
-            <Button
-              className="imbox-btn-submit"
-              type="submit"
-              onClick={() => setValue('idMessageReply', message.id)}
-              text="Responder"
+          <Button
+            className={`imbox-btn-submit ${isReply && 'button-selected'}`}
+            type="button"
+            onClick={() => {
+              setIsReply(true);
+              setValue('idMessageResend', undefined);
+              setValue('idMessageReply', message.id);
+            }}
+            text="Responder"
+          />
+          <Button
+            onClick={() => {
+              setIsReply(false);
+              setValue('idMessageReply', undefined);
+              setValue('idMessageResend', message.id);
+            }}
+            className={`imbox-btn-submit ${!isReply && 'button-selected'}`}
+            type="button"
+            text="Reenviar"
+          />
+        </div>
+        {isReply && (
+          <div>
+            <DropDownSimple
+              classNameInput="imbox-receiver-choice-dropdown-input"
+              type="search"
+              data={receiverUser}
+              textField="name"
+              itemKey="id"
+              selector
+              droper
+              valueInput={(value, id) => setUserPick({ id: +id, value })}
+              placeholder="Seleccionar usuario"
             />
-          ) : (
-            <Button
-              onClick={() => setValue('idMessageResend', message.id)}
-              className="imbox-btn-submit"
-              type="submit"
-              text="Reenviar"
+          </div>
+        )}
+        {!isReply && (
+          <div>
+            <DropDownSimple
+              placeholder="Seleccionar usuario"
+              classNameInput="imbox-receiver-choice-dropdown-input"
+              type="search"
+              data={contacts}
+              textField="name"
+              itemKey="id"
+              selector
+              droper
+              valueInput={(value, id) => setUserPick({ id: +id, value })}
             />
-          )}
+          </div>
+        )}
+        <div className="imbox-btn-submit-container">
+          <Button className="imbox-btn-submit" text="Enviar" />
         </div>
       </form>
     </div>

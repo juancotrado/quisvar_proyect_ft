@@ -39,7 +39,7 @@ const MessagePage = () => {
   if (!message) return <div>null</div>;
   const { users } = message;
   const sender = users.find(({ user }) => user.id !== userSession.id);
-  const receiver = users.find(({ user }) => user.id === userSession.id);
+  const receiver = users.find(({ user }) => user.id !== userSession.id);
   return (
     <div className="message-page-container">
       <div className="message-header-content">

@@ -19,6 +19,7 @@ import { assitant_perms, rolThirdLevel } from '../utils/roles';
 import Stage from '../pages/stage/Stage';
 import Task from '../pages/task/Task';
 import MailPage from '../pages/mail/MailPage';
+import MessagePage from '../pages/mail/message/MessagePage';
 
 const Navigation = () => {
   return (
@@ -31,7 +32,9 @@ const Navigation = () => {
             <Route path="/home" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/tareas/:id" element={<Tasks />} />
-            <Route path="/tramites" element={<MailPage />} />
+            <Route path="/tramites" element={<MailPage />}>
+              <Route path=":messageId" element={<MessagePage />} />
+            </Route>
             <Route path="/asistencia" element={<Attendance />} />
             <Route path="/especialidades" element={<Specialities />}>
               <Route path="proyecto/:projectId" element={<Stage />}>

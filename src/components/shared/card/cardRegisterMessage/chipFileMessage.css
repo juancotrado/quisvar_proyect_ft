@@ -1,0 +1,31 @@
+.chip-container-file {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.3rem;
+  width: 100%;
+  font-weight: 400;
+  max-height: 1.8rem;
+  background-color: var(--color-menu);
+  border-radius: var(--radius-input);
+  padding: 0.1rem 0.3rem;
+  color: var(--color-quaternay);
+}
+.chip-file-information {
+  display: flex;
+  max-width: 90%;
+  gap: 0.3rem;
+}
+.chip-file-icon-doc {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+.chip-file-icon-close {
+  width: 0.7rem;
+  height: 0.7rem;
+}
+.chip-file-text {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}

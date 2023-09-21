@@ -657,6 +657,8 @@ export interface MessageType {
   idMessageReply: number | null;
   idMessageResend: number | null;
   createdAt: Date;
+  header: string;
+  files?: fileMesage[];
   users: {
     type: MessageSender;
     user: {
@@ -664,4 +666,9 @@ export interface MessageType {
       profile: Pick<Profile, 'firstName' | 'lastName' | 'dni' | 'phone'>;
     };
   }[];
+}
+export interface fileMesage {
+  id: number;
+  name: string;
+  path: string;
 }

@@ -10,9 +10,11 @@ import { UserRoleType } from '../../../../types/types';
 import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
 import './cardRegisterMessage.css';
+import ChipFileMessage from './ChipFileMessage';
 
 interface MessageSendType {
   title: string;
+  header: string;
   description?: string;
   receiverId: number;
   type: 'INFORME' | 'MEMORANDUM' | 'CARTA';
@@ -38,21 +40,19 @@ type receiverType = { id: number; value: string };
 
 const CardRegisterMessage = () => {
   const { users } = useListUsers(RolePerm);
-  const [quantityFiles, setQuantityFiles] = useState<quantityType[] | null>(
-    null
-  );
   const { userSession } = useSelector((state: RootState) => state);
   const [receiver, setReceiver] = useState<receiverType | null>(null);
   const { handleSubmit, register, setValue } = useForm<MessageSendType>();
   const [fileUploadFiles, setFileUploadFiles] = useState<File[]>([]);
+  const [countMessage, setCountMessage] = useState<quantityType[] | null>(null);
+  const { lastName, firstName } = userSession.profile;
+  const HashUser = Hash(`${firstName} ${lastName}`);
+  const Year = new Date().getFullYear();
+
   const contacts = useMemo(
     () => users.filter(user => user.id !== userSession.id),
     [userSession, users]
   );
-  const { lastName, firstName } = userSession.profile;
-
-  const HashUser = Hash(`${firstName} ${lastName}`);
-  const Year = new Date().getFullYear();
 
   useEffect(() => {
     getQuantityServices();
@@ -61,14 +61,13 @@ const CardRegisterMessage = () => {
   const getQuantityServices = () =>
     axiosInstance
       .get('/mail/imbox/quantity')
-      // .then(res => console.log(res.data));
-      .then(res => setQuantityFiles(res.data));
+      .then(res => setCountMessage(res.data));
 
   const handleChangeRadio = ({
     target,
   }: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = target;
-    const countFile = quantityFiles?.find(file => file.type === value);
+    const countFile = countMessage?.find(file => file.type === value);
     const newIndex = (countFile ? countFile._count.type : 0) + 1;
     const newTitleValue = `${value} N°${newIndex} ${HashUser}-${Year}`;
     setValue('title', newTitleValue);
@@ -82,6 +81,7 @@ const CardRegisterMessage = () => {
     ).map(name => concatFiles.find(file => file.name === name)) as File[];
     setFileUploadFiles(uniqueFiles);
   };
+
   const deleteFiles = (delFiles: File) => {
     if (fileUploadFiles) {
       const newFiles = Array.from(fileUploadFiles).filter(
@@ -98,7 +98,16 @@ const CardRegisterMessage = () => {
       senderId: userSession.id,
       receiverId: receiver?.id,
     };
-    console.log(values);
+    const headers = {
+      'Content-type': 'multipart/form-data',
+    };
+    const formData = new FormData();
+    fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
+    formData.append('data', JSON.stringify(values));
+    formData.append('senderId', `${userSession.id}`);
+    axiosInstance
+      .post(`/mail`, formData, { headers })
+      .then(res => console.log(res.data));
   };
   return (
     <div className="imbox-send-container-main">
@@ -175,13 +184,22 @@ const CardRegisterMessage = () => {
           </label>
         </div>
         <label className="imbox-input-title">
-          Asunto:
+          Solicitud:
           <Input
             {...register('title')}
-            className="imbox-input-content"
+            className="imbox-input-content not-allowed"
             name="title"
             type="text"
             disabled
+          />
+        </label>
+        <label className="imbox-input-title">
+          Asunto:
+          <Input
+            {...register('header')}
+            className="imbox-input-content"
+            name="title"
+            type="text"
           />
         </label>
         <TextArea
@@ -190,17 +208,24 @@ const CardRegisterMessage = () => {
           {...register('description')}
           name="description"
         />
-        {fileUploadFiles && fileUploadFiles.length && (
-          <div>
+        {fileUploadFiles && (
+          <div className="imbox-container-file-list">
             {fileUploadFiles.map((file, i) => (
-              <div key={i} onClick={() => deleteFiles(file)}>
-                {file.name} {file.size}
-              </div>
+              <ChipFileMessage
+                text={file.name}
+                key={i}
+                onClose={() => deleteFiles(file)}
+              />
             ))}
           </div>
         )}
-        <InputFile getFilesList={files => addFiles(files)} />
-        <Button type="submit" text="Enviar" />
+        <InputFile
+          className="imbox-file-area"
+          getFilesList={files => addFiles(files)}
+        />
+        <div className="imbox-btn-submit-container">
+          <Button className="imbox-btn-submit" type="submit" text="Enviar" />
+        </div>
       </form>
     </div>
   );

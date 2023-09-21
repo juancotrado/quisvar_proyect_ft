@@ -41,9 +41,19 @@ const Project = () => {
   };
 
   const projectOptions = [
-    { id: 1, text: 'HOJA DE PRESUPUESTOS' },
-    { id: 2, text: 'DATOS GENERALES' },
-    { id: 3, text: 'BÁSICOS' },
+    {
+      id: 1,
+      text: 'DATOS GENERALES',
+      iconOn: 'ntbook-blue',
+      iconOff: 'ntbook-black',
+    },
+    {
+      id: 2,
+      text: 'HOJA DE PRESUPUESTOS',
+      iconOn: 'spread-blue',
+      iconOff: 'spread-black',
+    },
+    { id: 3, text: 'BÁSICOS', iconOn: 'brief-blue', iconOff: 'brief-black' },
   ];
   return (
     <div className="project">
@@ -56,14 +66,14 @@ const Project = () => {
             }`}
             text={option.text}
             icon={`${
-              optionSelected === option.id ? 'ntbook-blue' : 'ntbook-black'
+              optionSelected === option.id ? option.iconOn : option.iconOff
             }`}
             imageStyle="project-img-size"
           />
         ))}
       </div>
       <div className="project-content">
-        {optionSelected === 2 && (
+        {optionSelected === 1 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -73,7 +83,7 @@ const Project = () => {
             <GeneralData />
           </motion.div>
         )}
-        {optionSelected === 1 && (
+        {optionSelected === 2 && (
           <>
             <div className="project-title-contain">
               <div className="project-contain-left">

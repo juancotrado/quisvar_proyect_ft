@@ -4,28 +4,51 @@ interface MoreInfoProps {
   data: Level;
 }
 const MoreInfo = ({ data }: MoreInfoProps) => {
-  const { details } = data;
-
   return (
     <>
       <div className="moreInfo-currency-contain">
         <div className="moreInfo-currency">
           <span className="moreInfo-currency-money">
-            S/.{data.price.toFixed(2)}
+            S/.{data.balance.toFixed(2)}
           </span>
-          <span className="moreInfo-currency-info">Saldo</span>
+          {data.projectName && (
+            <span className="moreInfo-currency-info">Saldo</span>
+          )}
         </div>
         <div className="moreInfo-currency">
           <span className="moreInfo-currency-money money--red">
-            -/S.{data.price.toFixed(2)}
+            -/S.{data.spending.toFixed(2)}
           </span>
-          <span className="moreInfo-currency-info">Gasto</span>
+          {data.projectName && (
+            <span className="moreInfo-currency-info">Gasto</span>
+          )}
         </div>
         <div className="moreInfo-currency">
           <span className="moreInfo-currency-money">
             S/.{data.price.toFixed(2)}
           </span>
-          <span className="moreInfo-currency-info">Total</span>
+          {data.projectName && (
+            <span className="moreInfo-currency-info">Total</span>
+          )}
+        </div>
+        <div className="moreInfo-currency">
+          <span className="moreInfo-currency-money">
+            {data.percentage.toFixed(2)}%
+          </span>
+          {data.projectName && (
+            <span className="moreInfo-currency-info">Porcentaje</span>
+          )}
+        </div>
+        <div className="moreInfo-currency">
+          <span className="moreInfo-currency-money">
+            {data.total}
+            {!data.projectName && (
+              <span className="moreInfo-currency-info"> Tareas</span>
+            )}
+          </span>
+          {data.projectName && (
+            <span className="moreInfo-currency-info">Tareas</span>
+          )}
         </div>
       </div>
       {/* <div className="moreInfo-details-contain">
@@ -88,23 +111,29 @@ const MoreInfo = ({ data }: MoreInfoProps) => {
           <figure className="moreInfo-detail-icon">
             <img src="/svg/file-download.svg" alt="W3Schools" />
           </figure>
-          <span className="moreInfo-detail-info">Comprimir</span>
+          {data.projectName && (
+            <span className="moreInfo-detail-info">Comprimir</span>
+          )}
         </div>
         <div className="moreInfo-detail">
           <figure className="moreInfo-detail-icon">
             <img src="/svg/file-download.svg" alt="W3Schools" />
           </figure>
-          <span className="moreInfo-detail-info">
-            Comprimir <br /> PDS
-          </span>
+          {data.projectName && (
+            <span className="moreInfo-detail-info">
+              Comprimir <br /> PDS
+            </span>
+          )}
         </div>
         <div className="moreInfo-detail">
           <figure className="moreInfo-detail-icon">
             <img src="/svg/file-download.svg" alt="W3Schools" />
           </figure>
-          <span className="moreInfo-detail-info">
-            Comprimir <br /> Editables
-          </span>
+          {data.projectName && (
+            <span className="moreInfo-detail-info">
+              Comprimir <br /> Editables
+            </span>
+          )}
         </div>
       </div>
     </>

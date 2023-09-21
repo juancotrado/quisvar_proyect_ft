@@ -402,6 +402,9 @@ export interface Level {
   userId: number;
   projectName?: string;
   nextLevel?: NextLevel[];
+  percentage: number;
+  total: number;
+  days: number;
 }
 interface Details {
   UNRESOLVED: number;

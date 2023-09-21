@@ -18,6 +18,8 @@ interface MessageSendType {
   header: string;
   description?: string;
   receiverId: number;
+  idMessageReply?: number;
+  idMessageResend?: number;
   type: 'INFORME' | 'MEMORANDUM' | 'CARTA';
 }
 const RolePerm: UserRoleType[] = ['SUPER_ADMIN', 'ADMIN', 'SUPER_MOD', 'MOD'];
@@ -58,7 +60,7 @@ const CardRegisterMessageReply = ({
     () => listUser.filter(user => user.id !== userSession.id),
     [userSession, listUser]
   );
-
+  const [userPick, setUserPick] = useState<receiverType | null>(null);
   useEffect(() => {
     setValue('title', `Respuesta a Solicitud de ${message.type}`);
     setValue('header', message.title);
@@ -95,6 +97,7 @@ const CardRegisterMessageReply = ({
     const headers = {
       'Content-type': 'multipart/form-data',
     };
+    console.log(values);
     const formData = new FormData();
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
     formData.append('data', JSON.stringify(values));
@@ -157,10 +160,24 @@ const CardRegisterMessageReply = ({
           itemKey="id"
           selector
           droper
-          // valueInput={(value, id) => setReceiver({ id: +id, value })}
+          valueInput={(value, id) => setUserPick({ id: +id, value })}
         />
         <div className="imbox-btn-submit-container">
-          <Button className="imbox-btn-submit" type="submit" text="Enviar" />
+          {userPick?.id === receiverId ? (
+            <Button
+              className="imbox-btn-submit"
+              type="submit"
+              onClick={() => setValue('idMessageReply', message.id)}
+              text="Responder"
+            />
+          ) : (
+            <Button
+              onClick={() => setValue('idMessageResend', message.id)}
+              className="imbox-btn-submit"
+              type="submit"
+              text="Reenviar"
+            />
+          )}
         </div>
       </form>
     </div>

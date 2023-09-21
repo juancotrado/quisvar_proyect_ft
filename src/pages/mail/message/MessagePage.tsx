@@ -52,9 +52,7 @@ const MessagePage = () => {
               {message.status ? 'Aceptado' : 'En proceso'}
             </span>
           </div>
-          <span className="message-title">
-            {message.header} {message.header}
-          </span>
+          <span className="message-title">{message.header}</span>
         </div>
         <button onClick={() => navigate('/tramites?size=false')}>Cerrar</button>
       </div>
@@ -100,8 +98,6 @@ const MessagePage = () => {
         senderId={userSession.id}
         receiverId={receiver?.user.id}
       />
-      <div>mas detalles</div>
-      <span>{messageId}</span>
     </div>
   );
 };

@@ -13,6 +13,7 @@
   "dependencies": {
     "@emotion/styled": "^11.11.0",
     "@reduxjs/toolkit": "^1.9.5",
+    "@tinymce/tinymce-react": "^4.3.0",
     "axios": "^1.4.0",
     "exceljs": "^4.3.0",
     "framer-motion": "^10.12.10",

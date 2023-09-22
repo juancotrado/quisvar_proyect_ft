@@ -12,6 +12,7 @@ import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
 import './cardRegisterMessageReply.css';
 import ChipFileMessage from '../cardRegisterMessage/ChipFileMessage';
+import { Editor } from '@tinymce/tinymce-react';
 
 interface MessageSendType {
   title: string;
@@ -56,6 +57,15 @@ const CardRegisterMessageReply = ({
   const [isReply, setIsReply] = useState(false);
   const { users } = useListUsers(RolePerm);
   const receiverUser = users.filter(us => us.id === receiverId);
+
+  useEffect(() => {
+    setValue('title', `Respuesta a Solicitud de ${message.type}`);
+    setValue('header', message.title);
+    setValue('type', message.type);
+  }, [message]);
+
+  const InitialValueEditor = `<p style="text-align: justify;" >Por medio del presente documento me dirijo a usted con la finalidad de hacerle llegar un cordial saludo, y al mismo tiempo comunicarle lo siguiente:</p><p>&nbsp;</p><p>&nbsp;</p><p style="text-align: center;">Atentamente, ${userSession.profile.lastName.toUpperCase()} ${userSession.profile.firstName.toUpperCase()} </p>`;
+
   const contacts = useMemo(
     () =>
       users.filter(
@@ -64,11 +74,11 @@ const CardRegisterMessageReply = ({
     [userSession, users]
   );
   const [userPick, setUserPick] = useState<receiverType | null>(null);
-  useEffect(() => {
-    setValue('title', `Respuesta a Solicitud de ${message.type}`);
-    setValue('header', message.title);
-    setValue('type', message.type);
-  }, [message]);
+
+  const handleInputChange = (event: string) => {
+    console.log('<--------------------------------->');
+    console.log(event);
+  };
 
   const addFiles = (newFiles: File[]) => {
     if (!fileUploadFiles) return setFileUploadFiles(newFiles);
@@ -107,23 +117,26 @@ const CardRegisterMessageReply = ({
       .then(res => console.log(res.data));
   };
   return (
-    <div className="imbox-send-container-main">
-      <form className="imbox-data-content" onSubmit={handleSubmit(onSubmit)}>
-        <div className="imbox-data-details-title">
-          <label className="imbox-input-title">
+    <div className="imbox-reply-send-container-main">
+      <form
+        className="imbox-reply-data-content"
+        onSubmit={handleSubmit(onSubmit)}
+      >
+        <div className="imbox-reply-data-details-title">
+          <label className="imbox-reply-input-title">
             <Input
               {...register('title')}
-              className="imbox-input-content not-allowed bold"
+              className="imbox-reply-input-content not-allowed bold"
               name="title"
               defaultValue={`Respuesta a Solicitud de ${message.type}`}
               type="text"
               disabled
             />
           </label>
-          <label className="imbox-input-title ">
+          <label className="imbox-reply-input-title ">
             <Input
               {...register('header')}
-              className="imbox-input-content not-allowed subtitle"
+              className="imbox-reply-input-content not-allowed subtitle"
               name="title"
               type="text"
               defaultValue={message.title}
@@ -131,14 +144,27 @@ const CardRegisterMessageReply = ({
             />
           </label>
         </div>
-        <TextArea
-          className="imbox-text-area-description"
-          placeholder="Redacte su mensaje aqui"
-          {...register('description')}
-          name="description"
+        <Editor
+          initialValue={InitialValueEditor}
+          init={{
+            min_height: 400,
+            paste_data_images: false,
+            font_size_classes: 'size-editor',
+            menubar: false,
+            plugins: [
+              'advlist autolink lists link image charmap print preview anchor',
+              'searchreplace visualblocks code fullscreen checklist',
+              'insertdatetime media table paste code help wordcount autocorrect',
+            ],
+            toolbar:
+              'undo redo | formatselect | bold italic | table\
+              alignleft aligncenter alignright alignjustify | \
+              bullist numlist outdent indent | removeformat | code',
+          }}
+          onEditorChange={handleInputChange}
         />
         {fileUploadFiles && (
-          <div className="imbox-container-file-list">
+          <div className="message-container-file-list">
             {fileUploadFiles.map((file, i) => (
               <ChipFileMessage
                 text={file.name}
@@ -149,12 +175,12 @@ const CardRegisterMessageReply = ({
           </div>
         )}
         <InputFile
-          className="imbox-file-area"
+          className="imbox-reply-file-area"
           getFilesList={files => addFiles(files)}
         />
-        <div className="imbox-btn-submit-container">
+        <div className="imbox-reply-btn-submit-container">
           <Button
-            className={`imbox-btn-submit ${isReply && 'button-selected'}`}
+            className={`imbox-reply-btn-submit ${isReply && 'button-selected'}`}
             type="button"
             onClick={() => {
               setIsReply(true);
@@ -169,7 +195,9 @@ const CardRegisterMessageReply = ({
               setValue('idMessageReply', undefined);
               setValue('idMessageResend', message.id);
             }}
-            className={`imbox-btn-submit ${!isReply && 'button-selected'}`}
+            className={`imbox-reply-btn-submit ${
+              !isReply && 'button-selected'
+            }`}
             type="button"
             text="Reenviar"
           />
@@ -177,7 +205,7 @@ const CardRegisterMessageReply = ({
         {isReply && (
           <div>
             <DropDownSimple
-              classNameInput="imbox-receiver-choice-dropdown-input"
+              classNameInput="imbox-reply-receiver-choice-dropdown-input"
               type="search"
               data={receiverUser}
               textField="name"
@@ -193,7 +221,7 @@ const CardRegisterMessageReply = ({
           <div>
             <DropDownSimple
               placeholder="Seleccionar usuario"
-              classNameInput="imbox-receiver-choice-dropdown-input"
+              classNameInput="imbox-reply-receiver-choice-dropdown-input"
               type="search"
               data={contacts}
               textField="name"
@@ -204,8 +232,8 @@ const CardRegisterMessageReply = ({
             />
           </div>
         )}
-        <div className="imbox-btn-submit-container">
-          <Button className="imbox-btn-submit" text="Enviar" />
+        <div className="imbox-reply-btn-submit-container">
+          <Button className="imbox-reply-btn-submit" text="Enviar" />
         </div>
       </form>
     </div>

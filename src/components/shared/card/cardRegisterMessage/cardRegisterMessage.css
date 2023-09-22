@@ -1,23 +1,36 @@
 .imbox-send-container-main {
-  border-radius: var(--radius-input);
+  position: fixed;
+  /* height: 92vh; */
+  bottom: 0;
+  right: 5rem;
+  z-index: 1;
+  border-top-right-radius: var(--radius-input);
+  border-top-left-radius: var(--radius-input);
   background-color: white;
-  filter: drop-shadow(0 4px 3px rgb(0 0 0 / 0.07));
+  filter: drop-shadow(-3px -4px 4px rgb(0 0 0 / 0.15));
   color: #6e6e6e;
   font-size: 14px;
-  width: 50%;
+  border: 1px solid #6e6e6e39;
   font-style: normal;
   font-weight: 500;
   line-height: 150%;
   letter-spacing: 0.225px;
   overflow: auto;
-  /* overflow: auto; sdasd */
+}
+.imbox-container-options {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
 }
 .imnbox-title {
   display: flex;
+  position: sticky;
+  top: 0;
+  z-index: 1;
   color: #000;
   justify-content: space-between;
   align-items: center;
-  background-color: #f4f7fc;
+  background-color: #c2e7ff;
   padding: 0 0.5rem;
 }
 .imbox-data-content {
@@ -30,8 +43,32 @@
   width: 0.75rem;
   height: 0.75rem;
 }
+.imbox-container-title {
+  flex-grow: 1;
+  cursor: pointer;
+}
+.imbox-resize-icon {
+  width: 1.5rem;
+  background-color: transparent;
+  height: 1.5rem;
+  border: none;
+  border-radius: 0;
+  padding: 0;
+}
+.inbox-copy-button {
+  border: 0;
+  color: #6e6e6e;
+}
 .imbox-receiver-container {
   width: 100%;
+  align-items: center;
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 1px solid #c4c4c4a2;
+}
+.imbox-receiver-container-copy {
+  width: 100%;
+  flex-wrap: wrap;
   align-items: center;
   display: flex;
   gap: 0.5rem;
@@ -64,6 +101,14 @@
   border-radius: var(--radius-input);
   padding: 0 0.3rem;
 }
+
+.imbox-receiver-chip-name {
+  max-width: 9rem;
+  height: 100%;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
 .imbox-receiver-chip-icon-close {
   width: 1rem;
   height: 1rem;
@@ -75,10 +120,13 @@
 }
 .imbox-type-container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-around;
 }
 .imbox-type-send {
   display: flex;
+  width: 30%;
+  align-items: center;
   color: #000;
   gap: 0.4rem;
 }
@@ -96,6 +144,15 @@
   width: 100%;
   padding: 0.2rem;
   font-weight: 500;
+  border-radius: var(--radius-input);
+}
+.imbox-input-content-title {
+  width: 100%;
+  text-align: center;
+  padding: 0.2rem;
+  font-size: 16px;
+  text-decoration: underline;
+  font-weight: 600;
   border-radius: var(--radius-input);
 }
 .not-allowed {

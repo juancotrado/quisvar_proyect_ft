@@ -647,13 +647,20 @@ export interface MailType {
   message: MessageType;
 }
 export type MessageSender = 'SENDER' | 'RECEIVER';
+export type MessageTypeImbox =
+  | 'INFORME'
+  | 'CARTA'
+  | 'MEMORANDUM'
+  | 'ACUERDO'
+  | 'OFICIO'
+  | 'COORDINACION';
 export interface MessageType {
   id: number;
   status: boolean;
   title: string;
   isOpen: boolean;
   description: string;
-  type: 'INFORME' | 'CARTA' | 'MEMORANDUM';
+  type: MessageTypeImbox;
   idMessageReply: number | null;
   idMessageResend: number | null;
   createdAt: Date;
@@ -671,4 +678,17 @@ export interface fileMesage {
   id: number;
   name: string;
   path: string;
+}
+
+type quantityType = {
+  type: MessageType['type'];
+  _count: { type: number };
+};
+type receiverType = { id: number; value: string };
+interface MessageSendType {
+  title: string;
+  header: string;
+  description?: string;
+  receiverId: number;
+  type: MessageType['type'];
 }

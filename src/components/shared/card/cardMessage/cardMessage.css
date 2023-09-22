@@ -1,14 +1,19 @@
 .card-message-container-section {
   display: grid;
   height: 2rem;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
   align-items: center;
+}
+.status-card-true {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.status-card-false {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
 }
 .card-message-section-item {
   display: flex;
   align-items: center;
   color: #171c26;
-  font-size: 0.78rem;
+  font-size: 0.73rem;
   font-style: normal;
   padding: 0 0.2rem;
   font-weight: 500;
@@ -20,6 +25,7 @@
 .card-status-message {
   border-radius: var(--radius-button);
   padding: 0.1rem 0.4rem;
+  font-size: 9px;
   text-transform: uppercase;
 }
 .card-status-span {

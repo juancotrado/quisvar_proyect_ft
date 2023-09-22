@@ -7,6 +7,7 @@ interface SelectOptionsProps extends SelectHTMLAttributes<HTMLSelectElement> {
   itemKey: string;
   textField: string;
   name: string;
+  placeholder?: string;
   className?: string;
 }
 const SelectOptions = forwardRef<HTMLSelectElement, SelectOptionsProps>(
@@ -19,6 +20,7 @@ const SelectOptions = forwardRef<HTMLSelectElement, SelectOptionsProps>(
       name,
       defaultValue,
       className,
+      placeholder,
       ...props
     },
     ref
@@ -37,7 +39,9 @@ const SelectOptions = forwardRef<HTMLSelectElement, SelectOptionsProps>(
           defaultValue={defaultValue}
           name={name}
         >
-          <option value={0}>Seleccionar</option>
+          <option value={0}>{`${
+            placeholder ? placeholder : 'Seleccionar'
+          }`}</option>
           {data?.map(element => (
             <option key={element[itemKey]} value={element[itemKey]}>
               {element[textField]}

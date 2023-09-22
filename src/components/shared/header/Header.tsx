@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import './header.css';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useContext, useEffect, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
 import { toggle$ } from '../../../services/sharingSubject';
@@ -9,12 +9,13 @@ import { CardEditInformation, Menu } from '../..';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import { assitant_perms } from '../../../utils/roles';
+import { itemsAdmin, itemsEmployee } from '../../../utils/navigation/config';
+import ChipItem from './chipItem/ChipItem';
 
 const Header = () => {
   const navigate = useNavigate();
   const socket = useContext(SocketContext);
   const [isOpen, setIsOpen] = useState(false);
-
   const [isOpenMoreInfo, setIsOpenMoreInfo] = useState(false);
   const handleToggleRef = useRef<Subscription>(new Subscription());
   const { userSession } = useSelector((state: RootState) => state);
@@ -30,16 +31,6 @@ const Header = () => {
   }, []);
   const [openModalInfo, setOpenModalInfo] = useState(false);
 
-  const openModal = () => {
-    setOpenModalInfo(true);
-  };
-
-  const closeModal = () => {
-    setOpenModalInfo(false);
-  };
-  const toggleMenu = () => setIsOpen(!isOpen);
-  const toggleMenuMoreInfo = () => setIsOpenMoreInfo(!isOpenMoreInfo);
-
   const handleNotification = () => {
     navigate('lista-de-notificaciones');
   };
@@ -53,39 +44,28 @@ const Header = () => {
     navigate('/home');
   };
 
-  const itemsAdmin = [
-    { id: 1, title: 'Inicio', icon: 'home-bar', link: '/home' },
-    { id: 2, title: 'Reportes', icon: 'casco-bar', link: '/mis-tareas' },
-    {
-      id: 3,
-      title: 'Especialidades',
-      icon: 'specialty-white',
-      link: '/especialidades',
-    },
-    { id: 4, title: 'Usuarios', icon: 'users-bar', link: '/lista-de-usuarios' },
-    {
-      id: 5,
-      title: 'Tramites',
-      icon: 'ant-design_delivered',
-      link: '/tramites',
-    },
-    {
-      id: 6,
-      title: 'Asistencia',
-      icon: 'attendance-white',
-      link: '/asistencia',
-    },
-  ];
-  const itemsEmployee = [
-    { id: 1, title: 'Inicio', icon: 'home-bar', link: '/home' },
-    { id: 2, title: 'Tareas', icon: 'mdi-users', link: '/mis-tareas' },
-    {
-      id: 3,
-      title: 'Especialidades',
-      icon: 'casco-bar',
-      link: '/especialidades',
-    },
-  ];
+  const selectPdfForUserRol = () => {
+    if (userSession.role === 'EMPLOYEE')
+      return window.open('/public/tutorials/MANUAL_DE_USUARIO.pdf', '_blank');
+    return window.open(
+      '/public/tutorials/MANUAL_DE_ADMINISTRADOR.pdf',
+      '_blank'
+    );
+  };
+  const selectVideoForUserRol = () => {
+    if (userSession.role === 'EMPLOYEE')
+      return window.open('/public/tutorials/USER_GUIDE.mkv', '_blank');
+    return window.open('/public/tutorials/ADMIN_GUIDE.mkv', '_blank');
+  };
+
+  const itemType = assitant_perms.includes(userSession.role)
+    ? itemsAdmin
+    : itemsEmployee;
+
+  const openModal = () => setOpenModalInfo(true);
+  const closeModal = () => setOpenModalInfo(false);
+  const toggleMenu = () => setIsOpen(!isOpen);
+  const toggleMenuMoreInfo = () => setIsOpenMoreInfo(!isOpenMoreInfo);
 
   const icons = [
     {
@@ -107,20 +87,6 @@ const Header = () => {
       action: toggleMenu,
     },
   ];
-
-  const selectPdfForUserRol = () => {
-    if (userSession.role === 'EMPLOYEE')
-      return window.open('/public/tutorials/MANUAL_DE_USUARIO.pdf', '_blank');
-    return window.open(
-      '/public/tutorials/MANUAL_DE_ADMINISTRADOR.pdf',
-      '_blank'
-    );
-  };
-  const selectVideoForUserRol = () => {
-    if (userSession.role === 'EMPLOYEE')
-      return window.open('/public/tutorials/USER_GUIDE.mkv', '_blank');
-    return window.open('/public/tutorials/ADMIN_GUIDE.mkv', '_blank');
-  };
   const menuMoreInfo = [
     {
       id: 1,
@@ -155,10 +121,6 @@ const Header = () => {
       action: handleLogout,
     },
   ];
-  const itemType = assitant_perms.includes(userSession.role)
-    ? itemsAdmin
-    : itemsEmployee;
-
   return (
     <header className="header">
       <nav className="nav-container container">
@@ -173,19 +135,11 @@ const Header = () => {
           </figure>
           <ul className="items-list">
             {itemType.map(item => (
-              <li key={item.id}>
-                <NavLink
-                  to={item.link}
-                  className={({ isActive }) =>
-                    isActive ? 'item-nav-active' : 'item-nav-inactive'
-                  }
-                >
-                  <img src={`/svg/${item.icon}.svg`} title={`${item.title}`} />
-                </NavLink>
-              </li>
+              <ChipItem key={item.id} item={item} />
             ))}
           </ul>
         </div>
+
         <ul className="icons-list">
           {icons.map(icon => (
             <li key={icon.id} className="icon-list">
@@ -196,7 +150,7 @@ const Header = () => {
                   onClick={icon.action}
                   src={icon.name}
                   alt={icon.name}
-                  className="icon"
+                  className="icon-list-item"
                 />
               )}
               {icon.id === 2 && isOpenMoreInfo && <Menu data={menuMoreInfo} />}

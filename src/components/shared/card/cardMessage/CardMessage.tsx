@@ -4,10 +4,16 @@ import './cardMessage.css';
 interface CardMessageProps {
   message: MessageType;
   type: MessageSender;
+  isActive?: boolean;
   onClick: () => void;
 }
 
-const CardMessage = ({ message, type, onClick }: CardMessageProps) => {
+const CardMessage = ({
+  message,
+  type,
+  onClick,
+  isActive,
+}: CardMessageProps) => {
   const contactUser = message.users.find(user => user.type !== type);
   const parseDate = (date: Date) =>
     formatDate(new Date(date), {
@@ -20,7 +26,7 @@ const CardMessage = ({ message, type, onClick }: CardMessageProps) => {
     });
   return (
     <div
-      className={`card-message-container-section ${
+      className={`card-message-container-section status-card-${isActive} ${
         message.isOpen && 'message-isOpen'
       } pointer`}
       onClick={onClick}
@@ -40,16 +46,20 @@ const CardMessage = ({ message, type, onClick }: CardMessageProps) => {
       <div className="card-message-section-item mail-grid-col-2">
         <span className="card-status-span ">{message.title}</span>
       </div>
-      <div className="card-message-section-item">
-        <span className={`card-status-message status-${message.status}`}>
-          {message.status ? 'Aceptado' : 'En proceso'}
-        </span>
-      </div>
-      <div className="card-message-section-item">
-        <span className="card-status-span ">
-          {parseDate(message.createdAt)}
-        </span>
-      </div>
+      {!isActive && (
+        <>
+          <div className="card-message-section-item">
+            <span className={`card-status-message status-${message.status}`}>
+              {message.status ? 'Aceptado' : 'En proceso'}
+            </span>
+          </div>
+          <div className="card-message-section-item">
+            <span className="card-status-span ">
+              {parseDate(message.createdAt)}
+            </span>
+          </div>
+        </>
+      )}
     </div>
   );
 };

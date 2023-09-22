@@ -30,8 +30,8 @@ const ChipFileMessage = ({
   const parseLink = 'file-user/' + link?.split('/').slice(1).join('/');
   const dir = `${URL}/${parseLink}`;
   return (
-    <a target="_blank" href={link && dir}>
-      <div className={`${className} chip-container-file`} onClick={onClick}>
+    <div className={`${className} chip-container-file `} onClick={onClick}>
+      <a target="_blank" href={link && dir} className="chip-file-link">
         <div className="chip-file-information">
           <img className="chip-file-icon-doc" src={`/svg/${icon}.svg`} />
           <span className="chip-file-text">{text}</span>
@@ -43,8 +43,8 @@ const ChipFileMessage = ({
             src="/svg/close.svg"
           />
         )}
-      </div>
-    </a>
+      </a>
+    </div>
   );
 };
 

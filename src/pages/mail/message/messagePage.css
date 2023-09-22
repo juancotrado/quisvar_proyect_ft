@@ -6,6 +6,22 @@
   overflow-y: auto;
   height: 100%;
 }
+.message-icon-drop {
+  position: fixed;
+  top: 0.3rem;
+  border: none;
+  width: 1.85rem;
+  left: 0.3rem;
+}
+.message-icon-close {
+  position: fixed;
+  top: 0.5rem;
+  border: none;
+  color: #fff;
+  padding: 0.3rem 1rem;
+  background-color: var(--color-tertiary);
+  right: 1.2rem;
+}
 .message-page-section {
   display: grid;
   gap: 0.5rem;
@@ -17,7 +33,7 @@
   position: sticky;
   top: 0;
   padding: 0 0 0.5rem;
-  z-index: 1;
+  z-index: 2;
   background-color: #fff;
   border-bottom: 1px solid #e3e3e3;
   width: 100%;
@@ -29,12 +45,14 @@
   gap: 0.7rem;
 }
 .patito {
+  padding-top: 0.5rem;
   display: flex;
-  width: 100%;
-  justify-content: space-between;
+  gap: 0.5rem;
+  width: 90%;
 }
 .message-header-title-container {
   display: flex;
+  width: 100%;
   flex-direction: column;
   gap: 0.5rem;
   align-items: start;
@@ -43,7 +61,7 @@
   font-weight: 400;
 }
 .message-title {
-  max-width: 30rem;
+  max-width: 80%;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -87,6 +105,9 @@
 }
 .message-description-info {
   color: #000;
+  max-height: 20rem;
+  overflow-x: auto;
+  text-align: justify;
   font-size: 12px;
   font-style: normal;
   font-weight: 300;
@@ -101,9 +122,14 @@
   letter-spacing: 0.15px;
 }
 .message-container-files-grid {
-  display: grid;
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
   gap: 0.5rem;
   font-size: 14px;
   align-items: center;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  /* grid-template-columns: repeat(4, minmax(0, 1fr)); */
+}
+.message-files-list {
+  max-width: 12rem;
 }

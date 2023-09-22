@@ -37,7 +37,11 @@
 }
 
 .item-nav-active {
-  border-left: 2px solid var(--color-primary);
+  /* border-left: 2px solid white; */
+  width: 40px;
+  height: 40px;
+  background-color: red;
+  z-index: 10;
 }
 
 .item-nav-inactive {

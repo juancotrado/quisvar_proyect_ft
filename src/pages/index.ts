@@ -10,6 +10,9 @@ import NotificationsList from './notificationsList/NotificationsList';
 import CommingSoon from './commingSoon/CommingSoon';
 import PaperWork from './paperwork/PaperWork';
 import Attendance from './attendance/Attendance';
+import DetailsPage from './specialities/project/details/DetailsPage';
+import BasicsPage from './specialities/project/basics/BasicsPage';
+import BudgetsPage from './specialities/project/budgets/BudgetsPage';
 
 export {
   CommingSoon,
@@ -24,4 +27,7 @@ export {
   UsersList,
   PaperWork,
   Attendance,
+  DetailsPage,
+  BasicsPage,
+  BudgetsPage,
 };

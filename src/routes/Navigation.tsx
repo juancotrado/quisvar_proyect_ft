@@ -11,6 +11,9 @@ import {
   ListPersonalTask,
   CommingSoon,
   Attendance,
+  DetailsPage,
+  BasicsPage,
+  BudgetsPage,
 } from '../pages';
 import { ProtectedRoute } from '../components';
 import Project from '../pages/specialities/project/Project';
@@ -39,7 +42,11 @@ const Navigation = () => {
             <Route path="/especialidades" element={<Specialities />}>
               <Route path="proyecto/:projectId" element={<Stage />}>
                 <Route path="etapa/:stageId" element={<Project />}>
-                  <Route path="tarea/:taskId" element={<Task />} />
+                  <Route path="detalles" element={<DetailsPage />} />
+                  <Route path="basicos" element={<BasicsPage />} />
+                  <Route path="presupuestos" element={<BudgetsPage />}>
+                    <Route path="tarea/:taskId" element={<Task />} />
+                  </Route>
                 </Route>
               </Route>
             </Route>

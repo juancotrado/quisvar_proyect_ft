@@ -105,7 +105,7 @@ const GeneralData = () => {
     isUniqueCorp ? setCompany(null) : setConsortium(null);
   };
   return (
-    <div style={{ width: '100%' }}>
+    <div style={{ width: '100%', height: '100%' }}>
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="card-register-project"
@@ -115,7 +115,7 @@ const GeneralData = () => {
           ref={refDescriptioProject}
           className="card-register-project-container-details"
         >
-          <h2>{project ? 'ACTUALIZAR PROYECTO' : 'DATOS DEL PROYECTO'}</h2>
+          <h2>{project ? 'ACTUALIZAR PROYECTO' : 'DATOS DE LA ETAPA'}</h2>
           <hr></hr>
           <div className="col-input-top">
             <Select

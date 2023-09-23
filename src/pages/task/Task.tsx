@@ -37,7 +37,9 @@ const Task = () => {
 
   const navigate = useNavigate();
   const goBack = () => {
-    navigate(`/especialidades/proyecto/${projectId}/etapa/${stageId}`);
+    navigate(
+      `/especialidades/proyecto/${projectId}/etapa/${stageId}/presupuestos`
+    );
   };
   if (!task) return <></>;
   const { status } = task;

@@ -1,4 +1,4 @@
-import { Outlet, useParams } from 'react-router-dom';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import './project.css';
 import { useContext, useEffect, useState } from 'react';
 import { axiosInstance } from '../../../services/axiosInstance';
@@ -11,8 +11,31 @@ import { findProject } from '../../../utils/tools';
 import { motion } from 'framer-motion';
 import Button from '../../../components/shared/button/Button';
 import { GeneralData } from '../../../components';
-
+const projectOptions = [
+  {
+    id: 1,
+    text: 'DATOS GENERALES',
+    iconOn: 'ntbook-blue',
+    iconOff: 'ntbook-black',
+    navigation: 'detalles',
+  },
+  {
+    id: 2,
+    text: 'HOJA DE PRESUPUESTOS',
+    iconOn: 'spread-blue',
+    iconOff: 'spread-black',
+    navigation: 'presupuestos',
+  },
+  {
+    id: 3,
+    text: 'BÁSICOS',
+    iconOn: 'brief-blue',
+    iconOff: 'brief-black',
+    navigation: 'basicos',
+  },
+];
 const Project = () => {
+  const navigate = useNavigate();
   const { stageId } = useParams();
   const socket = useContext(SocketContext);
   const [levels, setlevels] = useState<Level | null>(null);
@@ -49,28 +72,16 @@ const Project = () => {
       }
     });
   };
-  const projectOptions = [
-    {
-      id: 1,
-      text: 'DATOS GENERALES',
-      iconOn: 'ntbook-blue',
-      iconOff: 'ntbook-black',
-    },
-    {
-      id: 2,
-      text: 'HOJA DE PRESUPUESTOS',
-      iconOn: 'spread-blue',
-      iconOff: 'spread-black',
-    },
-    { id: 3, text: 'BÁSICOS', iconOn: 'brief-blue', iconOff: 'brief-black' },
-  ];
+
+  const navigateTo = (value: string) => navigate(value);
+
   return (
     <div className="project">
       <div className="project-options">
         {projectOptions.map(option => (
           <Button
             key={option.id}
-            onClick={() => setOptionSelected(option.id)}
+            onClick={() => navigateTo(option.navigation)}
             className={`project-header-btn ${
               optionSelected === option.id && 'project-header-btn-selected'
             }`}
@@ -82,7 +93,8 @@ const Project = () => {
           />
         ))}
       </div>
-      <div className="project-content">
+      <Outlet />
+      {/* <div className="project-content">
         {optionSelected === 1 && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -187,7 +199,7 @@ const Project = () => {
             hola 3
           </motion.div>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

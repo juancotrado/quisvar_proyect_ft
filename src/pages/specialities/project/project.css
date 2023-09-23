@@ -105,3 +105,29 @@
 .project-img-size {
   width: 1.5rem;
 }
+.project-filter-btn {
+  border-radius: 0.5rem;
+  border: 1px solid white;
+}
+.project-filter-area {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}
+.project-filter-icon {
+  display: flex;
+  cursor: pointer;
+}
+.project-filter-close {
+  width: 22px;
+  border: 0.5px solid gray;
+}
+.project-filter {
+  display: flex;
+  gap: 1rem;
+  justify-content: baseline;
+  align-items: center;
+  width: 100%;
+  height: 29px;
+}

@@ -50,6 +50,22 @@ const MoreInfo = ({ data }: MoreInfoProps) => {
             <span className="moreInfo-currency-info">Tareas</span>
           )}
         </div>
+        <div className="moreInfo-currency">
+          <span className="moreInfo-currency-money">
+            {data.days}
+            {!data.projectName && (
+              <span className="moreInfo-currency-info">
+                {' '}
+                Dia{data.days !== 1 && 's'}
+              </span>
+            )}
+          </span>
+          {data.projectName && (
+            <span className="moreInfo-currency-info">
+              Dia{data.days !== 1 && 's'}
+            </span>
+          )}
+        </div>
       </div>
       {/* <div className="moreInfo-details-contain">
         <div className="moreInfo-detail">

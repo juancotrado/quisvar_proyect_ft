@@ -9,16 +9,23 @@ import CardRegisterMessage from '../../components/shared/card/cardRegisterMessag
 import Button from '../../components/shared/button/Button';
 import SelectOptions from '../../components/shared/select/Select';
 import { listStatusMsg, listTypeMsg } from '../../utils/files/files.utils';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
 
 const InitTMail: MailType['type'] = 'RECEIVER';
 
 const MailPage = () => {
+  const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const { userSession: user } = useSelector((state: RootState) => state);
   const [listMessage, setListMessage] = useState<MailType[] | null>(null);
+  const [totalMail, setTotalMail] = useState(0);
+  const [skip, setSkip] = useState(0);
+  //-----------------------------QUERIES-----------------------------------
   const [typeMsg, setTypeMsg] = useState<MessageTypeImbox | null>(null);
   const [typeMail, setTypeMail] = useState<MailType['type'] | null>(InitTMail);
   const [statusMsg, setStatusMsg] = useState<MessageStatus | null>(null);
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
+  //-----------------------------------------------------------------------
   const size = searchParams.get('size') === 'true' ? true : false;
   const [isNewMessage, setIsNewMessage] = useState(false);
   const viewMessage = (id: number, type: MailType['type']) =>
@@ -32,13 +39,16 @@ const MailPage = () => {
     getMessages();
     setIsNewMessage(false);
   };
-
   const getMessages = () => {
     const type = (typeMail && `&type=${typeMail}`) || '';
     const status = (statusMsg && `&status=${statusMsg}`) || '';
     const typeMessage = (typeMsg && `&typeMessage=${typeMsg}`) || '';
-    const query = `/mail?${type}${status}${typeMessage}`;
-    axiosInstance.get(query).then(res => setListMessage(res.data.mail));
+    const offset = `&skip=${skip}`;
+    const query = `/mail?${type}${status}${typeMessage}${offset}`;
+    axiosInstance.get(query).then(res => {
+      setListMessage(res.data.mail);
+      setTotalMail(res.data.total);
+    });
   };
   const handleSelectReceiver = () => {
     setTypeMail('RECEIVER');
@@ -54,6 +64,16 @@ const MailPage = () => {
     setTypeMail(null);
     setStatusMsg('ARCHIVADO');
     setTypeMsg(null);
+  };
+
+  const handleNextPage = () => {
+    const total = Math.floor(totalMail / 20);
+    const limit = Math.ceil(skip / 20);
+    if (limit < total) setSkip(skip === 0 ? skip + 21 : skip + 20);
+  };
+  const handlePreviusPage = () => {
+    const limit = Math.floor(skip / 20);
+    if (0 < limit) setSkip(skip === 21 ? skip - 21 : skip - 20);
   };
   return (
     <div className="mail-main container">
@@ -129,10 +149,12 @@ const MailPage = () => {
               className={`message-container-header-titles status-mail-header-${size} `}
             >
               <div className="message-header-item">
-                <span>DOCUMENTO</span>
+                <span>#DOCUMENTO</span>
               </div>
               <div className="message-header-item">
-                <span>DESTINATARIO</span>
+                <span>{`${
+                  typeMail === 'RECEIVER' ? 'REMITENTE' : 'DESTINATARIO'
+                }`}</span>
               </div>
               <div className="message-header-item mail-grid-col-2">
                 <span>ASUNTO</span>
@@ -145,6 +167,11 @@ const MailPage = () => {
                   <div className="message-header-item">
                     <span>FECHA DE ENVÍO</span>
                   </div>
+                  {user.role === 'SUPER_ADMIN' && (
+                    <div className="message-header-item message-cursor-none">
+                      <span>ARCHIVAR</span>
+                    </div>
+                  )}
                 </>
               )}
             </div>
@@ -153,6 +180,7 @@ const MailPage = () => {
             {listMessage &&
               listMessage.map(({ message, messageId, type }) => (
                 <CardMessage
+                  user={user}
                   isActive={size}
                   key={messageId}
                   type={type}
@@ -160,6 +188,22 @@ const MailPage = () => {
                   message={message}
                 />
               ))}
+          </div>
+          <div className="mail-footer-section">
+            <Button
+              className="mail-previus-btn-pagination"
+              icon="down"
+              onClick={handlePreviusPage}
+            />
+            <span className="mail-pagination-title">
+              {skip === 0 && totalMail !== 0 ? 1 : skip}
+              {`-${skip + totalMail < 20 ? totalMail : 20}`} de {totalMail}
+            </span>
+            <Button
+              className="mail-next-btn-pagination"
+              icon="down"
+              onClick={handleNextPage}
+            />
           </div>
         </div>
       </div>

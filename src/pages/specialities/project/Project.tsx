@@ -174,7 +174,6 @@ const Project = () => {
               )}
             </div>
             <Outlet />
-
             <CardRegisterSubTask onSave={getLevels} />
           </>
         )}

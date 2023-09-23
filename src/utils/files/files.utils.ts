@@ -1,3 +1,5 @@
+import { MessageStatus, MessageTypeImbox } from '../../types/types';
+
 export const addFilesList = (fileUploadFiles: File[], newFiles: File[]) => {
   if (!fileUploadFiles) return newFiles;
   const concatFiles = [...fileUploadFiles, ...newFiles];
@@ -16,3 +18,20 @@ export const deleteFileOnList = (fileUploadFiles: File[], delFiles: File) => {
     return newFiles;
   }
 };
+
+export const listTypeMsg: { id: MessageTypeImbox }[] = [
+  { id: 'ACUERDO' },
+  { id: 'CARTA' },
+  { id: 'COORDINACION' },
+  { id: 'INFORME' },
+  { id: 'MEMORANDUM' },
+  { id: 'OFICIO' },
+];
+
+export const listStatusMsg: { id: MessageStatus }[] = [
+  { id: 'ARCHIVADO' },
+  { id: 'FINALIZADO' },
+  { id: 'GUARDADO' },
+  { id: 'PROCESO' },
+  { id: 'RECHAZADO' },
+];

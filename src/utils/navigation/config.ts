@@ -1,10 +1,10 @@
 export const itemsAdmin = [
   { id: 1, title: 'Inicio', icon: 'home-bar', link: '/home' },
-  { id: 2, title: 'Reportes', icon: 'casco-bar', link: '/mis-tareas' },
+  { id: 2, title: 'Reportes', icon: 'specialty-white', link: '/mis-tareas' },
   {
     id: 3,
-    title: 'Especialidades',
-    icon: 'specialty-white',
+    title: 'Proyectos',
+    icon: 'casco-bar',
     link: '/especialidades',
   },
   { id: 4, title: 'Usuarios', icon: 'users-bar', link: '/lista-de-usuarios' },
@@ -23,10 +23,10 @@ export const itemsAdmin = [
 ];
 export const itemsEmployee = [
   { id: 1, title: 'Inicio', icon: 'home-bar', link: '/home' },
-  { id: 2, title: 'Tareas', icon: 'mdi-users', link: '/mis-tareas' },
+  { id: 2, title: 'Tareas', icon: 'users-bar', link: '/mis-tareas' },
   {
     id: 3,
-    title: 'Especialidades',
+    title: 'Proyectos',
     icon: 'casco-bar',
     link: '/especialidades',
   },

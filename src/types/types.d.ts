@@ -647,6 +647,12 @@ export interface MailType {
   message: MessageType;
 }
 export type MessageSender = 'SENDER' | 'RECEIVER';
+export type MessageStatus =
+  | 'PROCESO'
+  | 'RECHAZADO'
+  | 'ARCHIVADO'
+  | 'FINALIZADO'
+  | 'GUARDADO';
 export type MessageTypeImbox =
   | 'INFORME'
   | 'CARTA'

@@ -1,9 +1,13 @@
+import useArchiver from '../../../hooks/useArchiver';
 import { Level } from '../../../types/types';
 import './moreInfo.css';
 interface MoreInfoProps {
   data: Level;
 }
 const MoreInfo = ({ data }: MoreInfoProps) => {
+  const type = data.projectName ? 'stages' : 'levels';
+  const { handleArchiver } = useArchiver(data.id, type);
+
   return (
     <>
       <div className="moreInfo-currency-contain">
@@ -40,26 +44,13 @@ const MoreInfo = ({ data }: MoreInfoProps) => {
           )}
         </div>
         <div className="moreInfo-currency">
-          <span className="moreInfo-currency-money">
-            {data.total}
-            {!data.projectName && (
-              <span className="moreInfo-currency-info"> Tareas</span>
-            )}
-          </span>
+          <span className="moreInfo-currency-money">{data.total}</span>
           {data.projectName && (
             <span className="moreInfo-currency-info">Tareas</span>
           )}
         </div>
         <div className="moreInfo-currency">
-          <span className="moreInfo-currency-money">
-            {data.days}
-            {!data.projectName && (
-              <span className="moreInfo-currency-info">
-                {' '}
-                Dia{data.days !== 1 && 's'}
-              </span>
-            )}
-          </span>
+          <span className="moreInfo-currency-money">{data.days}</span>
           {data.projectName && (
             <span className="moreInfo-currency-info">
               Dia{data.days !== 1 && 's'}
@@ -120,10 +111,10 @@ const MoreInfo = ({ data }: MoreInfoProps) => {
             </span>
           </div>
           <span className="moreInfo-detail-info">Liquidados</span>
-        </div>
+        </div>x
       </div> */}
       <div className="moreInfo-details-contain">
-        <div className="moreInfo-detail">
+        <div className="moreInfo-detail" onClick={handleArchiver}>
           <figure className="moreInfo-detail-icon">
             <img src="/svg/file-download.svg" alt="W3Schools" />
           </figure>

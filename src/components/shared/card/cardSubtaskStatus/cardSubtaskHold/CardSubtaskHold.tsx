@@ -134,22 +134,23 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
       <section className="cardSubtaskHold-details">
         <SubtasksMoreInfo task={subTask} />
         <div className="cardSubtaskHold-btns">
-          {isAuthorizedMod && addBtn && (
+          {!isAuthorizedMod && <div></div>}
+          <SubtaskChangeStatusBtn
+            isAuthorizedUser
+            option="ASIG"
+            type="assigned"
+            subtaskId={subTask.id}
+            subtaskStatus={status}
+            text="ASIGNARME"
+            className="cardSubtaskHold-add-btn"
+          />
+          {isAuthorizedMod && (
             <Button
-              text="LISTO"
-              className="cardSubtaskHold-add-btn"
+              text="CONTINUAR"
+              className={`cardSubtaskHold-add-btn ${
+                !addBtn && 'cardSubtaskHold-btn-disabled'
+              }`}
               onClick={handleAddUserByTask}
-            />
-          )}
-          {userSession.role === 'EMPLOYEE' && (
-            <SubtaskChangeStatusBtn
-              isAuthorizedUser
-              option="ASIG"
-              type="assigned"
-              subtaskId={subTask.id}
-              subtaskStatus={status}
-              text="Asignarme"
-              className="cardSubtaskHold-add-btn"
             />
           )}
         </div>

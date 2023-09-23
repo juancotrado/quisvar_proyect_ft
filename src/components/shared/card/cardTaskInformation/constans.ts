@@ -3,7 +3,7 @@ export const statusText = {
   PROCESS: 'HACIENDO',
   INREVIEW: 'POR REVISAR',
   DENIED: 'POR CORREGIR',
-  DONE: 'SIN LIQUIDAR',
+  DONE: 'HECHO',
   LIQUIDATION: 'LIQUIDADO',
 };
 interface StatusBody {

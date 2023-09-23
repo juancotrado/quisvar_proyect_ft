@@ -22,6 +22,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+  justify-content: space-between;
   gap: 1rem;
 }
 
@@ -145,8 +146,22 @@
   color: white;
   align-items: center;
   justify-content: center;
-  min-width: 50%;
-  padding: 0.5rem 0;
+  padding: 0.625rem 3.1875rem;
   border: none;
-  border-radius: 8px;
+  border-radius: 0.63rem;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.25rem;
+}
+.cardSubtaskHold-btn-disabled {
+  border: 1px solid #5a6376;
+  opacity: 0.7;
+  background: #e9edf5;
+  color: #5a6376;
+}
+.cardSubtaskHold-btns {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }

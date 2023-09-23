@@ -9,7 +9,7 @@
   overflow: auto;
 }
 .cardSubtaskProcess-left-details {
-  flex: 2;
+  flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -94,11 +94,12 @@
 
 .cardSubtaskProcess-details {
   flex: 1;
+  border-left: 2px solid var(--color-secondary);
+  padding-left: 0.5rem;
   display: flex;
   align-items: center;
   flex-direction: column;
-  padding-left: 1rem;
-  border-left: 2px solid var(--color-secondary);
+  justify-content: space-between;
   gap: 1rem;
 }
 
@@ -146,7 +147,7 @@
   padding: 1rem 0.5rem;
   gap: 2rem;
   overflow-x: auto;
-  width: 40rem;
+  width: 100%;
 }
 .cardSubtaskProcess-files-values-contain {
   display: flex;

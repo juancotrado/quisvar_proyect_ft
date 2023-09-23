@@ -69,6 +69,7 @@ const Project = () => {
         const hasProject = findProject(res.data.nextLevel);
         setHasProject(hasProject);
         setlevels({ ...res.data, stagesId: +stageId });
+        socket.emit('leave', `project-${stageId}`);
       }
     });
   };

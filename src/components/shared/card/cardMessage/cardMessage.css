@@ -7,7 +7,7 @@
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 .status-card-false {
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(7, minmax(0, 1fr));
 }
 .card-message-section-item {
   display: flex;
@@ -25,8 +25,21 @@
 .card-status-message {
   border-radius: var(--radius-button);
   padding: 0.1rem 0.4rem;
-  font-size: 9px;
-  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.card-message-archiver-action {
+  border: none;
+  padding: 0;
+  border-radius: 0;
+  background-color: transparent;
+  width: 2rem;
+  height: 2rem;
+}
+.message-cursor-none {
+  cursor: default;
+  justify-content: center;
 }
 .card-status-span {
   letter-spacing: 0.0175rem;
@@ -35,13 +48,21 @@
   white-space: nowrap;
   width: 100%;
 }
-.status-true {
-  background-color: #c6e3c7;
-  color: #4aaf50;
+.status-ARCHIVADO {
+  background-color: var(--color-bg-liquidation);
+  color: var(--color-liquidation);
 }
-.status-false {
-  background-color: var(--color-process);
-  color: #aa5b00;
+.status-PROCESO {
+  background-color: var(--color-bg-asigned);
+  color: var(--color-asigned);
+}
+.status-RECHAZADO {
+  background-color: var(--color-bg-unresolved);
+  color: var(--color-unresolved);
+}
+.status-FINALIZADO {
+  background-color: var(--color-bg-done);
+  color: var(--color-done);
 }
 
 .message-isOpen {

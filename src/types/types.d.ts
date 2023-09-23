@@ -662,7 +662,7 @@ export type MessageTypeImbox =
   | 'COORDINACION';
 export interface MessageType {
   id: number;
-  status: boolean;
+  status: MessageStatus;
   title: string;
   isOpen: boolean;
   description: string;

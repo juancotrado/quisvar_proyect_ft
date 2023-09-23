@@ -1,13 +1,13 @@
 .projectAddLevel {
   display: flex;
-  padding: 0.976rem 0.8125rem;
+  padding: 0.476rem 0.8125rem;
   background-color: #ebf0fa99;
   gap: 1rem;
 }
 .projectAddLevel-figure {
   cursor: pointer;
-  width: 2.125rem;
-  height: 2.125rem;
+  width: 1.8rem;
+  height: 1.8rem;
 }
 .projectAddLevel-input {
   display: flex;

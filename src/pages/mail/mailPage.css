@@ -96,18 +96,25 @@
   padding: 0 0.3rem;
   align-items: center;
   background-color: #f4f7fc;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(7, minmax(0, 1fr));
 }
 .status-mail-header-true {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }
 .message-header-item {
-  color: #171c26;
+  display: flex;
+  width: 100%;
+  padding-left: 0.05rem;
   font-size: 0.6875rem;
   font-style: normal;
   font-weight: 600;
   line-height: 1rem;
   letter-spacing: 0.0275rem;
+}
+.message-header-item span {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }
 .mail-grid-col-2 {
   grid-column: span 2 / span 2;
@@ -128,4 +135,39 @@
 .mail-m-size-false {
   width: 0;
   max-width: 70vw;
+}
+.mail-footer-section {
+  position: fixed;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  bottom: 1rem;
+  right: 1rem;
+}
+.mail-pagination-title {
+  font-size: 15px;
+}
+.mail-previus-btn-pagination {
+  display: flex;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+}
+.mail-previus-btn-pagination img {
+  transform: rotate(90deg);
+  width: 100%;
+  height: 100%;
+}
+.mail-next-btn-pagination img {
+  transform: rotate(-90deg);
+  width: 100%;
+  height: 100%;
+}
+.mail-next-btn-pagination {
+  display: flex;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
 }

@@ -22,6 +22,7 @@
   display: flex;
   align-items: center;
   flex-direction: column;
+  justify-content: space-between;
   gap: 1rem;
 }
 
@@ -145,8 +146,10 @@
   color: white;
   align-items: center;
   justify-content: center;
-  min-width: 50%;
-  padding: 0.5rem 0;
+  padding: 0.625rem 3.1875rem;
   border: none;
   border-radius: 8px;
+}
+.cardSubtaskHold-btns {
+  margin-left: auto;
 }

@@ -10,9 +10,9 @@ import SubtaskFile from '../../../../subtasks/subtaskFiles/SubtaskFile';
 import SubtaskUploadFiles from '../../../../subtasks/subtaskUploadFiles/SubtaskUploadFiles';
 import SubtaskChangeStatusBtn from '../../../../subtasks/subtaskChangeStatusBtn/SubtaskChangeStatusBtn';
 import './cardSubtaskHold.css';
-import formatDate from '../../../../../utils/formatDate';
 import useListUsers from '../../../../../hooks/useListUsers';
 import { useParams } from 'react-router-dom';
+import SubtasksMoreInfo from '../../../../subtasks/subtasksMoreInfo/SubtasksMoreInfo';
 
 type DataUser = { id: number; name: string };
 interface CardSubtaskHold {
@@ -132,51 +132,27 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
         )}
       </section>
       <section className="cardSubtaskHold-details">
-        {/* <SubTaskStatusLabel status={status} /> */}
-        <div className="cardSubtaskHold-info">
-          {subTask.createdAt && (
-            <p className="cardSubtaskHold-info-date">
-              <b>Fecha de inicio: </b>
-              {formatDate(new Date(subTask.createdAt), {
-                day: '2-digit',
-                month: 'long',
-                year: 'numeric',
-              })}
-            </p>
+        <SubtasksMoreInfo task={subTask} />
+        <div className="cardSubtaskHold-btns">
+          {isAuthorizedMod && addBtn && (
+            <Button
+              text="LISTO"
+              className="cardSubtaskHold-add-btn"
+              onClick={handleAddUserByTask}
+            />
           )}
-          <h2 className={'cardSubtaskHold-info-price'}>
-            <b>Precio:</b> S/. {subTask.price}
-          </h2>
-          {isAuthorizedMod && (
-            <div className="cardSubtaskHold-files-models">
-              <h2 className="cardSubtaskHold-files-models-title">
-                Archivos Modelo:
-              </h2>
-              <SubtaskFile
-                files={subTask.files}
-                typeFile="MODEL"
-                showDeleteBtn={isAuthorizedMod}
-              />
-            </div>
+          {userSession.role === 'EMPLOYEE' && (
+            <SubtaskChangeStatusBtn
+              isAuthorizedUser
+              option="ASIG"
+              type="assigned"
+              subtaskId={subTask.id}
+              subtaskStatus={status}
+              text="Asignarme"
+              className="cardSubtaskHold-add-btn"
+            />
           )}
         </div>
-        {isAuthorizedMod && addBtn && (
-          <Button
-            text="LISTO"
-            className="cardSubtaskHold-add-btn"
-            onClick={handleAddUserByTask}
-          />
-        )}
-        {userSession.role === 'EMPLOYEE' && (
-          <SubtaskChangeStatusBtn
-            option="ASIG"
-            type="assigned"
-            subtaskId={subTask.id}
-            subtaskStatus={status}
-            text="Asignarme"
-            className="cardSubtaskHold-add-btn"
-          />
-        )}
       </section>
     </div>
   );

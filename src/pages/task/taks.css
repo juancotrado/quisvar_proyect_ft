@@ -2,6 +2,9 @@
   position: relative;
   flex: 1;
 }
+.task-header {
+  margin-bottom: 2rem;
+}
 .task-header-title {
   font-size: 0.75rem;
   color: var(--color-secondary);

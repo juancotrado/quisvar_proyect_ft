@@ -11,6 +11,7 @@ import { motion } from 'framer-motion';
 import ButtonDelete from '../../../button/ButtonDelete';
 import SubtasksShippingHistory from '../../../../subtasks/subtasksShippingHistory/SubtasksShippingHistory';
 import formatDate from '../../../../../utils/formatDate';
+import SubtasksMoreInfo from '../../../../subtasks/subtasksMoreInfo/SubtasksMoreInfo';
 interface CardSubtaskProcess {
   subTask: SubTask;
 }
@@ -129,7 +130,7 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
             getDataFeedback={getDataFeedback}
           />
         )}
-        {status === 'PROCESS' &&
+        {/* {status === 'PROCESS' &&
           isAuthorizedMod &&
           adminId !== subTask.users[0].user.id &&
           subTask.feedBacks.length === 0 && (
@@ -153,7 +154,7 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
               />
               <h2>Esperando al envio de archivos...</h2>
             </div>
-          )}
+          )} */}
         {areAuthorizedUsers && (
           <div className="cardSubtaskProcess-btns">
             {status !== 'INREVIEW' && isAuthorizedUser && (
@@ -198,33 +199,8 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
         )}
       </section>
       <section className="cardSubtaskProcess-details">
-        {/* <SubTaskStatusLabel status={status} /> */}
-        <div className="cardSubtaskProcess-info">
-          <p
-            className={`cardSubtaskProcess-info-untilDate ${
-              getTimeOut() <= 0 && 'expired-time '
-            }`}
-          >
-            Tiempo restante: {getTimeOut()} hrs
-          </p>
-          {subTask.createdAt && (
-            <p className="cardSubtaskHold-info-date">
-              <b>Fecha de inicio: </b>
-              {formatDate(new Date(subTask.createdAt), {
-                day: '2-digit',
-                month: 'long',
-                year: 'numeric',
-              })}
-            </p>
-          )}
+        <SubtasksMoreInfo task={subTask} />
 
-          <h3 className="cardSubtaskProcess-info-hours">
-            <b>Total horas:</b> 24 horas
-          </h3>
-          <h2 className={'cardSubtaskProcess-info-price'}>
-            Precio: S/. {subTask.price}
-          </h2>
-        </div>
         <div className="cardSubtaskProcess-porcentage-container-main">
           <h4>Lista de porcentaje de avance:</h4>
           {subTask.users.map((user, index) => (

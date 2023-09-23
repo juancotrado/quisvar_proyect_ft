@@ -250,7 +250,7 @@ export interface SubTask {
   description: string;
   untilDate?: string;
   price: string;
-  hours: number;
+  days: number;
   files: Files[];
   createdAt?: Date;
   updatedAt?: Date;

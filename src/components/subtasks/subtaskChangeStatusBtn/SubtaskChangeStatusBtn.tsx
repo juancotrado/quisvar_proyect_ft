@@ -3,7 +3,6 @@ import { statusBody } from '../../shared/card/cardTaskInformation/constans';
 import { SnackbarUtilities } from '../../../utils/SnackbarManager';
 import { useContext } from 'react';
 import { axiosInstance } from '../../../services/axiosInstance';
-import { isOpenModal$ } from '../../../services/sharingSubject';
 import { SocketContext } from '../../../context/SocketContex';
 import './subtaskChangeStatusBtn.css';
 import { DataFeedback, StatusType } from '../../../types/types';
@@ -68,8 +67,6 @@ const SubtaskChangeStatusBtn = ({
       );
       socket.emit('client:update-projectAndTask', resStatus.data);
     }
-
-    isOpenModal$.setSubject = false;
   };
 
   const handleSendToReview = async () => {

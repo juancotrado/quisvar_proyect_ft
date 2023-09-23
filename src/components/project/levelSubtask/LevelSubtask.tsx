@@ -7,6 +7,7 @@ import Button from '../../shared/button/Button';
 import ButtonDelete from '../../shared/button/ButtonDelete';
 import { RootState } from '../../../store';
 import { useSelector } from 'react-redux';
+import StatusText from '../../shared/statusText/StatusText';
 
 interface LevelSutaskProps {
   level: Level;
@@ -86,11 +87,7 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
             <div className="levelSubtask-text">{subtask.percentage}%</div>
           </div>
           <div className="levelSubtask-item">
-            <div
-              className={`levelSubtask-text  levelSubask-status  ${subtask.status}`}
-            >
-              {statusText[subtask.status]}
-            </div>
+            <StatusText status={subtask.status} />
           </div>
           <div className="levelSubtask-item">
             <div className="levelSubtask-text">

@@ -682,6 +682,7 @@ export interface MessageType {
 }
 export interface fileMesage {
   id: number;
+  attempt: string;
   name: string;
   path: string;
 }

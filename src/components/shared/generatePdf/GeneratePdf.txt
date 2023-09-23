@@ -173,3 +173,5 @@
 // // export default PDFGenerator;
 // const patito = 'patito';
 // export default patito;
+const patito = '';
+export default patito;

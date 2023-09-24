@@ -29,6 +29,6 @@
   background-color: var(--color-bg-done);
 }
 .LIQUIDATION {
-  color: var(--color-f0f1fa);
-  background-color: var(--color-bg-f0f1fa);
+  color: var(--color-liquidation);
+  background-color: var(--color-bg-liquidation);
 }

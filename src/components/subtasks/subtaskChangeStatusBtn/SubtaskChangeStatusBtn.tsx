@@ -48,7 +48,7 @@ const SubtaskChangeStatusBtn = ({
   const getStatus = (
     category: string,
     role: string,
-    state: string,
+    state: string
   ): { status: string } | undefined => {
     return statusBody[category]?.[role]?.[state];
   };
@@ -59,16 +59,17 @@ const SubtaskChangeStatusBtn = ({
     if (isAssignedAdminTask) {
       const resStatus = await axiosInstance.patch(
         `/subtasks/status/${subtaskId}`,
-        { status: 'DONE' },
+        { status: 'DONE' }
       );
       socket.emit('client:update-subTask', resStatus.data);
     } else {
       const resStatus = await axiosInstance.patch(
         `/subtasks/status/${subtaskId}/${stageId}`,
-        body,
+        body
       );
       socket.emit('client:update-projectAndTask', resStatus.data);
     }
+    SnackbarUtilities.success('Se realizo la operación con exito');
   };
 
   // const handleSendToReviewFormData = async () => {
@@ -107,16 +108,16 @@ const SubtaskChangeStatusBtn = ({
   //   await handleEditStatus();
   // };
   const handleSendToReview = async () => {
-    console.log(files)
+    console.log(files);
     if (!files?.length)
       return SnackbarUtilities.warning(
-        'Asegurese de subir una archivo  antes.',
+        'Asegurese de subir una archivo  antes.'
       );
 
     const hasPdf = Array.from(files).some(file => file.name.includes('.pdf'));
     if (!hasPdf)
       return SnackbarUtilities.warning(
-        'Asegurese de subir una archivo PDF antes.',
+        'Asegurese de subir una archivo PDF antes.'
       );
     const message = validateValuesPorcentage();
     if (message) return SnackbarUtilities.warning(message);
@@ -127,7 +128,7 @@ const SubtaskChangeStatusBtn = ({
     await axiosInstance.post(`/feedbacks`, feedbackBody);
     await axiosInstance.patch(
       `/subtasks/percentage/${subtaskId}`,
-      porcentagesForUser,
+      porcentagesForUser
     );
     await handleEditStatus();
   };
@@ -135,13 +136,13 @@ const SubtaskChangeStatusBtn = ({
   const handleDeprecated = async () => {
     if (!dataFeedback?.comment)
       return SnackbarUtilities.warning(
-        'Asegurese de escribir un comentario antes',
+        'Asegurese de escribir un comentario antes'
       );
     const message = validateValuesPorcentage();
     if (message) return SnackbarUtilities.warning(message);
     await axiosInstance.patch(
       `/subtasks/percentage/${subtaskId}`,
-      porcentagesForUser,
+      porcentagesForUser
     );
     await axiosInstance.patch(`/feedbacks`, dataFeedback);
     await handleEditStatus();
@@ -152,7 +153,7 @@ const SubtaskChangeStatusBtn = ({
 
     const sumOfPercentages = porcentagesForUser.reduce(
       (acc, { percentage }) => percentage + acc,
-      0,
+      0
     );
     if (sumOfPercentages > 100)
       return 'La suma de todos los porcentajes no debe exceder del 100%';
@@ -166,7 +167,7 @@ const SubtaskChangeStatusBtn = ({
     if (message) return SnackbarUtilities.warning(message);
     await axiosInstance.patch(
       `/subtasks/percentage/${subtaskId}`,
-      porcentagesForUser,
+      porcentagesForUser
     );
     await handleEditStatus();
   };

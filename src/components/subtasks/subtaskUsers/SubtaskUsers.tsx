@@ -8,12 +8,14 @@ interface SubtaskUsersProps {
   handleRemoveUser?: (data: DataUser) => void;
   handlePorcentage?: (e: FocusEvent<HTMLInputElement>) => void;
   areAuthorizedUsers?: boolean;
+  viewProcentage?: boolean;
 }
 const SubtaskUsers = ({
   usersData,
   handleRemoveUser,
   handlePorcentage,
   areAuthorizedUsers = false,
+  viewProcentage = false,
 }: SubtaskUsersProps) => {
   return (
     <div className="subtaskUsers-users-contain">
@@ -44,6 +46,17 @@ const SubtaskUsers = ({
                 name={String(_user.id)}
                 className="subtaskUsers-percentage-value"
                 disabled={!areAuthorizedUsers}
+              />
+              %
+            </div>
+          )}
+          {viewProcentage && (
+            <div className="subtaskUsers-porcentage-input">
+              <Input
+                placeholder={String(_user.percentage)}
+                name={String(_user.id)}
+                className="subtaskUsers-percentage-value"
+                disabled={true}
               />
               %
             </div>

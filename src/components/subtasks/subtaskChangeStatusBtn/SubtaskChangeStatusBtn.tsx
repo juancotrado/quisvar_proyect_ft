@@ -5,7 +5,7 @@ import { useContext } from 'react';
 import { axiosInstance } from '../../../services/axiosInstance';
 import { SocketContext } from '../../../context/SocketContex';
 import './subtaskChangeStatusBtn.css';
-import { DataFeedback, StatusType } from '../../../types/types';
+import { DataFeedback, Files, StatusType } from '../../../types/types';
 import { useParams } from 'react-router-dom';
 
 interface SubtaskChangeStatusBtn {
@@ -14,6 +14,7 @@ interface SubtaskChangeStatusBtn {
   subtaskId: number;
   className?: string;
   option: 'ASIG' | 'DENY';
+  isDisabled?: boolean;
   text: string;
   type:
     | 'sendToReview'
@@ -23,7 +24,7 @@ interface SubtaskChangeStatusBtn {
     | 'liquidate'
     | 'reset';
   porcentagesForUser?: { userid: number; percentage: number }[];
-  files?: File[] | null;
+  files?: Files[] | null;
   dataFeedback?: DataFeedback | null;
   isAuthorizedUser?: boolean;
 }
@@ -40,13 +41,14 @@ const SubtaskChangeStatusBtn = ({
   isAssignedAdminTask,
   porcentagesForUser,
   isAuthorizedUser,
+  isDisabled = false,
 }: SubtaskChangeStatusBtn) => {
   const socket = useContext(SocketContext);
   const { stageId } = useParams();
   const getStatus = (
     category: string,
     role: string,
-    state: string
+    state: string,
   ): { status: string } | undefined => {
     return statusBody[category]?.[role]?.[state];
   };
@@ -57,42 +59,67 @@ const SubtaskChangeStatusBtn = ({
     if (isAssignedAdminTask) {
       const resStatus = await axiosInstance.patch(
         `/subtasks/status/${subtaskId}`,
-        { status: 'DONE' }
+        { status: 'DONE' },
       );
       socket.emit('client:update-subTask', resStatus.data);
     } else {
       const resStatus = await axiosInstance.patch(
         `/subtasks/status/${subtaskId}/${stageId}`,
-        body
+        body,
       );
       socket.emit('client:update-projectAndTask', resStatus.data);
     }
   };
 
+  // const handleSendToReviewFormData = async () => {
+  //   if (!files?.length)
+  //     return SnackbarUtilities.warning(
+  //       'Asegurese de subir una archivo  antes.',
+  //     );
+
+  //   const hasPdf = Array.from(files).some(
+  //     file => file.type === 'application/pdf',
+  //   );
+  //   if (!hasPdf)
+  //     return SnackbarUtilities.warning(
+  //       'Asegurese de subir una archivo PDF antes.',
+  //     );
+  //   const message = validateValuesPorcentage();
+  //   if (message) return SnackbarUtilities.warning(message);
+  //   const formdata = new FormData();
+  //   for (const file of files) {
+  //     formdata.append('files', file);
+  //   }
+
+  //   await axiosInstance.post(
+  //     `/files/uploads/${subtaskId}/?status=REVIEW`,
+  //     formdata,
+  //   );
+
+  //   const feedbackBody = {
+  //     subTasksId: subtaskId,
+  //   };
+  //   await axiosInstance.post(`/feedbacks`, feedbackBody);
+  //   await axiosInstance.patch(
+  //     `/subtasks/percentage/${subtaskId}`,
+  //     porcentagesForUser,
+  //   );
+  //   await handleEditStatus();
+  // };
   const handleSendToReview = async () => {
+    console.log(files)
     if (!files?.length)
       return SnackbarUtilities.warning(
-        'Asegurese de subir una archivo  antes.'
+        'Asegurese de subir una archivo  antes.',
       );
 
-    const hasPdf = Array.from(files).some(
-      file => file.type === 'application/pdf'
-    );
+    const hasPdf = Array.from(files).some(file => file.name.includes('.pdf'));
     if (!hasPdf)
       return SnackbarUtilities.warning(
-        'Asegurese de subir una archivo PDF antes.'
+        'Asegurese de subir una archivo PDF antes.',
       );
     const message = validateValuesPorcentage();
     if (message) return SnackbarUtilities.warning(message);
-    const formdata = new FormData();
-    for (const file of files) {
-      formdata.append('files', file);
-    }
-
-    await axiosInstance.post(
-      `/files/uploads/${subtaskId}/?status=REVIEW`,
-      formdata
-    );
 
     const feedbackBody = {
       subTasksId: subtaskId,
@@ -100,7 +127,7 @@ const SubtaskChangeStatusBtn = ({
     await axiosInstance.post(`/feedbacks`, feedbackBody);
     await axiosInstance.patch(
       `/subtasks/percentage/${subtaskId}`,
-      porcentagesForUser
+      porcentagesForUser,
     );
     await handleEditStatus();
   };
@@ -108,13 +135,13 @@ const SubtaskChangeStatusBtn = ({
   const handleDeprecated = async () => {
     if (!dataFeedback?.comment)
       return SnackbarUtilities.warning(
-        'Asegurese de escribir un comentario antes'
+        'Asegurese de escribir un comentario antes',
       );
     const message = validateValuesPorcentage();
     if (message) return SnackbarUtilities.warning(message);
     await axiosInstance.patch(
       `/subtasks/percentage/${subtaskId}`,
-      porcentagesForUser
+      porcentagesForUser,
     );
     await axiosInstance.patch(`/feedbacks`, dataFeedback);
     await handleEditStatus();
@@ -125,7 +152,7 @@ const SubtaskChangeStatusBtn = ({
 
     const sumOfPercentages = porcentagesForUser.reduce(
       (acc, { percentage }) => percentage + acc,
-      0
+      0,
     );
     if (sumOfPercentages > 100)
       return 'La suma de todos los porcentajes no debe exceder del 100%';
@@ -139,11 +166,12 @@ const SubtaskChangeStatusBtn = ({
     if (message) return SnackbarUtilities.warning(message);
     await axiosInstance.patch(
       `/subtasks/percentage/${subtaskId}`,
-      porcentagesForUser
+      porcentagesForUser,
     );
     await handleEditStatus();
   };
   const selectFuctionType = () => {
+    if (isDisabled) return;
     switch (type) {
       case 'approved':
         handleApproved();

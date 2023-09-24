@@ -1,23 +1,23 @@
-import { ChangeEvent, useMemo, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { ChangeEvent, useState } from 'react';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { Input } from '../../..';
 import InputFile from '../../Input/InputFile';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import useListUsers from '../../../../hooks/useListUsers';
 import Button from '../../button/Button';
-import DropDownSimple from '../../select/DropDownSimple';
-import {
-  MessageType,
-  UserRoleType,
-  quantityType,
-} from '../../../../types/types';
+import { MessageType, quantityType } from '../../../../types/types';
 import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
-import './cardRegisterMessageReply.css';
 import ChipFileMessage from '../cardRegisterMessage/ChipFileMessage';
 import { Editor } from '@tinymce/tinymce-react';
+import {
+  HashFile,
+  addFilesList,
+  deleteFileOnList,
+  radioOptions,
+} from '../../../../utils/files/files.utils';
+import './cardRegisterMessageForward.css';
 import formatDate from '../../../../utils/formatDate';
-import { HashFile, radioOptions } from '../../../../utils/files/files.utils';
 
 interface MessageSendType {
   title: string;
@@ -28,10 +28,6 @@ interface MessageSendType {
   idMessageResend?: number;
   type: 'INFORME' | 'MEMORANDUM' | 'CARTA';
 }
-const RolePerm: UserRoleType[] = ['SUPER_ADMIN', 'ADMIN', 'SUPER_MOD', 'MOD'];
-
-type receiverType = { id: number; value: string };
-
 const YEAR = new Date().getFullYear();
 
 const parseDate = (date: Date) =>
@@ -41,74 +37,47 @@ const parseDate = (date: Date) =>
     day: '2-digit',
   });
 
-interface CardRegisterMessageReplyProps {
+interface CardRegisterMessageForwardProps {
   message: MessageType;
   receiverId?: number;
   senderId: number;
-  idMessageReply?: number;
-  idMessageResend?: number;
   quantityFiles?: quantityType[] | null;
 }
 
-const CardRegisterMessageReply = ({
+const CardRegisterMessageForward = ({
   message,
-  receiverId,
   quantityFiles,
-}: CardRegisterMessageReplyProps) => {
+}: CardRegisterMessageForwardProps) => {
   const { userSession } = useSelector((state: RootState) => state);
   const { lastName, firstName } = userSession.profile;
   const { handleSubmit, register, setValue } = useForm<MessageSendType>();
   const [fileUploadFiles, setFileUploadFiles] = useState<File[]>([]);
-  const { users } = useListUsers(RolePerm);
   const HashUser = HashFile(`${firstName} ${lastName}`);
-  const [receiver, setReceiver] = useState<receiverType | null>(null);
 
-  // const InitialValueEditor = `<p style="text-align: justify;" >Por medio del presente documento me dirijo a usted con la finalidad de hacerle llegar un cordial saludo, y al mismo tiempo comunicarle lo siguiente:</p><p>&nbsp;</p><p>&nbsp;</p><p style="text-align: center;">Atentamente, ${userSession.profile.lastName.toUpperCase()} ${userSession.profile.firstName.toUpperCase()} </p>`;
-
-  const contacts = useMemo(
-    () =>
-      users.filter(
-        user => user.id !== userSession.id && user.id !== receiverId
-      ),
-    [userSession, users, receiverId]
-  );
-
-  const handleInputChange = (event: string) => {
-    setValue('description', event);
-  };
+  const handleInputChange = (event: string) => setValue('description', event);
 
   const addFiles = (newFiles: File[]) => {
-    if (!fileUploadFiles) return setFileUploadFiles(newFiles);
-    const concatFiles = [...fileUploadFiles, ...newFiles];
-    const uniqueFiles = Array.from(
-      new Set(concatFiles.map(file => file.name))
-    ).map(name => concatFiles.find(file => file.name === name)) as File[];
-    setFileUploadFiles(uniqueFiles);
+    const _files = addFilesList(fileUploadFiles, newFiles);
+    setFileUploadFiles(_files);
   };
 
   const deleteFiles = (delFiles: File) => {
-    if (fileUploadFiles) {
-      const newFiles = Array.from(fileUploadFiles).filter(
-        file => file !== delFiles
-      );
-      if (!newFiles) return;
-      setFileUploadFiles(newFiles);
-    }
+    const _files = deleteFileOnList(fileUploadFiles, delFiles);
+    if (_files) setFileUploadFiles(_files);
   };
+
   const handleChangeRadio = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const { value } = target;
     const countFile = quantityFiles?.find(file => file.type === value);
     const newIndex = (countFile ? countFile._count.type : 0) + 1;
     const newTitleValue = `${value} N°${newIndex} DHYRIUM-${HashUser}-${YEAR}`;
     setValue('title', newTitleValue);
-    console.log(countFile);
   };
-  const handleRemoveReceiver = () => setReceiver(null);
+
   const onSubmit: SubmitHandler<MessageSendType> = async data => {
     const values = {
       ...data,
       messageId: message.id,
-      receiverId: receiver?.id,
     };
     const headers = {
       'Content-type': 'multipart/form-data',
@@ -116,24 +85,25 @@ const CardRegisterMessageReply = ({
     const formData = new FormData();
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
     formData.append('data', JSON.stringify(values));
-    if (receiver)
-      axiosInstance
-        .post(`/mail/reply`, formData, { headers })
-        .then(res => console.log(res.data));
+    // formData.append('senderId', `${senderId}`);
+    axiosInstance
+      .post(`/mail/reply?status=RECHAZADO`, formData, { headers })
+      .then(res => console.log(res.data))
+      .catch(err => console.log(err));
   };
 
-  const handleDoneMessage = () => {
+  const sender = message.users.filter(user => user.type === 'SENDER')[0].user;
+  const handleArchiverMessage = () => {
     axiosInstance
-      .patch(`/mail/done/${message.id}`)
+      .patch(`/mail/archived/${message.id}`)
       .then(res => console.log(res.data));
   };
-
   return (
     <form
-      className="inbox-reply-data-content"
+      className="inbox-forward-data-content"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="inbox-reply-type-container">
+      <div className="inbox-forward-type-container">
         {radioOptions.map(radio => (
           <label
             key={radio.value}
@@ -153,33 +123,21 @@ const CardRegisterMessageReply = ({
           </label>
         ))}
       </div>
-      <div className="inbox-reply-receiver-container">
+      <div className="inbox-forward-receiver-container">
         <div className="inbox-receiver-container-info">
-          <span className="imbox-receiver-label">Para: </span>
-          <div className="imbox-receiver-choice-dropdown">
-            {receiver ? (
-              <div className="imbox-receiver-chip">
-                <span>{receiver.value}</span>
-                <img
-                  className="imbox-receiver-chip-icon-close "
-                  onClick={handleRemoveReceiver}
-                  src="/svg/circle-xmark-solid.svg"
-                />
-              </div>
-            ) : (
-              <DropDownSimple
-                classNameInput="imbox-receiver-choice-dropdown-input"
-                type="search"
-                data={contacts}
-                textField="name"
-                itemKey="id"
-                selector
-                droper
-                valueInput={(value, id) => setReceiver({ id: +id, value })}
-              />
-            )}
-          </div>
+          <span>Para:</span>
+          <span className="inbox-receiver-forward-chip">
+            {sender.profile.lastName} {sender.profile.firstName}
+          </span>
         </div>
+        {/* <Button
+          type="button"
+          text="Cc"
+          className="inbox-copy-button"
+          // onClick={handleAddCopy}
+        /> */}
+        {/* {receiver && (
+          )} */}
       </div>
       <label className="imbox-input-title">
         Asunto:
@@ -207,8 +165,8 @@ const CardRegisterMessageReply = ({
             ],
             toolbar:
               'undo redo | formatselect | bold italic | table\
-            alignleft aligncenter alignright alignjustify | \
-            bullist numlist outdent indent | removeformat | code',
+              alignleft aligncenter alignright alignjustify | \
+              bullist numlist outdent indent | removeformat | code',
           }}
           onEditorChange={handleInputChange}
         />
@@ -226,24 +184,24 @@ const CardRegisterMessageReply = ({
         </div>
       )}
       <InputFile
-        className="inbox-reply-file-area"
+        className="inbox-forward-file-area"
         getFilesList={files => addFiles(files)}
       />
-      <div className="inbox-reply-btn-submit-container">
+      <div className="inbox-forward-btn-submit-container">
         <Button
-          onClick={handleDoneMessage}
-          className={`inbox-reply-btn-done`}
-          type="button"
-          text="Finalizar Tramite"
+          className={`inbox-forward-btn-submit`}
+          // onClick={() => {}}
+          text="No Procede"
         />
         <Button
-          className={`inbox-reply-btn-submit`}
-          // onClick={() => {}}
-          text="Procede"
+          onClick={() => handleArchiverMessage}
+          className={`inbox-forward-btn-archiver`}
+          type="button"
+          text="Archivar Tramite"
         />
       </div>
     </form>
   );
 };
 
-export default CardRegisterMessageReply;
+export default CardRegisterMessageForward;

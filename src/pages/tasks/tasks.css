@@ -92,3 +92,9 @@ section {
   margin-top: 20%;
   color: var(--color-secondary);
 }
+.cardSubtask-files-content {
+  width: 100%;
+  border-radius: var(--radius-input);
+  background-color: var(--color-menu);
+  padding: 0.5rem;
+}

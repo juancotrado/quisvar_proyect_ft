@@ -94,8 +94,9 @@ const Project = () => {
           />
         ))}
       </div>
-      <Outlet />
-      {/* <div className="project-content">
+      <div className="project-content">
+        <Outlet />
+        {/* 
         {optionSelected === 1 && (
           <motion.div
             initial={{ opacity: 0 }}
@@ -201,6 +202,7 @@ const Project = () => {
           </motion.div>
         )}
       </div> */}
+      </div>
     </div>
   );
 };

@@ -6,6 +6,11 @@ export interface SpecialityType {
   createdAt: Date;
   typeSpecialities?: TypeSpecialities[];
 }
+export interface DataUser {
+  id: number;
+  name: string;
+  percentage?: number;
+}
 export interface TypeSpecialities {
   id: number;
   name: string;
@@ -674,6 +679,8 @@ export interface MessageType {
   files?: fileMesage[];
   users: {
     type: MessageSender;
+    status: boolean;
+    role: 'MAIN' | 'SECONDARY';
     user: {
       id: number;
       profile: Pick<Profile, 'firstName' | 'lastName' | 'dni' | 'phone'>;
@@ -687,7 +694,7 @@ export interface fileMesage {
   path: string;
 }
 
-type quantityType = {
+export type quantityType = {
   type: MessageType['type'];
   _count: { type: number };
 };

@@ -1,15 +1,15 @@
 .chip-container-file {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.3rem;
   width: 100%;
   font-weight: 400;
   max-height: 1.8rem;
 }
 .chip-file-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.3rem;
   color: var(--color-quaternay);
-  padding: 0.3rem;
+  padding: 0.3rem 0.5rem;
   background-color: var(--color-menu);
   border-radius: var(--radius-input);
   width: 100%;
@@ -31,6 +31,7 @@
   height: 1.2rem;
 }
 .chip-file-icon-close {
+  cursor: pointer;
   width: 0.7rem;
   height: 0.7rem;
 }

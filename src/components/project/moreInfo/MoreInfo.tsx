@@ -37,7 +37,7 @@ const MoreInfo = ({ data }: MoreInfoProps) => {
         </div>
         <div className="moreInfo-currency">
           <span className="moreInfo-currency-money">
-            {data.percentage.toFixed(2)}%
+            {data?.percentage?.toFixed(2)}%
           </span>
           {data.projectName && (
             <span className="moreInfo-currency-info">Porcentaje</span>

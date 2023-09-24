@@ -44,7 +44,7 @@ const SubtaskFile = ({
         ?.filter(({ type }) =>
           !typeFile
             ? ['REVIEW', 'SUCCESSFUL'].includes(type)
-            : type === typeFile
+            : type === typeFile,
         )
         .map(file => (
           <div key={file.id} className="subtaskFile-contain">
@@ -64,12 +64,11 @@ const SubtaskFile = ({
               </span>
             </a>
             {(showDeleteBtnByUserAuth
-              ? userSession.profile.id === file.user.profile.id
+              ? userSession.profile.id === file.userId
               : showDeleteBtn) && (
               <Button
                 icon="trash-red"
                 onClick={() => deleteFile(file.id)}
-                // customOnClick={() => deleteFile(file.id)}
                 className="subtaskFile-btn-delete"
               />
             )}

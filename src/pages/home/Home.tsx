@@ -44,7 +44,7 @@ const Home = () => {
           className="home-btn btn-color-2"
           onClick={handleNavigateToAreas}
         >
-          Especialidades
+          Projectos
         </button>
         {/* <PDFGenerator /> */}
       </div>

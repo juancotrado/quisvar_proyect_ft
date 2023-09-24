@@ -125,7 +125,7 @@
 }
 
 .mail-m-size-true {
-  padding: 2rem 0.5rem;
+  padding: 1rem 0.5rem;
   max-width: 70vw;
   border: 1px solid #ccccccb6;
   border-end-end-radius: var(--radius-button);

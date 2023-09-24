@@ -1,4 +1,4 @@
-import { MessageStatus, MessageTypeImbox } from '../../types/types';
+import { MessageStatus, MessageTypeImbox, fileMesage } from '../../types/types';
 
 export const addFilesList = (fileUploadFiles: File[], newFiles: File[]) => {
   if (!fileUploadFiles) return newFiles;
@@ -17,6 +17,22 @@ export const deleteFileOnList = (fileUploadFiles: File[], delFiles: File) => {
     if (!newFiles) return;
     return newFiles;
   }
+};
+export const filterFilesByAttempt = (files: fileMesage[]) => {
+  const newFiles = Object.values(countFileByDate(files));
+  const keys = Object.keys(countFileByDate(files));
+  const data = newFiles.map((files, i) => ({ id: keys[i], files }));
+  return data;
+};
+
+const countFileByDate = (files: fileMesage[]) => {
+  const Obj: { [key: string]: fileMesage[] } = {};
+  files.forEach(objeto => {
+    const attempt = objeto.attempt;
+    if (!Obj[attempt]) Obj[attempt] = [];
+    Obj[attempt].push(objeto);
+  });
+  return Obj;
 };
 
 export const listTypeMsg: { id: MessageTypeImbox }[] = [

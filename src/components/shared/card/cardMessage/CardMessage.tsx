@@ -54,7 +54,7 @@ const CardMessage = ({
         )}
       </div>
       <div className="card-message-section-item mail-grid-col-2">
-        <span className="card-status-span ">{message.title}</span>
+        <span className="card-status-span ">{message.header}</span>
       </div>
       {!isActive && (
         <>

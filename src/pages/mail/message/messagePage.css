@@ -7,20 +7,12 @@
   height: 100%;
 }
 .message-icon-drop {
-  position: fixed;
-  top: 0.3rem;
-  border: none;
-  width: 1.85rem;
-  left: 0.3rem;
-}
-.message-icon-close {
-  position: fixed;
-  top: 0.5rem;
   border: none;
   color: #fff;
-  padding: 0.3rem 1rem;
-  background-color: var(--color-tertiary);
-  right: 1.2rem;
+}
+.message-icon-close {
+  border: none;
+  color: #fff;
 }
 .message-page-section {
   display: grid;
@@ -30,14 +22,21 @@
 }
 .message-header-content {
   display: flex;
+  flex-direction: column;
   position: sticky;
+  align-items: center;
   top: 0;
   padding: 0 0 0.5rem;
   z-index: 2;
   background-color: #fff;
   border-bottom: 1px solid #e3e3e3;
   width: 100%;
+}
+.message-heacer-content-options {
+  display: flex;
   justify-content: space-between;
+  height: 2.1rem;
+  width: 100%;
 }
 .message-details-info {
   display: flex;
@@ -61,7 +60,19 @@
   font-weight: 400;
 }
 .message-title {
-  max-width: 80%;
+  max-width: 100%;
+  color: var(--color-quaternay);
+  font-weight: 400;
+  font-size: 14px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.message-subtitle {
+  max-width: 100%;
+  color: var(--color-quaternay);
+  font-weight: 500;
+  font-size: 12px;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -69,13 +80,57 @@
 .message-card-status-message {
   border-radius: var(--radius-button);
   padding: 0.1rem 0.4rem;
-  font-size: 11px;
-  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 600;
 }
 .message-sender-info-container {
   display: flex;
   gap: 0.5rem;
   align-items: end;
+}
+.message-sender-info-details {
+  display: flex;
+  align-items: center;
+  padding-right: 1rem;
+  justify-content: space-between;
+  width: 100%;
+  gap: 0.2rem;
+}
+.message-status-ARCHIVADO {
+  background-color: var(--color-bg-liquidation);
+  color: var(--color-liquidation);
+}
+.message-status-PROCESO {
+  background-color: var(--color-bg-asigned);
+  color: var(--color-asigned);
+}
+.message-status-RECHAZADO {
+  background-color: var(--color-bg-unresolved);
+  color: var(--color-unresolved);
+}
+.message-status-FINALIZADO {
+  background-color: var(--color-bg-done);
+  color: var(--color-done);
+}
+.message-view-more-files-false {
+  flex-direction: row-reverse;
+  padding: 0.3rem 0.5rem;
+  border: 1px solid #d9d9d9;
+  justify-content: space-between;
+  width: 100%;
+}
+.message-view-more-files-true {
+  flex-direction: row-reverse;
+  padding: 0.3rem 0.5rem;
+  color: var(--color-secondary);
+  background-color: var(--color-bg-liquidation);
+  border: 0;
+  justify-content: space-between;
+  width: 100%;
+}
+.message-view-more-files-true img,
+.message-view-more-files-false img {
+  width: 2rem;
 }
 .message-sender-info {
   display: flex;
@@ -95,6 +150,10 @@
   font-style: normal;
   font-weight: 400;
   line-height: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 22rem;
 }
 .message-date-send {
   color: rgba(0, 0, 0, 0.7);

@@ -1,6 +1,6 @@
 export const itemsAdmin = [
   { id: 1, title: 'Inicio', icon: 'home-bar', link: '/home' },
-  { id: 2, title: 'Reportes', icon: 'specialty-white', link: '/mis-tareas' },
+  // { id: 2, title: 'Reportes', icon: 'specialty-white', link: '/mis-tareas' },
   {
     id: 3,
     title: 'Proyectos',
@@ -23,7 +23,8 @@ export const itemsAdmin = [
 ];
 export const itemsEmployee = [
   { id: 1, title: 'Inicio', icon: 'home-bar', link: '/home' },
-  { id: 2, title: 'Tareas', icon: 'users-bar', link: '/mis-tareas' },
+  // { id: 2, title: 'Tareas', icon: 'users-bar', link: '/mis-tareas' },
+  { id: 2, title: 'Tramites', icon: 'ant-design_delivered', link: '/tramites' },
   {
     id: 3,
     title: 'Proyectos',

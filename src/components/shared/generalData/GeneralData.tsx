@@ -76,6 +76,8 @@ const GeneralData = () => {
     ref.current?.scrollIntoView({ behavior: 'smooth' });
   };
   const onSubmit: SubmitHandler<ProjectForm> = values => {
+    // console.log(values);
+
     const { startDate, untilDate, ..._values } = values;
     const _data = {
       ..._values,
@@ -86,13 +88,15 @@ const GeneralData = () => {
       consortiumInfo: consortium,
       typeSpecialityId,
     };
-    if (project?.id) {
-      axiosInstance
-        .put(`projects/${project.id}`, _data)
-        .then(successfulShipment);
-    } else {
-      axiosInstance.post('projects', _data).then(successfulShipment);
-    }
+    console.log(_data);
+
+    // if (project?.id) {
+    //   axiosInstance
+    //     .put(`projects/${project.id}`, _data)
+    //     .then(successfulShipment);
+    // } else {
+    //   axiosInstance.post('projects', _data).then(successfulShipment);
+    // }
   };
   const successfulShipment = () => {
     // onSave?.();
@@ -148,13 +152,19 @@ const GeneralData = () => {
               type="date"
             />
           </div>
-
-          <Button
+          <div className="col-input">
+            <TextArea
+              label="Descripción:"
+              {...register('description')}
+              name="description"
+            />
+          </div>
+          {/* <Button
             type="button"
             text="Ver más información de Empresa/Consorcio +"
             className="card-register-project-button-show-bussiness"
             onClick={() => handleClickScroll(refDescriptionCompany)}
-          />
+          /> */}
         </div>
         <div
           ref={refDescriptionCompany}

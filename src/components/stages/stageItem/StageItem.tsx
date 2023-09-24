@@ -1,6 +1,6 @@
 import { MouseEvent, useState } from 'react';
 import { Option, Stage } from '../../../types/types';
-import { NavLink, useParams } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { Input } from '../..';
 import {
   validateCorrectTyping,
@@ -20,7 +20,6 @@ interface StageName {
 }
 const StageItem = ({ stage, i, getStages }: StageItemProps) => {
   const [openEdit, setOpenEdit] = useState(false);
-  const { stageId } = useParams();
   const [isClickRight, setIsClickRight] = useState(false);
   const {
     handleSubmit,
@@ -28,9 +27,11 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
     reset,
     formState: { errors },
   } = useForm<StageName>();
+
   const handleOpenEdit = () => {
     setOpenEdit(!openEdit);
     setIsClickRight(false);
+    reset({});
   };
 
   const handleClickRight = (e: MouseEvent<HTMLDivElement>) => {
@@ -39,17 +40,12 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
   };
 
   const onSubmitData: SubmitHandler<StageName> = async body => {
-    console.log(stage.id, body);
-
     axiosInstance.patch(`stages/${stage.id}`, body).then(() => getStages());
     setOpenEdit(false);
     reset({});
   };
   const handleDeleteLevel = () => {
-    console.log(stage.id);
-
     axiosInstance.delete(`stages/${stage.id}`).then(() => getStages());
-
     reset({});
   };
   const options: Option[] = [
@@ -68,6 +64,7 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
       function: handleDeleteLevel,
     },
   ];
+  const currentRoute = window.location.href;
   return (
     <div className="stage-header">
       {i !== 0 && <span className="stage-header-separation">|</span>}
@@ -77,8 +74,7 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
         onContextMenu={handleClickRight}
       >
         <NavLink
-          //to={`proyecto/${stage.id}`}
-          to={openEdit ? `etapa/${stageId}` : `etapa/${stage.id}`}
+          to={openEdit ? currentRoute : `etapa/${stage.id}`}
           className={({ isActive }) =>
             isActive ? 'stage-header-span  active' : 'stage-header-span'
           }
@@ -100,7 +96,10 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
                 errors={errors}
                 onClick={e => e.stopPropagation()}
               />
-              <div className="stageItem-icon-area">
+              <div
+                className="stageItem-icon-area"
+                onClick={e => e.stopPropagation()}
+              >
                 <button
                   className="stage-icon-action"
                   onClick={handleSubmit(onSubmitData)}
@@ -110,13 +109,7 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
                     style={{ width: '20px', height: '20px' }}
                   />
                 </button>
-                <button
-                  onClick={() => {
-                    handleOpenEdit();
-                    reset();
-                  }}
-                  className="stage-icon-action"
-                >
+                <button onClick={handleOpenEdit} className="stage-icon-action">
                   <img
                     src="/svg/cross-red.svg"
                     style={{ width: '20px', height: '20px' }}
@@ -126,12 +119,7 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
             </form>
           )}
         </NavLink>
-        <DotsOption
-          data={options}
-          // notPositionRelative
-          iconHide
-          isClickRight={isClickRight}
-        />
+        <DotsOption data={options} iconHide isClickRight={isClickRight} />
       </div>
     </div>
   );

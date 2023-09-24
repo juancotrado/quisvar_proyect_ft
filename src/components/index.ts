@@ -28,7 +28,7 @@ import StageItem from './stages/stageItem/StageItem';
 import AttendanceList from './attendance/attendanceList/AttendanceList';
 import Legend from './shared/legend/Legend';
 import GeneralData from './shared/generalData/GeneralData';
-// import PDFGenerator from './shared/generatePdf/generatePdf';
+import PDFGenerator from './shared/generatePdf/GeneratePdf';
 
 export {
   Alert,
@@ -61,5 +61,5 @@ export {
   AttendanceList,
   Legend,
   GeneralData,
-  // PDFGenerator,
+  PDFGenerator,
 };

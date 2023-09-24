@@ -47,12 +47,12 @@ close-add-card.content-area {
 }
 
 .switch-status-label {
-  font-size: var(--size-label);
+  /* font-size: var(--size-label); */
   text-transform: uppercase;
 }
 
 .card-register-project {
-  max-height: var(--register-height);
+  /* max-height: var(--register-height); */
   background-color: white;
 
   display: flex;
@@ -143,13 +143,16 @@ close-add-card.content-area {
 }
 
 .send-button {
-  width: 40%;
+  width: 8rem;
+  border-radius: 0.5rem;
+  background-color: var(--color-primary);
+  color: white;
   justify-content: center;
   margin: auto;
   transition: color ease 0.5s, background-color ease 0.5s;
 }
 
-.send-button:hover {
+/* .send-button:hover {
   background-color: var(--color-quaternay);
   color: #fff;
-}
+} */

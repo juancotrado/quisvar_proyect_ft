@@ -2,7 +2,7 @@ import './home.css';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-// import { PDFGenerator } from '../../components';
+import { PDFGenerator } from '../../components';
 
 const Home = () => {
   const { userSession } = useSelector((state: RootState) => state);
@@ -46,7 +46,7 @@ const Home = () => {
         >
           Projectos
         </button>
-        {/* <PDFGenerator /> */}
+        <PDFGenerator />
       </div>
     </div>
   );

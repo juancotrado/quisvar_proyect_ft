@@ -81,7 +81,8 @@ const CardRegisterExpert = ({ onSave, experts }: CardRegisterExpertProps) => {
 
   return (
     <div className="cardRegisterConsortium-container">
-      <span className="switch-status-label">Lista de Especialitas:</span>
+      <h2 className="switch-status-label">Lista de Especialitas:</h2>
+      <hr />
       <div className="container-grid-consortium">
         <ul className="cardRegisterConsortium-list">
           <li className="cardRegisterConsortium-list-li">

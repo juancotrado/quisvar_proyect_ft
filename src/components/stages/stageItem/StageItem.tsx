@@ -48,6 +48,9 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
     axiosInstance.delete(`stages/${stage.id}`).then(() => getStages());
     reset({});
   };
+  const handleDuplicate = () => {
+    axiosInstance.post(`/duplicates/stage/${stage.id}`).then(() => getStages());
+  };
   const options: Option[] = [
     {
       name: 'Editar',
@@ -62,6 +65,13 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
       icon: 'trash-red',
 
       function: handleDeleteLevel,
+    },
+    {
+      name: 'Duplicar',
+      type: 'button',
+      icon: 'trash-red',
+
+      function: handleDuplicate,
     },
   ];
   const currentRoute = window.location.href;

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '../../../services/axiosInstance';
-import { MessageType } from '../../../types/types';
+import { MessageType, quantityType } from '../../../types/types';
 import './messagePage.css';
 import { RootState } from '../../../store';
 import { useSelector } from 'react-redux';
@@ -11,6 +11,14 @@ import CardRegisterMessageReply from '../../../components/shared/card/cardRegist
 import { motion } from 'framer-motion';
 import Button from '../../../components/shared/button/Button';
 import { filterFilesByAttempt } from '../../../utils/files/files.utils';
+import CardRegisterMessageForward from '../../../components/shared/card/cardRegisterMessageFordward/CardRegisterMessageFordward';
+import CardRegisterMessageUpdate from '../../../components/shared/card/cardRegisterMessageUpdate/CardRegisterMessageUpdate';
+
+const spring = {
+  type: 'spring',
+  stiffness: 150,
+  damping: 30,
+};
 
 const parseDate = (date: Date) =>
   formatDate(new Date(date), {
@@ -25,37 +33,51 @@ const parseDate = (date: Date) =>
 const parseName = (title: string) => title.split('$').at(-1) || '';
 
 const MessagePage = () => {
-  const { messageId } = useParams();
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
+  const { messageId } = useParams();
+  const { userSession } = useSelector((state: RootState) => state);
+  const [isReply, setIsReply] = useState(true);
   const [message, setMessage] = useState<MessageType | null>();
   const [isActive, setIsActive] = useState<boolean>(false);
-  const { userSession } = useSelector((state: RootState) => state);
   const [viewMoreFiles, setViewMoreFiles] = useState(false);
-  const typeMessage = searchParams.get('type');
+  const [countMessage, setCountMessage] = useState<quantityType[] | null>([]);
+  //----------------------------------------------------------------------------
   const getFiles = (message && message.files) || [];
   const files = filterFilesByAttempt(getFiles);
-  console.log(files);
   // const parameters = searchParams.get('size');
   // const [searchParams] = useSearchParams();
 
   useEffect(() => {
     if (messageId) getMessage(messageId);
+    getQuantityServices();
   }, [messageId]);
 
   const getMessage = (id: string) => {
     axiosInstance.get(`/mail/${id}`).then(res => setMessage(res.data));
   };
   // console.log(message);
+  const getQuantityServices = () =>
+    axiosInstance
+      .get('/mail/imbox/quantity')
+      .then(res => setCountMessage(res.data));
+
   const handleClose = () => navigate('/tramites');
+  const toggleSwitch = () => setIsReply(!isReply);
   const handleViewMoreFiles = () => setViewMoreFiles(!viewMoreFiles);
+  const handleResizeAction = () => setIsActive(!isActive);
 
   if (!message) return <div></div>;
   const { users } = message;
   const sender = users.find(({ user }) => user.id !== userSession.id);
-  const receiver = users.find(({ user }) => user.id !== userSession.id);
-  const handleResizeAction = () => setIsActive(!isActive);
-
+  const mainSender = users.find(
+    ({ user, type, role }) =>
+      user.id === userSession.id && role === 'MAIN' && type == 'SENDER'
+  );
+  const mainReceiver = users.find(
+    ({ user, status, role }) =>
+      user.id === userSession.id && status && role === 'MAIN'
+  );
+  console.log(mainSender);
   return (
     <motion.div
       className="message-page-container"
@@ -143,33 +165,73 @@ const MessagePage = () => {
             </span>
           </div>
         </div>
-        <Button
-          className={`message-view-more-files-${viewMoreFiles}`}
-          text={`${viewMoreFiles ? 'Ocultar' : 'Ver'} documentos previos`}
-          icon="down"
-          onClick={handleViewMoreFiles}
-        />
-        {files.slice(1, files.length).map(({ id, files }) => (
-          <div key={id}>
-            {files.map(({ id, name, path }) => (
-              <ChipFileMessage
-                className="pointer message-files-list"
-                key={id}
-                text={parseName(name)}
-                link={path + '/' + name}
-              />
+        {files.length > 1 && (
+          <Button
+            className={`message-view-more-files-${viewMoreFiles}`}
+            text={`${viewMoreFiles ? 'Ocultar' : 'Ver'} documentos previos`}
+            icon="down"
+            onClick={handleViewMoreFiles}
+          />
+        )}
+        <div className="message-container-files-grid">
+          {viewMoreFiles &&
+            files.slice(1, files.length).map(({ id, files }) => (
+              <div className="message-container-file-information" key={id}>
+                <span>{parseDate(new Date(+id))}</span>
+                <div className="message-container-files-grid">
+                  {files.map(({ id, name, path }) => (
+                    <ChipFileMessage
+                      className="pointer message-files-list"
+                      key={id}
+                      text={parseName(name)}
+                      link={path + '/' + name}
+                    />
+                  ))}
+                </div>
+              </div>
             ))}
-            <span>{parseDate(new Date(+id))}</span>
+        </div>
+        {mainReceiver && message.status === 'PROCESO' && (
+          <div
+            className="message-switch"
+            data-ison={isReply}
+            onClick={toggleSwitch}
+          >
+            {isReply && <span className="message-hover-title">NO PROCEDE</span>}
+            <motion.div className={`message-handle`} layout transition={spring}>
+              <span className="span-list-task">
+                {isReply ? 'Procede' : 'No Procede'}
+              </span>
+            </motion.div>
+            {!isReply && <span className="message-hover-title">PROCEDE</span>}
           </div>
-        ))}
+        )}
       </div>
-      {/* {typeMessage === 'RECEIVER' && (
-        <CardRegisterMessageReply
+      {mainReceiver && message.status === 'PROCESO' && (
+        <>
+          {isReply ? (
+            <CardRegisterMessageReply
+              message={message}
+              receiverId={1}
+              senderId={2}
+              quantityFiles={countMessage}
+            />
+          ) : (
+            <CardRegisterMessageForward
+              message={message}
+              receiverId={1}
+              senderId={2}
+              quantityFiles={countMessage}
+            />
+          )}
+        </>
+      )}
+      {mainSender && message.status === 'RECHAZADO' && (
+        <CardRegisterMessageUpdate
           message={message}
-          senderId={userSession.id}
-          receiverId={receiver?.user.id}
+          receiverId={mainReceiver?.user.id}
         />
-      )} */}
+      )}
     </motion.div>
   );
 };

@@ -1,11 +1,20 @@
+import { Input } from '../..';
+import { DataUser } from '../../../types/types';
 import './subtaskUsers.css';
-type DataUser = { id: number; name: string };
+import { FocusEvent } from 'react';
 
 interface SubtaskUsersProps {
   usersData: DataUser[];
   handleRemoveUser?: (data: DataUser) => void;
+  handlePorcentage?: (e: FocusEvent<HTMLInputElement>) => void;
+  areAuthorizedUsers?: boolean;
 }
-const SubtaskUsers = ({ usersData, handleRemoveUser }: SubtaskUsersProps) => {
+const SubtaskUsers = ({
+  usersData,
+  handleRemoveUser,
+  handlePorcentage,
+  areAuthorizedUsers = false,
+}: SubtaskUsersProps) => {
   return (
     <div className="subtaskUsers-users-contain">
       <h4 className="subtaskUsers-title-information">
@@ -26,6 +35,18 @@ const SubtaskUsers = ({ usersData, handleRemoveUser }: SubtaskUsersProps) => {
             <button type="button" onClick={() => handleRemoveUser(_user)}>
               <img src="/svg/close.svg" className="subtaskUsers-user-delete" />
             </button>
+          )}
+          {handlePorcentage && (
+            <div className="subtaskUsers-porcentage-input">
+              <Input
+                onBlur={handlePorcentage}
+                placeholder={String(_user.percentage)}
+                name={String(_user.id)}
+                className="subtaskUsers-percentage-value"
+                disabled={!areAuthorizedUsers}
+              />
+              %
+            </div>
           )}
         </div>
       ))}

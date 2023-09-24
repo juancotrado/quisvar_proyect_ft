@@ -51,7 +51,9 @@ const Project = () => {
           </div>
         ))}
       </div>
-      <Outlet />
+      <div className="project-content">
+        <Outlet />
+      </div>
     </div>
   );
 };

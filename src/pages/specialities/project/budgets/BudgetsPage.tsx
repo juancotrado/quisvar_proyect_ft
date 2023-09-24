@@ -9,6 +9,7 @@ import DropdownLevel from '../../../../components/project/dropdownLevel/Dropdown
 import CardRegisterSubTask from '../../../../components/shared/card/cardRegisterSubTask/CardRegisterSubTask';
 import Button from '../../../../components/shared/button/Button';
 import { motion } from 'framer-motion';
+import './budgetsPage.css';
 
 const BudgetsPage = () => {
   const { stageId } = useParams();
@@ -47,10 +48,10 @@ const BudgetsPage = () => {
     });
   };
   return (
-    <div>
-      <div className="project-filter">
+    <>
+      <div className="budgetsPage-filter">
         <span
-          className="project-filter-icon"
+          className="budgetsPage-filter-icon"
           onClick={() => setOpenFilter(true)}
         >
           <img src="/svg/filter.svg" />
@@ -61,37 +62,37 @@ const BudgetsPage = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="project-filter-area"
+            className="budgetsPage-filter-area"
           >
             <Button
               onClick={() => levelFilter('DONE')}
               text="Hechos"
-              className="project-filter-btn color-done"
+              className="budgetsPage-filter-btn color-done"
             />
             <Button
               onClick={() => levelFilter('PROCESS')}
               text="Haciendo"
-              className="project-filter-btn color-process"
+              className="budgetsPage-filter-btn color-process"
             />
             <Button
               onClick={() => levelFilter('INREVIEW')}
               text="En Revision"
-              className="project-filter-btn color-process"
+              className="budgetsPage-filter-btn color-process"
             />
             <Button
               onClick={() => levelFilter('UNRESOLVED')}
               text="Sin Hacer"
-              className="project-filter-btn color-unresolver"
+              className="budgetsPage-filter-btn color-unresolver"
             />
             <Button
               onClick={() => levelFilter('DENIED')}
               text="Denegados"
-              className="project-filter-btn color-correct"
+              className="budgetsPage-filter-btn color-correct"
             />
             <Button
               onClick={() => levelFilter('LIQUIDATION')}
               text="Liquidados"
-              className="project-filter-btn color-liquidation"
+              className="budgetsPage-filter-btn color-liquidation"
             />
             <Button
               onClick={() => {
@@ -99,25 +100,25 @@ const BudgetsPage = () => {
                 setOpenFilter(false);
               }}
               icon="close"
-              className="project-filter-close"
+              className="budgetsPage-filter-close"
             />
           </motion.div>
         )}
       </div>
-      <div className="project-title-contain">
-        <div className="project-contain-left">
-          <figure className="project-figure">
+      <div className="budgetsPage-title-contain">
+        <div className="budgetsPage-contain-left">
+          <figure className="budgetsPage-figure">
             <img src="/svg/engineering.svg" alt="W3Schools" />
           </figure>
-          <h4 className="project-title">{levels?.projectName}</h4>
+          <h4 className="budgetsPage-title">{levels?.projectName}</h4>
         </div>
         {levels && (
-          <div className="project-contain-right">
+          <div className="budgetsPage-contain-right">
             <MoreInfo data={levels} />
           </div>
         )}
       </div>
-      <div className="project-contain">
+      <div className="budgetsPage-contain">
         {levels && (
           <DropdownLevel
             level={levels}
@@ -128,7 +129,7 @@ const BudgetsPage = () => {
       </div>
       <Outlet />
       <CardRegisterSubTask onSave={getLevels} />
-    </div>
+    </>
   );
 };
 

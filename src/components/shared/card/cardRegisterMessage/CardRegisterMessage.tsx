@@ -21,29 +21,16 @@ import { axiosInstance } from '../../../../services/axiosInstance';
 import { Input } from '../../..';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
+  HashFile,
   addFilesList,
   deleteFileOnList,
+  radioOptions,
 } from '../../../../utils/files/files.utils';
 import { useNavigate } from 'react-router-dom';
 import formatDate from '../../../../utils/formatDate';
 
 const YEAR = new Date().getFullYear();
 const RolePerm: UserRoleType[] = ['SUPER_ADMIN', 'ADMIN', 'SUPER_MOD', 'MOD'];
-
-const Hash = (name: string) => {
-  const newValue = name.split(' ');
-  const parseValue = newValue.map(value => value.slice(0, 1).toUpperCase());
-  return parseValue.join('');
-};
-
-const radioOptions = [
-  { id: 'Carta', value: 'CARTA', name: 'type' },
-  { id: 'Informe', value: 'INFORME', name: 'type' },
-  { id: 'Memorandum', value: 'MEMORANDUM', name: 'type' },
-  { id: 'Acuerdo', value: 'ACUERDO', name: 'type' },
-  { id: 'Oficio', value: 'OFICIO', name: 'type' },
-  { id: 'Coordinación', value: 'COORDINACION', name: 'type' },
-];
 
 interface CardRegisterMessageProps {
   onClosing?: () => void;
@@ -73,12 +60,15 @@ const CardRegisterMessage = ({
   const [fileUploadFiles, setFileUploadFiles] = useState<File[]>([]);
   const [countMessage, setCountMessage] = useState<quantityType[] | null>([]);
   const { lastName, firstName } = userSession.profile;
-  const HashUser = Hash(`${firstName} ${lastName}`);
+  const HashUser = HashFile(`${firstName} ${lastName}`);
   const initialValueEditor = InitialValueEditor(userSession.profile);
 
   const contacts = useMemo(
-    () => users.filter(user => user.id !== userSession.id),
-    [userSession, users]
+    () =>
+      users.filter(
+        user => user.id !== userSession.id && user.id !== receiver?.id
+      ),
+    [userSession, users, receiver]
   );
 
   useEffect(() => {

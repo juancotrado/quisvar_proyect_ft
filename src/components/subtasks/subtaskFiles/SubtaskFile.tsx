@@ -38,13 +38,12 @@ const SubtaskFile = ({
     if (!url) return;
     return url.replace('./uploads/', '');
   };
+  console.log(files);
   return (
     <div className={` subtaskFile ${className}`}>
       {files
         ?.filter(({ type }) =>
-          !typeFile
-            ? ['REVIEW', 'SUCCESSFUL'].includes(type)
-            : type === typeFile
+          !typeFile ? ['REVIEW', 'UPLOADS'].includes(type) : type === typeFile
         )
         .map(file => (
           <div key={file.id} className="subtaskFile-contain">

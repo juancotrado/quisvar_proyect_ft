@@ -6,13 +6,11 @@ import SubtaskChangeStatusBtn from '../../../../subtasks/subtaskChangeStatusBtn/
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../store';
 import './cardSubTaskProcess.css';
-import { Input } from '../../../..';
-import { motion } from 'framer-motion';
-import ButtonDelete from '../../../button/ButtonDelete';
 import SubtasksShippingHistory from '../../../../subtasks/subtasksShippingHistory/SubtasksShippingHistory';
-import formatDate from '../../../../../utils/formatDate';
 import SubtasksMoreInfo from '../../../../subtasks/subtasksMoreInfo/SubtasksMoreInfo';
 import SubtaskUsers from '../../../../subtasks/subtaskUsers/SubtaskUsers';
+import LoaderText from '../../../loaderText/LoaderText';
+import useUserPorcetage from '../../../../../hooks/useUserPorcetage';
 interface CardSubtaskProcess {
   subTask: SubTask;
 }
@@ -24,7 +22,6 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
   );
 
   const { status } = subTask;
-  // const [files, setFiles] = useState<File[] | null>(null);
   const [dataFeedback, setDataFeedback] = useState<DataFeedback | null>(null);
   const [porcetageForUser, setPorcetageForUser] = useState({});
   useEffect(() => {
@@ -96,16 +93,13 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
       ['user' + name]: { userId: +name, percentage: +value },
     });
   };
-  const usersData = subTask.users.map(user => ({
-    id: user.user.id,
-    name: `${user.user.profile.firstName} ${user.user.profile.lastName}`,
-    percentage: user.percentage,
-  }));
+  console.log({ filterFiles });
+  const { usersData } = useUserPorcetage(subTask.users);
   const getDataFeedback = (data: DataFeedback) => setDataFeedback(data);
   return (
     <div className="cardSubtaskProcess">
       <section className="cardSubtaskProcess-left-details">
-        {isAuthorizedMod && status === 'INREVIEW' && (
+        {isAuthorizedMod && (
           <>
             <h4 className="cardSubtask-title-information">
               <figure className="cardSubtask-figure">
@@ -121,6 +115,7 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
               files={subTask.files}
               typeFile="MODEL"
               showDeleteBtn={isAuthorizedMod}
+              className="cardSubtask-file-conten"
             />
           </>
         )}
@@ -175,6 +170,7 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
               typeFile="REVIEW"
               showDeleteBtnByUserAuth
               showDeleteBtn={isAuthorizedMod}
+              className="cardSubtask-file-conten"
             />
           </>
         )}
@@ -221,31 +217,6 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
             areAuthorizedUsers={areAuthorizedUsers}
           />
         </div>
-        {/* {status === 'PROCESS' &&
-          isAuthorizedMod &&
-          adminId !== subTask.users[0].user.id &&
-          subTask.feedBacks.length === 0 && (
-            <div className="waiting-screen">
-              <motion.img
-                animate={{
-                  scale: [0.5, 1, 1, 0.5, 0.5],
-                  rotate: [0, 0, 180, 180, 0],
-                  borderRadius: ['0%', '0%', '50%', '50%', '0%'],
-                }}
-                transition={{
-                  duration: 2,
-                  ease: 'easeInOut',
-                  times: [0, 0.4, 1, 1.6, 2],
-                  repeat: Infinity,
-                  repeatDelay: 1,
-                }}
-                className="waiting-screen-image"
-                src="svg/sand_clock.svg"
-                alt=""
-              />
-              <h2>Esperando al envio de archivos...</h2>
-            </div>
-          )} */}
       </section>
       <section className="cardSubtaskProcess-details">
         <SubtasksMoreInfo task={subTask} />
@@ -265,6 +236,13 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
             />
           </>
         )}
+        {isAuthorizedMod && status !== 'INREVIEW' && (
+          <LoaderText text="Esperando entregables..." />
+        )}
+        {isAuthorizedUser && status === 'INREVIEW' && (
+          <LoaderText text="Esperando aprovación..." />
+        )}
+
         {areAuthorizedUsers && (
           <div className="cardSubtaskProcess-btns">
             {status !== 'INREVIEW' && isAuthorizedUser && (
@@ -313,34 +291,6 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
             )}
           </div>
         )}
-
-        {/* <div className="cardSubtaskProcess-files-models">
-          <h2 className="cardSubtaskProcess-files-models-title">
-            Archivos Modelo:
-          </h2>
-          {status === 'INREVIEW' && isAuthorizedMod && (
-            <SubtaskUploadFiles
-              id={subTask.id}
-              type="MODEL"
-              className="cardSubtaskProcess-files-models-upload"
-            />
-          )}
-          <SubtaskFile
-            files={subTask.files}
-            typeFile="MODEL"
-            showDeleteBtn={false}
-          />
-        </div> */}
-
-        {/* {isAuthorizedMod && (
-          <SubtaskChangeStatusBtn
-            option="DENY"
-            subtaskId={subTask.id}
-            subtaskStatus={status}
-            text="Restablecer"
-            type="reset"
-          />
-        )} */}
       </section>
     </div>
   );

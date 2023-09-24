@@ -2,8 +2,6 @@ import { useState } from 'react';
 import { DataFeedback, Feedback, Profile } from '../../../types/types';
 import { motion } from 'framer-motion';
 import { TextArea } from '../..';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../store';
 import SubtaskFile from '../subtaskFiles/SubtaskFile';
 import './subtaskInfoHistory.css';
 import { container } from '../../../animations/animations';
@@ -38,7 +36,6 @@ const SubtaskInfoHistory = ({
 
     return ` ${localeDate} a las ${localeTime}`;
   };
-  console.log(authorize?.isAuthorizedMod);
   return (
     <div className={`SubtaskInfoHistory-review-card ${className}`}>
       <h3
@@ -53,10 +50,6 @@ const SubtaskInfoHistory = ({
         <span className="SubtaskInfoHistory-send-date">
           {getDatetimeCreated(feedBack.createdAt)}
         </span>
-        {/* Enviado por{' '}
-        <strong>{getUserName(feedBack.files[0].user.profile)}</strong>
-        {' el '}
-        <strong>{getDatetimeCreated(feedBack.createdAt)}</strong> */}
       </h3>
       {isActive && (
         <motion.div

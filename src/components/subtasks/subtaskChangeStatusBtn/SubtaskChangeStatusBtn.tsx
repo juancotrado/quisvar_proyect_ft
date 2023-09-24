@@ -69,6 +69,7 @@ const SubtaskChangeStatusBtn = ({
       );
       socket.emit('client:update-projectAndTask', resStatus.data);
     }
+    SnackbarUtilities.success('Se realizo la operación con exito');
   };
 
   // const handleSendToReviewFormData = async () => {

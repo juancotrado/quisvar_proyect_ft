@@ -31,15 +31,15 @@ interface PDFGeneratorProps {
 const generatePDF = (value: PDFGeneratorProps) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      <Text style={{ ...styles.title, fontWeight: 'bold' }}>
+      <Text style={{ ...styles.title }}>
         HOJA DE COORDINACIÓN Nº 003-2023-GG/JGQC-COORPORACIÓN DHYRIUM
       </Text>
       <View style={styles.headerContent}>
         {/* header */}
         <View style={styles.headerRow}>
           <View style={styles.leftInfo}>
-            <Text style={styles.header}>Para</Text>
-            <Text style={styles.header}>: </Text>
+            <Text style={styles.headerBold}>Para</Text>
+            <Text style={styles.headerBold}>: </Text>
           </View>
           <View style={styles.rigthInfo}>
             <Text style={styles.header}>
@@ -54,8 +54,8 @@ const generatePDF = (value: PDFGeneratorProps) => (
           value.data.cc?.map((item, idx) => (
             <View style={styles.headerRow} key={idx}>
               <View style={styles.leftInfo}>
-                <Text style={styles.header}>CC</Text>
-                <Text style={styles.header}>: </Text>
+                <Text style={styles.headerBold}>CC</Text>
+                <Text style={styles.headerBold}>: </Text>
               </View>
               <View>
                 <Text style={styles.header}>ING. {item.name}</Text>
@@ -66,8 +66,8 @@ const generatePDF = (value: PDFGeneratorProps) => (
         {/* header */}
         <View style={styles.headerRow}>
           <View style={styles.leftInfo}>
-            <Text style={styles.header}>De</Text>
-            <Text style={styles.header}>: </Text>
+            <Text style={styles.headerBold}>De</Text>
+            <Text style={styles.headerBold}>: </Text>
           </View>
           <View>
             <Text style={styles.header}>
@@ -79,8 +79,8 @@ const generatePDF = (value: PDFGeneratorProps) => (
         {/* header */}
         <View style={styles.headerRow}>
           <View style={styles.leftInfo}>
-            <Text style={styles.header}>Asunto</Text>
-            <Text style={styles.header}>: </Text>
+            <Text style={styles.headerBold}>Asunto</Text>
+            <Text style={styles.headerBold}>: </Text>
           </View>
           <View style={styles.rigthInfo}>
             <Text style={styles.headerLong}>{value.data?.affair}</Text>
@@ -90,8 +90,8 @@ const generatePDF = (value: PDFGeneratorProps) => (
         {/* header */}
         <View style={styles.headerRow}>
           <View style={styles.leftInfo}>
-            <Text style={styles.header}>Fecha</Text>
-            <Text style={styles.header}>: </Text>
+            <Text style={styles.headerBold}>Fecha</Text>
+            <Text style={styles.headerBold}>: </Text>
           </View>
           <View>
             <Text style={styles.header}>{value.data?.date}</Text>
@@ -119,42 +119,6 @@ const generatePDF = (value: PDFGeneratorProps) => (
             </View>
           </View>
         ))}
-      {/* <View style={styles.section}>
-        <View style={styles.table}>
-          <View style={styles.tableRow}>
-            <View style={styles.tableCell}>
-              <Text>Nombre</Text>
-            </View>
-            <View style={styles.tableCell}>
-              <Text>Edad</Text>
-            </View>
-          </View>
-          <View style={styles.tableRow}>
-            <View style={styles.tableCell}>
-              <Text>Juan</Text>
-            </View>
-            <View style={styles.tableCell}>
-              <Text>30</Text>
-            </View>
-          </View>
-          <View style={styles.tableRow}>
-            <View style={styles.tableCell}>
-              <Text>María</Text>
-            </View>
-            <View style={styles.tableCell}>
-              <Text>25</Text>
-            </View>
-          </View>
-          <View style={styles.tableRow}>
-            <View style={styles.tableCell}>
-              <Text>Carlos</Text>
-            </View>
-            <View style={styles.tableCell}>
-              <Text>35</Text>
-            </View>
-          </View>
-        </View>
-      </View> */}
       <View style={styles.signArea}>
         <View style={styles.sign} />
         <Text style={styles.header}>ING: {value.data.from.toUpperCase()}</Text>

@@ -1,5 +1,8 @@
-import { StyleSheet } from '@react-pdf/renderer';
-
+import { StyleSheet, Font } from '@react-pdf/renderer';
+import ArialNarrowBold from '../../../utils/pdfFonts/Arial-Narrow-Bold.ttf';
+import ArialNarrow from '../../../utils/pdfFonts/Arial-Narrow.ttf';
+Font.register({ family: 'Arial Narrow Bold', src: ArialNarrowBold });
+Font.register({ family: 'Arial Narrow', src: ArialNarrow });
 export const styles = StyleSheet.create({
   page: {
     flexDirection: 'column',
@@ -13,6 +16,7 @@ export const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: 'center',
     textDecoration: 'underline',
+    fontFamily: 'Arial Narrow Bold',
   },
   section: {
     fontSize: 11,
@@ -32,11 +36,17 @@ export const styles = StyleSheet.create({
   },
   header: {
     fontSize: 11,
+    fontFamily: 'Arial Narrow',
+  },
+  headerBold: {
+    fontSize: 11,
+    fontFamily: 'Arial Narrow Bold',
   },
   body: {
     fontSize: 11,
     textAlign: 'justify',
     marginBottom: 15,
+    fontFamily: 'Arial Narrow',
   },
   headerContent: {
     flexDirection: 'column',
@@ -63,6 +73,7 @@ export const styles = StyleSheet.create({
   headerLong: {
     fontSize: 11,
     flexWrap: 'wrap',
+    fontFamily: 'Arial Narrow',
   },
   sign: {
     width: '60%',

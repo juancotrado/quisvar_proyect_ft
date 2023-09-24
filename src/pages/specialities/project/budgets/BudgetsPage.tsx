@@ -9,7 +9,7 @@ import DropdownLevel from '../../../../components/project/dropdownLevel/Dropdown
 import CardRegisterSubTask from '../../../../components/shared/card/cardRegisterSubTask/CardRegisterSubTask';
 import Button from '../../../../components/shared/button/Button';
 import { motion } from 'framer-motion';
-import './budgetsPage.css'
+import './budgetsPage.css';
 
 const BudgetsPage = () => {
   const { stageId } = useParams();

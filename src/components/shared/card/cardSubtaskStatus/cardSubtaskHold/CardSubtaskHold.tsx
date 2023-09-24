@@ -22,7 +22,7 @@ interface CardSubtaskHold {
 const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
   const socket = useContext(SocketContext);
   const { modAuthProject, userSession } = useSelector(
-    (state: RootState) => state,
+    (state: RootState) => state
   );
   const isAuthorizedMod =
     modAuthProject || userSession.id === subTask.Levels.userId;

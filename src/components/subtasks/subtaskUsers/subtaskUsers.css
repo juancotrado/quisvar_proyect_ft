@@ -1,0 +1,41 @@
+.subtaskUsers-users-contain {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 0.5rem;
+  overflow: auto;
+}
+.subtaskUsers-title-information {
+  width: 100%;
+  display: flex;
+  gap: 1rem;
+  color: #000;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.5rem;
+  letter-spacing: 0.00938rem;
+}
+.subtaskUsers-figure {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+.subtaskUsers-list-user {
+  display: flex;
+  justify-content: space-between;
+}
+.subtaskUsers-user-info {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  color: #000;
+  font-size: 0.7rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1rem; /* 142.857% */
+}
+
+.subtaskUsers-user-delete {
+  cursor: pointer;
+  width: 1rem;
+}

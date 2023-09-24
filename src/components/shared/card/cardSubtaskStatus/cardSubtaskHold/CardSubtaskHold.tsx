@@ -13,6 +13,7 @@ import './cardSubtaskHold.css';
 import useListUsers from '../../../../../hooks/useListUsers';
 import { useParams } from 'react-router-dom';
 import SubtasksMoreInfo from '../../../../subtasks/subtasksMoreInfo/SubtasksMoreInfo';
+import SubtaskUsers from '../../../../subtasks/subtaskUsers/SubtaskUsers';
 
 type DataUser = { id: number; name: string };
 interface CardSubtaskHold {
@@ -59,16 +60,23 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
     <div className="cardSubtaskHold">
       <section className="cardSubtaskHold-left-details">
         {isAuthorizedMod ? (
-          <div className="cardSubtaskHold-files-content">
+          <>
             <h4 className="cardSubtaskHold-title-information">
               <figure className="cardSubtaskHold-figure">
                 <img src="/svg/paper-clip.svg" alt="W3Schools" />
               </figure>
               Archivos modelos:
             </h4>
-            <div className="cardSubtaskHold-add-files">
-              <SubtaskUploadFiles id={subTask.id} type="MODEL" />
-            </div>
+            {isAuthorizedMod && (
+              <div className="cardSubtaskHold-add-files">
+                <SubtaskUploadFiles id={subTask.id} type="MODEL" />
+              </div>
+            )}
+            <SubtaskFile
+              files={subTask.files}
+              typeFile="MODEL"
+              showDeleteBtn={isAuthorizedMod}
+            />
             <div className="cardSubtaskHold-add-users">
               <div className="cardSubtaskHold-users-contain">
                 <h4 className="cardSubtaskHold-title-information">
@@ -88,51 +96,42 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
                 />
               </div>
               {usersData && (
-                <div className="cardSubtaskHold-users-contain">
-                  <h4 className="cardSubtaskHold-title-information">
-                    <figure className="cardSubtaskHold-figure">
-                      <img src="/svg/user-task.svg" alt="W3Schools" />
-                    </figure>
-                    Lista de Usuarios Asignados:
-                  </h4>
-                  {usersData.map(_user => (
-                    <div key={_user.id} className="cardSubtaskHold-list-user">
-                      <h5 className="cardSubtaskHold-user-info">
-                        <figure className="cardSubtaskHold-figure">
-                          <img src="/svg/person-add.svg" alt="W3Schools" />
-                        </figure>
-                        {_user.name}
-                      </h5>
-                      <button
-                        type="button"
-                        onClick={() => handleRemoveUser(_user)}
-                      >
-                        <img
-                          src="/svg/close.svg"
-                          className="cardSubtaskHold-user-delete"
-                        />
-                      </button>
-                    </div>
-                  ))}
-                </div>
+                <SubtaskUsers
+                  usersData={usersData}
+                  handleRemoveUser={handleRemoveUser}
+                />
               )}
             </div>
-          </div>
+          </>
         ) : (
-          <div className="cardSubtaskHold-files-content">
-            <h2 className="cardSubtaskHold-files-models-title">
-              Archivos Modelo:
-            </h2>
-            <SubtaskFile
-              files={subTask.files}
-              typeFile="MODEL"
-              showDeleteBtn={isAuthorizedMod}
-            />
+          <div className="cardSubtaskHold-logo-content ">
+            <div className="cardSubtaskHold-more-info-content">
+              <figure className="cardSubtaskHold-figure-logo">
+                <img src={`/img/DHYRIUM-gray.png`} alt="W3Schools" />
+              </figure>
+              <p className="cardSubtaskHold-more-info">DHYRIUM</p>
+            </div>
           </div>
         )}
       </section>
       <section className="cardSubtaskHold-details">
         <SubtasksMoreInfo task={subTask} />
+        {!isAuthorizedMod && (
+          <>
+            <h4 className="cardSubtaskHold-title-information">
+              <figure className="cardSubtaskHold-figure">
+                <img src="/svg/paper-clip.svg" alt="W3Schools" />
+              </figure>
+              Archivos modelos:
+            </h4>
+
+            <SubtaskFile
+              files={subTask.files}
+              typeFile="MODEL"
+              showDeleteBtn={isAuthorizedMod}
+            />
+          </>
+        )}
         <div className="cardSubtaskHold-btns">
           {!isAuthorizedMod && <div></div>}
           <SubtaskChangeStatusBtn

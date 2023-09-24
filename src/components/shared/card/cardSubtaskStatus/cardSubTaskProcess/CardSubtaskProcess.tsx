@@ -201,8 +201,13 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
       <section className="cardSubtaskProcess-details">
         <SubtasksMoreInfo task={subTask} />
 
-        <div className="cardSubtaskProcess-porcentage-container-main">
-          <h4>Lista de porcentaje de avance:</h4>
+        <div className="cardSubtaskHold-users-contain">
+          <h4 className="cardSubtaskHold-title-information">
+            <figure className="cardSubtaskHold-figure">
+              <img src="/svg/user-task.svg" alt="W3Schools" />
+            </figure>
+            Lista de Usuarios Asignados:
+          </h4>
           {subTask.users.map((user, index) => (
             <div
               key={user.user.id}
@@ -211,7 +216,6 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
               <span className="cardSubtaskProcess-porcentage-user">
                 {index + 1}
                 {')'} {user.user.profile.firstName} {user.user.profile.lastName}{' '}
-                {user.percentage}
               </span>
               <div className="cardSubtaskProcess-porcentage-input">
                 <Input

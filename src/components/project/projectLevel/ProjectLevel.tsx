@@ -55,6 +55,9 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
     reset({});
     handleOpenEdit();
   };
+  const handleDuplicate = () => {
+    axiosInstance.post(`/duplicates/level/${data.id}`).then(() => onSave?.());
+  };
   const options: Option[] = [
     {
       name: openEdit ? 'Cancelar' : 'Editar',
@@ -69,6 +72,13 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
       icon: openEdit ? 'save' : 'trash-red',
 
       function: openEdit ? handleSubmit(onSubmitData) : handleDeleteLevel,
+    },
+    {
+      name: 'Duplicar',
+      type: 'button',
+      icon: 'trash-red',
+
+      function: handleDuplicate,
     },
   ];
   const isAreaOrProject = data.isArea || data.isProject;

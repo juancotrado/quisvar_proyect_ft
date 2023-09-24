@@ -4,7 +4,7 @@ import { RootState } from '../../../../../store';
 import { axiosInstance } from '../../../../../services/axiosInstance';
 import { SocketContext } from '../../../../../context/SocketContex';
 import Button from '../../../button/Button';
-import { SubTask } from '../../../../../types/types';
+import { DataUser, SubTask } from '../../../../../types/types';
 import DropDownSimple from '../../../select/DropDownSimple';
 import SubtaskFile from '../../../../subtasks/subtaskFiles/SubtaskFile';
 import SubtaskUploadFiles from '../../../../subtasks/subtaskUploadFiles/SubtaskUploadFiles';
@@ -15,7 +15,6 @@ import { useParams } from 'react-router-dom';
 import SubtasksMoreInfo from '../../../../subtasks/subtasksMoreInfo/SubtasksMoreInfo';
 import SubtaskUsers from '../../../../subtasks/subtaskUsers/SubtaskUsers';
 
-type DataUser = { id: number; name: string };
 interface CardSubtaskHold {
   subTask: SubTask;
 }
@@ -23,7 +22,7 @@ interface CardSubtaskHold {
 const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
   const socket = useContext(SocketContext);
   const { modAuthProject, userSession } = useSelector(
-    (state: RootState) => state
+    (state: RootState) => state,
   );
   const isAuthorizedMod =
     modAuthProject || userSession.id === subTask.Levels.userId;
@@ -41,6 +40,7 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
   };
 
   const handleAddUserByTask = () => {
+    if (!addBtn) return;
     axiosInstance
       .patch(`/subtasks/assignUser/${subTask.id}/${stageId}`, usersData)
       .then(res => {
@@ -61,17 +61,16 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
       <section className="cardSubtaskHold-left-details">
         {isAuthorizedMod ? (
           <>
-            <h4 className="cardSubtaskHold-title-information">
-              <figure className="cardSubtaskHold-figure">
+            <h4 className="cardSubtask-title-information">
+              <figure className="cardSubtask-figure">
                 <img src="/svg/paper-clip.svg" alt="W3Schools" />
               </figure>
               Archivos modelos:
             </h4>
-            {isAuthorizedMod && (
-              <div className="cardSubtaskHold-add-files">
-                <SubtaskUploadFiles id={subTask.id} type="MODEL" />
-              </div>
-            )}
+
+            <div className="cardSubtask-files-content">
+              <SubtaskUploadFiles id={subTask.id} type="MODEL" />
+            </div>
             <SubtaskFile
               files={subTask.files}
               typeFile="MODEL"
@@ -79,8 +78,8 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
             />
             <div className="cardSubtaskHold-add-users">
               <div className="cardSubtaskHold-users-contain">
-                <h4 className="cardSubtaskHold-title-information">
-                  <figure className="cardSubtaskHold-figure">
+                <h4 className="cardSubtask-title-information">
+                  <figure className="cardSubtask-figure">
                     <img src="/svg/asig-user.svg" alt="W3Schools" />
                   </figure>
                   Asignar Usuario:
@@ -118,8 +117,8 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
         <SubtasksMoreInfo task={subTask} />
         {!isAuthorizedMod && (
           <>
-            <h4 className="cardSubtaskHold-title-information">
-              <figure className="cardSubtaskHold-figure">
+            <h4 className="cardSubtask-title-information">
+              <figure className="cardSubtask-figure">
                 <img src="/svg/paper-clip.svg" alt="W3Schools" />
               </figure>
               Archivos modelos:
@@ -140,14 +139,17 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
             type="assigned"
             subtaskId={subTask.id}
             subtaskStatus={status}
+            isDisabled={addBtn}
             text="ASIGNARME"
-            className="cardSubtaskHold-add-btn"
+            className={`cardSubtask-add-btn ${
+              addBtn && 'cardSubtask-btn-disabled'
+            }`}
           />
           {isAuthorizedMod && (
             <Button
               text="CONTINUAR"
-              className={`cardSubtaskHold-add-btn ${
-                !addBtn && 'cardSubtaskHold-btn-disabled'
+              className={`cardSubtask-add-btn ${
+                !addBtn && 'cardSubtask-btn-disabled'
               }`}
               onClick={handleAddUserByTask}
             />

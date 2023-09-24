@@ -6,6 +6,11 @@ export interface SpecialityType {
   createdAt: Date;
   typeSpecialities?: TypeSpecialities[];
 }
+export interface DataUser {
+  id: number;
+  name: string;
+  percentage?: number;
+}
 export interface TypeSpecialities {
   id: number;
   name: string;

@@ -20,7 +20,6 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           ref={ref}
           {...props}
           name={name}
-          rows={5}
           className={`${className} input-container-textarea ${
             errors && name && errors[name] && 'input-text-area-error'
           }`}

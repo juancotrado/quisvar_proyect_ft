@@ -7,6 +7,7 @@ import { RootState } from '../../../store';
 import SubtaskFile from '../subtaskFiles/SubtaskFile';
 import './subtaskInfoHistory.css';
 import { container } from '../../../animations/animations';
+import { _date } from '../../../utils/formatDate';
 interface SubtaskInfoHistoryProps {
   feedBack: Feedback;
   className?: string;
@@ -32,29 +33,31 @@ const SubtaskInfoHistory = ({
   };
   const getDatetimeCreated = (dateTime: string) => {
     const date = new Date(dateTime);
-    const options: Intl.DateTimeFormatOptions = {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    };
-    const localeDate = date.toLocaleDateString('es-PE', options);
-    const localeTime = date.toLocaleTimeString('en-US');
+    const localeDate = _date(date);
+    const localeTime = date.toLocaleTimeString();
 
     return ` ${localeDate} a las ${localeTime}`;
   };
   console.log(authorize?.isAuthorizedMod);
   return (
     <div className={`SubtaskInfoHistory-review-card ${className}`}>
-      <motion.h3
-        className="SubtaskInfoHistory-review-card-time"
+      <h3
+        className="SubtaskInfoHistory-title-information"
         onClick={toggleIsActive}
       >
-        Enviado por{' '}
+        <figure className="cardSubtask-figure">
+          <img src="/svg/person-blue.svg" alt="W3Schools" />
+        </figure>
+        {getUserName(feedBack.files[0].user.profile)}
+        <span className="SubtaskInfoHistory-send-file">Envió un archivo</span>
+        <span className="SubtaskInfoHistory-send-date">
+          {getDatetimeCreated(feedBack.createdAt)}
+        </span>
+        {/* Enviado por{' '}
         <strong>{getUserName(feedBack.files[0].user.profile)}</strong>
         {' el '}
-        <strong>{getDatetimeCreated(feedBack.createdAt)}</strong>
-      </motion.h3>
+        <strong>{getDatetimeCreated(feedBack.createdAt)}</strong> */}
+      </h3>
       {isActive && (
         <motion.div
           className="SubtaskInfoHistory-container-feedback"
@@ -62,22 +65,6 @@ const SubtaskInfoHistory = ({
           initial="hidden"
           animate="show"
         >
-          {getDataFeedback &&
-            ((authorize?.isAuthorizedUser && feedBack.comment) ||
-              authorize?.isAuthorizedMod) && (
-              <TextArea
-                label={!feedBack.comment ? 'Agregar Comentario' : 'Comentario'}
-                className="SubtaskInfoHistory-container-feedback-textarea"
-                onBlur={e =>
-                  getDataFeedback({
-                    comment: e.target.value.trim(),
-                    id: feedBack.id,
-                  })
-                }
-                defaultValue={feedBack.comment || ''}
-                disabled={feedBack.comment ? true : false}
-              />
-            )}
           <div
             className={`${
               !getDataFeedback
@@ -85,13 +72,27 @@ const SubtaskInfoHistory = ({
                 : 'SubtaskInfoHistory-no-feedback '
             }`}
           >
-            <h3>Archivos Enviados:</h3>
-            <SubtaskFile
-              files={feedBack.files}
-              showDeleteBtn={false}
-              className="SubtaskInfoHistory-container-feedback-files"
-            />
+            <SubtaskFile files={feedBack.files} showDeleteBtn={false} />
           </div>
+          {getDataFeedback &&
+            ((authorize?.isAuthorizedUser && feedBack.comment) ||
+              authorize?.isAuthorizedMod) && (
+              <TextArea
+                rows={2}
+                className="SubtaskInfoHistory-container-feedback-textarea"
+                onBlur={e =>
+                  getDataFeedback({
+                    comment: e.target.value.trim(),
+                    id: feedBack.id,
+                  })
+                }
+                placeholder={
+                  !feedBack.comment ? 'Añadir Comentario' : 'Comentario'
+                }
+                defaultValue={feedBack.comment || ''}
+                disabled={feedBack.comment ? true : false}
+              />
+            )}
         </motion.div>
       )}
     </div>

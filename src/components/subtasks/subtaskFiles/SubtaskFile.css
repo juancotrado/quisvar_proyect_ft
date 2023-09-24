@@ -8,10 +8,11 @@
   width: 100%;
 }
 .subtaskFile-contain {
+  position: relative;
   display: flex;
   justify-content: space-between;
   gap: 0.5rem;
-  padding: 0.7rem;
+  padding: 0.4rem;
   border-radius: 0.39675rem;
   background-color: #f5f5f5;
 }
@@ -50,4 +51,10 @@
 .subtaskFile-btn-delete {
   border: none;
   background-color: transparent;
+}
+.subtaskFile-btn-delete {
+  position: absolute;
+  width: 1.5rem;
+  top: -0.8rem;
+  right: -0.8rem;
 }

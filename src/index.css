@@ -11,7 +11,7 @@
   --color-liquidation: #4f5aed;
   --color-asigned: #aa5b00;
   --color-correction: #2264e5;
-  --color-review: #2264e5;
+  --color-review: #5a6376;
   --color-bg-unresolved: #faf0f3;
   --color-bg-done: #e1fcef;
   --color-bg-liquidation: #f0f1fa;
@@ -108,6 +108,7 @@ h3 {
 .main-title-span {
   color: var(--color-primary);
 }
+
 ::-webkit-search-cancel-button {
   background-image: url('./../public/svg/circle-xmark-solid.svg');
   background-repeat: no-repeat;
@@ -117,6 +118,7 @@ h3 {
   cursor: pointer;
   width: 14px;
 }
+
 /* custom scrollbar */
 ::-webkit-scrollbar {
   width: 5px;

@@ -11,9 +11,10 @@ import { RootState } from '../../../store';
 import { useNavigate } from 'react-router-dom';
 import { rolSecondLevel } from '../../../utils/roles';
 import { useMotionValue, motion, PanInfo } from 'framer-motion';
+import LoaderForComponent from '../../shared/loaderForComponent/LoaderForComponent';
 interface SidebarSpecialityProps {
   settingSectors: (value: SectorType[]) => void;
-  sectors: SectorType[];
+  sectors: SectorType[] | null;
   onSave?: () => void;
 }
 
@@ -69,123 +70,134 @@ const SidebarSpeciality = ({
     [mWidth]
   );
   const style = {
-    maxWidth: mWidth,
+    width: mWidth,
   };
-  console.log({ asdas: mWidth.get() });
   return (
     <motion.aside className={`sidebarSpeciality `} style={style}>
-      {contentVisible && (
-        <Select
-          label="Año de Especialidad:"
-          required={true}
-          name="typeSpeciality"
-          data={yearData}
-          itemKey="year"
-          onChange={handleFilterForYear}
-          textField="year"
-        />
-      )}
-      <div className="sidebarSpeciality-slice">
-        <ul className="aside-dropdown">
-          {sectors.map(sector => (
-            <li key={sector.id} className="sidebarSpeciality-dropdown-list">
-              <SidebarSpecialityLvlList
-                authUser={authUsers}
-                data={sector}
-                type="sector"
-                indexSelected={indexSelected}
-              />
-              <div className="sidebarSpeciality-dropdown-content">
-                <ul className="sidebarSpeciality-dropdown-sub">
-                  {sector.specialities.map(speciality => (
-                    <li
-                      key={speciality.id}
-                      className="sidebarSpeciality-dropdown-sub-list"
-                    >
-                      <SidebarSpecialityLvlList
-                        authUser={authUsers}
-                        data={speciality}
-                        type="specialities"
-                        onSave={onSave}
-                        indexSelected={indexSelected}
-                      />
-                      <div className="sidebarSpeciality-dropdown-content">
-                        <ul className="sidebarSpeciality-dropdown-sub">
-                          {speciality.typeSpecialities?.map(typespeciality => (
-                            <li
-                              key={typespeciality.id}
-                              className="sidebarSpeciality-dropdown-sub-list"
-                            >
-                              <SidebarSpecialityLvlList
-                                authUser={authUsers}
-                                data={typespeciality}
-                                type="typespecialities"
-                                onSave={onSave}
-                                indexSelected={indexSelected}
-                              />
-                              <div className="sidebarSpeciality-dropdown-content">
-                                <ul className="sidebarSpeciality-dropdown-sub">
-                                  {typespeciality?.projects?.map(project => (
-                                    <li
-                                      key={project.id}
-                                      className="sidebarSpeciality-dropdown-sub-list"
-                                      onClick={() => {
-                                        handleProjectNavigate(project.id);
-                                      }}
-                                    >
-                                      <SidebarSpecialityLvlList
-                                        authUser={authUsers}
-                                        data={project}
-                                        type="projects"
-                                        onSave={onSave}
-                                        indexSelected={indexSelected}
-                                      />
-                                    </li>
-                                  ))}
-                                  {authUsers && (
-                                    <SidebarSpecialityAddLvl
+      {sectors ? (
+        <>
+          {contentVisible && (
+            <Select
+              label="Año de Especialidad:"
+              required={true}
+              name="typeSpeciality"
+              data={yearData}
+              itemKey="year"
+              onChange={handleFilterForYear}
+              textField="year"
+            />
+          )}
+          <div className="sidebarSpeciality-slice">
+            <ul className="aside-dropdown">
+              {sectors.map(sector => (
+                <li key={sector.id} className="sidebarSpeciality-dropdown-list">
+                  <SidebarSpecialityLvlList
+                    authUser={authUsers}
+                    data={sector}
+                    type="sector"
+                    indexSelected={indexSelected}
+                  />
+                  <div className="sidebarSpeciality-dropdown-content">
+                    <ul className="sidebarSpeciality-dropdown-sub">
+                      {sector.specialities.map(speciality => (
+                        <li
+                          key={speciality.id}
+                          className="sidebarSpeciality-dropdown-sub-list"
+                        >
+                          <SidebarSpecialityLvlList
+                            authUser={authUsers}
+                            data={speciality}
+                            type="specialities"
+                            onSave={onSave}
+                            indexSelected={indexSelected}
+                          />
+                          <div className="sidebarSpeciality-dropdown-content">
+                            <ul className="sidebarSpeciality-dropdown-sub">
+                              {speciality.typeSpecialities?.map(
+                                typespeciality => (
+                                  <li
+                                    key={typespeciality.id}
+                                    className="sidebarSpeciality-dropdown-sub-list"
+                                  >
+                                    <SidebarSpecialityLvlList
+                                      authUser={authUsers}
+                                      data={typespeciality}
+                                      type="typespecialities"
                                       onSave={onSave}
-                                      idValue={typespeciality.id}
-                                      keyNameId="typespecialityId"
-                                      nameLevel="Añadir nuevo proyecto"
+                                      indexSelected={indexSelected}
                                     />
-                                  )}
-                                </ul>
-                              </div>
-                            </li>
-                          ))}
-                          {authUsers && (
-                            <SidebarSpecialityAddLvl
-                              onSave={onSave}
-                              idValue={speciality.id}
-                              keyNameId="specialitiesId"
-                            />
-                          )}
-                        </ul>
-                      </div>
-                    </li>
-                  ))}
-                  {authUsers && (
-                    <SidebarSpecialityAddLvl
-                      onSave={onSave}
-                      idValue={sector.id}
-                      keyNameId="sectorId"
-                    />
-                  )}
-                </ul>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <motion.div
-        drag="x"
-        onDrag={handleDrag}
-        dragConstraints={{ top: 0, left: 0, right: 0, bottom: 0 }}
-        dragElastic={0}
-        dragMomentum={false}
-        className="sidebarSpeciality-resize-content"
-      />
+                                    <div className="sidebarSpeciality-dropdown-content">
+                                      <ul className="sidebarSpeciality-dropdown-sub">
+                                        {typespeciality?.projects?.map(
+                                          project => (
+                                            <li
+                                              key={project.id}
+                                              className="sidebarSpeciality-dropdown-sub-list"
+                                              onClick={() => {
+                                                handleProjectNavigate(
+                                                  project.id
+                                                );
+                                              }}
+                                            >
+                                              <SidebarSpecialityLvlList
+                                                authUser={authUsers}
+                                                data={project}
+                                                type="projects"
+                                                onSave={onSave}
+                                                indexSelected={indexSelected}
+                                              />
+                                            </li>
+                                          )
+                                        )}
+                                        {authUsers && (
+                                          <SidebarSpecialityAddLvl
+                                            onSave={onSave}
+                                            idValue={typespeciality.id}
+                                            keyNameId="typespecialityId"
+                                            nameLevel="Añadir nuevo proyecto"
+                                          />
+                                        )}
+                                      </ul>
+                                    </div>
+                                  </li>
+                                )
+                              )}
+                              {authUsers && (
+                                <SidebarSpecialityAddLvl
+                                  onSave={onSave}
+                                  idValue={speciality.id}
+                                  keyNameId="specialitiesId"
+                                />
+                              )}
+                            </ul>
+                          </div>
+                        </li>
+                      ))}
+                      {authUsers && (
+                        <SidebarSpecialityAddLvl
+                          onSave={onSave}
+                          idValue={sector.id}
+                          keyNameId="sectorId"
+                        />
+                      )}
+                    </ul>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <motion.div
+            drag="x"
+            onDrag={handleDrag}
+            dragConstraints={{ top: 0, left: 0, right: 0, bottom: 0 }}
+            dragElastic={0}
+            dragMomentum={false}
+            className="sidebarSpeciality-resize-content"
+          />
+        </>
+      ) : (
+        <LoaderForComponent />
+      )}
     </motion.aside>
   );
 };

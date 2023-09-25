@@ -14,6 +14,13 @@ interface SubtaskFileProps {
   showDeleteBtnByUserAuth?: boolean;
 }
 
+const iconForExtension = {
+  xlsx: 'excel-icon',
+  pdf: 'pdf-icon',
+  docx: 'word-icon',
+  dwg: 'autocad-icon',
+  default: 'file-download',
+};
 const SubtaskFile = ({
   files,
   typeFile,
@@ -38,6 +45,12 @@ const SubtaskFile = ({
     if (!url) return;
     return url.replace('./uploads/', '');
   };
+  const getIcon = (fileName: string) => {
+    const ext = fileName.split('.').pop() || 'default';
+    console.log({ ext });
+    const getExtencion = iconForExtension[ext as keyof typeof iconForExtension];
+    return getExtencion || 'file-download';
+  };
   return (
     <div className={` subtaskFile ${className}`}>
       {files
@@ -54,7 +67,7 @@ const SubtaskFile = ({
               title={file.name}
             >
               <img
-                src="/svg/file-download.svg"
+                src={`/svg/${getIcon(file.name)}.svg`}
                 alt="W3Schools"
                 className="subtaskFile-icon"
               />

@@ -15,6 +15,7 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
+  height: 1.7rem;
 }
 
 .stage-header-separation {
@@ -63,11 +64,13 @@
   margin-top: 0.2rem;
   overflow-y: auto;
 }
+
 .active {
   border-bottom: 2px solid var(--color-primary);
   padding-bottom: 0.2rem;
   color: #424242;
 }
+
 .stage-header-add-btn {
   cursor: pointer;
   padding: 0.3rem 0.8rem;
@@ -75,9 +78,11 @@
   background-color: #f5f5f5;
   border: none;
 }
+
 .stage-add-input {
   position: relative;
 }
+
 .stage-icon-area {
   position: absolute;
   top: 0;
@@ -87,10 +92,12 @@
   align-items: center;
   margin-right: 0.5rem;
 }
+
 .stage-icon-action {
   cursor: pointer;
   background-color: #f5f5f5;
 }
+
 .stage-add-btn-limit {
   padding-right: 3rem;
 }

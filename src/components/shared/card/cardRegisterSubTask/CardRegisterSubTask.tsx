@@ -38,7 +38,7 @@ const CardRegisterSubTask = ({ onSave }: CardRegisterSubTaskProps) => {
         reset({
           id: task.id,
           description: task.description,
-          days: task.hours / 24,
+          days: task.days,
           name: task.name,
           price: task.price,
         });
@@ -49,7 +49,7 @@ const CardRegisterSubTask = ({ onSave }: CardRegisterSubTaskProps) => {
     return () => {
       handleIsOpen.current.unsubscribe();
     };
-  }, [setValue]);
+  }, [reset, setValue]);
 
   const onSubmit: SubmitHandler<SubTaskForm> = data => {
     const body = { ...data, days: +data.days };

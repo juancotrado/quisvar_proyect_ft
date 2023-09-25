@@ -38,7 +38,6 @@ const SubtaskFile = ({
     if (!url) return;
     return url.replace('./uploads/', '');
   };
-  console.log(files);
   return (
     <div className={` subtaskFile ${className}`}>
       {files
@@ -52,6 +51,7 @@ const SubtaskFile = ({
               target="_blank"
               className="subtaskFile-anchor"
               download={true}
+              title={file.name}
             >
               <img
                 src="/svg/file-download.svg"

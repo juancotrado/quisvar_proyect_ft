@@ -31,7 +31,6 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
         { userId: user.id, percentage },
       ]
     );
-    // setFiles(null);
     setPorcetageForUser(Object.fromEntries(porcentageForUserFilter));
   }, [subTask.users]);
 
@@ -93,7 +92,6 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
       ['user' + name]: { userId: +name, percentage: +value },
     });
   };
-  console.log({ filterFiles });
   const { usersData } = useUserPorcetage(subTask.users);
   const getDataFeedback = (data: DataFeedback) => setDataFeedback(data);
   return (
@@ -174,35 +172,6 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
             />
           </>
         )}
-        {/* <div className="cardSubtaskHold-users-contain">
-        <h4 className="cardSubtask-title-information">
-          <figure className="cardSubtask-figure">
-            <img src="/svg/user-task.svg" alt="W3Schools" />
-          </figure>
-          Lista de Usuarios Asignados:
-        </h4>
-        {subTask.users.map((user, index) => (
-          <div
-            key={user.user.id}
-            className="cardSubtaskProcess-porcentage-container"
-          >
-            <span className="cardSubtaskProcess-porcentage-user">
-              {index + 1}
-              {')'} {user.user.profile.firstName} {user.user.profile.lastName}{' '}
-            </span>
-            <div className="cardSubtaskProcess-porcentage-input">
-              <Input
-                onBlur={handlePorcentage}
-                placeholder={String(user.percentage)}
-                name={String(user.user.id)}
-                className="input-percentage-value"
-                disabled={!areAuthorizedUsers}
-              />
-              %
-            </div>
-          </div>
-        ))}
-      </div> */}
         <div className="cardSubtaskProcess-left-details-buttom">
           {subTask.feedBacks.length !== 0 && (
             <SubtasksShippingHistory

@@ -39,14 +39,14 @@ const parseDate = (date: Date) =>
 
 interface CardRegisterMessageForwardProps {
   message: MessageType;
-  receiverId?: number;
-  senderId: number;
   quantityFiles?: quantityType[] | null;
+  onSave?: () => void;
 }
 
 const CardRegisterMessageForward = ({
   message,
   quantityFiles,
+  onSave,
 }: CardRegisterMessageForwardProps) => {
   const { userSession } = useSelector((state: RootState) => state);
   const { lastName, firstName } = userSession.profile;
@@ -88,15 +88,12 @@ const CardRegisterMessageForward = ({
     // formData.append('senderId', `${senderId}`);
     axiosInstance
       .post(`/mail/reply?status=RECHAZADO`, formData, { headers })
-      .then(res => console.log(res.data))
-      .catch(err => console.log(err));
+      .then(onSave);
   };
 
   const sender = message.users.filter(user => user.type === 'SENDER')[0].user;
   const handleArchiverMessage = () => {
-    axiosInstance
-      .patch(`/mail/archived/${message.id}`)
-      .then(res => console.log(res.data));
+    axiosInstance.patch(`/mail/archived/${message.id}`).then(onSave);
   };
   return (
     <form
@@ -193,12 +190,14 @@ const CardRegisterMessageForward = ({
           // onClick={() => {}}
           text="No Procede"
         />
-        <Button
-          onClick={() => handleArchiverMessage}
-          className={`inbox-forward-btn-archiver`}
-          type="button"
-          text="Archivar Tramite"
-        />
+        {['SUPER_ADMIN', 'ASSISTANT'].includes(userSession.role) && (
+          <Button
+            onClick={() => handleArchiverMessage}
+            className={`inbox-forward-btn-archiver`}
+            type="button"
+            text="Archivar Tramite"
+          />
+        )}
       </div>
     </form>
   );

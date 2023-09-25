@@ -25,6 +25,12 @@
   align-items: center;
   width: fit-content;
 }
+.message-container-header-options {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0.5rem;
+}
 .mail-main-options-btn {
   background-color: var(--color-menu);
   border: 0;
@@ -125,9 +131,9 @@
 }
 
 .mail-m-size-true {
-  padding: 1rem 0.5rem;
+  padding: 1rem 0rem;
   max-width: 70vw;
-  border: 1px solid #ccccccb6;
+  /* border: 1px solid #ccccccb6; */
   border-end-end-radius: var(--radius-button);
   border-start-end-radius: var(--radius-button);
   border-end-start-radius: var(--radius-button);

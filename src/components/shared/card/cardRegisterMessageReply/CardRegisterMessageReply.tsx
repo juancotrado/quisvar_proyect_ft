@@ -43,17 +43,16 @@ const parseDate = (date: Date) =>
 
 interface CardRegisterMessageReplyProps {
   message: MessageType;
-  receiverId?: number;
-  senderId: number;
-  idMessageReply?: number;
-  idMessageResend?: number;
+  senderId?: number;
   quantityFiles?: quantityType[] | null;
+  onSave?: () => void;
 }
 
 const CardRegisterMessageReply = ({
   message,
-  receiverId,
+  senderId,
   quantityFiles,
+  onSave,
 }: CardRegisterMessageReplyProps) => {
   const { userSession } = useSelector((state: RootState) => state);
   const { lastName, firstName } = userSession.profile;
@@ -67,10 +66,8 @@ const CardRegisterMessageReply = ({
 
   const contacts = useMemo(
     () =>
-      users.filter(
-        user => user.id !== userSession.id && user.id !== receiverId
-      ),
-    [userSession, users, receiverId]
+      users.filter(user => user.id !== userSession.id && user.id !== senderId),
+    [userSession, users, senderId]
   );
 
   const handleInputChange = (event: string) => {
@@ -117,15 +114,11 @@ const CardRegisterMessageReply = ({
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
     formData.append('data', JSON.stringify(values));
     if (receiver)
-      axiosInstance
-        .post(`/mail/reply`, formData, { headers })
-        .then(res => console.log(res.data));
+      axiosInstance.post(`/mail/reply`, formData, { headers }).then(onSave);
   };
 
   const handleDoneMessage = () => {
-    axiosInstance
-      .patch(`/mail/done/${message.id}`)
-      .then(res => console.log(res.data));
+    axiosInstance.patch(`/mail/done/${message.id}`).then(onSave);
   };
 
   return (

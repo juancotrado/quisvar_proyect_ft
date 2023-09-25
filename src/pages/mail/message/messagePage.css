@@ -6,6 +6,11 @@
   overflow-y: auto;
   height: 100%;
 }
+.message-page-hidden {
+  display: none;
+  width: 0;
+  height: 100%;
+}
 .message-icon-drop {
   border: none;
   color: #fff;

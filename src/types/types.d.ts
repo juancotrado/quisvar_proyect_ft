@@ -675,6 +675,7 @@ export interface MessageType {
   idMessageReply: number | null;
   idMessageResend: number | null;
   createdAt: Date;
+  updatedAt: Date;
   header: string;
   files?: fileMesage[];
   users: {
@@ -686,6 +687,22 @@ export interface MessageType {
       profile: Pick<Profile, 'firstName' | 'lastName' | 'dni' | 'phone'>;
     };
   }[];
+  history: MessageReply[];
+}
+
+export interface MessageReply {
+  id: number;
+  title: string;
+  isOpen: boolean;
+  description: string;
+  // type: MessageTypeImbox;
+  createdAt: Date;
+  header: string;
+  files?: fileMesage[];
+  user: {
+    id: number;
+    profile: Pick<Profile, 'firstName' | 'lastName' | 'dni' | 'phone'>;
+  };
 }
 export interface fileMesage {
   id: number;

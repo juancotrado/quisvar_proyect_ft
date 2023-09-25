@@ -41,11 +41,13 @@ interface CardRegisterMessageUpdateProps {
   message: MessageType;
   receiverId?: number;
   quantityFiles?: quantityType[] | null;
+  onSave?: () => void;
 }
 
 const CardRegisterMessageUpdate = ({
   message,
   quantityFiles,
+  onSave,
 }: CardRegisterMessageUpdateProps) => {
   const { userSession } = useSelector((state: RootState) => state);
   const { lastName, firstName } = userSession.profile;
@@ -89,10 +91,7 @@ const CardRegisterMessageUpdate = ({
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
     formData.append('data', JSON.stringify(data));
     // formData.append('senderId', `${senderId}`);
-    axiosInstance
-      .put(`/mail/${messageId}`, formData, { headers })
-      .then(res => console.log(res.data))
-      .catch(err => console.log(err));
+    axiosInstance.put(`/mail/${messageId}`, formData, { headers }).then(onSave);
   };
 
   const sender = message.users.filter(user => user.type === 'RECEIVER')[0].user;

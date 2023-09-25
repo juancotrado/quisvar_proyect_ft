@@ -26,12 +26,16 @@ const MailPage = () => {
   const [typeMail, setTypeMail] = useState<MailType['type'] | null>(InitTMail);
   const [statusMsg, setStatusMsg] = useState<MessageStatus | null>(null);
   //-----------------------------------------------------------------------
-  const size = searchParams.get('size') === 'true' ? true : false;
+  const size = !!searchParams.get('size') || false;
+  const refresh = !!searchParams.get('refresh') || false;
   const [isNewMessage, setIsNewMessage] = useState(false);
   const viewMessage = (id: number, type: MailType['type']) =>
     navigate(`${id}?size=true&type=${type}`);
 
   useEffect(() => getMessages(), [typeMail, typeMsg, statusMsg]);
+  useEffect(() => {
+    getMessages();
+  }, [refresh]);
 
   const handleNewMessage = () => setIsNewMessage(true);
   const handleCloseMessage = () => setIsNewMessage(false);
@@ -80,7 +84,15 @@ const MailPage = () => {
       <div className="mail-main-master-container">
         <div className="mail-messages-container">
           <div className={`message-container-header`}>
-            <h2>Trámites</h2>
+            <div className="message-container-header-options">
+              <h2>Trámites</h2>
+              <Button
+                icon="refresh"
+                text={(!size && 'Actualizar') || undefined}
+                className={`mail-main-options-btn`}
+                onClick={getMessages}
+              />
+            </div>
             <div className="message-options-filter">
               <div className="mail-main-options-container">
                 <Button
@@ -184,6 +196,7 @@ const MailPage = () => {
                   isActive={size}
                   key={messageId}
                   type={type}
+                  onArchiver={handleSaveMessage}
                   onClick={() => viewMessage(messageId, type)}
                   message={message}
                 />

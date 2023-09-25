@@ -1,3 +1,4 @@
+import { axiosInstance } from '../../../../services/axiosInstance';
 import { MessageSender, MessageType, User } from '../../../../types/types';
 import formatDate from '../../../../utils/formatDate';
 import Button from '../../button/Button';
@@ -8,6 +9,7 @@ interface CardMessageProps {
   isActive?: boolean;
   user: User;
   onClick: () => void;
+  onArchiver?: () => void;
 }
 
 const CardMessage = ({
@@ -15,6 +17,7 @@ const CardMessage = ({
   type,
   user,
   onClick,
+  onArchiver,
   isActive,
 }: CardMessageProps) => {
   const contactUser = message.users.find(user => user.type !== type);
@@ -29,8 +32,7 @@ const CardMessage = ({
     });
 
   const handleArchiverAction = () => {
-    const url = 'sdsa';
-    return url;
+    axiosInstance.patch(`/mail/archived/${message.id}`).then(onArchiver);
   };
   return (
     <div
@@ -68,7 +70,7 @@ const CardMessage = ({
               {parseDate(message.createdAt)}
             </span>
           </div>
-          {user.role === 'SUPER_ADMIN' && (
+          {['SUPER_ADMIN', 'ASSISTANT'].includes(user.role) ? (
             <div
               className="card-message-section-item message-cursor-none"
               onClick={e => e.stopPropagation()}
@@ -79,6 +81,8 @@ const CardMessage = ({
                 onClick={handleArchiverAction}
               />
             </div>
+          ) : (
+            <div className="card-message-section-item">--</div>
           )}
         </>
       )}

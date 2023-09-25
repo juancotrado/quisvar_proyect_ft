@@ -40,9 +40,11 @@ const MessagePage = () => {
   const [message, setMessage] = useState<MessageType | null>();
   const [isActive, setIsActive] = useState<boolean>(false);
   const [viewMoreFiles, setViewMoreFiles] = useState(false);
+  const [viewHistory, setViewHistory] = useState(false);
   const [countMessage, setCountMessage] = useState<quantityType[] | null>([]);
   //----------------------------------------------------------------------------
   const getFiles = (message && message.files) || [];
+  const getHistory = (message && message.history) || [];
   const files = filterFilesByAttempt(getFiles);
   // const parameters = searchParams.get('size');
   // const [searchParams] = useSearchParams();
@@ -64,9 +66,10 @@ const MessagePage = () => {
   const handleClose = () => navigate('/tramites');
   const toggleSwitch = () => setIsReply(!isReply);
   const handleViewMoreFiles = () => setViewMoreFiles(!viewMoreFiles);
+  const handleViewHistory = () => setViewHistory(!viewHistory);
   const handleResizeAction = () => setIsActive(!isActive);
 
-  if (!message) return <div></div>;
+  if (!message) return <div className="message-page-hidden"></div>;
   const { users } = message;
   const sender = users.find(({ user }) => user.id !== userSession.id);
   const mainSender = users.find(
@@ -77,7 +80,10 @@ const MessagePage = () => {
     ({ user, status, role }) =>
       user.id === userSession.id && status && role === 'MAIN'
   );
-  console.log(mainSender);
+
+  const handleSaveRegister = () => {
+    navigate('/tramites?refresh=true');
+  };
   return (
     <motion.div
       className="message-page-container"
@@ -191,6 +197,39 @@ const MessagePage = () => {
               </div>
             ))}
         </div>
+        {getHistory.length > 1 && (
+          <Button
+            className={`message-view-more-files-${viewHistory}`}
+            text={`${viewHistory ? 'Ocultar' : 'Ver'} documentos recibidos`}
+            icon="down"
+            onClick={handleViewHistory}
+          />
+        )}
+        <div className="message-container-files-grid">
+          {viewHistory &&
+            getHistory.map(({ id, files, createdAt, user }) => (
+              <div className="message-container-file-information" key={id}>
+                <span className="message-sender-name">
+                  Enviado por {` `}
+                  <b>
+                    {user.profile.lastName} {user.profile.firstName}
+                  </b>
+                </span>
+                <span>{parseDate(new Date(createdAt))}</span>
+                <div className="message-container-files-grid">
+                  {files &&
+                    files.map(({ id, name, path }) => (
+                      <ChipFileMessage
+                        className="pointer message-files-list"
+                        key={id}
+                        text={parseName(name)}
+                        link={path + '/' + name}
+                      />
+                    ))}
+                </div>
+              </div>
+            ))}
+        </div>
         {mainReceiver && message.status === 'PROCESO' && (
           <div
             className="message-switch"
@@ -212,16 +251,15 @@ const MessagePage = () => {
           {isReply ? (
             <CardRegisterMessageReply
               message={message}
-              receiverId={1}
-              senderId={2}
               quantityFiles={countMessage}
+              senderId={mainSender?.user.id}
+              onSave={handleSaveRegister}
             />
           ) : (
             <CardRegisterMessageForward
               message={message}
-              receiverId={1}
-              senderId={2}
               quantityFiles={countMessage}
+              onSave={handleSaveRegister}
             />
           )}
         </>
@@ -230,6 +268,7 @@ const MessagePage = () => {
         <CardRegisterMessageUpdate
           message={message}
           receiverId={mainReceiver?.user.id}
+          onSave={handleSaveRegister}
         />
       )}
     </motion.div>

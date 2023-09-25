@@ -1,4 +1,4 @@
-import { FocusEvent, useState } from 'react';
+import { FocusEvent, useCallback, useRef, useState } from 'react';
 import './sidebarSpeciality.css';
 import { SectorType } from '../../../types/types';
 import SidebarSpecialityLvlList from './sidebarSpecialityLvlList/SidebarSpecialityLvlList';
@@ -10,6 +10,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import { useNavigate } from 'react-router-dom';
 import { rolSecondLevel } from '../../../utils/roles';
+import { useMotionValue, motion, PanInfo } from 'framer-motion';
 interface SidebarSpecialityProps {
   settingSectors: (value: SectorType[]) => void;
   sectors: SectorType[];
@@ -25,8 +26,10 @@ const SidebarSpeciality = ({
   const handleProjectNavigate = (projectId: number) => {
     navigate(`proyecto/${projectId}`);
   };
+  const mWidth = useMotionValue(300);
   const { role } = useSelector((state: RootState) => state.userSession);
   const authUsers = rolSecondLevel.includes(role);
+  const [contentVisible, setContentVisible] = useState(true);
   const [indexSelected, setIndexSelected] = useState('');
   const handleFilterForYear = async (e: FocusEvent<HTMLSelectElement>) => {
     const { data } = await axiosInstance.get<SectorType[]>('/sector');
@@ -50,17 +53,38 @@ const SidebarSpeciality = ({
     if (especialties === undefined) return;
     setIndexSelected(name + '-' + especialties);
   };
+
+  const handleDrag = useCallback(
+    (_event: MouseEvent, info: PanInfo) => {
+      const newWidth = mWidth.get() + info.delta.x;
+      if (newWidth < 100) {
+        setContentVisible(false);
+      } else {
+        setContentVisible(true);
+      }
+      if (newWidth > 21 && newWidth < 600) {
+        mWidth.set(mWidth.get() + info.delta.x);
+      }
+    },
+    [mWidth]
+  );
+  const style = {
+    maxWidth: mWidth,
+  };
+  console.log({ asdas: mWidth.get() });
   return (
-    <aside className={`sidebarSpeciality `}>
-      <Select
-        label="Año de Especialidad:"
-        required={true}
-        name="typeSpeciality"
-        data={yearData}
-        itemKey="year"
-        onChange={handleFilterForYear}
-        textField="year"
-      />
+    <motion.aside className={`sidebarSpeciality `} style={style}>
+      {contentVisible && (
+        <Select
+          label="Año de Especialidad:"
+          required={true}
+          name="typeSpeciality"
+          data={yearData}
+          itemKey="year"
+          onChange={handleFilterForYear}
+          textField="year"
+        />
+      )}
       <div className="sidebarSpeciality-slice">
         <ul className="aside-dropdown">
           {sectors.map(sector => (
@@ -154,7 +178,15 @@ const SidebarSpeciality = ({
           ))}
         </ul>
       </div>
-    </aside>
+      <motion.div
+        drag="x"
+        onDrag={handleDrag}
+        dragConstraints={{ top: 0, left: 0, right: 0, bottom: 0 }}
+        dragElastic={0}
+        dragMomentum={false}
+        className="sidebarSpeciality-resize-content"
+      />
+    </motion.aside>
   );
 };
 

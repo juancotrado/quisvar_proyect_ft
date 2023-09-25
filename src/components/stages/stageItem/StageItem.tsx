@@ -69,7 +69,7 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
     {
       name: 'Duplicar',
       type: 'button',
-      icon: 'trash-red',
+      icon: 'document-duplicate',
 
       function: handleDuplicate,
     },
@@ -129,7 +129,12 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
             </form>
           )}
         </NavLink>
-        <DotsOption data={options} iconHide isClickRight={isClickRight} />
+        <DotsOption
+          data={options}
+          iconHide
+          isClickRight={isClickRight}
+          className="stageItem-dots"
+        />
       </div>
     </div>
   );

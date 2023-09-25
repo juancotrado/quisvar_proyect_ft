@@ -115,7 +115,7 @@ const ProjectAddLevel = ({
                 type="search"
                 name="employees"
                 selector
-                // className="report-employee-list"
+                className="projectAddLevel-employee-list"
                 placeholder="Coordinador de Area"
                 valueInput={(_name, index) => setIdCoordinator(+index)}
               />

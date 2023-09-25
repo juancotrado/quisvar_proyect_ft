@@ -4,7 +4,6 @@
 }
 
 .dropdown-container {
-  position: relative;
   width: 100%;
   display: flex;
   gap: 0.3rem;
@@ -35,17 +34,12 @@
   flex-grow: 1;
 }
 .dropdown-list-option {
-  position: absolute;
+  position: fixed;
   background-color: var(--color-menu);
-  left: 0;
-  top: 110%;
-  max-height: 400%;
-  width: 100%;
+  margin-top: 2rem;
   z-index: 1;
   overflow-y: auto;
   filter: drop-shadow(-2px 2px 3px rgba(33, 103, 255, 0.568));
-  /* border-radius: var(--radius-input); */
-  /* border-bottom: 2px solid var(--color-quaternay); */
 }
 .dropdown-option {
   padding: 0.4rem;

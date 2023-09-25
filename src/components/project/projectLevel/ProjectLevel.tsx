@@ -76,7 +76,7 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
     {
       name: 'Duplicar',
       type: 'button',
-      icon: 'trash-red',
+      icon: 'document-duplicate',
 
       function: handleDuplicate,
     },

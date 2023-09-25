@@ -10,21 +10,21 @@ const SubtasksMoreInfo = ({ task }: SubtasksMoreInfoProps) => {
     <div className="subtasksMoreInfo">
       <div className="subtasksMoreInfo-item">
         <h3 className="subtasksMoreInfo-item-title">FECHA DE INICIO</h3>
-        <p className="subtasksMoreInfo-item-text">
+        <div className="subtasksMoreInfo-item-text">
           <figure className="subtasksMoreInfo-item-icon">
             <img src="/svg/date-icon.svg" alt="W3Schools" />
           </figure>
           {_date(task?.createdAt || new Date())}
-        </p>
+        </div>
       </div>
       <div className="subtasksMoreInfo-item">
         <h3 className="subtasksMoreInfo-item-title">PRECIO</h3>
-        <p className="subtasksMoreInfo-item-text">
+        <div className="subtasksMoreInfo-item-text">
           <figure className="subtasksMoreInfo-item-icon">
             <img src="/svg/money-icon.svg" alt="W3Schools" />
           </figure>
           {task.price}
-        </p>
+        </div>
       </div>
       <div className="subtasksMoreInfo-item">
         <h3 className="subtasksMoreInfo-item-title">ESTADO ACTUAL</h3>
@@ -32,21 +32,21 @@ const SubtasksMoreInfo = ({ task }: SubtasksMoreInfoProps) => {
       </div>
       <div className="subtasksMoreInfo-item">
         <h3 className="subtasksMoreInfo-item-title">TIEMPO RESTANTE</h3>
-        <p className="subtasksMoreInfo-item-text">
+        <div className="subtasksMoreInfo-item-text">
           <figure className="subtasksMoreInfo-item-icon">
             <img src="/svg/hours-icon.svg" alt="W3Schools" />
           </figure>
           {task.price}
-        </p>
+        </div>
       </div>
       <div className="subtasksMoreInfo-item">
         <h3 className="subtasksMoreInfo-item-title">TOTAL DE HORAS</h3>
-        <p className="subtasksMoreInfo-item-text">
+        <div className="subtasksMoreInfo-item-text">
           <figure className="subtasksMoreInfo-item-icon">
             <img src="/svg/timer-icon.svg" alt="W3Schools" />
           </figure>
           {task.days * 24}
-        </p>
+        </div>
       </div>
     </div>
   );

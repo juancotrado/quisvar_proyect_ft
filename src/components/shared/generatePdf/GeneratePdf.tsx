@@ -8,6 +8,7 @@ import {
 } from '@react-pdf/renderer';
 import { useState } from 'react';
 import { styles } from './styledComponents';
+import { ObjetoTabla } from '../../../pages/home/Home';
 type CcProps = {
   name: string;
   manager: string;
@@ -18,6 +19,7 @@ export type TablesProps = {
 };
 interface PDFGeneratorProps {
   data: {
+    title: string;
     from: string;
     to: string;
     cc?: CcProps[];
@@ -26,14 +28,12 @@ interface PDFGeneratorProps {
     body: string;
     dni: string;
   };
-  tables?: TablesProps[];
+  tables?: ObjetoTabla[];
 }
 const generatePDF = (value: PDFGeneratorProps) => (
   <Document>
     <Page size="A4" style={styles.page}>
-      <Text style={{ ...styles.title }}>
-        HOJA DE COORDINACIÓN Nº 003-2023-GG/JGQC-COORPORACIÓN DHYRIUM
-      </Text>
+      <Text style={{ ...styles.title }}>{value.data?.title.toUpperCase()}</Text>
       <View style={styles.headerContent}>
         {/* header */}
         <View style={styles.headerRow}>
@@ -104,21 +104,27 @@ const generatePDF = (value: PDFGeneratorProps) => (
         hacerle llegar un coordial saludo, y al mismo tiempo comunicarle lo
         siguiente. {value.data?.body}
       </Text>
-      {value.tables &&
-        value.tables.map(table => (
-          <View style={styles.section}>
-            <View style={styles.table}>
-              <View style={styles.tableRow}>
-                <View style={styles.tableCell}>
-                  <Text style={styles.header}>{table.descripcion}</Text>
-                </View>
-                <View style={styles.tableCell}>
-                  <Text style={styles.header}>{table.encargados}</Text>
-                </View>
+      <View style={styles.table}>
+        <View style={styles.tableRow}>
+          {value.tables &&
+            value.tables.length > 0 &&
+            Object.keys(value.tables[0]).map((key, columnIndex) => (
+              <View style={styles.tableCell} key={columnIndex}>
+                <Text style={styles.header}>{key}</Text>
               </View>
+            ))}
+        </View>
+        {value.tables &&
+          value.tables.map((fila, filaIdx) => (
+            <View style={styles.tableRow} key={filaIdx}>
+              {Object.values(fila).map((valor, columnaIdx) => (
+                <View style={styles.tableCell} key={columnaIdx}>
+                  <Text>{valor}</Text>
+                </View>
+              ))}
             </View>
-          </View>
-        ))}
+          ))}
+      </View>
       <View style={styles.signArea}>
         <View style={styles.sign} />
         <Text style={styles.header}>ING: {value.data.from.toUpperCase()}</Text>
@@ -130,6 +136,7 @@ const generatePDF = (value: PDFGeneratorProps) => (
 
 const PDFGenerator = ({ data, tables }: PDFGeneratorProps) => {
   const [showPreview, setShowPreview] = useState(false);
+  // console.log(Object.keys(tables));
 
   return (
     <div>
@@ -158,9 +165,7 @@ const PDFGenerator = ({ data, tables }: PDFGeneratorProps) => {
           document={generatePDF({ data, tables })}
           fileName="tabla_pdf.pdf"
         >
-          {({ blob, url, loading, error }) =>
-            loading ? 'Generando PDF...' : 'Descargar PDF'
-          }
+          {({ loading }) => (loading ? 'Generando PDF...' : 'Descargar PDF')}
         </PDFDownloadLink>
       )}
     </div>

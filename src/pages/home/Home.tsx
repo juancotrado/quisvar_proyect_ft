@@ -2,8 +2,13 @@ import './home.css';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-// import { PDFGenerator } from '../../components';
-// import { TablesProps } from '../../components/shared/generatePdf/GeneratePdf';
+import { PDFGenerator } from '../../components';
+import { TablesProps } from '../../components/shared/generatePdf/GeneratePdf';
+export type ObjetoTabla = {
+  [clave: string]: string;
+};
+
+type Tablas = ObjetoTabla[];
 
 const Home = () => {
   const { userSession } = useSelector((state: RootState) => state);
@@ -19,66 +24,96 @@ const Home = () => {
       handleNavigateMyWorks();
     }
   };
-  //   const data = {
-  //     from: 'Juan Gonzalo Quispe Condori',
-  //     to: 'Sadith Vargas Montesinos',
-  //     affair: 'Lo que se indica',
-  //     // cc: [
-  //     //   {name: 'Juan', manager: 'Gerente'},
-  //     //   {name: 'Maria', manager: 'Asistente'},
-  //     //   {name: 'Jhon', manager: 'Coordinador'},
-  //     // ],
-  //     date: 'Puno 24 de setiembre del 2023',
-  //     body: 'Con las obras de mejoramiento de la infraestructura educativa a nivel nacional, se realizan intervenciones en los ambientes que componen las sedes educativas para reparar el deterioro físico por el uso, desgaste, antigüedad, emergencias, factores ambientales, falta de mantenimiento, uso inadecuado, entre otros.',
-  //     dni: '83774619',
-  //   }
-  //   const tablaHTML = `<table dir="ltr" style="width: 100.057%;" border="1" cellspacing="0" cellpadding="0"><colgroup><col style="width: 72.4832%;" width="549"><col style="width: 27.4735%;" width="99"></colgroup>
-  //   <tbody>
-  //   <tr>
-  //   <td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;DESCRIPCI&Oacute;N&quot;}">DESCRIPCI&Oacute;N</td>
-  //   <td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;ENCAGADOS&quot;}">ENCAGADOS</td>
-  //   </tr>
-  //   <tr>
-  //   <td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;1 . REGISTRO DEL FORMATO 07-A IMPRESO DESDE EL APLICATIVO&quot;}">1 . REGISTRO DEL FORMATO 07-A IMPRESO DESDE EL APLICATIVO</td>
-  //   <td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Ing. pluvio&quot;}">Ing. pluvio</td>
-  //   </tr>
-  //   <tr>
-  //   <td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;2 . FICHA T&Eacute;CNICA, SEG&Uacute;N CORRESPONDA (ficha t&eacute;cnica simplifica y/o ficha t&eacute;cnica est&aacute;ndar)&quot;}">2 . FICHA T&Eacute;CNICA, SEG&Uacute;N CORRESPONDA (ficha t&eacute;cnica simplifica y/o ficha t&eacute;cnica est&aacute;ndar)</td>
-  //   <td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Ing. pluvio&quot;}">Ing. pluvio</td>
-  //   </tr>
-  //   <tr>
-  //   <td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;3 . RESUMEN EJECUTIVO&quot;}">3 . RESUMEN EJECUTIVO</td>
-  //   <td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Ing. pluvio&quot;}">Ing. pluvio</td>
-  //   </tr>
-  //   <tr>
-  //   <td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;4 . ANEXOS Y/O INFORME COMPLEMENTARIO&quot;}">4 . ANEXOS Y/O INFORME COMPLEMENTARIO</td>
-  //   <td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Ing. pluvio&quot;}">Ing. pluvio</td>
-  //   </tr>
-  //   <tr>
-  //   <td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;4.1. Anexo N&deg; 01: Diagnostico, mapas, planos y/o croquis actual y panel fotogr&aacute;fico.&quot;}">4.1. Anexo N&deg; 01: Diagnostico, mapas, planos y/o croquis actual y panel fotogr&aacute;fico.</td>
-  //   <td data-sheets-value="{&quot;1&quot;:2,&quot;2&quot;:&quot;Ing. pluvio&quot;}">Ing. pluvio</td>
-  //   </tr>
-  //   </tbody>
-  //   </table>`
-  //   const tempElement = document.createElement('div');
-  // tempElement.innerHTML = tablaHTML;
+  const data = {
+    from: 'Juan Gonzalo Quispe Condori',
+    to: 'Sadith Vargas Montesinos',
+    affair: 'Lo que se indica',
+    // // cc: [
+    // //   {name: 'Juan', manager: 'Gerente'},
+    // //   {name: 'Maria', manager: 'Asistente'},
+    // //   {name: 'Jhon', manager: 'Coordinador'},
+    // // ],
+    date: 'Puno 24 de setiembre del 2023',
+    body: 'Con las obras de mejoramiento de la infraestructura educativa a nivel nacional, se realizan intervenciones en los ambientes que componen las sedes educativas para reparar el deterioro físico por el uso, desgaste, antigüedad, emergencias, factores ambientales, falta de mantenimiento, uso inadecuado, entre otros.',
+    dni: '83774619',
+    title: 'ACUERDO N°1 DHYRIUM-JJCM-2023',
+    type: 'ACUERDO',
+    header: 'XD',
+    description:
+      '<p style="text-align: justify;">Por medio del presente documento me dirijo a usted con la finalidad de hacerle llegar un cordial saludo,y al mismo tiempo comunicarle lo siguiente:</p>\n' +
+      '<p style="text-align: justify;">&nbsp;</p>\n' +
+      '<table style="border-collapse: collapse; width: 100%;" border="1">\n' +
+      '<tbody>\n' +
+      '<tr>\n' +
+      '<td style="width: 16.701%;">c</td>\n' +
+      '<td style="width: 16.701%;">x</td>\n' +
+      '<td style="width: 16.701%;">y</td>\n' +
+      '<td style="width: 16.701%;">z</td>\n' +
+      '<td style="width: 16.701%;">a</td>\n' +
+      '<td style="width: 16.701%;">b</td>\n' +
+      '</tr>\n' +
+      '<tr>\n' +
+      '<td style="width: 16.701%;">1</td>\n' +
+      '<td style="width: 16.701%;">asd</td>\n' +
+      '<td style="width: 16.701%;">fdsg</td>\n' +
+      '<td style="width: 16.701%;">wert</td>\n' +
+      '<td style="width: 16.701%;">iuyt</td>\n' +
+      '<td style="width: 16.701%;">ggg</td>\n' +
+      '</tr>\n' +
+      '<tr>\n' +
+      '<td style="width: 16.701%;">2</td>\n' +
+      '<td style="width: 16.701%;">asdf</td>\n' +
+      '<td style="width: 16.701%;">fdsgh</td>\n' +
+      '<td style="width: 16.701%;">we</td>\n' +
+      '<td style="width: 16.701%;">vbn</td>\n' +
+      '<td style="width: 16.701%;">ddd</td>\n' +
+      '</tr>\n' +
+      '</tbody>\n' +
+      '</table>\n' +
+      '<p>&nbsp;</p>\n' +
+      '<p>&nbsp;</p>\n' +
+      '<p style="text-align: center;">Atentamente, COTRADO MONTALICO JUAN JOEL</p>',
+  };
+  function convertirHtmlAArrayDeObjetos(htmlString: string): Tablas {
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = htmlString;
 
-  // // Obtener filas de la tabla
-  // const filas = tempElement.querySelectorAll('tbody tr');
-  // const arrayDeObjetos: TablesProps[] = [];
+    const tablas: Tablas = [];
+    const tablasHTML = tempElement.querySelectorAll('table');
 
-  // filas.forEach((fila) => {
-  //   const celdas = fila.querySelectorAll('td');
-  //   if (celdas.length >= 2) {
-  //     const objeto : TablesProps = {
-  //       descripcion: celdas[0].textContent,
-  //       encargados: celdas[1].textContent,
-  //     };
-  //     arrayDeObjetos.push(objeto);
-  //   }
-  // });
+    tablasHTML.forEach(tablaHTML => {
+      const filasHTML = tablaHTML.querySelectorAll('tr');
+      const headersHTML = filasHTML[0].querySelectorAll('td');
 
-  // console.log(arrayDeObjetos);
+      for (let i = 1; i < filasHTML.length; i++) {
+        const celdasHTML = filasHTML[i].querySelectorAll('td');
+        const objeto: ObjetoTabla = {};
+
+        celdasHTML.forEach((celda, index) => {
+          const encabezado = headersHTML[index];
+          if (
+            encabezado &&
+            typeof encabezado.textContent === 'string' &&
+            celda &&
+            typeof celda.textContent === 'string'
+          ) {
+            const clave = encabezado.textContent.trim();
+            const valor = celda.textContent.trim();
+            if (clave && valor) {
+              objeto[clave] = valor;
+            }
+          }
+        });
+
+        tablas.push(objeto);
+      }
+    });
+
+    return tablas;
+  }
+  const arrayDeObjetos = convertirHtmlAArrayDeObjetos(data.description);
+
+  console.log(arrayDeObjetos);
   return (
     <div className="home">
       <h1 className="home-title">
@@ -106,7 +141,7 @@ const Home = () => {
         >
           Projectos
         </button>
-        {/* <PDFGenerator data={data} tables={arrayDeObjetos}/> */}
+        <PDFGenerator data={data} tables={arrayDeObjetos} />
       </div>
     </div>
   );

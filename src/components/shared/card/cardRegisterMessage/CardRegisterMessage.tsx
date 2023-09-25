@@ -133,7 +133,9 @@ const CardRegisterMessage = ({
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
     formData.append('data', JSON.stringify(values));
     formData.append('senderId', `${userSession.id}`);
-    axiosInstance.post(`/mail`, formData, { headers }).then(handleSave);
+    console.log(values);
+
+    // axiosInstance.post(`/mail`, formData, { headers }).then(handleSave);
   };
 
   const handleSave = () => {

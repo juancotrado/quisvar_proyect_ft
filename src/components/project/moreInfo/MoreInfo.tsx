@@ -43,13 +43,13 @@ const MoreInfo = ({ data }: MoreInfoProps) => {
             <span className="moreInfo-currency-info">Porcentaje</span>
           )}
         </div>
-        <div className="moreInfo-currency">
+        <div className="moreInfo-currency moreInfo-currency-width">
           <span className="moreInfo-currency-money">{data.total}</span>
           {data.projectName && (
             <span className="moreInfo-currency-info">Tareas</span>
           )}
         </div>
-        <div className="moreInfo-currency">
+        <div className="moreInfo-currency moreInfo-currency-width">
           <span className="moreInfo-currency-money">{data.days}</span>
           {data.projectName && (
             <span className="moreInfo-currency-info">

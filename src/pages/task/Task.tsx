@@ -9,6 +9,7 @@ import {
   CardSubtaskProcess,
 } from '../../components';
 import { SocketContext } from '../../context/SocketContex';
+import LoaderForComponent from '../../components/shared/loaderForComponent/LoaderForComponent';
 const Task = () => {
   const [task, setTask] = useState<SubTask | null>(null);
   const socket = useContext(SocketContext);
@@ -41,7 +42,12 @@ const Task = () => {
       `/especialidades/proyecto/${projectId}/etapa/${stageId}/presupuestos`
     );
   };
-  if (!task) return <></>;
+  if (!task)
+    return (
+      <div className="task-loader">
+        <LoaderForComponent />
+      </div>
+    );
   const { status } = task;
   return (
     <div className="task">

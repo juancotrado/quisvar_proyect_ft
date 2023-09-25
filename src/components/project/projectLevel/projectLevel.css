@@ -92,7 +92,7 @@
 }
 .projectLevel-dropdown-check {
   position: absolute;
-  min-width: 100%;
+  min-width: 85%;
   opacity: 0;
   cursor: pointer;
   height: 100%;

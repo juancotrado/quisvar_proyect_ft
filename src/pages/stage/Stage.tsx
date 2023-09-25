@@ -9,6 +9,7 @@ import { rolSecondLevel } from '../../utils/roles';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
 import { setModAuthProject } from '../../store/slices/modAuthProject.slice';
+import LoaderForComponent from '../../components/shared/loaderForComponent/LoaderForComponent';
 
 const Stage = () => {
   const { projectId } = useParams();
@@ -39,26 +40,37 @@ const Stage = () => {
   return (
     <div className="stage">
       <div className="stage-header">
-        {project?.stages?.map((stage, i) => (
-          <StageItem stage={stage} i={i} key={stage.id} getStages={getStages} />
-        ))}
-
-        {modAuthProject && (
+        {project ? (
           <>
-            {!btnActive ? (
-              <Button
-                icon="add"
-                className="stage-header-add-btn"
-                onClick={handleBtnActive}
-              />
-            ) : (
-              <StageAddButton
-                stageId={projectId}
+            {' '}
+            {project?.stages?.map((stage, i) => (
+              <StageItem
+                stage={stage}
+                i={i}
+                key={stage.id}
                 getStages={getStages}
-                setBtnActive={handleBtnActive}
               />
+            ))}
+            {modAuthProject && (
+              <>
+                {!btnActive ? (
+                  <Button
+                    icon="add"
+                    className="stage-header-add-btn"
+                    onClick={handleBtnActive}
+                  />
+                ) : (
+                  <StageAddButton
+                    stageId={projectId}
+                    getStages={getStages}
+                    setBtnActive={handleBtnActive}
+                  />
+                )}
+              </>
             )}
           </>
+        ) : (
+          <LoaderForComponent width={20} />
         )}
       </div>
 

@@ -116,7 +116,7 @@ const BudgetsPage = () => {
         )}
       </div>
       <Outlet />
-      <CardRegisterSubTask onSave={getLevels} />
+      <CardRegisterSubTask />
     </>
   );
 };

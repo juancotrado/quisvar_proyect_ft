@@ -1,13 +1,73 @@
+import { useParams } from 'react-router-dom';
 import useArchiver from '../../../hooks/useArchiver';
+import { axiosInstance } from '../../../services/axiosInstance';
 import { Level } from '../../../types/types';
+import { excelSimpleReport } from '../../../utils/excelGenerate/excelReportForLevel';
 import './moreInfo.css';
+import formatDate from '../../../utils/formatDate';
+import { useState } from 'react';
 interface MoreInfoProps {
   data: Level;
 }
 const MoreInfo = ({ data }: MoreInfoProps) => {
+  const { projectId } = useParams();
+  const [showArchiverOption, setShowArchiverOption] = useState(false);
+  const handleReports = () => {
+    // const { department, district, province, startDate, untilDate, ...data } =
+    //   res.data;
+    // const { firstName, lastName } = res.data.moderator.profile;
+    // const initialDate = formatDate(new Date(startDate), {
+    //   day: 'numeric',
+    //   weekday: 'long',
+    //   month: 'long',
+    //   year: 'numeric',
+    // });
+    // const finishDate = formatDate(new Date(untilDate), {
+    //   day: 'numeric',
+    //   weekday: 'long',
+    //   month: 'long',
+    //   year: 'numeric',
+    // });
+    axiosInstance.get(`/projects/${projectId}`).then(res => {
+      const {
+        department,
+        district,
+        province,
+        startDate,
+        untilDate,
+        description,
+        CUI,
+      } = res.data;
+      const { firstName, lastName } = res.data.moderator.profile;
+      const initialDate = formatDate(new Date(startDate), {
+        day: 'numeric',
+        weekday: 'long',
+        month: 'long',
+        year: 'numeric',
+      });
+      const finishDate = formatDate(new Date(untilDate), {
+        day: 'numeric',
+        weekday: 'long',
+        month: 'long',
+        year: 'numeric',
+      });
+      const infoData = {
+        department,
+        district,
+        province,
+        initialDate,
+        finishDate,
+        description,
+        CUI,
+        fullName: firstName + ' ' + lastName,
+      };
+      excelSimpleReport(data, infoData, 'areas');
+    });
+  };
   const type = data.projectName ? 'stages' : 'levels';
   const { handleArchiver } = useArchiver(data.id, type);
-
+  const handleArchiverOptions = () =>
+    setShowArchiverOption(!showArchiverOption);
   return (
     <>
       <div className="moreInfo-currency-contain">
@@ -59,21 +119,48 @@ const MoreInfo = ({ data }: MoreInfoProps) => {
         </div>
       </div>
       <div className="moreInfo-details-contain">
+        {showArchiverOption && (
+          <div className="moreInfo-details-contain moreInfo-details-absolute">
+            <div
+              className="moreInfo-detail"
+              onClick={handleArchiver}
+              title={'Comprimir'}
+            >
+              <figure className="moreInfo-detail-icon">
+                <img src="/svg/zip-normal.svg" alt="W3Schools" />
+              </figure>
+              <span className="moreInfo-detail-info">Comprimir</span>
+            </div>
+            <div className="moreInfo-detail" title={'Comprimir PDFs'}>
+              <figure className="moreInfo-detail-icon">
+                <img src="/svg/zip-pdf.svg" alt="W3Schools" />
+              </figure>
+              <span className="moreInfo-detail-info">
+                Comprimir <br /> PDF
+              </span>
+            </div>
+            <div
+              className="moreInfo-detail"
+              title={'Comprimir Editables'}
+              onClick={handleReports}
+            >
+              <figure className="moreInfo-detail-icon">
+                <img src="/svg/zip-edit.svg" alt="W3Schools" />
+              </figure>
+              <span className="moreInfo-detail-info">
+                Comprimir <br /> Editables
+              </span>
+            </div>
+          </div>
+        )}
+
         <div
           className="moreInfo-detail"
-          onClick={handleArchiver}
-          title={'Comprimir'}
+          title={'Comprimir PDFs'}
+          onClick={handleArchiverOptions}
         >
           <figure className="moreInfo-detail-icon">
-            <img src="/svg/zip-normal.svg" alt="W3Schools" />
-          </figure>
-          {data.projectName && (
-            <span className="moreInfo-detail-info">Comprimir</span>
-          )}
-        </div>
-        <div className="moreInfo-detail" title={'Comprimir PDFs'}>
-          <figure className="moreInfo-detail-icon">
-            <img src="/svg/zip-pdf.svg" alt="W3Schools" />
+            <img src="/svg/compres-icon.svg" alt="W3Schools" />
           </figure>
           {data.projectName && (
             <span className="moreInfo-detail-info">
@@ -81,9 +168,13 @@ const MoreInfo = ({ data }: MoreInfoProps) => {
             </span>
           )}
         </div>
-        <div className="moreInfo-detail" title={'Comprimir Editables'}>
+        <div
+          className="moreInfo-detail"
+          title={'Comprimir Editables'}
+          onClick={handleReports}
+        >
           <figure className="moreInfo-detail-icon">
-            <img src="/svg/zip-edit.svg" alt="W3Schools" />
+            <img src="/svg/reportExcel-icon.svg" alt="W3Schools" />
           </figure>
           {data.projectName && (
             <span className="moreInfo-detail-info">

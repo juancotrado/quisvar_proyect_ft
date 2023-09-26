@@ -4,36 +4,31 @@ import {
   Text,
   View,
   PDFDownloadLink,
-  PDFViewer,
+  // PDFViewer,
 } from '@react-pdf/renderer';
-import { useState } from 'react';
+// import { useState } from 'react';
 import { styles } from './styledComponents';
-type CcProps = {
-  name: string;
-  manager: string;
-};
+import { PdfDataProps } from '../../../types/types';
+import './GeneratePdf.css';
+
 export type TablesProps = {
   descripcion: string | null;
   encargados: string | null;
 };
+
 interface PDFGeneratorProps {
-  data: {
-    from: string;
-    to: string;
-    cc?: CcProps[];
-    affair: string;
-    date: string;
-    body: string;
-    dni: string;
-  };
-  tables?: TablesProps[];
+  data: PdfDataProps;
 }
-const generatePDF = (value: PDFGeneratorProps) => (
+interface ConfigProps {
+  size: 'A4' | 'A5';
+}
+const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => (
   <Document>
-    <Page size="A4" style={styles.page}>
-      <Text style={{ ...styles.title }}>
-        HOJA DE COORDINACIÓN Nº 003-2023-GG/JGQC-COORPORACIÓN DHYRIUM
-      </Text>
+    <Page
+      size={config?.size ?? 'A4'}
+      style={config?.size === 'A4' ? styles.page : styles.pageA5}
+    >
+      <Text style={{ ...styles.title }}>{value.data?.title}</Text>
       <View style={styles.headerContent}>
         {/* header */}
         <View style={styles.headerRow}>
@@ -43,9 +38,9 @@ const generatePDF = (value: PDFGeneratorProps) => (
           </View>
           <View style={styles.rigthInfo}>
             <Text style={styles.header}>
-              ING. {value.data?.from.toUpperCase()}
+              {value.data.toDegree?.slice(0, 3)}. {value.data?.to}
             </Text>
-            <Text style={styles.header}>GERENTE GENERAL</Text>
+            <Text style={styles.header}>{value.data.toPosition}</Text>
           </View>
         </View>
         {/* header */}
@@ -70,10 +65,10 @@ const generatePDF = (value: PDFGeneratorProps) => (
             <Text style={styles.headerBold}>: </Text>
           </View>
           <View>
-            <Text style={styles.header}>
-              LIC. {value.data?.to.toUpperCase()}
+            <Text style={{ ...styles.header, textTransform: 'uppercase' }}>
+              {value.data.fromDegree?.slice(0, 3)}. {value.data?.from}
             </Text>
-            <Text style={styles.header}>GERENTE GENERAL</Text>
+            <Text style={styles.header}>{value.data.fromPosition}</Text>
           </View>
         </View>
         {/* header */}
@@ -83,7 +78,7 @@ const generatePDF = (value: PDFGeneratorProps) => (
             <Text style={styles.headerBold}>: </Text>
           </View>
           <View style={styles.rigthInfo}>
-            <Text style={styles.headerLong}>{value.data?.affair}</Text>
+            <Text style={styles.headerLong}>{value.data?.header}</Text>
             {/* <Text style={styles.header}>GERENTE GENERAL</Text> */}
           </View>
         </View>
@@ -99,46 +94,50 @@ const generatePDF = (value: PDFGeneratorProps) => (
         </View>
       </View>
       <View style={styles.line} />
-      <Text style={styles.body}>
-        Por medio del presente documento me dirijo a Ud. Con la finalidad de
-        hacerle llegar un coordial saludo, y al mismo tiempo comunicarle lo
-        siguiente. {value.data?.body}
-      </Text>
-      {value.tables &&
-        value.tables.map(table => (
-          <View style={styles.section}>
-            <View style={styles.table}>
-              <View style={styles.tableRow}>
-                <View style={styles.tableCell}>
-                  <Text style={styles.header}>{table.descripcion}</Text>
-                </View>
-                <View style={styles.tableCell}>
-                  <Text style={styles.header}>{table.encargados}</Text>
-                </View>
+      <Text style={styles.body}>{value.data?.body}</Text>
+      <View style={styles.table}>
+        <View style={styles.tableRow}>
+          {value.data.tables &&
+            value.data.tables.length > 0 &&
+            Object.keys(value.data.tables[0]).map((key, columnIndex) => (
+              <View style={styles.tableCell} key={columnIndex}>
+                <Text style={styles.header}>{key}</Text>
               </View>
+            ))}
+        </View>
+        {value.data.tables &&
+          value.data.tables.map((fila, filaIdx) => (
+            <View style={styles.tableRow} key={filaIdx}>
+              {Object.values(fila).map((valor, columnaIdx) => (
+                <View style={styles.tableCell} key={columnaIdx}>
+                  <Text>{valor}</Text>
+                </View>
+              ))}
             </View>
-          </View>
-        ))}
+          ))}
+      </View>
       <View style={styles.signArea}>
         <View style={styles.sign} />
-        <Text style={styles.header}>ING: {value.data.from.toUpperCase()}</Text>
+        <Text style={styles.header}>
+          {value.data.fromDegree?.slice(0, 3)}. {value.data.from}
+        </Text>
         <Text style={styles.header}>DNI: {value.data.dni}</Text>
       </View>
     </Page>
   </Document>
 );
 
-const PDFGenerator = ({ data, tables }: PDFGeneratorProps) => {
-  const [showPreview, setShowPreview] = useState(false);
+const PDFGenerator = ({ data }: PDFGeneratorProps) => {
+  // const [showPreview, setShowPreview] = useState(false);
+  // console.log(Object.keys(tables));
 
   return (
-    <div>
-      <h1>VER PDF DEL DOCUMENTO</h1>
-      {showPreview ? (
+    <div className="pdf-btn-area">
+      {/* {showPreview ? (
         <div>
           <p>Vista previa del PDF:</p>
           <PDFViewer width="1000" height="600">
-            {generatePDF({ data, tables })}
+            {generatePDF({ data, tables}, {size : 'A4'})}
           </PDFViewer>
           <button onClick={() => setShowPreview(false)}>
             Ocultar Vista Previa
@@ -152,17 +151,23 @@ const PDFGenerator = ({ data, tables }: PDFGeneratorProps) => {
           </p>
           <button onClick={() => setShowPreview(true)}>Ver Vista Previa</button>
         </div>
-      )}
-      {showPreview && (
-        <PDFDownloadLink
-          document={generatePDF({ data, tables })}
-          fileName="tabla_pdf.pdf"
-        >
-          {({ blob, url, loading, error }) =>
-            loading ? 'Generando PDF...' : 'Descargar PDF'
-          }
-        </PDFDownloadLink>
-      )}
+      )} */}
+      {/* {showPreview && ( */}
+      <PDFDownloadLink
+        document={generatePDF({ data }, { size: 'A5' })}
+        fileName={`${data.title}.pdf`}
+        className="pdf-btn"
+      >
+        {({ loading }) => (loading ? 'Generando PDF...' : 'Descargar A5')}
+      </PDFDownloadLink>
+      <PDFDownloadLink
+        document={generatePDF({ data }, { size: 'A4' })}
+        fileName={`${data.title}.pdf`}
+        className="pdf-btn"
+      >
+        {({ loading }) => (loading ? 'Generando PDF...' : 'Descargar A4')}
+      </PDFDownloadLink>
+      {/* )} */}
     </div>
   );
 };

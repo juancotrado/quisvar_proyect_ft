@@ -12,6 +12,8 @@ const useListUsers = (roleType: UserRoleType[] | null = null) => {
             .filter(user => (roleType ? roleType.includes(user.role) : user))
             .map(({ profile, ...props }) => ({
               name: `${profile.firstName} ${profile.lastName}`,
+              degree: profile.degree,
+              position: profile.description,
               ...props,
             }))
         : [],

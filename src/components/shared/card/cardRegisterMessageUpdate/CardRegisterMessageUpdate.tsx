@@ -1,11 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ChangeEvent, useEffect, useState } from 'react';
 import { axiosInstance } from '../../../../services/axiosInstance';
-import { Input } from '../../..';
+import { Input, PDFGenerator } from '../../..';
 import InputFile from '../../Input/InputFile';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Button from '../../button/Button';
-import { MessageType, quantityType } from '../../../../types/types';
+import {
+  MessageType,
+  PdfDataProps,
+  quantityType,
+} from '../../../../types/types';
 import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
 import ChipFileMessage from '../cardRegisterMessage/ChipFileMessage';
@@ -18,6 +22,12 @@ import {
 } from '../../../../utils/files/files.utils';
 import './cardRegisterMessageUpdate.css';
 import formatDate from '../../../../utils/formatDate';
+import {
+  convertToObject,
+  dataInitialPdf,
+  getTextParagraph,
+} from '../../../../utils/pdfReportFunctions';
+import useListUsers from '../../../../hooks/useListUsers';
 
 interface MessageSendType {
   title: string;
@@ -50,11 +60,13 @@ const CardRegisterMessageUpdate = ({
   onSave,
 }: CardRegisterMessageUpdateProps) => {
   const { userSession } = useSelector((state: RootState) => state);
+  const { users } = useListUsers();
   const { lastName, firstName } = userSession.profile;
-  const { handleSubmit, register, setValue } = useForm<MessageSendType>();
+  const { handleSubmit, register, setValue, watch } =
+    useForm<MessageSendType>();
   const [fileUploadFiles, setFileUploadFiles] = useState<File[]>([]);
   const HashUser = HashFile(`${firstName} ${lastName}`);
-
+  const [pdfData, setpdfData] = useState<PdfDataProps>(dataInitialPdf);
   const handleInputChange = (event: string) => setValue('description', event);
 
   useEffect(() => {
@@ -95,7 +107,32 @@ const CardRegisterMessageUpdate = ({
   };
 
   const sender = message.users.filter(user => user.type === 'RECEIVER')[0].user;
-
+  useEffect(() => {
+    const header = watch('header');
+    const description = watch('description');
+    const title = watch('title');
+    const to = sender.profile.firstName + ' ' + sender.profile.lastName;
+    const toUser = users.find(user => user.id === sender?.id);
+    setpdfData({
+      from: userSession.profile.firstName + ' ' + userSession.profile.lastName,
+      header,
+      body: getTextParagraph(description ?? ''),
+      tables: convertToObject(description ?? ''),
+      title,
+      to,
+      date: formatDate(new Date(), {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour12: true,
+      }),
+      toDegree: toUser?.degree,
+      toPosition: toUser?.position,
+      dni: userSession.profile.dni,
+      fromDegree: userSession.profile.degree,
+      fromPosition: userSession.profile.description,
+    });
+  }, [watch('description'), watch('header'), watch('title')]);
   return (
     <form
       className="inbox-forward-data-content"
@@ -179,6 +216,7 @@ const CardRegisterMessageUpdate = ({
         className="inbox-forward-file-area"
         getFilesList={files => addFiles(files)}
       />
+      <PDFGenerator data={pdfData} />
       <div className="inbox-forward-btn-submit-container">
         <Button
           className={`inbox-forward-btn-submit`}

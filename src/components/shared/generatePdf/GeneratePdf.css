@@ -1,0 +1,13 @@
+.pdf-btn {
+  border-radius: 5px;
+  border: 2px solid var(--color-primary);
+  color: white;
+  background-color: var(--color-primary);
+  padding: 0.2rem;
+}
+.pdf-btn-area {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  align-items: center;
+}

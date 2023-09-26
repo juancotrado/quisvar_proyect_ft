@@ -708,3 +708,25 @@ interface MessageSendType {
   receiverId: number;
   type: MessageType['type'];
 }
+export type ObjectBoard = {
+  [clave: string]: string;
+};
+type CcProps = {
+  name: string;
+  manager: string;
+};
+export type PdfDataProps = {
+  title: string;
+  from: string;
+  to: string;
+  cc?: CcProps[];
+  header: string;
+  date: string;
+  body: string;
+  dni: string;
+  tables?: ObjectBoard[];
+  fromDegree: string;
+  toDegree?: string;
+  toPosition?: string;
+  fromPosition: string;
+};

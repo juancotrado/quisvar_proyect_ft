@@ -197,7 +197,7 @@ const MessagePage = () => {
               </div>
             ))}
         </div>
-        {getHistory.length > 1 && (
+        {getHistory.length > 0 && (
           <Button
             className={`message-view-more-files-${viewHistory}`}
             text={`${viewHistory ? 'Ocultar' : 'Ver'} documentos recibidos`}

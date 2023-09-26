@@ -8,6 +8,7 @@ import DropDownSimple from '../../select/DropDownSimple';
 import ChipFileMessage from './ChipFileMessage';
 import {
   MessageSendType,
+  PdfDataProps,
   UserRoleType,
   quantityType,
   receiverType,
@@ -18,7 +19,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import { motion } from 'framer-motion';
 import { InitialValueEditor } from '../../../../utils/canvas';
 import { axiosInstance } from '../../../../services/axiosInstance';
-import { Input } from '../../..';
+import { Input, PDFGenerator } from '../../..';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   HashFile,
@@ -28,6 +29,11 @@ import {
 } from '../../../../utils/files/files.utils';
 import { useNavigate } from 'react-router-dom';
 import formatDate from '../../../../utils/formatDate';
+import {
+  convertToObject,
+  dataInitialPdf,
+  getTextParagraph,
+} from '../../../../utils/pdfReportFunctions';
 
 const YEAR = new Date().getFullYear();
 const RolePerm: UserRoleType[] = ['SUPER_ADMIN', 'ADMIN', 'SUPER_MOD', 'MOD'];
@@ -56,12 +62,15 @@ const CardRegisterMessage = ({
   const { userSession } = useSelector((state: RootState) => state);
   const [receiver, setReceiver] = useState<receiverType | null>(null);
   const [listCopy, setListCopy] = useState<receiverType[]>([]);
-  const { handleSubmit, register, setValue } = useForm<MessageSendType>();
+  const { handleSubmit, register, setValue, watch } =
+    useForm<MessageSendType>();
   const [fileUploadFiles, setFileUploadFiles] = useState<File[]>([]);
   const [countMessage, setCountMessage] = useState<quantityType[] | null>([]);
   const { lastName, firstName } = userSession.profile;
   const HashUser = HashFile(`${firstName} ${lastName}`);
-  const initialValueEditor = InitialValueEditor(userSession.profile);
+  const initialValueEditor = InitialValueEditor();
+
+  const [pdfData, setpdfData] = useState<PdfDataProps>(dataInitialPdf);
 
   const contacts = useMemo(
     () =>
@@ -118,6 +127,34 @@ const CardRegisterMessage = ({
     const _files = deleteFileOnList(fileUploadFiles, delFiles);
     if (_files) setFileUploadFiles(_files);
   };
+  // console.log(users.find(user => user.id === receiver?.id))
+
+  useEffect(() => {
+    const header = watch('header');
+    const description = watch('description');
+    const title = watch('title');
+    const to = receiver?.value ?? '';
+    const toUser = users.find(user => user.id === receiver?.id);
+    setpdfData({
+      from: userSession.profile.firstName + ' ' + userSession.profile.lastName,
+      header,
+      body: getTextParagraph(description ?? ''),
+      tables: convertToObject(description ?? ''),
+      title,
+      to,
+      date: formatDate(new Date(), {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour12: true,
+      }),
+      toDegree: toUser?.degree,
+      toPosition: toUser?.position,
+      dni: userSession.profile.dni,
+      fromDegree: userSession.profile.degree,
+      fromPosition: userSession.profile.description,
+    });
+  }, [watch('description'), watch('header'), watch('title')]);
 
   const onSubmit: SubmitHandler<MessageSendType> = async data => {
     const formData = new FormData();
@@ -133,9 +170,8 @@ const CardRegisterMessage = ({
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
     formData.append('data', JSON.stringify(values));
     formData.append('senderId', `${userSession.id}`);
-    console.log(values);
 
-    // axiosInstance.post(`/mail`, formData, { headers }).then(handleSave);
+    axiosInstance.post(`/mail`, formData, { headers }).then(handleSave);
   };
 
   const handleSave = () => {
@@ -330,6 +366,7 @@ const CardRegisterMessage = ({
           className="imbox-file-area"
           getFilesList={files => addFiles(files)}
         />
+        <PDFGenerator data={pdfData} />
         <div className="imbox-btn-submit-container">
           <Button className="imbox-btn-submit" type="submit" text="Enviar" />
         </div>

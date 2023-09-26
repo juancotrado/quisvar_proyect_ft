@@ -1,6 +1,6 @@
-import { ChangeEvent, useMemo, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { axiosInstance } from '../../../../services/axiosInstance';
-import { Input } from '../../..';
+import { Input, PDFGenerator } from '../../..';
 import InputFile from '../../Input/InputFile';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import useListUsers from '../../../../hooks/useListUsers';
@@ -8,6 +8,7 @@ import Button from '../../button/Button';
 import DropDownSimple from '../../select/DropDownSimple';
 import {
   MessageType,
+  PdfDataProps,
   UserRoleType,
   quantityType,
 } from '../../../../types/types';
@@ -18,6 +19,11 @@ import ChipFileMessage from '../cardRegisterMessage/ChipFileMessage';
 import { Editor } from '@tinymce/tinymce-react';
 import formatDate from '../../../../utils/formatDate';
 import { HashFile, radioOptions } from '../../../../utils/files/files.utils';
+import {
+  convertToObject,
+  dataInitialPdf,
+  getTextParagraph,
+} from '../../../../utils/pdfReportFunctions';
 
 interface MessageSendType {
   title: string;
@@ -56,12 +62,13 @@ const CardRegisterMessageReply = ({
 }: CardRegisterMessageReplyProps) => {
   const { userSession } = useSelector((state: RootState) => state);
   const { lastName, firstName } = userSession.profile;
-  const { handleSubmit, register, setValue } = useForm<MessageSendType>();
+  const { handleSubmit, register, setValue, watch } =
+    useForm<MessageSendType>();
   const [fileUploadFiles, setFileUploadFiles] = useState<File[]>([]);
   const { users } = useListUsers(RolePerm);
   const HashUser = HashFile(`${firstName} ${lastName}`);
   const [receiver, setReceiver] = useState<receiverType | null>(null);
-
+  const [pdfData, setpdfData] = useState<PdfDataProps>(dataInitialPdf);
   // const InitialValueEditor = `<p style="text-align: justify;" >Por medio del presente documento me dirijo a usted con la finalidad de hacerle llegar un cordial saludo, y al mismo tiempo comunicarle lo siguiente:</p><p>&nbsp;</p><p>&nbsp;</p><p style="text-align: center;">Atentamente, ${userSession.profile.lastName.toUpperCase()} ${userSession.profile.firstName.toUpperCase()} </p>`;
 
   const contacts = useMemo(
@@ -98,7 +105,6 @@ const CardRegisterMessageReply = ({
     const newIndex = (countFile ? countFile._count.type : 0) + 1;
     const newTitleValue = `${value} N°${newIndex} DHYRIUM-${HashUser}-${YEAR}`;
     setValue('title', newTitleValue);
-    console.log(countFile);
   };
   const handleRemoveReceiver = () => setReceiver(null);
   const onSubmit: SubmitHandler<MessageSendType> = async data => {
@@ -120,7 +126,32 @@ const CardRegisterMessageReply = ({
   const handleDoneMessage = () => {
     axiosInstance.patch(`/mail/done/${message.id}`).then(onSave);
   };
-
+  useEffect(() => {
+    const header = watch('header');
+    const description = watch('description');
+    const title = watch('title');
+    const to = receiver?.value ?? '';
+    const toUser = users.find(user => user.id === receiver?.id);
+    setpdfData({
+      from: userSession.profile.firstName + ' ' + userSession.profile.lastName,
+      header,
+      body: getTextParagraph(description ?? ''),
+      tables: convertToObject(description ?? ''),
+      title,
+      to,
+      date: formatDate(new Date(), {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour12: true,
+      }),
+      toDegree: toUser?.degree,
+      toPosition: toUser?.position,
+      dni: userSession.profile.dni,
+      fromDegree: userSession.profile.degree,
+      fromPosition: userSession.profile.description,
+    });
+  }, [watch('description'), watch('header'), watch('title')]);
   return (
     <form
       className="inbox-reply-data-content"
@@ -222,6 +253,7 @@ const CardRegisterMessageReply = ({
         className="inbox-reply-file-area"
         getFilesList={files => addFiles(files)}
       />
+      <PDFGenerator data={pdfData} />
       <div className="inbox-reply-btn-submit-container">
         <Button
           onClick={handleDoneMessage}

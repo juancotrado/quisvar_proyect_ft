@@ -11,6 +11,13 @@ export const styles = StyleSheet.create({
     flex: 1,
     position: 'relative',
   },
+  pageA5: {
+    flexDirection: 'column',
+    paddingHorizontal: 47,
+    paddingVertical: 23,
+    flex: 1,
+    position: 'relative',
+  },
   title: {
     fontSize: 11,
     marginBottom: 10,
@@ -37,6 +44,7 @@ export const styles = StyleSheet.create({
   header: {
     fontSize: 11,
     fontFamily: 'Arial Narrow',
+    textTransform: 'uppercase',
   },
   headerBold: {
     fontSize: 11,
@@ -74,6 +82,7 @@ export const styles = StyleSheet.create({
     fontSize: 11,
     flexWrap: 'wrap',
     fontFamily: 'Arial Narrow',
+    textTransform: 'uppercase',
   },
   sign: {
     width: '60%',
@@ -82,11 +91,9 @@ export const styles = StyleSheet.create({
     marginBottom: '5px',
   },
   signArea: {
-    position: 'absolute',
     flexDirection: 'column',
     alignItems: 'center',
     width: '100%',
-    bottom: 64,
-    right: 93,
+    top: 64,
   },
 });

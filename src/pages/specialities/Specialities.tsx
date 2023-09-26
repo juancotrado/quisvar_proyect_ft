@@ -9,13 +9,13 @@ const Specialities = () => {
 
   return (
     <div className="speciality-main">
-      {sectors && (
+      {
         <SidebarSpeciality
           sectors={sectors}
           onSave={getSpecialities}
           settingSectors={settingSectors}
         />
-      )}
+      }
       <Outlet />
       <CardRegisterProject onSave={getSpecialities} />
     </div>

@@ -6,16 +6,19 @@
   width: 100%;
   height: 29px;
 }
+
 .budgetsPage-filter-icon {
   display: flex;
   cursor: pointer;
 }
+
 .budgetsPage-filter-area {
   display: flex;
   gap: 1rem;
   justify-content: center;
   align-items: center;
 }
+
 .budgetsPage-filter-btn {
   border-radius: 0.5rem;
   border: 1px solid white;
@@ -25,6 +28,7 @@
   width: 22px;
   border: 0.5px solid gray;
 }
+
 .budgetsPage-title-contain {
   width: 100%;
   display: flex;
@@ -32,13 +36,16 @@
   align-items: center;
   padding: 7px 13px 0;
 }
+
 .budgetsPage-contain-left {
   display: flex;
   gap: 1rem;
 }
+
 .budgetsPage-figure {
   width: 1rem;
 }
+
 .budgetsPage-title {
   color: #000;
   font-size: 0.75rem;
@@ -47,13 +54,15 @@
   line-height: 150%;
   letter-spacing: 0.01125rem;
 }
+
 .budgetsPage-contain-right {
-  max-width: 64rem;
+  max-width: 56rem;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
+
 .budgetsPage-contain {
   width: 98%;
   margin-left: auto;

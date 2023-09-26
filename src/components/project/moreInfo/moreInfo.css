@@ -10,6 +10,9 @@
   align-items: flex-end;
   width: 7rem;
 }
+.moreInfo-currency-width {
+  width: 4rem;
+}
 .moreInfo-currency-info {
   color: #687182;
   font-size: 0.75rem;

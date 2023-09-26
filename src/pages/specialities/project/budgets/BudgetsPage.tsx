@@ -1,7 +1,7 @@
-import { useContext, useEffect, useState } from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 import { SocketContext } from '../../../../context/SocketContex';
-import { Level } from '../../../../types/types';
+import { Level, StatusType } from '../../../../types/types';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { findProject } from '../../../../utils/tools';
 import MoreInfo from '../../../../components/project/moreInfo/MoreInfo';
@@ -10,6 +10,7 @@ import CardRegisterSubTask from '../../../../components/shared/card/cardRegister
 import Button from '../../../../components/shared/button/Button';
 import { motion } from 'framer-motion';
 import './budgetsPage.css';
+import StatusText from '../../../../components/shared/statusText/StatusText';
 
 const BudgetsPage = () => {
   const { stageId } = useParams();
@@ -17,18 +18,7 @@ const BudgetsPage = () => {
   const [hasProject, setHasProject] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
   const socket = useContext(SocketContext);
-  useEffect(() => {
-    getLevels();
-  }, [stageId]);
-  useEffect(() => {
-    socket.on('server:update-project', (Level: Level) => {
-      if (stageId) setlevels(Level);
-    });
-    return () => {
-      socket.off('server:update-project');
-    };
-  }, [socket]);
-  const getLevels = () => {
+  const getLevels = useCallback(() => {
     axiosInstance.get(`/stages/${stageId}`).then(res => {
       if (stageId) {
         socket.emit('join', `project-${stageId}`);
@@ -37,7 +27,19 @@ const BudgetsPage = () => {
         setlevels({ ...res.data, stagesId: +stageId });
       }
     });
-  };
+  }, [socket, stageId]);
+  useEffect(() => {
+    getLevels();
+  }, [getLevels, stageId]);
+  useEffect(() => {
+    socket.on('server:update-project', (Level: Level) => {
+      if (stageId) setlevels(Level);
+    });
+    return () => {
+      socket.off('server:update-project');
+    };
+  }, [socket, stageId]);
+
   const levelFilter = (value: string) => {
     axiosInstance.get(`/stages/${stageId}?&status=${value}`).then(res => {
       if (stageId) {
@@ -47,6 +49,14 @@ const BudgetsPage = () => {
       }
     });
   };
+  const FilterOptions: StatusType[] = [
+    'UNRESOLVED',
+    'PROCESS',
+    'INREVIEW',
+    'DENIED',
+    'DONE',
+    'LIQUIDATION',
+  ];
   return (
     <>
       <div className="budgetsPage-filter">
@@ -64,36 +74,14 @@ const BudgetsPage = () => {
             transition={{ duration: 0.5 }}
             className="budgetsPage-filter-area"
           >
-            <Button
-              onClick={() => levelFilter('DONE')}
-              text="Hechos"
-              className="budgetsPage-filter-btn color-done"
-            />
-            <Button
-              onClick={() => levelFilter('PROCESS')}
-              text="Haciendo"
-              className="budgetsPage-filter-btn color-process"
-            />
-            <Button
-              onClick={() => levelFilter('INREVIEW')}
-              text="En Revision"
-              className="budgetsPage-filter-btn color-process"
-            />
-            <Button
-              onClick={() => levelFilter('UNRESOLVED')}
-              text="Sin Hacer"
-              className="budgetsPage-filter-btn color-unresolver"
-            />
-            <Button
-              onClick={() => levelFilter('DENIED')}
-              text="Denegados"
-              className="budgetsPage-filter-btn color-correct"
-            />
-            <Button
-              onClick={() => levelFilter('LIQUIDATION')}
-              text="Liquidados"
-              className="budgetsPage-filter-btn color-liquidation"
-            />
+            {FilterOptions.map(option => (
+              <StatusText
+                key={option}
+                status={option}
+                onClick={() => levelFilter(option)}
+              />
+            ))}
+
             <Button
               onClick={() => {
                 getLevels();
@@ -128,7 +116,7 @@ const BudgetsPage = () => {
         )}
       </div>
       <Outlet />
-      <CardRegisterSubTask onSave={getLevels} />
+      <CardRegisterSubTask />
     </>
   );
 };

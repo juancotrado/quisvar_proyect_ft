@@ -8,6 +8,7 @@ import { isOpenCardRegisteTask$ } from '../../../../services/sharingSubject';
 import Button from '../../button/Button';
 import Modal from '../../../portal/Modal';
 import { Subscription } from 'rxjs';
+import { useParams } from 'react-router-dom';
 
 type SubTaskForm = {
   id: number | null;
@@ -17,15 +18,11 @@ type SubTaskForm = {
   price: number | string;
 };
 
-interface CardRegisterSubTaskProps {
-  onSave?: () => void;
-}
-
-const CardRegisterSubTask = ({ onSave }: CardRegisterSubTaskProps) => {
+const CardRegisterSubTask = () => {
   const { handleSubmit, register, setValue, watch, reset } =
     useForm<SubTaskForm>();
   const socket = useContext(SocketContext);
-
+  const { stageId } = useParams();
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [levelId, setLevelId] = useState<number | null>(null);
   const handleIsOpen = useRef<Subscription>(new Subscription());
@@ -52,18 +49,16 @@ const CardRegisterSubTask = ({ onSave }: CardRegisterSubTaskProps) => {
   }, [reset, setValue]);
 
   const onSubmit: SubmitHandler<SubTaskForm> = data => {
-    const body = { ...data, days: +data.days };
+    const body = { ...data, days: +data.days, stageId };
     if (data.id) {
       axiosInstance.patch(`/subtasks/${data.id}`, body).then(res => {
-        socket.emit('client:update-subTask', res.data);
-        onSave?.();
+        socket.emit('client:update-project', res.data);
       });
     } else {
       axiosInstance
         .post('/subtasks', { ...body, levels_Id: levelId })
         .then(res => {
-          socket.emit('client:create-subTask', res.data);
-          onSave?.();
+          socket.emit('client:update-project', res.data);
         });
     }
     closeFunctions();

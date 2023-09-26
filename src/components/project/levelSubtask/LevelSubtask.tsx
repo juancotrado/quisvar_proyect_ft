@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import { Level, SubTask } from '../../../types/types';
-import { statusText } from '../../shared/card/cardTaskInformation/constans';
 import './levelSubtask.css';
 import { isOpenCardRegisteTask$ } from '../../../services/sharingSubject';
 import Button from '../../shared/button/Button';

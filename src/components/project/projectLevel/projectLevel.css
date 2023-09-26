@@ -9,7 +9,7 @@
   align-items: center;
 }
 .projectLevel-contain-right {
-  width: 64rem;
+  width: 56rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -92,7 +92,7 @@
 }
 .projectLevel-dropdown-check {
   position: absolute;
-  min-width: 100%;
+  min-width: 85%;
   opacity: 0;
   cursor: pointer;
   height: 100%;

@@ -24,8 +24,6 @@ const projectOptions = [
   },
 ];
 const Project = () => {
-  // const currentRoute = window.location.href;
-  // console.log(currentRoute.includes('detalles'));
   return (
     <div className="project">
       <div className="project-options">

@@ -361,21 +361,6 @@ export interface UserForm {
   cv: FileList | null;
   declaration: FileList | null;
 }
-export interface Report {
-  price: number;
-  spending: number;
-  balance: number;
-  taskInfo: Details;
-  id: number;
-  name: string;
-  areas?: Report[];
-  item?: string;
-  indexTasks?: Report[];
-  subTasks?: SubTask[];
-  tasks?: Report[];
-  tasks_2?: Report[];
-  tasks_3?: Report[];
-}
 
 // export interface Level {
 //   id: number;

@@ -18,6 +18,7 @@ export type TablesProps = {
 
 interface PDFGeneratorProps {
   data: PdfDataProps;
+  isView?: boolean;
 }
 interface ConfigProps {
   size: 'A4' | 'A5';
@@ -53,8 +54,10 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => (
                 <Text style={styles.headerBold}>: </Text>
               </View>
               <View>
-                <Text style={styles.header}>ING. {item.name}</Text>
-                <Text style={styles.header}>{item.manager}</Text>
+                <Text style={styles.header}>
+                  {item.degree.slice(0, 3)}. {item.name}
+                </Text>
+                <Text style={styles.header}>{item.position}</Text>
               </View>
             </View>
           ))}
@@ -127,7 +130,7 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => (
   </Document>
 );
 
-const PDFGenerator = ({ data }: PDFGeneratorProps) => {
+const PDFGenerator = ({ data, isView }: PDFGeneratorProps) => {
   // const [showPreview, setShowPreview] = useState(false);
   // console.log(Object.keys(tables));
 
@@ -156,16 +159,16 @@ const PDFGenerator = ({ data }: PDFGeneratorProps) => {
       <PDFDownloadLink
         document={generatePDF({ data }, { size: 'A5' })}
         fileName={`${data.title}.pdf`}
-        className="pdf-btn"
+        className={`${isView ? 'pdf-btn-view' : 'pdf-btn'}`}
       >
-        {({ loading }) => (loading ? 'Generando PDF...' : 'Descargar A5')}
+        {({ loading }) => (loading ? 'Generando...' : 'Descargar A5')}
       </PDFDownloadLink>
       <PDFDownloadLink
         document={generatePDF({ data }, { size: 'A4' })}
         fileName={`${data.title}.pdf`}
-        className="pdf-btn"
+        className={`${isView ? 'pdf-btn-view' : 'pdf-btn'}`}
       >
-        {({ loading }) => (loading ? 'Generando PDF...' : 'Descargar A4')}
+        {({ loading }) => (loading ? 'Generando...' : 'Descargar A4')}
       </PDFDownloadLink>
       {/* )} */}
     </div>

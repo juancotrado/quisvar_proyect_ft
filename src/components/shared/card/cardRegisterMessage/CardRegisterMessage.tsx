@@ -34,6 +34,7 @@ import {
   dataInitialPdf,
   getTextParagraph,
 } from '../../../../utils/pdfReportFunctions';
+import { validateWhiteSpace } from '../../../../utils/customValidatesForm';
 
 const YEAR = new Date().getFullYear();
 const RolePerm: UserRoleType[] = ['SUPER_ADMIN', 'ADMIN', 'SUPER_MOD', 'MOD'];
@@ -62,8 +63,13 @@ const CardRegisterMessage = ({
   const { userSession } = useSelector((state: RootState) => state);
   const [receiver, setReceiver] = useState<receiverType | null>(null);
   const [listCopy, setListCopy] = useState<receiverType[]>([]);
-  const { handleSubmit, register, setValue, watch } =
-    useForm<MessageSendType>();
+  const {
+    handleSubmit,
+    register,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<MessageSendType>();
   const [fileUploadFiles, setFileUploadFiles] = useState<File[]>([]);
   const [countMessage, setCountMessage] = useState<quantityType[] | null>([]);
   const { lastName, firstName } = userSession.profile;
@@ -130,6 +136,12 @@ const CardRegisterMessage = ({
   // console.log(users.find(user => user.id === receiver?.id))
 
   useEffect(() => {
+    const secondaryReceiver = listCopy.map(list => ({ userId: list.id }));
+    const cc = secondaryReceiver.map(item => {
+      const toUser = users.find(user => user.id === item.userId);
+      return toUser;
+    });
+
     const header = watch('header');
     const description = watch('description');
     const title = watch('title');
@@ -141,6 +153,7 @@ const CardRegisterMessage = ({
       body: getTextParagraph(description ?? ''),
       tables: convertToObject(description ?? ''),
       title,
+      cc,
       to,
       date: formatDate(new Date(), {
         year: 'numeric',
@@ -228,7 +241,8 @@ const CardRegisterMessage = ({
       </div>
       <form className="imbox-data-content" onSubmit={handleSubmit(onSubmit)}>
         <Input
-          {...register('title')}
+          {...register('title', { required: true })}
+          errors={errors}
           className="imbox-input-content-title not-allowed"
           name="title"
           type="text"
@@ -252,6 +266,7 @@ const CardRegisterMessage = ({
                 value={radio.value}
                 type="radio"
                 name={radio.name}
+                required
               />
               {radio.id === 'Coordinación' ? `Hoja de ${radio.id}` : radio.id}
             </label>
@@ -279,6 +294,7 @@ const CardRegisterMessage = ({
                 selector
                 droper
                 valueInput={(value, id) => setReceiver({ id: +id, value })}
+                required
               />
             )}
           </div>
@@ -295,7 +311,7 @@ const CardRegisterMessage = ({
           <div className="imbox-receiver-container-copy">
             <span className="imbox-receiver-label">Cc: </span>
             {listCopy.map(list => (
-              <div className="imbox-receiver-chip">
+              <div className="imbox-receiver-chip" key={list.id}>
                 <span className="imbox-receiver-chip-name">{list.value}</span>
                 <img
                   className="imbox-receiver-chip-icon-close "
@@ -319,7 +335,8 @@ const CardRegisterMessage = ({
         <label className="imbox-input-title">
           Asunto:
           <Input
-            {...register('header')}
+            {...register('header', { validate: { validateWhiteSpace } })}
+            errors={errors}
             className="imbox-input-content"
             name="header"
             type="text"

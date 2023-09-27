@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '../../../services/axiosInstance';
-import { MessageType, quantityType } from '../../../types/types';
+import { MessageType, PdfDataProps, quantityType } from '../../../types/types';
 import './messagePage.css';
 import { RootState } from '../../../store';
 import { useSelector } from 'react-redux';
@@ -13,6 +13,12 @@ import Button from '../../../components/shared/button/Button';
 import { filterFilesByAttempt } from '../../../utils/files/files.utils';
 import CardRegisterMessageForward from '../../../components/shared/card/cardRegisterMessageFordward/CardRegisterMessageFordward';
 import CardRegisterMessageUpdate from '../../../components/shared/card/cardRegisterMessageUpdate/CardRegisterMessageUpdate';
+import {
+  convertToObject,
+  dataInitialPdf,
+  getTextParagraph,
+} from '../../../utils/pdfReportFunctions';
+import { PDFGenerator } from '../../../components';
 
 const spring = {
   type: 'spring',
@@ -37,6 +43,7 @@ const MessagePage = () => {
   const { messageId } = useParams();
   const { userSession } = useSelector((state: RootState) => state);
   const [isReply, setIsReply] = useState(true);
+  // const [data, setData] = useState<PdfDataProps>(dataInitialPdf);
   const [message, setMessage] = useState<MessageType | null>();
   const [isActive, setIsActive] = useState<boolean>(false);
   const [viewMoreFiles, setViewMoreFiles] = useState(false);
@@ -46,8 +53,6 @@ const MessagePage = () => {
   const getFiles = (message && message.files) || [];
   const getHistory = (message && message.history) || [];
   const files = filterFilesByAttempt(getFiles);
-  // const parameters = searchParams.get('size');
-  // const [searchParams] = useSearchParams();
 
   useEffect(() => {
     if (messageId) getMessage(messageId);
@@ -80,6 +85,30 @@ const MessagePage = () => {
     ({ user, status, role }) =>
       user.id === userSession.id && status && role === 'MAIN'
   );
+  console.log(message);
+
+  const userTo = message.users.find(user => user.type === 'SENDER');
+  const data = {
+    from: userSession.profile.firstName + ' ' + userSession.profile.lastName,
+    header: message.header,
+    body: getTextParagraph(message.description ?? ''),
+    tables: convertToObject(message.description ?? ''),
+    title: message.title,
+    to: userTo?.user.profile.firstName + ' ' + userTo?.user.profile.firstName,
+    date: formatDate(new Date(message.createdAt), {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      hour12: true,
+    }),
+    toDegree: userTo?.user.profile.degree,
+    toPosition: userTo?.user.profile.description,
+    dni: userSession.profile.dni,
+    fromDegree: userSession.profile.degree,
+    fromPosition: userSession.profile.description,
+  };
+
+  console.log(data);
 
   const handleSaveRegister = () => {
     navigate('/tramites?refresh=true');
@@ -147,14 +176,17 @@ const MessagePage = () => {
           <span className="message-files-title">Archivos adjuntos:</span>
         </p>
         <div className="message-container-files-grid">
-          {files[0].files.map(({ id, name, path }) => (
-            <ChipFileMessage
-              className="pointer message-files-list"
-              key={id}
-              text={parseName(name)}
-              link={path + '/' + name}
-            />
-          ))}
+          <div style={{ display: 'flex', gap: '1rem' }}>
+            {files[0].files.map(({ id, name, path }) => (
+              <ChipFileMessage
+                className="pointer message-files-list"
+                key={id}
+                text={parseName(name)}
+                link={path + '/' + name}
+              />
+            ))}
+            <PDFGenerator data={data} isView />
+          </div>
           <div className="message-sender-info">
             {sender && sender.type === 'SENDER' ? (
               <span className="message-sender-name">

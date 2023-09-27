@@ -28,6 +28,7 @@ import {
   getTextParagraph,
 } from '../../../../utils/pdfReportFunctions';
 import useListUsers from '../../../../hooks/useListUsers';
+import { validateWhiteSpace } from '../../../../utils/customValidatesForm';
 
 interface MessageSendType {
   title: string;
@@ -57,13 +58,19 @@ interface CardRegisterMessageUpdateProps {
 const CardRegisterMessageUpdate = ({
   message,
   quantityFiles,
+  receiverId,
   onSave,
 }: CardRegisterMessageUpdateProps) => {
   const { userSession } = useSelector((state: RootState) => state);
   const { users } = useListUsers();
   const { lastName, firstName } = userSession.profile;
-  const { handleSubmit, register, setValue, watch } =
-    useForm<MessageSendType>();
+  const {
+    handleSubmit,
+    register,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<MessageSendType>();
   const [fileUploadFiles, setFileUploadFiles] = useState<File[]>([]);
   const HashUser = HashFile(`${firstName} ${lastName}`);
   const [pdfData, setpdfData] = useState<PdfDataProps>(dataInitialPdf);
@@ -96,17 +103,18 @@ const CardRegisterMessageUpdate = ({
 
   const onSubmit: SubmitHandler<MessageSendType> = async data => {
     const messageId = message.id;
+    const value = { ...data, receiverId: sender.id };
     const headers = {
       'Content-type': 'multipart/form-data',
     };
     const formData = new FormData();
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
-    formData.append('data', JSON.stringify(data));
+    formData.append('data', JSON.stringify(value));
     // formData.append('senderId', `${senderId}`);
     axiosInstance.put(`/mail/${messageId}`, formData, { headers }).then(onSave);
   };
 
-  const sender = message.users.filter(user => user.type === 'RECEIVER')[0].user;
+  const sender = message.users.filter(user => user.type === 'SENDER')[0].user;
   useEffect(() => {
     const header = watch('header');
     const description = watch('description');
@@ -155,6 +163,7 @@ const CardRegisterMessageUpdate = ({
               type="radio"
               disabled
               name={radio.name}
+              required
             />
             {radio.id === 'Coordinación' ? `Hoja de ${radio.id}` : radio.id}
           </label>
@@ -171,10 +180,12 @@ const CardRegisterMessageUpdate = ({
       <label className="imbox-input-title">
         Asunto:
         <Input
-          {...register('header')}
+          {...register('header', { validate: { validateWhiteSpace } })}
+          errors={errors}
           className="imbox-input-content"
           name="header"
           type="text"
+          required
         />
       </label>
       <label className="imbox-input-title">

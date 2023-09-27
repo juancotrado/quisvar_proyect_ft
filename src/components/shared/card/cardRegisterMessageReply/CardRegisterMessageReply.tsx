@@ -8,6 +8,7 @@ import Button from '../../button/Button';
 import DropDownSimple from '../../select/DropDownSimple';
 import {
   MessageType,
+  MessageTypeImbox,
   PdfDataProps,
   UserRoleType,
   quantityType,
@@ -24,6 +25,7 @@ import {
   dataInitialPdf,
   getTextParagraph,
 } from '../../../../utils/pdfReportFunctions';
+import { validateWhiteSpace } from '../../../../utils/customValidatesForm';
 
 interface MessageSendType {
   title: string;
@@ -32,7 +34,7 @@ interface MessageSendType {
   receiverId: number;
   idMessageReply?: number;
   idMessageResend?: number;
-  type: 'INFORME' | 'MEMORANDUM' | 'CARTA';
+  type: MessageTypeImbox;
 }
 const RolePerm: UserRoleType[] = ['SUPER_ADMIN', 'ADMIN', 'SUPER_MOD', 'MOD'];
 
@@ -62,8 +64,13 @@ const CardRegisterMessageReply = ({
 }: CardRegisterMessageReplyProps) => {
   const { userSession } = useSelector((state: RootState) => state);
   const { lastName, firstName } = userSession.profile;
-  const { handleSubmit, register, setValue, watch } =
-    useForm<MessageSendType>();
+  const {
+    handleSubmit,
+    register,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<MessageSendType>();
   const [fileUploadFiles, setFileUploadFiles] = useState<File[]>([]);
   const { users } = useListUsers(RolePerm);
   const HashUser = HashFile(`${firstName} ${lastName}`);
@@ -172,6 +179,7 @@ const CardRegisterMessageReply = ({
               value={radio.value}
               type="radio"
               name={radio.name}
+              required
             />
             {radio.id === 'Coordinación' ? `Hoja de ${radio.id}` : radio.id}
           </label>
@@ -200,6 +208,7 @@ const CardRegisterMessageReply = ({
                 selector
                 droper
                 valueInput={(value, id) => setReceiver({ id: +id, value })}
+                required
               />
             )}
           </div>
@@ -208,7 +217,8 @@ const CardRegisterMessageReply = ({
       <label className="imbox-input-title">
         Asunto:
         <Input
-          {...register('header')}
+          {...register('header', { validate: { validateWhiteSpace } })}
+          errors={errors}
           className="imbox-input-content"
           name="header"
           type="text"

@@ -7,8 +7,9 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import Button from '../../button/Button';
 import {
   MessageType,
+  MessageTypeImbox,
   PdfDataProps,
-  UserRoleType,
+  // UserRoleType,
   quantityType,
 } from '../../../../types/types';
 import { RootState } from '../../../../store';
@@ -29,6 +30,7 @@ import {
   getTextParagraph,
 } from '../../../../utils/pdfReportFunctions';
 import useListUsers from '../../../../hooks/useListUsers';
+import { validateWhiteSpace } from '../../../../utils/customValidatesForm';
 
 interface MessageSendType {
   title: string;
@@ -37,7 +39,7 @@ interface MessageSendType {
   receiverId: number;
   idMessageReply?: number;
   idMessageResend?: number;
-  type: 'INFORME' | 'MEMORANDUM' | 'CARTA';
+  type: MessageTypeImbox;
 }
 const YEAR = new Date().getFullYear();
 
@@ -61,8 +63,13 @@ const CardRegisterMessageForward = ({
   const { userSession } = useSelector((state: RootState) => state);
   const { users } = useListUsers();
   const { lastName, firstName } = userSession.profile;
-  const { handleSubmit, register, setValue, watch } =
-    useForm<MessageSendType>();
+  const {
+    handleSubmit,
+    register,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<MessageSendType>();
   const [fileUploadFiles, setFileUploadFiles] = useState<File[]>([]);
   const HashUser = HashFile(`${firstName} ${lastName}`);
   const [pdfData, setpdfData] = useState<PdfDataProps>(dataInitialPdf);
@@ -90,6 +97,7 @@ const CardRegisterMessageForward = ({
     const values = {
       ...data,
       messageId: message.id,
+      receiverId: sender.id,
     };
     const headers = {
       'Content-type': 'multipart/form-data',
@@ -157,6 +165,7 @@ const CardRegisterMessageForward = ({
               value={radio.value}
               type="radio"
               name={radio.name}
+              required
             />
             {radio.id === 'Coordinación' ? `Hoja de ${radio.id}` : radio.id}
           </label>
@@ -181,7 +190,8 @@ const CardRegisterMessageForward = ({
       <label className="imbox-input-title">
         Asunto:
         <Input
-          {...register('header')}
+          {...register('header', { validate: { validateWhiteSpace } })}
+          errors={errors}
           className="imbox-input-content"
           name="header"
           type="text"

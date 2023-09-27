@@ -3,11 +3,24 @@
   border: 2px solid var(--color-primary);
   color: white;
   background-color: var(--color-primary);
-  padding: 0.2rem;
+  padding: 0.3rem 0.5rem;
 }
 .pdf-btn-area {
   display: flex;
   justify-content: space-around;
   width: 100%;
   align-items: center;
+  gap: 1rem;
+}
+.pdf-btn-view {
+  border-radius: var(--radius-input);
+  /* border: 2px solid var(--color-primary); */
+  color: var(--color-quaternay);
+  background-color: var(--color-menu);
+  padding: 0.3rem 0.5rem;
+  transition: 0.2s ease-in;
+}
+.pdf-btn-view:hover {
+  border-radius: var(--radius-input);
+  background-color: #e3e3e3;
 }

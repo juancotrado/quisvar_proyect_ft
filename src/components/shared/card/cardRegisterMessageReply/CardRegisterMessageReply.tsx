@@ -8,6 +8,7 @@ import Button from '../../button/Button';
 import DropDownSimple from '../../select/DropDownSimple';
 import {
   MessageType,
+  MessageTypeImbox,
   PdfDataProps,
   UserRoleType,
   quantityType,
@@ -33,7 +34,7 @@ interface MessageSendType {
   receiverId: number;
   idMessageReply?: number;
   idMessageResend?: number;
-  type: 'INFORME' | 'MEMORANDUM' | 'CARTA';
+  type: MessageTypeImbox;
 }
 const RolePerm: UserRoleType[] = ['SUPER_ADMIN', 'ADMIN', 'SUPER_MOD', 'MOD'];
 

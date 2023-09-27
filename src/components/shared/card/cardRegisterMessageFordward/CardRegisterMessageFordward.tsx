@@ -7,6 +7,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import Button from '../../button/Button';
 import {
   MessageType,
+  MessageTypeImbox,
   PdfDataProps,
   // UserRoleType,
   quantityType,
@@ -38,7 +39,7 @@ interface MessageSendType {
   receiverId: number;
   idMessageReply?: number;
   idMessageResend?: number;
-  type: 'INFORME' | 'MEMORANDUM' | 'CARTA';
+  type: MessageTypeImbox;
 }
 const YEAR = new Date().getFullYear();
 

@@ -74,10 +74,6 @@ export const borderReportStyle = (row: ExcelJS.Row) => {
     left: { style: 'thin' },
     right: { style: 'thin' },
   };
-  row.getCell('C').font = {
-    bold: true,
-    color: { argb: '4472C4' },
-  };
 };
 
 export const formatExcelStyle = ({
@@ -97,14 +93,12 @@ export const exportExcel = async (name: string, workbook: ExcelJS.Workbook) => {
     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   });
   const editedUrl = URL.createObjectURL(editedBlob);
-  localStorage.setItem('bloblExcel', editedUrl);
   const a = document.createElement('a');
   a.href = editedUrl;
   a.download = name;
   a.click();
   isGenerateExcelReport$.setSubject = editedUrl;
-
-  // URL.revokeObjectURL(editedUrl);
+  URL.revokeObjectURL(editedUrl);
 };
 export const fontExcelStyle = ({
   row,

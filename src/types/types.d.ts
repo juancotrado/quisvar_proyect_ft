@@ -23,12 +23,9 @@ export interface TypeSpecialities {
 export interface ReportForm {
   initialDate: string;
   untilDate: string;
-  manager: string;
   concept: string;
-  charge: string;
   remote: string;
   title: string;
-  advancePorcentage: string;
 }
 
 export interface ExcelData extends ReportForm {
@@ -50,6 +47,12 @@ export interface DataSidebarSpeciality {
 
 export interface ProjectReport {
   id: number;
+  moderator: {
+    profile: {
+      firstName: string;
+      lastName: number;
+    };
+  };
   name: string;
   CUI: string;
   description: string;

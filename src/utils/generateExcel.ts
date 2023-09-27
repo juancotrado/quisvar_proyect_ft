@@ -16,13 +16,13 @@ const excelReport = async (
   attendance: UserAttendance
 ) => {
   // Cargar la plantilla desde un archivo
-  const response = await fetch('/templates/report_templateV4.xlsx');
+  const response = await fetch('/templates/report_templateV5.xlsx');
   const buffer = await response.arrayBuffer();
   const workbook = new ExcelJS.Workbook();
   await workbook.xlsx.load(buffer);
 
   // Obtener la hoja de cálculo
-  const wk = workbook.getWorksheet('PERIDO 18');
+  const wk = workbook.getWorksheet('REPORTE');
   const wk1 = workbook.addWorksheet('sheet');
   // Insertar contenido en las celdas
   wk1.getCell('A1').value = 'Contenido en A1';
@@ -32,7 +32,7 @@ const excelReport = async (
   wk1.getRow(10).addPageBreak(1, 4);
 
   wk.getCell('C1').value = infoData.title;
-  wk.getCell('D4').value = infoData.manager.toUpperCase();
+  wk.getCell('D4').value = 'ARQ. CATERINY YESENIA HUMPIRI MAMANI';
   wk.getCell('D9').value = infoData.concept.toUpperCase();
   wk.getCell('D13').value = infoData.degree;
   wk.getCell('H12').value = infoData.remote;
@@ -54,10 +54,21 @@ const excelReport = async (
       project.district,
       project.name.toUpperCase(),
     ]);
-
+    wk.mergeCells(`D${rowNumber}:I${rowNumber}`);
+    const { firstName, lastName } = project.moderator.profile;
+    projectRow.getCell('D').value = (
+      'COORDINADOR: ' +
+      firstName +
+      ' ' +
+      lastName
+    ).toUpperCase();
+    projectRow.getCell('D').alignment = {
+      horizontal: 'center',
+    };
     projectRow.font = {
       bold: true,
       color: { argb: 'F50000' },
+      size: 9,
     };
     borderReportStyle(projectRow);
 
@@ -65,6 +76,9 @@ const excelReport = async (
 
     rowNumber++;
     project.subtasks.forEach(subTask => {
+      const getDays = (
+        getTimeOut(subTask.assignedAt || '', subTask.untilDate || '') / 24
+      ).toFixed(1);
       const subtaskRow = wk.insertRow(rowNumber, [
         null,
         subTask.item,
@@ -75,10 +89,14 @@ const excelReport = async (
         subTask.percentage / 100,
         project.percentage / 100,
         null,
-        getTimeOut(subTask.assignedAt || '', subTask.untilDate || '') +
-          ' Horas',
+        getDays + 'Dias',
       ]);
       borderReportStyle(subtaskRow);
+      subtaskRow.getCell('C').font = {
+        bold: true,
+        color: { argb: '4472C4' },
+        size: 9,
+      };
       subtaskRow.getCell('I').value = {
         formula: `=+D${rowNumber}*G${rowNumber}`,
         date1904: false,
@@ -97,6 +115,16 @@ const excelReport = async (
     });
   });
   const endLine = rowNumber;
+  const resultPorcentage = data.reduce(
+    (acc, project) => {
+      acc.sumTotalTask += project.subtasks.length;
+      acc.porcentageValue += project.subtasks.length * project.percentage;
+      return acc;
+    },
+    { sumTotalTask: 0, porcentageValue: 0 }
+  );
+  const porcentageValue =
+    resultPorcentage.porcentageValue / resultPorcentage.sumTotalTask;
 
   const sumTotalCell = 'I' + (endLine + 2);
   wk.getCell(sumTotalCell).value = {
@@ -105,7 +133,7 @@ const excelReport = async (
   };
   const salaryAdvanceCell = 'I' + (endLine + 3);
   wk.getCell(salaryAdvanceCell).value = {
-    formula: `${sumTotalCell}*${infoData.advancePorcentage}/100`,
+    formula: `${sumTotalCell}*${porcentageValue}/100`,
     date1904: false,
   };
   wk.getCell('I' + (endLine + 4)).value = getPrice(attendance);
@@ -121,6 +149,10 @@ const excelReport = async (
     formula: `=${salaryAdvanceCell}`,
     date1904: false,
   };
+  wk.getCell(
+    'C18'
+  ).value = `ADELANTO MAXIMO (${porcentageValue}%) POR COSTO PARCIAL:`;
+
   wk.mergeCells(`H${endLine + 10}:I${endLine + 10}`);
   wk.mergeCells(`H${endLine + 11}:I${endLine + 11}`);
   const dniFinishcell = wk.getCell(`H${endLine + 10}`);

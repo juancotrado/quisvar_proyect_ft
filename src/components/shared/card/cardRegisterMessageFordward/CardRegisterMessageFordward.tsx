@@ -90,6 +90,7 @@ const CardRegisterMessageForward = ({
     const values = {
       ...data,
       messageId: message.id,
+      receiverId: sender.id,
     };
     const headers = {
       'Content-type': 'multipart/form-data',

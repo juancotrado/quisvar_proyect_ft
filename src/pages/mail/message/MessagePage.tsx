@@ -74,11 +74,14 @@ const MessagePage = () => {
   const sender = users.find(({ user }) => user.id !== userSession.id);
   const mainSender = users.find(
     ({ user, type, role }) =>
-      user.id === userSession.id && role === 'MAIN' && type == 'SENDER'
+      user.id === userSession.id && role === 'MAIN' && type == 'RECEIVER'
   );
   const mainReceiver = users.find(
-    ({ user, status, role }) =>
-      user.id === userSession.id && status && role === 'MAIN'
+    ({ user, status, role, type }) =>
+      user.id === userSession.id &&
+      status &&
+      role === 'MAIN' &&
+      type == 'RECEIVER'
   );
 
   const handleSaveRegister = () => {

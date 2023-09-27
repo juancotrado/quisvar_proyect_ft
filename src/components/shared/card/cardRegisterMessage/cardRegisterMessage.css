@@ -84,6 +84,8 @@
 }
 .imbox-receiver-choice-dropdown-input {
   border: none;
+  position: relative;
+  /* z-index: ; */
   border-radius: 1rem;
   background-color: #fff;
   min-width: 20rem;

@@ -57,6 +57,7 @@ interface CardRegisterMessageUpdateProps {
 const CardRegisterMessageUpdate = ({
   message,
   quantityFiles,
+  receiverId,
   onSave,
 }: CardRegisterMessageUpdateProps) => {
   const { userSession } = useSelector((state: RootState) => state);
@@ -96,17 +97,18 @@ const CardRegisterMessageUpdate = ({
 
   const onSubmit: SubmitHandler<MessageSendType> = async data => {
     const messageId = message.id;
+    const value = { ...data, receiverId: sender.id };
     const headers = {
       'Content-type': 'multipart/form-data',
     };
     const formData = new FormData();
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
-    formData.append('data', JSON.stringify(data));
+    formData.append('data', JSON.stringify(value));
     // formData.append('senderId', `${senderId}`);
     axiosInstance.put(`/mail/${messageId}`, formData, { headers }).then(onSave);
   };
 
-  const sender = message.users.filter(user => user.type === 'RECEIVER')[0].user;
+  const sender = message.users.filter(user => user.type === 'SENDER')[0].user;
   useEffect(() => {
     const header = watch('header');
     const description = watch('description');

@@ -669,7 +669,10 @@ export interface MessageType {
     role: 'MAIN' | 'SECONDARY';
     user: {
       id: number;
-      profile: Pick<Profile, 'firstName' | 'lastName' | 'dni' | 'phone'>;
+      profile: Pick<
+        Profile,
+        'firstName' | 'lastName' | 'dni' | 'phone' | 'degree' | 'description'
+      >;
     };
   }[];
   history: MessageReply[];
@@ -712,8 +715,17 @@ export type ObjectBoard = {
   [clave: string]: string;
 };
 type CcProps = {
+  id: number;
+  email: string;
+  password: string;
+  role: UserRoleType;
+  status?: boolean | undefined;
+  contract: string | null;
+  cv: string | null;
+  declaration: string | null;
   name: string;
-  manager: string;
+  degree: string;
+  position: string;
 };
 export type PdfDataProps = {
   title: string;

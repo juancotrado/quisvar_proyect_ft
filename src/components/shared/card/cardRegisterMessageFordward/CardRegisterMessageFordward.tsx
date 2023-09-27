@@ -8,7 +8,7 @@ import Button from '../../button/Button';
 import {
   MessageType,
   PdfDataProps,
-  UserRoleType,
+  // UserRoleType,
   quantityType,
 } from '../../../../types/types';
 import { RootState } from '../../../../store';
@@ -29,6 +29,7 @@ import {
   getTextParagraph,
 } from '../../../../utils/pdfReportFunctions';
 import useListUsers from '../../../../hooks/useListUsers';
+import { validateWhiteSpace } from '../../../../utils/customValidatesForm';
 
 interface MessageSendType {
   title: string;
@@ -61,8 +62,13 @@ const CardRegisterMessageForward = ({
   const { userSession } = useSelector((state: RootState) => state);
   const { users } = useListUsers();
   const { lastName, firstName } = userSession.profile;
-  const { handleSubmit, register, setValue, watch } =
-    useForm<MessageSendType>();
+  const {
+    handleSubmit,
+    register,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<MessageSendType>();
   const [fileUploadFiles, setFileUploadFiles] = useState<File[]>([]);
   const HashUser = HashFile(`${firstName} ${lastName}`);
   const [pdfData, setpdfData] = useState<PdfDataProps>(dataInitialPdf);
@@ -158,6 +164,7 @@ const CardRegisterMessageForward = ({
               value={radio.value}
               type="radio"
               name={radio.name}
+              required
             />
             {radio.id === 'Coordinación' ? `Hoja de ${radio.id}` : radio.id}
           </label>
@@ -182,7 +189,8 @@ const CardRegisterMessageForward = ({
       <label className="imbox-input-title">
         Asunto:
         <Input
-          {...register('header')}
+          {...register('header', { validate: { validateWhiteSpace } })}
+          errors={errors}
           className="imbox-input-content"
           name="header"
           type="text"

@@ -37,6 +37,7 @@ export interface ExcelData extends ReportForm {
   dni: string;
   phone: string;
   totalDays: number;
+  degree: string;
 }
 export interface DataSidebarSpeciality {
   id: number;
@@ -54,6 +55,7 @@ export interface ProjectReport {
   description: string;
   subtasks: SubTask[];
   district: string;
+  percentage: number;
 }
 export interface SectorType {
   id: number;
@@ -617,6 +619,14 @@ export interface userAttendance {
     title: string;
     id: number;
   };
+}
+export interface UserAttendance {
+  PUNTUAL: number;
+  TARDE: number;
+  SIMPLE: number;
+  GRAVE: number;
+  MUY_GRAVE: number;
+  PERMISO: number;
 }
 export interface AttendanceRange {
   id: number;

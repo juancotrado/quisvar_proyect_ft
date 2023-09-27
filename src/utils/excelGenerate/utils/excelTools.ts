@@ -1,4 +1,6 @@
 import * as ExcelJS from 'exceljs';
+import { UserAttendance } from '../../../types/types';
+import { isGenerateExcelReport$ } from '../../../services/sharingSubject';
 interface FontExcelStyle {
   row: ExcelJS.Row;
   positions: string;
@@ -9,7 +11,7 @@ interface FontExcelStyle {
 }
 export const moneyFormat =
   '_-"S/"* #,##0.00_-;-"S/"* #,##0.00_-;_-"S/"* "-"??_-;_-@_-';
-interface formatExcelStyle {
+interface formatExcelStyleProp {
   row: ExcelJS.Row;
   positions: string;
   format: string;
@@ -51,12 +53,38 @@ export const borderProjectStyle = (row: ExcelJS.Row) => {
     right: { style: 'medium' },
   };
 };
+export const borderReportStyle = (row: ExcelJS.Row) => {
+  row.getCell('B').border = {
+    left: { style: 'medium' },
+    right: { style: 'medium' },
+  };
+  row.getCell('J').border = {
+    left: { style: 'thin' },
+    right: { style: 'medium' },
+  };
+  row.getCell('D').border = {
+    left: { style: 'thin' },
+    right: { style: 'thin' },
+  };
+  row.getCell('F').border = {
+    left: { style: 'thin' },
+    right: { style: 'thin' },
+  };
+  row.getCell('H').border = {
+    left: { style: 'thin' },
+    right: { style: 'thin' },
+  };
+  row.getCell('C').font = {
+    bold: true,
+    color: { argb: '4472C4' },
+  };
+};
 
 export const formatExcelStyle = ({
   row,
   positions,
   format,
-}: formatExcelStyle) => {
+}: formatExcelStyleProp) => {
   const splitPositions = positions.split('');
   splitPositions.forEach(pos => {
     row.getCell(pos).numFmt = format;
@@ -69,11 +97,14 @@ export const exportExcel = async (name: string, workbook: ExcelJS.Workbook) => {
     type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
   });
   const editedUrl = URL.createObjectURL(editedBlob);
+  localStorage.setItem('bloblExcel', editedUrl);
   const a = document.createElement('a');
   a.href = editedUrl;
   a.download = name;
   a.click();
-  URL.revokeObjectURL(editedUrl);
+  isGenerateExcelReport$.setSubject = editedUrl;
+
+  // URL.revokeObjectURL(editedUrl);
 };
 export const fontExcelStyle = ({
   row,
@@ -92,4 +123,17 @@ export const fontExcelStyle = ({
       name,
     };
   });
+};
+
+export const getPrice = (counts: UserAttendance) => {
+  const T = 0.5;
+  const F = 10;
+  const G = 20;
+  const M = 80;
+  const result =
+    T * counts.TARDE +
+    F * counts.SIMPLE +
+    G * counts.GRAVE +
+    M * counts.MUY_GRAVE;
+  return result;
 };

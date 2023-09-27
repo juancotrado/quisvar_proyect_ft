@@ -1,5 +1,5 @@
 import './cardRegisterMessage.css';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { ChangeEvent } from 'react';
 import InputFile from '../../Input/InputFile';
 import useListUsers from '../../../../hooks/useListUsers';
@@ -34,6 +34,11 @@ import {
   dataInitialPdf,
   getTextParagraph,
 } from '../../../../utils/pdfReportFunctions';
+import {
+  isGenerateExcelReport$,
+  isOpenCardGenerateReport$,
+} from '../../../../services/sharingSubject';
+import { Subscription } from 'rxjs';
 
 const YEAR = new Date().getFullYear();
 const RolePerm: UserRoleType[] = ['SUPER_ADMIN', 'ADMIN', 'SUPER_MOD', 'MOD'];
@@ -72,6 +77,26 @@ const CardRegisterMessage = ({
 
   const [pdfData, setpdfData] = useState<PdfDataProps>(dataInitialPdf);
 
+  const handleIsOpen = useRef<Subscription>(new Subscription());
+
+  useEffect(() => {
+    handleIsOpen.current = isGenerateExcelReport$.getSubject.subscribe(
+      blobExcel => {
+        console.log({ blobExcel });
+        if (!blobExcel) return;
+        fetch(blobExcel)
+          .then(response => response.blob())
+          .then(blob => {
+            const file = new File([blob], 'nombre_del_archivo.xlsx');
+            addFiles?.([file]);
+          })
+          .catch(error => console.error('Error al cargar el blob:', error));
+      }
+    );
+    return () => {
+      handleIsOpen.current.unsubscribe();
+    };
+  }, []);
   const contacts = useMemo(
     () =>
       users.filter(
@@ -182,6 +207,9 @@ const CardRegisterMessage = ({
   const handleDroped = () => {
     setIsDroped(!isDroped);
     !isDroped && setIsOpened(false);
+  };
+  const showCardReport = () => {
+    isOpenCardGenerateReport$.setSubject = true;
   };
 
   return (
@@ -362,6 +390,7 @@ const CardRegisterMessage = ({
             ))}
           </div>
         )}
+        <div onClick={showCardReport}>generar report</div>
         <InputFile
           className="imbox-file-area"
           getFilesList={files => addFiles(files)}

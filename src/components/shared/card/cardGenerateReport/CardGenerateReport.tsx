@@ -70,15 +70,17 @@ const CardGenerateReport = ({ employeeId }: CardGenerateReportProps) => {
       year: 'numeric',
     });
     const totalDays = getTimeOut(data.initialDate, data.untilDate) / 24;
-    const idGenerate =
-      // userSession.role === 'EMPLOYEE' ? userSession.id : employee?.id;
-      userSession.role === 'EMPLOYEE' ? userSession.id : employeeId;
+    // const idGenerate =
+    //   // userSession.role === 'EMPLOYEE' ? userSession.id : employee?.id;
+    //   userSession.role === 'EMPLOYEE' ? userSession.id : employeeId;
+    const idGenerate = employeeId ?? userSession.id;
     axiosInstance
       .get(
         `/reports/user/${idGenerate}?initial=${data.initialDate}&until=${data.untilDate}&status=DONE`
       )
       .then(res => {
-        const { firstName, lastName, dni, phone } = res.data.user.profile;
+        const { firstName, lastName, dni, phone, degree } =
+          res.data.user.profile;
         const infoData = {
           ...data,
           manager: coordinator,
@@ -89,8 +91,9 @@ const CardGenerateReport = ({ employeeId }: CardGenerateReportProps) => {
           lastName,
           dni,
           phone,
+          degree,
         };
-        excelReport(res.data.subtask, infoData);
+        excelReport(res.data.projects, infoData, res.data.attendance);
       });
   };
 

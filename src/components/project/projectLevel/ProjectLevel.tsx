@@ -56,7 +56,12 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
     handleOpenEdit();
   };
   const handleDuplicate = () => {
-    axiosInstance.post(`/duplicates/level/${data.id}`).then(() => onSave?.());
+    const body = {
+      name: data.name + ' copia',
+    };
+    axiosInstance
+      .post(`/duplicates/level/${data.id}`, body)
+      .then(() => onSave?.());
   };
   const options: Option[] = [
     {

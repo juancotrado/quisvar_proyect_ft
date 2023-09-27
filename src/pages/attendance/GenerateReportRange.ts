@@ -1,19 +1,13 @@
 import * as ExcelJS from 'exceljs';
 import { contarStatus } from './ContarStatus';
 import { AttendanceRange } from '../../types/types';
+import { getPrice } from '../../utils/excelGenerate/utils/excelTools';
 interface GenerateReportProps {
   startDate: string;
   endDate: string;
   printData: AttendanceRange[];
 }
-interface countProps {
-  PUNTUAL: number;
-  TARDE: number;
-  SIMPLE: number;
-  GRAVE: number;
-  MUY_GRAVE: number;
-  PERMISO: number;
-}
+
 export async function generateReportRange({
   startDate,
   endDate,
@@ -28,18 +22,7 @@ export async function generateReportRange({
   let rowNumber = 6;
 
   wk.getCell('B3').value = `LISTA PERDIODO # DEL ${startDate} AL ${endDate}`;
-  const getPrice = (counts: countProps) => {
-    const T = 0.5;
-    const F = 10;
-    const G = 20;
-    const M = 80;
-    const result =
-      T * counts.TARDE +
-      F * counts.SIMPLE +
-      G * counts.GRAVE +
-      M * counts.MUY_GRAVE;
-    return result;
-  };
+
   const moneyFormat =
     '_-"S/"* #,##0.00_-;-"S/"* #,##0.00_-;_-"S/"* "-"??_-;_-@_-';
   printData.forEach((data: AttendanceRange, idx: number) => {
@@ -112,6 +95,7 @@ export async function generateReportRange({
       type: 'application/vnd.openxmlformats-officedocument.spreadsheet.sheet',
     });
     const url = window.URL.createObjectURL(blob);
+
     const anchor = document.createElement('a');
     anchor.href = url;
     anchor.download = 'download.xlsx';

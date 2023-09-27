@@ -15,6 +15,7 @@ interface CardRegisteTask {
 export const loader$ = new SubjectManager<boolean>();
 export const toggle$ = new SubjectManager<boolean>();
 export const isOpenModal$ = new SubjectManager<boolean>();
+export const isGenerateExcelReport$ = new SubjectManager<string>();
 export const isOpenCardRegisterUser$ = new SubjectManager<boolean>();
 export const isOpenCardGenerateReport$ = new SubjectManager<boolean>();
 export const isOpenCardFiles$ = new SubjectManager<boolean>();

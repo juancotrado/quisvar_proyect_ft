@@ -11,6 +11,7 @@ import SelectOptions from '../../components/shared/select/Select';
 import { listStatusMsg, listTypeMsg } from '../../utils/files/files.utils';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
+import { CardGenerateReport } from '../../components';
 
 const InitTMail: MailType['type'] = 'RECEIVER';
 
@@ -223,6 +224,8 @@ const MailPage = () => {
       <div className={`mail-messages-details mail-m-size-${size}`}>
         <Outlet />
       </div>
+      <CardGenerateReport />
+
       {isNewMessage && (
         <CardRegisterMessage
           onClosing={handleCloseMessage}

@@ -99,21 +99,17 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => (
       <View style={styles.line} />
       <Text style={styles.body}>{value.data?.body}</Text>
       <View style={styles.table}>
-        <View style={styles.tableRow}>
-          {value.data.tables &&
-            value.data.tables.length > 0 &&
-            Object.keys(value.data.tables[0]).map((key, columnIndex) => (
-              <View style={styles.tableCell} key={columnIndex}>
-                <Text style={styles.header}>{key}</Text>
-              </View>
-            ))}
-        </View>
         {value.data.tables &&
-          value.data.tables.map((fila, filaIdx) => (
-            <View style={styles.tableRow} key={filaIdx}>
-              {Object.values(fila).map((valor, columnaIdx) => (
-                <View style={styles.tableCell} key={columnaIdx}>
-                  <Text>{valor}</Text>
+          value.data.tables.length > 0 &&
+          value.data.tables.map((row, rowIndex) => (
+            <View style={styles.tableRow} key={rowIndex}>
+              {row.map((cell, cellIndex) => (
+                <View style={styles.tableCell} key={cellIndex}>
+                  {rowIndex === 0 ? (
+                    <Text style={styles.header}>{cell}</Text>
+                  ) : (
+                    <Text>{cell}</Text>
+                  )}
                 </View>
               ))}
             </View>

@@ -97,23 +97,27 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
       } ${data?.subTasks?.length && 'dropdownLevel-Subtask'}`}
       style={style}
     >
-      {modAuthProject && (
-        <DotsOption
-          className="projectLevel-menu-dots-option"
-          notPositionRelative
-          iconHide
-          isClickRight={isClickRight}
-          data={options}
-        />
-      )}
-      <div className={`projectLevel-section `} onContextMenu={handleClickRigth}>
-        <img src="/svg/down.svg" className="projectLevel-dropdown-arrow" />
-        <input
-          type="checkbox"
-          className="projectLevel-dropdown-check"
-          defaultChecked={false}
-        />
-        <div className="projectLevel-contain">
+      <div className="projectLevel-contain">
+        {modAuthProject && (
+          <DotsOption
+            className="projectLevel-menu-dots-option"
+            notPositionRelative
+            iconHide
+            isClickRight={isClickRight}
+            data={options}
+          />
+        )}
+        <div
+          className={`projectLevel-section `}
+          onContextMenu={handleClickRigth}
+        >
+          <img src="/svg/down.svg" className="projectLevel-dropdown-arrow" />
+          <input
+            type="checkbox"
+            className="projectLevel-dropdown-check"
+            defaultChecked={false}
+          />
+          {/* <div className="projectLevel-contain"> */}
           <div className="projectLevel-name-contain">
             {openEdit ? (
               <form
@@ -143,13 +147,14 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
               </h4>
             )}
           </div>
-          {modAuthProject && (
-            <div className="projectLevel-contain-right">
-              <MoreInfo data={data} />
-            </div>
-          )}
+          {/* </div> */}
         </div>
       </div>
+      {modAuthProject && (
+        <div className="projectLevel-contain-right">
+          <MoreInfo data={data} />
+        </div>
+      )}
     </div>
   );
 };

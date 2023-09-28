@@ -85,11 +85,14 @@ const ProjectAddLevel = ({
           <img src={`/svg/${typeImgArea}.svg`} alt="W3Schools" />
         </figure>
       )}
-      {!data.nextLevel?.length && !data.isArea && !data.isProject && (
-        <figure className="projectAddLevel-figure" onClick={hadleAddTask}>
-          <img src={`/svg/task-list.svg`} alt="W3Schools" />
-        </figure>
-      )}
+      {!data.nextLevel?.length &&
+        !data.isArea &&
+        !data.isProject &&
+        data.level && (
+          <figure className="projectAddLevel-figure" onClick={hadleAddTask}>
+            <img src={`/svg/task-list.svg`} alt="W3Schools" />
+          </figure>
+        )}
       {addLevel && (
         <>
           <form

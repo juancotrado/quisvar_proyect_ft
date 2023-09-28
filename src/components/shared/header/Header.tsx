@@ -17,8 +17,8 @@ const Header = () => {
   const socket = useContext(SocketContext);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenMoreInfo, setIsOpenMoreInfo] = useState(false);
-  const handleToggleRef = useRef<Subscription>(new Subscription());
   const { userSession } = useSelector((state: RootState) => state);
+  const handleToggleRef = useRef<Subscription>(new Subscription());
 
   useEffect(() => {
     handleToggleRef.current = toggle$.getSubject.subscribe((value: boolean) => {

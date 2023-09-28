@@ -5,13 +5,25 @@ import { Level } from '../../../types/types';
 import { excelSimpleReport } from '../../../utils/excelGenerate/excelReportForLevel';
 import './moreInfo.css';
 import formatDate from '../../../utils/formatDate';
-import { useState } from 'react';
+import { MouseEvent, useEffect, useRef, useState } from 'react';
+import { Subscription } from 'rxjs';
+import { toggle$ } from '../../../services/sharingSubject';
 interface MoreInfoProps {
   data: Level;
 }
 const MoreInfo = ({ data }: MoreInfoProps) => {
   const { projectId } = useParams();
   const [showArchiverOption, setShowArchiverOption] = useState(false);
+  const handleToggleRef = useRef<Subscription>(new Subscription());
+
+  useEffect(() => {
+    handleToggleRef.current = toggle$.getSubject.subscribe((value: boolean) => {
+      setShowArchiverOption(value);
+    });
+    return () => {
+      handleToggleRef.current.unsubscribe();
+    };
+  }, []);
   const handleReports = () => {
     // const { department, district, province, startDate, untilDate, ...data } =
     //   res.data;
@@ -66,8 +78,10 @@ const MoreInfo = ({ data }: MoreInfoProps) => {
   };
   const type = data.projectName ? 'stages' : 'levels';
   const { handleArchiver } = useArchiver(data.id, type);
-  const handleArchiverOptions = () =>
+  const handleArchiverOptions = (e: MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
     setShowArchiverOption(!showArchiverOption);
+  };
   return (
     <>
       <div className="moreInfo-currency-contain">

@@ -45,7 +45,7 @@ const Attendance = () => {
       setSendItems([...sendItems, { usersId, status }]);
     }
   };
-
+  console.log({ callLists });
   const filterUsers = useMemo(() => {
     return callList?.users.length
       ? users?.filter(
@@ -56,17 +56,23 @@ const Attendance = () => {
   useEffect(() => {
     getTodayData();
   }, []);
-  const getTodayData = () => {
-    axiosInstance
-      .get(`/list/attendance/?startDate=${_date(today)}`)
-      .then(res => {
-        setCallLists(res.data);
-      });
+  const getTodayData = async () => {
+    const res = await axiosInstance.get(
+      `/list/attendance/?startDate=${_date(today)}`
+    );
+    setCallLists(res.data);
+    return res.data;
   };
   const generateAttendance = () => {
     axiosInstance
       .post(`/list/attendance/${callList?.id}`, sendItems)
-      .then(() => getTodayData());
+      .then(async () => {
+        const data = await getTodayData();
+        const callListFind = data.find(
+          (list: ListAttendance) => list.id === callList?.id
+        );
+        setCallList(callListFind);
+      });
   };
   const callNotification = () => {
     socket.emit('client:call-notification');
@@ -77,7 +83,10 @@ const Attendance = () => {
     );
     if (!(llamados.length > res.data.length)) return;
     const body = llamados[res.data.length];
-    axiosInstance.post(`/list`, body).then(() => getTodayData());
+    axiosInstance.post(`/list`, body).then(async () => {
+      const data = await getTodayData();
+      setCallList(data[data.length - 1]);
+    });
   };
 
   const getDate = (e: ChangeEvent<HTMLInputElement>) => {

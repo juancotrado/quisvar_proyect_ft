@@ -64,6 +64,7 @@
 }
 
 .budgetsPage-contain {
+  position: relative;
   width: 98%;
   margin-left: auto;
   margin-top: 0.2rem;

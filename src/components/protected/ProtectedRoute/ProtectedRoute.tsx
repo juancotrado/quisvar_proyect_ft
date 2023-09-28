@@ -2,7 +2,6 @@ import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { Header } from '../..';
 import { errorToken$, toggle$ } from '../../../services/sharingSubject';
 import { useDispatch } from 'react-redux';
-// import { getUserSession } from '../../../store/slices/userSession.slice';
 import { AppDispatch } from '../../../store';
 import { useEffect, useRef } from 'react';
 import { SocketProvider } from '../../../context/SocketContex';

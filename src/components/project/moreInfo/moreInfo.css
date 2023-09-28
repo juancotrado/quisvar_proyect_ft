@@ -4,13 +4,13 @@
 }
 
 .moreInfo-details-absolute {
-  position: fixed;
+  position: absolute;
   border-radius: 0.4375rem;
   padding: 0.5rem;
   border: 0.5px solid rgba(191, 191, 191, 0.3);
   background: #fff;
   box-shadow: -2px 2px 3px 0px rgba(0, 0, 0, 0.1);
-  margin-top: -4.7rem;
+  margin-top: 1.7rem;
   margin-left: -4.6rem;
 }
 

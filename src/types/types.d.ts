@@ -665,32 +665,18 @@ export type MessageTypeImbox =
   | 'COORDINACION';
 export interface MessageType {
   id: number;
-  status: MessageStatus;
   title: string;
   isOpen: boolean;
   description: string;
-  type: MessageTypeImbox;
-  idMessageReply: number | null;
-  idMessageResend: number | null;
   createdAt: Date;
-  updatedAt: Date;
   header: string;
   files?: fileMesage[];
-  users: {
-    type: MessageSender;
-    status: boolean;
-    role: 'MAIN' | 'SECONDARY';
-    user: {
-      id: number;
-      profile: Pick<
-        Profile,
-        'firstName' | 'lastName' | 'dni' | 'phone' | 'degree' | 'description'
-      >;
-    };
-  }[];
+  status: MessageStatus;
+  users: userMessage[];
+  type: MessageTypeImbox;
+  updatedAt: Date;
   history: MessageReply[];
 }
-
 export interface MessageReply {
   id: number;
   title: string;
@@ -705,6 +691,35 @@ export interface MessageReply {
     profile: Pick<Profile, 'firstName' | 'lastName' | 'dni' | 'phone'>;
   };
 }
+export interface PdfGeneratorPick {
+  id: number;
+  title: string;
+  isOpen: boolean;
+  description: string;
+  createdAt: Date;
+  header: string;
+  files?: fileMesage[];
+  updatedAt?: Date;
+  users?: userMessage[];
+  user?: {
+    id: number;
+    profile: Pick<Profile, 'firstName' | 'lastName' | 'dni' | 'phone'>;
+  };
+  history?: MessageReply[];
+}
+export interface userMessage {
+  type: MessageSender;
+  status: boolean;
+  role: 'MAIN' | 'SECONDARY';
+  user: {
+    id: number;
+    profile: Pick<
+      Profile,
+      'firstName' | 'lastName' | 'dni' | 'phone' | 'degree' | 'description'
+    >;
+  };
+}
+
 export interface fileMesage {
   id: number;
   attempt: string;
@@ -727,31 +742,23 @@ interface MessageSendType {
 export type ObjectBoard = {
   [clave: string]: string;
 };
-type CcProps = {
-  id: number;
-  email: string;
-  password: string;
-  role: UserRoleType;
-  status?: boolean | undefined;
-  contract: string | null;
-  cv: string | null;
-  declaration: string | null;
+export interface ListUser extends Omit<User, 'profile'> {
   name: string;
   degree: string;
   position: string;
-};
+}
 export type PdfDataProps = {
   title: string;
   from: string;
   to: string;
-  cc?: CcProps[];
+  cc?: ListUser[];
   header: string;
   date: string;
   body: string;
-  dni: string;
+  dni?: string;
   tables?: ObjectBoard[];
-  fromDegree: string;
+  fromDegree?: string;
   toDegree?: string;
   toPosition?: string;
-  fromPosition: string;
+  fromPosition?: string;
 };

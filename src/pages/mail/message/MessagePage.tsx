@@ -1,7 +1,13 @@
-import { useEffect, useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '../../../services/axiosInstance';
-import { MessageType, PdfDataProps, quantityType } from '../../../types/types';
+import {
+  MessageType,
+  PdfDataProps,
+  UserRoleType,
+  quantityType,
+} from '../../../types/types';
 import './messagePage.css';
 import { RootState } from '../../../store';
 import { useSelector } from 'react-redux';
@@ -13,12 +19,11 @@ import Button from '../../../components/shared/button/Button';
 import { filterFilesByAttempt } from '../../../utils/files/files.utils';
 import CardRegisterMessageForward from '../../../components/shared/card/cardRegisterMessageFordward/CardRegisterMessageFordward';
 import CardRegisterMessageUpdate from '../../../components/shared/card/cardRegisterMessageUpdate/CardRegisterMessageUpdate';
-import {
-  convertToObject,
-  dataInitialPdf,
-  getTextParagraph,
-} from '../../../utils/pdfReportFunctions';
+import { dataInitialPdf } from '../../../utils/pdfReportFunctions';
 import { PDFGenerator } from '../../../components';
+import LoaderForComponent from '../../../components/shared/loaderForComponent/LoaderForComponent';
+import { transformDataPdf } from '../../../utils/transformDataPdf';
+import useListUsers from '../../../hooks/useListUsers';
 
 const spring = {
   type: 'spring',
@@ -37,13 +42,15 @@ const parseDate = (date: Date) =>
   });
 
 const parseName = (title: string) => title.split('$').at(-1) || '';
+const RolePerm: UserRoleType[] = ['SUPER_ADMIN', 'ADMIN', 'SUPER_MOD', 'MOD'];
 
 const MessagePage = () => {
   const navigate = useNavigate();
   const { messageId } = useParams();
+  const listUsers = useListUsers(RolePerm);
   const { userSession } = useSelector((state: RootState) => state);
   const [isReply, setIsReply] = useState(true);
-  // const [data, setData] = useState<PdfDataProps>(dataInitialPdf);
+  const [data, setData] = useState<PdfDataProps>(dataInitialPdf);
   const [message, setMessage] = useState<MessageType | null>();
   const [isActive, setIsActive] = useState<boolean>(false);
   const [viewMoreFiles, setViewMoreFiles] = useState(false);
@@ -52,17 +59,27 @@ const MessagePage = () => {
   //----------------------------------------------------------------------------
   const getFiles = (message && message.files) || [];
   const getHistory = (message && message.history) || [];
+  // console.log(getHistory);
+
   const files = filterFilesByAttempt(getFiles);
-
+  const getMessage = useCallback(
+    (id: string) => {
+      axiosInstance.get(`/mail/${id}`).then(res => {
+        const data = transformDataPdf({ listUsers, data: res.data });
+        setData(data);
+        setMessage(res.data);
+      });
+    },
+    [userSession]
+  );
   useEffect(() => {
-    if (messageId) getMessage(messageId);
+    if (messageId && userSession.id) getMessage(messageId);
     getQuantityServices();
-  }, [messageId]);
+    return () => {
+      setMessage(null);
+    };
+  }, [getMessage, messageId, userSession.id]);
 
-  const getMessage = (id: string) => {
-    axiosInstance.get(`/mail/${id}`).then(res => setMessage(res.data));
-  };
-  // console.log(message);
   const getQuantityServices = () =>
     axiosInstance
       .get('/mail/imbox/quantity')
@@ -74,7 +91,12 @@ const MessagePage = () => {
   const handleViewHistory = () => setViewHistory(!viewHistory);
   const handleResizeAction = () => setIsActive(!isActive);
 
-  if (!message) return <div className="message-page-hidden"></div>;
+  if (!message)
+    return (
+      <div className="message-page-loader">
+        <LoaderForComponent />
+      </div>
+    );
   const { users } = message;
   const sender = users.find(({ user }) => user.id !== userSession.id);
   const mainSender = users.find(
@@ -88,31 +110,14 @@ const MessagePage = () => {
       role === 'MAIN' &&
       type == 'RECEIVER'
   );
-  console.log(message);
-
-  const userTo = message.users.find(user => user.type === 'SENDER');
-  const data = {
-    from: userSession.profile.firstName + ' ' + userSession.profile.lastName,
-    header: message.header,
-    body: getTextParagraph(message.description ?? ''),
-    tables: convertToObject(message.description ?? ''),
-    title: message.title,
-    to: userTo?.user.profile.firstName + ' ' + userTo?.user.profile.firstName,
-    date: formatDate(new Date(message.createdAt), {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour12: true,
-    }),
-    toDegree: userTo?.user.profile.degree,
-    toPosition: userTo?.user.profile.description,
-    dni: userSession.profile.dni,
-    fromDegree: userSession.profile.degree,
-    fromPosition: userSession.profile.description,
-  };
-
-  console.log(data);
-
+  // const historyUser = message.users.find(
+  //   (user: userMessage) => user.type === 'SENDER'
+  // );
+  // const historyData = getHistory[0] && transformDataPdf({
+  //   userSession,
+  //   // userTo: historyUser,
+  //   data: getHistory[0],
+  // });
   const handleSaveRegister = () => {
     navigate('/tramites?refresh=true');
   };
@@ -261,6 +266,7 @@ const MessagePage = () => {
                         link={path + '/' + name}
                       />
                     ))}
+                  {/* <PDFGenerator data={getHistory} isView /> */}
                 </div>
               </div>
             ))}

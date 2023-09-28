@@ -19,7 +19,7 @@ export const transformDataPdf = ({
   );
   const secondaryReceiver = data.users?.find(user => user.role === 'SECONDARY');
   const cc =
-    (listUsers &&
+    (Array.isArray(listUsers) &&
       listUsers.filter(user => user.id === secondaryReceiver?.user.id)) ||
     undefined;
   const result: PdfDataProps = {

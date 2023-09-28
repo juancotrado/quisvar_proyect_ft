@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
-import { UserRoleType } from '../types/types';
+import { User, UserRoleType } from '../types/types';
 
 const useListUsers = (roleType: UserRoleType[] | null = null) => {
   const { listUsers } = useSelector((state: RootState) => state);
@@ -15,6 +15,6 @@ const useListUsers = (roleType: UserRoleType[] | null = null) => {
           ...props,
         }))) ||
     [];
-  return users;
+  return { users };
 };
 export default useListUsers;

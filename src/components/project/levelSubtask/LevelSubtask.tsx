@@ -48,7 +48,7 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
         <div className="levelSubtask-item">
           <div className="levelSubtask-header-title"># ITEM</div>
         </div>
-        <div className="levelSubtask-item">
+        <div className="levelSubtask-item levelSubtask-item--name">
           <div className="levelSubtask-header-title">NOMBRE</div>{' '}
         </div>
         <div className="levelSubtask-item">
@@ -81,7 +81,7 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
           <div className="levelSubtask-item">
             <div className="levelSubtask-text">{subtask.item}</div>
           </div>
-          <div className="levelSubtask-item">
+          <div className="levelSubtask-item levelSubtask-item--name">
             <div className="levelSubtask-text">{subtask.name}</div>
           </div>
           <div className="levelSubtask-item">

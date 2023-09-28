@@ -3,26 +3,37 @@
   flex-direction: column;
   align-items: center;
 }
+
 .levelSubtask-content {
   display: grid;
-  grid-template-columns: repeat(8, minmax(0, 1fr));
+  grid-template-columns: repeat(9, minmax(0, 1fr));
   width: 100%;
   background-color: #fff;
   font-size: 0.8rem;
 }
+
 .pointer {
   cursor: pointer;
 }
+
 .levelSubtask-item {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 2rem;
 }
+
+.levelSubtask-item--name {
+  overflow-x: auto;
+  justify-content: flex-start;
+  grid-column: 2/4;
+}
+
 .levelSubtask-header {
   align-items: center;
   background-color: #f4f7fc;
 }
+
 .levelSubtask-header-title {
   color: #171c26;
   font-size: 0.6875rem;
@@ -31,6 +42,7 @@
   line-height: 1rem;
   letter-spacing: 0.0275rem;
 }
+
 .levelSubtask-text {
   color: #171c26;
   font-size: 0.7rem;
@@ -47,10 +59,12 @@
   font-size: 0.875rem;
   font-style: normal;
   font-weight: 500;
-  line-height: 1.25rem; /* 142.857% */
+  line-height: 1.25rem;
+  /* 142.857% */
   letter-spacing: 0.0175rem;
   text-align: left;
 }
+
 .levelSubtask-plus {
   font-weight: 900;
 }

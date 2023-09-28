@@ -61,7 +61,7 @@ const CardRegisterMessage = ({
   onClosing,
   onSave,
 }: CardRegisterMessageProps) => {
-  const listUser = useListUsers(RolePerm);
+  const { users: listUser } = useListUsers(RolePerm);
   const navigate = useNavigate();
   const [isOpened, setIsOpened] = useState(false);
   const [isDroped, setIsDroped] = useState(false);

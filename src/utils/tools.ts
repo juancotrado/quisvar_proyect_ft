@@ -11,3 +11,9 @@ export const findProject = (data: Level[]): boolean => {
   }
   return existProyect;
 };
+
+export const getFirstLetterNames = (firstName: string, lastName: string) => {
+  const firstLetterFirstName = firstName[0].toUpperCase();
+  const firstLetterLastName = lastName[0].toUpperCase();
+  return firstLetterFirstName + firstLetterLastName;
+};

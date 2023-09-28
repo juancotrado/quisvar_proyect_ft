@@ -7,6 +7,7 @@ import ButtonDelete from '../../shared/button/ButtonDelete';
 import { RootState } from '../../../store';
 import { useSelector } from 'react-redux';
 import StatusText from '../../shared/statusText/StatusText';
+import DefaultUserImage from '../../shared/defaultUserImage/DefaultUserImage';
 
 interface LevelSutaskProps {
   level: Level;
@@ -40,6 +41,7 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
     );
     return userSelected.join(', ');
   };
+
   return (
     <div className="levelSubtask">
       <div className="levelSubtask-content levelSubtask-header">
@@ -89,7 +91,7 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
             <div className="levelSubtask-text">{subtask.percentage}%</div>
           </div>
           <div className="levelSubtask-item">
-            <div className="levelSubtask-text">{subtask.days}%</div>
+            <div className="levelSubtask-text">{subtask.days}</div>
           </div>
 
           <div className="levelSubtask-item">
@@ -97,9 +99,15 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
           </div>
           <div className="levelSubtask-item">
             <div className="levelSubtask-text">
-              {subtask?.users?.length
-                ? usersAsigned(subtask)
-                : 'No Asignado aun'}
+              {subtask?.users?.length ? (
+                <>
+                  {subtask.users.map(user => (
+                    <DefaultUserImage user={user} />
+                  ))}
+                </>
+              ) : (
+                'No Asignado aun'
+              )}
             </div>
           </div>
           {modAuthArea && (

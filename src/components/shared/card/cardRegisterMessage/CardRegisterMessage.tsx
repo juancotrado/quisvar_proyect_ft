@@ -163,22 +163,27 @@ const CardRegisterMessage = ({
 
   useEffect(() => {
     const secondaryReceiver = listCopy.map(list => ({ userId: list.id }));
-    const cc = secondaryReceiver.map(item => {
+    const cc: ListUser[] = secondaryReceiver.map(item => {
       const toUser = listUser.find(user => user.id === item.userId);
-      return toUser;
+      if (toUser) {
+        const { name, degree, position } = toUser;
+        return { name, degree, position };
+      }
+      return { name: '', degree: '', position: '' };
     });
-    console.log(cc);
     const header = watch('header');
     const description = watch('description');
     const title = watch('title');
     const to = receiver?.value ?? '';
     const toUser = listUser.find(user => user.id === receiver?.id);
+
     setpdfData({
       from: userSession.profile.firstName + ' ' + userSession.profile.lastName,
       header,
       body: getTextParagraph(description ?? ''),
       tables: convertToObject(description ?? ''),
       title,
+      cc,
       to,
       date: formatDate(new Date(), {
         year: 'numeric',

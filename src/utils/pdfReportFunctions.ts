@@ -1,41 +1,40 @@
-import { ObjectBoard } from '../types/types';
 import formatDate from './formatDate';
 
-type Boards = ObjectBoard[];
+// type Boards = ObjectBoard[];
+type Boards = (string | undefined)[][];
+
 export const convertToObject = (htmlString: string): Boards => {
   const tempElement = document.createElement('div');
   tempElement.innerHTML = htmlString;
 
-  const board: Boards = [];
   const tablasHTML = tempElement.querySelectorAll('table');
+  const board: Boards = [];
 
   tablasHTML.forEach(boardHTML => {
     const rowsHTML = boardHTML.querySelectorAll('tr');
     const headersHTML = rowsHTML[0].querySelectorAll('td');
+    const headers = Array.from(headersHTML).map(headerHTML =>
+      headerHTML.textContent?.trim()
+    );
 
-    for (let i = 1; i < rowsHTML.length; i++) {
-      const cellHTML = rowsHTML[i].querySelectorAll('td');
-      const object: ObjectBoard = {};
+    const rowData: (string | undefined)[] = [];
+    rowsHTML.forEach((rowHTML, rowIndex) => {
+      if (rowIndex === 0) {
+        return;
+      }
 
-      cellHTML.forEach((celda, index) => {
-        const header = headersHTML[index];
-        if (
-          header &&
-          typeof header.textContent === 'string' &&
-          celda &&
-          typeof celda.textContent === 'string'
-        ) {
-          const clave = header.textContent.trim();
-          const value = celda.textContent.trim();
-          if (clave && value) {
-            object[clave] = value;
-          }
-        }
-      });
+      const cellsHTML = rowHTML.querySelectorAll('td');
+      const rowValues = Array.from(cellsHTML).map(cellHTML =>
+        cellHTML.textContent?.trim()
+      );
 
-      board.push(object);
-    }
+      rowData.push(...rowValues);
+    });
+
+    board.push(headers, rowData);
   });
+
+  // console.log(board);
 
   return board;
 };

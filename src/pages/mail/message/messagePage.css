@@ -6,25 +6,35 @@
   overflow-y: auto;
   height: 100%;
 }
+
+.message-page-loader {
+  width: 40vw;
+  height: 100%;
+}
+
 .message-page-hidden {
   display: none;
   width: 0;
   height: 100%;
 }
+
 .message-icon-drop {
   border: none;
   color: #fff;
 }
+
 .message-icon-close {
   border: none;
   color: #fff;
 }
+
 .message-page-section {
   display: grid;
   gap: 0.5rem;
   width: 100%;
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
+
 .message-header-content {
   display: flex;
   flex-direction: column;
@@ -37,23 +47,27 @@
   border-bottom: 1px solid #e3e3e3;
   width: 100%;
 }
+
 .message-heacer-content-options {
   display: flex;
   justify-content: space-between;
   height: 2.1rem;
   width: 100%;
 }
+
 .message-details-info {
   display: flex;
   flex-direction: column;
   gap: 0.7rem;
 }
+
 .patito {
   padding-top: 0.5rem;
   display: flex;
   gap: 0.5rem;
   width: 90%;
 }
+
 .message-header-title-container {
   display: flex;
   width: 100%;
@@ -64,6 +78,7 @@
   color: var(--color-tertiary);
   font-weight: 400;
 }
+
 .message-title {
   max-width: 100%;
   color: var(--color-quaternay);
@@ -73,6 +88,7 @@
   overflow: hidden;
   white-space: nowrap;
 }
+
 .message-subtitle {
   max-width: 100%;
   color: var(--color-quaternay);
@@ -82,17 +98,20 @@
   overflow: hidden;
   white-space: nowrap;
 }
+
 .message-card-status-message {
   border-radius: var(--radius-button);
   padding: 0.1rem 0.4rem;
   font-size: 12px;
   font-weight: 600;
 }
+
 .message-sender-info-container {
   display: flex;
   gap: 0.5rem;
   align-items: end;
 }
+
 .message-sender-info-details {
   display: flex;
   align-items: center;
@@ -101,22 +120,27 @@
   width: 100%;
   gap: 0.2rem;
 }
+
 .message-status-ARCHIVADO {
   background-color: var(--color-bg-liquidation);
   color: var(--color-liquidation);
 }
+
 .message-status-PROCESO {
   background-color: var(--color-bg-asigned);
   color: var(--color-asigned);
 }
+
 .message-status-RECHAZADO {
   background-color: var(--color-bg-unresolved);
   color: var(--color-unresolved);
 }
+
 .message-status-FINALIZADO {
   background-color: var(--color-bg-done);
   color: var(--color-done);
 }
+
 .message-view-more-files-false {
   flex-direction: row-reverse;
   padding: 0.3rem 0.5rem;
@@ -125,6 +149,7 @@
   font-weight: 500;
   width: 100%;
 }
+
 .message-view-more-files-true {
   flex-direction: row-reverse;
   font-weight: 500;
@@ -135,22 +160,27 @@
   justify-content: space-between;
   width: 100%;
 }
+
 .message-view-more-files-true img,
 .message-view-more-files-false img {
   width: 2rem;
 }
+
 .message-sender-info {
   display: flex;
   align-items: center;
   gap: 0.2rem;
 }
+
 .message-sender-icon {
   width: 18px;
   height: 18px;
 }
+
 .message-sender-icon img {
   height: 100%;
 }
+
 .message-sender-name {
   color: #000;
   font-size: 13px;
@@ -162,6 +192,7 @@
   white-space: nowrap;
   max-width: 22rem;
 }
+
 .message-date-send {
   color: rgba(0, 0, 0, 0.7);
   font-size: 11px;
@@ -169,6 +200,7 @@
   font-weight: 300;
   line-height: 20px;
 }
+
 .message-description-info {
   color: #000;
   max-height: 20rem;
@@ -179,6 +211,7 @@
   font-weight: 300;
   line-height: 20px;
 }
+
 .message-files-title {
   color: #000;
   text-align: center;
@@ -187,6 +220,7 @@
   font-weight: 400;
   letter-spacing: 0.15px;
 }
+
 .message-container-files-grid {
   display: flex;
   flex-wrap: wrap;
@@ -196,6 +230,7 @@
   align-items: center;
   /* grid-template-columns: repeat(4, minmax(0, 1fr)); */
 }
+
 .message-container-file-information {
   display: flex;
   gap: 0.3rem;
@@ -203,9 +238,11 @@
   flex-direction: column;
   width: 100%;
 }
+
 .message-files-list {
   max-width: 12rem;
 }
+
 .message-switch {
   width: 100%;
   height: 2.4rem;
@@ -222,6 +259,7 @@
   font-weight: 600;
   cursor: pointer;
 }
+
 .message-hover-title {
   width: 50%;
   display: flex;
@@ -229,9 +267,11 @@
   justify-content: center;
   height: 100%;
 }
+
 .message-switch[data-isOn='true'] {
   justify-content: flex-end;
 }
+
 .message-handle {
   display: flex;
   width: 50%;

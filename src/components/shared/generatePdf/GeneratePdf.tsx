@@ -161,14 +161,14 @@ const PDFGenerator = ({ data, isView }: PDFGeneratorProps) => {
         fileName={`${data.title}.pdf`}
         className={`${isView ? 'pdf-btn-view' : 'pdf-btn'}`}
       >
-        {({ loading }) => (loading ? 'Generando...' : 'Descargar A5')}
+        {({ loading }) => (loading ? 'Descargar A5' : 'Descargar A5')}
       </PDFDownloadLink>
       <PDFDownloadLink
         document={generatePDF({ data }, { size: 'A4' })}
         fileName={`${data.title}.pdf`}
         className={`${isView ? 'pdf-btn-view' : 'pdf-btn'}`}
       >
-        {({ loading }) => (loading ? 'Generando...' : 'Descargar A4')}
+        {({ loading }) => (loading ? 'Descargar A4' : 'Descargar A4')}
       </PDFDownloadLink>
       {/* )} */}
     </div>

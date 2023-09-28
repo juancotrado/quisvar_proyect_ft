@@ -7,6 +7,7 @@ import Button from '../../button/Button';
 import DropDownSimple from '../../select/DropDownSimple';
 import ChipFileMessage from './ChipFileMessage';
 import {
+  ListUser,
   MessageSendType,
   PdfDataProps,
   UserRoleType,
@@ -60,7 +61,7 @@ const CardRegisterMessage = ({
   onClosing,
   onSave,
 }: CardRegisterMessageProps) => {
-  const { users } = useListUsers(RolePerm);
+  const listUser = useListUsers(RolePerm);
   const navigate = useNavigate();
   const [isOpened, setIsOpened] = useState(false);
   const [isDroped, setIsDroped] = useState(false);
@@ -105,10 +106,10 @@ const CardRegisterMessage = ({
   }, []);
   const contacts = useMemo(
     () =>
-      users.filter(
+      listUser.filter(
         user => user.id !== userSession.id && user.id !== receiver?.id
       ),
-    [userSession, users, receiver]
+    [userSession, listUser, receiver]
   );
 
   useEffect(() => {
@@ -163,22 +164,21 @@ const CardRegisterMessage = ({
   useEffect(() => {
     const secondaryReceiver = listCopy.map(list => ({ userId: list.id }));
     const cc = secondaryReceiver.map(item => {
-      const toUser = users.find(user => user.id === item.userId);
+      const toUser = listUser.find(user => user.id === item.userId);
       return toUser;
     });
-
+    console.log(cc);
     const header = watch('header');
     const description = watch('description');
     const title = watch('title');
     const to = receiver?.value ?? '';
-    const toUser = users.find(user => user.id === receiver?.id);
+    const toUser = listUser.find(user => user.id === receiver?.id);
     setpdfData({
       from: userSession.profile.firstName + ' ' + userSession.profile.lastName,
       header,
       body: getTextParagraph(description ?? ''),
       tables: convertToObject(description ?? ''),
       title,
-      cc,
       to,
       date: formatDate(new Date(), {
         year: 'numeric',

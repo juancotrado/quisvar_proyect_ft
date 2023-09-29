@@ -271,7 +271,6 @@
 .message-switch[data-isOn='true'] {
   justify-content: flex-end;
 }
-
 .message-handle {
   display: flex;
   width: 50%;
@@ -284,4 +283,9 @@
   border: 2px solid var(--color-primary);
   color: var(--color-primary);
   height: 2rem;
+}
+.message-pdf-area {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }

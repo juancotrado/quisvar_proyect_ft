@@ -198,12 +198,15 @@ const MessagePage = () => {
       <div className="message-details-info">
         <h4 className="message-title">{message.title}</h4>
         <span className="message-subtitle">Asunto: {message.header}</span>
-        <p className="message-sender-info">
-          <span className="message-sender-icon">
-            <img src="/svg/paper-clip.svg" alt="icon-profile" />
-          </span>
-          <span className="message-files-title">Archivos adjuntos:</span>
-        </p>
+        <div className="message-pdf-area">
+          <p className="message-sender-info">
+            <span className="message-sender-icon">
+              <img src="/svg/paper-clip.svg" alt="icon-profile" />
+            </span>
+            <span className="message-files-title">Archivos adjuntos:</span>
+          </p>
+          <PDFGenerator data={data} isView />
+        </div>
         <div className="message-container-files-grid">
           <div style={{ display: 'flex', gap: '1rem' }}>
             {files[0].files.map(({ id, name, path }) => (
@@ -214,7 +217,6 @@ const MessagePage = () => {
                 link={path + '/' + name}
               />
             ))}
-            <PDFGenerator data={data} isView />
           </div>
           <div className="message-sender-info">
             {sender && sender.type === 'SENDER' ? (
@@ -273,27 +275,27 @@ const MessagePage = () => {
                 className="message-container-file-information"
                 key={history.id}
               >
-                <span className="message-sender-name">
-                  Enviado por {` `}
-                  <b>
-                    {history.user.profile.lastName}{' '}
-                    {history.user.profile.firstName}
-                  </b>
-                </span>
+                <div className="message-pdf-area">
+                  <span className="message-sender-name">
+                    Enviado por {` `}
+                    <b>
+                      {history.user.profile.lastName}{' '}
+                      {history.user.profile.firstName}
+                    </b>
+                  </span>
+                  <PDFGenerator data={trandformData(history)} isView />
+                </div>
                 <span>{parseDate(new Date(history.createdAt))}</span>
                 <div className="message-container-files-grid">
-                  <div style={{ display: 'flex', gap: '1rem' }}>
-                    {history.files &&
-                      history.files.map(({ id, name, path }) => (
-                        <ChipFileMessage
-                          className="pointer message-files-list"
-                          key={id}
-                          text={parseName(name)}
-                          link={path + '/' + name}
-                        />
-                      ))}
-                    <PDFGenerator data={trandformData(history)} isView />
-                  </div>
+                  {history.files &&
+                    history.files.map(({ id, name, path }) => (
+                      <ChipFileMessage
+                        className="pointer message-files-list"
+                        key={id}
+                        text={parseName(name)}
+                        link={path + '/' + name}
+                      />
+                    ))}
                 </div>
               </div>
             ))}

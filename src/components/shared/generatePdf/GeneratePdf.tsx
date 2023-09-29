@@ -138,7 +138,7 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => (
 
 const PDFGenerator = ({ data, isView }: PDFGeneratorProps) => {
   return (
-    <div className={`${isView ? 'pdf-btn-area-view' : 'pdf-btn-area'}`}>
+    <div className="pdf-btn-area-view">
       {/* {showPreview ? (
         <div>
           <p>Vista previa del PDF:</p>
@@ -162,32 +162,34 @@ const PDFGenerator = ({ data, isView }: PDFGeneratorProps) => {
       <PDFDownloadLink
         document={generatePDF({ data }, { size: 'A5' })}
         fileName={`${data.title}.pdf`}
-        className={`${isView ? 'pdf-btn-view' : 'pdf-btn'}`}
+        className="pdf-btn-view-primary"
       >
         {({ loading }) => (
           <>
             {isView && (
-              <img className="chip-file-icon-doc" src={`/svg/pdf-icon.svg`} />
+              <img
+                className="chip-file-icon-doc"
+                src={`/svg/file-download-white.svg`}
+              />
             )}
-            <span className="download-text">
-              {loading ? 'DOC A5' : 'DOC A5'}
-            </span>
+            <span className="download-text">{loading ? 'A5' : 'A5'}</span>
           </>
         )}
       </PDFDownloadLink>
       <PDFDownloadLink
         document={generatePDF({ data }, { size: 'A4' })}
         fileName={`${data.title}.pdf`}
-        className={`${isView ? 'pdf-btn-view' : 'pdf-btn'}`}
+        className="pdf-btn-view-white"
       >
         {({ loading }) => (
           <>
             {isView && (
-              <img className="chip-file-icon-doc" src={`/svg/pdf-icon.svg`} />
+              <img
+                className="chip-file-icon-doc"
+                src={`/svg/file-download.svg`}
+              />
             )}
-            <span className="download-text">
-              {loading ? 'DOC A4' : 'DOC A4'}
-            </span>
+            <span className="download-text">{loading ? 'A4' : 'A4'}</span>
           </>
         )}
       </PDFDownloadLink>

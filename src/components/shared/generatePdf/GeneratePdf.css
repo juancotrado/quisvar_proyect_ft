@@ -5,6 +5,7 @@
   background-color: var(--color-primary);
   padding: 0.3rem 0.5rem;
 }
+
 .pdf-btn-area {
   display: flex;
   justify-content: space-around;
@@ -12,23 +13,40 @@
   align-items: center;
   gap: 1rem;
 }
-.pdf-btn-view {
+
+.pdf-btn-view-primary {
   border-radius: var(--radius-input);
   /* border: 2px solid var(--color-primary); */
-  color: var(--color-quaternay);
-  background-color: var(--color-menu);
+  color: white;
+  background-color: var(--color-primary);
   padding: 0.3rem 0.5rem;
   transition: 0.2s ease-in;
   display: flex;
   gap: 0.5rem;
 }
-.pdf-btn-view:hover {
-  border-radius: var(--radius-input);
-  background-color: #e3e3e3;
+
+.pdf-btn-view-primary:hover {
+  font-weight: bold;
 }
+
+.pdf-btn-view-white {
+  border-radius: var(--radius-input);
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  background-color: white;
+  padding: 0.3rem 0.5rem;
+  transition: 0.2s ease-in;
+  display: flex;
+  gap: 0.5rem;
+}
+
+.pdf-btn-view-white:hover {
+  font-weight: bold;
+}
+
 .pdf-btn-area-view {
   display: flex;
-  width: 100%;
+  /* width: 100%; */
   align-items: center;
   gap: 1rem;
 }

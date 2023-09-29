@@ -98,6 +98,7 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => (
         </View>
       </View>
       <View style={styles.line} />
+      {/* body */}
       {value.data.body &&
         value.data.body.length > 0 &&
         value.data.body.map((element, elementIndex) => (
@@ -123,25 +124,7 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => (
             ) : null}
           </View>
         ))}
-
-      {/* <Text style={styles.body}>{value.data?.body}</Text>
-      <View style={styles.table}>
-        {value.data.tables &&
-          value.data.tables.length > 0 &&
-          value.data.tables.map((row, rowIndex) => (
-            <View style={styles.tableRow} key={rowIndex}>
-              {row.map((cell, cellIndex) => (
-                <View style={styles.tableCell} key={cellIndex}>
-                  {rowIndex === 0 ? (
-                    <Text style={styles.header}>{cell}</Text>
-                  ) : (
-                    <Text>{cell}</Text>
-                  )}
-                </View>
-              ))}
-            </View>
-          ))}
-      </View> */}
+      {/* firma */}
       <View style={styles.signArea}>
         <View style={styles.sign} />
         <Text style={styles.header}>
@@ -154,11 +137,8 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => (
 );
 
 const PDFGenerator = ({ data, isView }: PDFGeneratorProps) => {
-  // const [showPreview, setShowPreview] = useState(false);
-  console.log(data.body);
-
   return (
-    <div className="pdf-btn-area">
+    <div className={`${isView ? 'pdf-btn-area-view' : 'pdf-btn-area'}`}>
       {/* {showPreview ? (
         <div>
           <p>Vista previa del PDF:</p>
@@ -184,14 +164,32 @@ const PDFGenerator = ({ data, isView }: PDFGeneratorProps) => {
         fileName={`${data.title}.pdf`}
         className={`${isView ? 'pdf-btn-view' : 'pdf-btn'}`}
       >
-        {({ loading }) => (loading ? 'Descargar A5' : 'Descargar A5')}
+        {({ loading }) => (
+          <>
+            {isView && (
+              <img className="chip-file-icon-doc" src={`/svg/pdf-icon.svg`} />
+            )}
+            <span className="download-text">
+              {loading ? 'DOC A5' : 'DOC A5'}
+            </span>
+          </>
+        )}
       </PDFDownloadLink>
       <PDFDownloadLink
         document={generatePDF({ data }, { size: 'A4' })}
         fileName={`${data.title}.pdf`}
         className={`${isView ? 'pdf-btn-view' : 'pdf-btn'}`}
       >
-        {({ loading }) => (loading ? 'Descargar A4' : 'Descargar A4')}
+        {({ loading }) => (
+          <>
+            {isView && (
+              <img className="chip-file-icon-doc" src={`/svg/pdf-icon.svg`} />
+            )}
+            <span className="download-text">
+              {loading ? 'DOC A4' : 'DOC A4'}
+            </span>
+          </>
+        )}
       </PDFDownloadLink>
       {/* )} */}
     </div>

@@ -34,7 +34,6 @@ const CardMessage = ({
   const handleArchiverAction = () => {
     axiosInstance.patch(`/mail/archived/${message.id}`).then(onArchiver);
   };
-  console.log(message.updatedAt);
 
   return (
     <div

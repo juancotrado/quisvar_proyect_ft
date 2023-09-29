@@ -57,7 +57,7 @@ const CardSubtaskDone = ({ subTask }: CardSubtaskDone) => {
       >
         <SubtasksMoreInfo task={subTask} />
         {!isAuthorizedMod && (
-          <>
+          <div className="cardSubtask-models-contain">
             <h4 className="cardSubtask-title-information">
               <figure className="cardSubtask-figure">
                 <img src="/svg/paper-clip.svg" alt="W3Schools" />
@@ -69,7 +69,7 @@ const CardSubtaskDone = ({ subTask }: CardSubtaskDone) => {
               typeFile="MODEL"
               showDeleteBtn={isAuthorizedMod}
             />
-          </>
+          </div>
         )}
         {status === 'DONE' && isAuthorizedMod && (
           <div className="cardSubtaskDone-btns">

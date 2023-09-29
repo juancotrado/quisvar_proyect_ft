@@ -114,7 +114,9 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
           <img src="/svg/down.svg" className="projectLevel-dropdown-arrow" />
           <input
             type="checkbox"
-            className="projectLevel-dropdown-check"
+            className={`projectLevel-dropdown-check ${
+              !modAuthProject && 'projectLevel-width-normal'
+            }`}
             defaultChecked={false}
           />
           {/* <div className="projectLevel-contain"> */}

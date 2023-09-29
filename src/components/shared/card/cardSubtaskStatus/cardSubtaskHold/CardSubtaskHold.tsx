@@ -116,7 +116,7 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
       <section className="cardSubtaskHold-details">
         <SubtasksMoreInfo task={subTask} />
         {!isAuthorizedMod && (
-          <>
+          <div className="cardSubtask-models-contain">
             <h4 className="cardSubtask-title-information">
               <figure className="cardSubtask-figure">
                 <img src="/svg/paper-clip.svg" alt="W3Schools" />
@@ -129,7 +129,7 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
               typeFile="MODEL"
               showDeleteBtn={isAuthorizedMod}
             />
-          </>
+          </div>
         )}
         <div className="cardSubtaskHold-btns">
           {!isAuthorizedMod && <div></div>}
@@ -141,7 +141,7 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
             subtaskStatus={status}
             isDisabled={addBtn}
             text="ASIGNARME"
-            className={`cardSubtask-add-btn ${
+            className={`cardSubtask-add-btn cardSubtask-asig-btn  ${
               addBtn && 'cardSubtask-btn-disabled'
             }`}
           />

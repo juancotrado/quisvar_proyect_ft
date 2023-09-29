@@ -5,6 +5,11 @@
   padding-right: 0.3rem;
   padding-left: 1rem;
 }
+
+.SubtaskInfoHistory-review-card {
+  width: 100%;
+}
+
 .SubtaskInfoHistory-title-information {
   cursor: pointer;
   display: flex;
@@ -16,10 +21,12 @@
   gap: 0.5rem;
   padding: 0;
 }
+
 .SubtaskInfoHistory-container-feedback-files-container {
   width: 100%;
   height: 100%;
 }
+
 .SubtaskInfoHistory-send-file {
   color: #000;
   font-size: 0.6875rem;
@@ -27,17 +34,20 @@
   font-weight: 300;
   line-height: 1.25rem;
 }
+
 .SubtaskInfoHistory-no-feedback {
   width: 100%;
   height: 100%;
   overflow-x: auto;
 }
+
 .SubtaskInfoHistory-send-date {
   color: rgba(0, 0, 0, 0.5);
   font-size: 0.625rem;
   font-style: normal;
   font-weight: 300;
-  line-height: 1.25rem; /* 200% */
+  line-height: 1.25rem;
+  /* 200% */
 }
 
 .SubtaskInfoHistory-container-feedback-textarea-container {

@@ -21,7 +21,7 @@
   letter-spacing: 0.01125rem;
 }
 
-. .task-header-title-span {
+.task-header-title-span {
   font-weight: 600;
 }
 
@@ -68,6 +68,7 @@
 }
 
 .cardSubtask-models-contain {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;

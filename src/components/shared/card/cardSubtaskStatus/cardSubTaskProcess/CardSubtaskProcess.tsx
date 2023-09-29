@@ -11,6 +11,7 @@ import SubtasksMoreInfo from '../../../../subtasks/subtasksMoreInfo/SubtasksMore
 import SubtaskUsers from '../../../../subtasks/subtaskUsers/SubtaskUsers';
 import LoaderText from '../../../loaderText/LoaderText';
 import useUserPorcetage from '../../../../../hooks/useUserPorcetage';
+import SubtaskInfoHistory from '../../../../subtasks/subtaskInfoHistory/SubtaskInfoHistory';
 interface CardSubtaskProcess {
   subTask: SubTask;
 }
@@ -51,22 +52,6 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
         .filter(({ type }) => type === 'REVIEW'),
     [allFileIds, subTask.files]
   );
-  // const addFiles = (newFiles: File[]) => {
-  //   if (!files) return setFiles(newFiles);
-  //   const concatFiles = [...files, ...newFiles];
-  //   const uniqueFiles = Array.from(
-  //     new Set(concatFiles.map(file => file.name)),
-  //   ).map(name => concatFiles.find(file => file.name === name)) as File[];
-  //   setFiles(uniqueFiles);
-  // };
-  // const deleteFiles = (delFiles: File) => {
-  //   if (files) {
-  //     const newFiles = Array.from(files).filter(file => file !== delFiles);
-  //     if (!newFiles) return;
-  //     setFiles(newFiles);
-  //   }
-  // };
-
   const isAuthorizedMod =
     modAuthProject || userSession.id === subTask.Levels.userId;
   const isAuthorizedUser = subTask?.users?.some(
@@ -131,37 +116,6 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
                 type="REVIEW"
                 // addFiles={addFiles}
               />
-              {/* {files && (
-                <div className="cardSubtaskProcess-files-view">
-                  <h2 className="cardSubtaskProcess-files-title">
-                    Archivos Cargados, listos para enviar:
-                  </h2>
-                  <div className="cardSubtaskProcess-files-contain">
-                    {Array.from(files).map(file => (
-                      <div
-                        key={file.lastModified + file.name + file.size}
-                        className="cardSubtaskProcess-files-name-contain"
-                        title={file.name}
-                      >
-                        <figure className="cardSubtaskProcess-files-icon">
-                          <img src="/svg/file-download.svg" alt="W3Schools" />
-                          <div className="cardSubtaskProcess-files-btn">
-                            <ButtonDelete
-                              icon="close"
-                              customOnClick={() => deleteFiles(file)}
-                              className="cardSubtaskProcess-files-btn-delete"
-                            />
-                          </div>
-                          .
-                        </figure>
-                        <span className="cardSubtaskProcess-files-name">
-                          {file.name}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )} */}
             </div>
             <SubtaskFile
               files={filterFiles}
@@ -204,6 +158,13 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
               showDeleteBtn={isAuthorizedMod}
             />
           </div>
+        )}
+        {isAuthorizedMod && status === 'INREVIEW' && (
+          <SubtaskInfoHistory
+            feedBack={subTask?.feedBacks?.[subTask?.feedBacks?.length - 1]}
+            authorize={{ isAuthorizedMod, isAuthorizedUser }}
+            getDataFeedback={getDataFeedback}
+          />
         )}
         {isAuthorizedMod && status !== 'INREVIEW' && (
           <LoaderText text="Esperando entregables..." />

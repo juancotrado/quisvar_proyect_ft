@@ -282,17 +282,18 @@ const MessagePage = () => {
                 </span>
                 <span>{parseDate(new Date(history.createdAt))}</span>
                 <div className="message-container-files-grid">
-                  {history.files &&
-                    history.files.map(({ id, name, path }) => (
-                      <ChipFileMessage
-                        className="pointer message-files-list"
-                        key={id}
-                        text={parseName(name)}
-                        link={path + '/' + name}
-                      />
-                    ))}
-                  <p>{}</p>
-                  <PDFGenerator data={trandformData(history)} isView />
+                  <div style={{ display: 'flex', gap: '1rem' }}>
+                    {history.files &&
+                      history.files.map(({ id, name, path }) => (
+                        <ChipFileMessage
+                          className="pointer message-files-list"
+                          key={id}
+                          text={parseName(name)}
+                          link={path + '/' + name}
+                        />
+                      ))}
+                    <PDFGenerator data={trandformData(history)} isView />
+                  </div>
                 </div>
               </div>
             ))}

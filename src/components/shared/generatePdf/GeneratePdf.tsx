@@ -23,6 +23,7 @@ interface PDFGeneratorProps {
 interface ConfigProps {
   size: 'A4' | 'A5';
 }
+
 const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => (
   <Document>
     <Page
@@ -97,7 +98,33 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => (
         </View>
       </View>
       <View style={styles.line} />
-      <Text style={styles.body}>{value.data?.body}</Text>
+      {value.data.body &&
+        value.data.body.length > 0 &&
+        value.data.body.map((element, elementIndex) => (
+          <View key={elementIndex}>
+            {element.type === 'paragraph' ? (
+              <Text style={styles.body}>{element.content}</Text>
+            ) : element.type === 'table' ? (
+              <View style={styles.table}>
+                {element.data.map((row, rowIndex) => (
+                  <View style={styles.tableRow} key={rowIndex}>
+                    {row.map((cell, cellIndex) => (
+                      <View style={styles.tableCell} key={cellIndex}>
+                        {rowIndex === 0 ? (
+                          <Text style={styles.header}>{cell}</Text>
+                        ) : (
+                          <Text>{cell}</Text>
+                        )}
+                      </View>
+                    ))}
+                  </View>
+                ))}
+              </View>
+            ) : null}
+          </View>
+        ))}
+
+      {/* <Text style={styles.body}>{value.data?.body}</Text>
       <View style={styles.table}>
         {value.data.tables &&
           value.data.tables.length > 0 &&
@@ -114,7 +141,7 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => (
               ))}
             </View>
           ))}
-      </View>
+      </View> */}
       <View style={styles.signArea}>
         <View style={styles.sign} />
         <Text style={styles.header}>
@@ -128,7 +155,7 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => (
 
 const PDFGenerator = ({ data, isView }: PDFGeneratorProps) => {
   // const [showPreview, setShowPreview] = useState(false);
-  // console.log(Object.keys(tables));
+  console.log(data.body);
 
   return (
     <div className="pdf-btn-area">

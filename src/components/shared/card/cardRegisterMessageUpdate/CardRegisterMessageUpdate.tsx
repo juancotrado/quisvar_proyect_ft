@@ -23,9 +23,8 @@ import {
 import './cardRegisterMessageUpdate.css';
 import formatDate from '../../../../utils/formatDate';
 import {
-  convertToObject,
+  convertToDynamicObject,
   dataInitialPdf,
-  getTextParagraph,
 } from '../../../../utils/pdfReportFunctions';
 import useListUsers from '../../../../hooks/useListUsers';
 import { validateWhiteSpace } from '../../../../utils/customValidatesForm';
@@ -124,8 +123,7 @@ const CardRegisterMessageUpdate = ({
     setpdfData({
       from: userSession.profile.firstName + ' ' + userSession.profile.lastName,
       header,
-      body: getTextParagraph(description ?? ''),
-      tables: convertToObject(description ?? ''),
+      body: convertToDynamicObject(description ?? ''),
       title,
       to,
       date: formatDate(new Date(), {

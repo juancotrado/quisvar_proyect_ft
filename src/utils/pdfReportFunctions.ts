@@ -1,64 +1,57 @@
 import formatDate from './formatDate';
 
-// type Boards = ObjectBoard[];
-type Boards = (string | undefined)[][];
+type ParagraphElement = {
+  type: 'paragraph';
+  content: string;
+};
 
-export const convertToObject = (htmlString: string): Boards => {
+type TableElement = {
+  type: 'table';
+  data: string[][];
+};
+
+type DynamicHTMLElement = ParagraphElement | TableElement;
+export const convertToDynamicObject = (
+  htmlString: string
+): DynamicHTMLElement[] => {
   const tempElement = document.createElement('div');
   tempElement.innerHTML = htmlString;
 
-  const tablasHTML = tempElement.querySelectorAll('table');
-  const board: Boards = [];
+  const elements: DynamicHTMLElement[] = [];
 
-  tablasHTML.forEach(boardHTML => {
-    const rowsHTML = boardHTML.querySelectorAll('tr');
-    const headersHTML = rowsHTML[0].querySelectorAll('td');
-    const headers = Array.from(headersHTML).map(headerHTML =>
-      headerHTML.textContent?.trim()
-    );
+  const childNodes = tempElement.childNodes;
 
-    const rowData: (string | undefined)[] = [];
-    rowsHTML.forEach((rowHTML, rowIndex) => {
-      if (rowIndex === 0) {
-        return;
+  for (let i = 0; i < childNodes.length; i++) {
+    const node = childNodes[i];
+
+    if (node.nodeType === Node.ELEMENT_NODE) {
+      if (node.nodeName === 'P') {
+        const content = (node.textContent || '').trim();
+        if (content) {
+          elements.push({ type: 'paragraph', content });
+        }
+      } else if (node.nodeName === 'TABLE') {
+        const tableData: string[][] = [];
+        const rows = (node as Element).querySelectorAll('tr');
+        rows.forEach(row => {
+          const rowData: string[] = [];
+          row.querySelectorAll('td').forEach(cell => {
+            rowData.push((cell.textContent || '').trim());
+          });
+          tableData.push(rowData);
+        });
+        elements.push({ type: 'table', data: tableData });
       }
-
-      const cellsHTML = rowHTML.querySelectorAll('td');
-      const rowValues = Array.from(cellsHTML).map(cellHTML =>
-        cellHTML.textContent?.trim()
-      );
-
-      rowData.push(...rowValues);
-    });
-
-    board.push(headers, rowData);
-  });
-
-  // console.log(board);
-
-  return board;
-};
-
-export const getTextParagraph = (htmlString: string) => {
-  const parser = new DOMParser();
-  const doc = parser.parseFromString(htmlString, 'text/html');
-  const parrafos = doc.querySelectorAll('p');
-
-  if (parrafos.length > 0) {
-    const textosDeParrafos = Array.from(parrafos).map(
-      parrafo => parrafo.textContent
-    );
-    const contenidoConcatenado = textosDeParrafos.join('\n');
-    return contenidoConcatenado;
-  } else {
-    return '';
+    }
   }
+
+  return elements;
 };
 export const dataInitialPdf = {
   from: '',
   to: '',
   header: '',
-  body: '',
+  body: [],
   date: formatDate(new Date(), {
     year: 'numeric',
     month: 'long',

@@ -21,9 +21,8 @@ import { filterFilesByAttempt } from '../../../utils/files/files.utils';
 import CardRegisterMessageForward from '../../../components/shared/card/cardRegisterMessageFordward/CardRegisterMessageFordward';
 import CardRegisterMessageUpdate from '../../../components/shared/card/cardRegisterMessageUpdate/CardRegisterMessageUpdate';
 import {
-  convertToObject,
+  convertToDynamicObject,
   dataInitialPdf,
-  getTextParagraph,
 } from '../../../utils/pdfReportFunctions';
 import { PDFGenerator } from '../../../components';
 import LoaderForComponent from '../../../components/shared/loaderForComponent/LoaderForComponent';
@@ -124,8 +123,7 @@ const MessagePage = () => {
     return {
       from: from?.user.profile.firstName + ' ' + from?.user.profile.lastName,
       header,
-      body: getTextParagraph(description ?? ''),
-      tables: convertToObject(description ?? ''),
+      body: convertToDynamicObject(description ?? ''),
       title,
       to,
       date: formatDate(new Date(data.createdAt), {

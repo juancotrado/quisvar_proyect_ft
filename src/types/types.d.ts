@@ -739,10 +739,20 @@ interface MessageSendType {
   receiverId: number;
   type: MessageType['type'];
 }
-// export type ObjectBoard = {
-//    [clave: string]: string;
-//  };
-// export interface ListUser extends Omit<User, 'profile'> {
+export type ElementType =
+  | {
+      type: 'paragraph';
+      content: string;
+    }
+  | {
+      type: 'table';
+      data: string[][];
+    };
+export interface ListUserExtend extends Omit<User, 'profile'> {
+  name: string;
+  degree: string;
+  position: string;
+}
 export interface ListUser {
   name: string;
   degree: string;
@@ -755,7 +765,7 @@ export type PdfDataProps = {
   cc?: ListUser[];
   header: string;
   date: string;
-  body: string;
+  body: ElementType[];
   dni?: string;
   tables?: (string | undefined)[][];
   fromDegree?: string;

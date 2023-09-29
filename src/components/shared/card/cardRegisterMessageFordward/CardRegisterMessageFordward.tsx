@@ -25,9 +25,8 @@ import {
 import './cardRegisterMessageForward.css';
 import formatDate from '../../../../utils/formatDate';
 import {
-  convertToObject,
+  convertToDynamicObject,
   dataInitialPdf,
-  getTextParagraph,
 } from '../../../../utils/pdfReportFunctions';
 import useListUsers from '../../../../hooks/useListUsers';
 import { validateWhiteSpace } from '../../../../utils/customValidatesForm';
@@ -105,15 +104,12 @@ const CardRegisterMessageForward = ({
     const formData = new FormData();
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
     formData.append('data', JSON.stringify(values));
-    // formData.append('senderId', `${senderId}`);
     axiosInstance
       .post(`/mail/reply?status=RECHAZADO`, formData, { headers })
       .then(onSave);
   };
 
   const sender = message.users.filter(user => user.type === 'SENDER')[0].user;
-  // console.log(sender);
-
   const handleArchiverMessage = () => {
     axiosInstance.patch(`/mail/archived/${message.id}`).then(onSave);
   };
@@ -123,13 +119,10 @@ const CardRegisterMessageForward = ({
     const title = watch('title');
     const to = sender.profile.firstName + ' ' + sender.profile.lastName;
     const toUser = users.find(user => user.id === sender?.id);
-    // console.log(toUser);
-
     setpdfData({
       from: userSession.profile.firstName + ' ' + userSession.profile.lastName,
       header,
-      body: getTextParagraph(description ?? ''),
-      tables: convertToObject(description ?? ''),
+      body: convertToDynamicObject(description ?? ''),
       title,
       to,
       date: formatDate(new Date(), {

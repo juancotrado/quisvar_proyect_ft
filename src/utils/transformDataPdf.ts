@@ -1,14 +1,13 @@
-import { ListUser, PdfDataProps, PdfGeneratorPick } from '../types/types';
+import { ListUserExtend, PdfDataProps, PdfGeneratorPick } from '../types/types';
 import formatDate from './formatDate';
-import { convertToObject, getTextParagraph } from './pdfReportFunctions';
+import { convertToDynamicObject } from './pdfReportFunctions';
 
 interface transformDataPdfProps {
-  listUsers?: ListUser[];
+  listUsers?: ListUserExtend[];
   data: PdfGeneratorPick;
 }
 export const transformDataPdf = ({
   listUsers,
-  //   userTo,
   data,
 }: transformDataPdfProps) => {
   const userTo = data.users?.find(
@@ -26,8 +25,7 @@ export const transformDataPdf = ({
     from:
       userFrom?.user.profile.firstName + ' ' + userFrom?.user.profile.lastName,
     header: data.header,
-    body: getTextParagraph(data.description ?? ''),
-    tables: convertToObject(data.description ?? ''),
+    body: convertToDynamicObject(data.description ?? ''),
     title: data.title,
     cc,
     to: userTo?.user.profile.firstName + ' ' + userTo?.user.profile.lastName,

@@ -31,9 +31,8 @@ import {
 import { useNavigate } from 'react-router-dom';
 import formatDate from '../../../../utils/formatDate';
 import {
-  convertToObject,
+  convertToDynamicObject,
   dataInitialPdf,
-  getTextParagraph,
 } from '../../../../utils/pdfReportFunctions';
 import {
   isGenerateExcelReport$,
@@ -180,8 +179,7 @@ const CardRegisterMessage = ({
     setpdfData({
       from: userSession.profile.firstName + ' ' + userSession.profile.lastName,
       header,
-      body: getTextParagraph(description ?? ''),
-      tables: convertToObject(description ?? ''),
+      body: convertToDynamicObject(description ?? ''),
       title,
       cc,
       to,

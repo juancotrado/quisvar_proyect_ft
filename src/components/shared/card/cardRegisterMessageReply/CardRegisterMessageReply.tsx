@@ -21,9 +21,8 @@ import { Editor } from '@tinymce/tinymce-react';
 import formatDate from '../../../../utils/formatDate';
 import { HashFile, radioOptions } from '../../../../utils/files/files.utils';
 import {
-  convertToObject,
+  convertToDynamicObject,
   dataInitialPdf,
-  getTextParagraph,
 } from '../../../../utils/pdfReportFunctions';
 import { validateWhiteSpace } from '../../../../utils/customValidatesForm';
 
@@ -143,8 +142,7 @@ const CardRegisterMessageReply = ({
     setpdfData({
       from: userSession.profile.firstName + ' ' + userSession.profile.lastName,
       header,
-      body: getTextParagraph(description ?? ''),
-      tables: convertToObject(description ?? ''),
+      body: convertToDynamicObject(description ?? ''),
       title,
       to,
       date: formatDate(new Date(), {

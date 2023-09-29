@@ -106,13 +106,6 @@ const SidebarSpecialityLvlList = ({
         }`}
         onContextMenu={handleClickRigth}
       >
-        {/* {isFirstLevel && (
-          <img
-            src="/svg/reports.svg"
-            alt="reportes"
-            className="SidebarSpecialityLvlList-icon"
-          />
-        )} */}
         {openEditData ? (
           <div
             className={`SidebarSpecialityLvlList-inputs`}
@@ -146,8 +139,6 @@ const SidebarSpecialityLvlList = ({
                   className="SidebarSpecialityLvlList-dropdown-check"
                   defaultChecked={false}
                 />
-                {/* {!!data.specialities?.length ||
-                   !!data.typeSpecialities?.length} */}
               </>
             )}
             <h4

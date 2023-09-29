@@ -23,6 +23,11 @@
   height: 2rem;
 }
 
+.levelSubtask-user-image {
+  display: flex;
+  gap: 0.1rem;
+}
+
 .levelSubtask-item--name {
   overflow-x: auto;
   justify-content: flex-start;

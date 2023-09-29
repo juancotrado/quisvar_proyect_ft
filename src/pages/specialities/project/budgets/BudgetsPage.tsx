@@ -11,6 +11,7 @@ import Button from '../../../../components/shared/button/Button';
 import { motion } from 'framer-motion';
 import './budgetsPage.css';
 import StatusText from '../../../../components/shared/statusText/StatusText';
+import LoaderForComponent from '../../../../components/shared/loaderForComponent/LoaderForComponent';
 
 const BudgetsPage = () => {
   const { stageId } = useParams();
@@ -49,6 +50,12 @@ const BudgetsPage = () => {
       }
     });
   };
+
+  const closeFilter = () => {
+    getLevels();
+    setOpenFilter(false);
+  };
+
   const FilterOptions: StatusType[] = [
     'UNRESOLVED',
     'PROCESS',
@@ -57,6 +64,12 @@ const BudgetsPage = () => {
     'DONE',
     'LIQUIDATION',
   ];
+  if (!levels)
+    return (
+      <div className="task-loader">
+        <LoaderForComponent />
+      </div>
+    );
   return (
     <>
       <div className="budgetsPage-filter">
@@ -83,10 +96,7 @@ const BudgetsPage = () => {
             ))}
 
             <Button
-              onClick={() => {
-                getLevels();
-                setOpenFilter(false);
-              }}
+              onClick={closeFilter}
               icon="close"
               className="budgetsPage-filter-close"
             />

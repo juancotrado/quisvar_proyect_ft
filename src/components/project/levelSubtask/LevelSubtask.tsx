@@ -98,16 +98,12 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
             <StatusText status={subtask.status} />
           </div>
           <div className="levelSubtask-item">
-            <div className="levelSubtask-text">
-              {subtask?.users?.length ? (
-                <>
-                  {subtask.users.map(user => (
-                    <DefaultUserImage user={user} />
-                  ))}
-                </>
-              ) : (
-                'No Asignado aun'
-              )}
+            <div className="levelSubtask-user-image">
+              {subtask?.users?.length
+                ? subtask.users.map(user => (
+                    <DefaultUserImage key={user.user.id} user={user} />
+                  ))
+                : 'No Asignado aun'}
             </div>
           </div>
           {modAuthArea && (

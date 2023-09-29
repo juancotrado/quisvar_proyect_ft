@@ -1,10 +1,4 @@
-import {
-  NavLink,
-  Outlet,
-  useLocation,
-  useNavigate,
-  useParams,
-} from 'react-router-dom';
+import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import './project.css';
 import { useEffect } from 'react';
 const projectOptions = [

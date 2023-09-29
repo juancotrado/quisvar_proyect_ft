@@ -10,17 +10,14 @@ interface DefaultUserImageProps {
 }
 const DefaultUserImage = ({ user }: DefaultUserImageProps) => {
   const { firstName, lastName } = user.user.profile;
-  const colorRef = useRef<string | null>(null);
+  const color = colors[Math.floor(Math.random() * 11) + 1];
   const [message, setMenssage] = useState(false);
-  useEffect(() => {
-    colorRef.current = colors[Math.floor(Math.random() * 11) + 1];
-  }, []);
 
   const showMessage = () => setMenssage(true);
   const hiddenMessage = () => setMenssage(false);
   const fistLetterNames = getFirstLetterNames(firstName, lastName);
   const style = {
-    backgroundColor: colorRef.current || 'blue',
+    backgroundColor: color || 'blue',
   };
   return (
     <div className="defaultUserImage-contain">

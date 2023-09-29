@@ -3,19 +3,19 @@ import { getFirstLetterNames } from '../../../utils/tools';
 import colors from '../../../utils/json/colors.json';
 
 import './defaultUserImage.css';
-import { useEffect, useRef, useState } from 'react';
+import { useMemo, useState } from 'react';
 
 interface DefaultUserImageProps {
   user: Users;
 }
+
 const DefaultUserImage = ({ user }: DefaultUserImageProps) => {
   const { firstName, lastName } = user.user.profile;
-  const color = colors[Math.floor(Math.random() * 11) + 1];
   const [message, setMenssage] = useState(false);
-
   const showMessage = () => setMenssage(true);
   const hiddenMessage = () => setMenssage(false);
   const fistLetterNames = getFirstLetterNames(firstName, lastName);
+  const color = useMemo(() => colors[Math.floor(Math.random() * 11) + 1], []);
   const style = {
     backgroundColor: color || 'blue',
   };

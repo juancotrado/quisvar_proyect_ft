@@ -162,16 +162,21 @@ const PDFGenerator = ({ data, isView }: PDFGeneratorProps) => {
       <PDFDownloadLink
         document={generatePDF({ data }, { size: 'A5' })}
         fileName={`${data.title}.pdf`}
-        className="pdf-btn-view-primary"
+        className="pdf-btn-view-white"
       >
         {({ loading }) => (
           <>
-            {isView && (
+            <>
               <img
-                className="chip-file-icon-doc"
+                className="chip-file-icon-doc normal"
+                src={`/svg/file-download.svg`}
+              />
+              <img
+                className="chip-file-icon-doc hover"
                 src={`/svg/file-download-white.svg`}
               />
-            )}
+            </>
+
             <span className="download-text">{loading ? 'A5' : 'A5'}</span>
           </>
         )}
@@ -183,12 +188,16 @@ const PDFGenerator = ({ data, isView }: PDFGeneratorProps) => {
       >
         {({ loading }) => (
           <>
-            {isView && (
+            <>
               <img
-                className="chip-file-icon-doc"
+                className="chip-file-icon-doc normal"
                 src={`/svg/file-download.svg`}
               />
-            )}
+              <img
+                className="chip-file-icon-doc hover"
+                src={`/svg/file-download-white.svg`}
+              />
+            </>
             <span className="download-text">{loading ? 'A4' : 'A4'}</span>
           </>
         )}

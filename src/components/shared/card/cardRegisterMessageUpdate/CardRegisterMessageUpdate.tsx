@@ -58,7 +58,7 @@ interface CardRegisterMessageUpdateProps {
 const CardRegisterMessageUpdate = ({
   message,
   quantityFiles,
-  receiverId,
+  // receiverId,
   onSave,
 }: CardRegisterMessageUpdateProps) => {
   const { userSession } = useSelector((state: RootState) => state);

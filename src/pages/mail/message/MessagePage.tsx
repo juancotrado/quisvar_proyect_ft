@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '../../../services/axiosInstance';
 import {
+  MessageReply,
   MessageType,
   PdfDataProps,
   UserRoleType,
@@ -19,7 +20,11 @@ import Button from '../../../components/shared/button/Button';
 import { filterFilesByAttempt } from '../../../utils/files/files.utils';
 import CardRegisterMessageForward from '../../../components/shared/card/cardRegisterMessageFordward/CardRegisterMessageFordward';
 import CardRegisterMessageUpdate from '../../../components/shared/card/cardRegisterMessageUpdate/CardRegisterMessageUpdate';
-import { dataInitialPdf } from '../../../utils/pdfReportFunctions';
+import {
+  convertToObject,
+  dataInitialPdf,
+  getTextParagraph,
+} from '../../../utils/pdfReportFunctions';
 import { PDFGenerator } from '../../../components';
 import LoaderForComponent from '../../../components/shared/loaderForComponent/LoaderForComponent';
 import { transformDataPdf } from '../../../utils/transformDataPdf';
@@ -59,8 +64,6 @@ const MessagePage = () => {
   //----------------------------------------------------------------------------
   const getFiles = (message && message.files) || [];
   const getHistory = (message && message.history) || [];
-  // console.log(getHistory);
-
   const files = filterFilesByAttempt(getFiles);
   const getMessage = useCallback(
     (id: string) => {
@@ -110,14 +113,34 @@ const MessagePage = () => {
       role === 'MAIN' &&
       type == 'RECEIVER'
   );
-  // const historyUser = message.users.find(
-  //   (user: userMessage) => user.type === 'SENDER'
-  // );
-  // const historyData = getHistory[0] && transformDataPdf({
-  //   userSession,
-  //   userTo: historyUser,
-  //   data: getHistory[0],
-  // });
+  const trandformData = (data: MessageReply) => {
+    const sender = data.user;
+    const header = data.header;
+    const description = data.description;
+    const title = data.title;
+    const to = sender.profile.firstName + ' ' + sender.profile.lastName;
+    const toUser = listUsers.find(user => user.id === sender?.id);
+    const from = message.users.find(user => user.type === 'SENDER');
+    return {
+      from: from?.user.profile.firstName + ' ' + from?.user.profile.lastName,
+      header,
+      body: getTextParagraph(description ?? ''),
+      tables: convertToObject(description ?? ''),
+      title,
+      to,
+      date: formatDate(new Date(data.createdAt), {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour12: true,
+      }),
+      toDegree: toUser?.degree,
+      toPosition: toUser?.position,
+      dni: from?.user.profile.dni,
+      fromDegree: from?.user.profile.degree,
+      fromPosition: from?.user.profile.description,
+    };
+  };
   const handleSaveRegister = () => {
     navigate('/tramites?refresh=true');
   };
@@ -247,18 +270,22 @@ const MessagePage = () => {
         )}
         <div className="message-container-files-grid">
           {viewHistory &&
-            getHistory.map(({ id, files, createdAt, user }) => (
-              <div className="message-container-file-information" key={id}>
+            getHistory.map(history => (
+              <div
+                className="message-container-file-information"
+                key={history.id}
+              >
                 <span className="message-sender-name">
                   Enviado por {` `}
                   <b>
-                    {user.profile.lastName} {user.profile.firstName}
+                    {history.user.profile.lastName}{' '}
+                    {history.user.profile.firstName}
                   </b>
                 </span>
-                <span>{parseDate(new Date(createdAt))}</span>
+                <span>{parseDate(new Date(history.createdAt))}</span>
                 <div className="message-container-files-grid">
-                  {files &&
-                    files.map(({ id, name, path }) => (
+                  {history.files &&
+                    history.files.map(({ id, name, path }) => (
                       <ChipFileMessage
                         className="pointer message-files-list"
                         key={id}
@@ -266,7 +293,8 @@ const MessagePage = () => {
                         link={path + '/' + name}
                       />
                     ))}
-                  {/* <PDFGenerator data={getHistory} isView /> */}
+                  <p>{}</p>
+                  <PDFGenerator data={trandformData(history)} isView />
                 </div>
               </div>
             ))}

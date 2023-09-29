@@ -49,6 +49,7 @@
 }
 
 .levelSubtask-text {
+  white-space: nowrap;
   color: #171c26;
   font-size: 0.7rem;
   font-style: normal;

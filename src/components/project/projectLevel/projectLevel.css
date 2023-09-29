@@ -114,3 +114,7 @@
   cursor: pointer;
   height: 100%;
 }
+
+.projectLevel-width-normal {
+  min-width: 100%;
+}

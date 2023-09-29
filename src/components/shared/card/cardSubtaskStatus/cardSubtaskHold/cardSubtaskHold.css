@@ -18,6 +18,7 @@
   height: 100%;
   gap: 0.5rem;
   align-items: center;
+  overflow-x: auto;
 }
 
 .cardSubtaskHold-details {
@@ -29,6 +30,7 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 0.4rem;
+  overflow-x: auto;
 }
 
 .cardSubtaskHold-info {

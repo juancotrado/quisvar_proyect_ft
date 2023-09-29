@@ -2,9 +2,8 @@
   display: flex;
   gap: 0.5rem;
   overflow-x: auto;
-  overflow-y: hidden;
-  max-width: 41rem;
-  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
 }
 
 .subtaskFile-contain {

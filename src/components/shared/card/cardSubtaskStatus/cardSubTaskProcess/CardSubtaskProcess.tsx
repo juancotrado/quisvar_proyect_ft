@@ -190,7 +190,7 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
       <section className="cardSubtaskProcess-details">
         <SubtasksMoreInfo task={subTask} />
         {!isAuthorizedMod && (
-          <>
+          <div className="cardSubtask-models-contain">
             <h4 className="cardSubtask-title-information">
               <figure className="cardSubtask-figure">
                 <img src="/svg/paper-clip.svg" alt="W3Schools" />
@@ -203,13 +203,13 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
               typeFile="MODEL"
               showDeleteBtn={isAuthorizedMod}
             />
-          </>
+          </div>
         )}
         {isAuthorizedMod && status !== 'INREVIEW' && (
           <LoaderText text="Esperando entregables..." />
         )}
         {isAuthorizedUser && status === 'INREVIEW' && (
-          <LoaderText text="Esperando aprovación..." />
+          <LoaderText text="Esperando aprobación..." />
         )}
 
         {areAuthorizedUsers && (
@@ -238,13 +238,13 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
             {status === 'INREVIEW' && isAuthorizedMod && (
               <>
                 <SubtaskChangeStatusBtn
-                  className={`cardSubtask-add-btn `}
+                  className={`cardSubtask-add-btn  cardSubtask-decline-btn`}
                   option="DENY"
                   subtaskId={subTask.id}
                   subtaskStatus={status}
                   dataFeedback={dataFeedback}
                   type="deprecated"
-                  text="Desaprobar"
+                  text="Declinar"
                   porcentagesForUser={Object.values(porcetageForUser)}
                 />
                 <SubtaskChangeStatusBtn

@@ -21,7 +21,7 @@
   letter-spacing: 0.01125rem;
 }
 
-.task-header-title-span {
+. .task-header-title-span {
   font-weight: 600;
 }
 
@@ -65,6 +65,24 @@
   font-style: normal;
   font-weight: 500;
   line-height: 1.25rem;
+}
+
+.cardSubtask-models-contain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.cardSubtask-decline-btn {
+  color: #000;
+  border: 1px solid #000;
+  background-color: #fff;
+}
+
+.cardSubtask-asig-btn {
+  color: var(--color-primary);
+  border: 1px solid var(--color-primary);
+  background-color: #fff;
 }
 
 .cardSubtask-btn-disabled {

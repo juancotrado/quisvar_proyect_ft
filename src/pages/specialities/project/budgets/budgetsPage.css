@@ -70,4 +70,5 @@
   margin-top: 0.2rem;
   overflow-y: auto;
   flex: 1;
+  border-bottom: 1px solid #80808054;
 }

@@ -47,7 +47,7 @@ const RolePerm: UserRoleType[] = ['SUPER_ADMIN', 'ADMIN', 'SUPER_MOD', 'MOD'];
 const MessagePage = () => {
   const navigate = useNavigate();
   const { messageId } = useParams();
-  const listUsers = useListUsers(RolePerm);
+  const { users: listUsers } = useListUsers(RolePerm);
   const { userSession } = useSelector((state: RootState) => state);
   const [isReply, setIsReply] = useState(true);
   const [data, setData] = useState<PdfDataProps>(dataInitialPdf);

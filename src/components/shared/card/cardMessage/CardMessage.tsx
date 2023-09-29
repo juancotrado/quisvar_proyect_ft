@@ -34,6 +34,8 @@ const CardMessage = ({
   const handleArchiverAction = () => {
     axiosInstance.patch(`/mail/archived/${message.id}`).then(onArchiver);
   };
+  console.log(message.updatedAt);
+
   return (
     <div
       className={`card-message-container-section status-card-${isActive} ${
@@ -67,7 +69,7 @@ const CardMessage = ({
           </div>
           <div className="card-message-section-item">
             <span className="card-status-span ">
-              {parseDate(message.createdAt)}
+              {parseDate(message.updatedAt)}
             </span>
           </div>
           {['SUPER_ADMIN', 'ASSISTANT'].includes(user.role) ? (

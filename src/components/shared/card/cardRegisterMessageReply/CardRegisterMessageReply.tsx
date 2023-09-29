@@ -72,7 +72,7 @@ const CardRegisterMessageReply = ({
     formState: { errors },
   } = useForm<MessageSendType>();
   const [fileUploadFiles, setFileUploadFiles] = useState<File[]>([]);
-  const users = useListUsers(RolePerm);
+  const { users } = useListUsers(RolePerm);
   const HashUser = HashFile(`${firstName} ${lastName}`);
   const [receiver, setReceiver] = useState<receiverType | null>(null);
   const [pdfData, setpdfData] = useState<PdfDataProps>(dataInitialPdf);

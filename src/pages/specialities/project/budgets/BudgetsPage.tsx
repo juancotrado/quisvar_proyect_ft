@@ -49,6 +49,12 @@ const BudgetsPage = () => {
       }
     });
   };
+
+  const closeFilter = () => {
+    getLevels();
+    setOpenFilter(false);
+  };
+
   const FilterOptions: StatusType[] = [
     'UNRESOLVED',
     'PROCESS',
@@ -83,10 +89,7 @@ const BudgetsPage = () => {
             ))}
 
             <Button
-              onClick={() => {
-                getLevels();
-                setOpenFilter(false);
-              }}
+              onClick={closeFilter}
               icon="close"
               className="budgetsPage-filter-close"
             />

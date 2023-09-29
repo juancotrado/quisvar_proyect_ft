@@ -65,12 +65,6 @@
   overflow-y: auto;
 }
 
-.active {
-  border-bottom: 2px solid var(--color-primary);
-  padding-bottom: 0.2rem;
-  color: #424242;
-}
-
 .stage-header-add-btn {
   cursor: pointer;
   padding: 0.3rem 0.8rem;

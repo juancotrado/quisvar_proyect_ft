@@ -1,6 +1,6 @@
 import { FocusEvent, useCallback, useRef, useState } from 'react';
 import './sidebarSpeciality.css';
-import { SectorType } from '../../../types/types';
+import { ProjectType, SectorType } from '../../../types/types';
 import SidebarSpecialityLvlList from './sidebarSpecialityLvlList/SidebarSpecialityLvlList';
 import SidebarSpecialityAddLvl from './sidebarSpecialityAddLvl/SidebarSpecialityAddLvl';
 import { Select } from '../..';
@@ -24,8 +24,14 @@ const SidebarSpeciality = ({
   onSave,
 }: SidebarSpecialityProps) => {
   const navigate = useNavigate();
-  const handleProjectNavigate = (projectId: number) => {
-    navigate(`proyecto/${projectId}`);
+  const handleProjectNavigate = (project: ProjectType) => {
+    const { id, stages } = project;
+    let urlNavigate = `proyecto/${id}`;
+    if (stages.length > 0) {
+      const stageId = stages[0].id;
+      urlNavigate += `/etapa/${stageId}`;
+    }
+    navigate(urlNavigate);
   };
   const mWidth = useMotionValue(300);
   const { role } = useSelector((state: RootState) => state.userSession);
@@ -134,7 +140,9 @@ const SidebarSpeciality = ({
                                               key={project.id}
                                               className="sidebarSpeciality-dropdown-sub-list"
                                               onClick={() => {
-                                                handleProjectNavigate(
+                                                handleProjectNavigate(project);
+                                                handleTaks(
+                                                  project.name,
                                                   project.id
                                                 );
                                               }}

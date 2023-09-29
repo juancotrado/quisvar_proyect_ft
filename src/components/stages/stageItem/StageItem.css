@@ -11,7 +11,14 @@
   height: 100%;
   align-items: center;
 }
+
 .stageItem-dots {
   right: -2rem;
   top: 0.2rem;
+}
+
+.activeLink {
+  border-bottom: 2px solid var(--color-primary);
+  padding-bottom: 0.2rem;
+  color: #424242;
 }

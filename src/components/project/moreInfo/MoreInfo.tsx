@@ -25,21 +25,6 @@ const MoreInfo = ({ data }: MoreInfoProps) => {
     };
   }, []);
   const handleReports = () => {
-    // const { department, district, province, startDate, untilDate, ...data } =
-    //   res.data;
-    // const { firstName, lastName } = res.data.moderator.profile;
-    // const initialDate = formatDate(new Date(startDate), {
-    //   day: 'numeric',
-    //   weekday: 'long',
-    //   month: 'long',
-    //   year: 'numeric',
-    // });
-    // const finishDate = formatDate(new Date(untilDate), {
-    //   day: 'numeric',
-    //   weekday: 'long',
-    //   month: 'long',
-    //   year: 'numeric',
-    // });
     axiosInstance.get(`/projects/${projectId}`).then(res => {
       const {
         department,
@@ -192,7 +177,7 @@ const MoreInfo = ({ data }: MoreInfoProps) => {
           </figure>
           {data.projectName && (
             <span className="moreInfo-detail-info">
-              Comprimir <br /> Editables
+              Generar <br /> reporte
             </span>
           )}
         </div>

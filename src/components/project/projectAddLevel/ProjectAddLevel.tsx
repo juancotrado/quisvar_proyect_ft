@@ -12,6 +12,7 @@ import { isOpenCardRegisteTask$ } from '../../../services/sharingSubject';
 import DropDownSimple from '../../shared/select/DropDownSimple';
 import useListUsers from '../../../hooks/useListUsers';
 import colors from '../../../utils/json/colors.json';
+import FloatingText from '../../shared/floatingText/FloatingText';
 
 interface DataForm {
   rootId: number;
@@ -23,14 +24,9 @@ interface DataForm {
 interface ProjectAddLevelProps {
   data: Level;
   onSave?: () => void;
-  hasProject: boolean;
 }
 type AddLevel = 'folder' | 'area';
-const ProjectAddLevel = ({
-  data,
-  onSave,
-  hasProject,
-}: ProjectAddLevelProps) => {
+const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
   const { users: modedators } = useListUsers(['MOD']);
   const [idCoordinator, setIdCoordinator] = useState<number | null>(null);
   const [addLevel, setAddLevel] = useState<AddLevel | null>(null);
@@ -77,21 +73,29 @@ const ProjectAddLevel = ({
       style={style}
     >
       {/* <div>{data.item}</div> */}
-      <figure className="projectAddLevel-figure" onClick={hadleAddFolder}>
-        <img src={`/svg/${typeImgFolder}.svg`} alt="W3Schools" />
-      </figure>
-      {!hasProject && (
-        <figure className="projectAddLevel-figure" onClick={hadleAddArea}>
-          <img src={`/svg/${typeImgArea}.svg`} alt="W3Schools" />
+      <FloatingText text="Agregar Nivel">
+        <figure className="projectAddLevel-figure" onClick={hadleAddFolder}>
+          <img src={`/svg/${typeImgFolder}.svg`} alt="W3Schools" />
         </figure>
+      </FloatingText>
+
+      {!data.isArea && !data.isProject && !data.isInclude && (
+        <FloatingText text="Agregar Carpeta de Areas">
+          <figure className="projectAddLevel-figure" onClick={hadleAddArea}>
+            <img src={`/svg/${typeImgArea}.svg`} alt="W3Schools" />
+          </figure>
+        </FloatingText>
       )}
       {!data.nextLevel?.length &&
         !data.isArea &&
         !data.isProject &&
         data.level && (
-          <figure className="projectAddLevel-figure" onClick={hadleAddTask}>
-            <img src={`/svg/task-list.svg`} alt="W3Schools" />
-          </figure>
+          <FloatingText text="Agregar Tarea">
+            {' '}
+            <figure className="projectAddLevel-figure" onClick={hadleAddTask}>
+              <img src={`/svg/task-list.svg`} alt="W3Schools" />
+            </figure>
+          </FloatingText>
         )}
       {addLevel && (
         <>

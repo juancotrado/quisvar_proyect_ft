@@ -29,6 +29,14 @@
   font-weight: bold;
 }
 
+.normal {
+  display: block;
+}
+
+.hover {
+  display: none;
+}
+
 .pdf-btn-view-white {
   border-radius: var(--radius-input);
   border: 1px solid var(--color-primary);
@@ -41,7 +49,14 @@
 }
 
 .pdf-btn-view-white:hover {
-  font-weight: bold;
+  color: white;
+  background-color: var(--color-primary);
+}
+.pdf-btn-view-white:hover .hover {
+  display: block;
+}
+.pdf-btn-view-white:hover .normal {
+  display: none;
 }
 
 .pdf-btn-area-view {

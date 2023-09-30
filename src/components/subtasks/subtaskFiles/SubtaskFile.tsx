@@ -47,7 +47,6 @@ const SubtaskFile = ({
   };
   const getIcon = (fileName: string) => {
     const ext = fileName.split('.').pop() || 'default';
-    console.log({ ext });
     const getExtencion = iconForExtension[ext as keyof typeof iconForExtension];
     return getExtencion || 'file-download';
   };

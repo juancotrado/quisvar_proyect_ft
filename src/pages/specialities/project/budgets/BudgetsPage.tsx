@@ -3,7 +3,6 @@ import { Outlet, useParams } from 'react-router-dom';
 import { SocketContext } from '../../../../context/SocketContex';
 import { Level, StatusType } from '../../../../types/types';
 import { axiosInstance } from '../../../../services/axiosInstance';
-import { findProject } from '../../../../utils/tools';
 import MoreInfo from '../../../../components/project/moreInfo/MoreInfo';
 import DropdownLevel from '../../../../components/project/dropdownLevel/DropdownLevel';
 import CardRegisterSubTask from '../../../../components/shared/card/cardRegisterSubTask/CardRegisterSubTask';
@@ -16,15 +15,12 @@ import LoaderForComponent from '../../../../components/shared/loaderForComponent
 const BudgetsPage = () => {
   const { stageId } = useParams();
   const [levels, setlevels] = useState<Level | null>(null);
-  const [hasProject, setHasProject] = useState(false);
   const [openFilter, setOpenFilter] = useState(false);
   const socket = useContext(SocketContext);
   const getLevels = useCallback(() => {
     axiosInstance.get(`/stages/${stageId}`).then(res => {
       if (stageId) {
         socket.emit('join', `project-${stageId}`);
-        const hasProject = findProject(res.data.nextLevel);
-        setHasProject(hasProject);
         setlevels({ ...res.data, stagesId: +stageId });
       }
     });
@@ -44,8 +40,6 @@ const BudgetsPage = () => {
   const levelFilter = (value: string) => {
     axiosInstance.get(`/stages/${stageId}?&status=${value}`).then(res => {
       if (stageId) {
-        const hasProject = findProject(res.data.nextLevel);
-        setHasProject(hasProject);
         setlevels({ ...res.data, stagesId: +stageId });
       }
     });
@@ -117,13 +111,7 @@ const BudgetsPage = () => {
         )}
       </div>
       <div className="budgetsPage-contain">
-        {levels && (
-          <DropdownLevel
-            level={levels}
-            onSave={getLevels}
-            hasProject={hasProject}
-          />
-        )}
+        {levels && <DropdownLevel level={levels} onSave={getLevels} />}
       </div>
       <Outlet />
       <CardRegisterSubTask />

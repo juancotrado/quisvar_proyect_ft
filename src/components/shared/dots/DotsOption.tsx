@@ -49,16 +49,15 @@ const DotsOption = ({
         } `}
         onClick={e => e.stopPropagation()}
       >
-        <span
-          onClick={() => setIsOpen(!isOpen)}
-          className={`${iconHide && 'span-hide'} `}
-        >
-          <img
-            className="menu-icon-dot"
-            src={`/svg/${variant ? 'dots-color' : 'menusmall'}.svg`}
-            alt=""
-          />
-        </span>
+        {!iconHide && (
+          <span onClick={() => setIsOpen(!isOpen)}>
+            <img
+              className="menu-icon-dot"
+              src={`/svg/${variant ? 'dots-color' : 'menusmall'}.svg`}
+              alt=""
+            />
+          </span>
+        )}
         <div className={`${className} dot-options`}>
           {isOpen &&
             data.map((option, index) => (

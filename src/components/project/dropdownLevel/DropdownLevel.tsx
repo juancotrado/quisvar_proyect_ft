@@ -9,10 +9,9 @@ import { RootState } from '../../../store';
 interface DropdownLevel {
   level: Level;
   onSave?: () => void;
-  hasProject: boolean;
 }
 
-const DropdownLevel = ({ level, onSave, hasProject }: DropdownLevel) => {
+const DropdownLevel = ({ level, onSave }: DropdownLevel) => {
   const { modAuthProject, userSession } = useSelector(
     (state: RootState) => state
   );
@@ -41,20 +40,10 @@ const DropdownLevel = ({ level, onSave, hasProject }: DropdownLevel) => {
                 }
               >
                 <ProjectLevel data={subLevel} onSave={onSave} />
-                <DropdownLevel
-                  level={subLevel}
-                  onSave={onSave}
-                  hasProject={hasProject}
-                />
+                <DropdownLevel level={subLevel} onSave={onSave} />
               </li>
             ))}
-            {modAuthArea && (
-              <ProjectAddLevel
-                data={level}
-                onSave={onSave}
-                hasProject={hasProject}
-              />
-            )}
+            {modAuthArea && <ProjectAddLevel data={level} onSave={onSave} />}
           </>
         )}
       </ul>

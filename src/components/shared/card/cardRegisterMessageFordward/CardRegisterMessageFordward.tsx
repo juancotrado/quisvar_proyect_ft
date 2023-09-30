@@ -30,6 +30,10 @@ import {
 } from '../../../../utils/pdfReportFunctions';
 import useListUsers from '../../../../hooks/useListUsers';
 import { validateWhiteSpace } from '../../../../utils/customValidatesForm';
+import ButtonDelete from '../../button/ButtonDelete';
+import { motion } from 'framer-motion';
+import Portal from '../../../portal/Portal';
+import { dropIn } from '../../../../animations/animations';
 
 interface MessageSendType {
   title: string;
@@ -61,6 +65,7 @@ const CardRegisterMessageForward = ({
 }: CardRegisterMessageForwardProps) => {
   const { userSession } = useSelector((state: RootState) => state);
   const { users } = useListUsers();
+  const [isAlertOpen, setIsAlertOpen] = useState(false);
   const { lastName, firstName } = userSession.profile;
   const {
     handleSubmit,
@@ -238,13 +243,54 @@ const CardRegisterMessageForward = ({
         />
         {['SUPER_ADMIN', 'ASSISTANT'].includes(userSession.role) && (
           <Button
-            onClick={() => handleArchiverMessage}
+            onClick={() => setIsAlertOpen(true)}
             className={`inbox-forward-btn-archiver`}
             type="button"
             text="Archivar Tramite"
           />
         )}
       </div>
+      {isAlertOpen && (
+        <Portal wrapperId="modal">
+          <div
+            className="alert-modal-main"
+            role="dialog"
+            onClick={() => setIsAlertOpen(false)}
+          >
+            <motion.div
+              className="alert-modal-children"
+              variants={dropIn}
+              onClick={e => e.stopPropagation()}
+              initial="hidden"
+              animate="visible"
+              exit="leave"
+            >
+              <span
+                className="close-icon"
+                onClick={() => setIsAlertOpen(false)}
+              >
+                <img src="/svg/close.svg" alt="pencil" />
+              </span>
+              <>
+                <img src="/svg/folder-icon.svg" className="alert-modal-trash" />
+                <h3>¿Estas seguro que desea archivar este trámite?</h3>
+                <div className="container-btn">
+                  <Button
+                    text="Cancelar"
+                    onClick={() => setIsAlertOpen(false)}
+                    className="modal-btn-cancel"
+                  />
+                  <Button
+                    text="Confirmar"
+                    onClick={handleArchiverMessage}
+                    className="modal-btn-confirm"
+                  />
+                </div>
+              </>
+            </motion.div>
+          </div>
+        </Portal>
+      )}
     </form>
   );
 };

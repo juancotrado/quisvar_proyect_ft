@@ -22,7 +22,7 @@ const InputFile = ({
   ...props
 }: InputFileProps) => {
   const [dragActive, setDragActive] = useState(false);
-  const [fileName, setFileName] = useState<string | null>(null);
+  const [, setFileName] = useState<string | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const handleDrag = (event: DragEvent<HTMLDivElement | HTMLFormElement>) => {

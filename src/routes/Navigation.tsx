@@ -4,7 +4,6 @@ import {
   Home,
   Login,
   NotFound,
-  Tasks,
   Specialities,
   UsersList,
   NotificationsList,
@@ -12,7 +11,6 @@ import {
   CommingSoon,
   Attendance,
   DetailsPage,
-  BasicsPage,
   BudgetsPage,
 } from '../pages';
 import { ProtectedRoute } from '../components';
@@ -23,6 +21,7 @@ import Stage from '../pages/stage/Stage';
 import Task from '../pages/task/Task';
 import MailPage from '../pages/mail/MailPage';
 import MessagePage from '../pages/mail/message/MessagePage';
+import BasicsPage from '../pages/specialities/project/basics/BasicsPage';
 
 const Navigation = () => {
   return (
@@ -34,7 +33,6 @@ const Navigation = () => {
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/tareas/:id" element={<Tasks />} />
             <Route path="/tramites" element={<MailPage />}>
               <Route path=":messageId" element={<MessagePage />} />
             </Route>

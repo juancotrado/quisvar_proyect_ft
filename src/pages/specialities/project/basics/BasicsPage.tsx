@@ -1,5 +1,3 @@
-import React from 'react';
-
 const BasicsPage = () => {
   return <div>BasicsPage</div>;
 };

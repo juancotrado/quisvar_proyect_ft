@@ -35,12 +35,6 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
       task: subtask,
     };
   };
-  const usersAsigned = (subTask: SubTask) => {
-    const userSelected = subTask.users?.map(
-      user => user.user.profile.firstName
-    );
-    return userSelected.join(', ');
-  };
 
   return (
     <div className="levelSubtask">

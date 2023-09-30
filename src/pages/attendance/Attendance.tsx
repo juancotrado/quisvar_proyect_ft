@@ -293,6 +293,11 @@ const Attendance = () => {
           </div>
         </>
       )}
+      {!callList && callLists && callLists?.length > 0 && (
+        <div className="attendance-list-empty">
+          <h1>Seleccione una Lista</h1>
+        </div>
+      )}
     </div>
   );
 };

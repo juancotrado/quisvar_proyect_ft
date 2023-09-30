@@ -10,13 +10,13 @@ interface PaperCardListProps {
 const PaperCardList = ({ data }: PaperCardListProps) => {
   const { profile } = data.user;
 
-  const submitReport = () => {
-    const _data = {
-      id: data.id,
-      stage: '',
-    };
-    return _data;
-  };
+  // const submitReport = () => {
+  //   const _data = {
+  //     id: data.id,
+  //     stage: '',
+  //   };
+  //   return _data;
+  // };
   // const declineReport = () => {};
   return (
     <form action="">

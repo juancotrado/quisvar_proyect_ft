@@ -136,7 +136,7 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => (
   </Document>
 );
 
-const PDFGenerator = ({ data, isView }: PDFGeneratorProps) => {
+const PDFGenerator = ({ data }: PDFGeneratorProps) => {
   return (
     <div className="pdf-btn-area-view">
       {/* {showPreview ? (

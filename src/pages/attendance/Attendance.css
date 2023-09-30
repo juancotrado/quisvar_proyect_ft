@@ -196,3 +196,12 @@
   background-color: var(--color-primary);
   color: white;
 }
+.attendance-list-empty {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  color: rgb(199, 199, 199);
+}

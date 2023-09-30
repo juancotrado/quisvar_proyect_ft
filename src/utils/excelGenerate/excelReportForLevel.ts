@@ -21,34 +21,34 @@ interface InfoDataReport {
   description: string;
   CUI: string;
 }
-const reportLvl = {
-  indexTasks: 'Area',
-  areas: 'proyecto',
-  tasks: 'Nivel 1',
-  tasks_2: 'Nivel2',
-  tasks_3: 'nivel3',
-};
-const reportColorFirst = {
-  areas: 'D9E1F2',
-  indexTasks: 'FF666F88',
-  tasks: 'FF788199',
-  tasks_2: 'FF8990A2',
-  tasks_3: 'FFA3A8B7',
-};
-const reportColorSecond = {
-  areas: 'FF666F88',
-  indexTasks: 'FF788199',
-  tasks: 'FF8990A2',
-  tasks_2: 'FFA3A8B7',
-  tasks_3: 'FFB5BAC9',
-};
-const reporTitle = {
-  areas: 'INFORME PARCIAL DEL PROYECTO',
-  indexTasks: 'INFORME PARCIAL DEL AREA',
-  tasks: 'INFORME PARCIAL DEL NIVEL',
-  tasks_2: 'INFORME PARCIAL DEL NIVEL',
-  tasks_3: 'INFORME PARCIAL DEL PROYECTO',
-};
+// const reportLvl = {
+//   indexTasks: 'Area',
+//   areas: 'proyecto',
+//   tasks: 'Nivel 1',
+//   tasks_2: 'Nivel2',
+//   tasks_3: 'nivel3',
+// };
+// const reportColorFirst = {
+//   areas: 'D9E1F2',
+//   indexTasks: 'FF666F88',
+//   tasks: 'FF788199',
+//   tasks_2: 'FF8990A2',
+//   tasks_3: 'FFA3A8B7',
+// };
+// const reportColorSecond = {
+//   areas: 'FF666F88',
+//   indexTasks: 'FF788199',
+//   tasks: 'FF8990A2',
+//   tasks_2: 'FFA3A8B7',
+//   tasks_3: 'FFB5BAC9',
+// };
+// const reporTitle = {
+//   areas: 'INFORME PARCIAL DEL PROYECTO',
+//   indexTasks: 'INFORME PARCIAL DEL AREA',
+//   tasks: 'INFORME PARCIAL DEL NIVEL',
+//   tasks_2: 'INFORME PARCIAL DEL NIVEL',
+//   tasks_3: 'INFORME PARCIAL DEL PROYECTO',
+// };
 const reportCoordinator = {
   areas: 'CC  COORDINADOR DEL PROYECTO : ',
   indexTasks: 'CC  COORDINADOR DEL AREA : ',

@@ -1,9 +1,9 @@
 import { motion } from 'framer-motion';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import { GeneralData } from '../../../../components';
 
 const DetailsPage = () => {
-  const { stageId } = useParams();
+  // const { stageId } = useParams();
 
   return (
     <motion.div

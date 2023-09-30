@@ -1,8 +1,5 @@
-import { Input } from '..';
 import Button from '../shared/button/Button';
-import PaperCard from '../shared/card/paperCard/PaperCard';
 import DropDownSimple from '../shared/select/DropDownSimple';
-import SelectOptions from '../shared/select/Select';
 import UploadFile from '../shared/uploadFile/UploadFile';
 
 interface UserDetailsReportProps {

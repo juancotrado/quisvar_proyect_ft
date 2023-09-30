@@ -5,7 +5,7 @@ import { _date } from '../../../../utils/formatDate';
 import Modal from '../../../portal/Modal';
 import Button from '../../button/Button';
 import './CardRegisterProject.css';
-import { RefObject, useEffect, useMemo, useRef, useState } from 'react';
+import { RefObject, useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   CompanyForm,
@@ -17,8 +17,8 @@ import {
 import { spring } from '../../../../animations/animations';
 import { motion } from 'framer-motion';
 import useListUsers from '../../../../hooks/useListUsers';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../store';
+// import { useSelector } from 'react-redux';
+// import { RootState } from '../../../../store';
 import provincesJson from '../../../../utils/ubigeo/provincias.json';
 import distritosJson from '../../../../utils/ubigeo/distritos.json';
 import departamentsJson from '../../../../utils/ubigeo/departamentos.json';
@@ -36,8 +36,8 @@ interface CardRegisterProjectProps {
 }
 
 const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
-  const { listStage } = useSelector((state: RootState) => state);
-  const [isOn, setIsOn] = useState(false);
+  // const { listStage } = useSelector((state: RootState) => state);
+  // const [isOn, setIsOn] = useState(false);
   const { users: coordinators } = useListUsers(['ADMIN', 'MOD']);
   const [company, setCompany] = useState<CompanyForm | null>(null);
   const [specialist, setSpecialist] = useState<ExpertForm[] | null>(null);
@@ -45,7 +45,7 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
   const [provinces, setProvinces] = useState<Ubigeo[]>([]);
   const [districts, setDistricts] = useState<Ubigeo[]>([]);
   const [isUniqueCorp, setIsUniqueCorp] = useState(true);
-  const stages = useMemo(() => (listStage ? listStage : []), [listStage]);
+  // const stages = useMemo(() => (listStage ? listStage : []), [listStage]);
   const refDescriptioProject = useRef<HTMLDivElement>(null);
   const refDescriptionCompany = useRef<HTMLDivElement>(null);
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -148,7 +148,7 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
 
   const successfulShipment = () => {
     onSave?.();
-    setIsOn(false);
+    // setIsOn(false);
     setIsOpenModal(false);
     reset();
   };
@@ -158,7 +158,7 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
     reset({});
     setDistricts([]);
     setProvinces([]);
-    setIsOn(false);
+    // setIsOn(false);
     setIsUniqueCorp(true);
     setIsOpenModal(false);
   };
@@ -167,10 +167,10 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
     ref.current?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const toggleSwitch = () => {
-    setIsOn(!isOn);
-    setValue('unique', !isOn);
-  };
+  // const toggleSwitch = () => {
+  //   setIsOn(!isOn);
+  //   setValue('unique', !isOn);
+  // };
 
   const toggleSwitchCorp = () => {
     setIsUniqueCorp(!isUniqueCorp);

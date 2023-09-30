@@ -30,7 +30,6 @@ import {
 } from '../../../../utils/pdfReportFunctions';
 import useListUsers from '../../../../hooks/useListUsers';
 import { validateWhiteSpace } from '../../../../utils/customValidatesForm';
-import ButtonDelete from '../../button/ButtonDelete';
 import { motion } from 'framer-motion';
 import Portal from '../../../portal/Portal';
 import { dropIn } from '../../../../animations/animations';

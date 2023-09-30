@@ -59,16 +59,16 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
   );
   const areAuthorizedUsers = isAuthorizedMod || isAuthorizedUser;
 
-  const getTimeOut = () => {
-    const assignedAt = new Date();
-    const untilDate = subTask.users.at(0)?.untilDate;
+  // const getTimeOut = () => {
+  //   const assignedAt = new Date();
+  //   const untilDate = subTask.users.at(0)?.untilDate;
 
-    if (!assignedAt || !untilDate) return 0;
-    const untilDateTime =
-      new Date(untilDate).getTime() - new Date(assignedAt).getTime();
-    const transformToHours = Math.floor(untilDateTime / 1000 / 60 / 60);
-    return transformToHours;
-  };
+  //   if (!assignedAt || !untilDate) return 0;
+  //   const untilDateTime =
+  //     new Date(untilDate).getTime() - new Date(assignedAt).getTime();
+  //   const transformToHours = Math.floor(untilDateTime / 1000 / 60 / 60);
+  //   return transformToHours;
+  // };
 
   const handlePorcentage = (e: FocusEvent<HTMLInputElement>) => {
     const { value, name } = e.target;

@@ -11,16 +11,16 @@ import {
   ConsortiumForm,
   ExpertForm,
   ProjectForm,
-  Ubigeo,
+  // Ubigeo,
 } from '../../../types/types';
-import {
-  validateCorrectTyping,
-  validateWhiteSpace,
-} from '../../../utils/customValidatesForm';
-import { RefObject, useEffect, useRef, useState } from 'react';
+// import {
+//   validateCorrectTyping,
+//   validateWhiteSpace,
+// } from '../../../utils/customValidatesForm';
+import { useRef, useState } from 'react';
 import useListUsers from '../../../hooks/useListUsers';
-import { axiosInstance } from '../../../services/axiosInstance';
-import { _date } from '../../../utils/formatDate';
+// import { axiosInstance } from '../../../services/axiosInstance';
+// import { _date } from '../../../utils/formatDate';
 
 const GeneralData = () => {
   const { users: coordinators } = useListUsers(['ADMIN', 'MOD']);
@@ -31,15 +31,15 @@ const GeneralData = () => {
   const [isUniqueCorp, setIsUniqueCorp] = useState(true);
   const refDescriptioProject = useRef<HTMLDivElement>(null);
   const refDescriptionCompany = useRef<HTMLDivElement>(null);
-  const [isOpenModal, setIsOpenModal] = useState(false);
-  const [project, setProject] = useState<ProjectForm | null>(null);
-  const [typeSpecialityId, setTypeSpecialityId] = useState<number | null>(null);
+  // const [isOpenModal, setIsOpenModal] = useState(false);
+  const [project] = useState<ProjectForm | null>(null);
+  const [typeSpecialityId] = useState<number | null>(null);
   const {
     handleSubmit,
     register,
-    setValue,
-    reset,
-    formState: { errors },
+    // setValue,
+    // reset,
+    // formState: { errors },
   } = useForm<ProjectForm>();
   // const handleIsOpen = useRef<Subscription>(new Subscription());
   // useEffect(() => {
@@ -72,9 +72,9 @@ const GeneralData = () => {
   //   };
   // }, [setValue]);
 
-  const handleClickScroll = (ref: RefObject<HTMLDivElement>) => {
-    ref.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  // const handleClickScroll = (ref: RefObject<HTMLDivElement>) => {
+  //   ref.current?.scrollIntoView({ behavior: 'smooth' });
+  // };
   const onSubmit: SubmitHandler<ProjectForm> = values => {
     // console.log(values);
 
@@ -98,12 +98,12 @@ const GeneralData = () => {
     //   axiosInstance.post('projects', _data).then(successfulShipment);
     // }
   };
-  const successfulShipment = () => {
-    // onSave?.();
-    // setIsOn(false);
-    setIsOpenModal(false);
-    reset();
-  };
+  // const successfulShipment = () => {
+  //   // onSave?.();
+  //   // setIsOn(false);
+  //   setIsOpenModal(false);
+  //   reset();
+  // };
   const toggleSwitchCorp = () => {
     setIsUniqueCorp(!isUniqueCorp);
     isUniqueCorp ? setCompany(null) : setConsortium(null);

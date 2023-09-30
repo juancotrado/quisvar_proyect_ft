@@ -6,7 +6,6 @@ import { useState } from 'react';
 import Button from './Button';
 import { dropIn } from '../../../animations/animations';
 import Portal from '../../portal/Portal';
-import { Input } from '../..';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import InputText from '../Input/Input';

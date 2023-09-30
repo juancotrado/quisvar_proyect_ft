@@ -32,7 +32,9 @@
   --register-height: 70vh;
   --color-disabled: #e9edf5;
   --color-pass: #e1fcef;
-  --color-ProjectAreaLvl: #dbf0f9;
+  --color-ProjectLvl: #ff00002f;
+  --color-includeLvl: #dbf0f9;
+  --color-AreaLvl: #70ad474f;
   --color-SubtaskLvl: #fff;
 }
 

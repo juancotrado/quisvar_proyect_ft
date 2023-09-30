@@ -86,15 +86,16 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
       function: handleDuplicate,
     },
   ];
-  const isAreaOrProject = data.isArea || data.isProject;
   const style = {
     borderLeft: `thick solid ${colors[data.level]}`,
   };
   return (
     <div
       className={`projectLevel-sub-list-item ${
-        isAreaOrProject && 'dropdownLevel-ProjectArea'
-      } ${data?.subTasks?.length && 'dropdownLevel-Subtask'}`}
+        data.isArea && 'dropdownLevel-Area'
+      } ${data.isInclude && 'dropdownLevel-Include'} ${
+        data?.subTasks?.length && 'dropdownLevel-Subtask'
+      }  ${data.isProject && 'dropdownLevel-Project'}`}
       style={style}
     >
       <div className="projectLevel-contain">

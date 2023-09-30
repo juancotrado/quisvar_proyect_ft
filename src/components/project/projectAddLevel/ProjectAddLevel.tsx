@@ -20,6 +20,7 @@ interface DataForm {
   name: string;
   isProject: boolean;
   userId: number;
+  typeItem: string;
 }
 interface ProjectAddLevelProps {
   data: Level;
@@ -44,7 +45,8 @@ const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
 
   const onSubmitData: SubmitHandler<DataForm> = async body => {
     const { id, stagesId } = data;
-    body = { ...body, rootId: firstLevel ? 0 : id, stagesId };
+    const typeItem = localStorage.getItem('typeItem') ?? 'NUM';
+    body = { ...body, rootId: firstLevel ? 0 : id, stagesId, typeItem };
     if (addLevel === 'area') {
       body = { ...body, isProject: true };
     }

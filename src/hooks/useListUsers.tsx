@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
-import { User, UserRoleType } from '../types/types';
+import { UserRoleType } from '../types/types';
 
 const useListUsers = (roleType: UserRoleType[] | null = null) => {
   const { listUsers } = useSelector((state: RootState) => state);

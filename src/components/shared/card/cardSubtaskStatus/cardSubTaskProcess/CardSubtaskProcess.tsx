@@ -1,5 +1,10 @@
-import { FocusEvent, useEffect, useMemo, useState } from 'react';
-import { DataFeedback, Files, SubTask } from '../../../../../types/types';
+import { FocusEvent, useContext, useEffect, useMemo, useState } from 'react';
+import {
+  DataFeedback,
+  DataUser,
+  Files,
+  SubTask,
+} from '../../../../../types/types';
 import SubtaskFile from '../../../../subtasks/subtaskFiles/SubtaskFile';
 import SubtaskUploadFiles from '../../../../subtasks/subtaskUploadFiles/SubtaskUploadFiles';
 import SubtaskChangeStatusBtn from '../../../../subtasks/subtaskChangeStatusBtn/SubtaskChangeStatusBtn';
@@ -12,6 +17,11 @@ import SubtaskUsers from '../../../../subtasks/subtaskUsers/SubtaskUsers';
 import LoaderText from '../../../loaderText/LoaderText';
 import useUserPorcetage from '../../../../../hooks/useUserPorcetage';
 import SubtaskInfoHistory from '../../../../subtasks/subtaskInfoHistory/SubtaskInfoHistory';
+import DropDownSimple from '../../../select/DropDownSimple';
+import useListUsers from '../../../../../hooks/useListUsers';
+import { axiosInstance } from '../../../../../services/axiosInstance';
+import { SocketContext } from '../../../../../context/SocketContex';
+import { useParams } from 'react-router-dom';
 interface CardSubtaskProcess {
   subTask: SubTask;
 }
@@ -21,6 +31,8 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
   const { userSession, modAuthProject } = useSelector(
     (state: RootState) => state
   );
+  const socket = useContext(SocketContext);
+  const { stageId } = useParams();
 
   const { status } = subTask;
   const [dataFeedback, setDataFeedback] = useState<DataFeedback | null>(null);
@@ -58,7 +70,20 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
     ({ user }) => user.id === userSession?.id
   );
   const areAuthorizedUsers = isAuthorizedMod || isAuthorizedUser;
+  const { users } = useListUsers();
 
+  const handleAddUser = (user: DataUser) => {
+    axiosInstance
+      .patch(`/subtasks/assignUser/${subTask.id}/${stageId}`, [user])
+      .then(res => {
+        socket.emit('client:update-projectAndTask', res.data);
+      });
+    // if (!getId) setUsersData([...usersData, user]);
+  };
+  // const handleRemoveUser = (user: DataUser) => {
+  //   const filterValue = usersData.filter(list => list.id !== user.id);
+  //   setUsersData(filterValue);
+  // };
   const getTimeOut = () => {
     const assignedAt = new Date();
     const untilDate = subTask.users.at(0)?.untilDate;
@@ -166,13 +191,33 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
             getDataFeedback={getDataFeedback}
           />
         )}
+
+        {isAuthorizedMod && status === 'PROCESS' && (
+          <div className="cardSubtaskHold-users-contain">
+            <h4 className="cardSubtask-title-information">
+              <figure className="cardSubtask-figure">
+                <img src="/svg/asig-user.svg" alt="W3Schools" />
+              </figure>
+              Asignar Usuario:
+            </h4>
+            <DropDownSimple
+              data={users}
+              textField="name"
+              itemKey="id"
+              valueInput={(name, id) =>
+                handleAddUser({ id: parseInt(id), name })
+              }
+              placeholder="Seleccione Usuario"
+            />
+          </div>
+        )}
         {isAuthorizedMod && status !== 'INREVIEW' && (
           <LoaderText text="Esperando entregables..." />
         )}
+
         {isAuthorizedUser && status === 'INREVIEW' && (
           <LoaderText text="Esperando aprobación..." />
         )}
-
         {areAuthorizedUsers && (
           <div className="cardSubtaskProcess-btns">
             {status !== 'INREVIEW' && isAuthorizedUser && (
@@ -213,6 +258,7 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
                   option="ASIG"
                   type="approved"
                   subtaskId={subTask.id}
+                  dataFeedback={dataFeedback}
                   subtaskStatus={status}
                   porcentagesForUser={Object.values(porcetageForUser)}
                   text="Aprobar"

@@ -1,4 +1,4 @@
-import { FocusEvent, MouseEvent, useEffect, useState } from 'react';
+import { FocusEvent, MouseEvent, useEffect, useRef, useState } from 'react';
 import {
   DataSidebarSpeciality,
   typeSidebarSpecility,
@@ -13,7 +13,11 @@ import {
 } from '../../../../utils/customValidatesForm';
 import colors from '../../../../utils/json/colorSidebar.json';
 
-import { isOpenCardRegisteProject$ } from '../../../../services/sharingSubject';
+import {
+  isOpenCardRegisteProject$,
+  toggle$,
+} from '../../../../services/sharingSubject';
+import { Subscription } from 'rxjs';
 
 interface SidebarSpecialityLvlListProps {
   data: DataSidebarSpeciality;
@@ -47,6 +51,17 @@ const SidebarSpecialityLvlList = ({
   useEffect(() => {
     setFormData({ name: data.name ?? '', cod: data.cod ?? '' });
   }, [data.cod, data.name]);
+
+  const handleToggleRef = useRef<Subscription>(new Subscription());
+
+  useEffect(() => {
+    handleToggleRef.current = toggle$.getSubject.subscribe((value: boolean) => {
+      setOpenEditData(value);
+    });
+    return () => {
+      handleToggleRef.current.unsubscribe();
+    };
+  }, []);
 
   const handleBlurInput = (e: FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

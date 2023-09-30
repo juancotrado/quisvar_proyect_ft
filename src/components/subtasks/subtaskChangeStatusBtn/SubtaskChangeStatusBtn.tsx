@@ -58,7 +58,7 @@ const SubtaskChangeStatusBtn = ({
     const body = getStatus(option, role, subtaskStatus);
     if (isAssignedAdminTask) {
       const resStatus = await axiosInstance.patch(
-        `/subtasks/status/${subtaskId}`,
+        `/subtasks/status/${subtaskId}/${stageId}`,
         { status: 'DONE' }
       );
       socket.emit('client:update-subTask', resStatus.data);
@@ -108,7 +108,6 @@ const SubtaskChangeStatusBtn = ({
   //   await handleEditStatus();
   // };
   const handleSendToReview = async () => {
-    console.log(files);
     if (!files?.length)
       return SnackbarUtilities.warning(
         'Asegurese de subir una archivo  antes.'
@@ -165,11 +164,27 @@ const SubtaskChangeStatusBtn = ({
   const handleApproved = async () => {
     const message = validateValuesPorcentage();
     if (message) return SnackbarUtilities.warning(message);
+    if (!porcentagesForUser) return;
+    const sumOfPercentages = porcentagesForUser.reduce(
+      (acc, { percentage }) => percentage + acc,
+      0
+    );
+    console.log({ message, sumOfPercentages });
     await axiosInstance.patch(
       `/subtasks/percentage/${subtaskId}`,
       porcentagesForUser
     );
-    await handleEditStatus();
+    if (sumOfPercentages === 100) {
+      await handleEditStatus();
+    } else if (sumOfPercentages < 100) {
+      const resStatus = await axiosInstance.patch(
+        `/subtasks/status/${subtaskId}/${stageId}`,
+        { status: 'PROCESS' }
+      );
+      await axiosInstance.patch(`/feedbacks`, dataFeedback);
+      socket.emit('client:update-projectAndTask', resStatus.data);
+      SnackbarUtilities.success('Se realizo la operación con exito');
+    }
   };
   const selectFuctionType = () => {
     if (isDisabled) return;

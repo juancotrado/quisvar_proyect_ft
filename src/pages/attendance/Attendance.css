@@ -190,3 +190,9 @@
 .attendance-labels {
   font-weight: bold;
 }
+.attendance-btn-screenshot {
+  width: 4.5rem;
+  border-radius: var(--radius-input);
+  background-color: var(--color-primary);
+  color: white;
+}

@@ -89,6 +89,7 @@ const DropDownSimple = ({
                 onChangeInput?.(event);
               }}
               value={query}
+              onBlur={() => setQuery('')}
               {...otherProps}
             />
             <div onClick={toogleIsActive} className="dropdown-icon">

@@ -1,4 +1,11 @@
-import { ChangeEvent, useContext, useEffect, useMemo, useState } from 'react';
+import {
+  ChangeEvent,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  useRef,
+} from 'react';
 import { AttendanceList, Input, Legend } from '../../components';
 import './Attendance.css';
 import { RootState } from '../../store';
@@ -10,6 +17,7 @@ import { AttendanceRange, ListAttendance, User } from '../../types/types';
 import { SocketContext } from '../../context/SocketContex';
 import { generateReportRange } from './GenerateReportRange';
 import { generateReportDaily } from './GenerateReportDaily';
+import html2canvas from 'html2canvas';
 interface sendItemsProps {
   usersId: number;
   status: string;
@@ -34,6 +42,20 @@ const Attendance = () => {
   const { listUsers: users } = useSelector((state: RootState) => state);
   const socket = useContext(SocketContext);
 
+  const componentRef = useRef(null);
+
+  const handleCapture = () => {
+    const currentComponent = componentRef.current;
+    if (currentComponent) {
+      html2canvas(currentComponent).then(canvas => {
+        const imgData = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = imgData;
+        link.download = 'captura.png';
+        link.click();
+      });
+    }
+  };
   const handleRadioChange = (status: string, usersId: number) => {
     const findId = sendItems.find(item => item.usersId === usersId);
     if (findId) {
@@ -55,12 +77,18 @@ const Attendance = () => {
   }, [callList?.users, users]);
   useEffect(() => {
     getTodayData();
+    deleteLists();
   }, []);
   const getTodayData = async () => {
     const res = await axiosInstance.get(
       `/list/attendance/?startDate=${_date(today)}`
     );
     setCallLists(res.data);
+    return res.data;
+  };
+  // borrar listas de ayer que no tengan asuarios
+  const deleteLists = async () => {
+    const res = await axiosInstance.delete('/list');
     return res.data;
   };
   const generateAttendance = () => {
@@ -179,7 +207,7 @@ const Attendance = () => {
       </span>
       {callList && (
         <>
-          <div className="attendance-card-container">
+          <div className="attendance-card-container" ref={componentRef}>
             <div className="attendance-header">
               <div className="attendance-list-text">ITEM</div>
               <div className="attendance-list-text">CUARTOS</div>
@@ -218,6 +246,13 @@ const Attendance = () => {
                 className="attendance-btn-save"
               />
             </div>
+          )}
+          {callList.users.length > 0 && (
+            <Button
+              text="Captura"
+              onClick={handleCapture}
+              className="attendance-btn-screenshot"
+            />
           )}
           <div className="attendance-info-area">
             <Legend />

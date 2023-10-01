@@ -26,34 +26,35 @@ const MoreInfo = ({ data }: MoreInfoProps) => {
   }, []);
   const handleReports = () => {
     axiosInstance.get(`/projects/${projectId}`).then(res => {
+      console.log(res.data);
       const {
         department,
         district,
         province,
-        startDate,
-        untilDate,
+        // startDate,
+        // untilDate,
         description,
         CUI,
       } = res.data;
       const { firstName, lastName } = res.data.moderator.profile;
-      const initialDate = formatDate(new Date(startDate), {
-        day: 'numeric',
-        weekday: 'long',
-        month: 'long',
-        year: 'numeric',
-      });
-      const finishDate = formatDate(new Date(untilDate), {
-        day: 'numeric',
-        weekday: 'long',
-        month: 'long',
-        year: 'numeric',
-      });
+      // const initialDate = formatDate(new Date(startDate), {
+      //   day: 'numeric',
+      //   weekday: 'long',
+      //   month: 'long',
+      //   year: 'numeric',
+      // });
+      // const finishDate = formatDate(new Date(untilDate), {
+      //   day: 'numeric',
+      //   weekday: 'long',
+      //   month: 'long',
+      //   year: 'numeric',
+      // });
       const infoData = {
         department,
         district,
         province,
-        initialDate,
-        finishDate,
+        initialDate: 'Fecha de inicio',
+        finishDate: 'fecha Final',
         description,
         CUI,
         fullName: firstName + ' ' + lastName,

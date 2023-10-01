@@ -71,7 +71,13 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
   );
   const areAuthorizedUsers = isAuthorizedMod || isAuthorizedUser;
   const { users } = useListUsers();
-
+  const handleAddUser = (user: DataUser) => {
+    axiosInstance
+      .patch(`/subtasks/assignUser/${subTask.id}/${stageId}`, [user])
+      .then(res => {
+        socket.emit('client:update-projectAndTask', res.data);
+      });
+  };
   // const getTimeOut = () => {
   //   const assignedAt = new Date();
   //   const untilDate = subTask.users.at(0)?.untilDate;
@@ -192,9 +198,9 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
               data={users}
               textField="name"
               itemKey="id"
-              // valueInput={(name, id) =>
-              //   handleAddUser({ id: parseInt(id), name })
-              // }
+              valueInput={(name, id) =>
+                handleAddUser({ id: parseInt(id), name })
+              }
               placeholder="Seleccione Usuario"
             />
           </div>

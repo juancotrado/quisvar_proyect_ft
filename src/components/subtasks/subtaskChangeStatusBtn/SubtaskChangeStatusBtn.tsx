@@ -164,12 +164,15 @@ const SubtaskChangeStatusBtn = ({
   const handleApproved = async () => {
     const message = validateValuesPorcentage();
     if (message) return SnackbarUtilities.warning(message);
+    if (!dataFeedback?.comment)
+      return SnackbarUtilities.warning(
+        'Asegurese de escribir un comentario antes'
+      );
     if (!porcentagesForUser) return;
     const sumOfPercentages = porcentagesForUser.reduce(
       (acc, { percentage }) => percentage + acc,
       0
     );
-    console.log({ message, sumOfPercentages });
     await axiosInstance.patch(
       `/subtasks/percentage/${subtaskId}`,
       porcentagesForUser

@@ -1,5 +1,4 @@
 import * as ExcelJS from 'exceljs';
-import colors from '../json/colorsExcel.json';
 
 import { Level } from '../../types/types';
 import {
@@ -21,34 +20,6 @@ interface InfoDataReport {
   description: string;
   CUI: string;
 }
-// const reportLvl = {
-//   indexTasks: 'Area',
-//   areas: 'proyecto',
-//   tasks: 'Nivel 1',
-//   tasks_2: 'Nivel2',
-//   tasks_3: 'nivel3',
-// };
-// const reportColorFirst = {
-//   areas: 'D9E1F2',
-//   indexTasks: 'FF666F88',
-//   tasks: 'FF788199',
-//   tasks_2: 'FF8990A2',
-//   tasks_3: 'FFA3A8B7',
-// };
-// const reportColorSecond = {
-//   areas: 'FF666F88',
-//   indexTasks: 'FF788199',
-//   tasks: 'FF8990A2',
-//   tasks_2: 'FFA3A8B7',
-//   tasks_3: 'FFB5BAC9',
-// };
-// const reporTitle = {
-//   areas: 'INFORME PARCIAL DEL PROYECTO',
-//   indexTasks: 'INFORME PARCIAL DEL AREA',
-//   tasks: 'INFORME PARCIAL DEL NIVEL',
-//   tasks_2: 'INFORME PARCIAL DEL NIVEL',
-//   tasks_3: 'INFORME PARCIAL DEL PROYECTO',
-// };
 const reportCoordinator = {
   areas: 'CC  COORDINADOR DEL PROYECTO : ',
   indexTasks: 'CC  COORDINADOR DEL AREA : ',
@@ -66,7 +37,6 @@ const excelSimpleReport = async (
   const workbook = new ExcelJS.Workbook();
   await workbook.xlsx.load(buffer);
   const wk = workbook.getWorksheet('REPORTE');
-
   wk.getCell(
     'C1'
   ).value = `INFORME PARCIAL DEL PROYECTO: ${infoData.description}-${infoData.CUI} `;
@@ -78,38 +48,8 @@ const excelSimpleReport = async (
   wk.getCell('D11').value = infoData.initialDate;
   wk.getCell('D12').value = infoData.finishDate;
   let rowNumber = 21;
-  //   const { LIQUIDATION } = data.details;
-  //   //   const totalProcesstask = PROCESS + DENIED + INREVIEW;
-  //   const projectRow = wk.insertRow(rowNumber, [
-  //     '',
-  //     reportLvl[option],
-  //     data.name,
-  //     data.balance,
-  //     data.spending,
-  //     data.price,
-  //     data.percentage,
-  //     data.days,
-  //     data.total,
-  //     LIQUIDATION,
-  //   ]);
-  //   rowNumber++;
-  //   fillRows(projectRow, 2, 10, colors[0]);
-  //   borderProjectStyle(projectRow);
-  //   formatExcelStyle({ row: projectRow, positions: 'DEF', format: moneyFormat });
-  //   fontExcelStyle({
-  //     row: projectRow,
-  //     positions: 'BCDEFGHIJ',
-  //     color: 'FF000000',
-  //     isBold: true,
-  //     size: 9,
-  //     name: 'Century Gothic',
-  //   });
-  //   const dataReport = data[option] as Report[];
-  //   if (data.nextLevel) {
   rowNumber = recursionProject(wk, [data], rowNumber);
-  //   }
   wk.pageSetup.printArea = 'A1:K' + (rowNumber + 3);
-
   exportExcel('project-report', workbook);
 };
 
@@ -119,12 +59,10 @@ const recursionProject = (
   rowNumber: number
 ) => {
   dataRows.forEach(dataRow => {
-    // const { DONE, LIQUIDATION } = dataRow.details;
     const indexLevel = dataRow.level || 0;
-
     const row = wk.insertRow(rowNumber, [
       null,
-      dataRow.item,
+      dataRow.level ? '  '.repeat(dataRow.level) + dataRow.item : null,
       dataRow.name,
       dataRow.balance,
       dataRow.spending,
@@ -134,15 +72,22 @@ const recursionProject = (
       dataRow.total,
       indexLevel,
     ]);
+    const color = dataRow.isProject
+      ? 'ffd0d0'
+      : dataRow.isArea
+      ? 'd3e6c6'
+      : dataRow.isInclude
+      ? 'dbf0f9'
+      : 'f3f6fc';
     borderProjectStyle(row);
-    fillRows(row, 2, 10, colors[indexLevel]);
+    fillRows(row, 2, 10, color);
     formatExcelStyle({ row, positions: 'DEF', format: moneyFormat });
     formatExcelStyle({ row, positions: 'G', format: '0%' });
     fontExcelStyle({
       row,
       positions: 'BCDEFGHIJ',
-      color: 'FFFFFF',
-      isBold: true,
+      color: '000000',
+      isBold: false,
       size: 8,
       name: 'Century Gothic',
     });

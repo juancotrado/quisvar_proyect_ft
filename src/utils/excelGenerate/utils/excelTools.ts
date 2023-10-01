@@ -16,6 +16,10 @@ interface formatExcelStyleProp {
   positions: string;
   format: string;
 }
+interface borderExcelStyleProp {
+  row: ExcelJS.Row;
+  positions: string;
+}
 export const fillRows = (
   row: ExcelJS.Row,
   posInit: number,
@@ -35,22 +39,138 @@ export const borderProjectStyle = (row: ExcelJS.Row) => {
   row.getCell('B').border = {
     left: { style: 'medium' },
     right: { style: 'medium' },
+    top: {
+      style: 'thin',
+      color: {
+        argb: 'ffffff',
+      },
+    },
+    bottom: {
+      style: 'thin',
+      color: {
+        argb: 'ffffff',
+      },
+    },
+  };
+  row.getCell('C').border = {
+    top: {
+      style: 'thin',
+      color: {
+        argb: 'ffffff',
+      },
+    },
+    bottom: {
+      style: 'thin',
+      color: {
+        argb: 'ffffff',
+      },
+    },
   };
   row.getCell('D').border = {
     left: { style: 'thin' },
     right: { style: 'thin' },
+    top: {
+      style: 'thin',
+      color: {
+        argb: 'ffffff',
+      },
+    },
+    bottom: {
+      style: 'thin',
+      color: {
+        argb: 'ffffff',
+      },
+    },
+  };
+  row.getCell('E').border = {
+    top: {
+      style: 'thin',
+      color: {
+        argb: 'ffffff',
+      },
+    },
+    bottom: {
+      style: 'thin',
+      color: {
+        argb: 'ffffff',
+      },
+    },
   };
   row.getCell('F').border = {
     left: { style: 'thin' },
     right: { style: 'thin' },
+    top: {
+      style: 'thin',
+      color: {
+        argb: 'ffffff',
+      },
+    },
+    bottom: {
+      style: 'thin',
+      color: {
+        argb: 'ffffff',
+      },
+    },
+  };
+  row.getCell('G').border = {
+    top: {
+      style: 'thin',
+      color: {
+        argb: 'ffffff',
+      },
+    },
+    bottom: {
+      style: 'thin',
+      color: {
+        argb: 'ffffff',
+      },
+    },
   };
   row.getCell('H').border = {
     left: { style: 'thin' },
     right: { style: 'thin' },
+    top: {
+      style: 'thin',
+      color: {
+        argb: 'ffffff',
+      },
+    },
+    bottom: {
+      style: 'thin',
+      color: {
+        argb: 'ffffff',
+      },
+    },
+  };
+  row.getCell('I').border = {
+    top: {
+      style: 'thin',
+      color: {
+        argb: 'ffffff',
+      },
+    },
+    bottom: {
+      style: 'thin',
+      color: {
+        argb: 'ffffff',
+      },
+    },
   };
   row.getCell('J').border = {
     left: { style: 'thin' },
     right: { style: 'medium' },
+    top: {
+      style: 'thin',
+      color: {
+        argb: 'ffffff',
+      },
+    },
+    bottom: {
+      style: 'thin',
+      color: {
+        argb: 'ffffff',
+      },
+    },
   };
 };
 export const borderReportStyle = (row: ExcelJS.Row) => {
@@ -84,6 +204,15 @@ export const formatExcelStyle = ({
   const splitPositions = positions.split('');
   splitPositions.forEach(pos => {
     row.getCell(pos).numFmt = format;
+  });
+};
+export const borderExcelStyle = ({ row, positions }: borderExcelStyleProp) => {
+  const splitPositions = positions.split('');
+  splitPositions.forEach(pos => {
+    row.getCell(pos).border = {
+      top: { style: 'thin' },
+      bottom: { style: 'thin' },
+    };
   });
 };
 

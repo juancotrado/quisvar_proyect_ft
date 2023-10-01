@@ -72,3 +72,11 @@
   flex: 1;
   border-bottom: 1px solid #80808054;
 }
+
+.budgetsPage-more-options {
+  display: flex;
+  gap: 2rem;
+  position: absolute;
+
+  right: 40px;
+}

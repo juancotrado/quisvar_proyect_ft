@@ -36,8 +36,16 @@
   align-items: center;
 }
 
-.dropdownLevel-ProjectArea {
-  background-color: var(--color-ProjectAreaLvl);
+.dropdownLevel-Project {
+  background-color: var(--color-ProjectLvl);
+}
+
+.dropdownLevel-Include {
+  background-color: var(--color-includeLvl);
+}
+
+.dropdownLevel-Area {
+  background-color: var(--color-AreaLvl);
 }
 
 .dropdownLevel-Subtask {
@@ -88,11 +96,10 @@
 .projectLevel-sub-list-name {
   color: var(--gray-900, #171c26);
   text-transform: uppercase;
-  font-size: 0.875rem;
+  font-size: 0.7rem;
   font-style: normal;
   font-weight: 600;
   line-height: 1.25rem;
-  /* 142.857% */
   letter-spacing: 0.0175rem;
 }
 

@@ -266,12 +266,15 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
 
 const AttendancePdf = ({ data, daily }: PDFGeneratorProps) => {
   //   const [showPreview, setShowPreview] = useState(false);
+  const filterdUsers: AttendanceRange[] = data.filter(
+    user => user.list.length !== 0
+  );
   return (
     <div className="pdf-btn-area-view">
       {/* {showPreview ? ( */}
       <div>
         <PDFViewer width="1000" height="600">
-          {generatePDF({ data, daily }, { size: 'A4' })}
+          {generatePDF({ data: filterdUsers, daily }, { size: 'A4' })}
         </PDFViewer>
         {/* <button onClick={() => setShowPreview(false)}>
             Ocultar Vista Previa

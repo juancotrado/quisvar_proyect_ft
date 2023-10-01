@@ -158,16 +158,16 @@ const Attendance = () => {
     );
     const newData: AttendanceRange[] = response.data;
     // console.log(newData);
-    setExportPdf(newData);
+    // setExportPdf(newData);
+    const patito = { isOpen: true, data: newData, daily: date };
+    isOpenCardViewPdf$.setSubject = patito;
     // generateReportDaily({
     //   startDate: date,
     //   printData: newData,
     // });
   };
   const handleOpenPreView = () => {
-    exportDaily().then(() => {
-      isOpenCardViewPdf$.setSubject = true;
-    });
+    exportDaily();
   };
   return (
     <div className="attendance container">
@@ -315,7 +315,7 @@ const Attendance = () => {
           <h1>Seleccione una Lista</h1>
         </div>
       )}
-      {exportPDF && <CardViewPdf exportPDF={exportPDF} daily={date} />}
+      <CardViewPdf />
     </div>
   );
 };

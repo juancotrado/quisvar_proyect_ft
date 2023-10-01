@@ -1,5 +1,9 @@
 import SubjectManager from '../models/subjectManager';
-import { DataSidebarSpeciality, SubTask } from '../types/types';
+import {
+  AttendanceRange,
+  DataSidebarSpeciality,
+  SubTask,
+} from '../types/types';
 
 interface CardRegisteProject {
   isOpen: boolean;
@@ -11,6 +15,11 @@ interface CardRegisteTask {
   levelId: number | null;
   task?: SubTask;
 }
+interface CardViewProps {
+  isOpen: boolean;
+  data: AttendanceRange[];
+  daily?: string;
+}
 
 export const loader$ = new SubjectManager<boolean>();
 export const toggle$ = new SubjectManager<boolean>();
@@ -18,7 +27,7 @@ export const isOpenModal$ = new SubjectManager<boolean>();
 export const isGenerateExcelReport$ = new SubjectManager<string>();
 export const isOpenCardRegisterUser$ = new SubjectManager<boolean>();
 export const isOpenCardGenerateReport$ = new SubjectManager<boolean>();
-export const isOpenCardViewPdf$ = new SubjectManager<boolean>();
+export const isOpenCardViewPdf$ = new SubjectManager<CardViewProps>();
 export const isOpenCardFiles$ = new SubjectManager<boolean>();
 export const isOpenViewDocs$ = new SubjectManager<boolean>();
 export const isOpenCardRegisteProject$ =

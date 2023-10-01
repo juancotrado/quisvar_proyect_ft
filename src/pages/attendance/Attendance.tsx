@@ -6,7 +6,7 @@ import {
   useState,
   useRef,
 } from 'react';
-import { AttendanceList, Input, Legend } from '../../components';
+import { AttendanceList, CardViewPdf, Input, Legend } from '../../components';
 import './Attendance.css';
 import { RootState } from '../../store';
 import { useSelector } from 'react-redux';
@@ -16,8 +16,9 @@ import { _date } from '../../utils/formatDate';
 import { AttendanceRange, ListAttendance, User } from '../../types/types';
 import { SocketContext } from '../../context/SocketContex';
 import { generateReportRange } from './GenerateReportRange';
-import { generateReportDaily } from './GenerateReportDaily';
-import html2canvas from 'html2canvas';
+// import { generateReportDaily } from './GenerateReportDaily';
+// import html2canvas from 'html2canvas';
+import { isOpenCardViewPdf$ } from '../../services/sharingSubject';
 interface sendItemsProps {
   usersId: number;
   status: string;
@@ -38,24 +39,25 @@ const Attendance = () => {
   const [date, setDate] = useState(_date(today));
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [exportPDF, setExportPdf] = useState<AttendanceRange[]>();
 
   const { listUsers: users } = useSelector((state: RootState) => state);
   const socket = useContext(SocketContext);
 
   const componentRef = useRef(null);
 
-  const handleCapture = () => {
-    const currentComponent = componentRef.current;
-    if (currentComponent) {
-      html2canvas(currentComponent).then(canvas => {
-        const imgData = canvas.toDataURL('image/png');
-        const link = document.createElement('a');
-        link.href = imgData;
-        link.download = 'captura.png';
-        link.click();
-      });
-    }
-  };
+  // const handleCapture = () => {
+  //   const currentComponent = componentRef.current;
+  //   if (currentComponent) {
+  //     html2canvas(currentComponent).then(canvas => {
+  //       const imgData = canvas.toDataURL('image/png');
+  //       const link = document.createElement('a');
+  //       link.href = imgData;
+  //       link.download = 'captura.png';
+  //       link.click();
+  //     });
+  //   }
+  // };
   const handleRadioChange = (status: string, usersId: number) => {
     const findId = sendItems.find(item => item.usersId === usersId);
     if (findId) {
@@ -67,7 +69,7 @@ const Attendance = () => {
       setSendItems([...sendItems, { usersId, status }]);
     }
   };
-  console.log({ callLists });
+  // console.log({ callLists });
   const filterUsers = useMemo(() => {
     return callList?.users.length
       ? users?.filter(
@@ -142,6 +144,8 @@ const Attendance = () => {
       `/list/attendance/range/?startDate=${startDate}&endDate=${endDate}`
     );
     const newData: AttendanceRange[] = response.data;
+    // console.log(newData);
+    setExportPdf(newData);
     generateReportRange({
       startDate,
       endDate,
@@ -153,9 +157,16 @@ const Attendance = () => {
       `/list/attendance/range/?startDate=${date}&endDate=${date}`
     );
     const newData: AttendanceRange[] = response.data;
-    generateReportDaily({
-      startDate: date,
-      printData: newData,
+    // console.log(newData);
+    setExportPdf(newData);
+    // generateReportDaily({
+    //   startDate: date,
+    //   printData: newData,
+    // });
+  };
+  const handleOpenPreView = () => {
+    exportDaily().then(() => {
+      isOpenCardViewPdf$.setSubject = true;
     });
   };
   return (
@@ -247,24 +258,30 @@ const Attendance = () => {
               />
             </div>
           )}
-          {callList.users.length > 0 && (
+          {/* {callList.users.length > 0 && (
             <Button
               text="Captura"
               onClick={handleCapture}
               className="attendance-btn-screenshot"
             />
-          )}
+          )} */}
           <div className="attendance-info-area">
             <Legend />
             <div className="attendance-reports">
               <label className="attendance-labels">
                 Generar asistencia actual
               </label>
-              <Button
+              {/* <Button
                 text="Generar"
                 onClick={exportDaily}
                 className="attendance-btn-report"
+              /> */}
+              <Button
+                text="Vista Previa"
+                onClick={handleOpenPreView}
+                className="attendance-btn-preview"
               />
+
               <label className="attendance-labels">
                 Generar asistencia por fechas
               </label>
@@ -298,6 +315,7 @@ const Attendance = () => {
           <h1>Seleccione una Lista</h1>
         </div>
       )}
+      {exportPDF && <CardViewPdf exportPDF={exportPDF} daily={date} />}
     </div>
   );
 };

@@ -1,0 +1,316 @@
+import {
+  Document,
+  Page,
+  Text,
+  PDFDownloadLink,
+  View,
+  PDFViewer,
+} from '@react-pdf/renderer';
+import { useState } from 'react';
+import { AttendanceRange } from '../../../types/types';
+import './AttendancePdf.css';
+import { styles } from './styledComponents';
+
+export type TablesProps = {
+  descripcion: string | null;
+  encargados: string | null;
+};
+
+interface PDFGeneratorProps {
+  data: AttendanceRange[];
+  daily?: string;
+}
+interface ConfigProps {
+  size: 'A4' | 'A5';
+}
+const information = [
+  {
+    item: 1,
+    simbolo: 'P',
+    descripcion: 'Puntual (P)',
+    multa: 'S/0.00',
+    gerente: 'S/0.00',
+    color: '#87E4BD',
+  },
+  {
+    item: 2,
+    simbolo: 'T',
+    descripcion: 'Tardanza (T)',
+    multa: 'S/0.50',
+    gerente: 'S/1.00',
+    color: '#FFE17F',
+  },
+  {
+    item: 3,
+    simbolo: 'F',
+    descripcion: 'Falta simple (F)',
+    multa: 'S/10.00',
+    gerente: 'S/20.00',
+    color: '#F8C5C5',
+  },
+  {
+    item: 4,
+    simbolo: 'G',
+    descripcion: 'Falta grave (G)',
+    multa: 'S/20.00',
+    gerente: 'S/40.00',
+    color: '#F19191',
+  },
+  {
+    item: 5,
+    simbolo: 'M',
+    descripcion: 'Falta muy grave (G)',
+    multa: 'S/80.00',
+    gerente: 'S/160.00',
+    color: '#D2595B',
+  },
+  {
+    item: 6,
+    simbolo: 'L',
+    descripcion: 'Licencia o permiso (L)',
+    multa: 'S/0.00',
+    gerente: 'S/0.00',
+    color: '#83A8F0',
+  },
+];
+
+const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
+  const getStatus = (data: AttendanceRange) => {
+    const mapStates = {
+      PUNTUAL: 'P',
+      TARDE: 'T',
+      SIMPLE: 'F',
+      GRAVE: 'G',
+      MUY_GRAVE: 'M',
+      PERMISO: 'L',
+    };
+
+    const orderedStatus: string[] = [];
+
+    const orderCalls = [
+      'primer llamado',
+      'segundo llamado',
+      'tercero llamado',
+      'cuarto llamado',
+      'quinto llamado',
+      'sexto llamado',
+    ];
+
+    orderCalls.forEach(call => {
+      const estadoEncontrado = data.list.find(item => item.list.title === call);
+      if (estadoEncontrado) {
+        const inicialEstado =
+          (mapStates as Record<string, string>)[estadoEncontrado.status] || ' ';
+        orderedStatus.push(inicialEstado);
+      } else {
+        orderedStatus.push(' ');
+      }
+    });
+
+    return orderedStatus;
+  };
+  return (
+    <Document>
+      <Page
+        size={config?.size ?? 'A4'}
+        style={config?.size === 'A4' ? styles.page : styles.pageA5}
+      >
+        <View style={styles.table}>
+          <View style={{ ...styles.title, width: '100%' }}>
+            <Text style={styles.headers}>
+              LISTA DE ASISTENCIA DEL {value?.daily}
+            </Text>
+          </View>
+        </View>
+        <View style={styles.table}>
+          <View style={styles.tableRow}>
+            <View style={{ ...styles.tableCol, width: '5%' }}>
+              <Text style={styles.headers}>N°</Text>
+            </View>
+            <View style={{ ...styles.tableCol, width: '10%' }}>
+              <Text style={styles.headers}>CUARTOS</Text>
+            </View>
+            <View style={{ ...styles.tableCol, width: '22%' }}>
+              <Text style={styles.headers}>APELLIDOS Y NOMBRES</Text>
+            </View>
+            <View style={{ ...styles.tableCol, width: '10%' }}>
+              <Text style={styles.headers}>DNI</Text>
+            </View>
+            <View style={{ ...styles.tableCol, width: '10%' }}>
+              <Text style={styles.headers}>CELULAR</Text>
+            </View>
+            <View style={{ ...styles.tableCol, width: '8%' }}>
+              <Text style={styles.headers}>EQUIPO</Text>
+            </View>
+            <View style={{ ...styles.tableCol, width: '10%' }}>
+              <Text style={styles.headers}>USUARIO</Text>
+            </View>
+            <View style={{ ...styles.tableCol, width: '25%' }}>
+              <Text style={styles.headers}>ASISTENCIAS</Text>
+            </View>
+          </View>
+          {value.data &&
+            value.data.map((value, index) => {
+              const attendances = getStatus(value);
+              //   console.log(attendances);
+              const getColor = (status: string) => {
+                if (status === 'P') return '#87E4BD';
+                if (status === 'T') return '#FFE17F';
+                if (status === 'F') return '#F8C5C5';
+                if (status === 'G') return '#F19191';
+                if (status === 'M') return '#D2595B';
+                if (status === 'L') return '#83A8F0';
+              };
+              return (
+                <View key={value.id} style={styles.tableRow}>
+                  <View style={{ ...styles.tableCol, width: '5%' }}>
+                    <Text style={styles.headers}>{index + 1}</Text>
+                  </View>
+                  <View style={{ ...styles.tableCol, width: '10%' }}>
+                    <Text style={styles.headers}>301</Text>
+                  </View>
+                  <View style={{ ...styles.tableCol, width: '22%' }}>
+                    <Text
+                      style={{
+                        ...styles.headers,
+                        textAlign: 'left',
+                        marginHorizontal: 5,
+                      }}
+                    >
+                      {value.profile.firstName + ' ' + value.profile.firstName}
+                    </Text>
+                  </View>
+                  <View style={{ ...styles.tableCol, width: '10%' }}>
+                    <Text style={styles.headers}>{value.profile.dni}</Text>
+                  </View>
+                  <View style={{ ...styles.tableCol, width: '10%' }}>
+                    <Text style={styles.headers}>{value.profile.phone}</Text>
+                  </View>
+                  <View style={{ ...styles.tableCol, width: '8%' }}>
+                    <Text style={styles.headers}>1</Text>
+                  </View>
+
+                  <View style={{ ...styles.tableCol, width: '10%' }}>
+                    <Text style={styles.headers}>207</Text>
+                  </View>
+                  <View style={{ ...styles.attendance, width: '25%' }}>
+                    {attendances &&
+                      attendances.map((attendance, index) => (
+                        <Text
+                          style={{
+                            ...styles.attendanceItem,
+                            backgroundColor: getColor(attendance),
+                          }}
+                          key={index}
+                        >
+                          {attendance}
+                        </Text>
+                      ))}
+                  </View>
+                </View>
+              );
+            })}
+        </View>
+        <View style={{ ...styles.table, marginTop: 10, width: '60%' }}>
+          <View style={styles.information}>
+            <View style={{ ...styles.tableCol, width: '10%' }}>
+              <Text style={styles.headers}>N°</Text>
+            </View>
+            <View style={{ ...styles.tableCol, width: '12%' }}>
+              <Text style={styles.headers}>SIMBOLO</Text>
+            </View>
+            <View style={{ ...styles.tableCol, width: '28%' }}>
+              <Text style={styles.headers}>DESCRIPCION</Text>
+            </View>
+            <View style={{ ...styles.tableCol, width: '15%' }}>
+              <Text style={styles.headers}>MULTA</Text>
+            </View>
+            <View style={{ ...styles.tableCol, width: '35%' }}>
+              <Text style={{ ...styles.headers, textAlign: 'center' }}>
+                {' '}
+                MULTA COORDINADORES Y GERENTE
+              </Text>
+            </View>
+          </View>
+          {information &&
+            information.map(info => (
+              <View key={info.item} style={styles.information}>
+                <View style={{ ...styles.tableCol, width: '10%' }}>
+                  <Text style={styles.headers}>{info.item}</Text>
+                </View>
+                <View
+                  style={{
+                    ...styles.tableCol,
+                    width: '12%',
+                    backgroundColor: info.color,
+                  }}
+                >
+                  <Text style={styles.headers}>{info.simbolo}</Text>
+                </View>
+                <View style={{ ...styles.tableCol, width: '28%' }}>
+                  <Text style={styles.headers}>{info.descripcion}</Text>
+                </View>
+                <View style={{ ...styles.tableCol, width: '15%' }}>
+                  <Text style={styles.headers}>{info.multa}</Text>
+                </View>
+                <View style={{ ...styles.tableCol, width: '35%' }}>
+                  <Text style={styles.headers}>{info.gerente}</Text>
+                </View>
+              </View>
+            ))}
+        </View>
+      </Page>
+    </Document>
+  );
+};
+
+const AttendancePdf = ({ data, daily }: PDFGeneratorProps) => {
+  //   const [showPreview, setShowPreview] = useState(false);
+  return (
+    <div className="pdf-btn-area-view">
+      {/* {showPreview ? ( */}
+      <div>
+        <PDFViewer width="1000" height="600">
+          {generatePDF({ data, daily }, { size: 'A4' })}
+        </PDFViewer>
+        {/* <button onClick={() => setShowPreview(false)}>
+            Ocultar Vista Previa
+          </button> */}
+      </div>
+      {/* ) : (
+        <div>
+          <p>
+            Haz clic en el botón para ver la vista previa y descargar el PDF con
+            la tabla:
+          </p>
+          <button onClick={() => setShowPreview(true)}>Ver Vista Previa</button>
+        </div> */}
+      {/* )} */}
+      {/* {showPreview && (
+        <PDFDownloadLink
+          document={generatePDF({ data,daily }, { size: 'A4' })}
+          fileName={`xd.pdf`}
+          //   className="pdf-btn-view-white"
+        >
+          {({ loading }) => (
+            <>
+              <>
+                <img
+                  className="chip-file-icon-doc normal"
+                  src={`/svg/file-download.svg`}
+                />
+                <img
+                  className="chip-file-icon-doc hover"
+                  src={`/svg/file-download-white.svg`}
+                />
+              </>
+              <span className="download-text">{loading ? 'A4' : 'A4'}</span>
+            </>
+          )}
+        </PDFDownloadLink>
+      )} */}
+    </div>
+  );
+};
+
+export default AttendancePdf;

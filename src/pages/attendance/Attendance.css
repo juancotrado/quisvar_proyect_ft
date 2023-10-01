@@ -187,6 +187,12 @@
   color: white;
   width: 4.5rem;
 }
+.attendance-btn-preview {
+  border-radius: var(--radius-input);
+  background-color: var(--color-primary);
+  color: white;
+  width: 6rem;
+}
 .attendance-labels {
   font-weight: bold;
 }

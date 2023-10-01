@@ -27,6 +27,8 @@ import AttendanceList from './attendance/attendanceList/AttendanceList';
 import Legend from './shared/legend/Legend';
 import GeneralData from './shared/generalData/GeneralData';
 import PDFGenerator from './shared/generatePdf/GeneratePdf';
+import AttendancePdf from './shared/attendancePdf/AttendancePdf';
+import CardViewPdf from './shared/card/cardViewPdf/CardViewPdf';
 
 export {
   Alert,
@@ -58,4 +60,6 @@ export {
   Legend,
   GeneralData,
   PDFGenerator,
+  AttendancePdf,
+  CardViewPdf,
 };

@@ -1,11 +1,11 @@
 import { Document, Page, Text, View } from '@react-pdf/renderer';
-import { Level } from '../../../types/types';
+import { Level, SubTask } from '../../../types/types';
 import { styles } from './styleGenerateIndexPdf';
 
 interface generateIndexPdfProps {
   data: Level;
 }
-const textRender = (level: Level) => {
+const textRenderLevel = (level: Level) => {
   const { fontBold, isProject, isArea, isInclude } = styles;
   const styleIndex = level.isProject
     ? isProject
@@ -21,15 +21,29 @@ const textRender = (level: Level) => {
     </Text>
   );
 };
+const textRenderSubtask = (subtask: SubTask) => {
+  const { isInclude } = styles;
+  return (
+    <View key={subtask.id}>
+      <Text style={{ ...styles.textIndex, ...isInclude }}>
+        {subtask.item} {subtask.name}
+      </Text>
+    </View>
+  );
+};
 const recursionIndex = (level: Level) => {
+  const existSubtask = level?.subTasks?.length;
+
   return (
     <View style={styles.dropdownLevel}>
-      {level?.nextLevel?.map(subLevel => (
-        <View key={subLevel.id}>
-          {textRender(subLevel)}
-          {recursionIndex(subLevel)}
-        </View>
-      ))}
+      {existSubtask
+        ? level.subTasks.map(subtask => textRenderSubtask(subtask))
+        : level?.nextLevel?.map(subLevel => (
+            <View key={subLevel.id}>
+              {textRenderLevel(subLevel)}
+              {recursionIndex(subLevel)}
+            </View>
+          ))}
     </View>
   );
 };

@@ -16,7 +16,7 @@ type DataForm = { name: string; cod: string };
 interface SidebarSpecialityAddLvlProps {
   idValue: number;
   onSave?: () => void;
-  keyNameId: 'sectorId' | 'specialitiesId' | 'typespecialityId';
+  keyNameId: 'sectorId' | 'specialitiesId' | 'typespecialityId' | 'noId';
   nameLevel?: string;
 }
 
@@ -24,6 +24,7 @@ const urlPost = {
   sectorId: '/specialities',
   specialitiesId: '/typespecialities',
   typespecialityId: '',
+  noId: '/sector',
 };
 const SidebarSpecialityAddLvl = ({
   onSave,
@@ -84,6 +85,7 @@ const SidebarSpecialityAddLvl = ({
       : keyNameId === 'typespecialityId'
       ? 'projects'
       : 'sector';
+
   const style = {
     borderLeft: `thick solid ${colors[type]}`,
   };

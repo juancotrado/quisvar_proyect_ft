@@ -55,29 +55,3 @@
 .sidebarSpeciality-show {
   left: 0;
 }
-
-.sidebarSpeciality-slice {
-  position: relative;
-}
-
-.sidebarSpeciality-dropdown-content {
-  display: grid;
-  grid-template-rows: var(--rows, 0fr);
-  transition: 0.3s grid-template-rows;
-}
-
-.sidebarSpeciality-dropdown-sub {
-  overflow: hidden;
-  width: 98%;
-  margin-left: auto;
-  margin-top: 0.2rem;
-}
-
-.sidebarSpeciality-dropdown-sub-list {
-  display: flex;
-  flex-direction: column;
-}
-
-.sidebarSpeciality-dropdown-sub-list span {
-  flex-grow: 1;
-}

@@ -49,7 +49,12 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
     reset({});
   };
   const handleDuplicate = () => {
-    axiosInstance.post(`/duplicates/stage/${stage.id}`).then(() => getStages());
+    const body = {
+      name: stage.name + ' copia',
+    };
+    axiosInstance
+      .post(`/duplicates/stage/${stage.id}`, body)
+      .then(() => getStages());
   };
   const options: Option[] = [
     {

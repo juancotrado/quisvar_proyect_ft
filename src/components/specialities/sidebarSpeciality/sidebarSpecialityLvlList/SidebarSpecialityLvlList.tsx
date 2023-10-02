@@ -62,7 +62,14 @@ const SidebarSpecialityLvlList = ({
       handleToggleRef.current.unsubscribe();
     };
   }, []);
-
+  const handleDuplicate = () => {
+    const body = {
+      name: data.name + ' copia',
+    };
+    axiosInstance
+      .post(`/duplicates/project/${data.id}`, body)
+      .then(() => onSave?.());
+  };
   const handleBlurInput = (e: FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     if (typeof validateCorrectTyping(value) === 'string') {
@@ -186,7 +193,7 @@ const SidebarSpecialityLvlList = ({
         <DotsOption
           notPersist={true}
           className="sidebarLevelList-menu-dots-option"
-          notPositionRelative
+          // notPositionRelative
           isClickRight={isClickRight}
           data={[
             {
@@ -203,6 +210,17 @@ const SidebarSpecialityLvlList = ({
               function: openEditData
                 ? () => handleForm()
                 : () => handleDelete(data.id),
+            },
+            {
+              name: isLastLevel ? 'Duplicar' : '',
+              type: 'button',
+              icon: isLastLevel ? 'document-duplicate' : '',
+
+              function: isLastLevel
+                ? handleDuplicate
+                : () => {
+                    console.log('first');
+                  },
             },
           ]}
         />

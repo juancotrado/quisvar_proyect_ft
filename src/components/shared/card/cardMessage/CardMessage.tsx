@@ -67,6 +67,11 @@ const CardMessage = ({
             </span>
           </div>
           <div className="card-message-section-item">
+            <span className={`card-status-span`}>
+              {contactUser?.user.profile.description}
+            </span>
+          </div>
+          <div className="card-message-section-item">
             <span className="card-status-span ">
               {parseDate(message.updatedAt)}
             </span>

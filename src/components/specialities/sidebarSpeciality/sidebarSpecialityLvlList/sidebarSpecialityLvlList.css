@@ -22,6 +22,11 @@
   border-left: none;
 }
 
+.sidebarLevelList-menu-dots-option {
+  top: auto;
+  right: 2rem;
+}
+
 .SidebarSpecialityLvlList-section {
   position: relative;
   flex-grow: 1;
@@ -56,10 +61,12 @@
   font-weight: 700;
   font-size: 0.8rem;
 }
+
 .CUI {
   font-weight: 600;
   color: #80808080;
 }
+
 .not-margin-left {
   margin-left: 0;
 }

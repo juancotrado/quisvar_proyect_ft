@@ -178,6 +178,9 @@ const MailPage = () => {
                     <span>ESTADO</span>
                   </div>
                   <div className="message-header-item">
+                    <span>DEPENDENCIA</span>
+                  </div>
+                  <div className="message-header-item">
                     <span>FECHA DE ENVÍO</span>
                   </div>
                   {user.role === 'SUPER_ADMIN' && (

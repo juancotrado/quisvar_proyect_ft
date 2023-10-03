@@ -1,10 +1,10 @@
-import { FocusEvent, MouseEvent, useEffect, useRef, useState } from 'react';
+import { FocusEvent, useEffect, useRef, useState } from 'react';
 import {
   DataSidebarSpeciality,
   typeSidebarSpecility,
 } from '../../../../types/types';
 import './sidebarSpecialityLvlList.css';
-import DotsOption, { Option } from '../../../shared/dots/DotsOption';
+import { Option } from '../../../shared/dots/DotsOption';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { Input } from '../../..';
 import {
@@ -18,7 +18,8 @@ import {
   toggle$,
 } from '../../../../services/sharingSubject';
 import { Subscription } from 'rxjs';
-
+import { ContextMenuTrigger } from 'rctx-contextmenu';
+import DotsRight from '../../../shared/dotsRight/DotsRight';
 interface SidebarSpecialityLvlListProps {
   data: DataSidebarSpeciality;
   type: typeSidebarSpecility;
@@ -47,7 +48,6 @@ const SidebarSpecialityLvlList = ({
   const isFirstLevel = type === 'sector';
   const isLastLevel = type === 'projects';
   const [errors, setErrors] = useState<{ [key: string]: any }>({});
-  const [isClickRight, setIsClickRight] = useState(false);
   useEffect(() => {
     setFormData({ name: data.name ?? '', cod: data.cod ?? '' });
   }, [data.cod, data.name]);
@@ -101,10 +101,7 @@ const SidebarSpecialityLvlList = ({
       onSave?.();
     });
   };
-  const handleClickRigth = (e: MouseEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsClickRight(!isClickRight);
-  };
+
   const handleEdit = () => {
     if (type === 'projects') {
       isOpenCardRegisteProject$.setSubject = {
@@ -140,14 +137,15 @@ const SidebarSpecialityLvlList = ({
       function: handleDuplicate,
     },
   ];
+
   return (
     <div className={`SidebarSpecialityLvlList-sub-list-item `} style={style}>
-      <div
+      <ContextMenuTrigger
+        id={`sidebar-speciality-${type}-${data.id}`}
         className={`SidebarSpecialityLvlList-section  ${
           data.name + '-' + data.id === indexSelected &&
           'sidebarLevelList-sub-list-span-active'
         }`}
-        onContextMenu={handleClickRigth}
       >
         {openEditData ? (
           <div
@@ -209,14 +207,11 @@ const SidebarSpecialityLvlList = ({
             className="SidebarSpecialityLvlList-dropdown-arrow"
           />
         )}
-      </div>
+      </ContextMenuTrigger>
       {authUser && (
-        <DotsOption
-          notPersist={true}
-          className="sidebarLevelList-menu-dots-option"
-          notPositionRelative
-          isClickRight={isClickRight}
+        <DotsRight
           data={dataDots.slice(0, isLastLevel ? 3 : 2)}
+          idContext={`sidebar-speciality-${type}-${data.id}`}
         />
       )}
     </div>

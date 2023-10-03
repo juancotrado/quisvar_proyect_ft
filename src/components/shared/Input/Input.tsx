@@ -11,11 +11,24 @@ interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   disabled?: boolean;
   classNameMain?: string;
   errors?: { [key: string]: any };
+  errorPosX?: number;
+  errorPosY?: number;
 }
 
 const InputText = forwardRef<HTMLInputElement, InputTextProps>(
   (
-    { name, label, col, errors, type, disabled, classNameMain, ...props },
+    {
+      name,
+      label,
+      col,
+      errors,
+      type,
+      errorPosX = 0,
+      errorPosY = 0,
+      disabled,
+      classNameMain,
+      ...props
+    },
     ref
   ) => {
     const [isShow, setIsShow] = useState(false);
@@ -25,6 +38,9 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
     if (type == 'password') {
       typeAux = isShow ? 'text' : 'password';
     }
+    const style = {
+      transform: `translate(${errorPosX}px,${errorPosY}px)`,
+    };
     return (
       <div className={`input-main ${col && 'input-col'} ${classNameMain}`}>
         {label && (
@@ -57,7 +73,7 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
           ) : null}
         </div>
         {name && errors && errors[name] && (
-          <span className="input-span-error">
+          <span className="input-span-error" style={style}>
             <img
               src="/svg/warning.svg"
               alt="warning"

@@ -13,11 +13,7 @@ import {
 } from '../../../../utils/customValidatesForm';
 import colors from '../../../../utils/json/colorSidebar.json';
 
-import {
-  isOpenCardRegisteProject$,
-  toggle$,
-} from '../../../../services/sharingSubject';
-import { Subscription } from 'rxjs';
+import { isOpenCardRegisteProject$ } from '../../../../services/sharingSubject';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import DotsRight from '../../../shared/dotsRight/DotsRight';
 interface SidebarSpecialityLvlListProps {
@@ -52,16 +48,12 @@ const SidebarSpecialityLvlList = ({
     setFormData({ name: data.name ?? '', cod: data.cod ?? '' });
   }, [data.cod, data.name]);
 
-  const handleToggleRef = useRef<Subscription>(new Subscription());
-
   useEffect(() => {
-    handleToggleRef.current = toggle$.getSubject.subscribe((value: boolean) => {
-      setOpenEditData(value);
-    });
-    return () => {
-      handleToggleRef.current.unsubscribe();
-    };
+    const handleClick = () => setOpenEditData(false);
+    window.addEventListener('click', handleClick);
+    return () => window.removeEventListener('click', handleClick);
   }, []);
+
   const handleDuplicate = () => {
     const body = {
       name: data.name + ' copia',

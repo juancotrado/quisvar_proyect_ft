@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from 'react';
+import { useState } from 'react';
 import { Option, Stage } from '../../../types/types';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Input } from '../..';
@@ -6,10 +6,13 @@ import {
   validateCorrectTyping,
   validateWhiteSpace,
 } from '../../../utils/customValidatesForm';
-import DotsOption from '../../shared/dots/DotsOption';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { axiosInstance } from '../../../services/axiosInstance';
 import './StageItem.css';
+import DotsRight from '../../shared/dotsRight/DotsRight';
+import { ContextMenuTrigger } from 'rctx-contextmenu';
+import { RootState } from '../../../store';
+import { useSelector } from 'react-redux';
 interface StageItemProps {
   stage: Stage;
   i: number;
@@ -20,7 +23,8 @@ interface StageName {
 }
 const StageItem = ({ stage, i, getStages }: StageItemProps) => {
   const [openEdit, setOpenEdit] = useState(false);
-  const [isClickRight, setIsClickRight] = useState(false);
+  const { modAuthProject } = useSelector((state: RootState) => state);
+
   const navigate = useNavigate();
   const {
     handleSubmit,
@@ -31,13 +35,7 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
 
   const handleOpenEdit = () => {
     setOpenEdit(!openEdit);
-    setIsClickRight(false);
     reset({});
-  };
-
-  const handleClickRight = (e: MouseEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsClickRight(!isClickRight);
   };
 
   const onSubmitData: SubmitHandler<StageName> = async body => {
@@ -90,70 +88,69 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
 
       <NavLink to={openEdit ? currentRoute : `etapa/${stage.id}`}>
         {({ isActive }) => (
-          <div
-            className="stage-header-div"
-            key={stage.id + 1}
-            onContextMenu={handleClickRight}
-            onClick={e => e.stopPropagation()}
-          >
-            {!openEdit ? (
-              <span
-                className={
-                  isActive
-                    ? ' stage-header-span activeLink'
-                    : 'stage-header-span'
-                }
-              >
-                {stage.name}
-              </span>
-            ) : (
-              <form
-                onSubmit={handleSubmit(onSubmitData)}
-                className="projectLevel-form"
-              >
-                <Input
-                  {...register('name', {
-                    validate: { validateWhiteSpace, validateCorrectTyping },
-                  })}
-                  name="name"
-                  placeholder={stage.name}
-                  className="stageItem-input stage-add-input"
-                  errors={errors}
-                />
-                <div
-                  className="stageItem-icon-area"
-                  onClick={e => e.stopPropagation()}
+          <ContextMenuTrigger id={`stage-${stage.id}`}>
+            <div
+              className="stage-header-div"
+              key={stage.id + 1}
+              onClick={e => e.stopPropagation()}
+            >
+              {!openEdit ? (
+                <span
+                  className={
+                    isActive
+                      ? ' stage-header-span activeLink'
+                      : 'stage-header-span'
+                  }
                 >
-                  <button
-                    className="stage-icon-action"
-                    onClick={handleSubmit(onSubmitData)}
+                  {stage.name}
+                </span>
+              ) : (
+                <form
+                  onSubmit={handleSubmit(onSubmitData)}
+                  className="projectLevel-form"
+                >
+                  <Input
+                    {...register('name', {
+                      validate: { validateWhiteSpace, validateCorrectTyping },
+                    })}
+                    name="name"
+                    placeholder={stage.name}
+                    className="stageItem-input stage-add-input"
+                    errors={errors}
+                  />
+                  <div
+                    className="stageItem-icon-area"
+                    onClick={e => e.stopPropagation()}
                   >
-                    <img
-                      src="/svg/check-blue.svg"
-                      style={{ width: '20px', height: '20px' }}
-                    />
-                  </button>
-                  <button
-                    onClick={handleOpenEdit}
-                    className="stage-icon-action"
-                  >
-                    <img
-                      src="/svg/cross-red.svg"
-                      style={{ width: '20px', height: '20px' }}
-                    />
-                  </button>
-                </div>
-              </form>
-            )}
-          </div>
+                    <button
+                      className="stage-icon-action"
+                      onClick={handleSubmit(onSubmitData)}
+                    >
+                      <img
+                        src="/svg/check-blue.svg"
+                        style={{ width: '20px', height: '20px' }}
+                      />
+                    </button>
+                    <button
+                      onClick={handleOpenEdit}
+                      className="stage-icon-action"
+                    >
+                      <img
+                        src="/svg/cross-red.svg"
+                        style={{ width: '20px', height: '20px' }}
+                      />
+                    </button>
+                  </div>
+                </form>
+              )}
+            </div>
+          </ContextMenuTrigger>
         )}
       </NavLink>
-      <DotsOption
-        data={options}
-        iconHide
-        isClickRight={isClickRight}
-        className="stageItem-dots"
-      />
+
+      {modAuthProject && (
+        <DotsRight data={options} idContext={`stage-${stage.id}`} />
+      )}
     </div>
   );
 };

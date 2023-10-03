@@ -14,6 +14,8 @@ import { axiosInstance } from '../../../services/axiosInstance';
 import MoreInfo from '../moreInfo/MoreInfo';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
+import DotsRight from '../../shared/dotsRight/DotsRight';
+import { ContextMenuTrigger } from 'rctx-contextmenu';
 interface ProjectLevelProps {
   data: Level;
   onSave?: () => void;
@@ -100,6 +102,9 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
     >
       <div className="projectLevel-contain">
         {modAuthProject && (
+          <DotsRight data={options} idContext={`projectLevel-${data.id}`} />
+        )}
+        {/* {modAuthProject && (
           <DotsOption
             className="projectLevel-menu-dots-option"
             notPositionRelative
@@ -107,51 +112,55 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
             isClickRight={isClickRight}
             data={options}
           />
-        )}
-        <div
-          className={`projectLevel-section `}
-          onContextMenu={handleClickRigth}
-        >
-          <img src="/svg/down.svg" className="projectLevel-dropdown-arrow" />
-          <input
-            type="checkbox"
-            className={`projectLevel-dropdown-check ${
-              !modAuthProject && 'projectLevel-width-normal'
-            }`}
-            defaultChecked={false}
-          />
-          {/* <div className="projectLevel-contain"> */}
-          <div className="projectLevel-name-contain">
-            {openEdit ? (
-              <form
-                onSubmit={handleSubmit(onSubmitData)}
-                className="projectLevel-form"
-              >
-                <Input
-                  {...register('name', {
-                    validate: { validateWhiteSpace, validateCorrectTyping },
-                  })}
-                  name="name"
-                  placeholder={`Editar nombre del nivel`}
-                  className="projectLevel-input"
-                  errors={errors}
-                />
-                <figure
-                  className="projectLevel-figure"
-                  onClick={handleCloseEdit}
+        )} */}
+        <ContextMenuTrigger id={`projectLevel-${data.id}`}>
+          <div
+            className={`projectLevel-section `}
+            onContextMenu={handleClickRigth}
+          >
+            <img src="/svg/down.svg" className="projectLevel-dropdown-arrow" />
+            <input
+              type="checkbox"
+              className={`projectLevel-dropdown-check ${
+                !modAuthProject && 'projectLevel-width-normal'
+              }`}
+              defaultChecked={false}
+            />
+            {/* <div className="projectLevel-contain"> */}
+            <div className="projectLevel-name-contain">
+              {openEdit ? (
+                <form
+                  onSubmit={handleSubmit(onSubmitData)}
+                  className="projectLevel-form"
                 >
-                  <img src="/svg/icon_close.svg" alt="W3Schools" />
-                </figure>
-              </form>
-            ) : (
-              <h4 className={`projectLevel-sub-list-name`}>
-                <span className="projectLevel-sub-list-span">{data.item} </span>{' '}
-                {data.name}
-              </h4>
-            )}
+                  <Input
+                    {...register('name', {
+                      validate: { validateWhiteSpace, validateCorrectTyping },
+                    })}
+                    name="name"
+                    placeholder={`Editar nombre del nivel`}
+                    className="projectLevel-input"
+                    errors={errors}
+                  />
+                  <figure
+                    className="projectLevel-figure"
+                    onClick={handleCloseEdit}
+                  >
+                    <img src="/svg/icon_close.svg" alt="W3Schools" />
+                  </figure>
+                </form>
+              ) : (
+                <h4 className={`projectLevel-sub-list-name`}>
+                  <span className="projectLevel-sub-list-span">
+                    {data.item}
+                  </span>
+                  {data.name}
+                </h4>
+              )}
+            </div>
+            {/* </div> */}
           </div>
-          {/* </div> */}
-        </div>
+        </ContextMenuTrigger>
       </div>
       {modAuthProject && (
         <div className="projectLevel-contain-right">

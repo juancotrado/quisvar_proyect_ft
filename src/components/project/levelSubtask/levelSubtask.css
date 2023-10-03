@@ -11,7 +11,9 @@
   background-color: #fff;
   font-size: 0.8rem;
 }
-
+.levelSubtask-context-menu {
+  width: 100%;
+}
 .pointer {
   cursor: pointer;
 }

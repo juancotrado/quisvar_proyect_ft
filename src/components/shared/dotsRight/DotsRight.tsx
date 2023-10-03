@@ -30,7 +30,7 @@ const DotsRight = ({ idContext, data }: DotsRightProps) => {
             type={option.type}
           >
             {option.icon && (
-              <img src={`/svg/${option.icon}.svg`} className="dot-icon" />
+              <img src={`/svg/${option.icon}.svg`} className="dotsRight-icon" />
             )}
             {option.name}
           </button>

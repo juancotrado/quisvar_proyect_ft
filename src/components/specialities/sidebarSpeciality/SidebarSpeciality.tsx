@@ -1,6 +1,6 @@
 import { FocusEvent, useCallback, useState } from 'react';
 import './sidebarSpeciality.css';
-import { DataSidebarSpeciality, SectorType } from '../../../types/types';
+import { SectorType } from '../../../types/types';
 import { CardRegisterProject, Select } from '../..';
 import { yearData } from '../const';
 import { axiosInstance } from '../../../services/axiosInstance';

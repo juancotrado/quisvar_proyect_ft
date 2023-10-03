@@ -4,7 +4,7 @@ import {
   typeSidebarSpecility,
 } from '../../../../types/types';
 import './sidebarSpecialityLvlList.css';
-import DotsOption from '../../../shared/dots/DotsOption';
+import DotsOption, { Option } from '../../../shared/dots/DotsOption';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { Input } from '../../..';
 import {
@@ -119,6 +119,27 @@ const SidebarSpecialityLvlList = ({
   const style = {
     borderLeft: `thick solid ${colors[type]}`,
   };
+
+  const dataDots: Option[] = [
+    {
+      name: openEditData ? 'Cancelar' : 'Editar',
+      type: openEditData ? 'submit' : 'button',
+      icon: openEditData ? 'close' : 'pencil',
+      function: handleEdit,
+    },
+    {
+      name: openEditData ? 'Guardar' : 'Eliminar',
+      type: openEditData ? 'submit' : 'button',
+      icon: openEditData ? 'save' : 'trash-red',
+      function: openEditData ? () => handleForm() : () => handleDelete(data.id),
+    },
+    {
+      name: 'Duplicar',
+      type: 'button',
+      icon: 'document-duplicate',
+      function: handleDuplicate,
+    },
+  ];
   return (
     <div className={`SidebarSpecialityLvlList-sub-list-item `} style={style}>
       <div
@@ -193,36 +214,9 @@ const SidebarSpecialityLvlList = ({
         <DotsOption
           notPersist={true}
           className="sidebarLevelList-menu-dots-option"
-          // notPositionRelative
+          notPositionRelative
           isClickRight={isClickRight}
-          data={[
-            {
-              name: openEditData ? 'Cancelar' : 'Editar',
-              type: openEditData ? 'submit' : 'button',
-              icon: openEditData ? 'close' : 'pencil',
-              function: handleEdit,
-            },
-
-            {
-              name: openEditData ? 'Guardar' : 'Eliminar',
-              type: openEditData ? 'submit' : 'button',
-              icon: openEditData ? 'save' : 'trash-red',
-              function: openEditData
-                ? () => handleForm()
-                : () => handleDelete(data.id),
-            },
-            {
-              name: isLastLevel ? 'Duplicar' : '',
-              type: 'button',
-              icon: isLastLevel ? 'document-duplicate' : '',
-
-              function: isLastLevel
-                ? handleDuplicate
-                : () => {
-                    console.log('first');
-                  },
-            },
-          ]}
+          data={dataDots.slice(0, isLastLevel ? 3 : 2)}
         />
       )}
     </div>

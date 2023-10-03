@@ -14,6 +14,9 @@
   color: var(--color-primary);
   font-weight: 600;
 }
+.sidebarSpecialityAddLvl-display-none {
+  display: none;
+}
 .sidebarSpecialityAddLvl-input {
   flex-grow: 1;
   height: 2rem;

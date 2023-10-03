@@ -67,7 +67,6 @@ const SidebarSpecialityAddLvl = ({
     },
   ];
   const handleAddlevel = () => {
-    console.log({ keyNameId });
     if (keyNameId === 'typespecialityId') {
       isOpenCardRegisteProject$.setSubject = {
         isOpen: true,
@@ -144,6 +143,7 @@ const SidebarSpecialityAddLvl = ({
           />
         </div>
       )}
+      <input type="submit" className="sidebarSpecialityAddLvl-display-none" />
     </form>
   );
 };

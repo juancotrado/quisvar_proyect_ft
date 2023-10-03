@@ -210,7 +210,7 @@ const SidebarSpecialityLvlList = ({
           />
         )}
       </div>
-      {!isFirstLevel && authUser && (
+      {authUser && (
         <DotsOption
           notPersist={true}
           className="sidebarLevelList-menu-dots-option"

@@ -29,9 +29,11 @@ const StageAddButton = ({
       name: values.name,
       projectId: Number(stageId),
     };
-    axiosInstance.post(`/stages`, data).then(() => getStages());
-    setBtnActive(false);
-    reset();
+    axiosInstance.post(`/stages`, data).then(() => {
+      setBtnActive(false);
+      reset();
+      getStages();
+    });
   };
   return (
     <form

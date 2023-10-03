@@ -14,6 +14,7 @@ import useListUsers from '../../../../../hooks/useListUsers';
 import { useParams } from 'react-router-dom';
 import SubtasksMoreInfo from '../../../../subtasks/subtasksMoreInfo/SubtasksMoreInfo';
 import SubtaskUsers from '../../../../subtasks/subtaskUsers/SubtaskUsers';
+import { SnackbarUtilities } from '../../../../../utils/SnackbarManager';
 
 interface CardSubtaskHold {
   subTask: SubTask;
@@ -41,6 +42,10 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
 
   const handleAddUserByTask = () => {
     if (!addBtn) return;
+    if (!subTask.files?.length)
+      return SnackbarUtilities.warning(
+        'Asegurese de subir los archivos modelos antes'
+      );
     axiosInstance
       .patch(`/subtasks/assignUser/${subTask.id}/${stageId}`, usersData)
       .then(res => {
@@ -140,6 +145,7 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
             subtaskId={subTask.id}
             subtaskStatus={status}
             isDisabled={addBtn}
+            files={subTask.files}
             text="ASIGNARME"
             className={`cardSubtask-add-btn cardSubtask-asig-btn  ${
               addBtn && 'cardSubtask-btn-disabled'

@@ -8,6 +8,7 @@ import { RootState } from '../../../store';
 import { useSelector } from 'react-redux';
 import StatusText from '../../shared/statusText/StatusText';
 import DefaultUserImage from '../../shared/defaultUserImage/DefaultUserImage';
+import { axiosInstance } from '../../../services/axiosInstance';
 
 interface LevelSutaskProps {
   level: Level;
@@ -36,6 +37,14 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
     };
   };
 
+  const handleDuplicateTask = (subtask: SubTask) => {
+    const body = {
+      name: subtask.name + ' copia',
+    };
+    axiosInstance
+      .post(`/duplicates/subtask/${subtask.id}`, body)
+      .then(() => onSave?.());
+  };
   return (
     <div className="levelSubtask">
       <div className="levelSubtask-content levelSubtask-header">
@@ -106,14 +115,19 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
               onClick={e => e.stopPropagation()}
             >
               <Button
+                icon="document-duplicate"
+                className="levelSubtask-btn"
+                onClick={() => handleDuplicateTask(subtask)}
+              />
+              <Button
                 icon="pencil"
-                className="role-btn"
+                className="levelSubtask-btn"
                 onClick={() => handleEditTask(subtask)}
               />
               <ButtonDelete
-                icon="trash"
+                icon="trash-red"
                 url={`/subtasks/${subtask.id}`}
-                className="role-delete-icon"
+                className="levelSubtask-btn"
                 onSave={onSave}
               />
             </div>

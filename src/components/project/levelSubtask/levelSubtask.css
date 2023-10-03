@@ -74,3 +74,7 @@
 .levelSubtask-plus {
   font-weight: 900;
 }
+.levelSubtask-btn {
+  border: none;
+  width: 1.7rem;
+}

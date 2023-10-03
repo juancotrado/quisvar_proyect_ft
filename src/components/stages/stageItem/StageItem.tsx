@@ -45,8 +45,10 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
     reset({});
   };
   const handleDeleteLevel = () => {
-    axiosInstance.delete(`stages/${stage.id}`).then(() => getStages());
-    reset({});
+    axiosInstance.delete(`stages/${stage.id}`).then(() => {
+      reset({});
+      getStages();
+    });
   };
   const handleDuplicate = () => {
     const body = {

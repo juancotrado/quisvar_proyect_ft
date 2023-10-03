@@ -42,7 +42,6 @@ const Stage = () => {
       <div className="stage-header">
         {project ? (
           <>
-            {' '}
             {project?.stages?.map((stage, i) => (
               <StageItem
                 stage={stage}

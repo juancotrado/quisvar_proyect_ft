@@ -1,6 +1,6 @@
 import { MouseEvent, useState } from 'react';
 import { Option, Stage } from '../../../types/types';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { Input } from '../..';
 import {
   validateCorrectTyping,
@@ -21,6 +21,7 @@ interface StageName {
 const StageItem = ({ stage, i, getStages }: StageItemProps) => {
   const [openEdit, setOpenEdit] = useState(false);
   const [isClickRight, setIsClickRight] = useState(false);
+  const navigate = useNavigate();
   const {
     handleSubmit,
     register,
@@ -48,6 +49,7 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
     axiosInstance.delete(`stages/${stage.id}`).then(() => {
       reset({});
       getStages();
+      navigate('.');
     });
   };
   const handleDuplicate = () => {
@@ -92,6 +94,7 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
             className="stage-header-div"
             key={stage.id + 1}
             onContextMenu={handleClickRight}
+            onClick={e => e.stopPropagation()}
           >
             {!openEdit ? (
               <span
@@ -116,7 +119,6 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
                   placeholder={stage.name}
                   className="stageItem-input stage-add-input"
                   errors={errors}
-                  onClick={e => e.stopPropagation()}
                 />
                 <div
                   className="stageItem-icon-area"

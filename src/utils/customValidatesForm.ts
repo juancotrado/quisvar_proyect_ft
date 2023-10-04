@@ -1,4 +1,6 @@
-export const validateWhiteSpace = (value: string) => {
+export const validateWhiteSpace = (value: string | undefined) => {
+  if (!value) return 'Este campo no puede estar vacío';
+
   return !value.trim()
     ? 'Este campo no puede estar vacío'
     : value[0].startsWith(' ')
@@ -6,7 +8,9 @@ export const validateWhiteSpace = (value: string) => {
     : true;
 };
 
-export const validateCorrectTyping = (value: string) => {
+export const validateCorrectTyping = (value: string | undefined) => {
+  if (!value) return 'Este campo no puede estar vacío';
+
   const regex = /^[^/?@|<>":'\\]+$/;
   return !regex.test(value)
     ? 'Ingresar nombre que no contenga lo siguiente ^/?@|<>": '

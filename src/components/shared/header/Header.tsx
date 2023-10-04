@@ -82,7 +82,7 @@ const Header = () => {
     },
     {
       id: 3,
-      name: '/svg/Profile Avatar.svg',
+      name: `https://robohash.org/${userSession.profile.dni}`,
       link: '/dashboard',
       action: toggleMenu,
     },
@@ -144,14 +144,19 @@ const Header = () => {
           {icons.map(icon => (
             <li key={icon.id} className="icon-list">
               {(userSession.role !== 'EMPLOYEE' || icon.id !== 1) && (
-                <motion.img
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.9 }}
-                  onClick={icon.action}
-                  src={icon.name}
-                  alt={icon.name}
-                  className="icon-list-item"
-                />
+                <figure
+                  className={`${
+                    icon.id === 3 ? 'user-profile-figure' : 'icon-list-item'
+                  } `}
+                >
+                  <motion.img
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
+                    onClick={icon.action}
+                    src={icon.name}
+                    alt={icon.name}
+                  />
+                </figure>
               )}
               {icon.id === 2 && isOpenMoreInfo && <Menu data={menuMoreInfo} />}
               {icon.id === 3 && isOpen && <Menu data={menu} />}

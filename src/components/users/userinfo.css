@@ -26,10 +26,6 @@
   padding: 0.3rem 0.5rem;
 }
 
-.email-container img {
-  width: 15%;
-}
-
 .user-details {
   flex-grow: 1;
   color: var(--color-quaternay);

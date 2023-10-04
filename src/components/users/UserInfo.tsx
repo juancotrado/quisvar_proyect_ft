@@ -49,7 +49,13 @@ const UserInfo = ({
   return (
     <div className="user-container">
       <div className="col-span col-span-2 email-container">
-        <img src="/svg/profile_avatar.svg" alt={user.email} className="icon" />
+        <figure className="user-profile-figure">
+          <img
+            src={`https://robohash.org/${user.profile.dni}`}
+            alt={user.email}
+          />
+        </figure>
+
         <div className="user-details">
           <h4>{profile.dni} </h4>
           <p>

@@ -3,6 +3,9 @@
   flex-direction: column;
   align-items: center;
 }
+.pointer:hover {
+  background-color: rgba(142, 238, 255, 0.315);
+}
 
 .levelSubtask-content {
   display: grid;
@@ -10,6 +13,7 @@
   width: 100%;
   background-color: #fff;
   font-size: 0.8rem;
+  transition: background-color 0.3s ease;
 }
 .levelSubtask-context-menu {
   width: 100%;
@@ -79,4 +83,7 @@
 .levelSubtask-btn {
   border: none;
   width: 1.7rem;
+}
+.levelSubtask-content-active {
+  background-color: rgba(142, 238, 255, 0.315);
 }

@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { Level, SubTask } from '../../../types/types';
 import './levelSubtask.css';
 import { isOpenCardRegisteTask$ } from '../../../services/sharingSubject';
@@ -28,9 +28,6 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
   const { subTasks, id } = level;
   const navigate = useNavigate();
 
-  const taskNavigate = (id: number) => {
-    navigate(`tarea/${id}`);
-  };
   const handleAddTask = () => {
     isOpenCardRegisteTask$.setSubject = { isOpen: true, levelId: id };
   };
@@ -87,15 +84,18 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
         )}
       </div>
       {subTasks?.map(subtask => (
-        <>
+        <div className="levelSubtask-context-menu">
           <ContextMenuTrigger
             id={`levelSubtask-${subtask.id}`}
-            className="levelSubtask-context-menu"
+            key={subtask.id}
           >
-            <div
-              className="levelSubtask-content pointer"
-              onClick={() => taskNavigate(subtask.id)}
-              key={subtask.id}
+            <NavLink
+              to={`tarea/${subtask.id}`}
+              className={({ isActive }) =>
+                `levelSubtask-content pointer ${
+                  isActive && 'levelSubtask-content-active'
+                }`
+              }
             >
               <div className="levelSubtask-item">
                 <div className="levelSubtask-text">{subtask.item}</div>
@@ -117,11 +117,13 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
               </div>
               <div className="levelSubtask-item">
                 <div className="levelSubtask-user-image">
-                  {subtask?.users?.length
-                    ? subtask.users.map(user => (
-                        <DefaultUserImage key={user.user.id} user={user} />
-                      ))
-                    : 'No Asignado aun'}
+                  {subtask?.users?.length ? (
+                    subtask.users.map(user => (
+                      <DefaultUserImage key={user.user.id} user={user} />
+                    ))
+                  ) : (
+                    <div className="levelSubtask-text">No asignado aún</div>
+                  )}
                 </div>
               </div>
               {modAuthArea && (
@@ -146,9 +148,8 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
                   />
                 </div>
               )}
-            </div>
+            </NavLink>
           </ContextMenuTrigger>
-
           {modAuthArea && (
             <DotsRight
               data={[
@@ -176,7 +177,7 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
               idContext={`levelSubtask-${subtask.id}`}
             />
           )}
-        </>
+        </div>
       ))}
 
       {modAuthArea && (

@@ -1,0 +1,13 @@
+.license-item-content {
+  display: grid;
+  height: 2rem;
+
+  width: 100%;
+  background-color: white;
+  /* font-size: 0.6875rem; */
+  /* border-radius: 0.3rem; */
+  padding: 0 0.3rem;
+}
+/* .license-chech-btn {
+
+} */

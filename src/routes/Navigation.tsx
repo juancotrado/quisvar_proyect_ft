@@ -12,6 +12,7 @@ import {
   Attendance,
   DetailsPage,
   BudgetsPage,
+  LicensePage,
 } from '../pages';
 import { ProtectedRoute } from '../components';
 import Project from '../pages/specialities/project/Project';
@@ -35,6 +36,7 @@ const Navigation = () => {
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/tramites" element={<MailPage />}>
               <Route path=":messageId" element={<MessagePage />} />
+              <Route path="licencia/:id" element={<LicensePage />} />
             </Route>
             <Route path="/asistencia" element={<Attendance />} />
             <Route path="/especialidades" element={<Specialities />}>

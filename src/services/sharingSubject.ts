@@ -29,6 +29,7 @@ export const isOpenCardRegisterUser$ = new SubjectManager<boolean>();
 export const isOpenCardGenerateReport$ = new SubjectManager<boolean>();
 export const isOpenCardViewPdf$ = new SubjectManager<CardViewProps>();
 export const isOpenCardFiles$ = new SubjectManager<boolean>();
+export const isOpenCardLicense$ = new SubjectManager<boolean>();
 export const isOpenViewDocs$ = new SubjectManager<boolean>();
 export const isOpenCardRegisteProject$ =
   new SubjectManager<CardRegisteProject>();

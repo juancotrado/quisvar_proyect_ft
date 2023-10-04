@@ -29,6 +29,7 @@ import GeneralData from './shared/generalData/GeneralData';
 import PDFGenerator from './shared/generatePdf/GeneratePdf';
 import AttendancePdf from './shared/attendancePdf/AttendancePdf';
 import CardViewPdf from './shared/card/cardViewPdf/CardViewPdf';
+import CardLicense from './shared/card/cardLicense/CardLicense';
 
 export {
   Alert,
@@ -62,4 +63,5 @@ export {
   PDFGenerator,
   AttendancePdf,
   CardViewPdf,
+  CardLicense,
 };

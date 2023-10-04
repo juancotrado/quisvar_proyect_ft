@@ -40,7 +40,7 @@ const Attendance = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [exportPDF, setExportPdf] = useState<AttendanceRange[]>();
-
+  const [license, setLicense] = useState<any[]>([]);
   const { listUsers: users } = useSelector((state: RootState) => state);
   const socket = useContext(SocketContext);
 
@@ -69,17 +69,19 @@ const Attendance = () => {
       setSendItems([...sendItems, { usersId, status }]);
     }
   };
-  // console.log({ callLists });
+  // console.log(users);
+
+  // console.log(callList);
   const filterUsers = useMemo(() => {
+    const callListUserIds = callList?.users.map(user => user.usersId);
     return callList?.users.length
-      ? users?.filter(
-          (user, index) => user.id === callList?.users[index]?.usersId
-        )
+      ? users?.filter(user => callListUserIds?.includes(user.id))
       : users?.filter(user => user.status === true);
   }, [callList?.users, users]);
   useEffect(() => {
     getTodayData();
     deleteLists();
+    getLicenses();
   }, []);
   const getTodayData = async () => {
     const res = await axiosInstance.get(
@@ -103,6 +105,9 @@ const Attendance = () => {
         );
         setCallList(callListFind);
       });
+  };
+  const getLicenses = () => {
+    axiosInstance.get(`/license`).then(res => setLicense(res.data));
   };
   const callNotification = () => {
     socket.emit('client:call-notification');
@@ -169,6 +174,7 @@ const Attendance = () => {
   const handleOpenPreView = () => {
     exportDaily();
   };
+  // console.log(users)
   return (
     <div className="attendance container">
       <div className="attendance-head">
@@ -241,6 +247,7 @@ const Attendance = () => {
                 user={user}
                 status={getStatus(user)}
                 index={index}
+                list={license}
               />
             ))}
           </div>
@@ -316,6 +323,7 @@ const Attendance = () => {
         </div>
       )}
       <CardViewPdf />
+      {/* <input type='datetime-local' onChange={e=> console.log(e.target.value)}/> */}
     </div>
   );
 };

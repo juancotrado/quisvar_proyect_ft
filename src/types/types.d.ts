@@ -649,7 +649,7 @@ export interface MailType {
   type: MessageSender;
   message: MessageType;
 }
-export type MessageSender = 'SENDER' | 'RECEIVER';
+export type MessageSender = 'SENDER' | 'RECEIVER' | 'LICENSE';
 export type MessageStatus =
   | 'PROCESO'
   | 'RECHAZADO'

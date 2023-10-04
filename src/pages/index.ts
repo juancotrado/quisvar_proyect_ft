@@ -11,7 +11,9 @@ import Attendance from './attendance/Attendance';
 import DetailsPage from './specialities/project/details/DetailsPage';
 import BasicsPage from './specialities/project/basics/BasicsPage';
 import BudgetsPage from './specialities/project/budgets/BudgetsPage';
-
+import LicensePage from './mail/license/LicensePage';
+import LicenseListHeader from './mail/licenseHeader/LicenseListHeader';
+import LicenseListItem from './mail/licenseList/LicenseListItem';
 export {
   CommingSoon,
   ListPersonalTask,
@@ -26,4 +28,7 @@ export {
   DetailsPage,
   BasicsPage,
   BudgetsPage,
+  LicensePage,
+  LicenseListHeader,
+  LicenseListItem,
 };

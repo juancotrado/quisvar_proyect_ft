@@ -11,7 +11,9 @@ import SelectOptions from '../../components/shared/select/Select';
 import { listStatusMsg, listTypeMsg } from '../../utils/files/files.utils';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import { CardGenerateReport } from '../../components';
+import { CardGenerateReport, CardLicense } from '../../components';
+import { isOpenCardLicense$ } from '../../services/sharingSubject';
+import { LicenseListHeader, LicenseListItem, LicensePage } from '..';
 
 const InitTMail: MailType['type'] = 'RECEIVER';
 
@@ -20,6 +22,8 @@ const MailPage = () => {
   const [searchParams] = useSearchParams();
   const { userSession: user } = useSelector((state: RootState) => state);
   const [listMessage, setListMessage] = useState<MailType[] | null>(null);
+  const [listLicense, setListLicense] = useState([]);
+  const [viewLicense, setViewLicense] = useState(false);
   const [totalMail, setTotalMail] = useState(0);
   const [skip, setSkip] = useState(0);
   //-----------------------------QUERIES-----------------------------------
@@ -50,24 +54,39 @@ const MailPage = () => {
     const typeMessage = (typeMsg && `&typeMessage=${typeMsg}`) || '';
     const offset = `&skip=${skip}`;
     const query = `/mail?${type}${status}${typeMessage}${offset}`;
-    axiosInstance.get(query).then(res => {
-      setListMessage(res.data.mail);
-      setTotalMail(res.data.total);
-    });
+    if (typeMail !== 'LICENSE') {
+      axiosInstance.get(query).then(res => {
+        setListMessage(res.data.mail);
+        setTotalMail(res.data.total);
+      });
+    } else {
+      axiosInstance.get('license').then(res => {
+        console.log(res.data);
+      });
+    }
   };
   const handleSelectReceiver = () => {
+    setViewLicense(false);
     setTypeMail('RECEIVER');
     setStatusMsg(null);
     setTypeMsg(null);
   };
   const handleSelectSender = () => {
+    setViewLicense(false);
     setTypeMail('SENDER');
     setStatusMsg(null);
     setTypeMsg(null);
   };
   const handleArchived = () => {
+    setViewLicense(false);
     setTypeMail(null);
     setStatusMsg('ARCHIVADO');
+    setTypeMsg(null);
+  };
+  const handlelicense = () => {
+    setViewLicense(true);
+    setTypeMail('LICENSE');
+    setStatusMsg(null);
     setTypeMsg(null);
   };
 
@@ -79,6 +98,9 @@ const MailPage = () => {
   const handlePreviusPage = () => {
     const limit = Math.floor(skip / 20);
     if (0 < limit) setSkip(skip === 21 ? skip - 21 : skip - 20);
+  };
+  const showCardReport = () => {
+    isOpenCardLicense$.setSubject = true;
   };
   return (
     <div className="mail-main container">
@@ -117,6 +139,13 @@ const MailPage = () => {
                   ${!typeMail && 'options-main-selected'}`}
                   onClick={handleArchived}
                 />
+                <Button
+                  icon="archiver-box"
+                  text={(!size && 'Solicitud de Licencias') || undefined}
+                  className={`mail-main-options-btn
+                  ${typeMail === 'LICENSE' && 'options-main-selected'}`}
+                  onClick={handlelicense}
+                />
               </div>
               <div className="mail-main-options-container">
                 <span className="mail-main-options-title-filter">
@@ -151,6 +180,13 @@ const MailPage = () => {
                   textField="id"
                 />
               </div>
+              <span className="mail-license" onClick={showCardReport}>
+                <img
+                  className="mail-mail-options-title-filter-img"
+                  src="/svg/license-icon.svg"
+                />
+                Solicitar Licencia
+              </span>
               <Button
                 onClick={handleNewMessage}
                 icon="plus-dark"
@@ -158,42 +194,47 @@ const MailPage = () => {
                 className="mail-new-message-btn"
               />
             </div>
-            <div
-              className={`message-container-header-titles status-mail-header-${size} `}
-            >
-              <div className="message-header-item">
-                <span>#DOCUMENTO</span>
-              </div>
-              <div className="message-header-item">
-                <span>{`${
-                  typeMail === 'RECEIVER' ? 'REMITENTE' : 'DESTINATARIO'
-                }`}</span>
-              </div>
-              <div className="message-header-item mail-grid-col-2">
-                <span>ASUNTO</span>
-              </div>
-              {!size && (
-                <>
-                  <div className="message-header-item">
-                    <span>ESTADO</span>
-                  </div>
-                  <div className="message-header-item">
-                    <span>DEPENDENCIA</span>
-                  </div>
-                  <div className="message-header-item">
-                    <span>FECHA DE ENVÍO</span>
-                  </div>
-                  {user.role === 'SUPER_ADMIN' && (
-                    <div className="message-header-item message-cursor-none">
-                      <span>ARCHIVAR</span>
+            {!viewLicense ? (
+              <div
+                className={`message-container-header-titles status-mail-header-${size} `}
+              >
+                <div className="message-header-item">
+                  <span>#DOCUMENTO</span>
+                </div>
+                <div className="message-header-item">
+                  <span>{`${
+                    typeMail === 'RECEIVER' ? 'REMITENTE' : 'DESTINATARIO'
+                  }`}</span>
+                </div>
+                <div className="message-header-item mail-grid-col-2">
+                  <span>ASUNTO</span>
+                </div>
+                {!size && (
+                  <>
+                    <div className="message-header-item">
+                      <span>ESTADO</span>
                     </div>
-                  )}
-                </>
-              )}
-            </div>
+                    <div className="message-header-item">
+                      <span>DEPENDENCIA</span>
+                    </div>
+                    <div className="message-header-item">
+                      <span>FECHA DE ENVÍO</span>
+                    </div>
+                    {user.role === 'SUPER_ADMIN' && (
+                      <div className="message-header-item message-cursor-none">
+                        <span>ARCHIVAR</span>
+                      </div>
+                    )}
+                  </>
+                )}
+              </div>
+            ) : (
+              <LicenseListHeader isEmployee={true} />
+            )}
           </div>
           <div className="mail-grid-container">
-            {listMessage &&
+            {!viewLicense ? (
+              listMessage &&
               listMessage.map(({ message, messageId, type }) => (
                 <CardMessage
                   user={user}
@@ -204,7 +245,10 @@ const MailPage = () => {
                   onClick={() => viewMessage(messageId, type)}
                   message={message}
                 />
-              ))}
+              ))
+            ) : (
+              <LicenseListItem isEmployee={true} />
+            )}
           </div>
           <div className="mail-footer-section">
             <Button
@@ -235,6 +279,8 @@ const MailPage = () => {
           onSave={handleSaveMessage}
         />
       )}
+      {/* {user.role === 'EMPLOYEE'} */}
+      <CardLicense />
     </div>
   );
 };

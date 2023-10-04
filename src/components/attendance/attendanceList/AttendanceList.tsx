@@ -2,24 +2,42 @@ import { useEffect, useState } from 'react';
 // import Button from '../../shared/button/Button'
 import './AttendanceList.css';
 import { Input } from '../..';
-import { User } from '../../../types/types';
+import { ListAttendance, User } from '../../../types/types';
+import { axiosInstance } from '../../../services/axiosInstance';
 
 interface AttendanceListProps {
   onRadioChange: (value: string, id: number) => void;
   user: User;
   index: number;
   status?: string | null;
+  // list: ListAttendance;
+  list: any[];
 }
 const AttendanceList = ({
+  list,
   onRadioChange,
   user,
   index,
   status = null,
 }: AttendanceListProps) => {
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
+  const [isActive, setisActive] = useState<boolean>(false);
   useEffect(() => {
+    // getLicense();
     setSelectedValue(status);
   }, [status]);
+  console.log(list.find(lis => lis.id === user.id));
+
+  // const haslength = list.users.length === 0;
+  // const getLicense = async () => {
+  //   const response = await axiosInstance.get(`/license/${user.id}?status=ACTIVE`);
+  //   const license = response.data ? true : false;
+  //   // console.log(response.data ? true : false);
+  //   setisActive(license && haslength);
+  //   setSelectedValue(license && haslength ? 'PERMISO' : status);
+  //   onRadioChange('PERMISO', user.id);
+  // };
+  // console.log(getLicense);
 
   const [userId, setUserId] = useState<number>(user.id);
 
@@ -28,6 +46,7 @@ const AttendanceList = ({
     setUserId(id);
     onRadioChange(value, id);
   };
+  // console.log(user);
 
   return (
     <div
@@ -51,7 +70,7 @@ const AttendanceList = ({
           classNameMain="attendanceList-radio"
           checked={selectedValue === 'PUNTUAL'}
           onChange={() => handleRadioChange('PUNTUAL', userId)}
-          disabled={!!status}
+          disabled={isActive ? true : !!status}
         />
       </div>
       <div className="attendanceList-col attendanceList-place attendanceList-t">
@@ -61,7 +80,7 @@ const AttendanceList = ({
           classNameMain="attendanceList-radio"
           checked={selectedValue === 'TARDE'}
           onChange={() => handleRadioChange('TARDE', userId)}
-          disabled={!!status}
+          disabled={isActive ? true : !!status}
         />
       </div>
       <div className="attendanceList-col attendanceList-place attendanceList-f">
@@ -71,7 +90,7 @@ const AttendanceList = ({
           classNameMain="attendanceList-radio"
           checked={selectedValue === 'SIMPLE'}
           onChange={() => handleRadioChange('SIMPLE', userId)}
-          disabled={!!status}
+          disabled={isActive ? true : !!status}
         />
       </div>
       <div className="attendanceList-col attendanceList-place attendanceList-g">
@@ -81,7 +100,7 @@ const AttendanceList = ({
           classNameMain="attendanceList-radio"
           checked={selectedValue === 'GRAVE'}
           onChange={() => handleRadioChange('GRAVE', userId)}
-          disabled={!!status}
+          disabled={isActive ? true : !!status}
         />
       </div>
       <div className="attendanceList-col attendanceList-place attendanceList-m">
@@ -91,7 +110,7 @@ const AttendanceList = ({
           classNameMain="attendanceList-radio"
           checked={selectedValue === 'MUY_GRAVE'}
           onChange={() => handleRadioChange('MUY_GRAVE', userId)}
-          disabled={!!status}
+          disabled={isActive ? true : !!status}
         />
       </div>
       <div className="attendanceList-col attendanceList-place attendanceList-l">
@@ -101,7 +120,7 @@ const AttendanceList = ({
           classNameMain="attendanceList-radio"
           checked={selectedValue === 'PERMISO'}
           onChange={() => handleRadioChange('PERMISO', userId)}
-          disabled={!!status}
+          disabled={isActive ? true : !!status}
         />
       </div>
     </div>

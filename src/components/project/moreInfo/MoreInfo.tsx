@@ -163,9 +163,7 @@ const MoreInfo = ({ data }: MoreInfoProps) => {
             <img src="/svg/compres-icon.svg" alt="W3Schools" />
           </figure>
           {data.projectName && (
-            <span className="moreInfo-detail-info">
-              Comprimir <br /> PDF
-            </span>
+            <span className="moreInfo-detail-info">Comprimir</span>
           )}
         </div>
         <div

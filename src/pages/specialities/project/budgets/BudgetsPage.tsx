@@ -156,12 +156,10 @@ const BudgetsPage = () => {
             </div>
           </FloatingText>
           {modAuthProject && (
-            <select name="select" onChange={handleFormat}>
+            <select name="select" onChange={handleFormat} defaultValue="NUM">
               <option value="ABC">ABC</option>
               <option value="ROM">ROM</option>
-              <option value="NUM" selected>
-                NUM
-              </option>
+              <option value="NUM">NUM</option>
             </select>
           )}
         </div>

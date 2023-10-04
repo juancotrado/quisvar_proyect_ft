@@ -139,9 +139,13 @@ const SubtaskChangeStatusBtn = ({
       );
     const message = validateValuesPorcentage();
     if (message) return SnackbarUtilities.warning(message);
+    const transforPorcentagesForUser = porcentagesForUser?.map(porcentage => ({
+      ...porcentage,
+      percentage: 0,
+    }));
     await axiosInstance.patch(
       `/subtasks/percentage/${subtaskId}`,
-      porcentagesForUser
+      transforPorcentagesForUser
     );
     await axiosInstance.patch(`/feedbacks`, dataFeedback);
     await handleEditStatus();
@@ -189,6 +193,13 @@ const SubtaskChangeStatusBtn = ({
       SnackbarUtilities.success('Se realizo la operación con exito');
     }
   };
+  const handleAsigned = () => {
+    if (!files?.length)
+      return SnackbarUtilities.warning(
+        'Asegurese de subir los archivos modelos antes'
+      );
+    handleEditStatus();
+  };
   const selectFuctionType = () => {
     if (isDisabled) return;
     switch (type) {
@@ -196,7 +207,7 @@ const SubtaskChangeStatusBtn = ({
         handleApproved();
         break;
       case 'assigned':
-        handleEditStatus();
+        handleAsigned();
         break;
       case 'deprecated':
         handleDeprecated();

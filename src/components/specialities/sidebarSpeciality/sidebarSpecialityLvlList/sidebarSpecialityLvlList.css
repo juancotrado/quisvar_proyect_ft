@@ -4,7 +4,7 @@
 }
 
 .SidebarSpecialityLvlList-sub-list-item:has(:checked)
-  + .sidebarSpeciality-dropdown-content {
+  + .dropDownSidebarSpeciality-dropdown-content {
   grid-template-rows: 1fr;
 }
 

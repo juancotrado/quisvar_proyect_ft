@@ -13,8 +13,6 @@ export const styles = StyleSheet.create({
   },
   dropdownLevel: {
     overflow: 'hidden',
-    width: '98.5%',
-    marginLeft: 'auto',
     marginTop: 1,
     marginBottom: 1,
   },

@@ -115,6 +115,8 @@ const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
               }`}
               className="projectAddLevel-input"
               errors={errors}
+              errorPosX={425}
+              errorPosY={-23}
             />
             {data.isProject && (
               <DropDownSimple

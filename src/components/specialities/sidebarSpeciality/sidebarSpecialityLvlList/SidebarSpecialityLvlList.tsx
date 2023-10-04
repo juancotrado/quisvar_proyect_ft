@@ -1,10 +1,10 @@
-import { FocusEvent, MouseEvent, useEffect, useRef, useState } from 'react';
+import { FocusEvent, useEffect, useRef, useState } from 'react';
 import {
   DataSidebarSpeciality,
   typeSidebarSpecility,
 } from '../../../../types/types';
 import './sidebarSpecialityLvlList.css';
-import DotsOption from '../../../shared/dots/DotsOption';
+import { Option } from '../../../shared/dots/DotsOption';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { Input } from '../../..';
 import {
@@ -13,12 +13,9 @@ import {
 } from '../../../../utils/customValidatesForm';
 import colors from '../../../../utils/json/colorSidebar.json';
 
-import {
-  isOpenCardRegisteProject$,
-  toggle$,
-} from '../../../../services/sharingSubject';
-import { Subscription } from 'rxjs';
-
+import { isOpenCardRegisteProject$ } from '../../../../services/sharingSubject';
+import { ContextMenuTrigger } from 'rctx-contextmenu';
+import DotsRight from '../../../shared/dotsRight/DotsRight';
 interface SidebarSpecialityLvlListProps {
   data: DataSidebarSpeciality;
   type: typeSidebarSpecility;
@@ -47,21 +44,16 @@ const SidebarSpecialityLvlList = ({
   const isFirstLevel = type === 'sector';
   const isLastLevel = type === 'projects';
   const [errors, setErrors] = useState<{ [key: string]: any }>({});
-  const [isClickRight, setIsClickRight] = useState(false);
   useEffect(() => {
     setFormData({ name: data.name ?? '', cod: data.cod ?? '' });
   }, [data.cod, data.name]);
 
-  const handleToggleRef = useRef<Subscription>(new Subscription());
-
   useEffect(() => {
-    handleToggleRef.current = toggle$.getSubject.subscribe((value: boolean) => {
-      setOpenEditData(value);
-    });
-    return () => {
-      handleToggleRef.current.unsubscribe();
-    };
+    const handleClick = () => setOpenEditData(false);
+    window.addEventListener('click', handleClick);
+    return () => window.removeEventListener('click', handleClick);
   }, []);
+
   const handleDuplicate = () => {
     const body = {
       name: data.name + ' copia',
@@ -101,10 +93,7 @@ const SidebarSpecialityLvlList = ({
       onSave?.();
     });
   };
-  const handleClickRigth = (e: MouseEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsClickRight(!isClickRight);
-  };
+
   const handleEdit = () => {
     if (type === 'projects') {
       isOpenCardRegisteProject$.setSubject = {
@@ -119,14 +108,36 @@ const SidebarSpecialityLvlList = ({
   const style = {
     borderLeft: `thick solid ${colors[type]}`,
   };
+
+  const dataDots: Option[] = [
+    {
+      name: openEditData ? 'Cancelar' : 'Editar',
+      type: openEditData ? 'submit' : 'button',
+      icon: openEditData ? 'close' : 'pencil',
+      function: handleEdit,
+    },
+    {
+      name: openEditData ? 'Guardar' : 'Eliminar',
+      type: openEditData ? 'submit' : 'button',
+      icon: openEditData ? 'save' : 'trash-red',
+      function: openEditData ? () => handleForm() : () => handleDelete(data.id),
+    },
+    {
+      name: 'Duplicar',
+      type: 'button',
+      icon: 'document-duplicate',
+      function: handleDuplicate,
+    },
+  ];
+
   return (
     <div className={`SidebarSpecialityLvlList-sub-list-item `} style={style}>
-      <div
+      <ContextMenuTrigger
+        id={`sidebar-speciality-${type}-${data.id}`}
         className={`SidebarSpecialityLvlList-section  ${
           data.name + '-' + data.id === indexSelected &&
           'sidebarLevelList-sub-list-span-active'
         }`}
-        onContextMenu={handleClickRigth}
       >
         {openEditData ? (
           <div
@@ -188,41 +199,11 @@ const SidebarSpecialityLvlList = ({
             className="SidebarSpecialityLvlList-dropdown-arrow"
           />
         )}
-      </div>
-      {!isFirstLevel && authUser && (
-        <DotsOption
-          notPersist={true}
-          className="sidebarLevelList-menu-dots-option"
-          // notPositionRelative
-          isClickRight={isClickRight}
-          data={[
-            {
-              name: openEditData ? 'Cancelar' : 'Editar',
-              type: openEditData ? 'submit' : 'button',
-              icon: openEditData ? 'close' : 'pencil',
-              function: handleEdit,
-            },
-
-            {
-              name: openEditData ? 'Guardar' : 'Eliminar',
-              type: openEditData ? 'submit' : 'button',
-              icon: openEditData ? 'save' : 'trash-red',
-              function: openEditData
-                ? () => handleForm()
-                : () => handleDelete(data.id),
-            },
-            {
-              name: isLastLevel ? 'Duplicar' : '',
-              type: 'button',
-              icon: isLastLevel ? 'document-duplicate' : '',
-
-              function: isLastLevel
-                ? handleDuplicate
-                : () => {
-                    console.log('first');
-                  },
-            },
-          ]}
+      </ContextMenuTrigger>
+      {authUser && (
+        <DotsRight
+          data={dataDots.slice(0, isLastLevel ? 3 : 2)}
+          idContext={`sidebar-speciality-${type}-${data.id}`}
         />
       )}
     </div>

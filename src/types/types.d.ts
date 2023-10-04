@@ -43,6 +43,8 @@ export interface DataSidebarSpeciality {
   CUI?: string;
   specialities?: SpecialityType[];
   typeSpecialities?: TypeSpecialities[];
+  projects?: ProjectType[];
+  sectors?: SectorType[];
 }
 
 export interface ProjectReport {
@@ -367,18 +369,6 @@ export interface UserForm {
   declaration: FileList | null;
 }
 
-// export interface Level {
-//   id: number;
-//   item: string;
-//   name: string;
-//   rootId: number;
-//   level: number;
-//   rootLevel: number;
-//   unique: boolean;
-//   stagesId: number;
-//   userId: null;
-//   nextLevel?: Level[];
-// }
 export interface Level {
   id: number;
   item: string;

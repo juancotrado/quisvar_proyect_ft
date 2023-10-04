@@ -32,7 +32,7 @@ const AlertNotification = () => {
           transition={{ duration: 0.5 }}
         >
           <CloseIcon onClick={handleClose} />
-          <h4 className="alertNotify-title">Se llamará lista en 5 minutos</h4>
+          <h4 className="alertNotify-title">Se llamará asistencia en breve</h4>
           <div className="alertNotify-body">
             <figure className="alertNotify-figure">
               <img
@@ -42,8 +42,8 @@ const AlertNotification = () => {
               />
             </figure>
             <p className="alertNotify-text">
-              Send timely, precise and relevant push notifications to your users
-              for more and better engagement.
+              Por favor, tome sus precauciones y permanezca en su área de
+              trabajo. Agradecemos su colaboración
             </p>
           </div>
         </motion.div>

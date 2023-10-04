@@ -11,7 +11,9 @@
   background-color: #fff;
   font-size: 0.8rem;
 }
-
+.levelSubtask-context-menu {
+  width: 100%;
+}
 .pointer {
   cursor: pointer;
 }
@@ -73,4 +75,8 @@
 
 .levelSubtask-plus {
   font-weight: 900;
+}
+.levelSubtask-btn {
+  border: none;
+  width: 1.7rem;
 }

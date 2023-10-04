@@ -1,9 +1,9 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import './sidebarSpecialityAddLvl.css';
-import { MouseEvent, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Input } from '../../..';
 import Button from '../../../shared/button/Button';
-import DotsOption, { Option } from '../../../shared/dots/DotsOption';
+import { Option } from '../../../shared/dots/DotsOption';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import {
   validateCorrectTyping,
@@ -11,12 +11,14 @@ import {
 } from '../../../../utils/customValidatesForm';
 import { isOpenCardRegisteProject$ } from '../../../../services/sharingSubject';
 import colors from '../../../../utils/json/colorSidebar.json';
+import DotsRight from '../../../shared/dotsRight/DotsRight';
+import { ContextMenuTrigger } from 'rctx-contextmenu';
 
 type DataForm = { name: string; cod: string };
 interface SidebarSpecialityAddLvlProps {
   idValue: number;
   onSave?: () => void;
-  keyNameId: 'sectorId' | 'specialitiesId' | 'typespecialityId';
+  keyNameId: 'sectorId' | 'specialitiesId' | 'typespecialityId' | 'noId';
   nameLevel?: string;
 }
 
@@ -24,6 +26,7 @@ const urlPost = {
   sectorId: '/specialities',
   specialitiesId: '/typespecialities',
   typespecialityId: '',
+  noId: '/sector',
 };
 const SidebarSpecialityAddLvl = ({
   onSave,
@@ -32,11 +35,12 @@ const SidebarSpecialityAddLvl = ({
   nameLevel = 'Añadir Nivel',
 }: SidebarSpecialityAddLvlProps) => {
   const [addLevel, setAddLevel] = useState<boolean>(false);
-  const [isClickRight, setIsClickRight] = useState(false);
-  const handleClickRigth = (e: MouseEvent<HTMLDivElement>) => {
-    e.preventDefault();
-    setIsClickRight(!isClickRight);
-  };
+
+  useEffect(() => {
+    const handleClick = () => setAddLevel(false);
+    window.addEventListener('click', handleClick);
+    return () => window.removeEventListener('click', handleClick);
+  }, []);
   const {
     handleSubmit,
     register,
@@ -63,10 +67,11 @@ const SidebarSpecialityAddLvl = ({
       name: 'Guardar',
       type: 'submit',
       icon: 'save',
+      function: handleSubmit(onSubmitData),
     },
   ];
-  const handleAddlevel = () => {
-    console.log({ keyNameId });
+  const handleAddlevel = (e: any) => {
+    e.stopPropagation();
     if (keyNameId === 'typespecialityId') {
       isOpenCardRegisteProject$.setSubject = {
         isOpen: true,
@@ -84,6 +89,7 @@ const SidebarSpecialityAddLvl = ({
       : keyNameId === 'typespecialityId'
       ? 'projects'
       : 'sector';
+
   const style = {
     borderLeft: `thick solid ${colors[type]}`,
   };
@@ -95,36 +101,36 @@ const SidebarSpecialityAddLvl = ({
     >
       {addLevel ? (
         <>
-          <div
+          <ContextMenuTrigger
             className="sidebarSpecialityAddLvl-inputs"
-            onContextMenu={handleClickRigth}
+            id={`sidebarSpecialityAddLvl-${type}-${idValue}`}
           >
-            <Input
-              label="Nombres:"
-              {...register('name', {
-                validate: { validateWhiteSpace, validateCorrectTyping },
-              })}
-              name="name"
-              className="sidebarSpecialityAddLvl-input"
-              errors={errors}
-            />
-            {keyNameId === 'sectorId' && (
+            <div onClick={e => e.stopPropagation()}>
               <Input
-                label="Nombre Corto:"
-                {...register('cod', {
+                label="Nombres:"
+                {...register('name', {
                   validate: { validateWhiteSpace, validateCorrectTyping },
                 })}
-                name="cod"
+                name="name"
                 className="sidebarSpecialityAddLvl-input"
                 errors={errors}
               />
-            )}
-          </div>
-          <DotsOption
-            notPositionRelative
-            isClickRight={isClickRight}
+              {keyNameId === 'sectorId' && (
+                <Input
+                  label="Nombre Corto:"
+                  {...register('cod', {
+                    validate: { validateWhiteSpace, validateCorrectTyping },
+                  })}
+                  name="cod"
+                  className="sidebarSpecialityAddLvl-input"
+                  errors={errors}
+                />
+              )}
+            </div>
+          </ContextMenuTrigger>
+          <DotsRight
             data={optionsData}
-            className="sidebarSpecialityAddLvl-menu-dots-option"
+            idContext={`sidebarSpecialityAddLvl-${type}-${idValue}`}
           />
         </>
       ) : (
@@ -142,6 +148,7 @@ const SidebarSpecialityAddLvl = ({
           />
         </div>
       )}
+      <input type="submit" className="sidebarSpecialityAddLvl-display-none" />
     </form>
   );
 };

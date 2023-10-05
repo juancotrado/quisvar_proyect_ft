@@ -13,6 +13,7 @@ import DropDownSimple from '../../shared/select/DropDownSimple';
 import useListUsers from '../../../hooks/useListUsers';
 import colors from '../../../utils/json/colors.json';
 import FloatingText from '../../shared/floatingText/FloatingText';
+import { SnackbarUtilities } from '../../../utils/SnackbarManager';
 
 interface DataForm {
   rootId: number;
@@ -48,10 +49,18 @@ const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
   } = useForm<DataForm>();
   const hadleAddFolder = () => setAddLevel('folder');
   const hadleAddArea = () => setAddLevel('area');
-  const handleHideForm = () => setAddLevel(null);
+  const handleHideForm = () => {
+    reset({});
+    setAddLevel(null);
+    setIdCoordinator(null);
+  };
 
   const onSubmitData: SubmitHandler<DataForm> = async body => {
-    const { id, stagesId } = data;
+    if (!idCoordinator && data.isProject)
+      return SnackbarUtilities.warning(
+        'Asegurese de elegir un coordinador antes.'
+      );
+    const { id, stagesId, rootTypeItem } = data;
     body = { ...body, rootId: firstLevel ? 0 : id, stagesId };
     if (addLevel === 'area') {
       body = { ...body, isProject: true };
@@ -59,21 +68,26 @@ const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
     if (data.isProject && idCoordinator) {
       body = { ...body, userId: idCoordinator };
     }
+
     if (body.typeItem) {
       if (body.rootId > 0) {
-        console.log('para actulizar level');
+        await axiosInstance.patch(
+          `levels/${id}?item=${body.typeItem}&type=LEVEL`
+        );
       } else {
-        console.log('para actulizar sector');
+        await axiosInstance.patch(
+          `levels/${stagesId}?item=${body.typeItem}&type=STAGE`
+        );
       }
+    } else {
+      body = { ...body, typeItem: rootTypeItem };
     }
-
     await axiosInstance.post('levels', body);
     onSave?.();
-    reset({});
     handleHideForm();
   };
   useEffect(() => {
-    const handleClick = () => setAddLevel(null);
+    const handleClick = () => handleHideForm();
     window.addEventListener('click', handleClick);
     return () => window.removeEventListener('click', handleClick);
   }, []);
@@ -86,6 +100,8 @@ const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
   const style = {
     borderLeft: `thick solid ${colors[data.level + 1]}`,
   };
+
+  const errorPosX = data.isProject ? 650 : 425;
   return (
     <div
       className={`projectAddLevel `}
@@ -134,8 +150,10 @@ const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
                   <option value="NUM">NUM</option>
                 </select>
                 <span className="projectAddLevel-item-info">
-                  {data.item}{' '}
-                  {watch('typeItem') ? typeNumber[watch('typeItem')] : 1}
+                  {data.item}
+                  <span className="projectAddLevel-item-info-type">
+                    {watch('typeItem') ? typeNumber[watch('typeItem')] : 1}
+                  </span>
                 </span>
               </>
             )}
@@ -150,7 +168,7 @@ const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
               }`}
               className="projectAddLevel-input"
               errors={errors}
-              errorPosX={425}
+              errorPosX={errorPosX}
               errorPosY={-23}
             />
             {data.isProject && (

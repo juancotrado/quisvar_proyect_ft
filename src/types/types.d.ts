@@ -394,6 +394,7 @@ export interface Level {
   percentage: number;
   total: number;
   days: number;
+  rootTypeItem: TypeItem;
 }
 interface Details {
   UNRESOLVED: number;

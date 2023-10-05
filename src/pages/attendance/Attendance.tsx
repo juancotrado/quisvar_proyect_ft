@@ -71,10 +71,9 @@ const Attendance = () => {
   //   }
   // };
   useEffect(() => {
-    // verifyLicenses();
+    verifyLicenses();
     getTodayData();
     deleteLists();
-    // verifyLicenses();
     getLicenses();
   }, []);
   const handleRadioChange = (status: string, usersId: number) => {
@@ -88,9 +87,7 @@ const Attendance = () => {
       setSendItems([...sendItems, { usersId, status }]);
     }
   };
-  // console.log(users);
 
-  // console.log(callList);
   const filterUsers = useMemo(() => {
     const callListUserIds = callList?.users.map(user => user.usersId);
     return callList?.users.length
@@ -115,20 +112,25 @@ const Attendance = () => {
     return res.data;
   };
   const generateAttendance = () => {
-    console.log(sendItems);
-
-    // axiosInstance
-    //   .post(`/list/attendance/${callList?.id}`, sendItems)
-    //   .then(async () => {
-    //     const data = await getTodayData();
-    //     const callListFind = data.find(
-    //       (list: ListAttendance) => list.id === callList?.id
-    //     );
-    //     setCallList(callListFind);
-    //   });
+    axiosInstance
+      .post(`/list/attendance/${callList?.id}`, sendItems)
+      .then(async () => {
+        const data = await getTodayData();
+        const callListFind = data.find(
+          (list: ListAttendance) => list.id === callList?.id
+        );
+        setCallList(callListFind);
+      });
   };
   const getLicenses = () => {
-    axiosInstance.get(`/license`).then(res => setLicense(res.data));
+    axiosInstance.get(`/license`).then(res => {
+      setLicense(res.data);
+      const listItems = res.data.map((item: getLicenses) => ({
+        ...item,
+        status: 'PERMISO',
+      }));
+      setSendItems(listItems);
+    });
   };
   const callNotification = () => {
     socket.emit('client:call-notification');
@@ -194,6 +196,8 @@ const Attendance = () => {
     const response = await axiosInstance.get(
       `/list/attendance/range/?startDate=${date}&endDate=${date}`
     );
+    // console.log(response.data);
+
     const newData: AttendanceRange[] = response.data;
     if (type === 'pdf') {
       isOpenCardViewPdf$.setSubject = {
@@ -283,7 +287,10 @@ const Attendance = () => {
             {filterUsers?.map((user, index) => (
               <AttendanceList
                 key={user.id}
-                onRadioChange={handleRadioChange}
+                onRadioChange={(e, v) => {
+                  // console.log(e, v);
+                  handleRadioChange(e, v);
+                }}
                 user={user}
                 status={getStatus(user)}
                 index={index}

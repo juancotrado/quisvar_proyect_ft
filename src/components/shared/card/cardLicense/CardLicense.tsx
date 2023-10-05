@@ -9,6 +9,7 @@ import Button from '../../button/Button';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
+import { licenseList } from '../../../../types/types';
 type DataLicense = {
   reason: string;
   startDate: string;
@@ -18,33 +19,66 @@ const CardLicense = () => {
   const { userSession } = useSelector((state: RootState) => state);
   const [isOpen, setIsOpen] = useState(false);
   const handleIsOpen = useRef<Subscription>(new Subscription());
+  const [data, setData] = useState<licenseList>();
+  const formattedDate = (value: string) => {
+    const parts = value.split(':');
+    const result = parts.slice(0, 2).join(':');
+    return result;
+  };
+  // console.log(data);
+
   const {
     handleSubmit,
     register,
     reset,
+    setValue,
     // formState: { errors },
   } = useForm<DataLicense>();
   useEffect(() => {
-    handleIsOpen.current = isOpenCardLicense$.getSubject.subscribe(value =>
-      setIsOpen(value)
-    );
+    handleIsOpen.current = isOpenCardLicense$.getSubject.subscribe(value => {
+      setIsOpen(value.isOpen);
+      setData(value.data);
+    });
     return () => {
       handleIsOpen.current.unsubscribe();
     };
   }, []);
+  useEffect(() => {
+    if (data) {
+      setValue('startDate', formattedDate(data?.startDate));
+      setValue('untilDate', formattedDate(data?.untilDate));
+      setValue('reason', data.reason ?? '');
+    }
+  }, [data, setValue]);
+
   const showModal = () => {
     reset({});
     setIsOpen(false);
   };
-  const onSubmit: SubmitHandler<DataLicense> = data => {
-    // console.log(data);
-    axiosInstance
-      .post(`license`, { userId: userSession.id, ...data })
-      .then(res => {
+  const onSubmit: SubmitHandler<DataLicense> = values => {
+    if (!data) {
+      axiosInstance
+        .post(`license`, { usersId: userSession.id, ...values })
+        .then(res => {
+          console.log(res.data);
+          setIsOpen(false);
+          reset({});
+        });
+    } else {
+      const updateLicense = {
+        reason: values.reason,
+        startDate: new Date(values.startDate),
+        untilDate: new Date(values.untilDate),
+        usersId: userSession.id,
+        feedback: data.feedback,
+        status: 'PROCESS',
+      };
+      axiosInstance.patch(`/license/${data.id}`, updateLicense).then(res => {
         console.log(res.data);
         setIsOpen(false);
         reset({});
       });
+    }
   };
 
   return (
@@ -66,14 +100,14 @@ const CardLicense = () => {
             {...register('startDate')}
             name="startDate"
             type="datetime-local"
-            min="2023-10-01T00:00"
+            // min="2023-10-01T00:00"
           />
           <Input
             label="Fecha y hora de retorno:"
             {...register('untilDate')}
             name="untilDate"
             type="datetime-local"
-            min="2023-10-01T00:00"
+            // min="2023-10-01T00:00"
           />
         </div>
         <TextArea label="Motivo" {...register('reason')} name="reason" />

@@ -32,7 +32,7 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
     const orderCalls = [
       'primer llamado',
       'segundo llamado',
-      'tercero llamado',
+      'tercer llamado',
       'cuarto llamado',
       'quinto llamado',
       'sexto llamado',
@@ -94,7 +94,6 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
           {value.data &&
             value.data.map((value, index) => {
               const attendances = getStatus(value);
-              //   console.log(attendances);
               const getColor = (status: string) => {
                 if (status === 'P') return '#87E4BD';
                 if (status === 'T') return '#FFE17F';
@@ -137,17 +136,19 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
                   </View>
                   <View style={{ ...styles.attendance, width: '25%' }}>
                     {attendances &&
-                      attendances.map((attendance, index) => (
-                        <Text
-                          style={{
-                            ...styles.attendanceItem,
-                            backgroundColor: getColor(attendance),
-                          }}
-                          key={index}
-                        >
-                          {attendance}
-                        </Text>
-                      ))}
+                      attendances.map((attendance, index) => {
+                        return (
+                          <Text
+                            style={{
+                              ...styles.attendanceItem,
+                              backgroundColor: getColor(attendance),
+                            }}
+                            key={index}
+                          >
+                            {attendance}
+                          </Text>
+                        );
+                      })}
                   </View>
                 </View>
               );
@@ -208,8 +209,10 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
 
 const AttendancePdf = ({ data, daily }: PDFGeneratorProps) => {
   //   const [showPreview, setShowPreview] = useState(false);
+  // console.log(data);
+
   const filterdUsers: AttendanceRange[] = data.filter(
-    user => user.list.length !== 0
+    user => user?.list.length !== 0
   );
   return (
     <PDFViewer width="1000" height="600">

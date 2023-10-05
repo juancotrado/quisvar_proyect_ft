@@ -770,7 +770,7 @@ export type PdfDataProps = {
 type licenseStatus = 'PROCESS' | 'ACTIVE' | 'INACTIVE' | 'DENIED';
 export type licenseList = {
   id: number;
-  userId: number;
+  usersId: number;
   reason?: string;
   feedback?: string;
   status: licenseStatus;
@@ -780,6 +780,6 @@ export type licenseList = {
 };
 export type getLicenses = {
   id: number;
-  status: licenseStatus;
-  userId: number;
+  // status: licenseStatus;
+  usersId: number;
 };

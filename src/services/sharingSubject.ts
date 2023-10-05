@@ -3,6 +3,7 @@ import {
   AttendanceRange,
   DataSidebarSpeciality,
   SubTask,
+  licenseList,
 } from '../types/types';
 
 interface CardRegisteProject {
@@ -22,6 +23,10 @@ interface CardViewProps {
   rangeDate?: { startDate: string; endDate: string };
   typeReport: 'range' | 'daily';
 }
+interface CardLicenseProps {
+  isOpen: boolean;
+  data?: licenseList;
+}
 
 export const loader$ = new SubjectManager<boolean>();
 export const toggle$ = new SubjectManager<boolean>();
@@ -31,7 +36,7 @@ export const isOpenCardRegisterUser$ = new SubjectManager<boolean>();
 export const isOpenCardGenerateReport$ = new SubjectManager<boolean>();
 export const isOpenCardViewPdf$ = new SubjectManager<CardViewProps>();
 export const isOpenCardFiles$ = new SubjectManager<boolean>();
-export const isOpenCardLicense$ = new SubjectManager<boolean>();
+export const isOpenCardLicense$ = new SubjectManager<CardLicenseProps>();
 export const isOpenViewDocs$ = new SubjectManager<boolean>();
 export const isOpenCardRegisteProject$ =
   new SubjectManager<CardRegisteProject>();

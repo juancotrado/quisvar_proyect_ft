@@ -21,17 +21,15 @@ const AttendanceList = ({
 }: AttendanceListProps) => {
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const [isActive, setisActive] = useState<boolean>(false);
-  const haslength = list.find(lis => lis.userId === user.id);
-  const [userId, setUserId] = useState<number>(user.id);
-  // console.log(list);
+  const haslength = list.find(lis => lis.usersId === user.id);
+  const [usersId, setUserId] = useState<number>(user.id);
 
   const getLicense = useCallback(() => {
-    // setSelectedValue(status)
-    setisActive(!!haslength);
+    if (haslength) setisActive(!!haslength);
     setSelectedValue(!status && haslength ? 'PERMISO' : status);
-  }, [status]);
+  }, [haslength, status]);
+
   useEffect(() => {
-    // onRadioChange('PERMISO', user.id);
     getLicense();
   }, [getLicense]);
   const handleRadioChange = (value: string, id: number) => {
@@ -39,7 +37,6 @@ const AttendanceList = ({
     setUserId(id);
     onRadioChange(value, id);
   };
-  // console.log(user);
 
   return (
     <div
@@ -47,7 +44,7 @@ const AttendanceList = ({
         index % 2 !== 0 && 'attendanceList-bg'
       }`}
     >
-      <div className="attendanceList-col attendanceList-place">{index + 1}</div>
+      <div className="attendanceList-col attendanceList-place">{user.id}</div>
       <div className="attendanceList-col attendanceList-place">403</div>
       <div className="attendanceList-col">
         {user.profile.lastName} {user.profile.firstName}
@@ -62,7 +59,7 @@ const AttendanceList = ({
           value="PUNTUAL"
           classNameMain="attendanceList-radio"
           checked={selectedValue === 'PUNTUAL'}
-          onChange={() => handleRadioChange('PUNTUAL', userId)}
+          onChange={() => handleRadioChange('PUNTUAL', usersId)}
           disabled={isActive ? true : !!status}
         />
       </div>
@@ -72,7 +69,7 @@ const AttendanceList = ({
           value="TARDE"
           classNameMain="attendanceList-radio"
           checked={selectedValue === 'TARDE'}
-          onChange={() => handleRadioChange('TARDE', userId)}
+          onChange={() => handleRadioChange('TARDE', usersId)}
           disabled={isActive ? true : !!status}
         />
       </div>
@@ -82,7 +79,7 @@ const AttendanceList = ({
           value="SIMPLE"
           classNameMain="attendanceList-radio"
           checked={selectedValue === 'SIMPLE'}
-          onChange={() => handleRadioChange('SIMPLE', userId)}
+          onChange={() => handleRadioChange('SIMPLE', usersId)}
           disabled={isActive ? true : !!status}
         />
       </div>
@@ -92,7 +89,7 @@ const AttendanceList = ({
           value="GRAVE"
           classNameMain="attendanceList-radio"
           checked={selectedValue === 'GRAVE'}
-          onChange={() => handleRadioChange('GRAVE', userId)}
+          onChange={() => handleRadioChange('GRAVE', usersId)}
           disabled={isActive ? true : !!status}
         />
       </div>
@@ -102,7 +99,7 @@ const AttendanceList = ({
           value="MUY_GRAVE"
           classNameMain="attendanceList-radio"
           checked={selectedValue === 'MUY_GRAVE'}
-          onChange={() => handleRadioChange('MUY_GRAVE', userId)}
+          onChange={() => handleRadioChange('MUY_GRAVE', usersId)}
           disabled={isActive ? true : !!status}
         />
       </div>
@@ -112,7 +109,7 @@ const AttendanceList = ({
           value="PERMISO"
           classNameMain="attendanceList-radio"
           checked={selectedValue === 'PERMISO'}
-          onChange={() => handleRadioChange('PERMISO', userId)}
+          onChange={() => handleRadioChange('PERMISO', usersId)}
           disabled={isActive ? true : !!status}
         />
       </div>

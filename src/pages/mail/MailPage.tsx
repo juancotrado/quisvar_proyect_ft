@@ -39,15 +39,17 @@ const MailPage = () => {
   const size = !!searchParams.get('size') || false;
   const refresh = !!searchParams.get('refresh') || false;
   const [isNewMessage, setIsNewMessage] = useState(false);
+  const permissions = ['SUPER_MOD', 'MOD', 'EMPLOYEE'].includes(user.role);
   const viewMessage = (id: number, type: MailType['type']) =>
     navigate(`${id}?size=true&type=${type}`);
 
-  // useEffect(() => verifyLicenses(), []);
+  useEffect(() => {
+    if (!permissions) verifyLicenses();
+  }, []);
   useEffect(() => getMessages(), [typeMail, typeMsg, statusMsg]);
   useEffect(() => {
     getMessages();
   }, [refresh]);
-  const permissions = ['SUPER_MOD', 'MOD', 'EMPLOYEE'].includes(user.role);
   const handleNewMessage = () => setIsNewMessage(true);
   const handleCloseMessage = () => setIsNewMessage(false);
   const handleSaveMessage = () => {
@@ -113,7 +115,15 @@ const MailPage = () => {
     if (0 < limit) setSkip(skip === 21 ? skip - 21 : skip - 20);
   };
   const showCardReport = () => {
-    isOpenCardLicense$.setSubject = true;
+    isOpenCardLicense$.setSubject = {
+      isOpen: true,
+    };
+  };
+  const showCardReportData = (data: licenseList) => {
+    isOpenCardLicense$.setSubject = {
+      isOpen: true,
+      data,
+    };
   };
   const verifyLicenses = () => {
     axiosInstance
@@ -273,7 +283,8 @@ const MailPage = () => {
                   data={license}
                   index={index}
                   isEmployee={permissions}
-                  // onSave={getMessages()}
+                  editData={() => showCardReportData(license)}
+                  onSave={getMessages}
                 />
               ))
             ) : (

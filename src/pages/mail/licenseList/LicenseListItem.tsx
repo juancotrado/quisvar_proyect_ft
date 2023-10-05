@@ -11,33 +11,39 @@ type license = {
   isEmployee: boolean;
   data: licenseList;
   index: number;
-  // onSave: void;
+  editData?: () => void;
+  onSave?: () => void;
 };
 
-const LicenseListItem = ({ isEmployee, data, index }: license) => {
+const LicenseListItem = ({
+  isEmployee,
+  data,
+  index,
+  editData,
+  onSave,
+}: license) => {
   const { users } = useListUsers();
   const [feedback, setFeedback] = useState('');
-  const userName = users.find(user => data.userId === user.id);
+  const userName = users.find(user => data.usersId === user.id);
   const handleFeedback = (e: React.FocusEvent<HTMLInputElement>) => {
     setFeedback(e.target.value);
   };
-  const handleSucces = () => {
+  const handleChangeStatus = (value: string) => {
     const newLicense = {
-      status: 'ACTIVE',
+      status: value,
       feedback,
     };
     axiosInstance.patch(`/license/${data.id}`, newLicense).then(res => {
       console.log(res.data);
-      // onSave;
+      onSave?.();
     });
-    // console.log(data.id);
   };
   const getDate = (value: string) => {
     const GMT = 5 * 60 * 60 * 1000;
     const time = new Date(value);
     const gmtMinus5Time = new Date(time.getTime() + GMT);
     const res = formatDate(gmtMinus5Time, {
-      day: 'numeric',
+      day: '2-digit',
       weekday: 'short',
       month: 'numeric',
       year: 'numeric',
@@ -79,7 +85,7 @@ const LicenseListItem = ({ isEmployee, data, index }: license) => {
         {!isEmployee ? (
           <>
             <button
-              onClick={handleSucces}
+              onClick={() => handleChangeStatus('ACTIVE')}
               className="license-btn-action"
               disabled={data.status !== 'PROCESS'}
             >
@@ -90,6 +96,7 @@ const LicenseListItem = ({ isEmployee, data, index }: license) => {
               Aprobar
             </button>
             <button
+              onClick={() => handleChangeStatus('DENIED')}
               className="license-btn-action"
               disabled={data.status !== 'PROCESS'}
             >
@@ -102,11 +109,18 @@ const LicenseListItem = ({ isEmployee, data, index }: license) => {
           </>
         ) : (
           <div className="col-span actions-container">
-            <Button icon="pencil" className="role-btn" />
+            <Button
+              icon="pencil"
+              className="role-btn"
+              onClick={editData}
+              disabled={
+                data && (data.status === 'ACTIVE' || data.status === 'INACTIVE')
+              }
+            />
             <ButtonDelete
               icon="trash"
               className="role-delete-icon"
-              // onSave={getUsers}
+              onSave={onSave}
               passwordRequired
             />
           </div>

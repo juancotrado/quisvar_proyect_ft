@@ -9,6 +9,8 @@ export async function generateReportDaily({
   startDate,
   printData,
 }: GenerateReportDailyProps) {
+  // console.log(printData);
+
   const response = await fetch('/templates/list_daily_template.xlsx');
   const buffer = await response.arrayBuffer();
   const workbook = new ExcelJS.Workbook();
@@ -34,7 +36,7 @@ export async function generateReportDaily({
     const orderCalls = [
       'primer llamado',
       'segundo llamado',
-      'tercero llamado',
+      'tercer llamado',
       'cuarto llamado',
       'quinto llamado',
       'sexto llamado',

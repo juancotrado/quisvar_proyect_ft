@@ -40,9 +40,6 @@ const BudgetsPage = () => {
   }, [socket, stageId]);
   useEffect(() => {
     getLevels();
-    return () => {
-      localStorage.removeItem('typeItem');
-    };
   }, [getLevels, stageId]);
   useEffect(() => {
     socket.on('server:update-project', (Level: Level) => {
@@ -60,10 +57,7 @@ const BudgetsPage = () => {
       }
     });
   };
-  const handleFormat = (e: ChangeEvent<HTMLSelectElement>) => {
-    const { value } = e.target;
-    localStorage.setItem('typeItem', value);
-  };
+
   const closeFilter = () => {
     getLevels();
     setOpenFilter(false);
@@ -86,6 +80,16 @@ const BudgetsPage = () => {
   return (
     <>
       <div className="budgetsPage-filter">
+        <FloatingText text="Descargar Indice" xPos={-50}>
+          <PDFDownloadLink
+            document={generateIndexPdf({ data: levels })}
+            fileName={`${levels.projectName}.pdf`}
+            className="budgetsPage-filter-icon"
+          >
+            <img src={`/svg/index-icon.svg`} />
+            Indice
+          </PDFDownloadLink>
+        </FloatingText>
         <span
           className="budgetsPage-filter-icon"
           onClick={() => setOpenFilter(true)}
@@ -133,37 +137,6 @@ const BudgetsPage = () => {
         {levels && <DropdownLevel level={levels} onSave={getLevels} />}
       </div>
 
-      {levels && (
-        <div className="budgetsPage-more-options">
-          <FloatingText text="Descargar Indice">
-            <div className="moreInfo-detail">
-              <PDFDownloadLink
-                document={generateIndexPdf({ data: levels })}
-                fileName={`${levels.projectName}.pdf`}
-                className="pdf-btn-view-white"
-              >
-                <>
-                  <img
-                    className="chip-file-icon-doc normal"
-                    src={`/svg/file-download.svg`}
-                  />
-                  <img
-                    className="chip-file-icon-doc hover"
-                    src={`/svg/file-download-white.svg`}
-                  />
-                </>
-              </PDFDownloadLink>
-            </div>
-          </FloatingText>
-          {modAuthProject && (
-            <select name="select" onChange={handleFormat} defaultValue="NUM">
-              <option value="ABC">ABC</option>
-              <option value="ROM">ROM</option>
-              <option value="NUM">NUM</option>
-            </select>
-          )}
-        </div>
-      )}
       <Outlet />
       <CardRegisterSubTask />
     </>

@@ -10,9 +10,12 @@ interface UserDetailProps {
 const UserDetail = ({ user, index, onClick }: UserDetailProps) => {
   return (
     <tr>
+      <h1>asdsad</h1>
       <td>{index + 1}</td>
       <td className="user-info">
-        <img src="/svg/Profile Avatar.svg" alt="" className="icon" />
+        <figure className="user-profile-figure">
+          <img src={`https://robohash.org/${user.id}`} alt={user.email} />
+        </figure>
         <div className="name-container">
           <h1 className="list-name">
             {user.profile?.firstName + ' ' + user.profile?.lastName}

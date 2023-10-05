@@ -83,7 +83,7 @@ const DropDownSidebarSpeciality = ({
             }`}
             onClick={() => {
               handleProjectNavigate(subLevel);
-              handleTaks(subLevel.name, subLevel.id);
+              if (type === 'projects') handleTaks(subLevel.name, subLevel.id);
             }}
           >
             <SidebarSpecialityLvlList
@@ -91,7 +91,7 @@ const DropDownSidebarSpeciality = ({
               data={subLevel}
               type={type}
               onSave={onSave}
-              indexSelected={indexSelected}
+              indexSelected={type === 'projects' ? indexSelected : ''}
             />
             <DropDownSidebarSpeciality data={subLevel} onSave={onSave} />
           </li>

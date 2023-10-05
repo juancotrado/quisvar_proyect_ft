@@ -774,3 +774,8 @@ export type licenseList = {
   untilDate: string;
   createdAt: string;
 };
+export type getLicenses = {
+  id: number;
+  status: licenseStatus;
+  userId: number;
+};

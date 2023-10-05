@@ -6,6 +6,7 @@ import useListUsers from '../../../hooks/useListUsers';
 import { axiosInstance } from '../../../services/axiosInstance';
 import { licenseList } from '../../../types/types';
 import './LicenseListItem.css';
+import formatDate from '../../../utils/formatDate';
 type license = {
   isEmployee: boolean;
   data: licenseList;
@@ -31,6 +32,20 @@ const LicenseListItem = ({ isEmployee, data, index }: license) => {
     });
     // console.log(data.id);
   };
+  const getDate = (value: string) => {
+    const GMT = 5 * 60 * 60 * 1000;
+    const time = new Date(value);
+    const gmtMinus5Time = new Date(time.getTime() + GMT);
+    const res = formatDate(gmtMinus5Time, {
+      day: 'numeric',
+      weekday: 'short',
+      month: 'numeric',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+    });
+    return res;
+  };
   return (
     <div
       className={`license-item-content ${
@@ -41,7 +56,9 @@ const LicenseListItem = ({ isEmployee, data, index }: license) => {
       {!isEmployee && (
         <div className="license-header-items">{userName?.name}</div>
       )}
-      <div className="license-header-items">{data.createdAt}</div>
+      <div className="license-header-items">
+        {formatDate(new Date(data.createdAt))}
+      </div>
       <div className="license-header-items">{data.reason}</div>
       {/* <div className="license-header-items">{data.status}</div> */}
       <div className="license-header-items">
@@ -49,8 +66,8 @@ const LicenseListItem = ({ isEmployee, data, index }: license) => {
           {data.status.toLowerCase()}
         </span>
       </div>
-      <div className="license-header-items">{data.startDate}</div>
-      <div className="license-header-items">{data.untilDate}</div>
+      <div className="license-header-items">{getDate(data.startDate)}</div>
+      <div className="license-header-items">{getDate(data.untilDate)}</div>
       {!isEmployee && data.status === 'PROCESS' ? (
         <div className="license-item-input">
           <input onBlur={handleFeedback} className="license-item-text" />
@@ -73,11 +90,8 @@ const LicenseListItem = ({ isEmployee, data, index }: license) => {
               Aprobar
             </button>
             <button
-              //   onClick={() => {
-              //     setBtnActive(false);
-              //     reset();
-              //   }}
               className="license-btn-action"
+              disabled={data.status !== 'PROCESS'}
             >
               <img
                 src="/svg/cross-red.svg"
@@ -88,15 +102,9 @@ const LicenseListItem = ({ isEmployee, data, index }: license) => {
           </>
         ) : (
           <div className="col-span actions-container">
-            <Button
-              icon="pencil"
-              className="role-btn"
-              // onClick={onUpdate}
-            />
+            <Button icon="pencil" className="role-btn" />
             <ButtonDelete
               icon="trash"
-              // disabled={user.id === userSession.id}
-              // url={`/users/${user.id}`}
               className="role-delete-icon"
               // onSave={getUsers}
               passwordRequired

@@ -13,7 +13,12 @@ import { useSelector } from 'react-redux';
 import Button from '../../components/shared/button/Button';
 import { axiosInstance } from '../../services/axiosInstance';
 import { _date } from '../../utils/formatDate';
-import { AttendanceRange, ListAttendance, User } from '../../types/types';
+import {
+  AttendanceRange,
+  ListAttendance,
+  User,
+  getLicenses,
+} from '../../types/types';
 import { SocketContext } from '../../context/SocketContex';
 import { generateReportRange } from './GenerateReportRange';
 // import { generateReportDaily } from './GenerateReportDaily';
@@ -26,7 +31,7 @@ interface sendItemsProps {
 const llamados = [
   { title: 'primer llamado' },
   { title: 'segundo llamado' },
-  { title: 'tercero llamado' },
+  { title: 'tercer llamado' },
   { title: 'cuarto llamado' },
   { title: 'quinto llamado' },
   { title: 'sexto llamado' },
@@ -40,7 +45,7 @@ const Attendance = () => {
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
   const [exportPDF, setExportPdf] = useState<AttendanceRange[]>();
-  const [license, setLicense] = useState<any[]>([]);
+  const [license, setLicense] = useState<getLicenses[]>([]);
   const { listUsers: users } = useSelector((state: RootState) => state);
   const socket = useContext(SocketContext);
 

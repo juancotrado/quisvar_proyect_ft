@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 // import Button from '../../shared/button/Button'
 import './AttendanceList.css';
 import { Input } from '../..';
-import { ListAttendance, User } from '../../../types/types';
+import { ListAttendance, User, getLicenses } from '../../../types/types';
 import { axiosInstance } from '../../../services/axiosInstance';
 
 interface AttendanceListProps {
@@ -10,7 +10,7 @@ interface AttendanceListProps {
   user: User;
   index: number;
   status?: string | null;
-  list: any[];
+  list: getLicenses[];
 }
 const AttendanceList = ({
   list,
@@ -21,13 +21,13 @@ const AttendanceList = ({
 }: AttendanceListProps) => {
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const [isActive, setisActive] = useState<boolean>(false);
-  const haslength: boolean = list.find(lis => lis.userId === user.id);
+  const haslength = list.find(lis => lis.userId === user.id);
   const [userId, setUserId] = useState<number>(user.id);
-  console.log(list);
+  // console.log(list);
 
   const getLicense = useCallback(() => {
     // setSelectedValue(status)
-    setisActive(haslength);
+    setisActive(!!haslength);
     setSelectedValue(!status && haslength ? 'PERMISO' : status);
   }, [status]);
   useEffect(() => {

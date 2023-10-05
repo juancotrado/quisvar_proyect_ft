@@ -68,8 +68,11 @@ const MailPage = () => {
     } else {
       if (user.role && permissions) {
         axiosInstance.get(`license/employee/${user.id}`).then(res => {
-          // console.log(res.data);
-
+          setListLicense(res.data);
+        });
+      }
+      if (!permissions) {
+        axiosInstance.get('license/status').then(res => {
           setListLicense(res.data);
         });
       }

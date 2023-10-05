@@ -713,6 +713,7 @@ export interface userMessage {
       'firstName' | 'lastName' | 'dni' | 'phone' | 'degree' | 'description'
     >;
   };
+  userId: number;
 }
 
 export interface fileMesage {

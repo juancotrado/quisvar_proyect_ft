@@ -121,16 +121,13 @@ const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
           </figure>
         </FloatingText>
       )}
-      {!data.nextLevel?.length &&
-        !data.isArea &&
-        !data.isProject &&
-        data.level && (
-          <FloatingText text="Agregar Tarea">
-            <figure className="projectAddLevel-figure" onClick={hadleAddTask}>
-              <img src={`/svg/task-list.svg`} alt="W3Schools" />
-            </figure>
-          </FloatingText>
-        )}
+      {!data.nextLevel?.length && !data.isProject && data.level && (
+        <FloatingText text="Agregar Tarea">
+          <figure className="projectAddLevel-figure" onClick={hadleAddTask}>
+            <img src={`/svg/task-list.svg`} alt="W3Schools" />
+          </figure>
+        </FloatingText>
+      )}
       {addLevel && (
         <>
           <form

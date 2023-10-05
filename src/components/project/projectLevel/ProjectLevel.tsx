@@ -86,11 +86,11 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
   };
   return (
     <div
-      className={`projectLevel-sub-list-item ${
+      className={`projectLevel-sub-list-item  ${
+        data.isInclude && 'dropdownLevel-Include'
+      } ${data?.subTasks?.length && !data.isArea && 'dropdownLevel-Subtask'}  ${
         data.isArea && 'dropdownLevel-Area'
-      } ${data.isInclude && 'dropdownLevel-Include'} ${
-        data?.subTasks?.length && 'dropdownLevel-Subtask'
-      }  ${data.isProject && 'dropdownLevel-Project'}`}
+      } ${data.isProject && 'dropdownLevel-Project'}`}
       style={style}
     >
       <div className="projectLevel-contain">

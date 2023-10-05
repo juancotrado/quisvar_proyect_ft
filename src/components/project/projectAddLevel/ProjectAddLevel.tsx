@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './projectAddLevel.css';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Input } from '../..';
@@ -20,8 +20,14 @@ interface DataForm {
   name: string;
   isProject: boolean;
   userId: number;
-  typeItem: string;
+  typeItem: TypeItem;
 }
+type TypeItem = 'ABC' | 'ROM' | 'NUM';
+const typeNumber = {
+  ABC: 'A',
+  ROM: 'I',
+  NUM: '1',
+};
 interface ProjectAddLevelProps {
   data: Level;
   onSave?: () => void;
@@ -37,6 +43,7 @@ const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
     handleSubmit,
     register,
     reset,
+    watch,
     formState: { errors },
   } = useForm<DataForm>();
   const hadleAddFolder = () => setAddLevel('folder');
@@ -45,36 +52,46 @@ const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
 
   const onSubmitData: SubmitHandler<DataForm> = async body => {
     const { id, stagesId } = data;
-    const typeItem = localStorage.getItem('typeItem') ?? 'NUM';
-    body = { ...body, rootId: firstLevel ? 0 : id, stagesId, typeItem };
+    body = { ...body, rootId: firstLevel ? 0 : id, stagesId };
     if (addLevel === 'area') {
       body = { ...body, isProject: true };
     }
     if (data.isProject && idCoordinator) {
       body = { ...body, userId: idCoordinator };
     }
-    axiosInstance.post('levels', body).then(() => {
-      onSave?.();
-      reset({});
-      handleHideForm();
-    });
+    if (body.typeItem) {
+      if (body.rootId > 0) {
+        console.log('para actulizar level');
+      } else {
+        console.log('para actulizar sector');
+      }
+    }
+
+    await axiosInstance.post('levels', body);
+    onSave?.();
+    reset({});
+    handleHideForm();
   };
+  useEffect(() => {
+    const handleClick = () => setAddLevel(null);
+    window.addEventListener('click', handleClick);
+    return () => window.removeEventListener('click', handleClick);
+  }, []);
   const hadleAddTask = () =>
     (isOpenCardRegisteTask$.setSubject = { isOpen: true, levelId: data.id });
 
   const typeImgFolder =
     addLevel === 'folder' ? 'add_folder-blue' : 'add_folder';
   const typeImgArea = addLevel === 'area' ? 'add_area-blue' : 'add_area';
-  const isProject = data.isProject;
   const style = {
     borderLeft: `thick solid ${colors[data.level + 1]}`,
   };
   return (
     <div
-      className={`projectAddLevel ${isProject && 'projectAddLevel-Project'}`}
+      className={`projectAddLevel `}
       style={style}
+      onClick={e => e.stopPropagation()}
     >
-      {/* <div>{data.item}</div> */}
       <FloatingText text="Agregar Nivel">
         <figure className="projectAddLevel-figure" onClick={hadleAddFolder}>
           <img src={`/svg/${typeImgFolder}.svg`} alt="W3Schools" />
@@ -93,7 +110,6 @@ const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
         !data.isProject &&
         data.level && (
           <FloatingText text="Agregar Tarea">
-            {' '}
             <figure className="projectAddLevel-figure" onClick={hadleAddTask}>
               <img src={`/svg/task-list.svg`} alt="W3Schools" />
             </figure>
@@ -105,6 +121,25 @@ const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
             onSubmit={handleSubmit(onSubmitData)}
             className="projectAddLevel-form"
           >
+            {!data.nextLevel?.length && (
+              <>
+                <select
+                  defaultValue="NUM"
+                  {...register('typeItem')}
+                  name="typeItem"
+                  className="projectAddLevel-selector"
+                >
+                  <option value="ABC">ABC</option>
+                  <option value="ROM">ROM</option>
+                  <option value="NUM">NUM</option>
+                </select>
+                <span className="projectAddLevel-item-info">
+                  {data.item}{' '}
+                  {watch('typeItem') ? typeNumber[watch('typeItem')] : 1}
+                </span>
+              </>
+            )}
+
             <Input
               {...register('name', {
                 validate: { validateWhiteSpace, validateCorrectTyping },

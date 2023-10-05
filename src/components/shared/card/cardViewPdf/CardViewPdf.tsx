@@ -6,6 +6,7 @@ import { AttendancePdf } from '../../..';
 // import { AttendanceRange } from '../../../../types/types';
 import './CardViewPdf.css';
 import { AttendanceRange } from '../../../../types/types';
+import AttendanceRangePdf from '../../attendanceRangePdf/AttendanceRangePdf';
 // interface CardViewProps {
 //   exportPDF: AttendanceRange[];
 //   daily?: string;
@@ -16,13 +17,21 @@ const CardViewPdf = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState<AttendanceRange[]>();
   const [daily, setDaily] = useState<string>();
+  const [typeReport, setTypeReport] = useState<'range' | 'daily' | null>(null);
+  const [rangeDate, setRangeDate] = useState({
+    startDate: '',
+    endDate: '',
+  });
 
   const handleIsOpen = useRef<Subscription>(new Subscription());
   useEffect(() => {
     handleIsOpen.current = isOpenCardViewPdf$.getSubject.subscribe(value => {
       setIsOpen(value.isOpen);
       setData(value.data);
-      setDaily(value.daily);
+      setTypeReport(value.typeReport);
+
+      if (value.daily) setDaily(value.daily);
+      if (value.rangeDate) setRangeDate(value.rangeDate);
     });
     return () => {
       handleIsOpen.current.unsubscribe();
@@ -30,9 +39,6 @@ const CardViewPdf = () => {
   }, []);
   const closeFunctions = () => {
     setIsOpen(false);
-    // onClose?.();
-    // setErrorPassword({});
-    // reset();
   };
   return (
     <Modal size={50} isOpenProp={isOpen}>
@@ -41,7 +47,12 @@ const CardViewPdf = () => {
           <img src="/svg/close.svg" alt="pencil" />
         </span>
         {/* <h1>VISTA PREVIA</h1> */}
-        {data && <AttendancePdf data={data} daily={daily} />}
+        {data && typeReport === 'daily' && (
+          <AttendancePdf data={data} daily={daily} />
+        )}
+        {data && typeReport === 'range' && (
+          <AttendanceRangePdf data={data} rangeDate={rangeDate} />
+        )}
       </div>
     </Modal>
   );

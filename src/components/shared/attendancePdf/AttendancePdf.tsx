@@ -1,15 +1,7 @@
-import {
-  Document,
-  Page,
-  Text,
-  PDFDownloadLink,
-  View,
-  PDFViewer,
-} from '@react-pdf/renderer';
-import { useState } from 'react';
+import { Document, Page, Text, View, PDFViewer } from '@react-pdf/renderer';
 import { AttendanceRange } from '../../../types/types';
-import './AttendancePdf.css';
 import { styles } from './styledComponents';
+import { information } from '../../../utils/constantsPdf';
 
 export type TablesProps = {
   descripcion: string | null;
@@ -23,56 +15,6 @@ interface PDFGeneratorProps {
 interface ConfigProps {
   size: 'A4' | 'A5';
 }
-const information = [
-  {
-    item: 1,
-    simbolo: 'P',
-    descripcion: 'Puntual (P)',
-    multa: 'S/0.00',
-    gerente: 'S/0.00',
-    color: '#87E4BD',
-  },
-  {
-    item: 2,
-    simbolo: 'T',
-    descripcion: 'Tardanza (T)',
-    multa: 'S/0.50',
-    gerente: 'S/1.00',
-    color: '#FFE17F',
-  },
-  {
-    item: 3,
-    simbolo: 'F',
-    descripcion: 'Falta simple (F)',
-    multa: 'S/10.00',
-    gerente: 'S/20.00',
-    color: '#F8C5C5',
-  },
-  {
-    item: 4,
-    simbolo: 'G',
-    descripcion: 'Falta grave (G)',
-    multa: 'S/20.00',
-    gerente: 'S/40.00',
-    color: '#F19191',
-  },
-  {
-    item: 5,
-    simbolo: 'M',
-    descripcion: 'Falta muy grave (G)',
-    multa: 'S/80.00',
-    gerente: 'S/160.00',
-    color: '#D2595B',
-  },
-  {
-    item: 6,
-    simbolo: 'L',
-    descripcion: 'Licencia o permiso (L)',
-    multa: 'S/0.00',
-    gerente: 'S/0.00',
-    color: '#83A8F0',
-  },
-];
 
 const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
   const getStatus = (data: AttendanceRange) => {
@@ -270,49 +212,9 @@ const AttendancePdf = ({ data, daily }: PDFGeneratorProps) => {
     user => user.list.length !== 0
   );
   return (
-    <div className="pdf-btn-area-view">
-      {/* {showPreview ? ( */}
-      <div>
-        <PDFViewer width="1000" height="600">
-          {generatePDF({ data: filterdUsers, daily }, { size: 'A4' })}
-        </PDFViewer>
-        {/* <button onClick={() => setShowPreview(false)}>
-            Ocultar Vista Previa
-          </button> */}
-      </div>
-      {/* ) : (
-        <div>
-          <p>
-            Haz clic en el botón para ver la vista previa y descargar el PDF con
-            la tabla:
-          </p>
-          <button onClick={() => setShowPreview(true)}>Ver Vista Previa</button>
-        </div> */}
-      {/* )} */}
-      {/* {showPreview && (
-        <PDFDownloadLink
-          document={generatePDF({ data,daily }, { size: 'A4' })}
-          fileName={`xd.pdf`}
-          //   className="pdf-btn-view-white"
-        >
-          {({ loading }) => (
-            <>
-              <>
-                <img
-                  className="chip-file-icon-doc normal"
-                  src={`/svg/file-download.svg`}
-                />
-                <img
-                  className="chip-file-icon-doc hover"
-                  src={`/svg/file-download-white.svg`}
-                />
-              </>
-              <span className="download-text">{loading ? 'A4' : 'A4'}</span>
-            </>
-          )}
-        </PDFDownloadLink>
-      )} */}
-    </div>
+    <PDFViewer width="1000" height="600">
+      {generatePDF({ data: filterdUsers, daily }, { size: 'A4' })}
+    </PDFViewer>
   );
 };
 

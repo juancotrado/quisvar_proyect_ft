@@ -19,6 +19,8 @@ interface CardViewProps {
   isOpen: boolean;
   data: AttendanceRange[];
   daily?: string;
+  rangeDate?: { startDate: string; endDate: string };
+  typeReport: 'range' | 'daily';
 }
 
 export const loader$ = new SubjectManager<boolean>();

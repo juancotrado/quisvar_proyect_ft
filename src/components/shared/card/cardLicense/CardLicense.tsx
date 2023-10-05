@@ -21,7 +21,7 @@ const CardLicense = () => {
   const {
     handleSubmit,
     register,
-    // reset,
+    reset,
     // formState: { errors },
   } = useForm<DataLicense>();
   useEffect(() => {
@@ -33,7 +33,7 @@ const CardLicense = () => {
     };
   }, []);
   const showModal = () => {
-    // reset({});
+    reset({});
     setIsOpen(false);
   };
   const onSubmit: SubmitHandler<DataLicense> = data => {
@@ -43,6 +43,7 @@ const CardLicense = () => {
       .then(res => {
         console.log(res.data);
         setIsOpen(false);
+        reset({});
       });
   };
 

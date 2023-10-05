@@ -2,7 +2,13 @@
 import { useEffect, useState } from 'react';
 import './mailPage.css';
 import { axiosInstance } from '../../services/axiosInstance';
-import { MailType, MessageStatus, MessageTypeImbox } from '../../types/types';
+import {
+  MailType,
+  MessageStatus,
+  MessageTypeImbox,
+  UserRoleType,
+  licenseList,
+} from '../../types/types';
 import CardMessage from '../../components/shared/card/cardMessage/CardMessage';
 import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
 import CardRegisterMessage from '../../components/shared/card/cardRegisterMessage/CardRegisterMessage';
@@ -13,16 +19,15 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { CardGenerateReport, CardLicense } from '../../components';
 import { isOpenCardLicense$ } from '../../services/sharingSubject';
-import { LicenseListHeader, LicenseListItem, LicensePage } from '..';
+import { LicenseListHeader, LicenseListItem } from '..';
 
 const InitTMail: MailType['type'] = 'RECEIVER';
-
 const MailPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { userSession: user } = useSelector((state: RootState) => state);
   const [listMessage, setListMessage] = useState<MailType[] | null>(null);
-  const [listLicense, setListLicense] = useState([]);
+  const [listLicense, setListLicense] = useState<licenseList[]>([]);
   const [viewLicense, setViewLicense] = useState(false);
   const [totalMail, setTotalMail] = useState(0);
   const [skip, setSkip] = useState(0);
@@ -37,11 +42,12 @@ const MailPage = () => {
   const viewMessage = (id: number, type: MailType['type']) =>
     navigate(`${id}?size=true&type=${type}`);
 
+  // useEffect(() => verifyLicenses(), []);
   useEffect(() => getMessages(), [typeMail, typeMsg, statusMsg]);
   useEffect(() => {
     getMessages();
   }, [refresh]);
-
+  const permissions = ['SUPER_MOD', 'MOD', 'EMPLOYEE'].includes(user.role);
   const handleNewMessage = () => setIsNewMessage(true);
   const handleCloseMessage = () => setIsNewMessage(false);
   const handleSaveMessage = () => {
@@ -60,9 +66,13 @@ const MailPage = () => {
         setTotalMail(res.data.total);
       });
     } else {
-      axiosInstance.get('license').then(res => {
-        console.log(res.data);
-      });
+      if (user.role && permissions) {
+        axiosInstance.get(`license/employee/${user.id}`).then(res => {
+          // console.log(res.data);
+
+          setListLicense(res.data);
+        });
+      }
     }
   };
   const handleSelectReceiver = () => {
@@ -101,6 +111,11 @@ const MailPage = () => {
   };
   const showCardReport = () => {
     isOpenCardLicense$.setSubject = true;
+  };
+  const verifyLicenses = () => {
+    axiosInstance
+      .post('/license/expired')
+      .then(() => console.log('Datos limpiados'));
   };
   return (
     <div className="mail-main container">
@@ -180,13 +195,15 @@ const MailPage = () => {
                   textField="id"
                 />
               </div>
-              <span className="mail-license" onClick={showCardReport}>
-                <img
-                  className="mail-mail-options-title-filter-img"
-                  src="/svg/license-icon.svg"
-                />
-                Solicitar Licencia
-              </span>
+              {permissions && (
+                <span className="mail-license" onClick={showCardReport}>
+                  <img
+                    className="mail-mail-options-title-filter-img"
+                    src="/svg/license-icon.svg"
+                  />
+                  Solicitar Licencia
+                </span>
+              )}
               <Button
                 onClick={handleNewMessage}
                 icon="plus-dark"
@@ -229,7 +246,7 @@ const MailPage = () => {
                 )}
               </div>
             ) : (
-              <LicenseListHeader isEmployee={true} />
+              <LicenseListHeader isEmployee={permissions} />
             )}
           </div>
           <div className="mail-grid-container">
@@ -246,8 +263,18 @@ const MailPage = () => {
                   message={message}
                 />
               ))
+            ) : listLicense.length > 0 ? (
+              listLicense.map((license, index) => (
+                <LicenseListItem
+                  key={license.id}
+                  data={license}
+                  index={index}
+                  isEmployee={permissions}
+                  // onSave={getMessages()}
+                />
+              ))
             ) : (
-              <LicenseListItem isEmployee={true} />
+              <div>hola mundo</div>
             )}
           </div>
           <div className="mail-footer-section">

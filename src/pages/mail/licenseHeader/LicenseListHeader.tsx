@@ -9,7 +9,7 @@ const LicenseListHeader = ({ isEmployee }: license) => {
         isEmployee ? 'license-employee' : 'license-admin'
       }`}
     >
-      <div className="license-header-items">items</div>
+      <div className="license-header-items">item</div>
       {!isEmployee && <div className="license-header-items">solicitante</div>}
       <div className="license-header-items">fecha de envío</div>
       <div className="license-header-items">motivo</div>

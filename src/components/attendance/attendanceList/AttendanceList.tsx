@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 // import Button from '../../shared/button/Button'
 import './AttendanceList.css';
 import { Input } from '../..';
@@ -10,7 +10,6 @@ interface AttendanceListProps {
   user: User;
   index: number;
   status?: string | null;
-  // list: ListAttendance;
   list: any[];
 }
 const AttendanceList = ({
@@ -22,25 +21,19 @@ const AttendanceList = ({
 }: AttendanceListProps) => {
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const [isActive, setisActive] = useState<boolean>(false);
-  useEffect(() => {
-    // getLicense();
-    setSelectedValue(status);
-  }, [status]);
-  console.log(list.find(lis => lis.id === user.id));
-
-  // const haslength = list.users.length === 0;
-  // const getLicense = async () => {
-  //   const response = await axiosInstance.get(`/license/${user.id}?status=ACTIVE`);
-  //   const license = response.data ? true : false;
-  //   // console.log(response.data ? true : false);
-  //   setisActive(license && haslength);
-  //   setSelectedValue(license && haslength ? 'PERMISO' : status);
-  //   onRadioChange('PERMISO', user.id);
-  // };
-  // console.log(getLicense);
-
+  const haslength: boolean = list.find(lis => lis.userId === user.id);
   const [userId, setUserId] = useState<number>(user.id);
+  console.log(list);
 
+  const getLicense = useCallback(() => {
+    // setSelectedValue(status)
+    setisActive(haslength);
+    setSelectedValue(!status && haslength ? 'PERMISO' : status);
+  }, [status]);
+  useEffect(() => {
+    // onRadioChange('PERMISO', user.id);
+    getLicense();
+  }, [getLicense]);
   const handleRadioChange = (value: string, id: number) => {
     setSelectedValue(value);
     setUserId(id);

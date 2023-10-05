@@ -58,6 +58,13 @@ const Attendance = () => {
   //     });
   //   }
   // };
+  useEffect(() => {
+    // verifyLicenses();
+    getTodayData();
+    deleteLists();
+    // verifyLicenses();
+    getLicenses();
+  }, []);
   const handleRadioChange = (status: string, usersId: number) => {
     const findId = sendItems.find(item => item.usersId === usersId);
     if (findId) {
@@ -78,11 +85,6 @@ const Attendance = () => {
       ? users?.filter(user => callListUserIds?.includes(user.id))
       : users?.filter(user => user.status === true);
   }, [callList?.users, users]);
-  useEffect(() => {
-    getTodayData();
-    deleteLists();
-    getLicenses();
-  }, []);
   const getTodayData = async () => {
     const res = await axiosInstance.get(
       `/list/attendance/?startDate=${_date(today)}`
@@ -90,21 +92,28 @@ const Attendance = () => {
     setCallLists(res.data);
     return res.data;
   };
+  const verifyLicenses = () => {
+    axiosInstance
+      .post('/license/expired')
+      .then(() => console.log('Datos limpiados'));
+  };
   // borrar listas de ayer que no tengan asuarios
   const deleteLists = async () => {
     const res = await axiosInstance.delete('/list');
     return res.data;
   };
   const generateAttendance = () => {
-    axiosInstance
-      .post(`/list/attendance/${callList?.id}`, sendItems)
-      .then(async () => {
-        const data = await getTodayData();
-        const callListFind = data.find(
-          (list: ListAttendance) => list.id === callList?.id
-        );
-        setCallList(callListFind);
-      });
+    console.log(sendItems);
+
+    // axiosInstance
+    //   .post(`/list/attendance/${callList?.id}`, sendItems)
+    //   .then(async () => {
+    //     const data = await getTodayData();
+    //     const callListFind = data.find(
+    //       (list: ListAttendance) => list.id === callList?.id
+    //     );
+    //     setCallList(callListFind);
+    //   });
   };
   const getLicenses = () => {
     axiosInstance.get(`/license`).then(res => setLicense(res.data));

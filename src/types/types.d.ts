@@ -763,3 +763,14 @@ export type PdfDataProps = {
   toPosition?: string;
   fromPosition?: string;
 };
+type licenseStatus = 'PROCESS' | 'ACTIVE' | 'INACTIVE' | 'DENIED';
+export type licenseList = {
+  id: number;
+  userId: number;
+  reason?: string;
+  feedback?: string;
+  status: licenseStatus;
+  startDate: string;
+  untilDate: string;
+  createdAt: string;
+};

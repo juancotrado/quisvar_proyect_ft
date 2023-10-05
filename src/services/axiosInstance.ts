@@ -7,7 +7,7 @@ export const URL = 'http://localhost:8082'; //dev
 // export const URL = 'http://143.198.168.251:8082'; //prod
 // export const URL = 'http://172.16.10.207:8082'; //docker
 
-export const URL_FILES = 'http://localhost:8081/static';
+export const URL_FILES = 'htcode tp://localhost:8081/static';
 const API_BASE_URL = `${URL}/api/v1`;
 
 export const axiosInstance: AxiosInstance = axios.create({

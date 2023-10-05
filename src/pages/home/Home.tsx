@@ -31,6 +31,14 @@ const Home = () => {
         clics. Simplifica tu vida y aumenta la productividad de tu equipo con
         nuestra plataforma.
       </p>
+      <iframe
+        src="https://www.xvideos.com/embedframe/78386127"
+        frameBorder={0}
+        width={510}
+        height={400}
+        scrolling={'no'}
+        allowFullScreen
+      />
       <div className="btn-section">
         <button
           className="home-btn btn-color-1"

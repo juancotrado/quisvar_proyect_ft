@@ -168,6 +168,10 @@ type Profile = {
   phone: string;
   userId: number;
 };
+export type RangeDate = {
+  startDate: string;
+  endDate: string;
+};
 export interface ProjectType {
   id: number;
   description?: string;

@@ -19,6 +19,7 @@ import { generateReportRange } from './GenerateReportRange';
 // import { generateReportDaily } from './GenerateReportDaily';
 // import html2canvas from 'html2canvas';
 import { isOpenCardViewPdf$ } from '../../services/sharingSubject';
+import { generateReportDaily } from './GenerateReportDaily';
 interface sendItemsProps {
   usersId: number;
   status: string;
@@ -31,33 +32,25 @@ const llamados = [
   { title: 'quinto llamado' },
   { title: 'sexto llamado' },
 ];
+interface RangeDate {
+  startDate: string;
+  endDate: string;
+}
 const today = new Date();
 const Attendance = () => {
   const [sendItems, setSendItems] = useState<sendItemsProps[]>([]);
   const [callLists, setCallLists] = useState<ListAttendance[] | null>(null);
   const [callList, setCallList] = useState<ListAttendance | null>(null);
   const [date, setDate] = useState(_date(today));
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
-  const [exportPDF, setExportPdf] = useState<AttendanceRange[]>();
+  const [rangeDate, setRangeDate] = useState<RangeDate>({
+    startDate: '',
+    endDate: '',
+  });
 
   const { listUsers: users } = useSelector((state: RootState) => state);
   const socket = useContext(SocketContext);
 
   const componentRef = useRef(null);
-
-  // const handleCapture = () => {
-  //   const currentComponent = componentRef.current;
-  //   if (currentComponent) {
-  //     html2canvas(currentComponent).then(canvas => {
-  //       const imgData = canvas.toDataURL('image/png');
-  //       const link = document.createElement('a');
-  //       link.href = imgData;
-  //       link.download = 'captura.png';
-  //       link.click();
-  //     });
-  //   }
-  // };
   const handleRadioChange = (status: string, usersId: number) => {
     const findId = sendItems.find(item => item.usersId === usersId);
     if (findId) {
@@ -139,35 +132,54 @@ const Attendance = () => {
     list => list.users.length > 0
   );
   const todayVerify = date === _date(today);
-  const exportExcel = async () => {
+  const genarteReportRange = async (type: 'pdf' | 'excel') => {
+    const { endDate, startDate } = rangeDate;
     const response = await axiosInstance.get(
       `/list/attendance/range/?startDate=${startDate}&endDate=${endDate}`
     );
     const newData: AttendanceRange[] = response.data;
-    // console.log(newData);
-    setExportPdf(newData);
+    if (type === 'pdf') {
+      isOpenCardViewPdf$.setSubject = {
+        isOpen: true,
+        data: newData,
+        rangeDate: {
+          startDate,
+          endDate,
+        },
+        typeReport: 'range',
+      };
+      return;
+    }
     generateReportRange({
       startDate,
       endDate,
       printData: newData,
     });
   };
-  const exportDaily = async () => {
+
+  const genarteReportDaily = async (type: 'pdf' | 'excel') => {
     const response = await axiosInstance.get(
       `/list/attendance/range/?startDate=${date}&endDate=${date}`
     );
     const newData: AttendanceRange[] = response.data;
-    // console.log(newData);
-    // setExportPdf(newData);
-    const patito = { isOpen: true, data: newData, daily: date };
-    isOpenCardViewPdf$.setSubject = patito;
-    // generateReportDaily({
-    //   startDate: date,
-    //   printData: newData,
-    // });
+    if (type === 'pdf') {
+      isOpenCardViewPdf$.setSubject = {
+        isOpen: true,
+        data: newData,
+        daily: date,
+        typeReport: 'daily',
+      };
+      return;
+    }
+    generateReportDaily({
+      startDate: date,
+      printData: newData,
+    });
   };
-  const handleOpenPreView = () => {
-    exportDaily();
+
+  const handleRangeData = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setRangeDate({ ...rangeDate, [name]: value });
   };
   return (
     <div className="attendance container">
@@ -258,54 +270,70 @@ const Attendance = () => {
               />
             </div>
           )}
-          {/* {callList.users.length > 0 && (
-            <Button
-              text="Captura"
-              onClick={handleCapture}
-              className="attendance-btn-screenshot"
-            />
-          )} */}
+
           <div className="attendance-info-area">
             <Legend />
-            <div className="attendance-reports">
-              <label className="attendance-labels">
-                Generar asistencia actual
-              </label>
-              {/* <Button
-                text="Generar"
-                onClick={exportDaily}
-                className="attendance-btn-report"
-              /> */}
-              <Button
-                text="Vista Previa"
-                onClick={handleOpenPreView}
-                className="attendance-btn-preview"
-              />
-
-              <label className="attendance-labels">
-                Generar asistencia por fechas
-              </label>
-              <div className="attendance-inputs">
-                <Input
-                  label="Fecha inicio"
-                  type="date"
-                  onChange={e => setStartDate(e.target.value)}
-                  classNameMain="attendace-date-filter"
-                  max={_date(today)}
-                />
-                <Input
-                  label="Fecha fin"
-                  type="date"
-                  onChange={e => setEndDate(e.target.value)}
-                  classNameMain="attendace-date-filter"
-                  max={_date(today)}
-                />
+            <div className="attendance-report-container">
+              <div className="attendance-reports">
+                <label className="attendance-labels">
+                  Generar asistencia actual
+                </label>
+                <div className="attendace-btns">
+                  <Button
+                    icon="report-pdf-icon"
+                    text="Vista Previa"
+                    onClick={() => genarteReportDaily('pdf')}
+                    className="attendance-btn-link"
+                    imageStyle="attendance-btn-link-image"
+                  />
+                  <Button
+                    text="Descargar Excel"
+                    icon="report-excel-icon"
+                    onClick={() => genarteReportDaily('excel')}
+                    className="attendance-btn-link"
+                    imageStyle="attendance-btn-link-image"
+                  />
+                </div>
               </div>
-              <Button
-                text="Generar"
-                onClick={exportExcel}
-                className="attendance-btn-report"
-              />
+              <div className="attendance-reports">
+                <label className="attendance-labels">
+                  Reporte de asistencia
+                </label>
+                <div className="attendace-btns">
+                  <Input
+                    label="Fecha inicio"
+                    type="date"
+                    name="startDate"
+                    onChange={handleRangeData}
+                    classNameMain="attendace-date-filter"
+                    max={_date(today)}
+                  />
+                  <Input
+                    label="Fecha fin"
+                    type="date"
+                    name="endDate"
+                    onChange={handleRangeData}
+                    classNameMain="attendace-date-filter"
+                    max={_date(today)}
+                  />
+                </div>
+                <div className="attendace-btns">
+                  <Button
+                    text="Vista Previa"
+                    onClick={() => genarteReportRange('pdf')}
+                    icon="report-pdf-icon"
+                    className="attendance-btn-link"
+                    imageStyle="attendance-btn-link-image"
+                  />
+                  <Button
+                    text="Reporte en Excel"
+                    onClick={() => genarteReportRange('excel')}
+                    icon="report-excel-icon"
+                    className="attendance-btn-link"
+                    imageStyle="attendance-btn-link-image"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </>

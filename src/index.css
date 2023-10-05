@@ -157,3 +157,12 @@ a.nostyle:visited {
   color: inherit;
   cursor: auto;
 }
+.user-profile-figure {
+  width: 2.5rem;
+  border-radius: 50%;
+  border: 1px solid var(--color-secondary);
+  aspect-ratio: 1;
+  overflow: hidden;
+  background-color: #fff;
+  cursor: pointer;
+}

@@ -62,7 +62,7 @@ const SubtasksMoreInfo = ({ task }: SubtasksMoreInfoProps) => {
         </div>
       </div>
       <div className="subtasksMoreInfo-item">
-        <h3 className="subtasksMoreInfo-item-title">TOTAL DE HORAS</h3>
+        <h3 className="subtasksMoreInfo-item-title">TOTAL DE DIAS</h3>
         <div className="subtasksMoreInfo-item-text">
           <figure className="subtasksMoreInfo-item-icon">
             <img src="/svg/timer-icon.svg" alt="W3Schools" />

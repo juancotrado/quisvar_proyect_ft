@@ -1,4 +1,4 @@
-import { FocusEvent, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   DataSidebarSpeciality,
   typeSidebarSpecility,
@@ -16,6 +16,7 @@ import colors from '../../../../utils/json/colorSidebar.json';
 import { isOpenCardRegisteProject$ } from '../../../../services/sharingSubject';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import DotsRight from '../../../shared/dotsRight/DotsRight';
+import { SubmitHandler, useForm } from 'react-hook-form';
 interface SidebarSpecialityLvlListProps {
   data: DataSidebarSpeciality;
   type: typeSidebarSpecility;
@@ -28,10 +29,6 @@ interface FormData {
   cod?: string;
 }
 
-const INIT_VALUES: FormData = {
-  name: '',
-  cod: '',
-};
 const SidebarSpecialityLvlList = ({
   data,
   type,
@@ -40,13 +37,14 @@ const SidebarSpecialityLvlList = ({
   authUser = true,
 }: SidebarSpecialityLvlListProps) => {
   const [openEditData, setOpenEditData] = useState<boolean>(false);
-  const [formData, setFormData] = useState<FormData>(INIT_VALUES);
   const isFirstLevel = type === 'sector';
   const isLastLevel = type === 'projects';
-  const [errors, setErrors] = useState<{ [key: string]: any }>({});
-  useEffect(() => {
-    setFormData({ name: data.name ?? '', cod: data.cod ?? '' });
-  }, [data.cod, data.name]);
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm<FormData>();
 
   useEffect(() => {
     const handleClick = () => setOpenEditData(false);
@@ -62,27 +60,9 @@ const SidebarSpecialityLvlList = ({
       .post(`/duplicates/project/${data.id}`, body)
       .then(() => onSave?.());
   };
-  const handleBlurInput = (e: FocusEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    if (typeof validateCorrectTyping(value) === 'string') {
-      setErrors({
-        name: {
-          message: validateCorrectTyping(value),
-        },
-      });
-    } else if (typeof validateWhiteSpace(value) === 'string') {
-      setErrors({
-        name: {
-          message: validateWhiteSpace(value),
-        },
-      });
-    } else {
-      setErrors({ value: '' });
-      setFormData({ ...formData, [name]: value });
-    }
-  };
-  const handleForm = () => {
-    axiosInstance.put(`/${type}/${data.id}`, formData).then(() => {
+
+  const handleForm: SubmitHandler<FormData> = async body => {
+    axiosInstance.put(`/${type}/${data.id}`, body).then(() => {
       setOpenEditData(false);
       onSave?.();
     });
@@ -103,6 +83,7 @@ const SidebarSpecialityLvlList = ({
       };
       return;
     }
+    reset({ name: data.name, cod: data.cod });
     setOpenEditData(!openEditData);
   };
   const style = {
@@ -120,7 +101,9 @@ const SidebarSpecialityLvlList = ({
       name: openEditData ? 'Guardar' : 'Eliminar',
       type: openEditData ? 'submit' : 'button',
       icon: openEditData ? 'save' : 'trash-red',
-      function: openEditData ? () => handleForm() : () => handleDelete(data.id),
+      function: openEditData
+        ? handleSubmit(handleForm)
+        : () => handleDelete(data.id),
     },
     {
       name: 'Duplicar',
@@ -140,29 +123,36 @@ const SidebarSpecialityLvlList = ({
         }`}
       >
         {openEditData ? (
-          <div
+          <form
+            onSubmit={handleSubmit(handleForm)}
             className={`SidebarSpecialityLvlList-inputs`}
             onClick={e => e.stopPropagation()}
           >
             {type === 'specialities' && (
               <Input
-                defaultValue={data?.cod}
                 label="Nombre Cortos:"
+                {...register('cod', {
+                  validate: { validateWhiteSpace, validateCorrectTyping },
+                })}
                 name="cod"
                 className="SidebarSpecialityLvlList-input"
-                onBlur={handleBlurInput}
                 errors={errors}
               />
             )}
             <Input
-              defaultValue={data.name}
               label="Nombre:"
+              {...register('name', {
+                validate: { validateWhiteSpace, validateCorrectTyping },
+              })}
               name="name"
               className="SidebarSpecialityLvlList-input"
-              onBlur={handleBlurInput}
               errors={errors}
             />
-          </div>
+            <input
+              type="submit"
+              className="sidebarSpecialityAddLvl-display-none"
+            />
+          </form>
         ) : (
           <>
             {!isLastLevel && (

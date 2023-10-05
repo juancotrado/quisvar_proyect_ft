@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from 'react';
+import { useState } from 'react';
 import { Level } from '../../../types/types';
 import './projectLevel.css';
 import { Input } from '../..';
@@ -9,7 +9,7 @@ import {
   validateCorrectTyping,
   validateWhiteSpace,
 } from '../../../utils/customValidatesForm';
-import DotsOption, { Option } from '../../shared/dots/DotsOption';
+import { Option } from '../../shared/dots/DotsOption';
 import { axiosInstance } from '../../../services/axiosInstance';
 import MoreInfo from '../moreInfo/MoreInfo';
 import { useSelector } from 'react-redux';
@@ -33,18 +33,11 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
   const { modAuthProject } = useSelector((state: RootState) => state);
   const [openEdit, setOpenEdit] = useState(false);
   const handleCloseEdit = () => setOpenEdit(false);
-  const [isClickRight, setIsClickRight] = useState(false);
   const handleOpenEdit = () => {
     reset({ name: data.name });
     setOpenEdit(!openEdit);
-    setIsClickRight(false);
   };
 
-  const handleClickRigth = (e: MouseEvent<HTMLDivElement>) => {
-    if (!modAuthProject) return;
-    e.preventDefault();
-    setIsClickRight(!isClickRight);
-  };
   const onSubmitData: SubmitHandler<DataForm> = async body => {
     axiosInstance.put(`levels/${data.id}`, body).then(() => resetValues());
   };
@@ -104,20 +97,8 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
         {modAuthProject && (
           <DotsRight data={options} idContext={`projectLevel-${data.id}`} />
         )}
-        {/* {modAuthProject && (
-          <DotsOption
-            className="projectLevel-menu-dots-option"
-            notPositionRelative
-            iconHide
-            isClickRight={isClickRight}
-            data={options}
-          />
-        )} */}
         <ContextMenuTrigger id={`projectLevel-${data.id}`}>
-          <div
-            className={`projectLevel-section `}
-            onContextMenu={handleClickRigth}
-          >
+          <div className={`projectLevel-section `}>
             <img src="/svg/down.svg" className="projectLevel-dropdown-arrow" />
             <input
               type="checkbox"

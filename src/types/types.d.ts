@@ -394,6 +394,7 @@ export interface Level {
   percentage: number;
   total: number;
   days: number;
+  rootTypeItem: TypeItem;
 }
 interface Details {
   UNRESOLVED: number;
@@ -712,6 +713,7 @@ export interface userMessage {
       'firstName' | 'lastName' | 'dni' | 'phone' | 'degree' | 'description'
     >;
   };
+  userId: number;
 }
 
 export interface fileMesage {

@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { Input, PDFGenerator } from '../../..';
 import InputFile from '../../Input/InputFile';
@@ -11,6 +11,7 @@ import {
   PdfDataProps,
   // UserRoleType,
   quantityType,
+  receiverType,
 } from '../../../../types/types';
 import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
@@ -33,6 +34,8 @@ import { validateWhiteSpace } from '../../../../utils/customValidatesForm';
 import { motion } from 'framer-motion';
 import Portal from '../../../portal/Portal';
 import { dropIn } from '../../../../animations/animations';
+import DropDownSimple from '../../select/DropDownSimple';
+import { SnackbarUtilities } from '../../../../utils/SnackbarManager';
 
 interface MessageSendType {
   title: string;
@@ -77,7 +80,19 @@ const CardRegisterMessageForward = ({
   const HashUser = HashFile(`${firstName} ${lastName}`);
   const [pdfData, setpdfData] = useState<PdfDataProps>(dataInitialPdf);
   const handleInputChange = (event: string) => setValue('description', event);
+  const [receiver, setReceiver] = useState<receiverType | null>(null);
+  const usersId = message.users
+    .filter(user => user.role !== 'SECONDARY')
+    .map(user => user.userId);
+  const contacts = useMemo(
+    () =>
+      users?.filter(
+        user => usersId.includes(user.id) && user.id !== userSession.id
+      ),
+    [userSession, users]
+  );
 
+  console.log({ contacts });
   const addFiles = (newFiles: File[]) => {
     const _files = addFilesList(fileUploadFiles, newFiles);
     setFileUploadFiles(_files);
@@ -97,10 +112,14 @@ const CardRegisterMessageForward = ({
   };
 
   const onSubmit: SubmitHandler<MessageSendType> = async data => {
+    if (!receiver)
+      return SnackbarUtilities.warning(
+        'Asegurese de seleccioner el destinatario.'
+      );
     const values = {
       ...data,
       messageId: message.id,
-      receiverId: sender.id,
+      receiverId: receiver.id,
     };
     const headers = {
       'Content-type': 'multipart/form-data',
@@ -112,7 +131,8 @@ const CardRegisterMessageForward = ({
       .post(`/mail/reply?status=RECHAZADO`, formData, { headers })
       .then(onSave);
   };
-
+  const handleRemoveReceiver = () => setReceiver(null);
+  console.log('first', message);
   const sender = message.users.filter(user => user.type === 'SENDER')[0].user;
   const handleArchiverMessage = () => {
     axiosInstance.patch(`/mail/archived/${message.id}`).then(onSave);
@@ -171,18 +191,31 @@ const CardRegisterMessageForward = ({
       <div className="inbox-forward-receiver-container">
         <div className="inbox-receiver-container-info">
           <span>Para:</span>
-          <span className="inbox-receiver-forward-chip">
-            {sender.profile.lastName} {sender.profile.firstName}
-          </span>
+          <div className="imbox-receiver-choice-dropdown">
+            {receiver ? (
+              <div className="imbox-receiver-chip">
+                <span>{receiver.value}</span>
+                <img
+                  className="imbox-receiver-chip-icon-close "
+                  onClick={handleRemoveReceiver}
+                  src="/svg/circle-xmark-solid.svg"
+                />
+              </div>
+            ) : (
+              <DropDownSimple
+                classNameInput="imbox-receiver-choice-dropdown-input"
+                type="search"
+                data={contacts}
+                textField="name"
+                itemKey="id"
+                selector
+                droper
+                valueInput={(value, id) => setReceiver({ id: +id, value })}
+                required
+              />
+            )}
+          </div>
         </div>
-        {/* <Button
-          type="button"
-          text="Cc"
-          className="inbox-copy-button"
-          // onClick={handleAddCopy}
-        /> */}
-        {/* {receiver && (
-          )} */}
       </div>
       <label className="imbox-input-title">
         Asunto:

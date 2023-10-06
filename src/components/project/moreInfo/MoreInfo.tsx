@@ -63,7 +63,11 @@ const MoreInfo = ({ data }: MoreInfoProps) => {
     });
   };
   const type = data.projectName ? 'stages' : 'levels';
-  const { handleArchiver } = useArchiver(data.id, type);
+  const { handleArchiver } = useArchiver(
+    data.id,
+    type,
+    data.projectName ?? data.name
+  );
   const handleArchiverOptions = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     setShowArchiverOption(!showArchiverOption);

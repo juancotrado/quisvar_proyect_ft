@@ -79,7 +79,7 @@ const LicenseListItem = ({
           <input onBlur={handleFeedback} className="license-item-text" />
         </div>
       ) : (
-        <div className="license-header-items">{data.feedback}</div>
+        <div className="license-item-input">{data.feedback}</div>
       )}
       <div className="license-header-btns">
         {!isEmployee ? (

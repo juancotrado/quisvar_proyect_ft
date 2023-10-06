@@ -15,7 +15,10 @@ type DataLicense = {
   startDate: string;
   untilDate: string;
 };
-const CardLicense = () => {
+interface CardLicenseProps {
+  onSave?: () => void;
+}
+const CardLicense = ({ onSave }: CardLicenseProps) => {
   const { userSession } = useSelector((state: RootState) => state);
   const [isOpen, setIsOpen] = useState(false);
   const handleIsOpen = useRef<Subscription>(new Subscription());
@@ -63,6 +66,7 @@ const CardLicense = () => {
           console.log(res.data);
           setIsOpen(false);
           reset({});
+          onSave?.();
         });
     } else {
       const updateLicense = {
@@ -77,6 +81,7 @@ const CardLicense = () => {
         console.log(res.data);
         setIsOpen(false);
         reset({});
+        onSave?.();
       });
     }
   };

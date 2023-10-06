@@ -288,7 +288,7 @@ const MailPage = () => {
                 />
               ))
             ) : (
-              <div>hola mundo</div>
+              <div>Aun no hay solicitudes</div>
             )}
           </div>
           <div className="mail-footer-section">
@@ -321,7 +321,7 @@ const MailPage = () => {
         />
       )}
       {/* {user.role === 'EMPLOYEE'} */}
-      <CardLicense />
+      <CardLicense onSave={getMessages} />
     </div>
   );
 };

@@ -1,4 +1,4 @@
-import { NavLink, useNavigate, useParams } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import { Level, SubTask } from '../../../types/types';
 import './levelSubtask.css';
 import { isOpenCardRegisteTask$ } from '../../../services/sharingSubject';
@@ -26,7 +26,6 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
   const { stageId } = useParams();
   const modAuthArea = modAuthProject || userSession.id === level.userId;
   const { subTasks, id } = level;
-  const navigate = useNavigate();
 
   const handleAddTask = () => {
     isOpenCardRegisteTask$.setSubject = { isOpen: true, levelId: id };
@@ -84,11 +83,8 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
         )}
       </div>
       {subTasks?.map(subtask => (
-        <div className="levelSubtask-context-menu">
-          <ContextMenuTrigger
-            id={`levelSubtask-${subtask.id}`}
-            key={subtask.id}
-          >
+        <div className="levelSubtask-context-menu" key={subtask.id}>
+          <ContextMenuTrigger id={`levelSubtask-${subtask.id}`}>
             <NavLink
               to={`tarea/${subtask.id}`}
               className={({ isActive }) =>

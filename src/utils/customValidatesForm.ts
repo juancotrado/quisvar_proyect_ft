@@ -11,9 +11,9 @@ export const validateWhiteSpace = (value: string | undefined) => {
 export const validateCorrectTyping = (value: string | undefined) => {
   if (!value) return 'Este campo no puede estar vacío';
 
-  const regex = /^[^/?@|<>":'\\]+$/;
+  const regex = /^[a-zA-Z0-9,áéíóúÁÉÍÓÚñÑ _-]+$/;
   return !regex.test(value)
-    ? 'Ingresar nombre que no contenga lo siguiente ^/?@|<>": '
+    ? 'Ingresar nombre que no contenga lo siguiente ^*/?@|<>": '
     : true;
 };
 export const validateEmail = (value: string) => {

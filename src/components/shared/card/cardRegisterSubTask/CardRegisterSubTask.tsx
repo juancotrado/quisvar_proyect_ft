@@ -9,6 +9,10 @@ import Button from '../../button/Button';
 import Modal from '../../../portal/Modal';
 import { Subscription } from 'rxjs';
 import { useParams } from 'react-router-dom';
+import {
+  validateCorrectTyping,
+  validateWhiteSpace,
+} from '../../../../utils/customValidatesForm';
 
 type SubTaskForm = {
   id: number | null;
@@ -19,8 +23,14 @@ type SubTaskForm = {
 };
 
 const CardRegisterSubTask = () => {
-  const { handleSubmit, register, setValue, watch, reset } =
-    useForm<SubTaskForm>();
+  const {
+    handleSubmit,
+    register,
+    setValue,
+    watch,
+    reset,
+    formState: { errors },
+  } = useForm<SubTaskForm>();
   const socket = useContext(SocketContext);
   const { stageId } = useParams();
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -94,7 +104,15 @@ const CardRegisterSubTask = () => {
             onClick={closeFunctions}
           />
         </div>
-        <Input label="Nombre" {...register('name')} name="name" type="text" />
+        <Input
+          label="Nombre"
+          {...register('name', {
+            validate: { validateCorrectTyping, validateWhiteSpace },
+          })}
+          name="name"
+          type="text"
+          errors={errors}
+        />
         <TextArea
           label="Descripción"
           {...register('description')}

@@ -395,6 +395,14 @@ export interface Level {
   total: number;
   days: number;
   rootTypeItem: TypeItem;
+  user?: {
+    id: number;
+    profile: {
+      firstName: string;
+      lastName: string;
+      dni: string;
+    };
+  };
 }
 interface Details {
   UNRESOLVED: number;

@@ -19,6 +19,7 @@ interface DropDownSimpleProps extends InputHTMLAttributes<HTMLInputElement> {
   droper?: boolean;
   valueInput?: (event: string, index: string) => void;
   onChangeInput?: (event: ChangeEvent<HTMLInputElement>) => void;
+  deleteUser?: () => void;
 }
 
 const DropDownSimple = ({
@@ -34,6 +35,8 @@ const DropDownSimple = ({
   selector,
   className,
   classNameInput,
+
+  deleteUser,
   ...otherProps
 }: DropDownSimpleProps) => {
   const [options, setOptions] = useState<typeObj[] | null>();
@@ -73,6 +76,7 @@ const DropDownSimple = ({
 
   const toogleIsActive = () => {
     setIsActive(!isActive);
+    deleteUser?.();
   };
   return (
     <Outside onClickOutside={() => setIsActive(false)}>
@@ -84,10 +88,11 @@ const DropDownSimple = ({
               className={`dropdown-field`}
               placeholder={!isActive ? placeholder : 'Buscar...'}
               onClick={toogleIsActive}
-              onChange={event => {
-                filterByQuery(event);
-                onChangeInput?.(event);
+              onChange={e => {
+                filterByQuery(e);
+                onChangeInput?.(e);
               }}
+              autoComplete="off"
               value={query}
               onBlur={() => setQuery('')}
               {...otherProps}

@@ -650,7 +650,8 @@ export type MessageStatus =
   | 'RECHAZADO'
   | 'ARCHIVADO'
   | 'FINALIZADO'
-  | 'GUARDADO';
+  | 'GUARDADO'
+  | 'POR_PAGAR';
 export type MessageTypeImbox =
   | 'INFORME'
   | 'CARTA'
@@ -671,6 +672,7 @@ export interface MessageType {
   type: MessageTypeImbox;
   updatedAt: Date;
   history: MessageReply[];
+  voucher?: string;
 }
 export interface MessageReply {
   id: number;

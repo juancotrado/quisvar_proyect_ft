@@ -1,10 +1,4 @@
-import {
-  ChangeEvent,
-  useCallback,
-  useContext,
-  useEffect,
-  useState,
-} from 'react';
+import { useCallback, useContext, useEffect, useState } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 import { SocketContext } from '../../../../context/SocketContex';
 import { Level, StatusType } from '../../../../types/types';

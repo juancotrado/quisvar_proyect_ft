@@ -4,7 +4,6 @@ import { axiosInstance } from '../../../services/axiosInstance';
 import { Level } from '../../../types/types';
 import { excelSimpleReport } from '../../../utils/excelGenerate/excelReportForLevel';
 import './moreInfo.css';
-import formatDate from '../../../utils/formatDate';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
 import { toggle$ } from '../../../services/sharingSubject';

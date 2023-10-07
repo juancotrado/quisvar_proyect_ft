@@ -2,8 +2,8 @@ import { useCallback, useEffect, useState } from 'react';
 // import Button from '../../shared/button/Button'
 import './AttendanceList.css';
 import { Input } from '../..';
-import { ListAttendance, User, getLicenses } from '../../../types/types';
-import { axiosInstance } from '../../../services/axiosInstance';
+import { User, getLicenses } from '../../../types/types';
+// import { axiosInstance } from '../../../services/axiosInstance';
 
 interface AttendanceListProps {
   onRadioChange: (value: string, id: number) => void;

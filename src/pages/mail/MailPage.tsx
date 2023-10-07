@@ -6,7 +6,6 @@ import {
   MailType,
   MessageStatus,
   MessageTypeImbox,
-  UserRoleType,
   licenseList,
 } from '../../types/types';
 import CardMessage from '../../components/shared/card/cardMessage/CardMessage';

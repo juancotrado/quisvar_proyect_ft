@@ -28,6 +28,8 @@ import { PDFGenerator } from '../../../components';
 import LoaderForComponent from '../../../components/shared/loaderForComponent/LoaderForComponent';
 import { transformDataPdf } from '../../../utils/transformDataPdf';
 import useListUsers from '../../../hooks/useListUsers';
+import CardRegisterVoucher from '../../../components/shared/card/cardRegisterVoucher/CardRegisterVoucher';
+import CardRegisterVoucherDenyOrAccept from '../../../components/shared/card/cardRegisterVoucherDenyOrAccept/CardRegisterVoucherDenyOrAccept';
 
 const spring = {
   type: 'spring',
@@ -112,6 +114,11 @@ const MessagePage = () => {
       role === 'MAIN' &&
       type == 'RECEIVER'
   );
+  const mainReceiverFinish = users.some(
+    ({ user, role, type }) =>
+      user.id === userSession.id && role === 'MAIN' && type == 'RECEIVER'
+  );
+  console.log({ mainReceiverFinish });
   const trandformData = (data: MessageReply) => {
     const sender = data.user;
     const header = data.header;
@@ -142,6 +149,7 @@ const MessagePage = () => {
   const handleSaveRegister = () => {
     navigate('/tramites?refresh=true');
   };
+  console.log({ message });
   return (
     <motion.div
       className="message-page-container"
@@ -333,6 +341,16 @@ const MessagePage = () => {
             />
           )}
         </>
+      )}
+      {message.status == 'FINALIZADO' && mainReceiverFinish && (
+        <CardRegisterVoucher message={message} onSave={handleSaveRegister} />
+      )}
+
+      {message.status === 'POR_PAGAR' && mainReceiverFinish && (
+        <CardRegisterVoucherDenyOrAccept
+          message={message}
+          onSave={handleSaveRegister}
+        />
       )}
       {mainSender && message.status === 'RECHAZADO' && (
         <CardRegisterMessageUpdate

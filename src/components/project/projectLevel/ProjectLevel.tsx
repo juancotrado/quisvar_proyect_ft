@@ -16,12 +16,15 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import DotsRight from '../../shared/dotsRight/DotsRight';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
+import useListUsers from '../../../hooks/useListUsers';
+import DropDownSimple from '../../shared/select/DropDownSimple';
 interface ProjectLevelProps {
   data: Level;
   onSave?: () => void;
 }
 interface DataForm {
   name: string;
+  userId?: number;
 }
 const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
   const {
@@ -37,14 +40,17 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
     reset({ name: data.name });
     setOpenEdit(!openEdit);
   };
+  const { users: modedators } = useListUsers(['MOD']);
+  const [idCoordinator, setIdCoordinator] = useState<number | null>(null);
 
   const onSubmitData: SubmitHandler<DataForm> = async body => {
+    if (data.userId) body = { ...body, userId: idCoordinator ?? data.userId };
     axiosInstance.put(`levels/${data.id}`, body).then(() => resetValues());
   };
   const handleDeleteLevel = () => {
     axiosInstance.delete(`levels/${data.id}`).then(() => resetValues());
   };
-
+  const deleteUser = () => setIdCoordinator(null);
   const resetValues = () => {
     onSave?.();
     reset({});
@@ -84,6 +90,7 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
   const style = {
     borderLeft: `thick solid ${colors[data.level]}`,
   };
+  console.log(idCoordinator);
   return (
     <div
       className={`projectLevel-sub-list-item  ${
@@ -114,29 +121,56 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
                   onSubmit={handleSubmit(onSubmitData)}
                   className="projectLevel-form"
                 >
-                  <Input
-                    {...register('name', {
-                      validate: { validateWhiteSpace, validateCorrectTyping },
-                    })}
-                    name="name"
-                    placeholder={`Editar nombre del nivel`}
-                    className="projectLevel-input"
-                    errors={errors}
-                  />
-                  <figure
-                    className="projectLevel-figure"
-                    onClick={handleCloseEdit}
-                  >
-                    <img src="/svg/icon_close.svg" alt="W3Schools" />
-                  </figure>
+                  <div className="projectLevel-input-name">
+                    <Input
+                      {...register('name', {
+                        validate: { validateWhiteSpace, validateCorrectTyping },
+                      })}
+                      name="name"
+                      placeholder={`Editar nombre del nivel`}
+                      className="projectLevel-input"
+                      errors={errors}
+                    />
+                    <figure
+                      className="projectLevel-figure"
+                      onClick={handleCloseEdit}
+                    >
+                      <img src="/svg/icon_close.svg" alt="W3Schools" />
+                    </figure>
+                  </div>
+                  {data.userId && (
+                    <DropDownSimple
+                      data={modedators}
+                      itemKey="id"
+                      textField="name"
+                      type="search"
+                      name="employees"
+                      deleteUser={deleteUser}
+                      selector
+                      defaultInput={
+                        data.user?.profile.firstName +
+                        '' +
+                        data.user?.profile.lastName
+                      }
+                      className="projectLevel-employee-list"
+                      placeholder="Coordinador de Area"
+                      valueInput={(_name, index) => setIdCoordinator(+index)}
+                    />
+                  )}
                 </form>
               ) : (
-                <h4 className={`projectLevel-sub-list-name`}>
+                <div className={`projectLevel-sub-list-name`}>
                   <span className="projectLevel-sub-list-span">
                     {data.item}
                   </span>
                   {data.name}
-                </h4>
+                  {data.userId && (
+                    <h3 className="projectLevel-sub-list-coord">
+                      Coordinador: {data.user?.profile.firstName}{' '}
+                      {data.user?.profile.lastName}
+                    </h3>
+                  )}
+                </div>
               )}
             </div>
             {/* </div> */}

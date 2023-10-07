@@ -395,6 +395,14 @@ export interface Level {
   total: number;
   days: number;
   rootTypeItem: TypeItem;
+  user?: {
+    id: number;
+    profile: {
+      firstName: string;
+      lastName: string;
+      dni: string;
+    };
+  };
 }
 interface Details {
   UNRESOLVED: number;
@@ -650,7 +658,8 @@ export type MessageStatus =
   | 'RECHAZADO'
   | 'ARCHIVADO'
   | 'FINALIZADO'
-  | 'GUARDADO';
+  | 'GUARDADO'
+  | 'POR_PAGAR';
 export type MessageTypeImbox =
   | 'INFORME'
   | 'CARTA'
@@ -671,6 +680,7 @@ export interface MessageType {
   type: MessageTypeImbox;
   updatedAt: Date;
   history: MessageReply[];
+  voucher?: string;
 }
 export interface MessageReply {
   id: number;

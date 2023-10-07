@@ -34,12 +34,13 @@
   flex-grow: 1;
 }
 .dropdown-list-option {
-  position: fixed;
+  position: absolute;
   background-color: var(--color-menu);
   margin-top: 2rem;
   z-index: 1;
   overflow-y: auto;
   filter: drop-shadow(-2px 2px 3px rgba(33, 103, 255, 0.568));
+  width: 100%;
 }
 .dropdown-option {
   padding: 0.4rem;

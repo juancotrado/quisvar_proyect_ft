@@ -79,6 +79,10 @@
   border-radius: 0.25rem;
   background: #fff;
 }
+.projectLevel-employee-list {
+  width: 20.5rem;
+  height: 2.1875rem;
+}
 
 .projectLevel-figure {
   width: 1rem;
@@ -88,13 +92,17 @@
 
 .projectLevel-form {
   display: flex;
-
+  flex-direction: column;
   align-items: center;
+  gap: 0.5rem;
   position: relative;
 }
-
+.projectLevel-input-name {
+  display: flex;
+  align-items: center;
+}
 .projectLevel-sub-list-name {
-  color: var(--gray-900, #171c26);
+  color: #171c26;
   text-transform: uppercase;
   font-size: 0.7rem;
   font-style: normal;
@@ -105,9 +113,18 @@
 
 .projectLevel-sub-list-span {
   font-weight: 500;
-  margin-right: 2rem;
+  margin-right: 1rem;
 }
-
+.projectLevel-sub-list-coord {
+  color: #171c26;
+  text-transform: capitalize;
+  font-size: 0.6rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.25rem;
+  letter-spacing: 0.0175rem;
+  padding: 0;
+}
 .projectLevel-dropdown-arrow {
   width: 1.5rem;
   transform: var(--rotate, 0);

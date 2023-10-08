@@ -110,7 +110,7 @@ const AttendanceList = ({
           classNameMain="attendanceList-radio"
           checked={selectedValue === 'PERMISO'}
           onChange={() => handleRadioChange('PERMISO', usersId)}
-          disabled={isActive ? true : !!status}
+          disabled={true}
         />
       </div>
     </div>

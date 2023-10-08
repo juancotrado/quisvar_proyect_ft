@@ -128,7 +128,8 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => (
       <View style={styles.signArea}>
         <View style={styles.sign} />
         <Text style={styles.header}>
-          {value.data.fromDegree?.slice(0, 3)}. {value.data.from}
+          {value.data.fromDegree && value.data.fromDegree?.slice(0, 3) + '.'}{' '}
+          {value.data.from}
         </Text>
         <Text style={styles.header}>DNI: {value.data.dni}</Text>
       </View>

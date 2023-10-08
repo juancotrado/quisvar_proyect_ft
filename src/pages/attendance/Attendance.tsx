@@ -357,6 +357,7 @@ const Attendance = () => {
                     onChange={handleRangeData}
                     classNameMain="attendace-date-filter"
                     max={_date(today)}
+                    required
                   />
                 </div>
                 <div className="attendace-btns">

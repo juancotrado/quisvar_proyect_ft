@@ -8,6 +8,7 @@ import { axiosInstance } from '../../services/axiosInstance';
 import { getListByRole, verifyByRole } from '../../utils/roles';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
+import { getIconDefault } from '../../utils/tools';
 
 interface UserInfoProps {
   user: User;
@@ -50,10 +51,7 @@ const UserInfo = ({
     <div className="user-container">
       <div className="col-span col-span-2 email-container">
         <figure className="user-profile-figure">
-          <img
-            src={`https://robohash.org/${user.profile.dni}`}
-            alt={user.email}
-          />
+          <img src={getIconDefault(user.profile.dni)} alt={user.email} />
         </figure>
 
         <div className="user-details">

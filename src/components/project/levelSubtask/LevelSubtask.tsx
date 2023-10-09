@@ -55,11 +55,8 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
   return (
     <div className="levelSubtask">
       <div className="levelSubtask-content levelSubtask-header">
-        <div className="levelSubtask-item">
-          <div className="levelSubtask-header-title"># ITEM</div>
-        </div>
         <div className="levelSubtask-item levelSubtask-item--name">
-          <div className="levelSubtask-header-title">NOMBRE</div>{' '}
+          <div className="levelSubtask-header-title">NOMBRE</div>
         </div>
         <div className="levelSubtask-item">
           <div className="levelSubtask-header-title">PRECIO</div>
@@ -76,11 +73,6 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
         <div className="levelSubtask-item">
           <div className="levelSubtask-header-title">USUARIO ASIGNADO</div>
         </div>
-        {modAuthArea && (
-          <div className="levelSubtask-item">
-            <div className="levelSubtask-header-title">OPCIONES</div>
-          </div>
-        )}
       </div>
       {subTasks?.map(subtask => (
         <div className="levelSubtask-context-menu" key={subtask.id}>
@@ -93,11 +85,11 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
                 }`
               }
             >
-              <div className="levelSubtask-item">
-                <div className="levelSubtask-text">{subtask.item}</div>
-              </div>
               <div className="levelSubtask-item levelSubtask-item--name">
-                <div className="levelSubtask-text">{subtask.name}</div>
+                <div className="levelSubtask-text">
+                  {subtask.item}
+                  <span className="levelSubtask-text-name">{subtask.name}</span>
+                </div>
               </div>
               <div className="levelSubtask-item">
                 <div className="levelSubtask-text">S/.{subtask.price}</div>
@@ -122,28 +114,6 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
                   )}
                 </div>
               </div>
-              {modAuthArea && (
-                <div
-                  className="levelSubtask-item"
-                  onClick={e => e.stopPropagation()}
-                >
-                  <Button
-                    icon="document-duplicate"
-                    className="levelSubtask-btn"
-                    onClick={() => handleDuplicateTask(subtask)}
-                  />
-                  <Button
-                    icon="pencil"
-                    className="levelSubtask-btn"
-                    onClick={() => handleEditTask(subtask)}
-                  />
-                  <Button
-                    icon="trash-red"
-                    className="levelSubtask-btn"
-                    onClick={() => handleDeleteTask(subtask.id)}
-                  />
-                </div>
-              )}
             </NavLink>
           </ContextMenuTrigger>
           {modAuthArea && (

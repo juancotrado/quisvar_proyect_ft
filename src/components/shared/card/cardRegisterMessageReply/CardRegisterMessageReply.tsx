@@ -127,7 +127,9 @@ const CardRegisterMessageReply = ({
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
     formData.append('data', JSON.stringify(values));
     if (receiver)
-      axiosInstance.post(`/mail/reply`, formData, { headers }).then(onSave);
+      axiosInstance
+        .post(`/mail/reply?status=PROCESO`, formData, { headers })
+        .then(onSave);
   };
 
   const handleDoneMessage = () => {

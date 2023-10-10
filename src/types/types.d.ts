@@ -795,3 +795,16 @@ export type getLicenses = {
   // status: licenseStatus;
   usersId: number;
 };
+export type Companies = {
+  id: number;
+  name: string;
+  ruc: string;
+  manager: string;
+  address: string;
+  departure: string;
+  inscription?: Date;
+  activities?: Date;
+  SEE?: Date;
+  CCI: string;
+  description: string;
+};

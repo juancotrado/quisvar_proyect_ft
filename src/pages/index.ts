@@ -14,6 +14,7 @@ import BudgetsPage from './specialities/project/budgets/BudgetsPage';
 import LicensePage from './mail/license/LicensePage';
 import LicenseListHeader from './mail/licenseHeader/LicenseListHeader';
 import LicenseListItem from './mail/licenseList/LicenseListItem';
+import Company from './company/Company';
 export {
   CommingSoon,
   ListPersonalTask,
@@ -31,4 +32,5 @@ export {
   LicensePage,
   LicenseListHeader,
   LicenseListItem,
+  Company,
 };

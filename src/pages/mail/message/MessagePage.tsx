@@ -169,7 +169,6 @@ const MessagePage = () => {
             onClick={handleResizeAction}
           />
           <Button
-            // text="Cerrar"
             icon="close"
             onClick={handleClose}
             className="message-icon-close"
@@ -308,7 +307,7 @@ const MessagePage = () => {
               </div>
             ))}
         </div>
-        {mainReceiver && message.status === 'PROCESO' && (
+        {mainReceiver && (
           <div
             className="message-switch"
             data-ison={isReply}
@@ -324,24 +323,25 @@ const MessagePage = () => {
           </div>
         )}
       </div>
-      {mainReceiver && message.status === 'PROCESO' && (
-        <>
-          {isReply ? (
-            <CardRegisterMessageReply
-              message={message}
-              quantityFiles={countMessage}
-              senderId={mainSender?.user.id}
-              onSave={handleSaveRegister}
-            />
-          ) : (
-            <CardRegisterMessageForward
-              message={message}
-              quantityFiles={countMessage}
-              onSave={handleSaveRegister}
-            />
-          )}
-        </>
-      )}
+      {mainReceiver &&
+        (message.status === 'PROCESO' || message.status === 'RECHAZADO') && (
+          <>
+            {isReply ? (
+              <CardRegisterMessageReply
+                message={message}
+                quantityFiles={countMessage}
+                senderId={mainSender?.user.id}
+                onSave={handleSaveRegister}
+              />
+            ) : (
+              <CardRegisterMessageForward
+                message={message}
+                quantityFiles={countMessage}
+                onSave={handleSaveRegister}
+              />
+            )}
+          </>
+        )}
       {message.status == 'FINALIZADO' && mainReceiverFinish && (
         <CardRegisterVoucher message={message} onSave={handleSaveRegister} />
       )}
@@ -352,13 +352,13 @@ const MessagePage = () => {
           onSave={handleSaveRegister}
         />
       )}
-      {mainSender && message.status === 'RECHAZADO' && (
+      {/* {mainSender && message.status === 'RECHAZADO' && (
         <CardRegisterMessageUpdate
           message={message}
           receiverId={mainReceiver?.user.id}
           onSave={handleSaveRegister}
         />
-      )}
+      )} */}
     </motion.div>
   );
 };

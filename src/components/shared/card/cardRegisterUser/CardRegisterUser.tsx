@@ -59,7 +59,6 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
   } = useForm<UserForm>({
     defaultValues: InitialValues,
   });
-
   useEffect(() => {
     if (user?.id) {
       const { profile, ..._data } = user;
@@ -113,6 +112,7 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
   const successfulShipment = () => {
     onSave?.();
     setIsOpen(false);
+    reset();
   };
 
   const closeFunctions = () => {
@@ -233,14 +233,14 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
                 type="file"
                 label="CV"
                 placeholder="cv"
-                {...register('cv', { required: true })}
+                {...register('cv', { required: !!user?.id })}
                 errors={errors}
               />
               <Input
                 type="file"
                 label="Declaracion Jurada"
                 placeholder="declaration"
-                {...register('declaration', { required: true })}
+                {...register('declaration', { required: !!user?.id })}
                 errors={errors}
               />
             </div>

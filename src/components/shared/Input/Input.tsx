@@ -1,7 +1,12 @@
 import Eye from '/svg/eye.svg';
 import EyeClose from '/svg/eyeClose.svg';
 import './input.css';
-import { InputHTMLAttributes, useState, forwardRef } from 'react';
+import {
+  InputHTMLAttributes,
+  useState,
+  forwardRef,
+  CSSProperties,
+} from 'react';
 
 interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   name?: string;
@@ -13,6 +18,7 @@ interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   errors?: { [key: string]: any };
   errorPosX?: number;
   errorPosY?: number;
+  isRelative?: boolean;
 }
 
 const InputText = forwardRef<HTMLInputElement, InputTextProps>(
@@ -26,6 +32,7 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
       errorPosX = 0,
       errorPosY = 0,
       disabled,
+      isRelative = false,
       classNameMain,
       ...props
     },
@@ -38,8 +45,9 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
     if (type == 'password') {
       typeAux = isShow ? 'text' : 'password';
     }
-    const style = {
+    const style: CSSProperties = {
       transform: `translate(${errorPosX}px,${errorPosY}px)`,
+      position: isRelative ? 'static' : 'absolute',
     };
     return (
       <div className={`input-main ${col && 'input-col'} ${classNameMain}`}>

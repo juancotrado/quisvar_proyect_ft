@@ -40,7 +40,6 @@
   z-index: 1;
   overflow-y: auto;
   filter: drop-shadow(-2px 2px 3px rgba(33, 103, 255, 0.568));
-  width: 100%;
 }
 .dropdown-option {
   padding: 0.4rem;

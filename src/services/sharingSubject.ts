@@ -1,7 +1,7 @@
 import SubjectManager from '../models/subjectManager';
 import {
   AttendanceRange,
-  DataSidebarSpeciality,
+  ProjectType,
   SubTask,
   licenseList,
 } from '../types/types';
@@ -9,7 +9,7 @@ import {
 interface CardRegisteProject {
   isOpen: boolean;
   typeSpecialityId: number | null;
-  project?: DataSidebarSpeciality;
+  project?: ProjectType;
 }
 interface CardRegisteTask {
   isOpen: boolean;

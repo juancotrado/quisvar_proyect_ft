@@ -42,7 +42,7 @@ const Home = () => {
           className="home-btn btn-color-2"
           onClick={handleNavigateToAreas}
         >
-          Projectos
+          Proyectos
         </button>
       </div>
     </div>

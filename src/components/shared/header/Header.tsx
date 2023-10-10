@@ -11,6 +11,7 @@ import { RootState } from '../../../store';
 import { assitant_perms } from '../../../utils/roles';
 import { itemsAdmin, itemsEmployee } from '../../../utils/navigation/config';
 import ChipItem from './chipItem/ChipItem';
+import { getIconDefault } from '../../../utils/tools';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -82,7 +83,7 @@ const Header = () => {
     },
     {
       id: 3,
-      name: `https://robohash.org/${userSession.profile.dni}`,
+      name: getIconDefault(userSession.profile.dni),
       link: '/dashboard',
       action: toggleMenu,
     },

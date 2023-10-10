@@ -1,4 +1,5 @@
 import { User } from '../../types/types';
+import { getIconDefault } from '../../utils/tools';
 import Button from '../shared/button/Button';
 import ButtonDelete from '../shared/button/ButtonDelete';
 import './UserDetail.css';
@@ -14,7 +15,7 @@ const UserDetail = ({ user, index, onClick }: UserDetailProps) => {
       <td>{index + 1}</td>
       <td className="user-info">
         <figure className="user-profile-figure">
-          <img src={`https://robohash.org/${user.id}`} alt={user.email} />
+          <img src={getIconDefault(user.profile.dni)} alt={user.email} />
         </figure>
         <div className="name-container">
           <h1 className="list-name">

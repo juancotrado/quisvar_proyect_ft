@@ -158,7 +158,6 @@ const CardRegisterMessage = ({
     const _files = deleteFileOnList(fileUploadFiles, delFiles);
     if (_files) setFileUploadFiles(_files);
   };
-  // console.log(users.find(user => user.id === receiver?.id))
 
   useEffect(() => {
     const secondaryReceiver = listCopy.map(list => ({ userId: list.id }));
@@ -393,12 +392,6 @@ const CardRegisterMessage = ({
           }}
           onEditorChange={handleInputChange}
         />
-        {/* <TextArea
-          className="imbox-text-area-description"
-          placeholder="Redacte su mensaje aqui"
-          {...register('description')}
-          name="description"
-        /> */}
         {fileUploadFiles && (
           <div className="imbox-container-file-list">
             {fileUploadFiles.map((file, i) => (

@@ -1,5 +1,5 @@
 import './Select.css';
-import { SelectHTMLAttributes, forwardRef } from 'react';
+import { CSSProperties, SelectHTMLAttributes, forwardRef } from 'react';
 
 interface SelectOptionsProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
@@ -7,7 +7,11 @@ interface SelectOptionsProps extends SelectHTMLAttributes<HTMLSelectElement> {
   itemKey: string;
   textField: string;
   name: string;
+  errors?: { [key: string]: any };
+  errorPosX?: number;
+  errorPosY?: number;
   placeholder?: string;
+  isRelative?: boolean;
   className?: string;
 }
 const SelectOptions = forwardRef<HTMLSelectElement, SelectOptionsProps>(
@@ -18,13 +22,21 @@ const SelectOptions = forwardRef<HTMLSelectElement, SelectOptionsProps>(
       itemKey,
       textField,
       name,
+      errorPosX = 0,
+      errorPosY = 0,
+      errors,
       defaultValue,
+      isRelative = false,
       className,
       placeholder,
       ...props
     },
     ref
   ) => {
+    const style: CSSProperties = {
+      transform: `translate(${errorPosX}px,${errorPosY}px)`,
+      position: isRelative ? 'static' : 'absolute',
+    };
     return (
       <div className="select-container">
         {label && (
@@ -39,7 +51,7 @@ const SelectOptions = forwardRef<HTMLSelectElement, SelectOptionsProps>(
           defaultValue={defaultValue}
           name={name}
         >
-          <option value={0}>{`${
+          <option value={''}>{`${
             placeholder ? placeholder : 'Seleccionar'
           }`}</option>
           {data?.map(element => (
@@ -48,6 +60,18 @@ const SelectOptions = forwardRef<HTMLSelectElement, SelectOptionsProps>(
             </option>
           ))}
         </select>
+        {name && errors && errors[name] && (
+          <span className="input-span-error" style={style}>
+            <img
+              src="/svg/warning.svg"
+              alt="warning"
+              className="input-span-icon"
+            />
+            {errors[name]?.type === 'required'
+              ? 'Por favor llene el campo.'
+              : errors[name].message}
+          </span>
+        )}
       </div>
     );
   }

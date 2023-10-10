@@ -174,33 +174,16 @@ export type RangeDate = {
 };
 export interface ProjectType {
   id: number;
-  description?: string;
-  location?: string;
+  description: string;
   CUI: string;
   name: string;
-  unique?: boolean;
-  status: boolean;
-  typeSpeciality: string;
-  company?: CompanyType;
-  consortium?: ConsortiumType;
   stage?: Stage;
-  startDate: Date;
-  untilDate: Date;
-  moderator: {
-    profile: Profile;
-  };
-  _count: {
-    tasks: number;
-  };
   stages: Stages[];
-  userId?: number;
-  areas: AreasType[];
   specialityId: number;
-  unique?: boolean;
   department: string;
   province: string;
+  percentage: string;
   district: string;
-  specialists?: PersonalBussines[];
 }
 
 interface Stages {
@@ -215,10 +198,17 @@ type AreasType = {
   name: string;
 };
 
-export type ProjectForm = Omit<
-  ProjectType,
-  'areas' | '_count' | 'moderator' | 'startDate' | 'untilDate'
-> & { startDate: string | Date; untilDate: string | Date };
+export interface ProjectForm {
+  id?: number;
+  CUI: string;
+  name: string;
+  description: string;
+  department: string;
+  province: string;
+  percentage: string;
+  district: string;
+  typeSpecialityId: number | null;
+}
 
 export interface WorkArea {
   id: number;

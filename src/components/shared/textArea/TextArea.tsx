@@ -1,14 +1,33 @@
 import './TextArea.css';
-import { TextareaHTMLAttributes, forwardRef } from 'react';
+import { CSSProperties, TextareaHTMLAttributes, forwardRef } from 'react';
 
 interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
   name?: string;
   className?: string;
   errors?: { [key: string]: any };
+  errorPosX?: number;
+  errorPosY?: number;
+  isRelative?: boolean;
 }
 const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
-  ({ label, name, className, errors, ...props }, ref) => {
+  (
+    {
+      label,
+      name,
+      className,
+      errors,
+      errorPosX = 0,
+      isRelative = false,
+      errorPosY = 0,
+      ...props
+    },
+    ref
+  ) => {
+    const style: CSSProperties = {
+      transform: `translate(${errorPosX}px,${errorPosY}px)`,
+      position: isRelative ? 'static' : 'absolute',
+    };
     return (
       <div className="input-container">
         {label && (
@@ -25,7 +44,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           }`}
         />
         {name && errors && errors[name] && (
-          <span className="input-span-error">
+          <span className="input-span-error" style={style}>
             <img
               src="/svg/warning.svg"
               alt="warning"

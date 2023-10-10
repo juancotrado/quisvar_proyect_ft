@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   DataSidebarSpeciality,
+  ProjectType,
   typeSidebarSpecility,
 } from '../../../../types/types';
 import './sidebarSpecialityLvlList.css';
@@ -79,7 +80,7 @@ const SidebarSpecialityLvlList = ({
       isOpenCardRegisteProject$.setSubject = {
         isOpen: true,
         typeSpecialityId: null,
-        project: data,
+        project: data as ProjectType,
       };
       return;
     }

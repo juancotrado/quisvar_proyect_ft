@@ -1,11 +1,16 @@
 export const validateWhiteSpace = (value: string | undefined) => {
   if (!value) return 'Este campo no puede estar vacío';
-
   return !value.trim()
     ? 'Este campo no puede estar vacío'
     : value[0].startsWith(' ')
     ? 'No deje espacios al inicio'
     : true;
+};
+export const validateOnlyNumbers = (value: string | undefined) => {
+  if (!value) return 'Este campo no puede estar vacío';
+
+  const regex = /^[0-9]+$/;
+  return !regex.test(value) ? 'Ingrese solo caracteres numericos ' : true;
 };
 
 export const validateCorrectTyping = (value: string | undefined) => {

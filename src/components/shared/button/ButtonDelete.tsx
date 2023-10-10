@@ -133,6 +133,7 @@ const ButtonDelete = ({
                   <div className="modal-text-input">
                     <InputText
                       label="Ingrese su contraseña"
+                      autoComplete="no"
                       placeholder="Contraseña"
                       onChange={e => setPassword(e.target.value)}
                       type="password"
@@ -140,6 +141,7 @@ const ButtonDelete = ({
                   </div>
                   <div className="container-btn">
                     <Button
+                      type="button"
                       text="Cancelar"
                       onClick={handleCloseButton}
                       className="modal-btn-cancel"

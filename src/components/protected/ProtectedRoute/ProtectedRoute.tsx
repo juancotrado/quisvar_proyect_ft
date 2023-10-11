@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 import './protecdRoute.css';
 import { getAllServices } from '../../../store/thunks/getAllInitServices..thunks';
 import AlertNotification from '../../shared/alertNotification/AlertNotification';
+import ButtonDelete from '../../shared/button/ButtonDelete';
 
 export const ProtectedRoute = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -43,6 +44,7 @@ export const ProtectedRoute = () => {
           <Outlet />
         </div>
         <AlertNotification />
+        <ButtonDelete notIsVisible />
       </div>
     </SocketProvider>
   );

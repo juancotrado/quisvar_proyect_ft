@@ -1,7 +1,7 @@
 import { Input } from '../..';
 import { DataUser } from '../../../types/types';
 import './subtaskUsers.css';
-import { FocusEvent } from 'react';
+import { FocusEvent, useEffect, useState, ChangeEvent } from 'react';
 
 interface SubtaskUsersProps {
   usersData: DataUser[];
@@ -17,6 +17,22 @@ const SubtaskUsers = ({
   areAuthorizedUsers = false,
   viewProcentage = false,
 }: SubtaskUsersProps) => {
+  const [usersPercentage, setUsersPercentage] = useState<DataUser[] | null>(
+    null
+  );
+  useEffect(() => {
+    setUsersPercentage(usersData);
+  }, [usersData]);
+
+  const handleUserPercentage = (e: ChangeEvent<HTMLInputElement>) => {
+    if (!usersPercentage) return;
+    const { value, name: userId } = e.currentTarget;
+    const newUserPorcentage = usersPercentage?.map(user =>
+      user.id === +userId ? { ...user, percentage: +value } : user
+    );
+    setUsersPercentage(newUserPorcentage);
+    console.log(value, name);
+  };
   return (
     <div className="subtaskUsers-users-contain">
       <h4 className="subtaskUsers-title-information">
@@ -25,7 +41,7 @@ const SubtaskUsers = ({
         </figure>
         Lista de Usuarios Asignados:
       </h4>
-      {usersData.map(_user => (
+      {usersPercentage?.map(_user => (
         <div key={_user.id} className="subtaskUsers-list-user">
           <h5 className="subtaskUsers-user-info">
             <figure className="subtaskUsers-figure">
@@ -40,13 +56,20 @@ const SubtaskUsers = ({
           )}
           {handlePorcentage && (
             <div className="subtaskUsers-porcentage-input">
-              <Input
-                onBlur={handlePorcentage}
-                placeholder={String(_user.percentage)}
-                name={String(_user.id)}
-                className="subtaskUsers-percentage-value"
-                disabled={!areAuthorizedUsers}
-              />
+              {!_user.status ? (
+                <Input
+                  onBlur={handlePorcentage}
+                  type="number"
+                  placeholder={String(_user.percentage)}
+                  value={String(_user.percentage)}
+                  onChange={handleUserPercentage}
+                  name={String(_user.id)}
+                  className="subtaskUsers-percentage-value"
+                  disabled={!areAuthorizedUsers}
+                />
+              ) : (
+                _user.percentage + ' '
+              )}
               %
             </div>
           )}

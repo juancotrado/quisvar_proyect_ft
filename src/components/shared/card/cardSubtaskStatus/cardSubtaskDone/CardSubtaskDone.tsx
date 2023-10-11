@@ -45,7 +45,10 @@ const CardSubtaskDone = ({ subTask }: CardSubtaskDone) => {
               </figure>
               Toda la actividad:
             </h4>
-            <SubtasksShippingHistory feedBacks={feedBacksReverse} />
+            <SubtasksShippingHistory
+              feedBacks={feedBacksReverse}
+              viewComentary
+            />
           </div>
           <SubtaskUsers usersData={usersData} viewProcentage />
         </div>
@@ -71,7 +74,7 @@ const CardSubtaskDone = ({ subTask }: CardSubtaskDone) => {
             />
           </div>
         )}
-        {status === 'DONE' && isAuthorizedMod && (
+        {/* {status === 'DONE' && isAuthorizedMod && (
           <div className="cardSubtaskDone-btns">
             <div></div>
             <SubtaskChangeStatusBtn
@@ -83,7 +86,7 @@ const CardSubtaskDone = ({ subTask }: CardSubtaskDone) => {
               className="cardSubtask-add-btn"
             />
           </div>
-        )}
+        )} */}
       </section>
     </div>
   );

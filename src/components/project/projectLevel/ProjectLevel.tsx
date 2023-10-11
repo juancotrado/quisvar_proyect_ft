@@ -18,6 +18,7 @@ import DotsRight from '../../shared/dotsRight/DotsRight';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import useListUsers from '../../../hooks/useListUsers';
 import DropDownSimple from '../../shared/select/DropDownSimple';
+import { isOpenButtonDelete$ } from '../../../services/sharingSubject';
 interface ProjectLevelProps {
   data: Level;
   onSave?: () => void;
@@ -50,6 +51,13 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
   const handleDeleteLevel = () => {
     axiosInstance.delete(`levels/${data.id}`).then(() => resetValues());
   };
+
+  const handleOpenButtonDelete = () => {
+    isOpenButtonDelete$.setSubject = {
+      isOpen: true,
+      function: () => handleDeleteLevel,
+    };
+  };
   const deleteUser = () => setIdCoordinator(null);
   const resetValues = () => {
     onSave?.();
@@ -77,7 +85,7 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
       type: openEdit ? 'submit' : 'button',
       icon: openEdit ? 'save' : 'trash-red',
 
-      function: openEdit ? handleSubmit(onSubmitData) : handleDeleteLevel,
+      function: openEdit ? handleSubmit(onSubmitData) : handleOpenButtonDelete,
     },
     {
       name: 'Duplicar',
@@ -90,7 +98,6 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
   const style = {
     borderLeft: `thick solid ${colors[data.level]}`,
   };
-  console.log(idCoordinator);
   return (
     <div
       className={`projectLevel-sub-list-item  ${

@@ -10,6 +10,7 @@ export interface DataUser {
   id: number;
   name: string;
   percentage?: number;
+  status?: boolean;
 }
 export interface TypeSpecialities {
   id: number;
@@ -113,6 +114,7 @@ export type Users = {
   assignedAt: Date;
   untilDate: Date;
   user: User;
+  status: boolean;
 };
 
 export interface FileInfo {

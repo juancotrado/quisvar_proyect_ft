@@ -9,14 +9,15 @@ interface SubtasksShippingHistoryProps {
     isAuthorizedMod: boolean;
     isAuthorizedUser: boolean;
   };
+  viewComentary?: boolean;
 }
 
 const SubtasksShippingHistory = ({
   feedBacks,
   getDataFeedback,
   authorize,
+  viewComentary = false,
 }: SubtasksShippingHistoryProps) => {
-  //
   const firstId = feedBacks[0].id;
   const isStatusDone = !getDataFeedback;
 
@@ -33,6 +34,7 @@ const SubtasksShippingHistory = ({
           }`}
           getDataFeedback={getDataFeedback}
           authorize={authorize}
+          viewComentary={viewComentary}
         />
       ))}
     </div>

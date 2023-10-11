@@ -19,7 +19,8 @@
   right: 0;
   width: 10px;
   height: 100%;
-  cursor: col-resize;
+  /* cursor: col-resize; */
+  cursor: url('../../../../public/svg/arrow-x-position.svg'), auto;
 }
 
 .sidebarSpeciality-slide {

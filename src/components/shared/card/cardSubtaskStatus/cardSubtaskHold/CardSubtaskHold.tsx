@@ -83,21 +83,26 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
             />
             <div className="cardSubtaskHold-add-users">
               <div className="cardSubtaskHold-users-contain">
-                <h4 className="cardSubtask-title-information">
-                  <figure className="cardSubtask-figure">
-                    <img src="/svg/asig-user.svg" alt="W3Schools" />
-                  </figure>
-                  Asignar Usuario:
-                </h4>
-                <DropDownSimple
-                  data={users}
-                  textField="name"
-                  itemKey="id"
-                  valueInput={(name, id) =>
-                    handleAddUser({ id: parseInt(id), name })
-                  }
-                  placeholder="Seleccione Usuario"
-                />
+                {usersData.length === 0 && (
+                  <>
+                    <h4 className="cardSubtask-title-information">
+                      <figure className="cardSubtask-figure">
+                        <img src="/svg/asig-user.svg" alt="W3Schools" />
+                      </figure>
+                      Asignar Usuario:
+                    </h4>
+                    <DropDownSimple
+                      data={users}
+                      textField="name"
+                      itemKey="id"
+                      valueInput={(name, id) =>
+                        handleAddUser({ id: parseInt(id), name })
+                      }
+                      placeholder="Seleccione Usuario"
+                      classNameListOption="cardSubtaskHold-list-option"
+                    />
+                  </>
+                )}
               </div>
               {usersData && (
                 <SubtaskUsers

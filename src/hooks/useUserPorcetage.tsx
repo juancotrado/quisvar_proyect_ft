@@ -8,6 +8,7 @@ const useUserPorcetage = (users: Users[]) => {
         id: user.user.id,
         name: `${user.user.profile.firstName} ${user.user.profile.lastName}`,
         percentage: user.percentage,
+        status: user.status,
       })),
     [users]
   );

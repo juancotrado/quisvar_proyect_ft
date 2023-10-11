@@ -88,7 +88,6 @@ const CardRegisterMessage = ({
   useEffect(() => {
     handleIsOpen.current = isGenerateExcelReport$.getSubject.subscribe(
       blobExcel => {
-        console.log({ blobExcel });
         if (!blobExcel) return;
         fetch(blobExcel)
           .then(response => response.blob())
@@ -103,6 +102,7 @@ const CardRegisterMessage = ({
       handleIsOpen.current.unsubscribe();
     };
   }, []);
+
   const contacts = useMemo(
     () =>
       listUser.filter(
@@ -226,24 +226,8 @@ const CardRegisterMessage = ({
   const showCardReport = () => {
     isOpenCardGenerateReport$.setSubject = true;
   };
-
   return (
-    <motion.div
-      className="imbox-send-container-main"
-      initial={{
-        opacity: 0,
-        width: '36vw',
-        height: isDroped ? 30 : '76vh',
-      }}
-      animate={{
-        opacity: 1,
-        width: isOpened ? '86vw' : '36vw',
-        height: isDroped ? 30 : isOpened ? '94vh' : '76vh',
-        transition: { duration: 0.4 },
-        overflow: isDroped ? 'hidden' : 'auto',
-      }}
-      exit={{ opacity: 0, transition: { delay: 0.3 } }}
-    >
+    <motion.div className="inbox-send-container-main">
       <div className="imnbox-title">
         <h3 className="imbox-container-title" onClick={handleDroped}>
           Nuevo Trámite
@@ -257,11 +241,6 @@ const CardRegisterMessage = ({
               onClick={() => setIsOpened(!isOpened)}
             />
           )}
-          <Button
-            className="imbox-resize-icon"
-            icon="minus"
-            onClick={handleDroped}
-          />
           <Button
             className="imbox-resize-icon"
             icon="close"
@@ -378,7 +357,7 @@ const CardRegisterMessage = ({
         <Editor
           initialValue={initialValueEditor}
           init={{
-            max_height: 500,
+            min_height: 600,
             paste_data_images: false,
             plugins: [
               'advlist autolink lists link image charmap print preview anchor',

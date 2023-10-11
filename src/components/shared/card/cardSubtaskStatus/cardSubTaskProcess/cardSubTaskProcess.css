@@ -136,6 +136,9 @@
   padding: 0.5rem;
   overflow: auto;
 }
+.cardSubtaskProcess-list-option {
+  height: 5rem;
+}
 .cardSubtaskProcess-files-contain {
   display: flex;
   padding: 1rem 0.5rem;

@@ -15,6 +15,9 @@
   height: 60%;
 }
 
+.btn-hiden {
+  display: none;
+}
 .btn-main-text {
   width: 14%;
   aspect-ratio: 1;

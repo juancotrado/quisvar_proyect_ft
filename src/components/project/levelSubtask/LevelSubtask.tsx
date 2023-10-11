@@ -1,8 +1,10 @@
 import { NavLink, useParams } from 'react-router-dom';
 import { Level, SubTask } from '../../../types/types';
 import './levelSubtask.css';
-import { isOpenCardRegisteTask$ } from '../../../services/sharingSubject';
-import Button from '../../shared/button/Button';
+import {
+  isOpenButtonDelete$,
+  isOpenCardRegisteTask$,
+} from '../../../services/sharingSubject';
 import { RootState } from '../../../store';
 import { useSelector } from 'react-redux';
 import StatusText from '../../shared/statusText/StatusText';
@@ -51,7 +53,12 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
       .post(`/duplicates/subtask/${subtask.id}`, body)
       .then(() => onSave?.());
   };
-
+  const handleOpenButtonDelete = (id: number) => {
+    isOpenButtonDelete$.setSubject = {
+      isOpen: true,
+      function: () => () => handleDeleteTask(id),
+    };
+  };
   return (
     <div className="levelSubtask">
       <div className="levelSubtask-content levelSubtask-header">
@@ -130,7 +137,7 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
                   type: 'button',
                   icon: 'trash-red',
 
-                  function: () => handleDeleteTask(subtask.id),
+                  function: () => handleOpenButtonDelete(subtask.id),
                 },
                 {
                   name: 'Duplicar',

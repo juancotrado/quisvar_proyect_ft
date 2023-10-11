@@ -1,14 +1,16 @@
-.imbox-send-container-main {
-  position: fixed;
+.inbox-send-container-main {
+  /* position: fixed; */
   /* height: 92vh; */
-  bottom: 0;
-  right: 5rem;
-  z-index: 1;
-  border-top-right-radius: var(--radius-input);
-  border-top-left-radius: var(--radius-input);
-  background-color: white;
+  /* bottom: 0; */
+  /* right: 5rem; */
+  /* z-index: 1; */
+  /* border-top-left-radius: var(--radius-input); */
+  height: 100%;
+  flex-grow: 1;
+  border-radius: var(--radius-input);
   filter: drop-shadow(-3px -4px 4px rgb(0 0 0 / 0.15));
   color: #6e6e6e;
+  background-color: #fff;
   font-size: 14px;
   border: 1px solid #6e6e6e39;
   font-style: normal;
@@ -42,6 +44,16 @@
 .imbox-close-icon {
   width: 0.75rem;
   height: 0.75rem;
+}
+.inbox-resize-content {
+  position: fixed;
+  z-index: 2;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 100%;
+  /* cursor: col-resize; */
+  cursor: url('../../../../public/svg/arrow-x-position.svg'), auto;
 }
 .imbox-container-title {
   flex-grow: 1;

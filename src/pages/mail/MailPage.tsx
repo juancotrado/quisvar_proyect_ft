@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import './mailPage.css';
 import { axiosInstance } from '../../services/axiosInstance';
 import {
@@ -19,6 +19,7 @@ import { RootState } from '../../store';
 import { CardGenerateReport, CardLicense } from '../../components';
 import { isOpenCardLicense$ } from '../../services/sharingSubject';
 import { LicenseListHeader, LicenseListItem } from '..';
+import { PanInfo, motion, useMotionValue } from 'framer-motion';
 
 const InitTMail: MailType['type'] = 'RECEIVER';
 const MailPage = () => {
@@ -35,7 +36,7 @@ const MailPage = () => {
   const [typeMail, setTypeMail] = useState<MailType['type'] | null>(InitTMail);
   const [statusMsg, setStatusMsg] = useState<MessageStatus | null>(null);
   //-----------------------------------------------------------------------
-  const size = !!searchParams.get('size') || false;
+  const size = !!searchParams.get('size');
   const refresh = !!searchParams.get('refresh') || false;
   const [isNewMessage, setIsNewMessage] = useState(false);
   const permissions = ['SUPER_MOD', 'MOD', 'EMPLOYEE'].includes(user.role);
@@ -45,12 +46,31 @@ const MailPage = () => {
   useEffect(() => {
     if (!permissions) verifyLicenses();
   }, []);
+
   useEffect(() => getMessages(), [typeMail, typeMsg, statusMsg]);
+
   useEffect(() => {
     getMessages();
   }, [refresh]);
-  const handleNewMessage = () => setIsNewMessage(true);
-  const handleCloseMessage = () => setIsNewMessage(false);
+
+  useEffect(() => {
+    if (size) {
+      mWidth.set(window.innerWidth * 0.5);
+      // setIsNewMessage(true);
+    } else {
+      mWidth.set(window.innerWidth - 100);
+    }
+  }, [size]);
+
+  const handleNewMessage = () => {
+    navigate('/tramites?size=true');
+    setIsNewMessage(true);
+  };
+  const handleCloseMessage = () => {
+    navigate('/tramites');
+    setIsNewMessage(false);
+    setContentVisible(true);
+  };
   const handleSaveMessage = () => {
     getMessages();
     setIsNewMessage(false);
@@ -129,17 +149,47 @@ const MailPage = () => {
       .post('/license/expired')
       .then(() => console.log('Datos limpiados'));
   };
+
+  //--------------------------------------------------------------------------
+  const mWidth = useMotionValue(window.innerWidth - 100);
+  const [contentVisible, setContentVisible] = useState(true);
+
+  const handleDrag = useCallback(
+    (_event: MouseEvent, info: PanInfo) => {
+      const maxWidth = size ? window.innerWidth * 0.5 : window.innerWidth + 100;
+      const newWidth = mWidth.get() + info.delta.x;
+      newWidth < 500 ? setContentVisible(false) : setContentVisible(true);
+      if (newWidth > 450 && newWidth < maxWidth) {
+        mWidth.set(mWidth.get() + info.delta.x);
+      }
+    },
+    [mWidth, size]
+  );
+  //--------------------------------------------------------------------------
   return (
-    <div className="mail-main container">
-      <div className="mail-main-master-container">
+    <div className="mail-main ">
+      <motion.div
+        className="mail-main-master-container"
+        style={{ width: mWidth }}
+      >
+        {size && (
+          <motion.div
+            drag="x"
+            onDrag={handleDrag}
+            dragConstraints={{ top: 0, left: 0, right: 0, bottom: 0 }}
+            dragElastic={0}
+            dragMomentum={false}
+            className="sidebarSpeciality-resize-content"
+          />
+        )}
         <div className="mail-messages-container">
           <div className={`message-container-header`}>
             <div className="message-container-header-options">
               <h2>Trámites</h2>
               <Button
                 icon="refresh"
-                text={(!size && 'Actualizar') || undefined}
-                className={`mail-main-options-btn`}
+                text={(contentVisible && 'Actualizar') || undefined}
+                className={`mail-main-update-btn`}
                 onClick={getMessages}
               />
             </div>
@@ -147,28 +197,30 @@ const MailPage = () => {
               <div className="mail-main-options-container">
                 <Button
                   icon="inbox"
-                  text={(!size && 'Bandeja de entrada') || undefined}
+                  text={(contentVisible && 'Bandeja de entrada') || undefined}
                   className={`mail-main-options-btn
                   ${typeMail === 'RECEIVER' && 'options-main-selected'} `}
                   onClick={handleSelectReceiver}
                 />
                 <Button
                   icon="tabler"
-                  text={(!size && 'Enviados') || undefined}
+                  text={(contentVisible && 'Enviados') || undefined}
                   className={`mail-main-options-btn
                   ${typeMail === 'SENDER' && 'options-main-selected'} `}
                   onClick={handleSelectSender}
                 />
                 <Button
                   icon="archiver-box"
-                  text={(!size && 'Archivados') || undefined}
+                  text={(contentVisible && 'Archivados') || undefined}
                   className={`mail-main-options-btn
                   ${!typeMail && 'options-main-selected'}`}
                   onClick={handleArchived}
                 />
                 <Button
                   icon="archiver-box"
-                  text={(!size && 'Solicitud de Licencias') || undefined}
+                  text={
+                    (contentVisible && 'Solicitud de Licencias') || undefined
+                  }
                   className={`mail-main-options-btn
                   ${typeMail === 'LICENSE' && 'options-main-selected'}`}
                   onClick={handlelicense}
@@ -216,12 +268,14 @@ const MailPage = () => {
                   Solicitar Licencia
                 </span>
               )}
-              <Button
-                onClick={handleNewMessage}
-                icon="plus-dark"
-                text="Nuevo Trámite"
-                className="mail-new-message-btn"
-              />
+              {!size && (
+                <Button
+                  onClick={handleNewMessage}
+                  icon="plus-dark"
+                  text="Nuevo Trámite"
+                  className="mail-new-message-btn"
+                />
+              )}
             </div>
             {!viewLicense ? (
               <div
@@ -238,7 +292,7 @@ const MailPage = () => {
                 <div className="message-header-item mail-grid-col-2">
                   <span>ASUNTO</span>
                 </div>
-                {!size && (
+                {contentVisible && (
                   <>
                     <div className="message-header-item">
                       <span>ESTADO</span>
@@ -267,7 +321,7 @@ const MailPage = () => {
               listMessage.map(({ message, messageId, type }) => (
                 <CardMessage
                   user={user}
-                  isActive={size}
+                  isActive={!contentVisible}
                   key={messageId}
                   type={type}
                   onArchiver={handleSaveMessage}
@@ -307,12 +361,11 @@ const MailPage = () => {
             />
           </div>
         </div>
-      </div>
-      <div className={`mail-messages-details mail-m-size-${size}`}>
-        <Outlet />
-      </div>
+      </motion.div>
+      {/* <div className={`mail-m-size-${size}`}> */}
+      <Outlet />
+      {/* </div> */}
       <CardGenerateReport />
-
       {isNewMessage && (
         <CardRegisterMessage
           onClosing={handleCloseMessage}

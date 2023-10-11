@@ -19,7 +19,6 @@ import { motion } from 'framer-motion';
 import Button from '../../../components/shared/button/Button';
 import { filterFilesByAttempt } from '../../../utils/files/files.utils';
 import CardRegisterMessageForward from '../../../components/shared/card/cardRegisterMessageFordward/CardRegisterMessageFordward';
-import CardRegisterMessageUpdate from '../../../components/shared/card/cardRegisterMessageUpdate/CardRegisterMessageUpdate';
 import {
   convertToDynamicObject,
   dataInitialPdf,
@@ -118,7 +117,6 @@ const MessagePage = () => {
     ({ user, role, type }) =>
       user.id === userSession.id && role === 'MAIN' && type == 'RECEIVER'
   );
-  console.log({ mainReceiverFinish });
   const trandformData = (data: MessageReply) => {
     const sender = data.user;
     const header = data.header;
@@ -149,18 +147,8 @@ const MessagePage = () => {
   const handleSaveRegister = () => {
     navigate('/tramites?refresh=true');
   };
-  console.log({ message });
   return (
-    <motion.div
-      className="message-page-container"
-      initial={{ opacity: 0, width: '40vw' }}
-      animate={{
-        opacity: 1,
-        width: isActive ? '70vw' : '40vw',
-        transition: { duration: 0.4 },
-      }}
-      exit={{ opacity: 0, transition: { delay: 0.3 } }}
-    >
+    <motion.div className="message-page-container">
       <div className="message-header-content">
         <div className="message-heacer-content-options">
           <Button

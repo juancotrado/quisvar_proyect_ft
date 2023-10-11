@@ -13,6 +13,7 @@ import DotsRight from '../../shared/dotsRight/DotsRight';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import { RootState } from '../../../store';
 import { useSelector } from 'react-redux';
+import { isOpenButtonDelete$ } from '../../../services/sharingSubject';
 interface StageItemProps {
   stage: Stage;
   i: number;
@@ -58,6 +59,12 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
       .post(`/duplicates/stage/${stage.id}`, body)
       .then(() => getStages());
   };
+  const handleOpenButtonDelete = () => {
+    isOpenButtonDelete$.setSubject = {
+      isOpen: true,
+      function: () => handleDeleteLevel,
+    };
+  };
   const options: Option[] = [
     {
       name: 'Editar',
@@ -71,7 +78,7 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
       type: 'button',
       icon: 'trash-red',
 
-      function: handleDeleteLevel,
+      function: handleOpenButtonDelete,
     },
     {
       name: 'Duplicar',

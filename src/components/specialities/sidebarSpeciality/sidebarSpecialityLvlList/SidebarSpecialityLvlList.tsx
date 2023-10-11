@@ -14,7 +14,10 @@ import {
 } from '../../../../utils/customValidatesForm';
 import colors from '../../../../utils/json/colorSidebar.json';
 
-import { isOpenCardRegisteProject$ } from '../../../../services/sharingSubject';
+import {
+  isOpenButtonDelete$,
+  isOpenCardRegisteProject$,
+} from '../../../../services/sharingSubject';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import DotsRight from '../../../shared/dotsRight/DotsRight';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -75,6 +78,12 @@ const SidebarSpecialityLvlList = ({
     });
   };
 
+  const handleOpenButtonDelete = (id: number) => {
+    isOpenButtonDelete$.setSubject = {
+      isOpen: true,
+      function: () => () => handleDelete(id),
+    };
+  };
   const handleEdit = () => {
     if (type === 'projects') {
       isOpenCardRegisteProject$.setSubject = {
@@ -104,7 +113,7 @@ const SidebarSpecialityLvlList = ({
       icon: openEditData ? 'save' : 'trash-red',
       function: openEditData
         ? handleSubmit(handleForm)
-        : () => handleDelete(data.id),
+        : () => handleOpenButtonDelete(data.id),
     },
     {
       name: 'Duplicar',

@@ -2,13 +2,15 @@ import { motion } from 'framer-motion';
 import type { HTMLMotionProps } from 'framer-motion';
 import { axiosInstance } from '../../../services/axiosInstance';
 import './button.css';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Button from './Button';
 import { dropIn } from '../../../animations/animations';
 import Portal from '../../portal/Portal';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import InputText from '../Input/Input';
+import { Subscription } from 'rxjs';
+import { isOpenButtonDelete$ } from '../../../services/sharingSubject';
 interface ButtonProps extends HTMLMotionProps<'button'> {
   text?: string;
   type?: 'button' | 'submit' | 'reset';
@@ -16,12 +18,13 @@ interface ButtonProps extends HTMLMotionProps<'button'> {
   icon: string;
   onSave?: () => void;
   customOnClick?: () => void;
+  notIsVisible?: boolean;
   imageStyle?: string;
   // sizeIcon?: boolean;
   passwordRequired?: boolean;
 }
 const ButtonDelete = ({
-  // sizeIcon,
+  notIsVisible = false,
   className,
   text,
   type,
@@ -35,6 +38,7 @@ const ButtonDelete = ({
 }: ButtonProps) => {
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const [askPassword, setAskPassword] = useState<boolean>(false);
+  const [customFuction, setCustomFuction] = useState<(() => void) | null>(null);
   const [password, setPassword] = useState<string>('');
   const handleCloseButton = () => {
     setAskPassword(false);
@@ -43,6 +47,11 @@ const ButtonDelete = ({
   const handleSendDelete = async () => {
     if (customOnClick) {
       customOnClick();
+      setIsAlertOpen(false);
+      return;
+    }
+    if (customFuction) {
+      customFuction();
       setIsAlertOpen(false);
       return;
     }
@@ -65,13 +74,26 @@ const ButtonDelete = ({
       .catch(err => console.log(err));
   };
 
+  const handleIsOpen = useRef<Subscription>(new Subscription());
+
+  useEffect(() => {
+    handleIsOpen.current = isOpenButtonDelete$.getSubject.subscribe(value => {
+      setIsAlertOpen(value.isOpen);
+      setCustomFuction(value.function);
+    });
+    return () => {
+      handleIsOpen.current.unsubscribe();
+    };
+  }, []);
   return (
     <>
       <motion.button
         // whileHover={{ scale: 1.05 }}
         // whileTap={{ scale: 0.9 }}
         onClick={handleCloseButton}
-        className={`${className} btn-main  btn-delete`}
+        className={`${className} btn-main  btn-delete ${
+          notIsVisible && 'btn-hiden'
+        }`}
         type={type}
         {...otherProps}
       >
@@ -108,7 +130,9 @@ const ButtonDelete = ({
               {!askPassword ? (
                 <>
                   <img src="/svg/trashdark.svg" className="alert-modal-trash" />
-                  <h3>{`¿Estas seguro que deseas eliminar este registro ${url}?`}</h3>
+                  <h3>{`¿Estas seguro que deseas eliminar este registro ${
+                    customFuction ? '' : url
+                  }?`}</h3>
                   <div className="container-btn">
                     <Button
                       text="No, cancelar"

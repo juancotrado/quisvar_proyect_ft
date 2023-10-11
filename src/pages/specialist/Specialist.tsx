@@ -47,7 +47,20 @@ const Specialist = () => {
               <h3>Ingeniero de Sistemas</h3>
             </div>
           </div>
-          <div className="specialist-aditional-info"></div>
+          <div className="specialist-aditional-info">
+            <div>
+              <h3>DNI:</h3>
+              <h3>71449908</h3>
+            </div>
+            <div>
+              <h3>Colegiatura:</h3>
+              <h3>315413</h3>
+            </div>
+            <div>
+              <h3>Correo:</h3>
+              <h3>milito@gmail.com</h3>
+            </div>
+          </div>
           <div className="specialist-projects-list"></div>
         </div>
       </section>

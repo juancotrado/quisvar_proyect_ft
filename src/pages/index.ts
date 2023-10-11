@@ -15,6 +15,7 @@ import LicensePage from './mail/license/LicensePage';
 import LicenseListHeader from './mail/licenseHeader/LicenseListHeader';
 import LicenseListItem from './mail/licenseList/LicenseListItem';
 import Company from './company/Company';
+import Specialist from './specialist/Specialist';
 export {
   CommingSoon,
   ListPersonalTask,
@@ -33,4 +34,5 @@ export {
   LicenseListHeader,
   LicenseListItem,
   Company,
+  Specialist,
 };

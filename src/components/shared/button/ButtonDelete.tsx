@@ -128,7 +128,7 @@ const ButtonDelete = ({
                   </div>
                 </>
               ) : (
-                <>
+                <form className="delete-form-btn">
                   <img src="/svg/trashdark.svg" className="alert-modal-trash" />
                   <div className="modal-text-input">
                     <InputText
@@ -152,7 +152,7 @@ const ButtonDelete = ({
                       className="modal-btn-confirm"
                     />
                   </div>
-                </>
+                </form>
               )}
             </motion.div>
           </div>

@@ -798,3 +798,15 @@ export type Companies = {
   CCI: string;
   description: string;
 };
+export type Specialists = {
+  id: number;
+  dni: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  career: string;
+  degree: string;
+  agreement: FileList | null;
+  cv: FileList | null;
+  price: string;
+};

@@ -26,6 +26,12 @@ export const itemsAdmin = [
     icon: 'attendance-white',
     link: '/empresas',
   },
+  {
+    id: 8,
+    title: 'Especialistas',
+    icon: 'attendance-white',
+    link: '/especialistas',
+  },
 ];
 export const itemsEmployee = [
   { id: 1, title: 'Inicio', icon: 'home-bar', link: '/home' },

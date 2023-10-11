@@ -1,0 +1,66 @@
+.specialist {
+  max-height: 100vh;
+  /* overflow-y: hidden; */
+  display: flex;
+  /* flex-direction: column; */
+  gap: 1rem;
+  height: 100%;
+}
+
+.specialist-list {
+  width: 17rem;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  background-color: white;
+  padding: 1.25rem 0;
+}
+
+.specialist-info {
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+  display: flex;
+  border-radius: 0.625rem;
+  background: #fff;
+  box-shadow: -2px -2px 4px 0px rgba(0, 0, 0, 0.1),
+    0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.specialist-experience {
+  width: 66.6%;
+  height: 100vh;
+  /* background-color: red; */
+}
+
+.specialist-data {
+  width: 33.3%;
+  padding: 1.25rem 0.9375rem;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.875rem;
+  flex-shrink: 0;
+  background-color: var(--color-menu);
+}
+
+.specialist-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.specialist-main-info {
+  display: flex;
+  gap: 1rem;
+}
+
+.specialist-main-img {
+  width: 10.71rem;
+  height: 10.71rem;
+  background-color: gray;
+}
+.specialist-info-text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

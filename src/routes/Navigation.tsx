@@ -14,6 +14,7 @@ import {
   BudgetsPage,
   LicensePage,
   Company,
+  Specialist,
 } from '../pages';
 import { ProtectedRoute } from '../components';
 import Project from '../pages/specialities/project/Project';
@@ -54,6 +55,7 @@ const Navigation = () => {
             <Route path="/mis-tareas" element={<ListPersonalTask />} />
             <Route path="/reportes" element={<CommingSoon />} />
             <Route path="/empresas" element={<Company />} />
+            <Route path="/especialistas" element={<Specialist />} />
             <Route element={<ProtectedRole rols={assitant_perms} />}>
               <Route path="/lista-de-usuarios" element={<UsersList />} />
             </Route>

@@ -23,13 +23,13 @@ export const itemsAdmin = [
   {
     id: 7,
     title: 'Empresas',
-    icon: 'attendance-white',
+    icon: 'company',
     link: '/empresas',
   },
   {
     id: 8,
     title: 'Especialistas',
-    icon: 'attendance-white',
+    icon: 'specialist',
     link: '/especialistas',
   },
 ];

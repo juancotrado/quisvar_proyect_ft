@@ -7,11 +7,12 @@ interface SubtasksMoreInfoProps {
 }
 const SubtasksMoreInfo = ({ task }: SubtasksMoreInfoProps) => {
   const getTimeOut = () => {
-    const assignedAt = new Date();
-    const untilDate = task.users.at(0)?.untilDate;
-    if (!assignedAt || !untilDate) return 0;
+    const currentDate = new Date();
+    const assignedDate = new Date(task.users.at(0)?.assignedAt || '');
+    assignedDate.setDate(assignedDate.getDate() + task.days);
+    if (!currentDate || !assignedDate) return 0;
     const untilDateTime =
-      new Date(untilDate).getTime() - new Date(assignedAt).getTime();
+      assignedDate.getTime() - new Date(currentDate).getTime();
     const transformToDays =
       Math.floor((untilDateTime / 1000 / 60 / 60 / 24) * 10) / 10;
     return transformToDays;
@@ -58,7 +59,7 @@ const SubtasksMoreInfo = ({ task }: SubtasksMoreInfoProps) => {
           <figure className="subtasksMoreInfo-item-icon">
             <img src="/svg/hours-icon.svg" alt="W3Schools" />
           </figure>
-          {task.users.length ? getTimeOut() : '-'}
+          {task.users.length ? getTimeOut() + ' Dias' : '-'}
         </div>
       </div>
       <div className="subtasksMoreInfo-item">

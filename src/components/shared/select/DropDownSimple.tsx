@@ -16,6 +16,7 @@ interface DropDownSimpleProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   className?: string;
   classNameInput?: string;
+  classNameListOption?: string;
   droper?: boolean;
   valueInput?: (event: string, index: string) => void;
   onChangeInput?: (event: ChangeEvent<HTMLInputElement>) => void;
@@ -35,6 +36,7 @@ const DropDownSimple = ({
   selector,
   className,
   classNameInput,
+  classNameListOption,
 
   deleteUser,
   ...otherProps
@@ -111,7 +113,7 @@ const DropDownSimple = ({
               animate="show"
               className={`dropdown-list-option ${
                 optionsFiltered?.length === 0 && 'dropdown-none'
-              }`}
+              } ${classNameListOption}`}
             >
               {optionsFiltered?.map(item => (
                 <li

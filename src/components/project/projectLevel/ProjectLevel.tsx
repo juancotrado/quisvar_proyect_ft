@@ -90,7 +90,6 @@ const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
   const style = {
     borderLeft: `thick solid ${colors[data.level]}`,
   };
-  console.log(idCoordinator);
   return (
     <div
       className={`projectLevel-sub-list-item  ${

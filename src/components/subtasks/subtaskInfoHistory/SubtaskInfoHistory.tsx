@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DataFeedback, Feedback, Profile } from '../../../types/types';
 import { motion } from 'framer-motion';
 import { TextArea } from '../..';
@@ -14,6 +14,8 @@ interface SubtaskInfoHistoryProps {
     isAuthorizedMod: boolean;
     isAuthorizedUser: boolean;
   };
+  active?: boolean;
+  viewComentary?: boolean;
 }
 
 const SubtaskInfoHistory = ({
@@ -21,6 +23,8 @@ const SubtaskInfoHistory = ({
   className,
   authorize,
   getDataFeedback,
+  active = false,
+  viewComentary = false,
 }: SubtaskInfoHistoryProps) => {
   const [isActive, setIsActive] = useState(false);
   const toggleIsActive = () => setIsActive(!isActive);
@@ -29,6 +33,10 @@ const SubtaskInfoHistory = ({
     const { firstName, lastName } = profile;
     return firstName + ' ' + lastName;
   };
+  useEffect(() => {
+    setIsActive(active);
+  }, []);
+
   const getDatetimeCreated = (dateTime: string) => {
     const date = new Date(dateTime);
     const localeDate = _date(date);
@@ -83,9 +91,11 @@ const SubtaskInfoHistory = ({
                   !feedBack.comment ? 'Añadir Comentario' : 'Comentario'
                 }
                 defaultValue={feedBack.comment || ''}
-                disabled={feedBack.comment ? true : false}
+                disabled={!!feedBack.comment}
               />
             )}
+
+          {viewComentary && feedBack.comment && <div>{feedBack.comment}</div>}
         </motion.div>
       )}
     </div>

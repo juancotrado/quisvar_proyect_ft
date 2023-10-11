@@ -66,8 +66,9 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
   );
   const isAuthorizedMod =
     modAuthProject || userSession.id === subTask.Levels.userId;
+
   const isAuthorizedUser = subTask?.users?.some(
-    ({ user }) => user.id === userSession?.id
+    ({ user, status }) => user.id === userSession?.id && !status
   );
   const areAuthorizedUsers = isAuthorizedMod || isAuthorizedUser;
   const { users } = useListUsers();
@@ -86,6 +87,8 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
       ['user' + name]: { userId: +name, percentage: +value },
     });
   };
+  const needToAssignUser = subTask.users.every(user => user.status);
+
   const { usersData } = useUserPorcetage(subTask.users);
   const getDataFeedback = (data: DataFeedback) => setDataFeedback(data);
   return (
@@ -171,12 +174,13 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
         {isAuthorizedMod && status === 'INREVIEW' && (
           <SubtaskInfoHistory
             feedBack={subTask?.feedBacks?.[subTask?.feedBacks?.length - 1]}
+            active
             authorize={{ isAuthorizedMod, isAuthorizedUser }}
             getDataFeedback={getDataFeedback}
           />
         )}
 
-        {isAuthorizedMod && status === 'PROCESS' && (
+        {isAuthorizedMod && status === 'PROCESS' && needToAssignUser && (
           <div className="cardSubtaskHold-users-contain">
             <h4 className="cardSubtask-title-information">
               <figure className="cardSubtask-figure">
@@ -192,6 +196,7 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
                 handleAddUser({ id: parseInt(id), name })
               }
               placeholder="Seleccione Usuario"
+              classNameListOption="cardSubtaskProcess-list-option"
             />
           </div>
         )}
@@ -206,7 +211,7 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
           <div className="cardSubtaskProcess-btns">
             {status !== 'INREVIEW' && isAuthorizedUser && (
               <>
-                <div></div>
+                <div />
                 <SubtaskChangeStatusBtn
                   option="ASIG"
                   subtaskId={subTask.id}

@@ -43,6 +43,11 @@ const SubtaskFile = ({
 
   const normalizeUrlFile = (url: string) => {
     if (!url) return;
+    const isFinishFile = url.includes('editables') || url.includes('projects');
+    if (isFinishFile) {
+      const normalizeUrl = url.split('/').slice(3).join('/');
+      return `static/${normalizeUrl}`;
+    }
     return url.replace('./uploads/', '');
   };
   const getIcon = (fileName: string) => {
@@ -54,7 +59,9 @@ const SubtaskFile = ({
     <div className={` subtaskFile ${className}`}>
       {files
         ?.filter(({ type }) =>
-          !typeFile ? ['REVIEW', 'UPLOADS'].includes(type) : type === typeFile
+          !typeFile
+            ? ['REVIEW', 'UPLOADS', 'EDITABLES'].includes(type)
+            : type === typeFile
         )
         .map(file => (
           <div key={file.id} className="subtaskFile-contain">

@@ -137,8 +137,7 @@ const SubtaskChangeStatusBtn = ({
       return SnackbarUtilities.warning(
         'Asegurese de escribir un comentario antes'
       );
-    const message = validateValuesPorcentage();
-    if (message) return SnackbarUtilities.warning(message);
+
     const transforPorcentagesForUser = porcentagesForUser?.map(porcentage => ({
       ...porcentage,
       percentage: 0,

@@ -20,7 +20,9 @@
   align-items: center;
   overflow-x: auto;
 }
-
+.cardSubtaskHold-list-option {
+  height: 6rem;
+}
 .cardSubtaskHold-details {
   flex: 1;
   border-left: 2px solid var(--color-secondary);

@@ -185,6 +185,7 @@ export interface ProjectType {
   department: string;
   province: string;
   percentage: string;
+  userId: number;
   district: string;
 }
 

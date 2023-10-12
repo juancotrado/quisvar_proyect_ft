@@ -1,22 +1,22 @@
 import { useCallback, useEffect, useState } from 'react';
 import { SectorType } from '../types/types';
-// import { axiosInstance } from '../services/axiosInstance';
+import { axiosInstance } from '../services/axiosInstance';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
 
 const useSector = () => {
   const [sectors, setSectors] = useState<SectorType[] | null>(null);
-  const { id, role } = useSelector((state: RootState) => state.userSession);
+  const { id } = useSelector((state: RootState) => state.userSession);
 
   const getSpecialities = useCallback(async () => {
     if (!id) return;
-    // const response = await axiosInstance.get('/sector');
-    // const sectors: SectorType[] = response.data;
+    const response = await axiosInstance.get('/sector');
+    const sectors: SectorType[] = response.data;
     // const sectorFilter = false
     //   ? filterForUserCoordinator(sectors, id)
     //   : sectors;
-    setSectors(null);
-  }, [id, role]);
+    setSectors(sectors);
+  }, [id]);
 
   useEffect(() => {
     getSpecialities();

@@ -65,7 +65,7 @@ const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
     if (addLevel === 'area') {
       body = { ...body, isProject: true };
     }
-    if (data.isProject && idCoordinator) {
+    if ((data.isProject || addLevel === 'area') && idCoordinator) {
       body = { ...body, userId: idCoordinator };
     }
 
@@ -168,7 +168,7 @@ const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
               errorPosX={errorPosX}
               errorPosY={-23}
             />
-            {data.isProject && (
+            {(data.isProject || addLevel === 'area') && (
               <DropDownSimple
                 data={modedators}
                 itemKey="id"

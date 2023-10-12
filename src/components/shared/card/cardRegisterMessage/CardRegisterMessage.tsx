@@ -37,9 +37,11 @@ import {
 import {
   isGenerateExcelReport$,
   isOpenCardGenerateReport$,
+  isResizing$,
 } from '../../../../services/sharingSubject';
 import { Subscription } from 'rxjs';
 import { validateWhiteSpace } from '../../../../utils/customValidatesForm';
+import GenerateDownloadPdf from '../../generatePdf/GenerateDownloadPdf';
 
 const YEAR = new Date().getFullYear();
 const RolePerm: UserRoleType[] = ['SUPER_ADMIN', 'ADMIN', 'SUPER_MOD', 'MOD'];
@@ -217,11 +219,16 @@ const CardRegisterMessage = ({
   const handleSave = () => {
     onSave?.();
     navigate('/tramites?loader=true');
+    isResizing$.setSubject = false;
   };
-  const handleClose = () => onClosing?.();
+  const handleClose = () => {
+    onClosing?.();
+    isResizing$.setSubject = false;
+  };
   const handleDroped = () => {
     setIsDroped(!isDroped);
     !isDroped && setIsOpened(false);
+    isResizing$.setSubject = false;
   };
   const showCardReport = () => {
     isOpenCardGenerateReport$.setSubject = true;
@@ -387,7 +394,8 @@ const CardRegisterMessage = ({
           className="imbox-file-area"
           getFilesList={files => addFiles(files)}
         />
-        <PDFGenerator data={pdfData} />
+        {/* <PDFGenerator data={pdfData} /> */}
+        <GenerateDownloadPdf data={pdfData} size="A4" />
         <div className="imbox-btn-submit-container">
           <Button className="imbox-btn-submit" type="submit" text="Enviar" />
         </div>

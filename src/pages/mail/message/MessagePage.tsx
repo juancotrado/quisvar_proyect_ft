@@ -29,6 +29,7 @@ import { transformDataPdf } from '../../../utils/transformDataPdf';
 import useListUsers from '../../../hooks/useListUsers';
 import CardRegisterVoucher from '../../../components/shared/card/cardRegisterVoucher/CardRegisterVoucher';
 import CardRegisterVoucherDenyOrAccept from '../../../components/shared/card/cardRegisterVoucherDenyOrAccept/CardRegisterVoucherDenyOrAccept';
+import { isResizing$ } from '../../../services/sharingSubject';
 
 const spring = {
   type: 'spring',
@@ -57,7 +58,6 @@ const MessagePage = () => {
   const [isReply, setIsReply] = useState(true);
   const [data, setData] = useState<PdfDataProps>(dataInitialPdf);
   const [message, setMessage] = useState<MessageType | null>();
-  const [isActive, setIsActive] = useState<boolean>(false);
   const [viewMoreFiles, setViewMoreFiles] = useState(false);
   const [viewHistory, setViewHistory] = useState(false);
   const [countMessage, setCountMessage] = useState<quantityType[] | null>([]);
@@ -78,9 +78,7 @@ const MessagePage = () => {
   useEffect(() => {
     if (messageId && userSession.id) getMessage(messageId);
     getQuantityServices();
-    return () => {
-      setMessage(null);
-    };
+    return () => setMessage(null);
   }, [getMessage, messageId, userSession.id]);
 
   const getQuantityServices = () =>
@@ -88,11 +86,13 @@ const MessagePage = () => {
       .get('/mail/imbox/quantity')
       .then(res => setCountMessage(res.data));
 
-  const handleClose = () => navigate('/tramites');
+  const handleClose = () => {
+    navigate('/tramites');
+    isResizing$.setSubject = false;
+  };
   const toggleSwitch = () => setIsReply(!isReply);
   const handleViewMoreFiles = () => setViewMoreFiles(!viewMoreFiles);
   const handleViewHistory = () => setViewHistory(!viewHistory);
-  const handleResizeAction = () => setIsActive(!isActive);
 
   if (!message)
     return (
@@ -145,17 +145,13 @@ const MessagePage = () => {
     };
   };
   const handleSaveRegister = () => {
+    isResizing$.setSubject = false;
     navigate('/tramites?refresh=true');
   };
   return (
     <motion.div className="message-page-container">
       <div className="message-header-content">
         <div className="message-heacer-content-options">
-          <Button
-            className="message-icon-drop"
-            icon={`${isActive ? 'resize-down' : 'resize-up'}`}
-            onClick={handleResizeAction}
-          />
           <Button
             icon="close"
             onClick={handleClose}

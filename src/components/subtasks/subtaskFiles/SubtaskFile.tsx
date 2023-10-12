@@ -46,7 +46,7 @@ const SubtaskFile = ({
     const isFinishFile = url.includes('editables') || url.includes('projects');
     if (isFinishFile) {
       const normalizeUrl = url.split('/').slice(3).join('/');
-      return `static/${normalizeUrl}`;
+      return `projects/${normalizeUrl}`;
     }
     return url.replace('./uploads/', '');
   };

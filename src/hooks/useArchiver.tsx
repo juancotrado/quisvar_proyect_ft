@@ -24,7 +24,7 @@ const useArchiver = (id: number, type: TypeArchiver, nameZip: string) => {
           -(deleteUpload.length - posSlash)
         );
 
-        window.location.href = `${URL}/static${normalizePath}`;
+        window.location.href = `${URL}/projects${normalizePath}`;
         timeoutRef.current = setTimeout(() => {
           axiosInstance.delete(`/archiver/?path=${res.data.url}`);
         }, 3000);

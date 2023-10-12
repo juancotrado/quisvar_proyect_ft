@@ -20,6 +20,18 @@ export const itemsAdmin = [
     icon: 'attendance-white',
     link: '/asistencia',
   },
+  {
+    id: 7,
+    title: 'Empresas',
+    icon: 'company',
+    link: '/empresas',
+  },
+  {
+    id: 8,
+    title: 'Especialistas',
+    icon: 'specialist',
+    link: '/especialistas',
+  },
 ];
 export const itemsEmployee = [
   { id: 1, title: 'Inicio', icon: 'home-bar', link: '/home' },

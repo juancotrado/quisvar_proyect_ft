@@ -30,6 +30,7 @@ import PDFGenerator from './shared/generatePdf/GeneratePdf';
 import AttendancePdf from './shared/attendancePdf/AttendancePdf';
 import CardViewPdf from './shared/card/cardViewPdf/CardViewPdf';
 import CardLicense from './shared/card/cardLicense/CardLicense';
+import CardCompany from './shared/card/cardCompany/CardCompany';
 
 export {
   Alert,
@@ -37,6 +38,7 @@ export {
   Input,
   InputRange,
   ProtectedRoute,
+  CardCompany,
   CardRegisterUser,
   CardRegisterArea,
   CardRegisterTask,

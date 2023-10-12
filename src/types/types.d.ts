@@ -787,3 +787,28 @@ export type getLicenses = {
   // status: licenseStatus;
   usersId: number;
 };
+export type Companies = {
+  id: number;
+  name: string;
+  ruc: string;
+  manager: string;
+  address: string;
+  departure: string;
+  inscription?: Date;
+  activities?: Date;
+  SEE?: Date;
+  CCI: string;
+  description: string;
+};
+export type Specialists = {
+  id: number;
+  dni: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  career: string;
+  degree: string;
+  agreement: FileList | null;
+  cv: FileList | null;
+  price: string;
+};

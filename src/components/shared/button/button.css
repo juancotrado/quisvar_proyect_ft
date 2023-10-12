@@ -96,3 +96,11 @@
   width: 70%;
   margin-bottom: 0.5rem;
 }
+.delete-form-btn {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 1rem;
+  justify-content: center;
+  align-items: center;
+}

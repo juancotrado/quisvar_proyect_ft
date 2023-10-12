@@ -20,7 +20,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import { motion } from 'framer-motion';
 import { InitialValueEditor } from '../../../../utils/canvas';
 import { axiosInstance } from '../../../../services/axiosInstance';
-import { Input, PDFGenerator } from '../../..';
+import { Input } from '../../..';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   HashFile,

@@ -2,7 +2,6 @@ import { SubTask } from '../../../../../types/types';
 import SubtaskFile from '../../../../subtasks/subtaskFiles/SubtaskFile';
 import SubtasksShippingHistory from '../../../../subtasks/subtasksShippingHistory/SubtasksShippingHistory';
 import './cardSubtaskDone.css';
-import SubtaskChangeStatusBtn from '../../../../subtasks/subtaskChangeStatusBtn/SubtaskChangeStatusBtn';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../store';
 import SubtasksMoreInfo from '../../../../subtasks/subtasksMoreInfo/SubtasksMoreInfo';
@@ -14,7 +13,6 @@ interface CardSubtaskDone {
 }
 
 const CardSubtaskDone = ({ subTask }: CardSubtaskDone) => {
-  const { status } = subTask;
   const { modAuthProject, userSession } = useSelector(
     (state: RootState) => state
   );

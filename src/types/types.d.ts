@@ -674,6 +674,7 @@ export interface MessageType {
   updatedAt: Date;
   history: MessageReply[];
   voucher?: string;
+  userInit: userMessage;
 }
 export interface MessageReply {
   id: number;

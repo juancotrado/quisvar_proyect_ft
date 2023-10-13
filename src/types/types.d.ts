@@ -194,6 +194,8 @@ interface Stages {
   createdAt: string;
   updatedAt: string;
   projectId: number;
+  startDate: string;
+  untilDate: string;
 }
 type AreasType = {
   id: number;
@@ -800,6 +802,12 @@ export type Companies = {
   CCI: string;
   description: string;
 };
+export type SpecialistProject = {
+  id: number;
+  specialistId: number;
+  projectId: number;
+  project: ProjectType;
+};
 export type Specialists = {
   id: number;
   dni: string;
@@ -811,4 +819,14 @@ export type Specialists = {
   agreement: FileList | null;
   cv: FileList | null;
   price: string;
+  CIP: string;
+  email: string;
+  // projects: ProjectType
+  projects: SpecialistProject[];
+};
+export type SpecialistList = {
+  id: number;
+  dni: string;
+  firstName: string;
+  lastName: string;
 };

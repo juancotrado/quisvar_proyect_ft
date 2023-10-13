@@ -38,7 +38,6 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
   const onSubmit: SubmitHandler<Specialists> = async data => {
     const fileCv = data.cv?.[0] as File;
     const fileAgreement = data.agreement?.[0] as File;
-    console.log(fileCv);
     const formData = new FormData();
     formData.append('dni', data.dni);
     formData.append('firstName', data.firstName);
@@ -49,6 +48,8 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
     formData.append('fileAgreement', fileAgreement);
     formData.append('fileCv', fileCv);
     formData.append('price', data.price);
+    formData.append('CIP', data.CIP);
+    formData.append('email', data.email);
     const headers = {
       'Content-type': 'multipart/form-data',
     };
@@ -75,14 +76,8 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
           <img src="/svg/close.svg" alt="pencil" />
         </span>
         <h1>Registrar nuevo especialista</h1>
+
         <div className="specialist-col">
-          <Input
-            label="DNI"
-            placeholder="DNI"
-            {...register('dni', { required: true })}
-            name="dni"
-            errors={errors}
-          />
           <Input
             label="Nombres"
             placeholder="Nombres"
@@ -98,15 +93,8 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
             errors={errors}
           />
         </div>
+
         <div className="specialist-col">
-          <Input
-            label="Celular"
-            placeholder="Celular"
-            type="number"
-            {...register('phone', { required: true })}
-            name="phone"
-            errors={errors}
-          />
           <Input
             label="Profesion"
             placeholder="Profesion"
@@ -119,6 +107,47 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
             placeholder="Grado"
             {...register('degree', { required: true })}
             name="degree"
+            errors={errors}
+          />
+          <Input
+            label="Colegiatura"
+            placeholder="Colegiatura"
+            {...register('CIP', { required: true })}
+            name="CIP"
+            errors={errors}
+          />
+        </div>
+        <div className="specialist-col">
+          <Input
+            label="DNI"
+            placeholder="DNI"
+            {...register('dni', { required: true })}
+            name="dni"
+            errors={errors}
+          />
+          <Input
+            label="Correo"
+            placeholder="Correo"
+            {...register('email', { required: true })}
+            name="email"
+            errors={errors}
+          />
+        </div>
+        <div className="specialist-col">
+          {/* <Input label="Areas de Especialidad" /> */}
+          <Input
+            label="Celular"
+            placeholder="Celular"
+            type="number"
+            {...register('phone', { required: true })}
+            name="phone"
+            errors={errors}
+          />
+          <Input
+            label="Tarifa"
+            placeholder="S/. 00.00"
+            {...register('price')}
+            name="price"
             errors={errors}
           />
         </div>
@@ -135,16 +164,6 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
             type="file"
             {...register('agreement')}
             name="agreement"
-            errors={errors}
-          />
-        </div>
-        <div className="specialist-col">
-          <Input label="Areas de Especialidad" />
-          <Input
-            label="Tarifa"
-            placeholder="S/. 00.00"
-            {...register('price')}
-            name="price"
             errors={errors}
           />
         </div>

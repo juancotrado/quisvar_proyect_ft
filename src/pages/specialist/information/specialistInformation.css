@@ -1,0 +1,123 @@
+.specialist-experience {
+  width: 66.6%;
+  height: 100vh;
+}
+
+.specialist-data {
+  width: 33.3%;
+  padding: 1.25rem 0.9375rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.875rem;
+  flex-shrink: 0;
+  background-color: #f4f7fc;
+}
+
+.specialist-hr {
+  width: 100%;
+}
+
+.specialist-main-info {
+  display: flex;
+  gap: 1rem;
+  height: 9.5rem;
+  width: 100%;
+}
+
+.specialist-main-img {
+  width: 9.5rem;
+  height: 9.5rem;
+  background-color: gray;
+  border-radius: 50%;
+}
+
+.specialist-img-size {
+  width: 9.5rem;
+  height: 9.5rem;
+  border-radius: 50%;
+}
+
+.specialist-info-text {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.specialist-info-icon {
+  width: 1.1rem;
+}
+
+.specialist-icons-area {
+  display: flex;
+  justify-content: space-between;
+}
+
+.specialist-icon-cv {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.specialist-info-name {
+  font-size: 1.3rem;
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 0.0225rem;
+  line-height: 150%;
+  padding: 0.3rem;
+}
+
+.specialist-aditional-info {
+  width: 100%;
+}
+
+.specialist-info-rows {
+  display: flex;
+  justify-content: space-between;
+}
+
+.specialist-projects-list {
+  width: 100%;
+}
+
+.sp-name {
+  color: #000;
+  font-size: 0.9rem;
+  font-style: normal;
+  font-weight: 600;
+}
+
+.sp-cui {
+  color: #000;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  margin-bottom: 8px;
+}
+
+.sp-details {
+  color: #000;
+  font-size: 0.7rem;
+  font-style: normal;
+  font-weight: 500;
+}
+
+.sp-details-area {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.sp-hr {
+  width: 100%;
+  margin-top: 8px;
+}
+.sp-motion-div {
+  border-bottom: 1px dashed var(--color-secondary);
+}
+.sp-motion-click {
+  cursor: pointer;
+}
+.sp-motion-click:hover {
+  /* cursor: pointer; */
+  border-bottom: 1px dashed var(--color-secondary);
+}

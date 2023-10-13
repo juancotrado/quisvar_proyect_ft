@@ -39,7 +39,7 @@ const CardRegisterVoucher = ({ message, onSave }: CardRegisterVoucherProps) => {
       )}
       {!fileUploadFile && (
         <InputFile
-          className="inbox-reply-file-area"
+          className="message-file-area"
           getFilesList={files => addFiles(files[0])}
         />
       )}

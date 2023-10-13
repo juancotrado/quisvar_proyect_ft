@@ -53,12 +53,12 @@ export const listStatusMsg: { id: MessageStatus }[] = [
 ];
 
 export const radioOptions = [
-  { id: 'Carta', value: 'CARTA', name: 'type' },
-  { id: 'Informe', value: 'INFORME', name: 'type' },
-  { id: 'Memorandum', value: 'MEMORANDUM', name: 'type' },
-  { id: 'Acuerdo', value: 'ACUERDO', name: 'type' },
-  { id: 'Oficio', value: 'OFICIO', name: 'type' },
-  { id: 'Coordinación', value: 'COORDINACION', name: 'type' },
+  { id: 'CARTA', value: 'CARTA' },
+  { id: 'INFORME', value: 'INFORME' },
+  { id: 'MEMORANDUM', value: 'MEMORANDUM' },
+  { id: 'ACUERDO', value: 'ACUERDO' },
+  { id: 'OFICIO', value: 'OFICIO' },
+  { id: 'COORDINACION', value: 'COORDINACION' },
 ];
 
 export const HashFile = (name: string) => {

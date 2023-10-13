@@ -31,6 +31,8 @@ import CardRegisterVoucher from '../../../components/shared/card/cardRegisterVou
 import CardRegisterVoucherDenyOrAccept from '../../../components/shared/card/cardRegisterVoucherDenyOrAccept/CardRegisterVoucherDenyOrAccept';
 import { isResizing$ } from '../../../services/sharingSubject';
 import CardRegisterMessageUpdate from '../../../components/shared/card/cardRegisterMessageUpdate/CardRegisterMessageUpdate';
+import { generateReportPDF } from '../../../components/shared/generatePdf/GeneratePdf';
+import { PDFViewer } from '@react-pdf/renderer';
 
 const spring = {
   type: 'spring',
@@ -54,6 +56,7 @@ const RolePerm: UserRoleType[] = ['SUPER_ADMIN', 'ADMIN', 'SUPER_MOD', 'MOD'];
 const MessagePage = () => {
   const navigate = useNavigate();
   const { messageId } = useParams();
+  const [isResize, setIsResize] = useState(false);
   const { users: listUsers } = useListUsers(RolePerm);
   const { userSession } = useSelector((state: RootState) => state);
   const [isReply, setIsReply] = useState(true);
@@ -101,6 +104,7 @@ const MessagePage = () => {
         <LoaderForComponent />
       </div>
     );
+
   const { users } = message;
   const sender = users.find(({ user }) => user.id !== userSession.id);
   const mainSender = users.find(
@@ -150,137 +154,183 @@ const MessagePage = () => {
     navigate('/tramites?refresh=true');
   };
   const isUserInitMessage = userSession.profile.id === message.userInit.userId;
-  console.log({ message });
+
+  const handleResize = () => setIsResize(!isResize);
   return (
-    <motion.div className="message-page-container">
-      <div className="message-header-content">
-        <div className="message-heacer-content-options">
+    <div className={`message-page-container ${isResize && 'message--resize'}`}>
+      {mainReceiver && (
+        <div className="message-page-contain message-page-contain--right">
           <Button
-            icon="close"
-            onClick={handleClose}
-            className="message-icon-close"
+            className="imbox-resize-icon"
+            icon={`${!isResize ? 'resize-down' : 'resize-up'}`}
+            onClick={handleResize}
           />
-        </div>
-        <div className="message-sender-info-details">
-          <div className="message-sender-info">
-            {sender?.type === 'SENDER' && (
-              <span className="message-sender-name">Enviado por:</span>
+          {mainReceiver &&
+            !isUserInitMessage &&
+            message.status !== 'RECHAZADO' && (
+              <div
+                className="message-switch"
+                data-ison={isReply}
+                onClick={toggleSwitch}
+              >
+                {isReply && (
+                  <span className="message-hover-title">NO PROCEDE</span>
+                )}
+                <motion.div
+                  className={`message-handle`}
+                  layout
+                  transition={spring}
+                >
+                  <span className="span-list-task">
+                    {isReply ? 'Procede' : 'No Procede'}
+                  </span>
+                </motion.div>
+                {!isReply && (
+                  <span className="message-hover-title">PROCEDE</span>
+                )}
+              </div>
             )}
-            <span className="message-sender-icon">
-              <img src="/svg/user-sender.svg" alt="icon-profile" />
+          {mainReceiver &&
+            (message.status === 'PROCESO' || message.status === 'RECHAZADO') &&
+            !isUserInitMessage && (
+              <>
+                {isReply ? (
+                  <CardRegisterMessageReply
+                    message={message}
+                    quantityFiles={countMessage}
+                    senderId={mainSender?.user.id}
+                    onSave={handleSaveRegister}
+                  />
+                ) : (
+                  <CardRegisterMessageForward
+                    message={message}
+                    quantityFiles={countMessage}
+                    onSave={handleSaveRegister}
+                  />
+                )}
+              </>
+            )}
+          {message.status == 'FINALIZADO' && mainReceiverFinish && (
+            <CardRegisterVoucher
+              message={message}
+              onSave={handleSaveRegister}
+            />
+          )}
+          {message.status === 'POR_PAGAR' && mainReceiverFinish && (
+            <CardRegisterVoucherDenyOrAccept
+              message={message}
+              onSave={handleSaveRegister}
+            />
+          )}
+          {isUserInitMessage && message.status === 'RECHAZADO' && (
+            <CardRegisterMessageUpdate
+              message={message}
+              receiverId={mainReceiver?.user.id}
+              onSave={handleSaveRegister}
+            />
+          )}
+        </div>
+      )}
+      <div className="message-page-contain  message-page-contain--left">
+        <div className="message-header-content">
+          <div className="message-heacer-content-options">
+            <Button
+              icon="close"
+              onClick={handleClose}
+              className="message-icon-close"
+            />
+            {!mainReceiver && (
+              <Button
+                className="imbox-resize-icon"
+                icon={`${!isResize ? 'resize-down' : 'resize-up'}`}
+                onClick={handleResize}
+              />
+            )}
+          </div>
+          <div className="message-sender-info-details">
+            <div className="message-sender-info">
+              {sender?.type === 'SENDER' && (
+                <span className="message-sender-name">Enviado por:</span>
+              )}
+              <span className="message-sender-icon">
+                <img src="/svg/user-sender.svg" alt="icon-profile" />
+              </span>
+              {sender && sender.type === 'SENDER' ? (
+                <span className="message-sender-name">
+                  <b>
+                    {sender.user.profile.lastName}{' '}
+                    {sender.user.profile.firstName}
+                  </b>
+                </span>
+              ) : (
+                <span className="message-sender-name">Enviado Por ti</span>
+              )}
+              <span className="message-date-send">
+                {parseDate(message.createdAt)}
+              </span>
+            </div>
+            <span
+              className={`message-card-status-message message-status-${message.status}`}
+            >
+              {message.status}
             </span>
-            {sender && sender.type === 'SENDER' ? (
+          </div>
+        </div>
+        <div className="message-details-info">
+          <h4 className="message-title">{message.title}</h4>
+          <span className="message-subtitle">Asunto: {message.header}</span>
+          <div className="message-pdf-area">
+            <p className="message-sender-info">
+              <span className="message-sender-icon">
+                <img src="/svg/paper-clip.svg" alt="icon-profile" />
+              </span>
+              <span className="message-files-title">Archivos adjuntos:</span>
+            </p>
+            <PDFGenerator data={data} isView />
+          </div>
+          <PDFViewer width="100%" height="400">
+            {generateReportPDF({ data }, { size: 'A4' })}
+          </PDFViewer>
+
+          <div className="message-container-files-grid">
+            <div style={{ display: 'flex', gap: '1rem' }}>
+              {files[0].files.map(({ id, name, path }) => (
+                <ChipFileMessage
+                  className="pointer message-files-list"
+                  key={id}
+                  text={parseName(name)}
+                  link={path + '/' + name}
+                />
+              ))}
+            </div>
+            <div className="message-sender-info">
               <span className="message-sender-name">
+                Enviado por{' '}
                 <b>
-                  {sender.user.profile.lastName} {sender.user.profile.firstName}
+                  {message.userInit.user.profile.lastName}{' '}
+                  {message.userInit.user.profile.firstName}
                 </b>
               </span>
-            ) : (
-              <span className="message-sender-name">Enviado Por ti</span>
-            )}
-            <span className="message-date-send">
-              {parseDate(message.createdAt)}
-            </span>
+              <span className="message-date-send">
+                {parseDate(new Date(+files[0].id))}
+              </span>
+            </div>
           </div>
-          <span
-            className={`message-card-status-message message-status-${message.status}`}
-          >
-            {message.status}
-          </span>
-        </div>
-      </div>
-      <div className="message-details-info">
-        <h4 className="message-title">{message.title}</h4>
-        <span className="message-subtitle">Asunto: {message.header}</span>
-        <div className="message-pdf-area">
-          <p className="message-sender-info">
-            <span className="message-sender-icon">
-              <img src="/svg/paper-clip.svg" alt="icon-profile" />
-            </span>
-            <span className="message-files-title">Archivos adjuntos:</span>
-          </p>
-          <PDFGenerator data={data} isView />
-        </div>
-        <div className="message-container-files-grid">
-          <div style={{ display: 'flex', gap: '1rem' }}>
-            {files[0].files.map(({ id, name, path }) => (
-              <ChipFileMessage
-                className="pointer message-files-list"
-                key={id}
-                text={parseName(name)}
-                link={path + '/' + name}
-              />
-            ))}
-          </div>
-          <div className="message-sender-info">
-            <span className="message-sender-name">
-              Enviado por{' '}
-              <b>
-                {message.userInit.user.profile.lastName}{' '}
-                {message.userInit.user.profile.firstName}
-              </b>
-            </span>
-
-            <span className="message-date-send">
-              {parseDate(new Date(+files[0].id))}
-            </span>
-          </div>
-        </div>
-        {files.length > 1 && (
-          <Button
-            className={`message-view-more-files-${viewMoreFiles}`}
-            text={`${viewMoreFiles ? 'Ocultar' : 'Ver'} documentos previos`}
-            icon="down"
-            onClick={handleViewMoreFiles}
-          />
-        )}
-        <div className="message-container-files-grid">
-          {viewMoreFiles &&
-            files.slice(1, files.length).map(({ id, files }) => (
-              <div className="message-container-file-information" key={id}>
-                <span>{parseDate(new Date(+id))}</span>
-                <div className="message-container-files-grid">
-                  {files.map(({ id, name, path }) => (
-                    <ChipFileMessage
-                      className="pointer message-files-list"
-                      key={id}
-                      text={parseName(name)}
-                      link={path + '/' + name}
-                    />
-                  ))}
-                </div>
-              </div>
-            ))}
-        </div>
-        {getHistory.length > 0 && (
-          <Button
-            className={`message-view-more-files-${viewHistory}`}
-            text={`${viewHistory ? 'Ocultar' : 'Ver'} documentos recibidos`}
-            icon="down"
-            onClick={handleViewHistory}
-          />
-        )}
-        <div className="message-container-files-grid">
-          {viewHistory &&
-            getHistory.map(history => (
-              <div
-                className="message-container-file-information"
-                key={history.id}
-              >
-                <div className="message-pdf-area">
-                  <span className="message-sender-name">
-                    Enviado por {` `}
-                    <b>
-                      {history.user.profile.lastName}{' '}
-                      {history.user.profile.firstName}
-                    </b>
-                  </span>
-                  <PDFGenerator data={trandformData(history)} isView />
-                </div>
-                <span>{parseDate(new Date(history.createdAt))}</span>
-                <div className="message-container-files-grid">
-                  {history.files &&
-                    history.files.map(({ id, name, path }) => (
+          {files.length > 1 && (
+            <Button
+              className={`message-view-more-files-${viewMoreFiles}`}
+              text={`${viewMoreFiles ? 'Ocultar' : 'Ver'} documentos previos`}
+              icon="down"
+              onClick={handleViewMoreFiles}
+            />
+          )}
+          <div className="message-container-files-grid">
+            {viewMoreFiles &&
+              files.slice(1, files.length).map(({ id, files }) => (
+                <div className="message-container-file-information" key={id}>
+                  <span>{parseDate(new Date(+id))}</span>
+                  <div className="message-container-files-grid">
+                    {files.map(({ id, name, path }) => (
                       <ChipFileMessage
                         className="pointer message-files-list"
                         key={id}
@@ -288,72 +338,59 @@ const MessagePage = () => {
                         link={path + '/' + name}
                       />
                     ))}
+                  </div>
                 </div>
-              </div>
-            ))}
-        </div>
-        {mainReceiver &&
-          !isUserInitMessage &&
-          message.status !== 'RECHAZADO' && (
-            <div
-              className="message-switch"
-              data-ison={isReply}
-              onClick={toggleSwitch}
-            >
-              {isReply && (
-                <span className="message-hover-title">NO PROCEDE</span>
-              )}
-              <motion.div
-                className={`message-handle`}
-                layout
-                transition={spring}
-              >
-                <span className="span-list-task">
-                  {isReply ? 'Procede' : 'No Procede'}
-                </span>
-              </motion.div>
-              {!isReply && <span className="message-hover-title">PROCEDE</span>}
-            </div>
+              ))}
+          </div>
+          {getHistory.length > 0 && (
+            <Button
+              className={`message-view-more-files-${viewHistory}`}
+              text={`${viewHistory ? 'Ocultar' : 'Ver'} documentos recibidos`}
+              icon="down"
+              onClick={handleViewHistory}
+            />
           )}
+          <div className="message-container-files-grid">
+            {viewHistory &&
+              getHistory.map(history => (
+                <div
+                  className="message-container-file-information"
+                  key={history.id}
+                >
+                  <div className="message-pdf-area">
+                    <span className="message-sender-name">
+                      Enviado por {` `}
+                      <b>
+                        {history.user.profile.lastName}{' '}
+                        {history.user.profile.firstName}
+                      </b>
+                    </span>
+                    <PDFGenerator data={trandformData(history)} isView />
+                  </div>
+                  <PDFViewer width="100%" height="400">
+                    {generateReportPDF(
+                      { data: trandformData(history) },
+                      { size: 'A4' }
+                    )}
+                  </PDFViewer>
+                  <span>{parseDate(new Date(history.createdAt))}</span>
+                  <div className="message-container-files-grid">
+                    {history.files &&
+                      history.files.map(({ id, name, path }) => (
+                        <ChipFileMessage
+                          className="pointer message-files-list"
+                          key={id}
+                          text={parseName(name)}
+                          link={path + '/' + name}
+                        />
+                      ))}
+                  </div>
+                </div>
+              ))}
+          </div>
+        </div>
       </div>
-      {mainReceiver &&
-        (message.status === 'PROCESO' || message.status === 'RECHAZADO') &&
-        !isUserInitMessage && (
-          <>
-            {isReply ? (
-              <CardRegisterMessageReply
-                message={message}
-                quantityFiles={countMessage}
-                senderId={mainSender?.user.id}
-                onSave={handleSaveRegister}
-              />
-            ) : (
-              <CardRegisterMessageForward
-                message={message}
-                quantityFiles={countMessage}
-                onSave={handleSaveRegister}
-              />
-            )}
-          </>
-        )}
-      {message.status == 'FINALIZADO' && mainReceiverFinish && (
-        <CardRegisterVoucher message={message} onSave={handleSaveRegister} />
-      )}
-
-      {message.status === 'POR_PAGAR' && mainReceiverFinish && (
-        <CardRegisterVoucherDenyOrAccept
-          message={message}
-          onSave={handleSaveRegister}
-        />
-      )}
-      {isUserInitMessage && message.status === 'RECHAZADO' && (
-        <CardRegisterMessageUpdate
-          message={message}
-          receiverId={mainReceiver?.user.id}
-          onSave={handleSaveRegister}
-        />
-      )}
-    </motion.div>
+    </div>
   );
 };
 

@@ -91,16 +91,27 @@
 }
 .imbox-receiver-choice-dropdown {
   border: none;
-  flex-grow: 1;
   background-color: #fff;
+  width: 100%;
 }
-.imbox-receiver-choice-dropdown-input {
-  border: none;
-  position: relative;
-  /* z-index: ; */
-  border-radius: 1rem;
-  background-color: #fff;
-  min-width: 20rem;
+.messageRegister-options {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.messageRegister-figure {
+  width: 1.5rem;
+}
+
+.messageRegister-report {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  color: #000;
+  font-size: 0.85rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5rem;
 }
 .imbox-receiver-chip {
   display: flex;

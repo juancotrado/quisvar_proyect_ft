@@ -1,6 +1,6 @@
-import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { axiosInstance } from '../../../../services/axiosInstance';
-import { Input, PDFGenerator } from '../../..';
+import { Input, PDFGenerator, Select } from '../../..';
 import InputFile from '../../Input/InputFile';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import useListUsers from '../../../../hooks/useListUsers';
@@ -41,13 +41,6 @@ type receiverType = { id: number; value: string };
 
 const YEAR = new Date().getFullYear();
 
-const parseDate = (date: Date) =>
-  formatDate(new Date(date), {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  });
-
 interface CardRegisterMessageReplyProps {
   message: MessageType;
   senderId?: number;
@@ -75,7 +68,6 @@ const CardRegisterMessageReply = ({
   const HashUser = HashFile(`${firstName} ${lastName}`);
   const [receiver, setReceiver] = useState<receiverType | null>(null);
   const [pdfData, setpdfData] = useState<PdfDataProps>(dataInitialPdf);
-  // const InitialValueEditor = `<p style="text-align: justify;" >Por medio del presente documento me dirijo a usted con la finalidad de hacerle llegar un cordial saludo, y al mismo tiempo comunicarle lo siguiente:</p><p>&nbsp;</p><p>&nbsp;</p><p style="text-align: center;">Atentamente, ${userSession.profile.lastName.toUpperCase()} ${userSession.profile.firstName.toUpperCase()} </p>`;
 
   const contacts = useMemo(
     () =>
@@ -106,19 +98,17 @@ const CardRegisterMessageReply = ({
       setFileUploadFiles(newFiles);
     }
   };
-  const handleChangeRadio = ({ target }: ChangeEvent<HTMLInputElement>) => {
-    const { value } = target;
+  const handleTitle = (value: string) => {
     const countFile = quantityFiles?.find(file => file.type === value);
     const newIndex = (countFile ? countFile._count.type : 0) + 1;
-    const newTitleValue = `${value} N°${newIndex} DHYRIUM-${HashUser}-${YEAR}`;
-    setValue('title', newTitleValue);
+    return `${value} N°${newIndex} DHYRIUM-${HashUser}-${YEAR}`;
   };
-  const handleRemoveReceiver = () => setReceiver(null);
   const onSubmit: SubmitHandler<MessageSendType> = async data => {
     const values = {
       ...data,
       messageId: message.id,
       receiverId: receiver?.id,
+      title: handleTitle(watch('type')),
     };
     const headers = {
       'Content-type': 'multipart/form-data',
@@ -138,14 +128,13 @@ const CardRegisterMessageReply = ({
   useEffect(() => {
     const header = watch('header');
     const description = watch('description');
-    const title = watch('title');
     const to = receiver?.value ?? '';
     const toUser = users.find(user => user.id === receiver?.id);
     setpdfData({
       from: userSession.profile.firstName + ' ' + userSession.profile.lastName,
       header,
       body: convertToDynamicObject(description ?? ''),
-      title,
+      title: handleTitle(watch('type')),
       to,
       date: formatDate(new Date(), {
         year: 'numeric',
@@ -161,76 +150,52 @@ const CardRegisterMessageReply = ({
     });
   }, [watch('description'), watch('header'), watch('title')]);
   return (
-    <form
-      className="inbox-reply-data-content"
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <div className="inbox-reply-type-container">
-        {radioOptions.map(radio => (
-          <label
-            key={radio.value}
-            htmlFor={radio.id}
-            className="imbox-type-send"
-          >
-            <input
-              id={radio.id}
-              className="imbox-input-radio"
-              {...register('type')}
-              onChange={handleChangeRadio}
-              value={radio.value}
-              type="radio"
-              name={radio.name}
-              required
-            />
-            {radio.id === 'Coordinación' ? `Hoja de ${radio.id}` : radio.id}
-          </label>
-        ))}
-      </div>
-      <div className="inbox-reply-receiver-container">
-        <div className="inbox-receiver-container-info">
-          <span className="imbox-receiver-label">Para: </span>
-          <div className="imbox-receiver-choice-dropdown">
-            {receiver ? (
-              <div className="imbox-receiver-chip">
-                <span>{receiver.value}</span>
-                <img
-                  className="imbox-receiver-chip-icon-close "
-                  onClick={handleRemoveReceiver}
-                  src="/svg/circle-xmark-solid.svg"
-                />
-              </div>
-            ) : (
-              <DropDownSimple
-                classNameInput="imbox-receiver-choice-dropdown-input"
-                type="search"
-                data={contacts}
-                textField="name"
-                itemKey="id"
-                selector
-                droper
-                valueInput={(value, id) => setReceiver({ id: +id, value })}
-                required
-              />
-            )}
-          </div>
+    <form className="messagePage-send-mail" onSubmit={handleSubmit(onSubmit)}>
+      {watch('type') && (
+        <h3 className="messagePage-type-document">
+          {' '}
+          {handleTitle(watch('type'))}
+        </h3>
+      )}
+      <div className="messagePage-input-contain">
+        <Select
+          {...register('type', {
+            validate: { validateWhiteSpace },
+          })}
+          name="type"
+          data={radioOptions}
+          itemKey="id"
+          textField="value"
+          errors={errors}
+          placeholder="Tipo de Documento"
+          className="messagePage-input"
+        />
+        <div className="imbox-receiver-choice-dropdown">
+          <DropDownSimple
+            classNameInput="messagePage-input"
+            type="search"
+            data={contacts}
+            textField="name"
+            itemKey="id"
+            placeholder="Dirigido a"
+            selector
+            droper
+            valueInput={(value, id) => setReceiver({ id: +id, value })}
+            required
+          />
         </div>
       </div>
-      <label className="imbox-input-title">
-        Asunto:
-        <Input
-          {...register('header', { validate: { validateWhiteSpace } })}
-          errors={errors}
-          className="imbox-input-content"
-          name="header"
-          type="text"
-        />
-      </label>
-      <label className="imbox-input-title">
-        Fecha:<span>{parseDate(new Date())}</span>
-      </label>
+
+      <Input
+        {...register('header', { validate: { validateWhiteSpace } })}
+        errors={errors}
+        className="messagePage-input"
+        placeholder="Asunto"
+        name="header"
+        type="text"
+      />
       <div className="inbox-editor-container">
         <Editor
-          // initialValue={initialValueEditor}
           init={{
             height: '100%',
             resize: false,
@@ -248,23 +213,26 @@ const CardRegisterMessageReply = ({
           onEditorChange={handleInputChange}
         />
       </div>
-      {fileUploadFiles && (
-        <div className="inbox-container-file-grid">
-          {fileUploadFiles.map((file, i) => (
-            <ChipFileMessage
-              className="message-files-list"
-              text={file.name}
-              key={i}
-              onClose={() => deleteFiles(file)}
-            />
-          ))}
-        </div>
-      )}
-      <InputFile
-        className="inbox-reply-file-area"
-        getFilesList={files => addFiles(files)}
-      />
       <PDFGenerator data={pdfData} />
+      <div className="message-file-add">
+        <h4 className="message-add-document">Agregar Documentos:</h4>
+        <InputFile
+          className="message-file-area"
+          getFilesList={files => addFiles(files)}
+        />
+        {fileUploadFiles && (
+          <div className="inbox-container-file-grid">
+            {fileUploadFiles.map((file, i) => (
+              <ChipFileMessage
+                className="message-files-list"
+                text={file.name}
+                key={i}
+                onClose={() => deleteFiles(file)}
+              />
+            ))}
+          </div>
+        )}
+      </div>
       <div className="inbox-reply-btn-submit-container">
         <Button
           onClick={handleDoneMessage}
@@ -272,11 +240,7 @@ const CardRegisterMessageReply = ({
           type="button"
           text="Finalizar Tramite"
         />
-        <Button
-          className={`inbox-reply-btn-submit`}
-          // onClick={() => {}}
-          text="Procede"
-        />
+        <Button className={`inbox-reply-btn-submit`} text="Procede" />
       </div>
     </form>
   );

@@ -24,7 +24,10 @@ interface ConfigProps {
   size: 'A4' | 'A5';
 }
 
-const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => (
+export const generateReportPDF = (
+  value: PDFGeneratorProps,
+  config?: ConfigProps
+) => (
   <Document>
     <Page
       size={config?.size ?? 'A4'}
@@ -140,28 +143,8 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => (
 const PDFGenerator = ({ data }: PDFGeneratorProps) => {
   return (
     <div className="pdf-btn-area-view">
-      {/* {showPreview ? (
-        <div>
-          <p>Vista previa del PDF:</p>
-          <PDFViewer width="1000" height="600">
-            {generatePDF({ data, tables}, {size : 'A4'})}
-          </PDFViewer>
-          <button onClick={() => setShowPreview(false)}>
-            Ocultar Vista Previa
-          </button>
-        </div>
-      ) : (
-        <div>
-          <p>
-            Haz clic en el botón para ver la vista previa y descargar el PDF con
-            la tabla:
-          </p>
-          <button onClick={() => setShowPreview(true)}>Ver Vista Previa</button>
-        </div>
-      )} */}
-      {/* {showPreview && ( */}
       <PDFDownloadLink
-        document={generatePDF({ data }, { size: 'A5' })}
+        document={generateReportPDF({ data }, { size: 'A5' })}
         fileName={`${data.title}.pdf`}
         className="pdf-btn-view-white"
       >
@@ -183,7 +166,7 @@ const PDFGenerator = ({ data }: PDFGeneratorProps) => {
         )}
       </PDFDownloadLink>
       <PDFDownloadLink
-        document={generatePDF({ data }, { size: 'A4' })}
+        document={generateReportPDF({ data }, { size: 'A4' })}
         fileName={`${data.title}.pdf`}
         className="pdf-btn-view-white"
       >
@@ -203,7 +186,6 @@ const PDFGenerator = ({ data }: PDFGeneratorProps) => {
           </>
         )}
       </PDFDownloadLink>
-      {/* )} */}
     </div>
   );
 };

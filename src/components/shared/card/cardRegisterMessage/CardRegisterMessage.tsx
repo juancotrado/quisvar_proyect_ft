@@ -20,7 +20,7 @@ import { Editor } from '@tinymce/tinymce-react';
 import { motion } from 'framer-motion';
 import { InitialValueEditor } from '../../../../utils/canvas';
 import { axiosInstance } from '../../../../services/axiosInstance';
-import { Input } from '../../..';
+import { Input, PDFGenerator, Select } from '../../..';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   HashFile,
@@ -41,7 +41,6 @@ import {
 } from '../../../../services/sharingSubject';
 import { Subscription } from 'rxjs';
 import { validateWhiteSpace } from '../../../../utils/customValidatesForm';
-import GenerateDownloadPdf from '../../generatePdf/GenerateDownloadPdf';
 
 const YEAR = new Date().getFullYear();
 const RolePerm: UserRoleType[] = ['SUPER_ADMIN', 'ADMIN', 'SUPER_MOD', 'MOD'];
@@ -50,13 +49,6 @@ interface CardRegisterMessageProps {
   onClosing?: () => void;
   onSave?: () => void;
 }
-
-const parseDate = (date: Date) =>
-  formatDate(new Date(date), {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  });
 
 const CardRegisterMessage = ({
   onClosing,
@@ -133,14 +125,6 @@ const CardRegisterMessage = ({
     setListCopy(filterValue);
   };
 
-  const handleChangeRadio = ({ target }: ChangeEvent<HTMLInputElement>) => {
-    const { value } = target;
-    const countFile = countMessage?.find(file => file.type === value);
-    const newIndex = (countFile ? countFile._count.type : 0) + 1;
-    const newTitleValue = `${value} N°${newIndex} DHYRIUM-${HashUser}-${YEAR}`;
-    setValue('title', newTitleValue);
-  };
-
   const handleInputChange = (event: string) => {
     setValue('description', event);
   };
@@ -160,7 +144,11 @@ const CardRegisterMessage = ({
     const _files = deleteFileOnList(fileUploadFiles, delFiles);
     if (_files) setFileUploadFiles(_files);
   };
-
+  const handleTitle = (value: string) => {
+    const countFile = countMessage?.find(file => file.type === value);
+    const newIndex = (countFile ? countFile._count.type : 0) + 1;
+    return `${value} N°${newIndex} DHYRIUM-${HashUser}-${YEAR}`;
+  };
   useEffect(() => {
     const secondaryReceiver = listCopy.map(list => ({ userId: list.id }));
     const cc: ListUser[] = secondaryReceiver.map(item => {
@@ -173,7 +161,6 @@ const CardRegisterMessage = ({
     });
     const header = watch('header');
     const description = watch('description');
-    const title = watch('title');
     const to = receiver?.value ?? '';
     const toUser = listUser.find(user => user.id === receiver?.id);
 
@@ -181,7 +168,7 @@ const CardRegisterMessage = ({
       from: userSession.profile.firstName + ' ' + userSession.profile.lastName,
       header,
       body: convertToDynamicObject(description ?? ''),
-      title,
+      title: handleTitle(watch('type')),
       cc,
       to,
       date: formatDate(new Date(), {
@@ -196,7 +183,7 @@ const CardRegisterMessage = ({
       fromDegree: userSession.profile.degree,
       fromPosition: userSession.profile.description,
     });
-  }, [watch('description'), watch('header'), watch('title')]);
+  }, [watch('description'), watch('header'), watch('title'), watch('type')]);
 
   const onSubmit: SubmitHandler<MessageSendType> = async data => {
     const formData = new FormData();
@@ -207,7 +194,9 @@ const CardRegisterMessage = ({
       secondaryReceiver,
       senderId: userSession.id,
       receiverId: receiver?.id,
+      title: handleTitle(watch('type')),
     };
+    console.log(values);
     //----------------------------------------------------------------
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
     formData.append('data', JSON.stringify(values));
@@ -256,72 +245,39 @@ const CardRegisterMessage = ({
         </div>
       </div>
       <form className="imbox-data-content" onSubmit={handleSubmit(onSubmit)}>
-        <Input
-          {...register('title', { required: true })}
-          errors={errors}
-          className="imbox-input-content-title not-allowed"
-          name="title"
-          type="text"
-          disabled
-        />
-        <span>
-          Tipo de Documento <span style={{ color: 'red' }}>*</span>
-        </span>
-        <div className="imbox-type-container">
-          {radioOptions.map(radio => (
-            <label
-              key={radio.value}
-              htmlFor={radio.id}
-              className="imbox-type-send"
-            >
-              <input
-                id={radio.id}
-                className="imbox-input-radio"
-                {...register('type')}
-                onChange={handleChangeRadio}
-                value={radio.value}
-                type="radio"
-                name={radio.name}
-                required
-              />
-              {radio.id === 'Coordinación' ? `Hoja de ${radio.id}` : radio.id}
-            </label>
-          ))}
-        </div>
-        <div className="imbox-receiver-container">
-          <span className="imbox-receiver-label">Para: </span>
+        {watch('type') && (
+          <h3 className="messagePage-type-document">
+            {' '}
+            {handleTitle(watch('type'))}
+          </h3>
+        )}
+        <div className="messagePage-input-contain">
+          <Select
+            {...register('type', {
+              validate: { validateWhiteSpace },
+            })}
+            name="type"
+            data={radioOptions}
+            itemKey="id"
+            textField="value"
+            errors={errors}
+            placeholder="Tipo de Documento"
+            className="messagePage-input"
+          />
           <div className="imbox-receiver-choice-dropdown">
-            {receiver ? (
-              <div className="imbox-receiver-chip">
-                <span>{receiver.value}</span>
-                <img
-                  className="imbox-receiver-chip-icon-close "
-                  onClick={handleRemoveReceiver}
-                  src="/svg/circle-xmark-solid.svg"
-                />
-              </div>
-            ) : (
-              <DropDownSimple
-                classNameInput="imbox-receiver-choice-dropdown-input"
-                type="search"
-                data={contacts}
-                textField="name"
-                itemKey="id"
-                selector
-                droper
-                valueInput={(value, id) => setReceiver({ id: +id, value })}
-                required
-              />
-            )}
-          </div>
-          {receiver && (
-            <Button
-              type="button"
-              text="Cc"
-              className="inbox-copy-button"
-              onClick={handleAddCopy}
+            <DropDownSimple
+              classNameInput="messagePage-input"
+              type="search"
+              data={contacts}
+              textField="name"
+              itemKey="id"
+              placeholder="Dirigido a"
+              selector
+              droper
+              valueInput={(value, id) => setReceiver({ id: +id, value })}
+              required
             />
-          )}
+          </div>
         </div>
         {isAddReceiver && (
           <div className="imbox-receiver-container-copy">
@@ -348,23 +304,18 @@ const CardRegisterMessage = ({
             />
           </div>
         )}
-        <label className="imbox-input-title">
-          Asunto:
-          <Input
-            {...register('header', { validate: { validateWhiteSpace } })}
-            errors={errors}
-            className="imbox-input-content"
-            name="header"
-            type="text"
-          />
-        </label>
-        <label className="imbox-input-title">
-          Fecha:<span>{parseDate(new Date())}</span>
-        </label>
+        <Input
+          {...register('header', { validate: { validateWhiteSpace } })}
+          errors={errors}
+          className="messagePage-input"
+          placeholder="Asunto"
+          name="header"
+          type="text"
+        />
         <Editor
           initialValue={initialValueEditor}
           init={{
-            min_height: 600,
+            min_height: 500,
             paste_data_images: false,
             plugins: [
               'advlist autolink lists link image charmap print preview anchor',
@@ -378,24 +329,36 @@ const CardRegisterMessage = ({
           }}
           onEditorChange={handleInputChange}
         />
-        {fileUploadFiles && (
-          <div className="imbox-container-file-list">
-            {fileUploadFiles.map((file, i) => (
-              <ChipFileMessage
-                text={file.name}
-                key={i}
-                onClose={() => deleteFiles(file)}
-              />
-            ))}
+
+        <div className="messageRegister-options">
+          <div className="messageRegister-report" onClick={showCardReport}>
+            <figure className="messageRegister-figure">
+              <img src={`/svg/clip-icon.svg`} alt="W3Schools" />
+            </figure>
+            <span>Adjuntar reporte</span>
           </div>
-        )}
-        <div onClick={showCardReport}>generar report</div>
-        <InputFile
-          className="imbox-file-area"
-          getFilesList={files => addFiles(files)}
-        />
-        {/* <PDFGenerator data={pdfData} /> */}
-        <GenerateDownloadPdf data={pdfData} size="A4" />
+          <PDFGenerator data={pdfData} />
+        </div>
+        <div className="message-file-add">
+          <h4 className="message-add-document">Agregar Documentos:</h4>
+          <InputFile
+            className="message-file-area"
+            getFilesList={files => addFiles(files)}
+          />
+          {fileUploadFiles && (
+            <div className="inbox-container-file-grid">
+              {fileUploadFiles.map((file, i) => (
+                <ChipFileMessage
+                  className="message-files-list"
+                  text={file.name}
+                  key={i}
+                  onClose={() => deleteFiles(file)}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+
         <div className="imbox-btn-submit-container">
           <Button className="imbox-btn-submit" type="submit" text="Enviar" />
         </div>

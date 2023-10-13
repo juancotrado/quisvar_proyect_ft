@@ -60,6 +60,7 @@
 }
 
 .mail-main-master-container {
+  width: 100%;
   position: relative;
   background-color: #fff;
   padding: 0.5rem;

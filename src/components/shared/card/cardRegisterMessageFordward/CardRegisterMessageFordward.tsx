@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { axiosInstance } from '../../../../services/axiosInstance';
-import { Input, PDFGenerator } from '../../..';
+import { Input, PDFGenerator, Select } from '../../..';
 import InputFile from '../../Input/InputFile';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Button from '../../button/Button';
@@ -92,7 +92,6 @@ const CardRegisterMessageForward = ({
     [userSession, users]
   );
 
-  console.log({ contacts });
   const addFiles = (newFiles: File[]) => {
     const _files = addFilesList(fileUploadFiles, newFiles);
     setFileUploadFiles(_files);
@@ -103,14 +102,11 @@ const CardRegisterMessageForward = ({
     if (_files) setFileUploadFiles(_files);
   };
 
-  const handleChangeRadio = ({ target }: ChangeEvent<HTMLInputElement>) => {
-    const { value } = target;
+  const handleTitle = (value: string) => {
     const countFile = quantityFiles?.find(file => file.type === value);
     const newIndex = (countFile ? countFile._count.type : 0) + 1;
-    const newTitleValue = `${value} N°${newIndex} DHYRIUM-${HashUser}-${YEAR}`;
-    setValue('title', newTitleValue);
+    return `${value} N°${newIndex} DHYRIUM-${HashUser}-${YEAR}`;
   };
-
   const onSubmit: SubmitHandler<MessageSendType> = async data => {
     if (!receiver)
       return SnackbarUtilities.warning(
@@ -120,6 +116,7 @@ const CardRegisterMessageForward = ({
       ...data,
       messageId: message.id,
       receiverId: receiver.id,
+      title: handleTitle(watch('type')),
     };
     const headers = {
       'Content-type': 'multipart/form-data',
@@ -131,8 +128,6 @@ const CardRegisterMessageForward = ({
       .post(`/mail/reply?status=RECHAZADO`, formData, { headers })
       .then(onSave);
   };
-  const handleRemoveReceiver = () => setReceiver(null);
-  console.log('first', message);
   const sender = message.users.filter(user => user.type === 'SENDER')[0].user;
   const handleArchiverMessage = () => {
     axiosInstance.patch(`/mail/archived/${message.id}`).then(onSave);
@@ -140,14 +135,13 @@ const CardRegisterMessageForward = ({
   useEffect(() => {
     const header = watch('header');
     const description = watch('description');
-    const title = watch('title');
     const to = sender.profile.firstName + ' ' + sender.profile.lastName;
     const toUser = users.find(user => user.id === sender?.id);
     setpdfData({
       from: userSession.profile.firstName + ' ' + userSession.profile.lastName,
       header,
       body: convertToDynamicObject(description ?? ''),
-      title,
+      title: handleTitle(watch('type')),
       to,
       date: formatDate(new Date(), {
         year: 'numeric',
@@ -161,78 +155,54 @@ const CardRegisterMessageForward = ({
       fromDegree: userSession.profile.degree,
       fromPosition: userSession.profile.description,
     });
-  }, [watch('description'), watch('header'), watch('title')]);
+  }, [watch('description'), watch('header'), watch('title'), watch('type')]);
   return (
-    <form
-      className="inbox-forward-data-content"
-      onSubmit={handleSubmit(onSubmit)}
-    >
-      <div className="inbox-forward-type-container">
-        {radioOptions.map(radio => (
-          <label
-            key={radio.value}
-            htmlFor={radio.id}
-            className="imbox-type-send"
-          >
-            <input
-              id={radio.id}
-              className="imbox-input-radio"
-              {...register('type')}
-              onChange={handleChangeRadio}
-              value={radio.value}
-              type="radio"
-              name={radio.name}
-              required
-            />
-            {radio.id === 'Coordinación' ? `Hoja de ${radio.id}` : radio.id}
-          </label>
-        ))}
-      </div>
-      <div className="inbox-forward-receiver-container">
-        <div className="inbox-receiver-container-info">
-          <span>Para:</span>
-          <div className="imbox-receiver-choice-dropdown">
-            {receiver ? (
-              <div className="imbox-receiver-chip">
-                <span>{receiver.value}</span>
-                <img
-                  className="imbox-receiver-chip-icon-close "
-                  onClick={handleRemoveReceiver}
-                  src="/svg/circle-xmark-solid.svg"
-                />
-              </div>
-            ) : (
-              <DropDownSimple
-                classNameInput="imbox-receiver-choice-dropdown-input"
-                type="search"
-                data={contacts}
-                textField="name"
-                itemKey="id"
-                selector
-                droper
-                valueInput={(value, id) => setReceiver({ id: +id, value })}
-                required
-              />
-            )}
-          </div>
+    <form className="messagePage-send-mail" onSubmit={handleSubmit(onSubmit)}>
+      {watch('type') && (
+        <h3 className="messagePage-type-document">
+          {' '}
+          {handleTitle(watch('type'))}
+        </h3>
+      )}
+
+      <div className="messagePage-input-contain">
+        <Select
+          {...register('type', {
+            validate: { validateWhiteSpace },
+          })}
+          name="type"
+          data={radioOptions}
+          itemKey="id"
+          textField="value"
+          errors={errors}
+          placeholder="Tipo de Documento"
+          className="messagePage-input"
+        />
+        <div className="imbox-receiver-choice-dropdown">
+          <DropDownSimple
+            classNameInput="messagePage-input"
+            type="search"
+            data={contacts}
+            textField="name"
+            itemKey="id"
+            placeholder="Dirigido a"
+            selector
+            droper
+            valueInput={(value, id) => setReceiver({ id: +id, value })}
+            required
+          />
         </div>
       </div>
-      <label className="imbox-input-title">
-        Asunto:
-        <Input
-          {...register('header', { validate: { validateWhiteSpace } })}
-          errors={errors}
-          className="imbox-input-content"
-          name="header"
-          type="text"
-        />
-      </label>
-      <label className="imbox-input-title">
-        Fecha:<span>{parseDate(new Date())}</span>
-      </label>
+      <Input
+        {...register('header', { validate: { validateWhiteSpace } })}
+        errors={errors}
+        className="messagePage-input"
+        placeholder="Asunto"
+        name="header"
+        type="text"
+      />
       <div className="inbox-editor-container">
         <Editor
-          // initialValue={initialValueEditor}
           init={{
             height: '100%',
             resize: false,
@@ -244,35 +214,35 @@ const CardRegisterMessageForward = ({
             ],
             toolbar:
               'undo redo | formatselect | bold italic | table\
-              alignleft aligncenter alignright alignjustify | \
-              bullist numlist outdent indent | removeformat | code',
+            alignleft aligncenter alignright alignjustify | \
+            bullist numlist outdent indent | removeformat | code',
           }}
           onEditorChange={handleInputChange}
         />
       </div>
-      {fileUploadFiles && (
-        <div className="inbox-container-file-grid">
-          {fileUploadFiles.map((file, i) => (
-            <ChipFileMessage
-              className="message-files-list"
-              text={file.name}
-              key={i}
-              onClose={() => deleteFiles(file)}
-            />
-          ))}
-        </div>
-      )}
-      <InputFile
-        className="inbox-forward-file-area"
-        getFilesList={files => addFiles(files)}
-      />
+
       <PDFGenerator data={pdfData} />
-      <div className="inbox-forward-btn-submit-container">
-        <Button
-          className={`inbox-forward-btn-submit`}
-          // onClick={() => {}}
-          text="No Procede"
+      <div className="message-file-add">
+        <h4 className="message-add-document">Agregar Documentos:</h4>
+        <InputFile
+          className="message-file-area"
+          getFilesList={files => addFiles(files)}
         />
+        {fileUploadFiles && (
+          <div className="inbox-container-file-grid">
+            {fileUploadFiles.map((file, i) => (
+              <ChipFileMessage
+                className="message-files-list"
+                text={file.name}
+                key={i}
+                onClose={() => deleteFiles(file)}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+      <div className="inbox-forward-btn-submit-container">
+        <Button className={`inbox-forward-btn-submit`} text="No Procede" />
         {['SUPER_ADMIN'].includes(userSession.role) && (
           <Button
             onClick={() => setIsAlertOpen(true)}

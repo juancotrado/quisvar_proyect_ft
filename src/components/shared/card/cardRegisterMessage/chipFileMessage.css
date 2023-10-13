@@ -24,6 +24,7 @@
 .chip-file-information {
   display: flex;
   max-width: 90%;
+  align-items: center;
   gap: 0.3rem;
 }
 .chip-file-icon-doc {
@@ -39,4 +40,9 @@
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
+  color: var(--color-secondary);
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
 }

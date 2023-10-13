@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './mailPage.css';
 import { axiosInstance } from '../../services/axiosInstance';
 import {
@@ -17,10 +17,8 @@ import { listStatusMsg, listTypeMsg } from '../../utils/files/files.utils';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { CardGenerateReport, CardLicense } from '../../components';
-import { isOpenCardLicense$, isResizing$ } from '../../services/sharingSubject';
+import { isOpenCardLicense$ } from '../../services/sharingSubject';
 import { LicenseListHeader, LicenseListItem } from '..';
-import { PanInfo, motion, useMotionValue } from 'framer-motion';
-import { Subscription } from 'rxjs';
 
 const InitTMail: MailType['type'] = 'RECEIVER';
 const MailPage = () => {
@@ -30,7 +28,7 @@ const MailPage = () => {
   const [listMessage, setListMessage] = useState<MailType[] | null>(null);
   const [listLicense, setListLicense] = useState<licenseList[]>([]);
   const [viewLicense, setViewLicense] = useState(false);
-  const [isResizing, setIsResizing] = useState(false);
+  // const [isResizing, setIsResizing] = useState(false);
   const [totalMail, setTotalMail] = useState(0);
   const [skip, setSkip] = useState(0);
   //-----------------------------QUERIES-----------------------------------
@@ -43,17 +41,7 @@ const MailPage = () => {
   const [isNewMessage, setIsNewMessage] = useState(false);
   const permissions = ['SUPER_MOD', 'MOD', 'EMPLOYEE'].includes(user.role);
   //-----------------------------------------------------------------------
-  const handleIsOpen = useRef<Subscription>(new Subscription());
-  useEffect(() => {
-    handleIsOpen.current = isResizing$.getSubject.subscribe(value => {
-      setIsResizing(value);
-      const sizing = value ? 0.5 : 1;
-      mWidth.set(window.innerWidth * sizing - (value ? 0 : 90));
-    });
-    return () => {
-      handleIsOpen.current.unsubscribe();
-    };
-  }, []);
+
   //-----------------------------------------------------------------------
 
   useEffect(() => {
@@ -68,17 +56,14 @@ const MailPage = () => {
 
   const handleNewMessage = () => {
     // navigate('/tramites?size=true');
-    isResizing$.setSubject = true;
     setIsNewMessage(true);
   };
   const handleCloseMessage = () => {
     // navigate('/tramites');
-    isResizing$.setSubject = false;
     setIsNewMessage(false);
     setContentVisible(true);
   };
   const handleSaveMessage = () => {
-    isResizing$.setSubject = false;
     getMessages();
     setIsNewMessage(false);
   };
@@ -131,7 +116,6 @@ const MailPage = () => {
     setTypeMsg(null);
   };
   const handleViewMessage = (id: number, type: MailType['type']) => {
-    isResizing$.setSubject = true;
     setIsNewMessage(false);
     navigate(`${id}?type=${type}`);
   };
@@ -162,39 +146,12 @@ const MailPage = () => {
   };
 
   //--------------------------------------------------------------------------
-  const mWidth = useMotionValue(window.innerWidth - 90);
   const [contentVisible, setContentVisible] = useState(true);
 
-  const handleDrag = useCallback(
-    (_event: MouseEvent, info: PanInfo) => {
-      const maxWidth = isResizing
-        ? window.innerWidth * 0.5
-        : window.innerWidth + 100;
-      const newWidth = mWidth.get() + info.delta.x;
-      newWidth < 500 ? setContentVisible(false) : setContentVisible(true);
-      if (newWidth > 450 && newWidth < maxWidth) {
-        mWidth.set(mWidth.get() + info.delta.x);
-      }
-    },
-    [mWidth, isResizing]
-  );
-  //--------------------------------------------------------------------------
   return (
     <div className="mail-main ">
-      <motion.div
-        className="mail-main-master-container"
-        style={{ width: mWidth }}
-      >
-        {isResizing && (
-          <motion.div
-            drag="x"
-            onDrag={handleDrag}
-            dragConstraints={{ top: 0, left: 0, right: 0, bottom: 0 }}
-            dragElastic={0}
-            dragMomentum={false}
-            className="sidebarSpeciality-resize-content"
-          />
-        )}
+      <div className="mail-main-master-container">
+        <div className="sidebarSpeciality-resize-content" />
         <div className="mail-messages-container">
           <div className={`message-container-header`}>
             <div className="message-container-header-options">
@@ -281,14 +238,12 @@ const MailPage = () => {
                   Solicitar Licencia
                 </span>
               )}
-              {!isResizing && (
-                <Button
-                  onClick={handleNewMessage}
-                  icon="plus-dark"
-                  text="Nuevo Trámite"
-                  className="mail-new-message-btn"
-                />
-              )}
+              <Button
+                onClick={handleNewMessage}
+                icon="plus-dark"
+                text="Nuevo Trámite"
+                className="mail-new-message-btn"
+              />
             </div>
             {!viewLicense ? (
               <div
@@ -374,7 +329,7 @@ const MailPage = () => {
             />
           </div>
         </div>
-      </motion.div>
+      </div>
       {/* <div className={`mail-m-size-${size}`}> */}
       <Outlet />
       {/* </div> */}

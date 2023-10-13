@@ -2,25 +2,21 @@ version: '3.3'
 
 services:
   builder:
-    image: node:alpine
-    # build:
-    #   context: ./
-    #   dockerfile: Dockerfile
-    container_name: project_frontend
+    image: node
+    container_name: builder_frontend
     entrypoint: /bin/sh
     restart: always
     working_dir: /srv/app
     volumes:
       - ./:/srv/app
     tty: true
-    # command: 'npm run build'
 
   frontend:
     image: nginx:alpine
     container_name: project_frontend_nginx
     restart: always
     ports:
-      - 8002:80
+      - ${PORT}:80
     environment:
       VIRTUAL_HOST: quisvar.com, www.quisvar.com
     volumes:

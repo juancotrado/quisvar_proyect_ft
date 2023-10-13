@@ -17,6 +17,7 @@ import {
   Specialist,
   SpecialistInformation,
   SpecialistExperience,
+  CompanyInformation,
 } from '../pages';
 import { ProtectedRoute } from '../components';
 import Project from '../pages/specialities/project/Project';
@@ -56,7 +57,12 @@ const Navigation = () => {
             </Route>
             <Route path="/mis-tareas" element={<ListPersonalTask />} />
             <Route path="/reportes" element={<CommingSoon />} />
-            <Route path="/empresas" element={<Company />} />
+            <Route path="/empresas" element={<Company />}>
+              <Route
+                path="informacion/:infoId"
+                element={<CompanyInformation />}
+              />
+            </Route>
             <Route path="/especialistas" element={<Specialist />}>
               {/* <Route path="experiencia" element={<SpecialistExperience />} /> */}
               <Route

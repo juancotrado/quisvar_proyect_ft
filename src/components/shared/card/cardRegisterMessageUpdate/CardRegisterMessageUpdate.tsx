@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { Input, PDFGenerator } from '../../..';
 import InputFile from '../../Input/InputFile';
@@ -9,6 +9,7 @@ import {
   MessageType,
   PdfDataProps,
   quantityType,
+  receiverType,
 } from '../../../../types/types';
 import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
@@ -28,6 +29,7 @@ import {
 } from '../../../../utils/pdfReportFunctions';
 import useListUsers from '../../../../hooks/useListUsers';
 import { validateWhiteSpace } from '../../../../utils/customValidatesForm';
+import DropDownSimple from '../../select/DropDownSimple';
 
 interface MessageSendType {
   title: string;
@@ -75,6 +77,11 @@ const CardRegisterMessageUpdate = ({
   const [pdfData, setpdfData] = useState<PdfDataProps>(dataInitialPdf);
   const handleInputChange = (event: string) => setValue('description', event);
 
+  const [receiver, setReceiver] = useState<receiverType | null>(null);
+  const contacts = useMemo(
+    () => users?.filter(user => user.id !== userSession.id),
+    [userSession, users]
+  );
   useEffect(() => {
     setValue('header', message.header);
     setValue('title', message.title);
@@ -101,15 +108,15 @@ const CardRegisterMessageUpdate = ({
   };
 
   const onSubmit: SubmitHandler<MessageSendType> = async data => {
+    if (!receiver) return;
     const messageId = message.id;
-    const value = { ...data, receiverId: sender.id };
+    const value = { ...data, receiverId: receiver.id };
     const headers = {
       'Content-type': 'multipart/form-data',
     };
     const formData = new FormData();
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
     formData.append('data', JSON.stringify(value));
-    // formData.append('senderId', `${senderId}`);
     axiosInstance.put(`/mail/${messageId}`, formData, { headers }).then(onSave);
   };
 
@@ -170,9 +177,19 @@ const CardRegisterMessageUpdate = ({
       <div className="inbox-forward-receiver-container inbox-radio-not-allowed">
         <div className="inbox-receiver-container-info">
           <span>Para:</span>
-          <span className="inbox-receiver-forward-chip">
-            {sender.profile.lastName} {sender.profile.firstName}
-          </span>
+          <div className="imbox-receiver-choice-dropdown">
+            <DropDownSimple
+              classNameInput="imbox-receiver-choice-dropdown-input"
+              type="search"
+              data={contacts}
+              textField="name"
+              itemKey="id"
+              selector
+              droper
+              valueInput={(value, id) => setReceiver({ id: +id, value })}
+              required
+            />
+          </div>
         </div>
       </div>
       <label className="imbox-input-title">

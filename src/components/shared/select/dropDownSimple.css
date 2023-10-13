@@ -37,7 +37,7 @@
   position: absolute;
   background-color: var(--color-menu);
   margin-top: 2rem;
-  z-index: 1;
+  z-index: 2;
   overflow-y: auto;
   filter: drop-shadow(-2px 2px 3px rgba(33, 103, 255, 0.568));
 }

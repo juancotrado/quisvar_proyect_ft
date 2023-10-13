@@ -30,6 +30,7 @@ import useListUsers from '../../../hooks/useListUsers';
 import CardRegisterVoucher from '../../../components/shared/card/cardRegisterVoucher/CardRegisterVoucher';
 import CardRegisterVoucherDenyOrAccept from '../../../components/shared/card/cardRegisterVoucherDenyOrAccept/CardRegisterVoucherDenyOrAccept';
 import { isResizing$ } from '../../../services/sharingSubject';
+import CardRegisterMessageUpdate from '../../../components/shared/card/cardRegisterMessageUpdate/CardRegisterMessageUpdate';
 
 const spring = {
   type: 'spring',
@@ -148,6 +149,8 @@ const MessagePage = () => {
     isResizing$.setSubject = false;
     navigate('/tramites?refresh=true');
   };
+  const isUserInitMessage = userSession.profile.id === message.userInit.userId;
+  console.log({ message });
   return (
     <motion.div className="message-page-container">
       <div className="message-header-content">
@@ -210,16 +213,14 @@ const MessagePage = () => {
             ))}
           </div>
           <div className="message-sender-info">
-            {sender && sender.type === 'SENDER' ? (
-              <span className="message-sender-name">
-                Enviado por {` `}
-                <b>
-                  {sender.user.profile.lastName} {sender.user.profile.firstName}
-                </b>
-              </span>
-            ) : (
-              <span className="message-sender-name">Enviado Por ti</span>
-            )}
+            <span className="message-sender-name">
+              Enviado por{' '}
+              <b>
+                {message.userInit.user.profile.lastName}{' '}
+                {message.userInit.user.profile.firstName}
+              </b>
+            </span>
+
             <span className="message-date-send">
               {parseDate(new Date(+files[0].id))}
             </span>
@@ -291,24 +292,33 @@ const MessagePage = () => {
               </div>
             ))}
         </div>
-        {mainReceiver && (
-          <div
-            className="message-switch"
-            data-ison={isReply}
-            onClick={toggleSwitch}
-          >
-            {isReply && <span className="message-hover-title">NO PROCEDE</span>}
-            <motion.div className={`message-handle`} layout transition={spring}>
-              <span className="span-list-task">
-                {isReply ? 'Procede' : 'No Procede'}
-              </span>
-            </motion.div>
-            {!isReply && <span className="message-hover-title">PROCEDE</span>}
-          </div>
-        )}
+        {mainReceiver &&
+          !isUserInitMessage &&
+          message.status !== 'RECHAZADO' && (
+            <div
+              className="message-switch"
+              data-ison={isReply}
+              onClick={toggleSwitch}
+            >
+              {isReply && (
+                <span className="message-hover-title">NO PROCEDE</span>
+              )}
+              <motion.div
+                className={`message-handle`}
+                layout
+                transition={spring}
+              >
+                <span className="span-list-task">
+                  {isReply ? 'Procede' : 'No Procede'}
+                </span>
+              </motion.div>
+              {!isReply && <span className="message-hover-title">PROCEDE</span>}
+            </div>
+          )}
       </div>
       {mainReceiver &&
-        (message.status === 'PROCESO' || message.status === 'RECHAZADO') && (
+        (message.status === 'PROCESO' || message.status === 'RECHAZADO') &&
+        !isUserInitMessage && (
           <>
             {isReply ? (
               <CardRegisterMessageReply
@@ -336,13 +346,13 @@ const MessagePage = () => {
           onSave={handleSaveRegister}
         />
       )}
-      {/* {mainSender && message.status === 'RECHAZADO' && (
+      {isUserInitMessage && message.status === 'RECHAZADO' && (
         <CardRegisterMessageUpdate
           message={message}
           receiverId={mainReceiver?.user.id}
           onSave={handleSaveRegister}
         />
-      )} */}
+      )}
     </motion.div>
   );
 };

@@ -132,6 +132,7 @@ const MailPage = () => {
   };
   const handleViewMessage = (id: number, type: MailType['type']) => {
     isResizing$.setSubject = true;
+    setIsNewMessage(false);
     navigate(`${id}?type=${type}`);
   };
   const handleNextPage = () => {

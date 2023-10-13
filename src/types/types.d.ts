@@ -185,6 +185,7 @@ export interface ProjectType {
   department: string;
   province: string;
   percentage: string;
+  userId: number;
   district: string;
 }
 
@@ -675,6 +676,7 @@ export interface MessageType {
   updatedAt: Date;
   history: MessageReply[];
   voucher?: string;
+  userInit: userMessage;
 }
 export interface MessageReply {
   id: number;

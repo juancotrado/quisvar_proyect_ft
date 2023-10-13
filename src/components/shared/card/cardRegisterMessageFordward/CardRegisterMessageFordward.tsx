@@ -273,7 +273,7 @@ const CardRegisterMessageForward = ({
           // onClick={() => {}}
           text="No Procede"
         />
-        {['SUPER_ADMIN', 'ASSISTANT'].includes(userSession.role) && (
+        {['SUPER_ADMIN'].includes(userSession.role) && (
           <Button
             onClick={() => setIsAlertOpen(true)}
             className={`inbox-forward-btn-archiver`}

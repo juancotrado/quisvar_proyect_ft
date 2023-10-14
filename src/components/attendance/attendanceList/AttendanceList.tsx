@@ -44,16 +44,18 @@ const AttendanceList = ({
         index % 2 !== 0 && 'attendanceList-bg'
       }`}
     >
-      <div className="attendanceList-col attendanceList-place">{user.id}</div>
-      <div className="attendanceList-col attendanceList-place">403</div>
+      <div className="attendanceList-col attendanceList-place">{index + 1}</div>
+      <div className="attendanceList-col attendanceList-place"> --- </div>
       <div className="attendanceList-col">
         {user.profile.lastName} {user.profile.firstName}
       </div>
       <div className="attendanceList-col">{user.profile.dni}</div>
       <div className="attendanceList-col">{user.profile.phone}</div>
-      <div className="attendanceList-col">EQUIPO 01 (101)</div>
-      <div className="attendanceList-col">USUARIO 01</div>
-      <div className="attendanceList-col attendanceList-place attendanceList-p">
+      {/* <div className="attendanceList-col">EQUIPO 01 (101)</div>
+      <div className="attendanceList-col">USUARIO 01</div> */}
+      <div className="attendanceList-col"> --- </div>
+      <div className="attendanceList-col"> --- </div>
+      <div className="attendanceList-col attendanceList-place attendanceList-config list-p">
         <Input
           type="radio"
           value="PUNTUAL"
@@ -63,7 +65,7 @@ const AttendanceList = ({
           disabled={isActive ? true : !!status}
         />
       </div>
-      <div className="attendanceList-col attendanceList-place attendanceList-t">
+      <div className="attendanceList-col attendanceList-place  attendanceList-config list-t">
         <Input
           type="radio"
           value="TARDE"
@@ -73,7 +75,7 @@ const AttendanceList = ({
           disabled={isActive ? true : !!status}
         />
       </div>
-      <div className="attendanceList-col attendanceList-place attendanceList-f">
+      <div className="attendanceList-col attendanceList-place attendanceList-config list-f">
         <Input
           type="radio"
           value="SIMPLE"
@@ -83,7 +85,7 @@ const AttendanceList = ({
           disabled={isActive ? true : !!status}
         />
       </div>
-      <div className="attendanceList-col attendanceList-place attendanceList-g">
+      <div className="attendanceList-col attendanceList-place attendanceList-config list-g">
         <Input
           type="radio"
           value="GRAVE"
@@ -93,7 +95,7 @@ const AttendanceList = ({
           disabled={isActive ? true : !!status}
         />
       </div>
-      <div className="attendanceList-col attendanceList-place attendanceList-m">
+      <div className="attendanceList-col attendanceList-place attendanceList-config list-m">
         <Input
           type="radio"
           value="MUY_GRAVE"
@@ -103,14 +105,15 @@ const AttendanceList = ({
           disabled={isActive ? true : !!status}
         />
       </div>
-      <div className="attendanceList-col attendanceList-place attendanceList-l">
+      <div className="attendanceList-col attendanceList-place attendanceList-config list-l">
         <Input
           type="radio"
           value="PERMISO"
           classNameMain="attendanceList-radio"
           checked={selectedValue === 'PERMISO'}
           onChange={() => handleRadioChange('PERMISO', usersId)}
-          disabled={true}
+          disabled={isActive ? true : !!status}
+          // disabled={true}
         />
       </div>
     </div>

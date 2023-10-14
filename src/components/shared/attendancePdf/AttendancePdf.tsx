@@ -2,6 +2,7 @@ import { Document, Page, Text, View, PDFViewer } from '@react-pdf/renderer';
 import { AttendanceRange } from '../../../types/types';
 import { styles } from './styledComponents';
 import { information } from '../../../utils/constantsPdf';
+import formatDate from '../../../utils/formatDate';
 
 export type TablesProps = {
   descripcion: string | null;
@@ -51,18 +52,38 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
 
     return orderedStatus;
   };
+  const parseDate = (value?: string) => {
+    return formatDate(new Date(value ? value : new Date()), {
+      year: 'numeric',
+      month: 'long',
+      day: '2-digit',
+    });
+  };
   return (
     <Document>
       <Page
         size={config?.size ?? 'A4'}
         style={config?.size === 'A4' ? styles.page : styles.pageA5}
       >
-        <View style={styles.table}>
-          <View style={{ ...styles.title, width: '100%' }}>
-            <Text style={styles.headers}>
-              LISTA DE ASISTENCIA DEL {value?.daily}
-            </Text>
-          </View>
+        {/* <View style={styles.table}>
+        <View style={{ ...styles.title, width: '100%' }}>
+          <Text style={styles.headers}>
+            LISTA DE ASISTENCIA DEL {value?.daily}
+          </Text>
+        </View>
+      </View> */}
+        <View
+          style={{
+            width: '100%',
+            fontSize: '12px',
+            textDecoration: 'underline',
+            fontWeight: 'semibold',
+            paddingBottom: '5px',
+            textAlign: 'center',
+            textTransform: 'uppercase',
+          }}
+        >
+          <Text>LISTA DE ASISTENCIA DEL {parseDate(value?.daily)}</Text>
         </View>
         <View style={styles.table}>
           <View style={styles.tableRow}>
@@ -108,7 +129,7 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
                     <Text style={styles.headers}>{index + 1}</Text>
                   </View>
                   <View style={{ ...styles.tableCol, width: '10%' }}>
-                    <Text style={styles.headers}>301</Text>
+                    <Text style={styles.headers}> --- </Text>
                   </View>
                   <View style={{ ...styles.tableCol, width: '22%' }}>
                     <Text
@@ -128,11 +149,11 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
                     <Text style={styles.headers}>{value.profile.phone}</Text>
                   </View>
                   <View style={{ ...styles.tableCol, width: '8%' }}>
-                    <Text style={styles.headers}>1</Text>
+                    <Text style={styles.headers}> ------ </Text>
                   </View>
 
                   <View style={{ ...styles.tableCol, width: '10%' }}>
-                    <Text style={styles.headers}>207</Text>
+                    <Text style={styles.headers}> ------ </Text>
                   </View>
                   <View style={{ ...styles.attendance, width: '25%' }}>
                     {attendances &&
@@ -215,7 +236,7 @@ const AttendancePdf = ({ data, daily }: PDFGeneratorProps) => {
     user => user?.list.length !== 0
   );
   return (
-    <PDFViewer width="1000" height="600">
+    <PDFViewer width="100%" height="100%">
       {generatePDF({ data: filterdUsers, daily }, { size: 'A4' })}
     </PDFViewer>
   );

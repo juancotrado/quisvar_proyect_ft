@@ -33,7 +33,7 @@
   width: 100px;
   height: 100%;
   /* cursor: col-resize; */
-  cursor: url('../../../../public/svg/arrow-x-position.svg'), auto;
+  cursor: url('/svg/arrow-x-position.svg'), auto;
 }
 
 .message-add-document {

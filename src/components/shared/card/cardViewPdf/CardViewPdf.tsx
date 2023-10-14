@@ -41,7 +41,7 @@ const CardViewPdf = () => {
     setIsOpen(false);
   };
   return (
-    <Modal size={50} isOpenProp={isOpen}>
+    <Modal size={60} isOpenProp={isOpen}>
       <div className="card-view-main">
         <span className="close-icon" onClick={closeFunctions}>
           <img src="/svg/close.svg" alt="pencil" />

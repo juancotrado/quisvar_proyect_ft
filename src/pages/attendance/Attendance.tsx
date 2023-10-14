@@ -220,7 +220,7 @@ const Attendance = () => {
   };
   // console.log(users)
   return (
-    <div className="attendance container">
+    <div className="attendance">
       <div className="attendance-head">
         <div>
           <h1 className="main-title">
@@ -262,57 +262,71 @@ const Attendance = () => {
           <Button
             onClick={addCall}
             className="attendance-add-btn"
-            icon="plus"
+            // icon="plus"
+            text="Añadir Nueva Lista"
           />
         )}
       </span>
       {callList && (
-        <>
-          <div className="attendance-card-container" ref={componentRef}>
-            <div className="attendance-header">
-              <div className="attendance-list-text">ITEM</div>
-              <div className="attendance-list-text">CUARTOS</div>
-              <div className="attendance-list-text">APELLIDO Y NOMBRE</div>
-              <div className="attendance-list-text">DNI</div>
-              <div className="attendance-list-text">CELULAR</div>
-              <div className="attendance-list-text">EQUIPO</div>
-              <div className="attendance-list-text">USUARIO</div>
-              <div className="attendance-list-text attendance-p">P</div>
-              <div className="attendance-list-text attendance-t">T</div>
-              <div className="attendance-list-text attendance-f">F</div>
-              <div className="attendance-list-text attendance-g">G</div>
-              <div className="attendance-list-text attendance-m">M</div>
-              <div className="attendance-list-text attendance-l">L</div>
+        <div className="attendance-card-container-main">
+          <div className="attendance-card-container-list">
+            {callList.users.length === 0 && (
+              <div className="attendance-btn-area">
+                <Button
+                  text="Mandar notificación"
+                  onClick={callNotification}
+                  className="attendance-btn-notify"
+                />
+                <Button
+                  text="Guardar Lista"
+                  onClick={generateAttendance}
+                  className="attendance-btn-save"
+                />
+              </div>
+            )}
+            <div className="attendance-card-container" ref={componentRef}>
+              <div className="attendance-header">
+                <div className="attendance-list-text">ITEM</div>
+                <div className="attendance-list-text">CUARTOS</div>
+                <div className="attendance-list-text">APELLIDO Y NOMBRE</div>
+                <div className="attendance-list-text">DNI</div>
+                <div className="attendance-list-text">CELULAR</div>
+                <div className="attendance-list-text">EQUIPO</div>
+                <div className="attendance-list-text">USUARIO</div>
+                <div className="attendance-list-text attendance-config head-p">
+                  P
+                </div>
+                <div className="attendance-list-text attendance-config head-t">
+                  T
+                </div>
+                <div className="attendance-list-text attendance-config head-f">
+                  F
+                </div>
+                <div className="attendance-list-text attendance-config head-g">
+                  G
+                </div>
+                <div className="attendance-list-text attendance-config head-m">
+                  M
+                </div>
+                <div className="attendance-list-text attendance-config head-l">
+                  L
+                </div>
+              </div>
+              {filterUsers?.map((user, index) => (
+                <AttendanceList
+                  key={user.id}
+                  onRadioChange={(e, v) => {
+                    // console.log(e, v);
+                    handleRadioChange(e, v);
+                  }}
+                  user={user}
+                  status={getStatus(user)}
+                  index={index}
+                  list={license}
+                />
+              ))}
             </div>
-            {filterUsers?.map((user, index) => (
-              <AttendanceList
-                key={user.id}
-                onRadioChange={(e, v) => {
-                  // console.log(e, v);
-                  handleRadioChange(e, v);
-                }}
-                user={user}
-                status={getStatus(user)}
-                index={index}
-                list={license}
-              />
-            ))}
           </div>
-          {callList.users.length === 0 && (
-            <div className="attendance-btn-area">
-              <Button
-                text="Mandar notificacion"
-                onClick={callNotification}
-                className="attendance-btn-notify"
-              />
-              <Button
-                text="Guardar"
-                onClick={generateAttendance}
-                className="attendance-btn-save"
-              />
-            </div>
-          )}
-
           <div className="attendance-info-area">
             <Legend />
             <div className="attendance-report-container">
@@ -379,7 +393,7 @@ const Attendance = () => {
               </div>
             </div>
           </div>
-        </>
+        </div>
       )}
       {!callList && callLists && callLists?.length > 0 && (
         <div className="attendance-list-empty">

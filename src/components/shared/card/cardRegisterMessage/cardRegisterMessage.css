@@ -47,7 +47,7 @@
   width: 10px;
   height: 100%;
   /* cursor: col-resize; */
-  cursor: url('../../../../public/svg/arrow-x-position.svg'), auto;
+  cursor: url('/svg/arrow-x-position.svg'), auto;
 }
 .imbox-container-title {
   flex-grow: 1;

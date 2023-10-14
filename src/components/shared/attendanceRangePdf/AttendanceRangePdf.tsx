@@ -242,7 +242,7 @@ const AttendanceRangePdf = ({ data, rangeDate }: AttendanceRangePdfProps) => {
     user => user.list.length !== 0
   );
   return (
-    <PDFViewer width="1000" height="600">
+    <PDFViewer width="100%" height="100%">
       {generatePDF(filterUsers, rangeDate)}
     </PDFViewer>
   );

@@ -16,7 +16,6 @@ import {
   Company,
   Specialist,
   SpecialistInformation,
-  SpecialistExperience,
   CompanyInformation,
 } from '../pages';
 import { ProtectedRoute } from '../components';

@@ -36,7 +36,6 @@ const CardCompany = ({ onSave }: CardCompanyProps) => {
     };
   }, []);
   const onSubmit: SubmitHandler<Companies> = async data => {
-    console.log(data);
     axiosInstance.post(`/companies`, data).then(closeFunctions);
   };
   return (

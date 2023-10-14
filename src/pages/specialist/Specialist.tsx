@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Input } from '../../components';
 import Button from '../../components/shared/button/Button';
 import CardSpecialist from '../../components/shared/card/cardSpecialist/CardSpecialist';
@@ -8,9 +8,11 @@ import { SpecialistList } from '../../types/types';
 import { axiosInstance } from '../../services/axiosInstance';
 import { getIconDefault } from '../../utils/tools';
 import { NavLink, Outlet } from 'react-router-dom';
+import { Subject, debounceTime, switchMap } from 'rxjs';
 
 const Specialist = () => {
   const [specialist, setSpecialist] = useState<SpecialistList[]>();
+  const [searchTerm, setSearchTerm] = useState('');
 
   useEffect(() => {
     getSpecialists();
@@ -22,6 +24,30 @@ const Specialist = () => {
     isOpenCardSpecialist$.setSubject = {
       isOpen: true,
     };
+  };
+  // const apiSubject = new Subject();
+  const apiSubjectRef = useRef(new Subject());
+  useEffect(() => {
+    const subscription = apiSubjectRef.current
+      .pipe(
+        debounceTime(500),
+        switchMap(dni => {
+          return axiosInstance.get(`specialists/dni/${dni}`);
+        })
+      )
+      .subscribe(response => {
+        console.log(response.data);
+      });
+
+    return () => {
+      subscription.unsubscribe();
+    };
+  }, []);
+  const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target;
+    setSearchTerm(value);
+    if (!value) return;
+    apiSubjectRef.current.next(value);
   };
   return (
     <div className="specialist container">
@@ -37,6 +63,8 @@ const Specialist = () => {
         <Input
           placeholder="Buscar por DNI"
           className="specialist-search-input"
+          onChange={handleSearch}
+          value={searchTerm}
         />
         {specialist &&
           specialist.map(item => (

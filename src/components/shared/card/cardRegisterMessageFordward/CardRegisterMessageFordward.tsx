@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { ChangeEvent, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { Input, PDFGenerator, Select } from '../../..';
 import InputFile from '../../Input/InputFile';
@@ -48,12 +48,12 @@ interface MessageSendType {
 }
 const YEAR = new Date().getFullYear();
 
-const parseDate = (date: Date) =>
-  formatDate(new Date(date), {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  });
+// const parseDate = (date: Date) =>
+//   formatDate(new Date(date), {
+//     year: 'numeric',
+//     month: '2-digit',
+//     day: '2-digit',
+//   });
 
 interface CardRegisterMessageForwardProps {
   message: MessageType;

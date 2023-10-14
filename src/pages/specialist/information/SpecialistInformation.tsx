@@ -3,7 +3,7 @@ import './specialistInformation.css';
 import { getIconDefault } from '../../../utils/tools';
 import { SpecialistProject, Specialists } from '../../../types/types';
 import { useCallback, useEffect, useState } from 'react';
-import { axiosInstance } from '../../../services/axiosInstance';
+import { URL, axiosInstance } from '../../../services/axiosInstance';
 import formatDate from '../../../utils/formatDate';
 import { AnimatePresence, motion } from 'framer-motion';
 
@@ -54,7 +54,12 @@ const SpecialistInformation = () => {
                 className="specialist-info-icon"
               />
               <span className="specialist-icon-cv">
-                <img src="/svg/download.svg" className="specialist-info-icon" />
+                <a href={`${URL}/file-user/cv/${data?.cv}`} target="_blank">
+                  <img
+                    src="/svg/download.svg"
+                    className="specialist-info-icon"
+                  />
+                </a>
                 <h4>CV</h4>
               </span>
             </div>
@@ -98,7 +103,7 @@ const SpecialistInformation = () => {
                     className="sp-motion-div"
                   >
                     {project.stages.map(stage => (
-                      <div className="sp-details-area">
+                      <div className="sp-details-area" key={stage.id}>
                         <h4 className="sp-details">{stage.name}</h4>
                         <h4 className="sp-details">
                           Inicio: {getDate(stage?.startDate)}

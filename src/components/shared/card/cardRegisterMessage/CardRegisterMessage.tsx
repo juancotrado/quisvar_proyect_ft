@@ -1,6 +1,5 @@
 import './cardRegisterMessage.css';
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type { ChangeEvent } from 'react';
 import InputFile from '../../Input/InputFile';
 import useListUsers from '../../../../hooks/useListUsers';
 import Button from '../../button/Button';
@@ -126,10 +125,10 @@ const CardRegisterMessage = ({
     setValue('description', event);
   };
 
-  const handleRemoveReceiver = () => {
-    setReceiver(null);
-    setIsAddReceiver(false);
-  };
+  // const handleRemoveReceiver = () => {
+  //   setReceiver(null);
+  //   setIsAddReceiver(false);
+  // };
   const handleAddCopy = () => {
     setIsAddReceiver(true);
   };

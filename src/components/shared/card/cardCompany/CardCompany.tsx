@@ -7,7 +7,11 @@ import { Input } from '../../..';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Button from '../../button/Button';
 import { Companies } from '../../../../types/types';
-const CardCompany = () => {
+import { axiosInstance } from '../../../../services/axiosInstance';
+type CardCompanyProps = {
+  onSave?: () => void;
+};
+const CardCompany = ({ onSave }: CardCompanyProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleIsOpen = useRef<Subscription>(new Subscription());
   const {
@@ -21,6 +25,7 @@ const CardCompany = () => {
   const closeFunctions = () => {
     setIsOpen(false);
     reset({});
+    onSave?.();
   };
   useEffect(() => {
     handleIsOpen.current = isOpenCardCompany$.getSubject.subscribe(value =>
@@ -32,6 +37,7 @@ const CardCompany = () => {
   }, []);
   const onSubmit: SubmitHandler<Companies> = async data => {
     console.log(data);
+    axiosInstance.post(`/companies`, data).then(closeFunctions);
   };
   return (
     <Modal size={50} isOpenProp={isOpen}>
@@ -94,6 +100,7 @@ const CardCompany = () => {
         <div className="company-col">
           <Input
             label="S.E.E."
+            type="date"
             {...register('SEE')}
             name="SEE"
             errors={errors}

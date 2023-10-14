@@ -18,6 +18,7 @@ import Company from './company/Company';
 import Specialist from './specialist/Specialist';
 import SpecialistExperience from './specialist/experience/SpecialistExperience';
 import SpecialistInformation from './specialist/information/SpecialistInformation';
+import CompanyInformation from './company/infomation/CompanyInformation';
 export {
   CommingSoon,
   ListPersonalTask,
@@ -36,6 +37,7 @@ export {
   LicenseListHeader,
   LicenseListItem,
   Company,
+  CompanyInformation,
   Specialist,
   SpecialistInformation,
   SpecialistExperience,

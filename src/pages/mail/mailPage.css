@@ -65,12 +65,9 @@
   background-color: #fff;
   padding: 0.5rem;
   transition: 0.3s left ease;
-  /* flex-grow: 1; */
   border-radius: var(--radius-button);
   filter: drop-shadow(0px 4px 3px rgb(0 0 0 / 0.3));
   height: 100%;
-  /* max-width: 20%; */
-  /* max-width: 20%; */
   overflow: auto;
 }
 .mail-messages-container {

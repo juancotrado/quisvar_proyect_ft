@@ -363,6 +363,7 @@
 .messagePage-input-contain {
   display: flex;
   gap: 2rem;
+  align-items: center;
 }
 .messagePage-input {
   border-radius: 0.25rem;

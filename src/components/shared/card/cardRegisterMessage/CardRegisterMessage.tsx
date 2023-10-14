@@ -37,7 +37,6 @@ import {
 import {
   isGenerateExcelReport$,
   isOpenCardGenerateReport$,
-  isResizing$,
 } from '../../../../services/sharingSubject';
 import { Subscription } from 'rxjs';
 import { validateWhiteSpace } from '../../../../utils/customValidatesForm';
@@ -56,8 +55,6 @@ const CardRegisterMessage = ({
 }: CardRegisterMessageProps) => {
   const { users: listUser } = useListUsers(RolePerm);
   const navigate = useNavigate();
-  const [isOpened, setIsOpened] = useState(false);
-  const [isDroped, setIsDroped] = useState(false);
   const [isAddReceiver, setIsAddReceiver] = useState(false);
   const { userSession } = useSelector((state: RootState) => state);
   const [receiver, setReceiver] = useState<receiverType | null>(null);
@@ -133,7 +130,9 @@ const CardRegisterMessage = ({
     setReceiver(null);
     setIsAddReceiver(false);
   };
-  const handleAddCopy = () => setIsAddReceiver(true);
+  const handleAddCopy = () => {
+    setIsAddReceiver(true);
+  };
 
   const addFiles = (newFiles: File[]) => {
     const _files = addFilesList(fileUploadFiles, newFiles);
@@ -149,7 +148,43 @@ const CardRegisterMessage = ({
     const newIndex = (countFile ? countFile._count.type : 0) + 1;
     return `${value} N°${newIndex} DHYRIUM-${HashUser}-${YEAR}`;
   };
-  useEffect(() => {
+  // useEffect(() => {
+  //   const secondaryReceiver = listCopy.map(list => ({ userId: list.id }));
+  //   const cc: ListUser[] = secondaryReceiver.map(item => {
+  //     const toUser = listUser.find(user => user.id === item.userId);
+  //     if (toUser) {
+  //       const { name, degree, position } = toUser;
+  //       return { name, degree, position };
+  //     }
+  //     return { name: '', degree: '', position: '' };
+  //   });
+  //   const header = watch('header');
+  //   const description = watch('description');
+  //   const to = receiver?.value ?? '';
+  //   const toUser = listUser.find(user => user.id === receiver?.id);
+
+  //   setpdfData({
+  //     from: userSession.profile.firstName + ' ' + userSession.profile.lastName,
+  //     header,
+  //     body: convertToDynamicObject(description ?? ''),
+  //     title: handleTitle(watch('type')),
+  //     cc,
+  //     to,
+  //     date: formatDate(new Date(), {
+  //       year: 'numeric',
+  //       month: 'long',
+  //       day: 'numeric',
+  //       hour12: true,
+  //     }),
+  //     toDegree: toUser?.degree,
+  //     toPosition: toUser?.position,
+  //     dni: userSession.profile.dni,
+  //     fromDegree: userSession.profile.degree,
+  //     fromPosition: userSession.profile.description,
+  //   });
+  // }, [watch('description'), watch('header'), watch('title'), watch('type')]);
+
+  const handleReportPDF = () => {
     const secondaryReceiver = listCopy.map(list => ({ userId: list.id }));
     const cc: ListUser[] = secondaryReceiver.map(item => {
       const toUser = listUser.find(user => user.id === item.userId);
@@ -183,8 +218,7 @@ const CardRegisterMessage = ({
       fromDegree: userSession.profile.degree,
       fromPosition: userSession.profile.description,
     });
-  }, [watch('description'), watch('header'), watch('title'), watch('type')]);
-
+  };
   const onSubmit: SubmitHandler<MessageSendType> = async data => {
     const formData = new FormData();
     const headers = { 'Content-type': 'multipart/form-data' };
@@ -196,7 +230,6 @@ const CardRegisterMessage = ({
       receiverId: receiver?.id,
       title: handleTitle(watch('type')),
     };
-    console.log(values);
     //----------------------------------------------------------------
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
     formData.append('data', JSON.stringify(values));
@@ -208,16 +241,9 @@ const CardRegisterMessage = ({
   const handleSave = () => {
     onSave?.();
     navigate('/tramites?loader=true');
-    isResizing$.setSubject = false;
   };
   const handleClose = () => {
     onClosing?.();
-    isResizing$.setSubject = false;
-  };
-  const handleDroped = () => {
-    setIsDroped(!isDroped);
-    !isDroped && setIsOpened(false);
-    isResizing$.setSubject = false;
   };
   const showCardReport = () => {
     isOpenCardGenerateReport$.setSubject = true;
@@ -225,18 +251,9 @@ const CardRegisterMessage = ({
   return (
     <motion.div className="inbox-send-container-main">
       <div className="imnbox-title">
-        <h3 className="imbox-container-title" onClick={handleDroped}>
-          Nuevo Trámite
-        </h3>
+        <h3 className="imbox-container-title">Nuevo Trámite</h3>
 
         <div className="imbox-container-options">
-          {!isDroped && (
-            <Button
-              className="imbox-resize-icon"
-              icon={`${isOpened ? 'resize-down' : 'resize-up'}`}
-              onClick={() => setIsOpened(!isOpened)}
-            />
-          )}
           <Button
             className="imbox-resize-icon"
             icon="close"
@@ -247,7 +264,6 @@ const CardRegisterMessage = ({
       <form className="imbox-data-content" onSubmit={handleSubmit(onSubmit)}>
         {watch('type') && (
           <h3 className="messagePage-type-document">
-            {' '}
             {handleTitle(watch('type'))}
           </h3>
         )}
@@ -263,6 +279,7 @@ const CardRegisterMessage = ({
             errors={errors}
             placeholder="Tipo de Documento"
             className="messagePage-input"
+            onBlur={handleReportPDF}
           />
           <div className="imbox-receiver-choice-dropdown">
             <DropDownSimple
@@ -276,9 +293,19 @@ const CardRegisterMessage = ({
               droper
               valueInput={(value, id) => setReceiver({ id: +id, value })}
               required
+              onBlur={handleReportPDF}
             />
           </div>
+          {receiver && (
+            <Button
+              type="button"
+              text=" + Cc"
+              className="inbox-copy-button"
+              onClick={handleAddCopy}
+            />
+          )}
         </div>
+
         {isAddReceiver && (
           <div className="imbox-receiver-container-copy">
             <span className="imbox-receiver-label">Cc: </span>
@@ -293,7 +320,7 @@ const CardRegisterMessage = ({
               </div>
             ))}
             <DropDownSimple
-              classNameInput="imbox-receiver-choice-dropdown-input"
+              classNameInput="messagePage-input"
               type="search"
               data={contacts}
               placeholder="Buscar...."
@@ -301,6 +328,7 @@ const CardRegisterMessage = ({
               itemKey="id"
               droper
               valueInput={(value, id) => handleAddUser({ id: +id, value })}
+              onBlur={handleReportPDF}
             />
           </div>
         )}
@@ -311,9 +339,11 @@ const CardRegisterMessage = ({
           placeholder="Asunto"
           name="header"
           type="text"
+          onBlur={handleReportPDF}
         />
         <Editor
           initialValue={initialValueEditor}
+          onBlur={handleReportPDF}
           init={{
             min_height: 500,
             paste_data_images: false,

@@ -1,12 +1,6 @@
 .inbox-send-container-main {
-  /* position: fixed; */
-  /* height: 92vh; */
-  /* bottom: 0; */
-  /* right: 5rem; */
-  /* z-index: 1; */
-  /* border-top-left-radius: var(--radius-input); */
   height: 100%;
-  flex-grow: 1;
+  width: 100%;
   border-radius: var(--radius-input);
   filter: drop-shadow(-3px -4px 4px rgb(0 0 0 / 0.15));
   color: #6e6e6e;
@@ -68,8 +62,11 @@
   padding: 0;
 }
 .inbox-copy-button {
+  border-radius: 0.75rem;
+  background: #c2e7ff;
   border: 0;
   color: #6e6e6e;
+  text-wrap: nowrap;
 }
 .imbox-receiver-container {
   width: 100%;
@@ -84,7 +81,6 @@
   align-items: center;
   display: flex;
   gap: 0.5rem;
-  border-bottom: 1px solid #c4c4c4a2;
 }
 .imbox-receiver-label {
   width: fit-content;

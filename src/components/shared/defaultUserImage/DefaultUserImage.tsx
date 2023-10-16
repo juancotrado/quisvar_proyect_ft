@@ -1,4 +1,4 @@
-import { Users } from '../../../types/types';
+import { Profile } from '../../../types/types';
 import { getFirstLetterNames } from '../../../utils/tools';
 import colors from '../../../utils/json/colors.json';
 
@@ -6,11 +6,14 @@ import './defaultUserImage.css';
 import { useMemo, useState } from 'react';
 
 interface DefaultUserImageProps {
-  user: Users;
+  user: {
+    firstName: string;
+    lastName: string;
+  };
 }
 
 const DefaultUserImage = ({ user }: DefaultUserImageProps) => {
-  const { firstName, lastName } = user.user.profile;
+  const { firstName, lastName } = user;
   const [message, setMenssage] = useState(false);
   const showMessage = () => setMenssage(true);
   const hiddenMessage = () => setMenssage(false);

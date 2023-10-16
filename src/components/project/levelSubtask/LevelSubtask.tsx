@@ -113,7 +113,10 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
                 <div className="levelSubtask-user-image">
                   {subtask?.users?.length ? (
                     subtask.users.map(user => (
-                      <DefaultUserImage key={user.user.id} user={user} />
+                      <DefaultUserImage
+                        key={user.user.id}
+                        user={user.user.profile}
+                      />
                     ))
                   ) : (
                     <div className="levelSubtask-text">No asignado aún</div>

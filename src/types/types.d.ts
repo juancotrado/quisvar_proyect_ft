@@ -398,6 +398,14 @@ export interface Level {
       dni: string;
     };
   };
+  listUsers: ListUsers[];
+}
+
+export interface ListUsers {
+  userId: number;
+  count: number;
+  firstName: string;
+  lastName: string;
 }
 interface Details {
   UNRESOLVED: number;

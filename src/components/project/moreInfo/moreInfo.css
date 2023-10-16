@@ -3,18 +3,6 @@
   gap: 1rem;
 }
 
-.moreInfo-details-absolute {
-  position: absolute;
-  border-radius: 0.4375rem;
-  padding: 0.5rem;
-  border: 0.5px solid rgba(191, 191, 191, 0.3);
-  background: #fff;
-  box-shadow: -2px 2px 3px 0px rgba(0, 0, 0, 0.1);
-  margin-top: 1.7rem;
-  margin-left: -4.6rem;
-  z-index: 1;
-}
-
 .moreInfo-currency {
   display: flex;
   flex-direction: column;
@@ -54,6 +42,16 @@
   cursor: pointer;
   display: flex;
   gap: 1rem;
+}
+.moreInfo-details-absolute {
+  position: absolute;
+  border-radius: 0.4375rem;
+  padding: 0.5rem;
+  border: 0.5px solid rgba(191, 191, 191, 0.3);
+  background: #fff;
+  box-shadow: -2px 2px 3px 0px rgba(0, 0, 0, 0.1);
+  margin-top: 1.7rem;
+  z-index: 1;
 }
 
 .moreInfo-detail {

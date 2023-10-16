@@ -406,6 +406,7 @@ export interface ListUsers {
   count: number;
   firstName: string;
   lastName: string;
+  dni: string;
 }
 interface Details {
   UNRESOLVED: number;

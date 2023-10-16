@@ -1,26 +1,27 @@
-import { Profile } from '../../../types/types';
-import { getFirstLetterNames } from '../../../utils/tools';
-import colors from '../../../utils/json/colors.json';
-
+import {
+  generateUniqueColorForDNI,
+  getFirstLetterNames,
+} from '../../../utils/tools';
 import './defaultUserImage.css';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
 interface DefaultUserImageProps {
   user: {
     firstName: string;
     lastName: string;
+    dni: string;
   };
 }
 
 const DefaultUserImage = ({ user }: DefaultUserImageProps) => {
-  const { firstName, lastName } = user;
+  const { firstName, lastName, dni } = user;
   const [message, setMenssage] = useState(false);
   const showMessage = () => setMenssage(true);
   const hiddenMessage = () => setMenssage(false);
   const fistLetterNames = getFirstLetterNames(firstName, lastName);
-  const color = useMemo(() => colors[Math.floor(Math.random() * 11) + 1], []);
+  // const color = useMemo(() => colors[Math.floor(Math.random() * 11) + 1], []);
   const style = {
-    backgroundColor: color || 'blue',
+    backgroundColor: generateUniqueColorForDNI(dni),
   };
   return (
     <div className="defaultUserImage-contain">

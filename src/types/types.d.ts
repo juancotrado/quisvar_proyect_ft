@@ -832,3 +832,11 @@ export type SpecialistList = {
   firstName: string;
   lastName: string;
 };
+export type AreaSpecialty = {
+  specialtyName: string;
+  institution: string;
+  startDate: Date;
+  untilDate: Date;
+  file: string;
+  specialistId: number;
+};

@@ -6,11 +6,15 @@ import { useCallback, useEffect, useState } from 'react';
 import { URL, axiosInstance } from '../../../services/axiosInstance';
 import formatDate from '../../../utils/formatDate';
 import { AnimatePresence, motion } from 'framer-motion';
+import { isOpenAddExperience$ } from '../../../services/sharingSubject';
+import CardAddExperience from '../../../components/shared/card/cardAddExperience/CardAddExperience';
 
 const SpecialistInformation = () => {
   const { infoId } = useParams();
   const [data, setData] = useState<Specialists>();
+  const [experience, setExperience] = useState();
   const [projectSelected, setProjectSelected] = useState<number | null>(null);
+  console.log(experience);
 
   const toggleDetalleProyecto = (projectID: number) => {
     if (projectSelected === projectID) {
@@ -23,6 +27,9 @@ const SpecialistInformation = () => {
     axiosInstance
       .get(`/specialists/information/${infoId}`)
       .then(item => setData(item.data));
+    axiosInstance
+      .get(`/areaSpecialty/${infoId}`)
+      .then(elem => setExperience(elem.data));
   }, [infoId]);
   useEffect(() => {
     getSpecialist();
@@ -36,9 +43,55 @@ const SpecialistInformation = () => {
     });
     return date;
   };
+  const handleAddExperience = () => {
+    isOpenAddExperience$.setSubject = true;
+  };
+  // console.log(data);
+
   return (
     <>
-      <div className="specialist-experience"></div>
+      <div className="specialist-experience">
+        <section className="specialist-info-exp">
+          <span className="specialist-info-title">Especialidades</span>
+          <div className="specialist-more-info">
+            <div className="smi-items">
+              <div className="smi-specialty-name">
+                <h3>Especialidad: </h3>
+                <h4>Educacion primaria</h4>
+              </div>
+              <div className="smi-specialty-name">
+                <h3>Años de experiencia: </h3>
+                <h4>2 años y 6 meses</h4>
+              </div>
+              <img src="/svg/down.svg" alt="" style={{ width: '20px' }} />
+            </div>
+            <span className="smi-add-specialty" onClick={handleAddExperience}>
+              <img src="/svg/plus.svg" alt="" style={{ width: '12px' }} />
+              <h3>Añadir especialidad</h3>
+            </span>
+          </div>
+        </section>
+        <section className="specialist-info-exp">
+          <span className="specialist-info-title">Capacitaciones</span>
+          <div className="specialist-more-info">
+            <div className="smi-items">
+              <div className="smi-specialty-name">
+                <h3>Tipo de capacitacion: </h3>
+                <h4>Diplomados</h4>
+              </div>
+              <div className="smi-specialty-name">
+                <h3>Cantidad: </h3>
+                <h4>10 certificados</h4>
+              </div>
+              <img src="/svg/down.svg" alt="" style={{ width: '20px' }} />
+            </div>
+            <span className="smi-add-specialty">
+              <img src="/svg/plus.svg" alt="" style={{ width: '12px' }} />
+              <h3>Añadir capacitacion</h3>
+            </span>
+          </div>
+        </section>
+      </div>
       <div className="specialist-data">
         <div className="specialist-main-info">
           <span className="specialist-main-img">
@@ -86,41 +139,44 @@ const SpecialistInformation = () => {
         <hr className="specialist-hr" />
         <div className="specialist-projects-list">
           <h3>Proyectos</h3>
-          {data?.projects.map(({ project }: SpecialistProject) => (
-            <div
-              key={project.id}
-              onClick={() => toggleDetalleProyecto(project.id)}
-              className="sp-motion-click"
-            >
-              <h4 className="sp-name">{project.name}</h4>
-              <h4 className="sp-cui">CUI: {project.CUI}</h4>
-              <AnimatePresence>
-                {projectSelected === project.id && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: 'auto' }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="sp-motion-div"
-                  >
-                    {project.stages.map(stage => (
-                      <div className="sp-details-area" key={stage.id}>
-                        <h4 className="sp-details">{stage.name}</h4>
-                        <h4 className="sp-details">
-                          Inicio: {getDate(stage?.startDate)}
-                        </h4>
-                        <h4 className="sp-details">
-                          Fin: {getDate(stage?.untilDate)}
-                        </h4>
-                      </div>
-                    ))}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-              {/* <hr className="sp-hr" /> */}
-            </div>
-          ))}
+          {data &&
+            data?.projects.map(({ project }: SpecialistProject) => (
+              <div
+                key={project.id}
+                onClick={() => toggleDetalleProyecto(project.id)}
+                className="sp-motion-click"
+              >
+                <h4 className="sp-name">{project.name}</h4>
+                <h4 className="sp-cui">CUI: {project.CUI}</h4>
+                <AnimatePresence>
+                  {projectSelected === project.id && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0 }}
+                      animate={{ opacity: 1, height: 'auto' }}
+                      exit={{ opacity: 0, height: 0 }}
+                      className="sp-motion-div"
+                    >
+                      {project &&
+                        project.stages.map(stage => (
+                          <div className="sp-details-area" key={stage.id}>
+                            <h4 className="sp-details">{stage.name}</h4>
+                            <h4 className="sp-details">
+                              Inicio: {getDate(stage?.startDate)}
+                            </h4>
+                            <h4 className="sp-details">
+                              Fin: {getDate(stage?.untilDate)}
+                            </h4>
+                          </div>
+                        ))}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+                {/* <hr className="sp-hr" /> */}
+              </div>
+            ))}
         </div>
       </div>
+      <CardAddExperience />
     </>
   );
 };

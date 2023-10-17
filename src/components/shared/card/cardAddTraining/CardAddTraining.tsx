@@ -1,20 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
 import Modal from '../../../portal/Modal';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import './cardAddExperience.css';
+import './cardAddTraining.css';
 import { Input } from '../../..';
-import { AreaSpecialty } from '../../../../types/types';
+import { TrainingSpecialty } from '../../../../types/types';
 import Button from '../../button/Button';
 import { Subscription } from 'rxjs';
-import { isOpenAddExperience$ } from '../../../../services/sharingSubject';
+import { isOpenAddTraining$ } from '../../../../services/sharingSubject';
 import { useParams } from 'react-router-dom';
 import { axiosInstance } from '../../../../services/axiosInstance';
 
-interface CardExperienceProps {
+interface CardAddTrainingProps {
   onSave?: () => void;
 }
 
-const CardAddExperience = ({ onSave }: CardExperienceProps) => {
+const CardAddTraining = ({ onSave }: CardAddTrainingProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const { infoId } = useParams();
   const handleIsOpen = useRef<Subscription>(new Subscription());
@@ -25,9 +25,9 @@ const CardAddExperience = ({ onSave }: CardExperienceProps) => {
     reset,
     // watch,
     formState: { errors },
-  } = useForm<AreaSpecialty>();
+  } = useForm<TrainingSpecialty>();
   useEffect(() => {
-    handleIsOpen.current = isOpenAddExperience$.getSubject.subscribe(value =>
+    handleIsOpen.current = isOpenAddTraining$.getSubject.subscribe(value =>
       setIsOpen(value)
     );
     return () => {
@@ -38,23 +38,25 @@ const CardAddExperience = ({ onSave }: CardExperienceProps) => {
     setIsOpen(false);
     reset({});
   };
-  const onSubmit: SubmitHandler<AreaSpecialty> = async data => {
-    const files = data.file?.[0];
-
+  const onSubmit: SubmitHandler<TrainingSpecialty> = async data => {
+    const files = data.trainingFile?.[0];
+    const issue = data.issue.toString() ?? '';
     const startDate = data.startDate.toString() ?? '';
     const untilDate = data.untilDate.toString() ?? '';
     const specialistId = infoId?.toString() ?? '';
     const formData = new FormData();
-    formData.append('specialtyName', data.specialtyName);
+    formData.append('trainingName', data.trainingName);
     formData.append('institution', data.institution);
+    formData.append('hours', data.hours);
     formData.append('startDate', startDate);
     formData.append('untilDate', untilDate);
+    formData.append('issue', issue);
     formData.append('specialistId', specialistId);
-    formData.append('file', files);
+    formData.append('trainingFile', files);
     const headers = {
       'Content-type': 'multipart/form-data',
     };
-    axiosInstance.post(`/areaSpecialty`, formData, { headers }).then(() => {
+    axiosInstance.post(`/trainingSpecialty`, formData, { headers }).then(() => {
       setIsOpen(false);
       reset({});
       onSave?.();
@@ -66,14 +68,14 @@ const CardAddExperience = ({ onSave }: CardExperienceProps) => {
         <span className="close-icon" onClick={closeFunctions}>
           <img src="/svg/close.svg" alt="pencil" />
         </span>
-        <h1>Registrar Experiencia</h1>
+        <h1>Registrar Capacitacion</h1>
 
         <div className="specialist-col">
           <Input
-            label="Nombre de Especialidad"
-            placeholder="Nombre"
-            {...register('specialtyName')}
-            name="specialtyName"
+            label="Tipo de Capacitacion"
+            placeholder="Tipo"
+            {...register('trainingName')}
+            name="trainingName"
             errors={errors}
           />
           <Input
@@ -87,24 +89,40 @@ const CardAddExperience = ({ onSave }: CardExperienceProps) => {
 
         <div className="specialist-col">
           <Input
-            label="Inicio"
+            label="Desde"
             type="date"
             {...register('startDate')}
             name="startDate"
             errors={errors}
           />
           <Input
-            label="Fin"
+            label="Hasta"
             type="date"
             {...register('untilDate')}
             name="untilDate"
             errors={errors}
           />
           <Input
+            label="Fecha de Emision"
+            type="date"
+            {...register('issue')}
+            name="issue"
+            errors={errors}
+          />
+        </div>
+        <div className="specialist-col">
+          <Input
+            label="Horas"
+            placeholder="Nº de horas"
+            {...register('hours')}
+            name="hours"
+            errors={errors}
+          />
+          <Input
             label="Documento"
             type="file"
-            {...register('file')}
-            name="file"
+            {...register('trainingFile')}
+            name="trainingFile"
             errors={errors}
           />
         </div>
@@ -114,4 +132,4 @@ const CardAddExperience = ({ onSave }: CardExperienceProps) => {
   );
 };
 
-export default CardAddExperience;
+export default CardAddTraining;

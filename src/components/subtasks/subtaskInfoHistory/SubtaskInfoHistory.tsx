@@ -35,7 +35,7 @@ const SubtaskInfoHistory = ({
   };
   useEffect(() => {
     setIsActive(active);
-  }, []);
+  }, [active]);
 
   const getDatetimeCreated = (dateTime: string) => {
     const date = new Date(dateTime);

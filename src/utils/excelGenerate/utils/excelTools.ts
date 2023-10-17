@@ -1,6 +1,5 @@
 import * as ExcelJS from 'exceljs';
 import { UserAttendance } from '../../../types/types';
-import { isGenerateExcelReport$ } from '../../../services/sharingSubject';
 interface FontExcelStyle {
   row: ExcelJS.Row;
   positions: string;
@@ -226,7 +225,8 @@ export const exportExcel = async (name: string, workbook: ExcelJS.Workbook) => {
   a.href = editedUrl;
   a.download = name;
   a.click();
-  isGenerateExcelReport$.setSubject = editedUrl;
+  //funcion futura para que el reporte se agrega auntomaticamente
+  //  isGenerateExcelReport$.setSubject = editedUrl;
   URL.revokeObjectURL(editedUrl);
 };
 export const fontExcelStyle = ({

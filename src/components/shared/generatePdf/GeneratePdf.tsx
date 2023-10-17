@@ -19,6 +19,7 @@ export type TablesProps = {
 interface PDFGeneratorProps {
   data: PdfDataProps;
   isView?: boolean;
+  handleFocus?: () => void;
 }
 interface ConfigProps {
   size: 'A4' | 'A5';
@@ -140,9 +141,9 @@ export const generateReportPDF = (
   </Document>
 );
 
-const PDFGenerator = ({ data }: PDFGeneratorProps) => {
+const PDFGenerator = ({ data, handleFocus }: PDFGeneratorProps) => {
   return (
-    <div className="pdf-btn-area-view">
+    <div className="pdf-btn-area-view" onMouseOver={handleFocus}>
       <PDFDownloadLink
         document={generateReportPDF({ data }, { size: 'A5' })}
         fileName={`${data.title}.pdf`}
@@ -150,16 +151,14 @@ const PDFGenerator = ({ data }: PDFGeneratorProps) => {
       >
         {({ loading }) => (
           <>
-            <>
-              <img
-                className="chip-file-icon-doc normal"
-                src={`/svg/file-download.svg`}
-              />
-              <img
-                className="chip-file-icon-doc hover"
-                src={`/svg/file-download-white.svg`}
-              />
-            </>
+            <img
+              className="chip-file-icon-doc normal"
+              src={`/svg/file-download.svg`}
+            />
+            <img
+              className="chip-file-icon-doc hover"
+              src={`/svg/file-download-white.svg`}
+            />
 
             <span className="download-text">{loading ? 'A5' : 'A5'}</span>
           </>

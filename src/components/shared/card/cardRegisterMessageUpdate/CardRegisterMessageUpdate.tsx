@@ -115,7 +115,7 @@ const CardRegisterMessageUpdate = ({
   };
 
   const sender = message.users.filter(user => user.type === 'SENDER')[0].user;
-  useEffect(() => {
+  const handleReportPDF = () => {
     const header = watch('header');
     const description = watch('description');
     const to = sender.profile.firstName + ' ' + sender.profile.lastName;
@@ -138,7 +138,8 @@ const CardRegisterMessageUpdate = ({
       fromDegree: userSession.profile.degree,
       fromPosition: userSession.profile.description,
     });
-  }, [watch('description'), watch('header'), watch('title'), watch('type')]);
+  };
+
   return (
     <form
       className="inbox-forward-data-content"
@@ -208,7 +209,7 @@ const CardRegisterMessageUpdate = ({
           onEditorChange={handleInputChange}
         />
       </div>
-      <PDFGenerator data={pdfData} />
+      <PDFGenerator data={pdfData} handleFocus={handleReportPDF} />
       <div className="message-file-add">
         <h4 className="message-add-document">Agregar Documentos:</h4>
         <InputFile

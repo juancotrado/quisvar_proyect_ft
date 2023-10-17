@@ -1,2 +1,27 @@
 .xyz {
 }
+
+.cardRegisteVoucher-figure {
+  width: 1rem;
+}
+
+.cardRegisteVoucher-service-orden {
+  display: flex;
+  align-items: center;
+  color: var(--color-secondary);
+  font-size: 0.7rem;
+  gap: 0.5rem;
+}
+
+.cardRegisterVoucher-subTitle {
+  color: var(--color-secondary);
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.5rem;
+  letter-spacing: 0.00938rem;
+}
+
+.cardRegisterVoucher-file-options {
+  height: 3rem;
+}

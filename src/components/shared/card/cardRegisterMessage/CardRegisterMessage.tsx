@@ -1,5 +1,5 @@
 import './cardRegisterMessage.css';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import InputFile from '../../Input/InputFile';
 import useListUsers from '../../../../hooks/useListUsers';
 import Button from '../../button/Button';
@@ -33,11 +33,7 @@ import {
   convertToDynamicObject,
   dataInitialPdf,
 } from '../../../../utils/pdfReportFunctions';
-import {
-  isGenerateExcelReport$,
-  isOpenCardGenerateReport$,
-} from '../../../../services/sharingSubject';
-import { Subscription } from 'rxjs';
+import { isOpenCardGenerateReport$ } from '../../../../services/sharingSubject';
 import { validateWhiteSpace } from '../../../../utils/customValidatesForm';
 
 const YEAR = new Date().getFullYear();
@@ -72,26 +68,26 @@ const CardRegisterMessage = ({
   const initialValueEditor = InitialValueEditor();
 
   const [pdfData, setpdfData] = useState<PdfDataProps>(dataInitialPdf);
+  //funcion futura para que el reporte se agrega auntomaticamente
+  // const handleIsOpen = useRef<Subscription>(new Subscription());
 
-  const handleIsOpen = useRef<Subscription>(new Subscription());
-
-  useEffect(() => {
-    handleIsOpen.current = isGenerateExcelReport$.getSubject.subscribe(
-      blobExcel => {
-        if (!blobExcel) return;
-        fetch(blobExcel)
-          .then(response => response.blob())
-          .then(blob => {
-            const file = new File([blob], 'nombre_del_archivo.xlsx');
-            addFiles?.([file]);
-          })
-          .catch(error => console.error('Error al cargar el blob:', error));
-      }
-    );
-    return () => {
-      handleIsOpen.current.unsubscribe();
-    };
-  }, []);
+  // useEffect(() => {
+  //   handleIsOpen.current = isGenerateExcelReport$.getSubject.subscribe(
+  //     blobExcel => {
+  //       if (!blobExcel) return;
+  //       fetch(blobExcel)
+  //         .then(response => response.blob())
+  //         .then(blob => {
+  //           const file = new File([blob], 'nombre_del_archivo.xlsx');
+  //           addFiles?.([file]);
+  //         })
+  //         .catch(error => console.error('Error al cargar el blob:', error));
+  //     }
+  //   );
+  //   return () => {
+  //     handleIsOpen.current.unsubscribe();
+  //   };
+  // }, []);
 
   const contacts = useMemo(
     () =>
@@ -125,10 +121,6 @@ const CardRegisterMessage = ({
     setValue('description', event);
   };
 
-  // const handleRemoveReceiver = () => {
-  //   setReceiver(null);
-  //   setIsAddReceiver(false);
-  // };
   const handleAddCopy = () => {
     setIsAddReceiver(true);
   };
@@ -278,7 +270,6 @@ const CardRegisterMessage = ({
             errors={errors}
             placeholder="Tipo de Documento"
             className="messagePage-input"
-            onBlur={handleReportPDF}
           />
           <div className="imbox-receiver-choice-dropdown">
             <DropDownSimple
@@ -292,7 +283,6 @@ const CardRegisterMessage = ({
               droper
               valueInput={(value, id) => setReceiver({ id: +id, value })}
               required
-              onBlur={handleReportPDF}
             />
           </div>
           {receiver && (
@@ -327,7 +317,6 @@ const CardRegisterMessage = ({
               itemKey="id"
               droper
               valueInput={(value, id) => handleAddUser({ id: +id, value })}
-              onBlur={handleReportPDF}
             />
           </div>
         )}
@@ -338,11 +327,9 @@ const CardRegisterMessage = ({
           placeholder="Asunto"
           name="header"
           type="text"
-          onBlur={handleReportPDF}
         />
         <Editor
           initialValue={initialValueEditor}
-          onBlur={handleReportPDF}
           init={{
             min_height: 500,
             paste_data_images: false,
@@ -366,7 +353,7 @@ const CardRegisterMessage = ({
             </figure>
             <span>Adjuntar reporte</span>
           </div>
-          <PDFGenerator data={pdfData} />
+          <PDFGenerator data={pdfData} handleFocus={handleReportPDF} />
         </div>
         <div className="message-file-add">
           <h4 className="message-add-document">Agregar Documentos:</h4>

@@ -132,7 +132,8 @@ const CardRegisterMessageForward = ({
   const handleArchiverMessage = () => {
     axiosInstance.patch(`/mail/archived/${message.id}`).then(onSave);
   };
-  useEffect(() => {
+
+  const handleReportPDF = () => {
     const header = watch('header');
     const description = watch('description');
     const to = sender.profile.firstName + ' ' + sender.profile.lastName;
@@ -155,7 +156,8 @@ const CardRegisterMessageForward = ({
       fromDegree: userSession.profile.degree,
       fromPosition: userSession.profile.description,
     });
-  }, [watch('description'), watch('header'), watch('title'), watch('type')]);
+  };
+
   return (
     <form className="messagePage-send-mail" onSubmit={handleSubmit(onSubmit)}>
       {watch('type') && (
@@ -221,7 +223,7 @@ const CardRegisterMessageForward = ({
         />
       </div>
 
-      <PDFGenerator data={pdfData} />
+      <PDFGenerator data={pdfData} handleFocus={handleReportPDF} />
       <div className="message-file-add">
         <h4 className="message-add-document">Agregar Documentos:</h4>
         <InputFile

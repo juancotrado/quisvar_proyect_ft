@@ -122,6 +122,7 @@ const MessagePage = () => {
     ({ user, role, type }) =>
       user.id === userSession.id && role === 'MAIN' && type == 'RECEIVER'
   );
+  console.log({ mainReceiverFinish });
   const trandformData = (data: MessageReply) => {
     const sender = data.user;
     const header = data.header;
@@ -156,9 +157,10 @@ const MessagePage = () => {
   const isUserInitMessage = userSession.profile.id === message.userInit.userId;
 
   const handleResize = () => setIsResize(!isResize);
+  console.log({ message });
   return (
     <div className={`message-page-container ${isResize && 'message--resize'}`}>
-      {mainReceiver && (
+      {(mainReceiver || mainReceiverFinish) && (
         <div className="message-page-contain message-page-contain--right">
           <Button
             className="imbox-resize-icon"

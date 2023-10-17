@@ -17,11 +17,14 @@ const CardRegisterVoucherDenyOrAccept = ({
   };
   return (
     <div>
-      <ChipFileMessage
-        className="message-files-list"
-        text={'voucher'}
-        link={message.voucher}
-      />
+      {message.files?.map(file => (
+        <ChipFileMessage
+          key={file.id}
+          className="message-files-list"
+          text={file.name}
+          link={file.path + '/' + file.name}
+        />
+      ))}
       <Button text="Aceptar" onClick={() => handleDenyOrAccept('PAGADO')} />
       <Button text="Denegar" onClick={() => handleDenyOrAccept('FINALIZADO')} />
     </div>

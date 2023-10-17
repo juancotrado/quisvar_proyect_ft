@@ -125,7 +125,7 @@ const CardRegisterMessageReply = ({
   const handleDoneMessage = () => {
     axiosInstance.patch(`/mail/done/${message.id}`).then(onSave);
   };
-  useEffect(() => {
+  const handleReportPDF = () => {
     const header = watch('header');
     const description = watch('description');
     const to = receiver?.value ?? '';
@@ -148,7 +148,8 @@ const CardRegisterMessageReply = ({
       fromDegree: userSession.profile.degree,
       fromPosition: userSession.profile.description,
     });
-  }, [watch('description'), watch('header'), watch('title')]);
+  };
+
   return (
     <form className="messagePage-send-mail" onSubmit={handleSubmit(onSubmit)}>
       {watch('type') && (
@@ -180,8 +181,11 @@ const CardRegisterMessageReply = ({
             placeholder="Dirigido a"
             selector
             droper
-            valueInput={(value, id) => setReceiver({ id: +id, value })}
+            valueInput={(value, id) => {
+              setReceiver({ id: +id, value });
+            }}
             required
+            // otherFunction={handleReportPDF}
           />
         </div>
       </div>
@@ -213,7 +217,7 @@ const CardRegisterMessageReply = ({
           onEditorChange={handleInputChange}
         />
       </div>
-      <PDFGenerator data={pdfData} />
+      <PDFGenerator data={pdfData} handleFocus={handleReportPDF} />
       <div className="message-file-add">
         <h4 className="message-add-document">Agregar Documentos:</h4>
         <InputFile

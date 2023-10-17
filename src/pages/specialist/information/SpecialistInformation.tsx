@@ -5,26 +5,31 @@ import {
   Experience,
   SpecialistProject,
   Specialists,
+  Training,
 } from '../../../types/types';
 import { useCallback, useEffect, useState } from 'react';
 import { URL, axiosInstance } from '../../../services/axiosInstance';
 import formatDate from '../../../utils/formatDate';
 import { AnimatePresence, motion } from 'framer-motion';
-import { isOpenAddExperience$ } from '../../../services/sharingSubject';
+import {
+  isOpenAddExperience$,
+  isOpenAddTraining$,
+} from '../../../services/sharingSubject';
 import CardAddExperience from '../../../components/shared/card/cardAddExperience/CardAddExperience';
-import { ExperienceTable } from '../../../components';
+import { ExperienceTable, TrainingTable } from '../../../components';
 import { sumAllExperience } from '../../../utils/experienceFunctions/experienceFunctions';
+import CardAddTraining from '../../../components/shared/card/cardAddTraining/CardAddTraining';
 
 const SpecialistInformation = () => {
   const { infoId } = useParams();
   const [data, setData] = useState<Specialists>();
   const [experiences, setExperiences] = useState<Experience[]>();
+  const [training, setTraining] = useState<Training[]>();
   const [projectSelected, setProjectSelected] = useState<number | null>(null);
   const [experienceSelected, setExperienceSelected] = useState<number | null>(
     null
   );
-  console.log(experiences);
-
+  const [trainingSelected, setTrainingSelected] = useState<number | null>(null);
   const toggleDetailProject = (projectID: number) => {
     if (projectSelected === projectID) {
       setProjectSelected(null);
@@ -39,18 +44,39 @@ const SpecialistInformation = () => {
       setExperienceSelected(experienceID);
     }
   };
+  const toggleDetailTraining = (trainingID: number) => {
+    if (trainingSelected === trainingID) {
+      setTrainingSelected(null);
+    } else {
+      setTrainingSelected(trainingID);
+    }
+  };
   const getSpecialist = useCallback(() => {
     axiosInstance
       .get(`/specialists/information/${infoId}`)
       .then(item => setData(item.data));
+  }, [infoId]);
+  const getExperience = useCallback(() => {
     axiosInstance
       .get(`/areaSpecialty/${infoId}`)
-      .then(elem => setExperiences(elem.data));
+      .then(item => setExperiences(item.data));
+  }, [infoId]);
+  const getTraining = useCallback(() => {
+    axiosInstance
+      .get(`/trainingSpecialty/${infoId}`)
+      .then(item => setTraining(item.data));
   }, [infoId]);
   useEffect(() => {
     getSpecialist();
-    return setProjectSelected(null);
-  }, [getSpecialist]);
+    getExperience();
+    getTraining();
+    return () => {
+      setProjectSelected(null);
+      setExperienceSelected(null);
+      setTrainingSelected(null);
+    };
+  }, [getExperience, getSpecialist, getTraining]);
+
   const getDate = (value: string) => {
     const date = formatDate(new Date(value), {
       day: '2-digit',
@@ -61,6 +87,9 @@ const SpecialistInformation = () => {
   };
   const handleAddExperience = () => {
     isOpenAddExperience$.setSubject = true;
+  };
+  const handleAddTraining = () => {
+    isOpenAddTraining$.setSubject = true;
   };
 
   return (
@@ -108,20 +137,34 @@ const SpecialistInformation = () => {
         <section className="specialist-info-exp">
           <span className="specialist-info-title">Capacitaciones</span>
           <div className="specialist-more-info">
-            <div className="smi-items">
-              <div className="smi-specialty-name">
-                <h3>Tipo de capacitacion: </h3>
-                <h4>Diplomados</h4>
-              </div>
-              <div className="smi-specialty-name">
-                <h3>Cantidad: </h3>
-                <h4>10 certificados</h4>
-              </div>
-              <img src="/svg/down.svg" alt="" style={{ width: '20px' }} />
-            </div>
-            <span className="smi-add-specialty">
+            {training &&
+              training.map((train, idx) => (
+                <div className="smi-container" key={train.trainingName}>
+                  <div
+                    className="smi-items"
+                    onClick={() => toggleDetailTraining(idx)}
+                  >
+                    <div className="smi-specialty-name">
+                      <h3>Tipo de capacitacion: </h3>
+                      <h4>{train.trainingName}</h4>
+                    </div>
+                    <div className="smi-specialty-name">
+                      <h3>Cantidad: </h3>
+                      <h4>
+                        {train.datos.length} {`certificado(s)`}
+                      </h4>
+                    </div>
+                    <img src="/svg/down.svg" alt="" style={{ width: '20px' }} />
+                  </div>
+                  {trainingSelected === idx && train.datos.length > 0 && (
+                    <TrainingTable datos={train.datos} />
+                  )}
+                </div>
+              ))}
+
+            <span className="smi-add-specialty" onClick={handleAddTraining}>
               <img src="/svg/plus.svg" alt="" style={{ width: '12px' }} />
-              <h3>Añadir capacitacion</h3>
+              <h3>Añadir capacitación</h3>
             </span>
           </div>
         </section>
@@ -190,7 +233,7 @@ const SpecialistInformation = () => {
                       exit={{ opacity: 0, height: 0 }}
                       className="sp-motion-div"
                     >
-                      {project &&
+                      {project.stages.length > 0 &&
                         project.stages.map(stage => (
                           <div className="sp-details-area" key={stage.id}>
                             <h4 className="sp-details">{stage.name}</h4>
@@ -205,12 +248,12 @@ const SpecialistInformation = () => {
                     </motion.div>
                   )}
                 </AnimatePresence>
-                {/* <hr className="sp-hr" /> */}
               </div>
             ))}
         </div>
       </div>
-      <CardAddExperience />
+      <CardAddExperience onSave={getExperience} />
+      <CardAddTraining onSave={getTraining} />
     </>
   );
 };

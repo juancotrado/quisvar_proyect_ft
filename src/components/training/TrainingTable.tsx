@@ -1,12 +1,11 @@
 import { URL } from '../../services/axiosInstance';
-import { Experience } from '../../types/types';
-import { calcDates } from '../../utils/experienceFunctions/experienceFunctions';
+import { Training } from '../../types/types';
 import formatDate from '../../utils/formatDate';
-import './experienceTable.css';
+import './trainingTable.css';
 interface ExperienceTableProps {
-  datos: Experience['datos'];
+  datos: Training['datos'];
 }
-const ExperienceTable = ({ datos }: ExperienceTableProps) => {
+const TrainingTable = ({ datos }: ExperienceTableProps) => {
   const formattedDate = (value: Date) => {
     const newDate = formatDate(new Date(value), {
       month: 'short',
@@ -15,33 +14,38 @@ const ExperienceTable = ({ datos }: ExperienceTableProps) => {
     return newDate;
   };
   return (
-    <div className="experience-table-content">
-      <div className="experience-table-header">
+    <div className="training-table-content">
+      <div className="training-table-header">
         <div className="ex-center">ITEM</div>
         <div>INSTITUCIÓN</div>
-        <div>DESCRIPCIÓN</div>
-        <div>FECHA</div>
-        <div>PERMANENCIA</div>
+        <div>EMISIÓN</div>
+        <div>DURACIÓN</div>
+        <div>HORAS</div>
         <div className="ex-center">DOCUMENTO</div>
       </div>
       {datos &&
         datos.map((dato, idx) => {
-          const res = calcDates(dato.startDate, dato.untilDate);
           return (
-            <div className="experience-table-body" key={idx}>
-              <div className="ex-center">{idx + 1}</div>
+            <div className="training-table-body" key={idx}>
+              <div className="tr-center">{idx + 1}</div>
               <div>{dato.institution}</div>
-              <div>descripcion</div>
+              <div>
+                {formatDate(new Date(dato.issue), {
+                  day: '2-digit',
+                  month: 'long',
+                  year: 'numeric',
+                })}
+              </div>
               <div>
                 {formattedDate(dato.startDate) +
                   ' - ' +
                   formattedDate(dato.untilDate)}
               </div>
-              <div>{`${res.years} año(s) y ${res.months} mes(es)`}</div>
-              <div className="ex-center">
+              <div>{dato.hours}</div>
+              <div className="tr-center">
                 <span className="specialist-icon-cv">
                   <a
-                    href={`${URL}/file-user/specialty/${dato?.file}`}
+                    href={`${URL}/file-user/training/${dato?.trainingFile}`}
                     target="_blank"
                   >
                     <img
@@ -58,4 +62,4 @@ const ExperienceTable = ({ datos }: ExperienceTableProps) => {
   );
 };
 
-export default ExperienceTable;
+export default TrainingTable;

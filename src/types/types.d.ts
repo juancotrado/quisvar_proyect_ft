@@ -849,7 +849,21 @@ export type AreaSpecialty = {
   file: string;
   specialistId: number;
 };
+export type TrainingSpecialty = {
+  trainingName: string;
+  institution: string;
+  hours: string;
+  issue: Date;
+  startDate: Date;
+  untilDate: Date;
+  trainingFile: string;
+  specialistId: number;
+};
 export type Experience = {
   specialtyName: string;
   datos: AreaSpecialty[];
+};
+export type Training = {
+  trainingName: string;
+  datos: TrainingSpecialty[];
 };

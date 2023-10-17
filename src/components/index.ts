@@ -32,6 +32,8 @@ import CardViewPdf from './shared/card/cardViewPdf/CardViewPdf';
 import CardLicense from './shared/card/cardLicense/CardLicense';
 import CardCompany from './shared/card/cardCompany/CardCompany';
 import ExperienceTable from './experience/ExperienceTable';
+import CardAddTraining from './shared/card/cardAddTraining/CardAddTraining';
+import TrainingTable from './training/TrainingTable';
 
 export {
   Alert,
@@ -39,6 +41,7 @@ export {
   Input,
   InputRange,
   ProtectedRoute,
+  CardAddTraining,
   CardCompany,
   CardRegisterUser,
   CardRegisterArea,
@@ -68,4 +71,5 @@ export {
   CardViewPdf,
   CardLicense,
   ExperienceTable,
+  TrainingTable,
 };

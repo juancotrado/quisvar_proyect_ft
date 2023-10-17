@@ -16,7 +16,6 @@ import LicenseListHeader from './mail/licenseHeader/LicenseListHeader';
 import LicenseListItem from './mail/licenseList/LicenseListItem';
 import Company from './company/Company';
 import Specialist from './specialist/Specialist';
-import SpecialistExperience from './specialist/experience/SpecialistExperience';
 import SpecialistInformation from './specialist/information/SpecialistInformation';
 import CompanyInformation from './company/infomation/CompanyInformation';
 export {
@@ -40,5 +39,4 @@ export {
   CompanyInformation,
   Specialist,
   SpecialistInformation,
-  SpecialistExperience,
 };

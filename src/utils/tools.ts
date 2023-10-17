@@ -23,3 +23,17 @@ export const getIconDefault = (seed: string) => {
   // const urlIconDefault = `https://robohash.org/${seed}`;//robohash
   return urlIconDefault;
 };
+
+export const generateUniqueColorForDNI = (dni: string) => {
+  const valorNumber = parseInt(dni, 10);
+
+  const r = (valorNumber * 17) % 256;
+  const g = (valorNumber * 29) % 256;
+  const b = (valorNumber * 41) % 256;
+
+  const hexadecimalColo = `#${r.toString(16).padStart(2, '0')}${g
+    .toString(16)
+    .padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
+
+  return hexadecimalColo;
+};

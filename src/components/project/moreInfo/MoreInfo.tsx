@@ -7,12 +7,14 @@ import './moreInfo.css';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
 import { toggle$ } from '../../../services/sharingSubject';
+import MoreInfoUsers from './moreInfoUsers/MoreInfoUsers';
 interface MoreInfoProps {
   data: Level;
 }
 const MoreInfo = ({ data }: MoreInfoProps) => {
   const { projectId } = useParams();
   const [showArchiverOption, setShowArchiverOption] = useState(false);
+  const [showUsers, setShowUsers] = useState(false);
   const handleToggleRef = useRef<Subscription>(new Subscription());
 
   useEffect(() => {
@@ -25,29 +27,9 @@ const MoreInfo = ({ data }: MoreInfoProps) => {
   }, []);
   const handleReports = () => {
     axiosInstance.get(`/projects/${projectId}`).then(res => {
-      console.log(res.data);
-      const {
-        department,
-        district,
-        province,
-        // startDate,
-        // untilDate,
-        description,
-        CUI,
-      } = res.data;
+      const { department, district, province, description, CUI } = res.data;
       const { firstName, lastName } = res.data.moderator.profile;
-      // const initialDate = formatDate(new Date(startDate), {
-      //   day: 'numeric',
-      //   weekday: 'long',
-      //   month: 'long',
-      //   year: 'numeric',
-      // });
-      // const finishDate = formatDate(new Date(untilDate), {
-      //   day: 'numeric',
-      //   weekday: 'long',
-      //   month: 'long',
-      //   year: 'numeric',
-      // });
+
       const infoData = {
         department,
         district,
@@ -67,6 +49,7 @@ const MoreInfo = ({ data }: MoreInfoProps) => {
     type,
     data.projectName ?? data.name
   );
+  const handleViewUsers = () => setShowUsers(!showUsers);
   const handleArchiverOptions = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     setShowArchiverOption(!showArchiverOption);
@@ -122,46 +105,60 @@ const MoreInfo = ({ data }: MoreInfoProps) => {
         </div>
       </div>
       <div className="moreInfo-details-contain">
-        {showArchiverOption && (
-          <div className="moreInfo-details-contain moreInfo-details-absolute">
-            <div
-              className="moreInfo-detail"
-              onClick={handleArchiver}
-              title={'Comprimir'}
-            >
-              <figure className="moreInfo-detail-icon">
-                <img src="/svg/zip-normal.svg" alt="W3Schools" />
-              </figure>
-              <span className="moreInfo-detail-info">Comprimir</span>
-            </div>
-            <div className="moreInfo-detail" title={'Comprimir PDFs'}>
-              <figure className="moreInfo-detail-icon">
-                <img src="/svg/zip-pdf.svg" alt="W3Schools" />
-              </figure>
-              <span className="moreInfo-detail-info">
-                Comprimir <br /> PDF
-              </span>
-            </div>
-            <div
-              className="moreInfo-detail"
-              title={'Comprimir Editables'}
-              onClick={handleReports}
-            >
-              <figure className="moreInfo-detail-icon">
-                <img src="/svg/zip-edit.svg" alt="W3Schools" />
-              </figure>
-              <span className="moreInfo-detail-info">
-                Comprimir <br /> Editables
-              </span>
-            </div>
-          </div>
-        )}
+        <div
+          className="moreInfo-detail"
+          title={'Ver Usuarios'}
+          onClick={handleViewUsers}
+        >
+          {showUsers && <MoreInfoUsers users={data.listUsers} />}
+
+          <figure className="moreInfo-detail-icon">
+            <img src="/svg/person-blue.svg" alt="W3Schools" />
+          </figure>
+          {data.projectName && (
+            <span className="moreInfo-detail-info">Ver Usuarios</span>
+          )}
+        </div>
 
         <div
           className="moreInfo-detail"
           title={'Comprimir PDFs'}
           onClick={handleArchiverOptions}
         >
+          {showArchiverOption && (
+            <div className="moreInfo-details-contain moreInfo-details-absolute">
+              <div
+                className="moreInfo-detail"
+                onClick={handleArchiver}
+                title={'Comprimir'}
+              >
+                <figure className="moreInfo-detail-icon">
+                  <img src="/svg/zip-normal.svg" alt="W3Schools" />
+                </figure>
+                <span className="moreInfo-detail-info">Comprimir</span>
+              </div>
+              <div className="moreInfo-detail" title={'Comprimir PDFs'}>
+                <figure className="moreInfo-detail-icon">
+                  <img src="/svg/zip-pdf.svg" alt="W3Schools" />
+                </figure>
+                <span className="moreInfo-detail-info">
+                  Comprimir <br /> PDF
+                </span>
+              </div>
+              <div
+                className="moreInfo-detail"
+                title={'Comprimir Editables'}
+                onClick={handleReports}
+              >
+                <figure className="moreInfo-detail-icon">
+                  <img src="/svg/zip-edit.svg" alt="W3Schools" />
+                </figure>
+                <span className="moreInfo-detail-info">
+                  Comprimir <br /> Editables
+                </span>
+              </div>
+            </div>
+          )}
           <figure className="moreInfo-detail-icon">
             <img src="/svg/compres-icon.svg" alt="W3Schools" />
           </figure>

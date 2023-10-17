@@ -31,6 +31,7 @@ import AttendancePdf from './shared/attendancePdf/AttendancePdf';
 import CardViewPdf from './shared/card/cardViewPdf/CardViewPdf';
 import CardLicense from './shared/card/cardLicense/CardLicense';
 import CardCompany from './shared/card/cardCompany/CardCompany';
+import ExperienceTable from './experience/ExperienceTable';
 
 export {
   Alert,
@@ -66,4 +67,5 @@ export {
   AttendancePdf,
   CardViewPdf,
   CardLicense,
+  ExperienceTable,
 };

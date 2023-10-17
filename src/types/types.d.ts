@@ -840,3 +840,7 @@ export type AreaSpecialty = {
   file: string;
   specialistId: number;
 };
+export type Experience = {
+  specialtyName: string;
+  datos: AreaSpecialty[];
+};

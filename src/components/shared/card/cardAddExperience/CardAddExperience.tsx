@@ -46,7 +46,7 @@ const CardAddExperience = ({ onSave }: CardExperienceProps) => {
     const untilDate = data.untilDate.toString() ?? '';
     const specialistId = infoId?.toString() ?? '';
     const formData = new FormData();
-    formData.append('specialtyName', 'asd');
+    formData.append('specialtyName', data.specialtyName);
     formData.append('institution', data.institution);
     formData.append('startDate', startDate);
     formData.append('untilDate', untilDate);

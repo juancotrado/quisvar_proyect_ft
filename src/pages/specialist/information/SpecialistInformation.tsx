@@ -1,26 +1,42 @@
 import { useParams } from 'react-router-dom';
 import './specialistInformation.css';
 import { getIconDefault } from '../../../utils/tools';
-import { SpecialistProject, Specialists } from '../../../types/types';
+import {
+  Experience,
+  SpecialistProject,
+  Specialists,
+} from '../../../types/types';
 import { useCallback, useEffect, useState } from 'react';
 import { URL, axiosInstance } from '../../../services/axiosInstance';
 import formatDate from '../../../utils/formatDate';
 import { AnimatePresence, motion } from 'framer-motion';
 import { isOpenAddExperience$ } from '../../../services/sharingSubject';
 import CardAddExperience from '../../../components/shared/card/cardAddExperience/CardAddExperience';
+import { ExperienceTable } from '../../../components';
+import { sumAllExperience } from '../../../utils/experienceFunctions/experienceFunctions';
 
 const SpecialistInformation = () => {
   const { infoId } = useParams();
   const [data, setData] = useState<Specialists>();
-  const [experience, setExperience] = useState();
+  const [experiences, setExperiences] = useState<Experience[]>();
   const [projectSelected, setProjectSelected] = useState<number | null>(null);
-  console.log(experience);
+  const [experienceSelected, setExperienceSelected] = useState<number | null>(
+    null
+  );
+  console.log(experiences);
 
-  const toggleDetalleProyecto = (projectID: number) => {
+  const toggleDetailProject = (projectID: number) => {
     if (projectSelected === projectID) {
       setProjectSelected(null);
     } else {
       setProjectSelected(projectID);
+    }
+  };
+  const toggleDetailExperience = (experienceID: number) => {
+    if (experienceSelected === experienceID) {
+      setExperienceSelected(null);
+    } else {
+      setExperienceSelected(experienceID);
     }
   };
   const getSpecialist = useCallback(() => {
@@ -29,7 +45,7 @@ const SpecialistInformation = () => {
       .then(item => setData(item.data));
     axiosInstance
       .get(`/areaSpecialty/${infoId}`)
-      .then(elem => setExperience(elem.data));
+      .then(elem => setExperiences(elem.data));
   }, [infoId]);
   useEffect(() => {
     getSpecialist();
@@ -46,7 +62,6 @@ const SpecialistInformation = () => {
   const handleAddExperience = () => {
     isOpenAddExperience$.setSubject = true;
   };
-  // console.log(data);
 
   return (
     <>
@@ -54,17 +69,36 @@ const SpecialistInformation = () => {
         <section className="specialist-info-exp">
           <span className="specialist-info-title">Especialidades</span>
           <div className="specialist-more-info">
-            <div className="smi-items">
-              <div className="smi-specialty-name">
-                <h3>Especialidad: </h3>
-                <h4>Educacion primaria</h4>
-              </div>
-              <div className="smi-specialty-name">
-                <h3>Años de experiencia: </h3>
-                <h4>2 años y 6 meses</h4>
-              </div>
-              <img src="/svg/down.svg" alt="" style={{ width: '20px' }} />
-            </div>
+            {experiences &&
+              experiences.map((experience, idx) => {
+                const res = sumAllExperience(experience.datos);
+                return (
+                  <div className="smi-container" key={experience.specialtyName}>
+                    <div
+                      className="smi-items"
+                      onClick={() => toggleDetailExperience(idx)}
+                    >
+                      <div className="smi-specialty-name">
+                        <h3>Especialidad: </h3>
+                        <h4>{experience.specialtyName}</h4>
+                      </div>
+                      <div className="smi-specialty-name">
+                        <h3>Años de experiencia: </h3>
+                        <h4>{`${res.totalYears} año(s) y ${res.totalMonths} mes(es)`}</h4>
+                      </div>
+                      <img
+                        src="/svg/down.svg"
+                        alt=""
+                        style={{ width: '20px' }}
+                      />
+                    </div>
+                    {experienceSelected === idx &&
+                      experience.datos.length > 0 && (
+                        <ExperienceTable datos={experience.datos} />
+                      )}
+                  </div>
+                );
+              })}
             <span className="smi-add-specialty" onClick={handleAddExperience}>
               <img src="/svg/plus.svg" alt="" style={{ width: '12px' }} />
               <h3>Añadir especialidad</h3>
@@ -143,7 +177,7 @@ const SpecialistInformation = () => {
             data?.projects.map(({ project }: SpecialistProject) => (
               <div
                 key={project.id}
-                onClick={() => toggleDetalleProyecto(project.id)}
+                onClick={() => toggleDetailProject(project.id)}
                 className="sp-motion-click"
               >
                 <h4 className="sp-name">{project.name}</h4>

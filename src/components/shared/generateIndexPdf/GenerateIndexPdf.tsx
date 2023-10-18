@@ -47,7 +47,7 @@ const recursionIndex = (level: Level) => {
     </View>
   );
 };
-export const generateIndexPdf = ({ data }: generateIndexPdfProps) => (
+export const GenerateIndexPdf = ({ data }: generateIndexPdfProps) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <Text style={styles.title}>{data.projectName}</Text>

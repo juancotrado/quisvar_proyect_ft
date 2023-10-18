@@ -12,7 +12,8 @@ import './budgetsPage.css';
 import StatusText from '../../../../components/shared/statusText/StatusText';
 import LoaderForComponent from '../../../../components/shared/loaderForComponent/LoaderForComponent';
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import { generateIndexPdf } from '../../../../components/shared/generateIndexPdf/GenerateIndexPdf';
+import { GenerateIndexPdf } from '../../../../components/shared/generateIndexPdf/GenerateIndexPdf';
+import { GenerateDetailedIndexPdf } from '../../../../components/shared/generateDetailedIndexPdf/GenerateDetailedIndexPdf';
 import FloatingText from '../../../../components/shared/floatingText/FloatingText';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
@@ -76,14 +77,38 @@ const BudgetsPage = () => {
       <div className="budgetsPage-filter">
         <FloatingText text="Descargar Indice" xPos={-50}>
           <PDFDownloadLink
-            document={generateIndexPdf({ data: levels })}
+            document={GenerateIndexPdf({ data: levels })}
+            fileName={`${levels.projectName}.pdf`}
+            className="budgetsPage-filter-icon"
+          >
+            <figure className="budgetsPage-figure-icon">
+              <img src={`/svg/index-icon.svg`} />
+            </figure>
+            Indice
+          </PDFDownloadLink>
+        </FloatingText>
+        <FloatingText text="Descargar Indice" xPos={-50}>
+          <PDFDownloadLink
+            document={GenerateDetailedIndexPdf({ data: levels })}
+            fileName={`${levels.projectName}.pdf`}
+            className="budgetsPage-filter-icon"
+          >
+            <figure className="budgetsPage-figure-icon">
+              <img src={`/svg/index-icon.svg`} />
+            </figure>
+            Indice Detallado
+          </PDFDownloadLink>
+        </FloatingText>
+        {/* <FloatingText text="Descargar Indice" xPos={-50}>
+          <PDFDownloadLink
+            document={GenerateDetailedIndexPdf({ data: levels })}
             fileName={`${levels.projectName}.pdf`}
             className="budgetsPage-filter-icon"
           >
             <img src={`/svg/index-icon.svg`} />
-            Indice
+            Indice Detallado
           </PDFDownloadLink>
-        </FloatingText>
+        </FloatingText> */}
         <span
           className="budgetsPage-filter-icon"
           onClick={() => setOpenFilter(true)}

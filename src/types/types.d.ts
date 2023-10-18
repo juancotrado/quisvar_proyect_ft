@@ -385,7 +385,7 @@ export interface Level {
   subTasks: SubTask[];
   userId: number;
   projectName?: string;
-  nextLevel?: NextLevel[];
+  nextLevel?: Level[];
   percentage: number;
   total: number;
   days: number;

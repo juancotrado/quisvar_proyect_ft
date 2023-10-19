@@ -58,7 +58,8 @@ const Task = () => {
         <h4 className="task-header-title">
           Título de la tarea:
           <span className="task-header-title-span">
-            {task.item}. {task.name}
+            {' '}
+            {task.item} {task.name}
           </span>
         </h4>
       </div>

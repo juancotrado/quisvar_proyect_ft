@@ -113,7 +113,9 @@ const SubtaskChangeStatusBtn = ({
         'Asegurese de subir una archivo  antes.'
       );
 
-    const hasPdf = Array.from(files).some(file => file.name.includes('.pdf'));
+    const hasPdf = Array.from(files).some(file =>
+      file.name.toLowerCase().includes('.pdf')
+    );
     if (!hasPdf)
       return SnackbarUtilities.warning(
         'Asegurese de subir una archivo PDF antes.'
@@ -123,6 +125,7 @@ const SubtaskChangeStatusBtn = ({
 
     const feedbackBody = {
       subTasksId: subtaskId,
+      percentage: porcentagesForUser?.[0].percentage,
     };
     await axiosInstance.post(`/feedbacks`, feedbackBody);
     await axiosInstance.patch(
@@ -180,14 +183,17 @@ const SubtaskChangeStatusBtn = ({
       `/subtasks/percentage/${subtaskId}`,
       porcentagesForUser
     );
+    await axiosInstance.patch(`/feedbacks`, {
+      ...dataFeedback,
+      status: true,
+    });
     if (sumOfPercentages === 100) {
-      await handleEditStatus();
+      handleEditStatus();
     } else if (sumOfPercentages < 100) {
       const resStatus = await axiosInstance.patch(
         `/subtasks/status/${subtaskId}/${stageId}`,
         { status: 'PROCESS' }
       );
-      await axiosInstance.patch(`/feedbacks`, dataFeedback);
       socket.emit('client:update-projectAndTask', resStatus.data);
       SnackbarUtilities.success('Se realizo la operación con exito');
     }

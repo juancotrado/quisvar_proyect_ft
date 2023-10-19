@@ -14,6 +14,7 @@ import DotsRight from '../../shared/dotsRight/DotsRight';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import { useContext } from 'react';
 import { SocketContext } from '../../../context/SocketContex';
+import FloatingText from '../../shared/floatingText/FloatingText';
 
 interface LevelSutaskProps {
   level: Level;
@@ -66,6 +67,9 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
           <div className="levelSubtask-header-title">NOMBRE</div>
         </div>
         <div className="levelSubtask-item">
+          <div className="levelSubtask-header-title">ESTADO</div>
+        </div>
+        <div className="levelSubtask-item">
           <div className="levelSubtask-header-title">PRECIO</div>
         </div>
         <div className="levelSubtask-item">
@@ -76,9 +80,6 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
         </div>
         <div className="levelSubtask-item">
           <div className="levelSubtask-header-title">USUARIO ASIGNADO</div>
-        </div>
-        <div className="levelSubtask-item">
-          <div className="levelSubtask-header-title">ESTADO</div>
         </div>
       </div>
       {subTasks?.map(subtask => (
@@ -93,10 +94,21 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
               }
             >
               <div className="levelSubtask-item levelSubtask-item--name">
-                <div className="levelSubtask-text">
-                  {subtask.item}
-                  <span className="levelSubtask-text-name">{subtask.name}</span>
-                </div>
+                <FloatingText
+                  text={subtask.item + ' ' + subtask.name}
+                  className="levelSubtask-text"
+                  yPos={-40}
+                >
+                  <div className="levelSubtask-text">
+                    {subtask.item}
+                    <span className="levelSubtask-text-name">
+                      {subtask.name}
+                    </span>
+                  </div>
+                </FloatingText>
+              </div>
+              <div className="levelSubtask-item">
+                <StatusText status={subtask.status} />
               </div>
               <div className="levelSubtask-item">
                 <div className="levelSubtask-text">S/.{subtask.price}</div>
@@ -120,9 +132,6 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
                     <div className="levelSubtask-text">No asignado aún</div>
                   )}
                 </div>
-              </div>
-              <div className="levelSubtask-item">
-                <StatusText status={subtask.status} />
               </div>
             </NavLink>
           </ContextMenuTrigger>

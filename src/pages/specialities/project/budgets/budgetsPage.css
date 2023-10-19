@@ -15,6 +15,10 @@
   color: black;
 }
 
+.budgetsPage-figure-icon {
+  width: 1rem;
+}
+
 .budgetsPage-filter-area {
   display: flex;
   gap: 1rem;
@@ -83,6 +87,7 @@
 
   right: 40px;
 }
+
 .budgetsPage-index-download {
   display: block;
   width: 1.5rem;

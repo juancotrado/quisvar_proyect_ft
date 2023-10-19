@@ -1,10 +1,5 @@
 import { FocusEvent, useContext, useEffect, useMemo, useState } from 'react';
-import {
-  DataFeedback,
-  DataUser,
-  Files,
-  SubTask,
-} from '../../../../../types/types';
+import { DataFeedback, DataUser, SubTask } from '../../../../../types/types';
 import SubtaskFile from '../../../../subtasks/subtaskFiles/SubtaskFile';
 import SubtaskUploadFiles from '../../../../subtasks/subtaskUploadFiles/SubtaskUploadFiles';
 import SubtaskChangeStatusBtn from '../../../../subtasks/subtaskChangeStatusBtn/SubtaskChangeStatusBtn';
@@ -49,12 +44,9 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
 
   const allFileIds: number[] = useMemo(
     () =>
-      subTask.feedBacks.reduce((acc, feedback) => {
-        feedback.files.forEach((file: Files) => {
-          acc.push(file.id);
-        });
-        return acc;
-      }, []),
+      subTask.feedBacks.flatMap(feedback =>
+        feedback.files.map(file => file.id)
+      ),
     [subTask.feedBacks]
   );
   const filterFiles = useMemo(
@@ -83,7 +75,6 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
   const handlePorcentage = (e: FocusEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setPorcetageForUser({
-      ...porcetageForUser,
       ['user' + name]: { userId: +name, percentage: +value },
     });
   };
@@ -141,7 +132,7 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
         <div className="cardSubtaskProcess-left-details-buttom">
           {subTask.feedBacks.length !== 0 && (
             <SubtasksShippingHistory
-              feedBacks={subTask.feedBacks}
+              feedBacks={[...subTask.feedBacks].reverse()}
               authorize={{ isAuthorizedMod, isAuthorizedUser }}
               getDataFeedback={getDataFeedback}
             />

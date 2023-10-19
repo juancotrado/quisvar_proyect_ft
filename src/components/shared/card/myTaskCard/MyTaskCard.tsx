@@ -1,5 +1,5 @@
 import './mytaskcard.css';
-import { SubtaskIncludes, TypeTask } from '../../../../types/types';
+import { SubtaskIncludes } from '../../../../types/types';
 import { _date } from '../../../../utils/formatDate';
 import { useNavigate } from 'react-router-dom';
 
@@ -9,52 +9,16 @@ interface TaskCardProps {
 
 const MyTaskCard = ({ subTask }: TaskCardProps) => {
   const navigate = useNavigate();
-  const navigateLocation = (
-    workAreaId: number,
-    taskIdProp: number,
-    subTaskIdProp: number,
-    subTaskType: TypeTask
-  ) => {
-    return navigate(`/tareas/${workAreaId}`, {
-      state: {
-        taskIdProp,
-        subTaskIdProp,
-        subTaskType,
-      },
-      replace: true,
-    });
-  };
 
   const handleNavigate = () => {
-    const { indexTask, task, task_lvl_2, task_lvl_3, id } = subTask;
-    if (indexTask) {
-      navigateLocation(indexTask.workAreaId, indexTask.id, id, 'indextask');
-    }
-    if (task) {
-      navigateLocation(task.indexTask.workAreaId, task.id, id, 'task');
-    }
-    if (task_lvl_2) {
-      navigateLocation(
-        task_lvl_2.task.indexTask.workAreaId,
-        task_lvl_2.id,
-        id,
-        'task2'
-      );
-    }
-    if (task_lvl_3) {
-      navigateLocation(
-        task_lvl_3.task_2.task.indexTask.workAreaId,
-        task_lvl_3.id,
-        id,
-        'task3'
-      );
-    }
+    const { id: stageId, projectId } = subTask.Levels.stages;
+    navigate(
+      `../especialidades/proyecto/${projectId}/etapa/${stageId}/presupuestos/tarea/${subTask.id}`
+    );
   };
 
   return (
     <div className={`my-task-class`}>
-      {/* <span className="task-text">{`${task.status == 'DONE'? "Hecho":"asd"}` }</span> */}
-
       <div className="my-task-content">
         <span
           className={`my-icon-card ${

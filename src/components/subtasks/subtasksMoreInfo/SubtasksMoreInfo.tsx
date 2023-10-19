@@ -1,4 +1,4 @@
-import { SubTask } from '../../../types/types';
+import { Feedback, SubTask } from '../../../types/types';
 import { _date } from '../../../utils/formatDate';
 import StatusText from '../../shared/statusText/StatusText';
 import './subtasksMoreInfo.css';
@@ -7,12 +7,24 @@ interface SubtasksMoreInfoProps {
 }
 const SubtasksMoreInfo = ({ task }: SubtasksMoreInfoProps) => {
   const getTimeOut = () => {
-    const currentDate = new Date();
-    const assignedDate = new Date(task.users.at(0)?.assignedAt || '');
-    assignedDate.setDate(assignedDate.getDate() + task.days);
-    if (!currentDate || !assignedDate) return 0;
-    const untilDateTime =
-      assignedDate.getTime() - new Date(currentDate).getTime();
+    let firsDate;
+    let lastDate;
+    if (task.status === 'DONE' || task.status === 'LIQUIDATION') {
+      const getTaskAproved = task.feedBacks
+        .filter(arr => arr.status)
+        .reduce((acc, arr) => (arr.id > acc.id ? arr : acc), {
+          id: 0,
+        }) as Feedback;
+      firsDate = new Date(task.users.at(0)?.assignedAt || '');
+      lastDate = new Date(getTaskAproved.updatedAt);
+    } else {
+      firsDate = new Date();
+      lastDate = new Date(task.users.at(0)?.assignedAt || '');
+      lastDate.setDate(lastDate.getDate() + task.days);
+      if (!firsDate || !firsDate) return 0;
+    }
+
+    const untilDateTime = lastDate.getTime() - new Date(firsDate).getTime();
     const transformToDays =
       Math.floor((untilDateTime / 1000 / 60 / 60 / 24) * 10) / 10;
     return transformToDays;
@@ -54,7 +66,11 @@ const SubtasksMoreInfo = ({ task }: SubtasksMoreInfoProps) => {
         </div>
       </div>
       <div className="subtasksMoreInfo-item">
-        <h3 className="subtasksMoreInfo-item-title">TIEMPO RESTANTE</h3>
+        <h3 className="subtasksMoreInfo-item-title">
+          {task.status === 'DONE' || task.status === 'LIQUIDATION'
+            ? 'TIEMPO EMPLEADO'
+            : 'TIEMPO RESTANTE'}
+        </h3>
         <div className="subtasksMoreInfo-item-text">
           <figure className="subtasksMoreInfo-item-icon">
             <img src="/svg/hours-icon.svg" alt="W3Schools" />

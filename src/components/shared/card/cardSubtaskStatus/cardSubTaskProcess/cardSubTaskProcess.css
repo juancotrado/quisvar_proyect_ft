@@ -1,6 +1,7 @@
 .cardSubtaskProcess {
   background-color: white;
-  width: 100%; /*falta calcular*/
+  width: 100%;
+  /*falta calcular*/
   border-radius: var(--radius-input);
   flex-wrap: wrap;
   gap: 5px;
@@ -8,6 +9,7 @@
   height: 100%;
   overflow: auto;
 }
+
 .cardSubtaskProcess-left-details {
   flex: 1.6;
   display: flex;
@@ -17,9 +19,11 @@
   height: 100%;
   overflow-y: auto;
 }
+
 .cardSubtask-file-conten {
   min-height: 1.8rem;
 }
+
 .waiting-screen {
   display: flex;
   flex-direction: column;
@@ -30,10 +34,12 @@
   color: var(--color-primary);
   flex-grow: 1;
 }
+
 .waiting-screen-image {
   width: 60%;
   height: 60%;
 }
+
 .cardSubtaskProcess-porcentage-container-main {
   display: flex;
   flex-direction: column;
@@ -42,11 +48,13 @@
   padding: 0.3rem;
   background-color: var(--color-menu);
 }
+
 .cardSubtaskProcess-porcentage-container {
   display: flex;
   align-items: center;
   width: 100%;
 }
+
 .cardSubtaskProcess-porcentage-user {
   flex: 3;
   text-transform: capitalize;
@@ -57,7 +65,9 @@
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
+  height: 100%;
 }
+
 .cardSubtaskProcess-files-title {
   font-size: 0.87rem;
   color: var(--color-primary);
@@ -96,6 +106,7 @@
   width: 80%;
   align-items: left;
 }
+
 .cardSubtaskProcess-info-date {
   font-size: 0.87rem;
 }
@@ -106,19 +117,23 @@
   width: 85%;
   gap: 0.5rem;
 }
+
 .cardSubtaskProcess-files-models-title {
   font-size: 0.87rem;
   color: var(--color-primary);
 }
+
 .cardSubtaskProcess-info-price {
   font-size: 1rem;
   font-weight: 800;
   color: var(--color-primary);
 }
+
 .cardSubtaskProcess-info-hours {
   font-size: 0.87rem;
   color: var(--color-primary);
 }
+
 .cardSubtaskProcess-info-untilDate {
   color: var(--color-done);
   font-size: 1.3rem;
@@ -128,6 +143,7 @@
 .expired-time {
   color: var(--color-unresolved);
 }
+
 .cardSubtaskHold-users-contain {
   width: 100%;
   display: flex;
@@ -136,9 +152,11 @@
   padding: 0.5rem;
   overflow: auto;
 }
+
 .cardSubtaskProcess-list-option {
   height: 5rem;
 }
+
 .cardSubtaskProcess-files-contain {
   display: flex;
   padding: 1rem 0.5rem;
@@ -146,6 +164,7 @@
   overflow-x: auto;
   width: 100%;
 }
+
 .cardSubtaskProcess-files-values-contain {
   display: flex;
   justify-content: space-between;
@@ -158,20 +177,24 @@
   align-items: center;
   gap: 0.5rem;
 }
+
 .cardSubtaskProcess-files-btn {
   position: absolute;
   right: -10px;
   top: -10px;
 }
+
 .cardSubtaskProcess-files-models-upload {
   height: 4rem;
 }
+
 .cardSubtaskProcess-files-icon {
   position: relative;
   width: 1rem;
   display: flex;
   gap: 1rem;
 }
+
 .cardSubtaskProcess-files-name {
   display: block;
   font-size: 0.6rem;

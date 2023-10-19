@@ -256,7 +256,7 @@ export interface SubTask {
   status: StatusType;
   name: string;
   item?: string;
-  feedBacks: feedBacks[];
+  feedBacks: Feedback[];
   percentage: number;
   description: string;
   untilDate?: string;
@@ -283,9 +283,21 @@ export interface Feedback {
   createdAt: string;
   updatedAt: string;
   subTasksId: number;
+  percentage: number;
   files: Files[];
+  users: UserFeedback[];
 }
 
+interface UserFeedback {
+  userId: number;
+  feedbackId: number;
+  userMain: boolean;
+  assignedAt: string;
+  user: {
+    id: number;
+    profile: Profile;
+  };
+}
 export interface DataFeedback {
   id: number;
   comment: string;
@@ -301,38 +313,10 @@ type StatusType =
 
 export type TypeTask = 'task' | 'indextask' | 'task2' | 'task3';
 export interface SubtaskIncludes extends SubTask {
-  task: {
-    id: number;
-    indexTask: {
+  Levels: {
+    stages: {
       id: number;
-      workAreaId: number;
-    };
-  };
-  indexTask: {
-    id: number;
-    workAreaId: number;
-  };
-  task_lvl_2: {
-    id: number;
-    task: {
-      id: number;
-      indexTask: {
-        id: number;
-        workAreaId: number;
-      };
-    };
-  };
-  task_lvl_3: {
-    id: number;
-    task_2: {
-      id: number;
-      task: {
-        id: number;
-        indexTask: {
-          id: number;
-          workAreaId: number;
-        };
-      };
+      projectId: number;
     };
   };
 }
@@ -342,7 +326,6 @@ interface Files {
   id: number;
   name: string;
   userId: number;
-  user: User;
   dir: string;
   type: FileType;
   subTasksId: number;

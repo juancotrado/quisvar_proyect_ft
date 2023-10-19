@@ -4,7 +4,8 @@
   flex-direction: column;
   padding: 0.5rem 0;
   gap: 0.5rem;
-  height: 10rem;
+  /* height: 10rem; */
+  height: 100%;
   overflow-y: scroll;
 }
 

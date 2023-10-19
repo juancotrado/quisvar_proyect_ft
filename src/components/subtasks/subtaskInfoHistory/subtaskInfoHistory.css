@@ -22,6 +22,16 @@
   padding: 0;
 }
 
+.SubtaskInfoHistory-span-status {
+  font-weight: 500;
+}
+
+.SubtaskInfoHistory-span-percentage {
+  color: var(--color-primary);
+  font-size: 0.6875rem;
+  font-weight: 600;
+}
+
 .SubtaskInfoHistory-container-feedback-files-container {
   width: 100%;
   height: 100%;

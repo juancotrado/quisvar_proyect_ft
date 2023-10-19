@@ -75,7 +75,7 @@ const BudgetsPage = () => {
   return (
     <>
       <div className="budgetsPage-filter">
-        <FloatingText text="Descargar Indice" xPos={-50}>
+        <FloatingText text="Descargar Índice" xPos={-50}>
           <PDFDownloadLink
             document={GenerateIndexPdf({ data: levels })}
             fileName={`${levels.projectName}.pdf`}
@@ -84,10 +84,10 @@ const BudgetsPage = () => {
             <figure className="budgetsPage-figure-icon">
               <img src={`/svg/index-icon.svg`} />
             </figure>
-            Indice
+            Índice
           </PDFDownloadLink>
         </FloatingText>
-        <FloatingText text="Descargar Indice" xPos={-50}>
+        <FloatingText text="Descargar Índice" xPos={-50}>
           <PDFDownloadLink
             document={GenerateDetailedIndexPdf({ data: levels })}
             fileName={`${levels.projectName}.pdf`}
@@ -96,19 +96,9 @@ const BudgetsPage = () => {
             <figure className="budgetsPage-figure-icon">
               <img src={`/svg/index-icon.svg`} />
             </figure>
-            Indice Detallado
+            Índice Detallado
           </PDFDownloadLink>
         </FloatingText>
-        {/* <FloatingText text="Descargar Indice" xPos={-50}>
-          <PDFDownloadLink
-            document={GenerateDetailedIndexPdf({ data: levels })}
-            fileName={`${levels.projectName}.pdf`}
-            className="budgetsPage-filter-icon"
-          >
-            <img src={`/svg/index-icon.svg`} />
-            Indice Detallado
-          </PDFDownloadLink>
-        </FloatingText> */}
         <span
           className="budgetsPage-filter-icon"
           onClick={() => setOpenFilter(true)}

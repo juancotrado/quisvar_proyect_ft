@@ -53,8 +53,13 @@ const SubtaskInfoHistory = ({
         <figure className="cardSubtask-figure">
           <img src="/svg/person-blue.svg" alt="W3Schools" />
         </figure>
-        {getUserName(feedBack.files[0].user.profile)}
-        <span className="SubtaskInfoHistory-send-file">Envió un archivo</span>
+        {getUserName(feedBack.users[0].user.profile)}
+        <span className="SubtaskInfoHistory-send-file">
+          Envió entregable al{' '}
+          <span className="SubtaskInfoHistory-span-percentage">
+            {feedBack.percentage}%
+          </span>
+        </span>
         <span className="SubtaskInfoHistory-send-date">
           {getDatetimeCreated(feedBack.createdAt)}
         </span>
@@ -75,6 +80,22 @@ const SubtaskInfoHistory = ({
           >
             <SubtaskFile files={feedBack.files} showDeleteBtn={false} />
           </div>
+          {feedBack.users[1] && (
+            <h3 className="SubtaskInfoHistory-title-information">
+              <span className="SubtaskInfoHistory-send-file">
+                <span
+                  className="SubtaskInfoHistory-span-status"
+                  style={{ color: feedBack.status ? '#14804a' : '#d12953' }}
+                >
+                  {feedBack.status ? 'Aprobado ' : 'Rechazado '}
+                </span>
+                por {getUserName(feedBack.users[1].user.profile)}
+              </span>
+              <span className="SubtaskInfoHistory-send-date">
+                {getDatetimeCreated(feedBack.users[1].assignedAt)}
+              </span>
+            </h3>
+          )}
           {getDataFeedback &&
             ((authorize?.isAuthorizedUser && feedBack.comment) ||
               authorize?.isAuthorizedMod) && (

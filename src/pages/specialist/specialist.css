@@ -10,6 +10,7 @@
 .specialist-add-area {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .specialist-title {
@@ -20,7 +21,7 @@
 }
 
 .specialist-add-btn {
-  width: 1.5rem;
+  width: 1.6rem;
   border: none;
 }
 

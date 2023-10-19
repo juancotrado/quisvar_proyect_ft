@@ -1,11 +1,14 @@
 import { URL } from '../../services/axiosInstance';
 import { Training } from '../../types/types';
 import formatDate from '../../utils/formatDate';
+import Button from '../shared/button/Button';
 import './trainingTable.css';
 interface ExperienceTableProps {
-  datos: Training['datos'];
+  datos: Training['trainingSpecialistName'];
+  id: number;
+  handleFuntion: (open: boolean, identifier: number) => void;
 }
-const TrainingTable = ({ datos }: ExperienceTableProps) => {
+const TrainingTable = ({ datos, id, handleFuntion }: ExperienceTableProps) => {
   const formattedDate = (value: Date) => {
     const newDate = formatDate(new Date(value), {
       month: 'short',
@@ -15,6 +18,14 @@ const TrainingTable = ({ datos }: ExperienceTableProps) => {
   };
   return (
     <div className="training-table-content">
+      <div className="experience-table-title">
+        <h4 className="ex-table-title-text">Capacitaciones y certificados</h4>
+        <Button
+          text="+ Agregar Capacitación"
+          className="exp-table-title-btn"
+          onClick={() => handleFuntion(true, id)}
+        />
+      </div>
       <div className="training-table-header">
         <div className="ex-center">ITEM</div>
         <div>INSTITUCIÓN</div>

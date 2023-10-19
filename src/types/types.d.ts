@@ -842,7 +842,7 @@ export type SpecialistList = {
   lastName: string;
 };
 export type AreaSpecialty = {
-  specialtyName: string;
+  id: number;
   institution: string;
   startDate: Date;
   untilDate: Date;
@@ -850,7 +850,7 @@ export type AreaSpecialty = {
   specialistId: number;
 };
 export type TrainingSpecialty = {
-  trainingName: string;
+  id: number;
   institution: string;
   hours: string;
   issue: Date;
@@ -860,10 +860,20 @@ export type TrainingSpecialty = {
   specialistId: number;
 };
 export type Experience = {
+  id: number;
   specialtyName: string;
-  datos: AreaSpecialty[];
+  areaSpecialtyName: AreaSpecialty[];
 };
 export type Training = {
+  id: number;
   trainingName: string;
-  datos: TrainingSpecialty[];
+  trainingSpecialistName: TrainingSpecialty[];
+};
+export type TrainingName = {
+  trainingName: string;
+  specialistId: number;
+};
+export type AreaSpecialtyName = {
+  specialtyName: string;
+  specialistId: number;
 };

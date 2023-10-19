@@ -36,6 +36,10 @@ interface OpenButtonDelete {
   isOpen: boolean;
   function: () => void;
 }
+interface OpenEspecialistDescription {
+  isOpen: boolean;
+  id: number;
+}
 export const loader$ = new SubjectManager<boolean>();
 export const toggle$ = new SubjectManager<boolean>();
 export const isOpenModal$ = new SubjectManager<boolean>();
@@ -46,8 +50,10 @@ export const isOpenCardCompany$ = new SubjectManager<boolean>();
 export const isOpenCardSpecialist$ = new SubjectManager<CardSpecialistProps>();
 export const isOpenCardViewPdf$ = new SubjectManager<CardViewProps>();
 export const isOpenCardFiles$ = new SubjectManager<boolean>();
-export const isOpenAddExperience$ = new SubjectManager<boolean>();
-export const isOpenAddTraining$ = new SubjectManager<boolean>();
+export const isOpenAddExperience$ =
+  new SubjectManager<OpenEspecialistDescription>();
+export const isOpenAddTraining$ =
+  new SubjectManager<OpenEspecialistDescription>();
 export const isOpenButtonDelete$ = new SubjectManager<OpenButtonDelete>();
 export const isOpenCardLicense$ = new SubjectManager<CardLicenseProps>();
 export const isOpenViewDocs$ = new SubjectManager<boolean>();

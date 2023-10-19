@@ -31,3 +31,20 @@
   display: flex;
   justify-content: center;
 }
+.experience-table-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.7rem 0;
+}
+.ex-table-title-text {
+  font-size: 0.9375rem;
+  font-style: normal;
+  font-weight: 500;
+  color: var(--color-secondary);
+}
+.exp-table-title-btn {
+  color: var(--color-primary);
+  border-radius: 0.3375rem;
+  border: 1px solid var(--color-primary);
+}

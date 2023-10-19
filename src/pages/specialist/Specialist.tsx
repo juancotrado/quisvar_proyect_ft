@@ -25,7 +25,6 @@ const Specialist = () => {
       isOpen: true,
     };
   };
-  // const apiSubject = new Subject();
   const apiSubjectRef = useRef(new Subject());
   useEffect(() => {
     const subscription = apiSubjectRef.current
@@ -36,7 +35,7 @@ const Specialist = () => {
         })
       )
       .subscribe(response => {
-        console.log(response.data);
+        setSpecialist(response.data);
       });
 
     return () => {
@@ -46,7 +45,7 @@ const Specialist = () => {
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     setSearchTerm(value);
-    if (!value) return;
+    if (!value) getSpecialists();
     apiSubjectRef.current.next(value);
   };
   return (

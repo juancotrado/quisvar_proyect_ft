@@ -7,7 +7,7 @@ import { AreaSpecialty } from '../../../../types/types';
 import Button from '../../button/Button';
 import { Subscription } from 'rxjs';
 import { isOpenAddExperience$ } from '../../../../services/sharingSubject';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import { axiosInstance } from '../../../../services/axiosInstance';
 
 interface CardExperienceProps {
@@ -16,7 +16,8 @@ interface CardExperienceProps {
 
 const CardAddExperience = ({ onSave }: CardExperienceProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { infoId } = useParams();
+  const [hasId, setHasId] = useState<number>();
+  // const { infoId } = useParams();
   const handleIsOpen = useRef<Subscription>(new Subscription());
   const {
     register,
@@ -27,9 +28,10 @@ const CardAddExperience = ({ onSave }: CardExperienceProps) => {
     formState: { errors },
   } = useForm<AreaSpecialty>();
   useEffect(() => {
-    handleIsOpen.current = isOpenAddExperience$.getSubject.subscribe(value =>
-      setIsOpen(value)
-    );
+    handleIsOpen.current = isOpenAddExperience$.getSubject.subscribe(value => {
+      setIsOpen(value.isOpen);
+      setHasId(value.id);
+    });
     return () => {
       handleIsOpen.current.unsubscribe();
     };
@@ -43,13 +45,13 @@ const CardAddExperience = ({ onSave }: CardExperienceProps) => {
 
     const startDate = data.startDate.toString() ?? '';
     const untilDate = data.untilDate.toString() ?? '';
-    const specialistId = infoId?.toString() ?? '';
+    const areaSpecialtyNameId = hasId?.toString() ?? '';
     const formData = new FormData();
-    formData.append('specialtyName', data.specialtyName);
+    // formData.append('specialtyName', data.specialtyName);
     formData.append('institution', data.institution);
     formData.append('startDate', startDate);
     formData.append('untilDate', untilDate);
-    formData.append('specialistId', specialistId);
+    formData.append('areaSpecialtyNameId', areaSpecialtyNameId);
     formData.append('file', files);
     const headers = {
       'Content-type': 'multipart/form-data',
@@ -69,13 +71,13 @@ const CardAddExperience = ({ onSave }: CardExperienceProps) => {
         <h1>Registrar Experiencia</h1>
 
         <div className="specialist-col">
-          <Input
+          {/* <Input
             label="Nombre de Especialidad"
             placeholder="Nombre"
             {...register('specialtyName')}
             name="specialtyName"
             errors={errors}
-          />
+          /> */}
           <Input
             label="Institucion"
             placeholder="Institucion"

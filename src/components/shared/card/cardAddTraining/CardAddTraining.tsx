@@ -7,7 +7,7 @@ import { TrainingSpecialty } from '../../../../types/types';
 import Button from '../../button/Button';
 import { Subscription } from 'rxjs';
 import { isOpenAddTraining$ } from '../../../../services/sharingSubject';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import { axiosInstance } from '../../../../services/axiosInstance';
 
 interface CardAddTrainingProps {
@@ -16,7 +16,8 @@ interface CardAddTrainingProps {
 
 const CardAddTraining = ({ onSave }: CardAddTrainingProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { infoId } = useParams();
+  const [hasId, setHasId] = useState<number>();
+  // const { infoId } = useParams();
   const handleIsOpen = useRef<Subscription>(new Subscription());
   const {
     register,
@@ -27,9 +28,10 @@ const CardAddTraining = ({ onSave }: CardAddTrainingProps) => {
     formState: { errors },
   } = useForm<TrainingSpecialty>();
   useEffect(() => {
-    handleIsOpen.current = isOpenAddTraining$.getSubject.subscribe(value =>
-      setIsOpen(value)
-    );
+    handleIsOpen.current = isOpenAddTraining$.getSubject.subscribe(value => {
+      setIsOpen(value.isOpen);
+      setHasId(value.id);
+    });
     return () => {
       handleIsOpen.current.unsubscribe();
     };
@@ -43,15 +45,14 @@ const CardAddTraining = ({ onSave }: CardAddTrainingProps) => {
     const issue = data.issue.toString() ?? '';
     const startDate = data.startDate.toString() ?? '';
     const untilDate = data.untilDate.toString() ?? '';
-    const specialistId = infoId?.toString() ?? '';
+    const TrainingSpecialistNameId = hasId?.toString() ?? '';
     const formData = new FormData();
-    formData.append('trainingName', data.trainingName);
     formData.append('institution', data.institution);
     formData.append('hours', data.hours);
     formData.append('startDate', startDate);
     formData.append('untilDate', untilDate);
     formData.append('issue', issue);
-    formData.append('specialistId', specialistId);
+    formData.append('TrainingSpecialistNameId', TrainingSpecialistNameId);
     formData.append('trainingFile', files);
     const headers = {
       'Content-type': 'multipart/form-data',
@@ -71,13 +72,13 @@ const CardAddTraining = ({ onSave }: CardAddTrainingProps) => {
         <h1>Registrar Capacitacion</h1>
 
         <div className="specialist-col">
-          <Input
+          {/* <Input
             label="Tipo de Capacitacion"
             placeholder="Tipo"
             {...register('trainingName')}
             name="trainingName"
             errors={errors}
-          />
+          /> */}
           <Input
             label="Institucion"
             placeholder="Institucion"

@@ -2,10 +2,12 @@ import { useParams } from 'react-router-dom';
 import './specialistInformation.css';
 import { getIconDefault } from '../../../utils/tools';
 import {
+  AreaSpecialty,
   Experience,
   SpecialistProject,
   Specialists,
   Training,
+  TrainingSpecialty,
 } from '../../../types/types';
 import { useCallback, useEffect, useState } from 'react';
 import { URL, axiosInstance } from '../../../services/axiosInstance';
@@ -73,10 +75,32 @@ const SpecialistInformation = () => {
       id: identifier,
     };
   };
+  const handleEditExperience = (
+    value: boolean,
+    identifier: number,
+    data: AreaSpecialty
+  ) => {
+    isOpenAddExperience$.setSubject = {
+      isOpen: value,
+      id: identifier,
+      data,
+    };
+  };
   const handleAddTraining = (value: boolean, identifier: number) => {
     isOpenAddTraining$.setSubject = {
       isOpen: value,
       id: identifier,
+    };
+  };
+  const handleEditTraining = (
+    value: boolean,
+    identifier: number,
+    data: TrainingSpecialty
+  ) => {
+    isOpenAddTraining$.setSubject = {
+      isOpen: value,
+      id: identifier,
+      data,
     };
   };
   return (
@@ -86,6 +110,7 @@ const SpecialistInformation = () => {
           <ExperienceInformation
             onSave={getExperience}
             handleAddExperience={handleAddExperience}
+            handleEditExperience={handleEditExperience}
             experiences={experiences}
           />
         </section>
@@ -94,6 +119,7 @@ const SpecialistInformation = () => {
             training={training}
             onSave={getTraining}
             handleAddTraining={handleAddTraining}
+            handleEditTraining={handleEditTraining}
           />
         </section>
       </div>

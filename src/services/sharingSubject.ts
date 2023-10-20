@@ -1,9 +1,11 @@
 import SubjectManager from '../models/subjectManager';
 import {
+  AreaSpecialty,
   AttendanceRange,
   ProjectType,
   Specialists,
   SubTask,
+  TrainingSpecialty,
   licenseList,
 } from '../types/types';
 
@@ -36,9 +38,15 @@ interface OpenButtonDelete {
   isOpen: boolean;
   function: () => void;
 }
-interface OpenEspecialistDescription {
+interface OpenEspecialistExperienceDescription {
   isOpen: boolean;
   id: number;
+  data?: AreaSpecialty;
+}
+interface OpenEspecialistTrainingDescription {
+  isOpen: boolean;
+  id: number;
+  data?: TrainingSpecialty;
 }
 export const loader$ = new SubjectManager<boolean>();
 export const toggle$ = new SubjectManager<boolean>();
@@ -51,9 +59,9 @@ export const isOpenCardSpecialist$ = new SubjectManager<CardSpecialistProps>();
 export const isOpenCardViewPdf$ = new SubjectManager<CardViewProps>();
 export const isOpenCardFiles$ = new SubjectManager<boolean>();
 export const isOpenAddExperience$ =
-  new SubjectManager<OpenEspecialistDescription>();
+  new SubjectManager<OpenEspecialistExperienceDescription>();
 export const isOpenAddTraining$ =
-  new SubjectManager<OpenEspecialistDescription>();
+  new SubjectManager<OpenEspecialistTrainingDescription>();
 export const isOpenButtonDelete$ = new SubjectManager<OpenButtonDelete>();
 export const isOpenCardLicense$ = new SubjectManager<CardLicenseProps>();
 export const isOpenViewDocs$ = new SubjectManager<boolean>();

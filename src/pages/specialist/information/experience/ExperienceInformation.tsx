@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import { sumAllExperience } from '../../../../utils/experienceFunctions/experienceFunctions';
 import { ExperienceTable, Input } from '../../../../components';
-import { AreaSpecialtyName, Experience } from '../../../../types/types';
+import {
+  AreaSpecialty,
+  AreaSpecialtyName,
+  Experience,
+} from '../../../../types/types';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { useParams } from 'react-router-dom';
@@ -12,11 +16,13 @@ import {
 interface ExperienceProps {
   experiences?: Experience[];
   handleAddExperience: (e: boolean, v: number) => void;
+  handleEditExperience: (e: boolean, v: number, d: AreaSpecialty) => void;
   onSave: () => void;
 }
 const ExperienceInformation = ({
   experiences,
   handleAddExperience,
+  handleEditExperience,
   onSave,
 }: ExperienceProps) => {
   const [experienceSelected, setExperienceSelected] = useState<number | null>(
@@ -61,7 +67,9 @@ const ExperienceInformation = ({
     setOpenAddSpeciality(false);
     reset({});
   };
-
+  const handleDelete = (id: number) => {
+    axiosInstance.delete(`/areaSpecialty/${id}`).then(() => onSave?.());
+  };
   return (
     <>
       <span className="specialist-info-title">Especialidades</span>
@@ -94,6 +102,8 @@ const ExperienceInformation = ({
                     datos={experience.areaSpecialtyName}
                     id={experience.id}
                     handleFuntion={handleAddExperience}
+                    handleEdit={handleEditExperience}
+                    handleDelete={handleDelete}
                   />
                 )}
               </div>

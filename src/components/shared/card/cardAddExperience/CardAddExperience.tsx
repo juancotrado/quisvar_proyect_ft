@@ -17,12 +17,14 @@ interface CardExperienceProps {
 const CardAddExperience = ({ onSave }: CardExperienceProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hasId, setHasId] = useState<number>();
-  // const { infoId } = useParams();
+  const [data, setData] = useState<AreaSpecialty>();
+  console.log(data);
+
   const handleIsOpen = useRef<Subscription>(new Subscription());
   const {
     register,
     handleSubmit,
-    // setValue,
+    setValue,
     reset,
     // watch,
     formState: { errors },
@@ -31,11 +33,20 @@ const CardAddExperience = ({ onSave }: CardExperienceProps) => {
     handleIsOpen.current = isOpenAddExperience$.getSubject.subscribe(value => {
       setIsOpen(value.isOpen);
       setHasId(value.id);
+      setData(value.data);
     });
     return () => {
       handleIsOpen.current.unsubscribe();
     };
   }, []);
+  useEffect(() => {
+    if (!data) return;
+    setValue('institution', data.institution);
+    setValue('startDate', data.startDate);
+    setValue('untilDate', data.untilDate);
+    // setValue('file', data.file);
+  }, [data, setValue]);
+
   const closeFunctions = () => {
     setIsOpen(false);
     reset({});
@@ -68,16 +79,9 @@ const CardAddExperience = ({ onSave }: CardExperienceProps) => {
         <span className="close-icon" onClick={closeFunctions}>
           <img src="/svg/close.svg" alt="pencil" />
         </span>
-        <h1>Registrar Experiencia</h1>
+        <h1>{data ? 'Editar' : 'Registrar'} Experiencia</h1>
 
         <div className="specialist-col">
-          {/* <Input
-            label="Nombre de Especialidad"
-            placeholder="Nombre"
-            {...register('specialtyName')}
-            name="specialtyName"
-            errors={errors}
-          /> */}
           <Input
             label="Institucion"
             placeholder="Institucion"
@@ -110,7 +114,9 @@ const CardAddExperience = ({ onSave }: CardExperienceProps) => {
             errors={errors}
           />
         </div>
-        <Button text="Guardar" type="submit" />
+        <div className="add-ex-btn-area">
+          <Button text="Guardar" type="submit" className="add-ex-btn" />
+        </div>
       </form>
     </Modal>
   );

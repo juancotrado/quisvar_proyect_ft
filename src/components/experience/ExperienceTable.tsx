@@ -1,6 +1,6 @@
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import { URL } from '../../services/axiosInstance';
-import { Experience, Option } from '../../types/types';
+import { AreaSpecialty, Experience, Option } from '../../types/types';
 import { calcDates } from '../../utils/experienceFunctions/experienceFunctions';
 import formatDate from '../../utils/formatDate';
 import Button from '../shared/button/Button';
@@ -10,12 +10,16 @@ interface ExperienceTableProps {
   datos: Experience['areaSpecialtyName'];
   id: number;
   handleFuntion: (open: boolean, identifier: number) => void;
+  handleEdit: (open: boolean, identifier: number, data: AreaSpecialty) => void;
+  handleDelete: (id: number) => void;
 }
 
 const ExperienceTable = ({
   datos,
   id,
   handleFuntion,
+  handleEdit,
+  handleDelete,
 }: ExperienceTableProps) => {
   const formattedDate = (value: Date) => {
     const newDate = formatDate(new Date(value), {
@@ -24,6 +28,7 @@ const ExperienceTable = ({
     });
     return newDate;
   };
+
   return (
     <div className="experience-table-content">
       <div className="experience-table-title">
@@ -50,13 +55,13 @@ const ExperienceTable = ({
               name: 'Editar',
               type: 'button',
               icon: 'pencil',
-              function: () => console.log(dato.id),
+              function: () => handleEdit(true, dato.id, dato),
             },
             {
               name: 'Eliminar',
               type: 'button',
               icon: 'trash-red',
-              function: () => null,
+              function: () => handleDelete(dato.id),
             },
           ];
           return (

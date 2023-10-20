@@ -17,12 +17,13 @@ interface CardAddTrainingProps {
 const CardAddTraining = ({ onSave }: CardAddTrainingProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hasId, setHasId] = useState<number>();
+  const [data, setData] = useState<TrainingSpecialty>();
   // const { infoId } = useParams();
   const handleIsOpen = useRef<Subscription>(new Subscription());
   const {
     register,
     handleSubmit,
-    // setValue,
+    setValue,
     reset,
     // watch,
     formState: { errors },
@@ -31,11 +32,18 @@ const CardAddTraining = ({ onSave }: CardAddTrainingProps) => {
     handleIsOpen.current = isOpenAddTraining$.getSubject.subscribe(value => {
       setIsOpen(value.isOpen);
       setHasId(value.id);
+      setData(value.data);
     });
     return () => {
       handleIsOpen.current.unsubscribe();
     };
   }, []);
+  useEffect(() => {
+    if (!data) return;
+    setValue('institution', data.institution);
+    setValue('hours', data.hours);
+  }, [data, setValue]);
+
   const closeFunctions = () => {
     setIsOpen(false);
     reset({});
@@ -69,16 +77,9 @@ const CardAddTraining = ({ onSave }: CardAddTrainingProps) => {
         <span className="close-icon" onClick={closeFunctions}>
           <img src="/svg/close.svg" alt="pencil" />
         </span>
-        <h1>Registrar Capacitacion</h1>
+        <h1>{data ? 'Editar' : 'Registrar'}Registrar Capacitacion</h1>
 
         <div className="specialist-col">
-          {/* <Input
-            label="Tipo de Capacitacion"
-            placeholder="Tipo"
-            {...register('trainingName')}
-            name="trainingName"
-            errors={errors}
-          /> */}
           <Input
             label="Institucion"
             placeholder="Institucion"
@@ -127,7 +128,9 @@ const CardAddTraining = ({ onSave }: CardAddTrainingProps) => {
             errors={errors}
           />
         </div>
-        <Button text="Guardar" type="submit" />
+        <div className="add-tr-btn-area">
+          <Button text="Guardar" type="submit" className="add-tr-btn" />
+        </div>
       </form>
     </Modal>
   );

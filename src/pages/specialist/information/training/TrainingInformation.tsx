@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Training, TrainingName } from '../../../../types/types';
+import {
+  Training,
+  TrainingName,
+  TrainingSpecialty,
+} from '../../../../types/types';
 import { Input, TrainingTable } from '../../../../components';
 import {
   validateCorrectTyping,
@@ -12,11 +16,13 @@ import { axiosInstance } from '../../../../services/axiosInstance';
 interface TrainingProps {
   training?: Training[];
   handleAddTraining: (e: boolean, v: number) => void;
+  handleEditTraining: (e: boolean, v: number, d: TrainingSpecialty) => void;
   onSave: () => void;
 }
 const TrainingInformation = ({
   training,
   handleAddTraining,
+  handleEditTraining,
   onSave,
 }: TrainingProps) => {
   const [trainingSelected, setTrainingSelected] = useState<number | null>(null);
@@ -56,6 +62,9 @@ const TrainingInformation = ({
     setOpenAddTraining(false);
     reset({});
   };
+  const handleDelete = (id: number) => {
+    axiosInstance.delete(`/trainingSpecialty/${id}`).then(() => onSave?.());
+  };
   return (
     <>
       <span className="specialist-info-title">Capacitaciones</span>
@@ -86,6 +95,8 @@ const TrainingInformation = ({
                   datos={train.trainingSpecialistName}
                   id={train.id}
                   handleFuntion={handleAddTraining}
+                  handleEdit={handleEditTraining}
+                  handleDelete={handleDelete}
                 />
               )}
             </div>

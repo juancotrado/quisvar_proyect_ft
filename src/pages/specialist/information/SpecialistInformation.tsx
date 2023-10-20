@@ -2,10 +2,12 @@ import { useParams } from 'react-router-dom';
 import './specialistInformation.css';
 import { getIconDefault } from '../../../utils/tools';
 import {
+  AreaSpecialty,
   Experience,
   SpecialistProject,
   Specialists,
   Training,
+  TrainingSpecialty,
 } from '../../../types/types';
 import { useCallback, useEffect, useState } from 'react';
 import { URL, axiosInstance } from '../../../services/axiosInstance';
@@ -16,9 +18,10 @@ import {
   isOpenAddTraining$,
 } from '../../../services/sharingSubject';
 import CardAddExperience from '../../../components/shared/card/cardAddExperience/CardAddExperience';
-import { ExperienceTable, TrainingTable } from '../../../components';
-import { sumAllExperience } from '../../../utils/experienceFunctions/experienceFunctions';
 import CardAddTraining from '../../../components/shared/card/cardAddTraining/CardAddTraining';
+
+import ExperienceInformation from './experience/ExperienceInformation';
+import TrainingInformation from './training/TrainingInformation';
 
 const SpecialistInformation = () => {
   const { infoId } = useParams();
@@ -26,29 +29,12 @@ const SpecialistInformation = () => {
   const [experiences, setExperiences] = useState<Experience[]>();
   const [training, setTraining] = useState<Training[]>();
   const [projectSelected, setProjectSelected] = useState<number | null>(null);
-  const [experienceSelected, setExperienceSelected] = useState<number | null>(
-    null
-  );
-  const [trainingSelected, setTrainingSelected] = useState<number | null>(null);
+
   const toggleDetailProject = (projectID: number) => {
     if (projectSelected === projectID) {
       setProjectSelected(null);
     } else {
       setProjectSelected(projectID);
-    }
-  };
-  const toggleDetailExperience = (experienceID: number) => {
-    if (experienceSelected === experienceID) {
-      setExperienceSelected(null);
-    } else {
-      setExperienceSelected(experienceID);
-    }
-  };
-  const toggleDetailTraining = (trainingID: number) => {
-    if (trainingSelected === trainingID) {
-      setTrainingSelected(null);
-    } else {
-      setTrainingSelected(trainingID);
     }
   };
   const getSpecialist = useCallback(() => {
@@ -58,12 +44,12 @@ const SpecialistInformation = () => {
   }, [infoId]);
   const getExperience = useCallback(() => {
     axiosInstance
-      .get(`/areaSpecialty/${infoId}`)
+      .get(`/areaSpecialtyList/${infoId}`)
       .then(item => setExperiences(item.data));
   }, [infoId]);
   const getTraining = useCallback(() => {
     axiosInstance
-      .get(`/trainingSpecialty/${infoId}`)
+      .get(`/trainingSpecialtyList/${infoId}`)
       .then(item => setTraining(item.data));
   }, [infoId]);
   useEffect(() => {
@@ -72,8 +58,6 @@ const SpecialistInformation = () => {
     getTraining();
     return () => {
       setProjectSelected(null);
-      setExperienceSelected(null);
-      setTrainingSelected(null);
     };
   }, [getExperience, getSpecialist, getTraining]);
 
@@ -85,88 +69,58 @@ const SpecialistInformation = () => {
     });
     return date;
   };
-  const handleAddExperience = () => {
-    isOpenAddExperience$.setSubject = true;
+  const handleAddExperience = (value: boolean, identifier: number) => {
+    isOpenAddExperience$.setSubject = {
+      isOpen: value,
+      id: identifier,
+    };
   };
-  const handleAddTraining = () => {
-    isOpenAddTraining$.setSubject = true;
+  const handleEditExperience = (
+    value: boolean,
+    identifier: number,
+    data: AreaSpecialty
+  ) => {
+    isOpenAddExperience$.setSubject = {
+      isOpen: value,
+      id: identifier,
+      data,
+    };
   };
-
+  const handleAddTraining = (value: boolean, identifier: number) => {
+    isOpenAddTraining$.setSubject = {
+      isOpen: value,
+      id: identifier,
+    };
+  };
+  const handleEditTraining = (
+    value: boolean,
+    identifier: number,
+    data: TrainingSpecialty
+  ) => {
+    isOpenAddTraining$.setSubject = {
+      isOpen: value,
+      id: identifier,
+      data,
+    };
+  };
   return (
     <>
       <div className="specialist-experience">
         <section className="specialist-info-exp">
-          <span className="specialist-info-title">Especialidades</span>
-          <div className="specialist-more-info">
-            {experiences &&
-              experiences.map((experience, idx) => {
-                const res = sumAllExperience(experience.datos);
-                return (
-                  <div className="smi-container" key={experience.specialtyName}>
-                    <div
-                      className="smi-items"
-                      onClick={() => toggleDetailExperience(idx)}
-                    >
-                      <div className="smi-specialty-name">
-                        <h3>Especialidad: </h3>
-                        <h4>{experience.specialtyName}</h4>
-                      </div>
-                      <div className="smi-specialty-name">
-                        <h3>Años de experiencia: </h3>
-                        <h4>{`${res.totalYears} año(s) y ${res.totalMonths} mes(es)`}</h4>
-                      </div>
-                      <img
-                        src="/svg/down.svg"
-                        alt=""
-                        style={{ width: '20px' }}
-                      />
-                    </div>
-                    {experienceSelected === idx &&
-                      experience.datos.length > 0 && (
-                        <ExperienceTable datos={experience.datos} />
-                      )}
-                  </div>
-                );
-              })}
-            <span className="smi-add-specialty" onClick={handleAddExperience}>
-              <img src="/svg/plus.svg" alt="" style={{ width: '12px' }} />
-              <h3>Añadir especialidad</h3>
-            </span>
-          </div>
+          <ExperienceInformation
+            onSave={getExperience}
+            handleAddExperience={handleAddExperience}
+            handleEditExperience={handleEditExperience}
+            experiences={experiences}
+          />
         </section>
         <section className="specialist-info-exp">
-          <span className="specialist-info-title">Capacitaciones</span>
-          <div className="specialist-more-info">
-            {training &&
-              training.map((train, idx) => (
-                <div className="smi-container" key={train.trainingName}>
-                  <div
-                    className="smi-items"
-                    onClick={() => toggleDetailTraining(idx)}
-                  >
-                    <div className="smi-specialty-name">
-                      <h3>Tipo de capacitacion: </h3>
-                      <h4>{train.trainingName}</h4>
-                    </div>
-                    <div className="smi-specialty-name">
-                      <h3>Cantidad: </h3>
-                      <h4>
-                        {train.datos.length} {`certificado(s)`}
-                      </h4>
-                    </div>
-                    <img src="/svg/down.svg" alt="" style={{ width: '20px' }} />
-                  </div>
-                  {trainingSelected === idx && train.datos.length > 0 && (
-                    <TrainingTable datos={train.datos} />
-                  )}
-                </div>
-              ))}
-
-            <span className="smi-add-specialty" onClick={handleAddTraining}>
-              <img src="/svg/plus.svg" alt="" style={{ width: '12px' }} />
-              <h3>Añadir capacitación</h3>
-            </span>
-          </div>
+          <TrainingInformation
+            training={training}
+            onSave={getTraining}
+            handleAddTraining={handleAddTraining}
+            handleEditTraining={handleEditTraining}
+          />
         </section>
       </div>
       <div className="specialist-data">
@@ -215,7 +169,7 @@ const SpecialistInformation = () => {
         </div>
         <hr className="specialist-hr" />
         <div className="specialist-projects-list">
-          <h3>Proyectos</h3>
+          <h3 className="specialist-sub-title">Proyectos</h3>
           {data &&
             data?.projects.map(({ project }: SpecialistProject) => (
               <div

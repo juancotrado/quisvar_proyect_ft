@@ -7,7 +7,7 @@ import { AreaSpecialty } from '../../../../types/types';
 import Button from '../../button/Button';
 import { Subscription } from 'rxjs';
 import { isOpenAddExperience$ } from '../../../../services/sharingSubject';
-import { useParams } from 'react-router-dom';
+// import { useParams } from 'react-router-dom';
 import { axiosInstance } from '../../../../services/axiosInstance';
 
 interface CardExperienceProps {
@@ -16,24 +16,37 @@ interface CardExperienceProps {
 
 const CardAddExperience = ({ onSave }: CardExperienceProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const { infoId } = useParams();
+  const [hasId, setHasId] = useState<number>();
+  const [data, setData] = useState<AreaSpecialty>();
+  console.log(data);
+
   const handleIsOpen = useRef<Subscription>(new Subscription());
   const {
     register,
     handleSubmit,
-    // setValue,
+    setValue,
     reset,
     // watch,
     formState: { errors },
   } = useForm<AreaSpecialty>();
   useEffect(() => {
-    handleIsOpen.current = isOpenAddExperience$.getSubject.subscribe(value =>
-      setIsOpen(value)
-    );
+    handleIsOpen.current = isOpenAddExperience$.getSubject.subscribe(value => {
+      setIsOpen(value.isOpen);
+      setHasId(value.id);
+      setData(value.data);
+    });
     return () => {
       handleIsOpen.current.unsubscribe();
     };
   }, []);
+  useEffect(() => {
+    if (!data) return;
+    setValue('institution', data.institution);
+    setValue('startDate', data.startDate);
+    setValue('untilDate', data.untilDate);
+    // setValue('file', data.file);
+  }, [data, setValue]);
+
   const closeFunctions = () => {
     setIsOpen(false);
     reset({});
@@ -43,13 +56,13 @@ const CardAddExperience = ({ onSave }: CardExperienceProps) => {
 
     const startDate = data.startDate.toString() ?? '';
     const untilDate = data.untilDate.toString() ?? '';
-    const specialistId = infoId?.toString() ?? '';
+    const areaSpecialtyNameId = hasId?.toString() ?? '';
     const formData = new FormData();
-    formData.append('specialtyName', data.specialtyName);
+    // formData.append('specialtyName', data.specialtyName);
     formData.append('institution', data.institution);
     formData.append('startDate', startDate);
     formData.append('untilDate', untilDate);
-    formData.append('specialistId', specialistId);
+    formData.append('areaSpecialtyNameId', areaSpecialtyNameId);
     formData.append('file', files);
     const headers = {
       'Content-type': 'multipart/form-data',
@@ -66,16 +79,9 @@ const CardAddExperience = ({ onSave }: CardExperienceProps) => {
         <span className="close-icon" onClick={closeFunctions}>
           <img src="/svg/close.svg" alt="pencil" />
         </span>
-        <h1>Registrar Experiencia</h1>
+        <h1>{data ? 'Editar' : 'Registrar'} Experiencia</h1>
 
         <div className="specialist-col">
-          <Input
-            label="Nombre de Especialidad"
-            placeholder="Nombre"
-            {...register('specialtyName')}
-            name="specialtyName"
-            errors={errors}
-          />
           <Input
             label="Institucion"
             placeholder="Institucion"
@@ -108,7 +114,9 @@ const CardAddExperience = ({ onSave }: CardExperienceProps) => {
             errors={errors}
           />
         </div>
-        <Button text="Guardar" type="submit" />
+        <div className="add-ex-btn-area">
+          <Button text="Guardar" type="submit" className="add-ex-btn" />
+        </div>
       </form>
     </Modal>
   );

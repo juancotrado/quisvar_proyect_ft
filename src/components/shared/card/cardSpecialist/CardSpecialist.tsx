@@ -47,7 +47,7 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
     formData.append('degree', data.degree);
     formData.append('fileAgreement', fileAgreement);
     formData.append('fileCv', fileCv);
-    formData.append('price', data.price);
+    formData.append('price', '3000');
     formData.append('CIP', data.CIP);
     formData.append('email', data.email);
     const headers = {
@@ -143,13 +143,13 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
             name="phone"
             errors={errors}
           />
-          <Input
+          {/* <Input
             label="Tarifa"
             placeholder="S/. 00.00"
             {...register('price')}
             name="price"
             errors={errors}
-          />
+          /> */}
         </div>
         <div className="specialist-col">
           <Input

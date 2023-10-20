@@ -1,4 +1,9 @@
-import { ProjectReport, ExcelData, UserAttendance } from '../types/types';
+import {
+  ProjectReport,
+  ExcelData,
+  UserAttendance,
+  RangeDays,
+} from '../types/types';
 import * as ExcelJS from 'exceljs';
 import { getTimeOut, parseUTC } from './formatDate';
 import {
@@ -9,7 +14,22 @@ import {
   getPrice,
   moneyFormat,
 } from './excelGenerate/utils/excelTools';
+import { getDaysHistory, transformDaysObject } from './tools';
 
+const normalizeDayArr = (days: (RangeDays | RangeDays[])[]) => {
+  const result = days.map(el => {
+    if (el instanceof Array && el.length > 0) {
+      const otherResul = el.map(eli => {
+        return Object.values(eli).join(': ');
+      });
+      return otherResul.join(' ; ');
+    } else {
+      return Object.values(el).join(': ');
+    }
+  });
+
+  return result;
+};
 const excelReport = async (
   data: ProjectReport[],
   infoData: ExcelData,
@@ -79,6 +99,13 @@ const excelReport = async (
       const getDays = (
         getTimeOut(subTask.assignedAt || '', subTask.untilDate || '') / 24
       ).toFixed(1);
+      const daysHistory = getDaysHistory(
+        subTask.feedBacks,
+        subTask.assignedAt || ''
+      );
+      console.log('daysHistory', daysHistory);
+      const rangeDays = transformDaysObject(daysHistory);
+      console.log('daysHistory', rangeDays);
       const subtaskRow = wk.insertRow(rowNumber, [
         null,
         subTask.item,
@@ -91,6 +118,35 @@ const excelReport = async (
         null,
         getDays + 'Dias',
       ]);
+
+      const normalizerRangeDays = normalizeDayArr(rangeDays);
+      for (let l = 0; l < normalizerRangeDays.length; l++) {
+        subtaskRow.getCell(11 + l).value = normalizerRangeDays[l];
+        subtaskRow.getCell(11 + l).border = {
+          top: { style: 'thin' },
+          left: { style: 'thin' },
+          right: { style: 'thin' },
+          bottom: { style: 'thin' },
+        };
+        const color =
+          normalizerRangeDays[l].includes('C') &&
+          normalizerRangeDays[l].includes('E')
+            ? 'F8C5C5'
+            : normalizerRangeDays[l].includes('C')
+            ? '83A8F0'
+            : '87E4BD';
+        subtaskRow.getCell(11 + l).fill = {
+          type: 'pattern',
+          pattern: 'solid',
+          fgColor: { argb: color },
+        };
+        const columWidth = Math.max(
+          wk.getColumn(11 + l).width ?? 0,
+          6 * normalizerRangeDays[l].split(';').length
+        );
+        wk.getColumn(11 + l).width = columWidth;
+      }
+
       borderReportStyle(subtaskRow);
       subtaskRow.getCell('C').font = {
         bold: true,
@@ -171,7 +227,7 @@ const excelReport = async (
     horizontal: 'center',
   };
 
-  wk.pageSetup.printArea = 'A1:K' + (endLine + 13);
+  wk.pageSetup.printArea = 'A1:Q' + (endLine + 13);
   exportExcel('userReport', workbook);
 };
 

@@ -1,4 +1,4 @@
-import { Level } from '../types/types';
+import { Feedback, Level, RangeDays } from '../types/types';
 
 export const findProject = (data: Level[]): boolean => {
   let existProyect = false;
@@ -36,4 +36,143 @@ export const generateUniqueColorForDNI = (dni: string) => {
     .padStart(2, '0')}${b.toString(16).padStart(2, '0')}`;
 
   return hexadecimalColo;
+};
+
+export const getDayDiferency = (firsDate: string, lastDate: string) => {
+  const untilDateTime =
+    new Date(lastDate).getTime() - new Date(firsDate).getTime();
+  const transformToDays =
+    Math.floor((untilDateTime / 1000 / 60 / 60 / 24) * 10) / 10;
+  return transformToDays;
+};
+export const getDaysHistory = (
+  feedBacks: Feedback[],
+  assignedAt: string
+): RangeDays[] => {
+  const dayEmployee = getDayDiferency(assignedAt, feedBacks[0].createdAt);
+  const result = [{ participant: 'E', day: dayEmployee }];
+  for (const i in feedBacks) {
+    const dayCoordinator = getDayDiferency(
+      feedBacks[i].createdAt,
+      feedBacks[i].updatedAt
+    );
+    result.push({ participant: 'C', day: dayCoordinator });
+    if (!feedBacks[+i + 1]) continue;
+    const dayEmployee = getDayDiferency(
+      feedBacks[i].updatedAt,
+      feedBacks[+i + 1].createdAt
+    );
+    result.push({ participant: 'E', day: dayEmployee });
+  }
+  console.log('ASD', JSON.stringify(result, null, 2));
+  return result;
+};
+
+export const transformDays = (days: number[]) => {
+  const sumDays = days.reduce((acc, day) => +(acc + day).toFixed(1), 0);
+  if (sumDays <= 1) return [days];
+  const result = [];
+  for (let i = 0; i < days.length; i++) {
+    const intDay = Math.trunc(days[i]);
+    const floatDay = +(days[i] - intDay).toFixed(1);
+    for (let i = 0; i < intDay; i++) {
+      result.push(1);
+    }
+    if (floatDay > 0) {
+      const nextValurArr = days[i + 1];
+      const floatDays = [floatDay];
+      let sumFloatDay;
+
+      if (nextValurArr) {
+        if (+(floatDay + nextValurArr).toFixed(1) < 1) {
+          const copyDays = [...days.slice(i + 1)];
+          for (const j in copyDays) {
+            sumFloatDay = floatDays.reduce(
+              (acc, day) => +(acc + day).toFixed(1),
+              0
+            );
+            if (sumFloatDay + copyDays[j] < 1) {
+              floatDays.push(copyDays[j]);
+              days.splice(i, 1);
+            }
+          }
+        } else {
+          days[i + 1] = +(days[i + 1] - (1 - floatDay)).toFixed(1);
+          result.push([...floatDays, +(1 - floatDay).toFixed(1)]);
+          continue;
+        }
+        if (!sumFloatDay) continue;
+        days[i + 1] = +(days[i + 1] - (1 - sumFloatDay)).toFixed(1);
+        const daysPushValues = days[i + 1]
+          ? [...floatDays, +(1 - sumFloatDay).toFixed(1)]
+          : floatDays;
+        result.push(daysPushValues);
+      } else {
+        result.push(floatDays);
+      }
+    }
+  }
+  return result;
+};
+
+export const transformDaysObject = (days: RangeDays[]) => {
+  const sumDays = days.reduce((acc, { day }) => +(acc + day).toFixed(1), 0);
+  if (sumDays <= 1) return [days];
+  const result = [];
+
+  for (let i = 0; i < days.length; i++) {
+    const intDay = Math.trunc(days[i].day);
+    const floatDay = +(days[i].day - intDay).toFixed(1);
+    for (let k = 0; k < intDay; k++) {
+      result.push({ ...days[i], day: 1 });
+    }
+    if (floatDay > 0) {
+      const floatDays = [{ ...days[i], day: floatDay }];
+      const nextValurArr = days[i + 1]?.day;
+      let sumFloatDay;
+
+      if (nextValurArr) {
+        if (+(floatDay + nextValurArr).toFixed(1) < 1) {
+          const copyDays = [...days.slice(i + 1)];
+          for (const j in copyDays) {
+            sumFloatDay = floatDays.reduce(
+              (acc, { day }) => +(acc + day).toFixed(1),
+              0
+            );
+            if (sumFloatDay + copyDays[j].day < 1) {
+              console.log(sumFloatDay, copyDays[j].day);
+              floatDays.push({ ...copyDays[j], day: copyDays[j].day });
+              days.splice(i, 1);
+            }
+          }
+        } else {
+          days[i + 1] = {
+            ...days[i + 1],
+            day: +(days[i + 1].day - (1 - floatDay)).toFixed(1),
+          };
+
+          result.push([
+            ...floatDays,
+            { ...days[i + 1], day: +(1 - floatDay).toFixed(1) },
+          ]);
+          continue;
+        }
+        if (!sumFloatDay) continue;
+        days[i + 1] = {
+          ...days[i + 1],
+          day: +(days[i + 1]?.day - (1 - sumFloatDay)).toFixed(1),
+        };
+        const daysPushValues = days[i + 1]
+          ? [
+              ...floatDays,
+              { ...days[i + 1], day: +(1 - sumFloatDay).toFixed(1) },
+            ]
+          : floatDays;
+        result.push(daysPushValues);
+      } else {
+        result.push(...floatDays);
+      }
+    }
+  }
+  return result;
 };

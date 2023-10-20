@@ -850,3 +850,8 @@ export type Training = {
   trainingName: string;
   datos: TrainingSpecialty[];
 };
+
+export interface RangeDays {
+  day: number;
+  participant: string;
+}

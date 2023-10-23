@@ -32,6 +32,10 @@ export const _date = (date: Date) => {
   return parse;
 };
 
+export const formatDateToDMY = (date: string) => {
+  const dateSplit = date.split('-');
+  return `${dateSplit[2]}/${dateSplit[1]}/${dateSplit[0]}`;
+};
 export const parseUTC = (date: string) => {
   const getDate = new Date(date).getTime();
   const UTCHours = new Date().getUTCHours();

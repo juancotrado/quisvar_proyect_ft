@@ -14,7 +14,7 @@ import {
   getPrice,
   moneyFormat,
 } from './excelGenerate/utils/excelTools';
-import { getDaysHistory, transformDaysObject } from './tools';
+import { drawDaysBars, getDaysHistory, transformDaysObject } from './tools';
 
 const normalizeDayArr = (days: (RangeDays | RangeDays[])[]) => {
   const result = days.map(el => {
@@ -96,16 +96,12 @@ const excelReport = async (
 
     rowNumber++;
     project.subtasks.forEach(subTask => {
-      const getDays = (
-        getTimeOut(subTask.assignedAt || '', subTask.untilDate || '') / 24
-      ).toFixed(1);
+      const getDays = getTimeOut(subTask.assignedAt, subTask.untilDate) / 24;
       const daysHistory = getDaysHistory(
         subTask.feedBacks,
         subTask.assignedAt || ''
       );
-      console.log('daysHistory', daysHistory);
       const rangeDays = transformDaysObject(daysHistory);
-      console.log('daysHistory', rangeDays);
       const subtaskRow = wk.insertRow(rowNumber, [
         null,
         subTask.item,
@@ -118,34 +114,15 @@ const excelReport = async (
         null,
         getDays + 'Dias',
       ]);
-
-      const normalizerRangeDays = normalizeDayArr(rangeDays);
-      for (let l = 0; l < normalizerRangeDays.length; l++) {
-        subtaskRow.getCell(11 + l).value = normalizerRangeDays[l];
-        subtaskRow.getCell(11 + l).border = {
-          top: { style: 'thin' },
-          left: { style: 'thin' },
-          right: { style: 'thin' },
-          bottom: { style: 'thin' },
-        };
-        const color =
-          normalizerRangeDays[l].includes('C') &&
-          normalizerRangeDays[l].includes('E')
-            ? 'F8C5C5'
-            : normalizerRangeDays[l].includes('C')
-            ? '83A8F0'
-            : '87E4BD';
-        subtaskRow.getCell(11 + l).fill = {
-          type: 'pattern',
-          pattern: 'solid',
-          fgColor: { argb: color },
-        };
-        const columWidth = Math.max(
-          wk.getColumn(11 + l).width ?? 0,
-          6 * normalizerRangeDays[l].split(';').length
-        );
-        wk.getColumn(11 + l).width = columWidth;
-      }
+      const imageBar = drawDaysBars(rangeDays);
+      const imageId2 = workbook.addImage({
+        base64: imageBar,
+        extension: 'png',
+      });
+      wk.addImage(imageId2, {
+        tl: { col: 11, row: rowNumber - 1 },
+        ext: { width: 170 * rangeDays.length, height: 35 },
+      });
 
       borderReportStyle(subtaskRow);
       subtaskRow.getCell('C').font = {
@@ -227,7 +204,7 @@ const excelReport = async (
     horizontal: 'center',
   };
 
-  wk.pageSetup.printArea = 'A1:Q' + (endLine + 13);
+  wk.pageSetup.printArea = 'A1:K' + (endLine + 13);
   exportExcel('userReport', workbook);
 };
 

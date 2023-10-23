@@ -48,7 +48,10 @@ export const getValueByType = (value: string, type: string) => {
   return value;
 };
 
-export const getTimeOut = (assignedAt: string, untilDate: string) => {
+export const getTimeOut = (
+  assignedAt: string | undefined,
+  untilDate: string | undefined
+) => {
   if (!assignedAt || !untilDate) return 0;
   const untilDateTime =
     new Date(untilDate).getTime() - new Date(assignedAt).getTime();

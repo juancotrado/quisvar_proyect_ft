@@ -176,3 +176,49 @@ export const transformDaysObject = (days: RangeDays[]) => {
   }
   return result;
 };
+
+export const drawDaysBars = (data: (RangeDays | RangeDays[])[]) => {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+  const width = 600;
+  canvas.width = width * data.length;
+  const height = 100;
+
+  const drawBar = (x: number, day: number, participant: string) => {
+    if (!ctx) return;
+    const color = participant === 'E' ? '#92D268' : '#FFC700';
+    const width1 = day * width;
+    ctx.fillStyle = color;
+    ctx.fillRect(x, 0, width1, height);
+    ctx.strokeStyle = 'black';
+    ctx.lineWidth = 2;
+    ctx.strokeRect(x, 0, width1, height);
+    ctx.fillStyle = 'black';
+    ctx.font = 'bold 35px Arial';
+
+    ctx.textAlign = 'center';
+    ctx.fillText(day.toString(), x + width1 / 2, height / 1.5);
+  };
+  function drawCompoundBar(x: number, subBars: RangeDays[]) {
+    subBars.forEach(subBar => {
+      const width1 = subBar.day * width;
+      drawBar(x, subBar.day, subBar.participant);
+      x += width1;
+    });
+  }
+
+  let x = 0;
+
+  data.forEach(item => {
+    if (Array.isArray(item)) {
+      drawCompoundBar(x, item);
+    } else {
+      drawBar(x, item.day, item.participant);
+    }
+    x += 1 * width;
+  });
+  const myBase64Image = canvas.toDataURL('image/png'); // 'image/png' es el formato de la imagen
+
+  console.log(myBase64Image);
+  return myBase64Image;
+};

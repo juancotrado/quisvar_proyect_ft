@@ -27,6 +27,7 @@ import Task from '../pages/task/Task';
 import MailPage from '../pages/mail/MailPage';
 import MessagePage from '../pages/mail/message/MessagePage';
 import BasicsPage from '../pages/specialities/project/basics/BasicsPage';
+import CustomizableInvoice from '../pages/customizableInvoice/CustomizableInvoice';
 
 const Navigation = () => {
   return (
@@ -56,6 +57,7 @@ const Navigation = () => {
             </Route>
             <Route path="/mis-tareas" element={<ListPersonalTask />} />
             <Route path="/reportes" element={<CommingSoon />} />
+            <Route path="/factura" element={<CustomizableInvoice />} />
             <Route path="/empresas" element={<Company />}>
               <Route
                 path="informacion/:infoId"

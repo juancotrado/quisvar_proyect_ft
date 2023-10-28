@@ -34,6 +34,8 @@ import CardCompany from './shared/card/cardCompany/CardCompany';
 import ExperienceTable from './experience/ExperienceTable';
 import CardAddTraining from './shared/card/cardAddTraining/CardAddTraining';
 import TrainingTable from './training/TrainingTable';
+import Equipment from './userList/uploadUserFile/equipment/Equipment';
+import CardAssign from './shared/card/CardAssign/CardAssign';
 
 export {
   Alert,
@@ -42,6 +44,7 @@ export {
   InputRange,
   ProtectedRoute,
   CardAddTraining,
+  CardAssign,
   CardCompany,
   CardRegisterUser,
   CardRegisterArea,
@@ -72,4 +75,5 @@ export {
   CardLicense,
   ExperienceTable,
   TrainingTable,
+  Equipment,
 };

@@ -1,24 +1,30 @@
-import { ChangeEvent, useMemo, useState } from 'react';
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import './userList.css';
 import {
+  CardAssign,
   CardGenerateReport,
   CardOpenFile,
   CardRegisterUser,
   CardViewDocs,
+  Equipment,
   Input,
 } from '../../components';
 import Button from '../../components/shared/button/Button';
 import {
+  isOpenCardAddEquipment$,
+  isOpenCardAssing$,
   isOpenCardFiles$,
   isOpenCardGenerateReport$,
   isOpenCardRegisterUser$,
   isOpenViewDocs$,
 } from '../../services/sharingSubject';
-import { User } from '../../types/types';
+import { User, WorkStation } from '../../types/types';
 import UserInfo from '../../components/users/UserInfo';
 import { AppDispatch, RootState } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
 import { getListUsers } from '../../store/slices/listUsers.slice';
+import CardAddEquipment from '../../components/shared/card/CardAddEquipment/CardAddEquipment';
+import { axiosInstance } from '../../services/axiosInstance';
 
 const UsersList = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -28,10 +34,18 @@ const UsersList = () => {
   const [isArchived, setIsArchived] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [printReportId, setPrintReportId] = useState<number>();
+  const [workStations, setWorkStations] = useState<WorkStation[]>();
 
   const getUsers = async () => {
     dispatch(getListUsers());
   };
+  const getWorkStations = useCallback(() => {
+    axiosInstance.get('/workStation').then(res => setWorkStations(res.data));
+  }, []);
+
+  useEffect(() => {
+    getWorkStations();
+  }, [getWorkStations]);
 
   const filterList = useMemo(() => {
     if (!users) return [];
@@ -67,6 +81,15 @@ const UsersList = () => {
     setUserDocs(value);
     isOpenViewDocs$.setSubject = true;
   };
+  const handleOpenAddEquipment = () => {
+    isOpenCardAddEquipment$.setSubject = true;
+  };
+  const handleOpenAssing = (id: number) => {
+    isOpenCardAssing$.setSubject = {
+      isOpen: true,
+      id,
+    };
+  };
   return (
     <div className="content-list">
       <div className="user-list">
@@ -90,6 +113,11 @@ const UsersList = () => {
                 isArchived ? 'btn-filter-unavailable' : 'btn-filter-available'
               }`}
               onClick={() => setIsArchived(!isArchived)}
+            />
+            <Button
+              text="Equipos"
+              className="userList-btn"
+              // onClick={handleOpenCardFiles}
             />
             <Button
               text="Ver Archivos"
@@ -128,6 +156,27 @@ const UsersList = () => {
           />
         ))}
       </div>
+      <div className="user-list-equipment">
+        <div className="ule-header">
+          <h4>Equipos</h4>
+          <Button
+            text="Agregar Equipo"
+            icon="plus"
+            className="userList-btn"
+            onClick={handleOpenAddEquipment}
+          />
+        </div>
+        {workStations &&
+          workStations.map(workStation => (
+            <Equipment
+              data={workStation}
+              openCard={handleOpenAssing}
+              key={workStation.id}
+            />
+          ))}
+      </div>
+      <CardAddEquipment />
+      <CardAssign />
       <CardGenerateReport employeeId={printReportId} />
       <CardOpenFile />
       <CardViewDocs user={userDocs} />
@@ -140,6 +189,7 @@ const UsersList = () => {
           getUsers();
           setUserData(null);
         }}
+        workStations={workStations}
       />
     </div>
   );

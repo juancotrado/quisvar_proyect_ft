@@ -48,11 +48,17 @@ interface OpenEspecialistTrainingDescription {
   id: number;
   data?: TrainingSpecialty;
 }
+interface OpenAssignCard {
+  isOpen: boolean;
+  id: number;
+}
 export const loader$ = new SubjectManager<boolean>();
 export const toggle$ = new SubjectManager<boolean>();
 export const isOpenModal$ = new SubjectManager<boolean>();
 export const isGenerateExcelReport$ = new SubjectManager<string>();
 export const isOpenCardRegisterUser$ = new SubjectManager<boolean>();
+export const isOpenCardAddEquipment$ = new SubjectManager<boolean>();
+export const isOpenCardAssing$ = new SubjectManager<OpenAssignCard>();
 export const isOpenCardGenerateReport$ = new SubjectManager<boolean>();
 export const isOpenCardCompany$ = new SubjectManager<boolean>();
 export const isOpenCardSpecialist$ = new SubjectManager<CardSpecialistProps>();

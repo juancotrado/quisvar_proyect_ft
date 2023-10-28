@@ -36,6 +36,7 @@
 
 .user-list {
   width: 100%;
+  height: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -130,4 +131,13 @@
 
 .userList-upload {
   height: 100%;
+}
+
+.user-list-equipment {
+  width: 470px;
+  height: 100vh;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
 }

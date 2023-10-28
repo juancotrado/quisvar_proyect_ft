@@ -1,5 +1,4 @@
 import { ListUsers } from '../../../../types/types';
-import DefaultUserImage from '../../../shared/defaultUserImage/DefaultUserImage';
 import './moreInfoUsers.css';
 interface MoreInfoUsersProps {
   users: ListUsers[];
@@ -9,7 +8,9 @@ const MoreInfoUsers = ({ users }: MoreInfoUsersProps) => {
     <div className="moreInfoUsers-datails-contain moreInfoUsers-datails-absolute">
       {users.map(user => (
         <div className="moreInfoUsers-users-contain">
-          <DefaultUserImage user={user} />
+          <p className="moreInfoUsers-user-names">
+            - {user.firstName} {user.lastName}
+          </p>
           <span className="moreInfoUsers-count">x{user.count}</span>
         </div>
       ))}

@@ -1,12 +1,10 @@
 .moreInfoUsers-details-contain {
   cursor: pointer;
   display: flex;
-
-  gap: 1rem;
+  flex-direction: column;
 }
+
 .moreInfoUsers-datails-absolute {
-  display: flex;
-  gap: 1rem;
   position: absolute;
   border-radius: 0.4375rem;
   padding: 0.5rem;
@@ -16,16 +14,25 @@
   margin-top: 1.7rem;
   z-index: 1;
 }
+
+.moreInfoUsers-user-names {
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
 .moreInfoUsers-users-contain {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   gap: 0.2rem;
   text-align: left;
 }
+
 .moreInfoUsers-count {
-  font-size: 1rem;
+  font-size: rem;
   font-weight: 600;
 }
+
 .moreInfoUsers-info {
   font-size: 0.7rem;
   font-weight: 600;

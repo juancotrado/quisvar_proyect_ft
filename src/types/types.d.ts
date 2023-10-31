@@ -158,6 +158,8 @@ export type User = {
   contract: string | null;
   cv: string | null;
   declaration: string | null;
+  ruc: string;
+  address: string;
 };
 type Profile = {
   id: number;
@@ -345,6 +347,8 @@ export interface UserForm {
   dni: string;
   phone: string;
   degree: string;
+  address: string;
+  ruc: string;
   description: string;
   job: string;
   cv: FileList | null;
@@ -864,4 +868,29 @@ export type AreaSpecialtyName = {
 export interface RangeDays {
   day: number;
   participant: string;
+}
+export interface WorkStation {
+  id: number;
+  name: string;
+  total: number;
+  doc: string;
+  description: string;
+  price: string;
+  equipment: Equipment[];
+}
+export interface Equipment {
+  id: number;
+  name: string;
+  doc: string;
+  description: string;
+  userId: number;
+  workStationId: number;
+  user?: {
+    id: number;
+    profile: {
+      firstName: string;
+      lastName: string;
+      dni: string;
+    };
+  };
 }

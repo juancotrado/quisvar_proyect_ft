@@ -7,7 +7,7 @@ import { isOpenCardRegisterUser$ } from '../../../../services/sharingSubject';
 import Button from '../../button/Button';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import InputText from '../../Input/Input';
-import { UserForm, User } from '../../../../types/types';
+import { UserForm, User, WorkStation } from '../../../../types/types';
 import { validateEmail } from '../../../../utils/customValidatesForm';
 import { Input } from '../../..';
 import { Subscription } from 'rxjs';
@@ -15,6 +15,7 @@ interface CardRegisterUserProps {
   onSave?: () => void;
   onClose?: () => void;
   user?: User | null;
+  workStations?: WorkStation[];
 }
 
 const InitialValues: UserForm = {
@@ -26,15 +27,23 @@ const InitialValues: UserForm = {
   dni: '',
   phone: '',
   degree: '',
+  address: '',
+  ruc: '',
   description: '',
   job: '',
   cv: null,
   declaration: null,
 };
 
-const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
+const CardRegisterUser = ({
+  user,
+  onSave,
+  onClose,
+  workStations,
+}: CardRegisterUserProps) => {
   const [data, setData] = useState<UserForm>(InitialValues);
   const [isOpen, setIsOpen] = useState(false);
+  const [stationId, setStationId] = useState<number>();
   const handleIsOpen = useRef<Subscription>(new Subscription());
 
   useEffect(() => {
@@ -79,12 +88,15 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
     setValue('job', data.job);
     setValue('degree', data.degree);
     setValue('description', data.description);
+    setValue('address', data.address);
+    setValue('ruc', data.ruc);
   }, [data]);
 
   const onSubmit: SubmitHandler<UserForm> = async data => {
     const fileCv = data.cv?.[0] as File;
     const fileDeclaration = data.declaration?.[0] as File;
     const formData = new FormData();
+    const workStationId = stationId;
     formData.append('fileUser', fileCv);
     formData.append('fileUser', fileDeclaration);
     formData.append('id', data.id + '');
@@ -97,6 +109,8 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
     formData.append('lastName', data.lastName);
     formData.append('password', data.password);
     formData.append('phone', data.phone);
+    formData.append('address', data.address);
+    formData.append('ruc', data.ruc);
     if (data.id) {
       axiosInstance.put(`/profile/${data.id}`, data).then(successfulShipment);
     } else {
@@ -196,6 +210,12 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
             name="email"
           />
           <InputText
+            {...register('address')}
+            placeholder="Dirección"
+            label="Dirección"
+            errors={errors}
+          />
+          <InputText
             {...register('phone')}
             placeholder="Celular"
             label="Celular"
@@ -225,6 +245,37 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
             errors={errors}
             label="Cargo"
           />
+          <InputText
+            {...register('ruc')}
+            placeholder="ruc"
+            type="text"
+            errors={errors}
+            label="ruc"
+          />
+        </div>
+        <div className="col-station-area">
+          <label className="input-label">Asignar equipo</label>
+          <div className="user-station-list">
+            {workStations &&
+              workStations.map(workStation => {
+                const [name, number] = workStation.name.split(' ');
+                const slot = workStation.total - workStation.equipment.length;
+                return (
+                  <div className="user-station-pc" key={workStation.id}>
+                    <h3>{name[0] + '-' + number}</h3>
+                    <span
+                      className="user-station"
+                      onClick={() =>
+                        setStationId(slot > 0 ? workStation.id : undefined)
+                      }
+                    >
+                      <img src="/svg/pc-icon.svg" className="ule-icon-size" />
+                      {slot}
+                    </span>
+                  </div>
+                );
+              })}
+          </div>
         </div>
         {!user?.id && (
           <>

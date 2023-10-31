@@ -5,12 +5,13 @@ import InputFile from '../../Input/InputFile';
 import Button from '../../button/Button';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { MessageType } from '../../../../types/types';
-import { PDFDownloadLink, PDFViewer } from '@react-pdf/renderer';
+import { PDFDownloadLink } from '@react-pdf/renderer';
 import { ServiceOrderPdf } from '../../serviceOrderPdf/ServiceOrderPdf';
 import {
   addFilesList,
   deleteFileOnList,
 } from '../../../../utils/files/files.utils';
+import ReceiptOfPaymentPdf from '../../receiptOfPaymentPdf/ReceiptOfPaymentPdf';
 
 interface CardRegisterVoucherProps {
   message: MessageType;
@@ -50,6 +51,16 @@ const CardRegisterVoucher = ({ message, onSave }: CardRegisterVoucherProps) => {
         </figure>
         Descargar Orden de Servicio
       </PDFDownloadLink>
+      <PDFDownloadLink
+        document={<ReceiptOfPaymentPdf />}
+        fileName={`asdasdS.pdf`}
+        className="cardRegisteVoucher-service-orden"
+      >
+        <figure className="cardRegisteVoucher-figure">
+          <img src={`/svg/index-icon.svg`} />
+        </figure>
+        Descargar Orden de Servicio
+      </PDFDownloadLink>
 
       <h3 className="cardRegisterVoucher-subTitle">
         Suba su recibo por honorarios y su orden de servicios firmado:
@@ -72,7 +83,6 @@ const CardRegisterVoucher = ({ message, onSave }: CardRegisterVoucherProps) => {
           ))}
         </div>
       )}
-
       <Button onClick={handleSendVoucher} text="Enviar RC" />
     </div>
   );

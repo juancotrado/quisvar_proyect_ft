@@ -33,6 +33,7 @@ import { isResizing$ } from '../../../services/sharingSubject';
 import CardRegisterMessageUpdate from '../../../components/shared/card/cardRegisterMessageUpdate/CardRegisterMessageUpdate';
 import { generateReportPDF } from '../../../components/shared/generatePdf/GeneratePdf';
 import { PDFViewer } from '@react-pdf/renderer';
+import { typeStatus } from '../utils';
 
 const spring = {
   type: 'spring',
@@ -274,7 +275,7 @@ const MessagePage = () => {
             <span
               className={`message-card-status-message message-status-${message.status}`}
             >
-              {message.status}
+              {typeStatus[message.status]}
             </span>
           </div>
         </div>
@@ -294,30 +295,32 @@ const MessagePage = () => {
             {generateReportPDF({ data }, { size: 'A4' })}
           </PDFViewer>
 
-          <div className="message-container-files-grid">
-            <div style={{ display: 'flex', gap: '1rem' }}>
-              {files[0].files.map(({ id, name, path }) => (
-                <ChipFileMessage
-                  className="pointer message-files-list"
-                  key={id}
-                  text={parseName(name)}
-                  link={path + '/' + name}
-                />
-              ))}
+          {files.length > 0 && (
+            <div className="message-container-files-grid">
+              <div style={{ display: 'flex', gap: '1rem' }}>
+                {files[0].files.map(({ id, name, path }) => (
+                  <ChipFileMessage
+                    className="pointer message-files-list"
+                    key={id}
+                    text={parseName(name)}
+                    link={path + '/' + name}
+                  />
+                ))}
+              </div>
+              <div className="message-sender-info">
+                <span className="message-sender-name">
+                  Enviado por{' '}
+                  <b>
+                    {message.userInit.user.profile.lastName}{' '}
+                    {message.userInit.user.profile.firstName}
+                  </b>
+                </span>
+                <span className="message-date-send">
+                  {parseDate(new Date(+files[0].id))}
+                </span>
+              </div>
             </div>
-            <div className="message-sender-info">
-              <span className="message-sender-name">
-                Enviado por{' '}
-                <b>
-                  {message.userInit.user.profile.lastName}{' '}
-                  {message.userInit.user.profile.firstName}
-                </b>
-              </span>
-              <span className="message-date-send">
-                {parseDate(new Date(+files[0].id))}
-              </span>
-            </div>
-          </div>
+          )}
           {files.length > 1 && (
             <Button
               className={`message-view-more-files-${viewMoreFiles}`}

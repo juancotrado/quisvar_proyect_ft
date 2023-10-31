@@ -10,10 +10,6 @@ export const styles = StyleSheet.create({
     fontFamily: 'Arial Narrow Bold',
     letterSpacing: 0.5,
     padding: 2,
-    borderWidth: 2,
-    justifyContent: 'center',
-    width: 200,
-    borderRadius: 20,
   },
   page: {
     flexDirection: 'column',
@@ -38,13 +34,23 @@ export const styles = StyleSheet.create({
   infoRight: {
     justifyContent: 'space-between',
   },
+  textBold: {
+    fontSize: 9,
+    fontFamily: 'Arial Narrow Bold',
+  },
   text: {
     fontSize: 9,
+    fontFamily: 'Arial Narrow',
+  },
+  textName: {
+    fontSize: 14,
+    fontFamily: 'Arial Narrow Bold',
   },
   signatureText: {
     fontSize: 9,
     paddingHorizontal: 10,
     borderTopWidth: 2,
+    fontFamily: 'Arial Narrow',
     paddingTop: 5,
   },
   footer: {

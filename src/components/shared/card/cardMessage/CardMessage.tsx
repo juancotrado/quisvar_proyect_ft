@@ -1,3 +1,4 @@
+import { typeStatus } from '../../../../pages/mail/utils';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { MessageSender, MessageType, User } from '../../../../types/types';
 import formatDate from '../../../../utils/formatDate';
@@ -63,7 +64,7 @@ const CardMessage = ({
         <>
           <div className="card-message-section-item">
             <span className={`card-status-message status-${message.status}`}>
-              {message.status.toLowerCase()}
+              {typeStatus[message.status]?.toLowerCase()}
             </span>
           </div>
           <div className="card-message-section-item">

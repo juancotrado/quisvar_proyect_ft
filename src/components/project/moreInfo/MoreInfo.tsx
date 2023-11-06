@@ -49,6 +49,12 @@ const MoreInfo = ({ data }: MoreInfoProps) => {
     type,
     data.projectName ?? data.name
   );
+  const { handleArchiver: handleArchiverEdit } = useArchiver(
+    data.id,
+    type,
+    data.projectName ?? data.name,
+    'editables'
+  );
   const handleViewUsers = () => setShowUsers(!showUsers);
   const handleArchiverOptions = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -148,7 +154,7 @@ const MoreInfo = ({ data }: MoreInfoProps) => {
               <div
                 className="moreInfo-detail"
                 title={'Comprimir Editables'}
-                onClick={handleReports}
+                onClick={handleArchiverEdit}
               >
                 <figure className="moreInfo-detail-icon">
                   <img src="/svg/zip-edit.svg" alt="W3Schools" />

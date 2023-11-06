@@ -1,7 +1,13 @@
 import { useEffect, useRef } from 'react';
 import { URL, axiosInstance } from '../services/axiosInstance';
 type TypeArchiver = 'projects' | 'levels' | 'stages';
-const useArchiver = (id: number, type: TypeArchiver, nameZip: string) => {
+type TypeZip = 'projects' | 'editables' | 'pdfs';
+const useArchiver = (
+  id: number,
+  type: TypeArchiver,
+  nameZip: string,
+  typeZip: TypeZip = 'projects'
+) => {
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
@@ -16,7 +22,7 @@ const useArchiver = (id: number, type: TypeArchiver, nameZip: string) => {
       clearTimeout(timeoutRef.current);
     }
     axiosInstance
-      .get(`/archiver/${id}?type=${type}&nameZip=${nameZip}`)
+      .get(`/archiver/${id}?type=${type}&nameZip=${nameZip}&typeZip=${typeZip}`)
       .then(res => {
         const deleteUpload = res.data.url.replace('./uploads/', '');
         const posSlash = deleteUpload.indexOf('/');

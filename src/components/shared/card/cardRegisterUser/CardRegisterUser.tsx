@@ -39,11 +39,11 @@ const CardRegisterUser = ({
   user,
   onSave,
   onClose,
-  workStations,
-}: CardRegisterUserProps) => {
+}: // workStations,
+CardRegisterUserProps) => {
   const [data, setData] = useState<UserForm>(InitialValues);
   const [isOpen, setIsOpen] = useState(false);
-  const [stationId, setStationId] = useState<number>();
+  // const [stationId, setStationId] = useState<number>();
   const handleIsOpen = useRef<Subscription>(new Subscription());
 
   useEffect(() => {
@@ -96,7 +96,7 @@ const CardRegisterUser = ({
     const fileCv = data.cv?.[0] as File;
     const fileDeclaration = data.declaration?.[0] as File;
     const formData = new FormData();
-    const workStationId = stationId;
+    // const workStationId = stationId;
     formData.append('fileUser', fileCv);
     formData.append('fileUser', fileDeclaration);
     formData.append('id', data.id + '');
@@ -253,7 +253,7 @@ const CardRegisterUser = ({
             label="ruc"
           />
         </div>
-        <div className="col-station-area">
+        {/* <div className="col-station-area">
           <label className="input-label">Asignar equipo</label>
           <div className="user-station-list">
             {workStations &&
@@ -276,7 +276,7 @@ const CardRegisterUser = ({
                 );
               })}
           </div>
-        </div>
+        </div> */}
         {!user?.id && (
           <>
             <div className="col-input">

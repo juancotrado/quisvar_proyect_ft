@@ -43,6 +43,9 @@ const UsersList = () => {
     axiosInstance.get('/workStation').then(res => setWorkStations(res.data));
   }, []);
 
+  // const getWorkStations = () => {
+  //   axiosInstance.get('/workStation').then(res => setWorkStations(res.data));
+  // };
   useEffect(() => {
     getWorkStations();
   }, [getWorkStations]);
@@ -175,8 +178,8 @@ const UsersList = () => {
             />
           ))}
       </div>
-      <CardAddEquipment />
-      <CardAssign />
+      <CardAddEquipment onSave={() => getWorkStations()} />
+      <CardAssign onSave={() => getWorkStations()} />
       <CardGenerateReport employeeId={printReportId} />
       <CardOpenFile />
       <CardViewDocs user={userDocs} />

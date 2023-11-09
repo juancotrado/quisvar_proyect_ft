@@ -238,12 +238,6 @@ const CardRegisterMessageReply = ({
         )}
       </div>
       <div className="inbox-reply-btn-submit-container">
-        <Button
-          onClick={handleDoneMessage}
-          className={`inbox-reply-btn-done`}
-          type="button"
-          text="Finalizar Tramite"
-        />
         <Button className={`inbox-reply-btn-submit`} text="Procede" />
       </div>
     </form>

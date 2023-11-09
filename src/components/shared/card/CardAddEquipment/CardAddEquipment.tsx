@@ -9,8 +9,10 @@ import InputText from '../../Input/Input';
 import { validateWhiteSpace } from '../../../../utils/customValidatesForm';
 import Button from '../../button/Button';
 import { axiosInstance } from '../../../../services/axiosInstance';
-
-const CardAddEquipment = () => {
+interface CardAddEquipmentProps {
+  onSave: () => void;
+}
+const CardAddEquipment = ({ onSave }: CardAddEquipmentProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleIsOpen = useRef<Subscription>(new Subscription());
   const {
@@ -46,7 +48,7 @@ const CardAddEquipment = () => {
       .then(successfulShipment);
   };
   const successfulShipment = () => {
-    // onSave?.();
+    onSave?.();
     setIsOpen(false);
     reset();
   };

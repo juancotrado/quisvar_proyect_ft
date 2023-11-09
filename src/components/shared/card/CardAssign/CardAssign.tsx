@@ -12,12 +12,15 @@ import { validateWhiteSpace } from '../../../../utils/customValidatesForm';
 import SelectOptions from '../../select/Select';
 import useListUsers from '../../../../hooks/useListUsers';
 
-const CardAssign = () => {
+interface CardAssingProps {
+  onSave: () => void;
+}
+
+const CardAssign = ({ onSave }: CardAssingProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hasId, setHasId] = useState<number>(0);
   const handleIsOpen = useRef<Subscription>(new Subscription());
   const { users } = useListUsers();
-  console.log(users);
 
   const {
     register,
@@ -52,7 +55,7 @@ const CardAssign = () => {
       .then(successfulShipment);
   };
   const successfulShipment = () => {
-    // onSave?.();
+    onSave?.();
     setIsOpen(false);
     reset();
   };

@@ -16,19 +16,21 @@ const Equipment = ({ data, openCard }: Equipment) => {
         <p className="ule-h3">{data.name}</p>
         <div className="ule-info">
           <p className="ule-h3">P. en uso: {data.total}</p>
-          <p className="ule-h3">P. disponibles: 2</p>
+          <p className="ule-h3">
+            P. disponibles: {data.total - data.equipment.length}
+          </p>
         </div>
         <img src="/svg/mdi_question.svg" className="ule-icon-size" />
         <img src="/svg/ep_arrow-up-bold.svg" className="ule-icon-size" />
       </div>
-      {isOpen &&
-        data.equipment.map(equipment => (
-          <div className="ule-items-area" key={equipment.id}>
-            <div className="ule-item-header">
-              <h3 className="ule-size">PANTALLA</h3>
-              <h3 className="ule-size">USUARIO</h3>
-            </div>
-            <div className="ule-item-body">
+      {isOpen && (
+        <div className="ule-items-area">
+          <div className="ule-item-header">
+            <h3 className="ule-size">PANTALLA</h3>
+            <h3 className="ule-size">USUARIO</h3>
+          </div>
+          {data.equipment.map(equipment => (
+            <div className="ule-item-body" key={equipment.id}>
               <h3 className="ule-size-pc">
                 <img src="/svg/pc-icon.svg" className="ule-icon-size" />
                 {equipment.name}
@@ -38,8 +40,9 @@ const Equipment = ({ data, openCard }: Equipment) => {
                 {equipment.user?.profile.lastName}
               </h3>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
+      )}
       <Button
         icon="pc-icon"
         imageStyle="icon-pc"

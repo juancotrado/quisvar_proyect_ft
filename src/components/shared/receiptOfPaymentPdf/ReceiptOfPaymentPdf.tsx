@@ -1,7 +1,10 @@
 import { Document, Page, Text, View } from '@react-pdf/renderer';
 import { styles } from './stylesReceiptOfPaymentPdf';
-
-const ReceiptOfPaymentPdf = () => {
+import { ServiceOrderData } from '../../../types/types';
+interface ReceiptOfPaymentPdfProps {
+  data: ServiceOrderData;
+}
+const ReceiptOfPaymentPdf = ({ data }: ReceiptOfPaymentPdfProps) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -16,17 +19,18 @@ const ReceiptOfPaymentPdf = () => {
           <Text style={styles.text}>
             {' '}
             HE RECIBIDO DE LA EMPRESA
-            <Text style={styles.textBold}> QUISVAR C Y C SRL </Text> POR
-            CONCEPTO DE :
+            <Text style={styles.textBold}>
+              {' '}
+              {data.companyName.toUpperCase()}
+            </Text>{' '}
+            POR CONCEPTO DE :
           </Text>
           <Text style={styles.text}>
-            PAGO DE ADELANTO POR SERVICOS PRESTADOS COMO COORDINADOR DE
-            INSTALACIONES SANITARIAS CORRESPONDIENTE AL 26 DE ENERO DEL 2023
-            HASTA 12 DE FEBRERO DEL 2023, SEGÚN INFORME PARCIAL DE SERVICIOS NO
-            PROFESIONALES N°001-2023-ASISTENTE DE ARQUITECTURA/ZQYJ, ADJUNTO AL
-            PRESENTE
+            {data.concept.toUpperCase()}, ADJUNTO AL PRESENTE.
           </Text>
-          <Text style={styles.textName}> ZUÑIGA QUENALLATA YHIMY JOSCET</Text>
+          <Text style={styles.textName}>
+            {data.firstName} {data.lastName}
+          </Text>
         </View>
         <View
           style={{
@@ -51,18 +55,26 @@ const ReceiptOfPaymentPdf = () => {
               <Text style={styles.headers}>TOTAL</Text>
             </View>
           </View>
-          <View style={{ ...styles.tableRow, height: 100 }}>
+          <View style={styles.tableRow}>
             <View style={{ ...styles.tableCol, width: '15%' }}>
-              <Text style={styles.headers}>ITM</Text>
+              <Text style={{ ...styles.headers, paddingVertical: 20 }}>
+                {data.payType === 'CUENTA' && data.acountNumber}
+              </Text>
             </View>
             <View style={{ ...styles.tableCol, width: '55%' }}>
-              <Text style={styles.headers}>CTA. CONTABLE</Text>
+              <Text style={{ ...styles.headers, paddingVertical: 20 }}>
+                {data.payType}
+              </Text>
             </View>
             <View style={{ ...styles.tableCol, width: '15%' }}>
-              <Text style={styles.headers}>DESCRIPCIÓN </Text>
+              <Text style={{ ...styles.headers, paddingVertical: 20 }}>
+                {data.payType === 'CHEQUE' && data.acountCheck}
+              </Text>
             </View>
             <View style={{ ...styles.tableCol, width: '15%' }}>
-              <Text style={styles.headers}>CANTIDAD</Text>
+              <Text style={{ ...styles.headers, paddingVertical: 20 }}>
+                S/. {data.amount}
+              </Text>
             </View>
           </View>
         </View>

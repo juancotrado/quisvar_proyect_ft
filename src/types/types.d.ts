@@ -21,6 +21,25 @@ export interface TypeSpecialities {
     projects: number;
   };
 }
+
+export interface ServiceOrderData {
+  firstName: string;
+  lastName: string;
+  dni: string;
+  phone: string;
+  degree: string;
+  description: string;
+  concept: string;
+  amount: string;
+  payType: string;
+  acountNumber: string;
+  acountCheck: string;
+  ruc: string;
+  address: string;
+  companyName: string;
+  companyRuc: string;
+  title: string;
+}
 export interface ReportForm {
   initialDate: string;
   untilDate: string;
@@ -672,6 +691,7 @@ export interface MessageType {
   updatedAt: Date;
   history: MessageReply[];
   voucher?: string;
+  paymentPdfData: string;
   userInit: userMessage;
 }
 export interface MessageReply {
@@ -710,6 +730,8 @@ export interface userMessage {
   role: 'MAIN' | 'SECONDARY';
   user: {
     id: number;
+    ruc: string;
+    address: string;
     profile: Pick<
       Profile,
       'firstName' | 'lastName' | 'dni' | 'phone' | 'degree' | 'description'
@@ -893,4 +915,12 @@ export interface Equipment {
       dni: string;
     };
   };
+}
+export interface ServiceOrderForm {
+  concept: string;
+  amount: string;
+  payType: string;
+  acountNumber: string;
+  acountCheck: string;
+  companyId: string;
 }

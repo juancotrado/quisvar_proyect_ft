@@ -1,8 +1,16 @@
-.xyz {
+.cardRegisterVoucher-container {
+  display: grid;
+  gap: 0.5rem;
 }
 
 .cardRegisteVoucher-figure {
   width: 1rem;
+}
+
+.cardRegisterVoucher-options {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
 }
 
 .cardRegisteVoucher-service-orden {
@@ -11,6 +19,7 @@
   color: var(--color-secondary);
   font-size: 0.7rem;
   gap: 0.5rem;
+  justify-content: space-between;
 }
 
 .cardRegisterVoucher-subTitle {
@@ -19,6 +28,7 @@
   font-style: normal;
   font-weight: 600;
   line-height: 1.5rem;
+  padding: 0;
   letter-spacing: 0.00938rem;
 }
 

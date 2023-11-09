@@ -34,6 +34,7 @@ import CardRegisterMessageUpdate from '../../../components/shared/card/cardRegis
 import { generateReportPDF } from '../../../components/shared/generatePdf/GeneratePdf';
 import { PDFViewer } from '@react-pdf/renderer';
 import { typeStatus } from '../utils';
+import GenerateOrderService from '../../../components/shared/generateOrderService/GenerateOrderService';
 
 const spring = {
   type: 'spring',
@@ -65,6 +66,9 @@ const MessagePage = () => {
   const [message, setMessage] = useState<MessageType | null>();
   const [viewMoreFiles, setViewMoreFiles] = useState(false);
   const [viewHistory, setViewHistory] = useState(false);
+  const [procedureOption, setProcedureOption] = useState<'finish' | 'continue'>(
+    'continue'
+  );
   const [countMessage, setCountMessage] = useState<quantityType[] | null>([]);
   //----------------------------------------------------------------------------
   const getFiles = (message && message.files) || [];
@@ -156,79 +160,106 @@ const MessagePage = () => {
     navigate('/tramites?refresh=true');
   };
   const isUserInitMessage = userSession.profile.id === message.userInit.userId;
-
+  const handleOptionSelect = (option: 'continue' | 'finish') =>
+    setProcedureOption(option);
   const handleResize = () => setIsResize(!isResize);
   console.log({ message });
   return (
     <div className={`message-page-container ${isResize && 'message--resize'}`}>
       {(mainReceiver || mainReceiverFinish) && (
         <div className="message-page-contain message-page-contain--right">
-          <Button
-            className="imbox-resize-icon"
-            icon={`${!isResize ? 'resize-down' : 'resize-up'}`}
-            onClick={handleResize}
-          />
-          {mainReceiver &&
-            !isUserInitMessage &&
-            message.status !== 'RECHAZADO' && (
-              <div
-                className="message-switch"
-                data-ison={isReply}
-                onClick={toggleSwitch}
-              >
-                {isReply && (
-                  <span className="message-hover-title">NO PROCEDE</span>
-                )}
-                <motion.div
-                  className={`message-handle`}
-                  layout
-                  transition={spring}
+          {message.status !== 'FINALIZADO' &&
+            message.status !== 'POR_PAGAR' && (
+              <div className="message-header-content-options  message-header--flexStart">
+                <p
+                  className={`messge-header-text-option ${
+                    procedureOption === 'continue' && 'message-option-selected'
+                  }`}
+                  onClick={() => handleOptionSelect('continue')}
                 >
-                  <span className="span-list-task">
-                    {isReply ? 'Procede' : 'No Procede'}
-                  </span>
-                </motion.div>
-                {!isReply && (
-                  <span className="message-hover-title">PROCEDE</span>
-                )}
+                  Continuar trámite
+                </p>
+                <p
+                  className={`messge-header-text-option ${
+                    procedureOption === 'finish' && 'message-option-selected'
+                  }`}
+                  onClick={() => handleOptionSelect('finish')}
+                >
+                  Finalizar tramite
+                </p>
               </div>
             )}
-          {mainReceiver &&
-            (message.status === 'PROCESO' || message.status === 'RECHAZADO') &&
-            !isUserInitMessage && (
-              <>
-                {isReply ? (
-                  <CardRegisterMessageReply
-                    message={message}
-                    quantityFiles={countMessage}
-                    senderId={mainSender?.user.id}
-                    onSave={handleSaveRegister}
-                  />
-                ) : (
-                  <CardRegisterMessageForward
-                    message={message}
-                    quantityFiles={countMessage}
-                    onSave={handleSaveRegister}
-                  />
+          {procedureOption === 'continue' ? (
+            <>
+              {mainReceiver &&
+                !isUserInitMessage &&
+                message.status !== 'RECHAZADO' && (
+                  <div
+                    className="message-switch"
+                    data-ison={isReply}
+                    onClick={toggleSwitch}
+                  >
+                    {isReply && (
+                      <span className="message-hover-title">NO PROCEDE</span>
+                    )}
+                    <motion.div
+                      className={`message-handle`}
+                      layout
+                      transition={spring}
+                    >
+                      <span className="span-list-task">
+                        {isReply ? 'Procede' : 'No Procede'}
+                      </span>
+                    </motion.div>
+                    {!isReply && (
+                      <span className="message-hover-title">PROCEDE</span>
+                    )}
+                  </div>
                 )}
-              </>
-            )}
-          {message.status == 'FINALIZADO' && mainReceiverFinish && (
-            <CardRegisterVoucher
+              {mainReceiver &&
+                (message.status === 'PROCESO' ||
+                  message.status === 'RECHAZADO') &&
+                !isUserInitMessage && (
+                  <>
+                    {isReply ? (
+                      <CardRegisterMessageReply
+                        message={message}
+                        quantityFiles={countMessage}
+                        senderId={mainSender?.user.id}
+                        onSave={handleSaveRegister}
+                      />
+                    ) : (
+                      <CardRegisterMessageForward
+                        message={message}
+                        quantityFiles={countMessage}
+                        onSave={handleSaveRegister}
+                      />
+                    )}
+                  </>
+                )}
+              {message.status == 'FINALIZADO' && mainReceiverFinish && (
+                <CardRegisterVoucher
+                  message={message}
+                  onSave={handleSaveRegister}
+                />
+              )}
+              {message.status === 'POR_PAGAR' && mainReceiverFinish && (
+                <CardRegisterVoucherDenyOrAccept
+                  message={message}
+                  onSave={handleSaveRegister}
+                />
+              )}
+              {isUserInitMessage && message.status === 'RECHAZADO' && (
+                <CardRegisterMessageUpdate
+                  message={message}
+                  receiverId={mainReceiver?.user.id}
+                  onSave={handleSaveRegister}
+                />
+              )}
+            </>
+          ) : (
+            <GenerateOrderService
               message={message}
-              onSave={handleSaveRegister}
-            />
-          )}
-          {message.status === 'POR_PAGAR' && mainReceiverFinish && (
-            <CardRegisterVoucherDenyOrAccept
-              message={message}
-              onSave={handleSaveRegister}
-            />
-          )}
-          {isUserInitMessage && message.status === 'RECHAZADO' && (
-            <CardRegisterMessageUpdate
-              message={message}
-              receiverId={mainReceiver?.user.id}
               onSave={handleSaveRegister}
             />
           )}
@@ -236,19 +267,17 @@ const MessagePage = () => {
       )}
       <div className="message-page-contain  message-page-contain--left">
         <div className="message-header-content">
-          <div className="message-heacer-content-options">
+          <div className="message-header-content-options ">
             <Button
               icon="close"
               onClick={handleClose}
               className="message-icon-close"
             />
-            {!mainReceiver && (
-              <Button
-                className="imbox-resize-icon"
-                icon={`${!isResize ? 'resize-down' : 'resize-up'}`}
-                onClick={handleResize}
-              />
-            )}
+            <Button
+              className="imbox-resize-icon"
+              icon={`${!isResize ? 'resize-down' : 'resize-up'}`}
+              onClick={handleResize}
+            />
           </div>
           <div className="message-sender-info-details">
             <div className="message-sender-info">

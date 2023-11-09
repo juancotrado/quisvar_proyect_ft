@@ -38,28 +38,41 @@ const CardRegisterVoucher = ({ message, onSave }: CardRegisterVoucherProps) => {
     await axiosInstance.patch(`/mail/voucher/${message.id}`, formData);
     onSave?.();
   };
+  const dataServiceOrder = JSON.parse(message.paymentPdfData);
   return (
     <div className="cardRegisterVoucher-container">
-      <h3 className="cardRegisterVoucher-subTitle">Orden de Servicio:</h3>
+      <h3 className="cardRegisterVoucher-subTitle">
+        FIRMA Y SUBA SUS DOCUMENTOS:
+      </h3>
       <PDFDownloadLink
-        document={ServiceOrderPdf()}
+        document={<ServiceOrderPdf data={dataServiceOrder} />}
         fileName={`asdasdS.pdf`}
         className="cardRegisteVoucher-service-orden"
       >
+        <div className="cardRegisterVoucher-options">
+          <figure className="cardRegisteVoucher-figure">
+            <img src={`/svg/payment-pdf.svg`} />
+          </figure>
+          Descargar Orden de Servicio sin firmar
+        </div>
         <figure className="cardRegisteVoucher-figure">
-          <img src={`/svg/index-icon.svg`} />
+          <img src={`/svg/download_icon.svg`} />
         </figure>
-        Descargar Orden de Servicio
       </PDFDownloadLink>
       <PDFDownloadLink
-        document={<ReceiptOfPaymentPdf />}
+        document={<ReceiptOfPaymentPdf data={dataServiceOrder} />}
         fileName={`asdasdS.pdf`}
         className="cardRegisteVoucher-service-orden"
       >
+        <div className="cardRegisterVoucher-options">
+          <figure className="cardRegisteVoucher-figure">
+            <img src={`/svg/payment-pdf.svg`} />
+          </figure>
+          Descargar Recibo de Pago sin firmar
+        </div>
         <figure className="cardRegisteVoucher-figure">
-          <img src={`/svg/index-icon.svg`} />
+          <img src={`/svg/download_icon.svg`} />
         </figure>
-        Descargar Orden de Servicio
       </PDFDownloadLink>
 
       <h3 className="cardRegisterVoucher-subTitle">

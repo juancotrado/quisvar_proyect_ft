@@ -34,7 +34,9 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  infoLeft: {},
+  infoLeft: {
+    gap: 5,
+  },
   infoRight: {
     justifyContent: 'space-between',
   },
@@ -51,6 +53,8 @@ export const styles = StyleSheet.create({
     borderWidth: 2,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    paddingVertical: 10,
+    paddingHorizontal: 5,
   },
   table: {
     width: 'auto',
@@ -76,7 +80,7 @@ export const styles = StyleSheet.create({
     borderTopWidth: 0,
   },
   signature: {
-    marginTop: 30,
+    marginTop: 150,
     flexDirection: 'row',
     justifyContent: 'space-around',
   },

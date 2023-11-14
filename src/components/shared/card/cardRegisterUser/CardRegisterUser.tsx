@@ -7,12 +7,19 @@ import { isOpenCardRegisterUser$ } from '../../../../services/sharingSubject';
 import Button from '../../button/Button';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import InputText from '../../Input/Input';
-import { UserForm, User, WorkStation } from '../../../../types/types';
-import { validateEmail } from '../../../../utils/customValidatesForm';
-import { Input } from '../../..';
+import { UserForm, User, WorkStation, Ubigeo } from '../../../../types/types';
+import {
+  validateEmail,
+  validateWhiteSpace,
+} from '../../../../utils/customValidatesForm';
+import { Input, Select } from '../../..';
 import { Subscription } from 'rxjs';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import SwornDeclarationPdf from '../../swornDeclarationPdf/SwornDeclarationPdf';
+import provincesJson from '../../../../utils/ubigeo/provincias.json';
+import distritosJson from '../../../../utils/ubigeo/distritos.json';
+import departamentsJson from '../../../../utils/ubigeo/departamentos.json';
+import axios from 'axios';
 interface CardRegisterUserProps {
   onSave?: () => void;
   onClose?: () => void;
@@ -35,17 +42,16 @@ const InitialValues: UserForm = {
   job: '',
   cv: null,
   declaration: null,
+  department: '',
+  province: '',
+  district: '',
 };
 
-const CardRegisterUser = ({
-  user,
-  onSave,
-  onClose,
-}: // workStations,
-CardRegisterUserProps) => {
+const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
   const [data, setData] = useState<UserForm>(InitialValues);
+  const [provinces, setProvinces] = useState<Ubigeo[]>([]);
+  const [districts, setDistricts] = useState<Ubigeo[]>([]);
   const [isOpen, setIsOpen] = useState(false);
-  // const [stationId, setStationId] = useState<number>();
   const handleIsOpen = useRef<Subscription>(new Subscription());
 
   useEffect(() => {
@@ -73,10 +79,27 @@ CardRegisterUserProps) => {
   useEffect(() => {
     if (user?.id) {
       const { profile, ..._data } = user;
-      setData({ ...profile, ..._data, cv: null, declaration: null });
+      setData({
+        ...profile,
+        ..._data,
+        cv: null,
+        declaration: null,
+        department: '',
+        district: '',
+        province: '',
+      });
     } else {
       setData(InitialValues);
     }
+
+    axios
+      .get(
+        'https://apiperu.dev/api/dni/73188660?api_token=b2bb916986bae680cf5bf44e01b443b70ea845b2640d33aaefde169c48abfe80'
+      )
+      .then(res => {
+        console.log(res.data);
+      })
+      .catch(err => console.log(err));
   }, [user]);
 
   useEffect(() => {
@@ -147,6 +170,25 @@ CardRegisterUserProps) => {
       : setErrorPassword({});
   };
 
+  const handleGetProvinces = (value: string) => {
+    const findDepartament = departamentsJson.find(
+      ubigeo => ubigeo.nombre_ubigeo === value
+    );
+    const idDepartament = findDepartament?.id_ubigeo;
+    const provinciasData =
+      provincesJson[idDepartament as keyof typeof provincesJson];
+    setProvinces(provinciasData);
+  };
+  const handleGetDistricts = (value: string) => {
+    const findProvice = provinces.find(
+      ubigeo => ubigeo.nombre_ubigeo === value
+    );
+    const idProvince = findProvice?.id_ubigeo;
+    const districsData =
+      distritosJson[idProvince as keyof typeof distritosJson];
+    setDistricts(districsData);
+  };
+  const dataForm = watch();
   return (
     <Modal size={50} isOpenProp={isOpen}>
       <form onSubmit={handleSubmit(onSubmit)} className="card-register-users">
@@ -177,29 +219,31 @@ CardRegisterUserProps) => {
             label="Apellidos"
           />
         </div>
-        <div className="col-input">
-          {!user && (
-            <InputText
-              {...register('password', { required: true })}
-              errors={errors}
-              placeholder="Contraseña"
-              type="password"
-              autoComplete="no"
-              label="Contraseña"
-            />
-          )}
-          {!user && (
-            <InputText
-              errors={errorPassword}
-              name="verifyPassword"
-              onBlur={e => verifyPasswords(e)}
-              placeholder="Confirmar contraseña"
-              type="password"
-              autoComplete="no"
-              label="Confirmar contraseña"
-            />
-          )}
-        </div>
+        {!user?.id && (
+          <div className="col-input">
+            {!user && (
+              <InputText
+                {...register('password', { required: true })}
+                errors={errors}
+                placeholder="Contraseña"
+                type="password"
+                autoComplete="no"
+                label="Contraseña"
+              />
+            )}
+            {!user && (
+              <InputText
+                errors={errorPassword}
+                name="verifyPassword"
+                onBlur={e => verifyPasswords(e)}
+                placeholder="Confirmar contraseña"
+                type="password"
+                autoComplete="no"
+                label="Confirmar contraseña"
+              />
+            )}
+          </div>
+        )}
         <div className="col-input">
           <InputText
             {...register('email', {
@@ -222,6 +266,46 @@ CardRegisterUserProps) => {
             placeholder="Celular"
             label="Celular"
             type="number"
+            errors={errors}
+          />
+        </div>
+        <div className="col-input">
+          <Select
+            isRelative
+            label="Departamento:"
+            {...register('department', {
+              validate: { validateWhiteSpace },
+            })}
+            name="department"
+            data={departamentsJson}
+            itemKey="nombre_ubigeo"
+            textField="nombre_ubigeo"
+            onChange={e => handleGetProvinces(e.target.value)}
+            errors={errors}
+          />
+          <Select
+            isRelative
+            label="Provincia:"
+            {...register('province', {
+              validate: { validateWhiteSpace },
+            })}
+            name="province"
+            data={provinces}
+            itemKey="nombre_ubigeo"
+            onChange={e => handleGetDistricts(e.target.value)}
+            textField="nombre_ubigeo"
+            errors={errors}
+          />
+          <Select
+            isRelative
+            label="Distrito:"
+            {...register('district', {
+              validate: { validateWhiteSpace },
+            })}
+            name="district"
+            data={districts}
+            itemKey="nombre_ubigeo"
+            textField="nombre_ubigeo"
             errors={errors}
           />
         </div>
@@ -297,8 +381,8 @@ CardRegisterUserProps) => {
                 errors={errors}
               />
               <PDFDownloadLink
-                document={<SwornDeclarationPdf />}
-                fileName={`asdasdS.pdf`}
+                document={<SwornDeclarationPdf data={dataForm} />}
+                fileName={`Declaracion-Jurada.pdf`}
                 className="generateOrderService-preview-pdf"
               >
                 <figure className="cardRegisteVoucher-figure">

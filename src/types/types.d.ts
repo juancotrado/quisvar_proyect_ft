@@ -367,6 +367,9 @@ export interface UserForm {
   phone: string;
   degree: string;
   address: string;
+  department: string;
+  province: string;
+  district: string;
   ruc: string;
   description: string;
   job: string;

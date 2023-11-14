@@ -11,6 +11,8 @@ import { UserForm, User, WorkStation } from '../../../../types/types';
 import { validateEmail } from '../../../../utils/customValidatesForm';
 import { Input } from '../../..';
 import { Subscription } from 'rxjs';
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import SwornDeclarationPdf from '../../swornDeclarationPdf/SwornDeclarationPdf';
 interface CardRegisterUserProps {
   onSave?: () => void;
   onClose?: () => void;
@@ -294,6 +296,16 @@ CardRegisterUserProps) => {
                 {...register('declaration', { required: !!user?.id })}
                 errors={errors}
               />
+              <PDFDownloadLink
+                document={<SwornDeclarationPdf />}
+                fileName={`asdasdS.pdf`}
+                className="generateOrderService-preview-pdf"
+              >
+                <figure className="cardRegisteVoucher-figure">
+                  <img src={`/svg/preview-pdf.svg`} />
+                </figure>
+                Declaracion Jurada
+              </PDFDownloadLink>
             </div>
           </>
         )}

@@ -13,7 +13,7 @@ export const styles = StyleSheet.create({
     borderWidth: 2,
     justifyContent: 'center',
     width: 200,
-    borderRadius: 20,
+    // borderRadius: 20,
   },
   page: {
     flexDirection: 'column',

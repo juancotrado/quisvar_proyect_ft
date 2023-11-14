@@ -47,7 +47,7 @@ export const ServiceOrderPdf = ({ data }: ServiceOrderPdfProps) => {
         <View style={styles.info}>
           <View style={styles.infoLeft}>
             <Text style={styles.text}>
-              Señores: {data.firstName} {data.lastName}
+              Señores: {data.firstName} sadsad asd{data.lastName}sa dad a
             </Text>
             <Text style={styles.text}>Direccion: {data.address}</Text>
             <Text style={styles.text}>Doc. Ref: {data.title}</Text>

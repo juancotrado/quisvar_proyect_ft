@@ -687,6 +687,9 @@ export interface MessageType {
   description: string;
   createdAt: Date;
   header: string;
+  filesPay: {
+    files: fileMesage[];
+  }[];
   files?: fileMesage[];
   status: MessageStatus;
   users: userMessage[];

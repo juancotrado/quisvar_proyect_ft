@@ -414,3 +414,19 @@
   height: auto;
   flex: 1;
 }
+
+.messagePage-btn-submit {
+  border-radius: 0.3125rem;
+  border: 0.8px solid var(--Primary, #0e9cd8);
+  background: var(--Primary, #0e9cd8);
+  display: flex;
+  padding: 0.5rem 0.625rem;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+.btn-submit--red {
+  background-color: #d12953;
+}

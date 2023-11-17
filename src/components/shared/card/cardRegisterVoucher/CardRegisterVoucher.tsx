@@ -96,7 +96,11 @@ const CardRegisterVoucher = ({ message, onSave }: CardRegisterVoucherProps) => {
           ))}
         </div>
       )}
-      <Button onClick={handleSendVoucher} text="Enviar RC" />
+      <Button
+        onClick={handleSendVoucher}
+        className="messagePage-btn-submit"
+        text="Enviar Documentos"
+      />
     </div>
   );
 };

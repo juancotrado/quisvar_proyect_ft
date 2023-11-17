@@ -64,6 +64,10 @@
   background-color: var(--color-bg-done);
   color: var(--color-done);
 }
+.status-PAGADO {
+  background-color: var(--color-bg-done);
+  color: var(--color-done);
+}
 
 .message-isOpen {
   background-color: #fff;

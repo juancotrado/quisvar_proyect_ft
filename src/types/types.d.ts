@@ -669,7 +669,8 @@ export type MessageStatus =
   | 'ARCHIVADO'
   | 'FINALIZADO'
   | 'GUARDADO'
-  | 'POR_PAGAR';
+  | 'POR_PAGAR'
+  | 'PAGADO';
 export type MessageTypeImbox =
   | 'INFORME'
   | 'CARTA'

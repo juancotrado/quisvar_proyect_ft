@@ -169,7 +169,8 @@ const MessagePage = () => {
       {(mainReceiver || mainReceiverFinish) && (
         <div className="message-page-contain message-page-contain--right">
           {message.status !== 'FINALIZADO' &&
-            message.status !== 'POR_PAGAR' && (
+            message.status !== 'POR_PAGAR' &&
+            message.status !== 'PAGADO' && (
               <div className="message-header-content-options  message-header--flexStart">
                 <p
                   className={`messge-header-text-option ${
@@ -255,6 +256,19 @@ const MessagePage = () => {
                   receiverId={mainReceiver?.user.id}
                   onSave={handleSaveRegister}
                 />
+              )}
+              {message.status === 'PAGADO' && (
+                <div
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <h2>Tramite Finalizado</h2>
+                </div>
               )}
             </>
           ) : (

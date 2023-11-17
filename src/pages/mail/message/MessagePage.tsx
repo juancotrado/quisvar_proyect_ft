@@ -166,30 +166,43 @@ const MessagePage = () => {
   console.log({ message });
   return (
     <div className={`message-page-container ${isResize && 'message--resize'}`}>
-      {(mainReceiver || mainReceiverFinish) && (
+      {message.status === 'PAGADO' && (
         <div className="message-page-contain message-page-contain--right">
-          {message.status !== 'FINALIZADO' &&
-            message.status !== 'POR_PAGAR' &&
-            message.status !== 'PAGADO' && (
-              <div className="message-header-content-options  message-header--flexStart">
-                <p
-                  className={`messge-header-text-option ${
-                    procedureOption === 'continue' && 'message-option-selected'
-                  }`}
-                  onClick={() => handleOptionSelect('continue')}
-                >
-                  Continuar trámite
-                </p>
-                <p
-                  className={`messge-header-text-option ${
-                    procedureOption === 'finish' && 'message-option-selected'
-                  }`}
-                  onClick={() => handleOptionSelect('finish')}
-                >
-                  Finalizar tramite
-                </p>
-              </div>
-            )}
+          <div
+            style={{
+              width: '100%',
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            <h2>Tramite Finalizado</h2>
+          </div>
+        </div>
+      )}
+      {(mainReceiver || mainReceiverFinish) && message.status !== 'PAGADO' && (
+        <div className="message-page-contain message-page-contain--right">
+          {message.status !== 'FINALIZADO' && (
+            <div className="message-header-content-options  message-header--flexStart">
+              <p
+                className={`messge-header-text-option ${
+                  procedureOption === 'continue' && 'message-option-selected'
+                }`}
+                onClick={() => handleOptionSelect('continue')}
+              >
+                Continuar trámite
+              </p>
+              <p
+                className={`messge-header-text-option ${
+                  procedureOption === 'finish' && 'message-option-selected'
+                }`}
+                onClick={() => handleOptionSelect('finish')}
+              >
+                Finalizar tramite
+              </p>
+            </div>
+          )}
           {procedureOption === 'continue' ? (
             <>
               {mainReceiver &&
@@ -256,19 +269,6 @@ const MessagePage = () => {
                   receiverId={mainReceiver?.user.id}
                   onSave={handleSaveRegister}
                 />
-              )}
-              {message.status === 'PAGADO' && (
-                <div
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <h2>Tramite Finalizado</h2>
-                </div>
               )}
             </>
           ) : (

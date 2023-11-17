@@ -6,9 +6,9 @@ Font.register({ family: 'Arial Narrow', src: ArialNarrow });
 export const styles = StyleSheet.create({
   page: {
     flexDirection: 'column',
-    paddingHorizontal: 30,
+    paddingHorizontal: 50,
     paddingVertical: 64,
-    gap: 15,
+    gap: 8,
   },
   pageA5: {
     flexDirection: 'column',
@@ -26,63 +26,31 @@ export const styles = StyleSheet.create({
     marginTop: 5,
     textAlign: 'center',
   },
-  attendance: {
-    flexDirection: 'row',
-    borderStyle: 'solid',
-    borderLeftWidth: 0,
-    borderTopWidth: 0,
-  },
-  attendanceItem: {
-    fontSize: 8,
-    width: '100%',
-    paddingVertical: 5,
-    display: 'flex',
-    textAlign: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderLeftWidth: 0,
-    borderTopWidth: 0,
-  },
-  table: {
-    width: 'auto',
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderRightWidth: 0,
-    borderBottomWidth: 0,
-  },
-  tableRow: {
-    width: '100%',
-    flexDirection: 'row',
-  },
-  tableCol: {
-    borderStyle: 'solid',
-    borderWidth: 1,
-    borderLeftWidth: 0,
-    borderTopWidth: 0,
-  },
-  totalCurrency: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 3,
-  },
-  information: {
-    margin: 'auto',
-    flexDirection: 'row',
-  },
+
   title: {
     borderStyle: 'solid',
     borderBottomWidth: 1,
     fontSize: 13,
-    // fontFamily: 'Arial Narrow Bold',
+    fontFamily: 'Arial Narrow Bold',
   },
   subtitle: {
-    fontSize: 9,
-    // fontFamily: 'Arial Narrow Bold',
+    fontSize: 11,
+    fontFamily: 'Arial Narrow Bold',
   },
   text: {
     fontSize: 11,
-    // fontFamily: 'Arial Narrow ',
+    fontFamily: 'Arial Narrow',
+    textAlign: 'justify',
+  },
+  textBold: {
+    fontFamily: 'Arial Narrow Bold',
+  },
+  signText: {
+    fontSize: 11,
+    fontFamily: 'Arial Narrow',
+    borderTopWidth: 1,
+    width: 200,
+    marginTop: 80,
+    textAlign: 'center',
   },
 });

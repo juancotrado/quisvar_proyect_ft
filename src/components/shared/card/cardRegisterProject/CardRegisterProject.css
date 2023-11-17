@@ -88,6 +88,7 @@ close-add-card.content-area {
   display: flex;
   justify-content: space-between;
   gap: 2rem;
+  align-items: flex-end;
 }
 
 .col-input-top {

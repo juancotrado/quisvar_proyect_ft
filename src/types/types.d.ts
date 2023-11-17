@@ -367,6 +367,9 @@ export interface UserForm {
   phone: string;
   degree: string;
   address: string;
+  department: string;
+  province: string;
+  district: string;
   ruc: string;
   description: string;
   job: string;
@@ -685,6 +688,9 @@ export interface MessageType {
   description: string;
   createdAt: Date;
   header: string;
+  filesPay: {
+    files: fileMesage[];
+  }[];
   files?: fileMesage[];
   status: MessageStatus;
   users: userMessage[];

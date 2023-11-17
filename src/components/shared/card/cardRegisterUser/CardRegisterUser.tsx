@@ -115,6 +115,9 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
     setValue('description', data.description);
     setValue('address', data.address);
     setValue('ruc', data.ruc);
+    setValue('department', data.department);
+    setValue('province', data.province);
+    setValue('district', data.district);
   }, [data]);
 
   const onSubmit: SubmitHandler<UserForm> = async data => {
@@ -136,6 +139,9 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
     formData.append('phone', data.phone);
     formData.append('address', data.address);
     formData.append('ruc', data.ruc);
+    formData.append('department', data.department);
+    formData.append('province', data.province);
+    formData.append('district', data.district);
     if (data.id) {
       axiosInstance.put(`/profile/${data.id}`, data).then(successfulShipment);
     } else {

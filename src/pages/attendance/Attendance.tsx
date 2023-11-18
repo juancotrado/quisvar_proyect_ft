@@ -36,6 +36,7 @@ const llamados = [
   { title: 'cuarto llamado' },
   { title: 'quinto llamado' },
   { title: 'sexto llamado' },
+  { title: 'sétimo llamado' },
 ];
 interface RangeDate {
   startDate: string;

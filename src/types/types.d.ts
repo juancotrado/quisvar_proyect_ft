@@ -672,7 +672,8 @@ export type MessageStatus =
   | 'ARCHIVADO'
   | 'FINALIZADO'
   | 'GUARDADO'
-  | 'POR_PAGAR';
+  | 'POR_PAGAR'
+  | 'PAGADO';
 export type MessageTypeImbox =
   | 'INFORME'
   | 'CARTA'
@@ -687,6 +688,9 @@ export interface MessageType {
   description: string;
   createdAt: Date;
   header: string;
+  filesPay: {
+    files: fileMesage[];
+  }[];
   files?: fileMesage[];
   status: MessageStatus;
   users: userMessage[];

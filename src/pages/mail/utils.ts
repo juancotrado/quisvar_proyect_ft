@@ -5,4 +5,5 @@ export const typeStatus = {
   FINALIZADO: 'PROCESO',
   GUARDADO: 'GUARDADO',
   POR_PAGAR: 'POR PAGAR',
+  PAGADO: 'PAGADO',
 };

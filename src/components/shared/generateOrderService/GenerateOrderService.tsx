@@ -170,10 +170,7 @@ const GenerateOrderService = ({
             type="text"
           />
         )}
-        <Button
-          className={`generateOrderService-btn-submit`}
-          text="Enviar Formulario"
-        />
+        <Button className={`messagePage-btn-submit`} text="Enviar Formulario" />
 
         <div
           className="generateOrderService-previews-btns"

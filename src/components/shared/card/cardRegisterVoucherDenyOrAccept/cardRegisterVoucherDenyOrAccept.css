@@ -1,2 +1,13 @@
-.xyz {
+.CardRegisterVoucherDenyOrAccept {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.CardRegisterVoucherDenyOrAccept-icon {
+  width: 1rem;
+}
+.CardRegisterVoucherDenyOrAccept-btns {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
 }

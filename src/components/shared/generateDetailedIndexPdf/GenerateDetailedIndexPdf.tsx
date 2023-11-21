@@ -29,19 +29,19 @@ const textRenderLevel = (level: Level) => {
       </Text>
       <View style={styles.infoContainer}>
         <View style={styles.infoTextContainer}>
-          <Text style={styles.infoText}>S/.{level.balance.toFixed(2)}</Text>
+          <Text style={styles.infoText}>S/.{level.balance?.toFixed(2)}</Text>
         </View>
         <View style={styles.infoTextContainer}>
-          <Text style={styles.infoText}>S/.{level.balance.toFixed(2)}</Text>
+          <Text style={styles.infoText}>S/.{level.balance?.toFixed(2)}</Text>
         </View>
         <View style={styles.infoTextContainer}>
-          <Text style={styles.infoText}>-S/.{level.spending.toFixed(2)}</Text>
+          <Text style={styles.infoText}>-S/.{level.spending?.toFixed(2)}</Text>
         </View>
         <View style={styles.infoTextContainer}>
-          <Text style={styles.infoText}>S/.{level.price.toFixed(2)}</Text>
+          <Text style={styles.infoText}>S/.{level.price?.toFixed(2)}</Text>
         </View>
         <View style={styles.infoTextContainer}>
-          <Text style={styles.infoText}>{level.percentage.toFixed(2)}%</Text>
+          <Text style={styles.infoText}>{level.percentage?.toFixed(2)}%</Text>
         </View>
         <View style={styles.infoTextContainer}>
           <Text style={styles.infoText}>{level.total}</Text>
@@ -74,10 +74,10 @@ const textRenderSubtask = (subtask: SubTask) => {
       </Text>
       <View style={styles.infoContainer}>
         <View style={styles.infoTextContainer}>
-          <Text style={styles.infoText}>S/.{(+subtask.price).toFixed(2)}</Text>
+          <Text style={styles.infoText}>S/.{(+subtask.price)?.toFixed(2)}</Text>
         </View>
         <View style={styles.infoTextContainer}>
-          <Text style={styles.infoText}>{subtask.percentage.toFixed(2)}%</Text>
+          <Text style={styles.infoText}>{subtask.percentage?.toFixed(2)}%</Text>
         </View>
 
         <View style={{ ...styles.infoTextContainer, width: 85 }}>

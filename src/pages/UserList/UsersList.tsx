@@ -148,16 +148,18 @@ const UsersList = () => {
           <div className="header-list-text">EDITAR</div>
           <div className="header-list-text">Reportes</div>
         </div>
-        {filterList.map(user => (
-          <UserInfo
-            key={user.id}
-            user={user}
-            getUsers={getUsers}
-            onUpdate={() => editUser(user)}
-            onPrint={() => printReport(user.id)}
-            onViewDocs={() => handleViewDocs(user)}
-          />
-        ))}
+        <div style={{ width: '100%', height: '750px', overflowY: 'auto' }}>
+          {filterList.map(user => (
+            <UserInfo
+              key={user.id}
+              user={user}
+              getUsers={getUsers}
+              onUpdate={() => editUser(user)}
+              onPrint={() => printReport(user.id)}
+              onViewDocs={() => handleViewDocs(user)}
+            />
+          ))}
+        </div>
       </div>
       <div className="user-list-equipment">
         <div className="ule-header">

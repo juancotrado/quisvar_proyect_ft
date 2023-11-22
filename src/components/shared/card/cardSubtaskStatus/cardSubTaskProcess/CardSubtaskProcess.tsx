@@ -75,6 +75,7 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
   const handlePorcentage = (e: FocusEvent<HTMLInputElement>) => {
     const { value, name } = e.target;
     setPorcetageForUser({
+      ...porcetageForUser,
       ['user' + name]: { userId: +name, percentage: +value },
     });
   };
@@ -231,6 +232,7 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
                   dataFeedback={dataFeedback}
                   type="deprecated"
                   text="Rechazar"
+                  userId={userSession?.id}
                   porcentagesForUser={Object.values(porcetageForUser)}
                 />
                 <SubtaskChangeStatusBtn

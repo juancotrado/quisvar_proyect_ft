@@ -27,6 +27,7 @@ interface SubtaskChangeStatusBtn {
   files?: Files[] | null;
   dataFeedback?: DataFeedback | null;
   isAuthorizedUser?: boolean;
+  userId?: number;
 }
 
 const SubtaskChangeStatusBtn = ({
@@ -42,6 +43,7 @@ const SubtaskChangeStatusBtn = ({
   porcentagesForUser,
   isAuthorizedUser,
   isDisabled = false,
+  userId,
 }: SubtaskChangeStatusBtn) => {
   const socket = useContext(SocketContext);
   const { stageId } = useParams();
@@ -140,11 +142,14 @@ const SubtaskChangeStatusBtn = ({
       return SnackbarUtilities.warning(
         'Asegurese de escribir un comentario antes'
       );
-
-    const transforPorcentagesForUser = porcentagesForUser?.map(porcentage => ({
-      ...porcentage,
-      percentage: 0,
-    }));
+    const transforPorcentagesForUser = porcentagesForUser?.map(porcentage =>
+      porcentage.userid === userId
+        ? {
+            ...porcentage,
+            percentage: 0,
+          }
+        : porcentage
+    );
     await axiosInstance.patch(
       `/subtasks/percentage/${subtaskId}`,
       transforPorcentagesForUser

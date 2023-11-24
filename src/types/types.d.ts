@@ -12,6 +12,12 @@ export interface DataUser {
   percentage?: number;
   status?: boolean;
 }
+export interface GeneralFile {
+  id: number;
+  name: string;
+  dir: string;
+  createdAt: string;
+}
 export interface TypeSpecialities {
   id: number;
   name: string;
@@ -190,6 +196,9 @@ type Profile = {
   dni: string;
   phone: string;
   userId: number;
+  department: string;
+  province: string;
+  district: string;
 };
 export type RangeDate = {
   startDate: string;
@@ -375,7 +384,7 @@ export interface UserForm {
   job: string;
   cv: FileList | null;
   declaration: FileList | null;
-  declarations?: any;
+  declarations?: string[];
   typeDeclaration?: 'technical' | 'administrative';
 }
 

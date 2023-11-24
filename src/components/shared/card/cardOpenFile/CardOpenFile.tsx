@@ -4,31 +4,24 @@ import { useEffect, useRef, useState } from 'react';
 import Modal from '../../../portal/Modal';
 import { isOpenCardFiles$ } from '../../../../services/sharingSubject';
 import { Subscription } from 'rxjs';
-import { URL, axiosInstance } from '../../../../services/axiosInstance';
+import { URL } from '../../../../services/axiosInstance';
 import ButtonDelete from '../../button/ButtonDelete';
 import UploadFile from '../../uploadFile/UploadFile';
 import formatDate from '../../../../utils/formatDate';
-
-interface GeneralFile {
-  id: number;
-  name: string;
-  dir: string;
-  createdAt: string;
+import { GeneralFile } from '../../../../types/types';
+interface CardOpenFileProps {
+  generalFiles: GeneralFile[];
+  getGeneralFiles: () => void;
 }
-const CardOpenFile = () => {
+
+const CardOpenFile = ({ generalFiles, getGeneralFiles }: CardOpenFileProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleIsOpen = useRef<Subscription>(new Subscription());
-  const [generalFiles, setGeneralFiles] = useState<GeneralFile[] | null>(null);
-  const getGeneralFiles = async () => {
-    await axiosInstance.get('/files/generalFiles').then(res => {
-      setGeneralFiles(res.data);
-    });
-  };
+
   const closeFunctions = () => {
     setIsOpen(false);
   };
   useEffect(() => {
-    getGeneralFiles();
     handleIsOpen.current = isOpenCardFiles$.getSubject.subscribe(value =>
       setIsOpen(value)
     );

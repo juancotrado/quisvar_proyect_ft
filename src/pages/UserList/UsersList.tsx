@@ -18,7 +18,7 @@ import {
   isOpenCardRegisterUser$,
   isOpenViewDocs$,
 } from '../../services/sharingSubject';
-import { User, WorkStation } from '../../types/types';
+import { GeneralFile, User, WorkStation } from '../../types/types';
 import UserInfo from '../../components/users/UserInfo';
 import { AppDispatch, RootState } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -35,19 +35,21 @@ const UsersList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [printReportId, setPrintReportId] = useState<number>();
   const [workStations, setWorkStations] = useState<WorkStation[]>();
-
+  const [generalFiles, setGeneralFiles] = useState<GeneralFile[] | null>(null);
+  const getGeneralFiles = async () => {
+    await axiosInstance.get('/files/generalFiles').then(res => {
+      setGeneralFiles(res.data);
+    });
+  };
   const getUsers = async () => {
     dispatch(getListUsers());
   };
   const getWorkStations = useCallback(() => {
     axiosInstance.get('/workStation').then(res => setWorkStations(res.data));
   }, []);
-
-  // const getWorkStations = () => {
-  //   axiosInstance.get('/workStation').then(res => setWorkStations(res.data));
-  // };
   useEffect(() => {
     getWorkStations();
+    getGeneralFiles();
   }, [getWorkStations]);
 
   const filterList = useMemo(() => {
@@ -123,7 +125,7 @@ const UsersList = () => {
               // onClick={handleOpenCardFiles}
             />
             <Button
-              text="Ver Archivos"
+              text="Ver Directivas"
               className="userList-btn"
               onClick={handleOpenCardFiles}
             />
@@ -183,7 +185,12 @@ const UsersList = () => {
       <CardAddEquipment onSave={() => getWorkStations()} />
       <CardAssign onSave={() => getWorkStations()} />
       <CardGenerateReport employeeId={printReportId} />
-      <CardOpenFile />
+      {generalFiles && (
+        <CardOpenFile
+          generalFiles={generalFiles}
+          getGeneralFiles={getGeneralFiles}
+        />
+      )}
       <CardViewDocs user={userDocs} />
       <CardRegisterUser
         user={userData}
@@ -194,6 +201,7 @@ const UsersList = () => {
           getUsers();
           setUserData(null);
         }}
+        generalFiles={generalFiles}
         workStations={workStations}
       />
     </div>

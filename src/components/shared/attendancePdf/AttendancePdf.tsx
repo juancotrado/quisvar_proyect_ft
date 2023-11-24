@@ -60,6 +60,7 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
       day: '2-digit',
     });
   };
+  console.log(value);
 
   return (
     <Document>
@@ -151,7 +152,13 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
                     <Text style={styles.headers}>{value.profile.phone}</Text>
                   </View>
                   <View style={{ ...styles.tableCol, width: '8%' }}>
-                    <Text style={styles.headers}> ------ </Text>
+                    <Text style={styles.headers}>
+                      {' '}
+                      {value.equipment ? value.equipment.workStation.name : ''}
+                      {value.equipment
+                        ? `(${value.equipment.name})`
+                        : '---'}{' '}
+                    </Text>
                   </View>
 
                   <View style={{ ...styles.tableCol, width: '10%' }}>

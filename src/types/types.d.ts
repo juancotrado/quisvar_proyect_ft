@@ -179,6 +179,15 @@ export type User = {
   declaration: string | null;
   ruc: string;
   address: string;
+  equipment: {
+    id: number;
+    name: string;
+    doc: string;
+    description: string;
+    userId: number;
+    workStationId: number;
+    workStation: WorkStation;
+  };
 };
 type Profile = {
   id: number;
@@ -652,6 +661,11 @@ export interface UserAttendance {
 export interface AttendanceRange {
   id: number;
   role: UserRoleType;
+  equipment: {
+    name: string;
+    workStationId: number;
+    workStation: WorkStation;
+  };
   profile: {
     firstName: string;
     lastName: string;

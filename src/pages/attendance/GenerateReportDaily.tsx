@@ -76,7 +76,7 @@ export async function generateReportDaily({
       data.profile.phone,
       ..._getStatus,
     ]);
-    const columnLetters = 'BCDEFGHIJKL';
+    const columnLetters = 'BCDEFGHIJKLM';
     columnLetters.split('').forEach(columnLetter => {
       const cell = dataRows.getCell(columnLetter);
       cell.border = {
@@ -86,7 +86,7 @@ export async function generateReportDaily({
         right: { style: 'thin' },
       };
     });
-    const fillColors = 'GHIJKL';
+    const fillColors = 'GHIJKLM';
     for (let i = 0; i < _getStatus.length; i++) {
       const columnFill = fillColors[i];
       const cell = dataRows.getCell(columnFill);
@@ -99,7 +99,7 @@ export async function generateReportDaily({
     rowNumber++;
   });
   const endLine = rowNumber;
-  wk.pageSetup.printArea = 'A1:L' + (endLine + 9);
+  wk.pageSetup.printArea = 'A1:M' + (endLine + 9);
   workbook.xlsx.writeBuffer().then(data => {
     const blob = new Blob([data], {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheet.sheet',

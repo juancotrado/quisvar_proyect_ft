@@ -22,6 +22,8 @@ export const INITIAL_STATE: User = {
   },
   contract: null,
   cv: null,
+  ruc: '',
+  address: '',
   declaration: null,
 };
 

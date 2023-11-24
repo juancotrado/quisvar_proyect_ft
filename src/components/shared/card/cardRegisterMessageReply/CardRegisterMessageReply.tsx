@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { Input, PDFGenerator, Select } from '../../..';
 import InputFile from '../../Input/InputFile';
@@ -122,9 +122,9 @@ const CardRegisterMessageReply = ({
         .then(onSave);
   };
 
-  const handleDoneMessage = () => {
-    axiosInstance.patch(`/mail/done/${message.id}`).then(onSave);
-  };
+  // const handleDoneMessage = () => {
+  //   axiosInstance.patch(`/mail/done/${message.id}`).then(onSave);
+  // };
   const handleReportPDF = () => {
     const header = watch('header');
     const description = watch('description');

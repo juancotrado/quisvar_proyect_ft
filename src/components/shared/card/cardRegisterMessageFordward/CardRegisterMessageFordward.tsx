@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { Input, PDFGenerator, Select } from '../../..';
 import InputFile from '../../Input/InputFile';

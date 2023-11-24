@@ -2,7 +2,7 @@ import {
   ProjectReport,
   ExcelData,
   UserAttendance,
-  RangeDays,
+  // RangeDays,
 } from '../types/types';
 import * as ExcelJS from 'exceljs';
 import { getTimeOut, parseUTC } from './formatDate';
@@ -16,20 +16,20 @@ import {
 } from './excelGenerate/utils/excelTools';
 import { drawDaysBars, getDaysHistory, transformDaysObject } from './tools';
 
-const normalizeDayArr = (days: (RangeDays | RangeDays[])[]) => {
-  const result = days.map(el => {
-    if (el instanceof Array && el.length > 0) {
-      const otherResul = el.map(eli => {
-        return Object.values(eli).join(': ');
-      });
-      return otherResul.join(' ; ');
-    } else {
-      return Object.values(el).join(': ');
-    }
-  });
+// const normalizeDayArr = (days: (RangeDays | RangeDays[])[]) => {
+//   const result = days.map(el => {
+//     if (el instanceof Array && el.length > 0) {
+//       const otherResul = el.map(eli => {
+//         return Object.values(eli).join(': ');
+//       });
+//       return otherResul.join(' ; ');
+//     } else {
+//       return Object.values(el).join(': ');
+//     }
+//   });
 
-  return result;
-};
+//   return result;
+// };
 const excelReport = async (
   data: ProjectReport[],
   infoData: ExcelData,

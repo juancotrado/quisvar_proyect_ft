@@ -30,7 +30,13 @@ interface CardRegisterUserProps {
   workStations?: WorkStation[];
   generalFiles: GeneralFile[] | null;
 }
-
+const degreeData = [
+  { id: 1, value: 'Egresado' },
+  { id: 2, value: 'Bachiller' },
+  { id: 3, value: 'Titulado' },
+  { id: 4, value: 'Magister' },
+  { id: 5, value: 'Doctorado' },
+];
 const InitialValues: UserForm = {
   id: 0,
   email: '',
@@ -302,12 +308,15 @@ const CardRegisterUser = ({
               label="Profesión"
               errors={errors}
             />
-            <InputText
+            <Select
+              isRelative
+              label="Grado:"
               {...register('degree')}
-              placeholder="Grado"
-              type="text"
+              name="degree"
+              data={degreeData}
+              itemKey="value"
+              textField="value"
               errors={errors}
-              label="Grado"
             />
             <InputText
               {...register('description')}

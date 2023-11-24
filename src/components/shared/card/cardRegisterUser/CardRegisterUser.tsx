@@ -7,7 +7,12 @@ import { isOpenCardRegisterUser$ } from '../../../../services/sharingSubject';
 import Button from '../../button/Button';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import InputText from '../../Input/Input';
-import { UserForm, User, WorkStation, Ubigeo } from '../../../../types/types';
+import {
+  UserForm,
+  User,
+  WorkStation,
+  GeneralFile,
+} from '../../../../types/types';
 import {
   validateEmail,
   validateWhiteSpace,
@@ -16,17 +21,22 @@ import { Input, Select } from '../../..';
 import { Subscription } from 'rxjs';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import SwornDeclarationPdf from '../../swornDeclarationPdf/SwornDeclarationPdf';
-import provincesJson from '../../../../utils/ubigeo/provincias.json';
-import distritosJson from '../../../../utils/ubigeo/distritos.json';
-import departamentsJson from '../../../../utils/ubigeo/departamentos.json';
-import axios from 'axios';
+import useJurisdiction from '../../../../hooks/useJurisdiction';
+
 interface CardRegisterUserProps {
   onSave?: () => void;
   onClose?: () => void;
   user?: User | null;
   workStations?: WorkStation[];
+  generalFiles: GeneralFile[] | null;
 }
-
+const degreeData = [
+  { id: 1, value: 'Egresado' },
+  { id: 2, value: 'Bachiller' },
+  { id: 3, value: 'Titulado' },
+  { id: 4, value: 'Magister' },
+  { id: 5, value: 'Doctorado' },
+];
 const InitialValues: UserForm = {
   id: 0,
   email: '',
@@ -44,17 +54,29 @@ const InitialValues: UserForm = {
   declaration: null,
   department: '',
   province: '',
+  declarations: [],
   district: '',
   typeDeclaration: 'technical',
 };
 
-const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
-  const [data, setData] = useState<UserForm>(InitialValues);
-  const [provinces, setProvinces] = useState<Ubigeo[]>([]);
-  const [districts, setDistricts] = useState<Ubigeo[]>([]);
+const CardRegisterUser = ({
+  user,
+  onSave,
+  onClose,
+  generalFiles,
+}: CardRegisterUserProps) => {
+  const [errorPassword, setErrorPassword] = useState<{}>();
   const [isOpen, setIsOpen] = useState(false);
   const handleIsOpen = useRef<Subscription>(new Subscription());
-  const [showDirectives, setShowDirectives] = useState(false);
+
+  const {
+    departaments,
+    districts,
+    provinces,
+    handleGetDistricts,
+    handleGetProvinces,
+    setJurisdictionSelectData,
+  } = useJurisdiction();
 
   useEffect(() => {
     handleIsOpen.current = isOpenCardRegisterUser$.getSubject.subscribe(value =>
@@ -65,90 +87,66 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
     };
   }, []);
 
-  const [errorPassword, setErrorPassword] = useState<{
-    [key: string]: { [key: string]: string };
-  }>();
   const {
     register,
     handleSubmit,
-    setValue,
     reset,
     watch,
     formState: { errors },
   } = useForm<UserForm>({
     defaultValues: InitialValues,
   });
+
   useEffect(() => {
     if (user?.id) {
-      const { profile, ..._data } = user;
-      setData({
-        ...profile,
-        ..._data,
-        cv: null,
-        declaration: null,
-        department: '',
-        district: '',
-        province: '',
+      const { profile, id, email, address, ruc } = user;
+      const {
+        dni,
+        firstName,
+        lastName,
+        phone,
+        degree,
+        description,
+        job,
+        department,
+        district,
+        province,
+      } = profile;
+      setJurisdictionSelectData(department, province);
+      reset({
+        id,
+        email,
+        dni,
+        firstName,
+        lastName,
+        phone,
+        degree,
+        job,
+        description,
+        address,
+        ruc,
+        department,
+        province,
+        district,
+        declarations: [],
       });
-    } else {
-      setData(InitialValues);
     }
-
-    axios
-      .get(
-        'https://apiperu.dev/api/dni/73188660?api_token=b2bb916986bae680cf5bf44e01b443b70ea845b2640d33aaefde169c48abfe80'
-      )
-      .then(res => {
-        console.log(res.data);
-      })
-      .catch(err => console.log(err));
   }, [user]);
-
-  useEffect(() => {
-    setValue('id', data.id);
-    setValue('email', data.email);
-    setValue('password', data.password);
-    setValue('dni', data.dni);
-    setValue('firstName', data.firstName);
-    setValue('lastName', data.lastName);
-    setValue('phone', data.phone);
-    setValue('job', data.job);
-    setValue('degree', data.degree);
-    setValue('description', data.description);
-    setValue('address', data.address);
-    setValue('ruc', data.ruc);
-    setValue('department', data.department);
-    setValue('province', data.province);
-    setValue('district', data.district);
-  }, [data]);
-
   const onSubmit: SubmitHandler<UserForm> = async data => {
-    const fileCv = data.cv?.[0] as File;
-    const fileDeclaration = data.declaration?.[0] as File;
-    const formData = new FormData();
-    // const workStationId = stationId;
-    formData.append('fileUser', fileCv);
-    formData.append('fileUser', fileDeclaration);
-    formData.append('id', data.id + '');
-    formData.append('degree', data.degree);
-    formData.append('description', data.description);
-    formData.append('dni', data.dni);
-    formData.append('email', data.email);
-    formData.append('firstName', data.firstName);
-    formData.append('job', data.job);
-    formData.append('lastName', data.lastName);
-    formData.append('password', data.password);
-    formData.append('phone', data.phone);
-    formData.append('address', data.address);
-    formData.append('ruc', data.ruc);
-    formData.append('department', data.department);
-    formData.append('province', data.province);
-    formData.append('district', data.district);
-    console.log(data);
-    return;
-    if (data.id) {
+    const { cv, declaration, declarations, id, typeDeclaration, ...newData } =
+      data;
+    if (id) {
       axiosInstance.put(`/profile/${data.id}`, data).then(successfulShipment);
     } else {
+      const fileCv = cv?.[0] as File;
+      const fileDeclaration = declaration?.[0] as File;
+      const formData = new FormData();
+      for (const [key, value] of Object.entries(newData)) {
+        console.log(key, value);
+        formData.append(key, String(value));
+      }
+      formData.append('fileUser', fileCv);
+      formData.append('fileUser', fileDeclaration);
       const headers = {
         'Content-type': 'multipart/form-data',
       };
@@ -180,26 +178,7 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
       : setErrorPassword({});
   };
 
-  const handleGetProvinces = (value: string) => {
-    const findDepartament = departamentsJson.find(
-      ubigeo => ubigeo.nombre_ubigeo === value
-    );
-    const idDepartament = findDepartament?.id_ubigeo;
-    const provinciasData =
-      provincesJson[idDepartament as keyof typeof provincesJson];
-    setProvinces(provinciasData);
-  };
-  const handleGetDistricts = (value: string) => {
-    const findProvice = provinces.find(
-      ubigeo => ubigeo.nombre_ubigeo === value
-    );
-    const idProvince = findProvice?.id_ubigeo;
-    const districsData =
-      distritosJson[idProvince as keyof typeof distritosJson];
-    setDistricts(districsData);
-  };
   const dataForm = watch();
-  const handleDirectives = () => setShowDirectives(!showDirectives);
   return (
     <Modal size={50} isOpenProp={isOpen}>
       <div className="card-register">
@@ -289,10 +268,10 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
                 validate: { validateWhiteSpace },
               })}
               name="department"
-              data={departamentsJson}
+              data={departaments}
               itemKey="nombre_ubigeo"
               textField="nombre_ubigeo"
-              onChange={e => handleGetProvinces(e.target.value)}
+              onChange={handleGetProvinces}
               errors={errors}
             />
             <Select
@@ -304,7 +283,7 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
               name="province"
               data={provinces}
               itemKey="nombre_ubigeo"
-              onChange={e => handleGetDistricts(e.target.value)}
+              onChange={handleGetDistricts}
               textField="nombre_ubigeo"
               errors={errors}
             />
@@ -329,12 +308,15 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
               label="Profesión"
               errors={errors}
             />
-            <InputText
+            <Select
+              isRelative
+              label="Grado:"
               {...register('degree')}
-              placeholder="Grado"
-              type="text"
+              name="degree"
+              data={degreeData}
+              itemKey="value"
+              textField="value"
               errors={errors}
-              label="Grado"
             />
             <InputText
               {...register('description')}
@@ -351,59 +333,23 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
               label="ruc"
             />
           </div>
-          {/* <div className="col-station-area">
-          <label className="input-label">Asignar equipo</label>
-          <div className="user-station-list">
-            {workStations &&
-              workStations.map(workStation => {
-                const [name, number] = workStation.name.split(' ');
-                const slot = workStation.total - workStation.equipment.length;
-                return (
-                  <div className="user-station-pc" key={workStation.id}>
-                    <h3>{name[0] + '-' + number}</h3>
-                    <span
-                      className="user-station"
-                      onClick={() =>
-                        setStationId(slot > 0 ? workStation.id : undefined)
-                      }
-                    >
-                      <img src="/svg/pc-icon.svg" className="ule-icon-size" />
-                      {slot}
-                    </span>
-                  </div>
-                );
-              })}
-          </div>
-        </div> */}
           {!user?.id && (
-            <>
-              <div className="col-input">
-                <Input
-                  type="file"
-                  label="CV"
-                  placeholder="cv"
-                  {...register('cv', { required: !!user?.id })}
-                  errors={errors}
-                />
-                <Input
-                  type="file"
-                  label="Declaracion Jurada"
-                  placeholder="declaration"
-                  {...register('declaration', { required: !!user?.id })}
-                  errors={errors}
-                />
-                <PDFDownloadLink
-                  document={<SwornDeclarationPdf data={dataForm} />}
-                  fileName={`Declaracion-Jurada.pdf`}
-                  className="generateOrderService-preview-pdf"
-                >
-                  <figure className="cardRegisteVoucher-figure">
-                    <img src={`/svg/preview-pdf.svg`} />
-                  </figure>
-                  Declaracion Jurada
-                </PDFDownloadLink>
-              </div>
-            </>
+            <div className="col-input">
+              <Input
+                type="file"
+                label="CV"
+                placeholder="cv"
+                {...register('cv', { required: !!user?.id })}
+                errors={errors}
+              />
+              <Input
+                type="file"
+                label="Declaracion Jurada"
+                placeholder="declaration"
+                {...register('declaration', { required: !!user?.id })}
+                errors={errors}
+              />
+            </div>
           )}
           <div className="btn-build">
             <Button
@@ -415,90 +361,88 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
           </div>
         </form>
         <div className="card-register-sworn-declaration">
-          <h2>Generar declaración jurada</h2>
-          <h4>Selecctionar tipo</h4>
-
-          <div className="card-register-radio-input">
-            <input
-              type="radio"
-              id="technical"
-              value="technical"
-              {...register('typeDeclaration')}
-              name="typeDeclaration"
-            />
-            <label htmlFor="technical">Técnico</label>
+          <h2 className="card-register-sworn-declaration-title">
+            Generar declaración jurada
+          </h2>
+          <h4 className="card-register-sworn-declaration-subtitle">
+            Selecctionar tipo
+          </h4>
+          <div className="card-register-radio-container">
+            <div className="card-register-radio-input">
+              <input
+                type="radio"
+                id="technical"
+                value="technical"
+                {...register('typeDeclaration')}
+                name="typeDeclaration"
+              />
+              <label
+                htmlFor="technical"
+                className="card-register-radio-input-text"
+              >
+                Técnico
+              </label>
+            </div>
+            <div className="card-register-radio-input">
+              <input
+                type="radio"
+                id="administrative"
+                value="administrative"
+                {...register('typeDeclaration')}
+                name="typeDeclaration"
+              />
+              <label
+                htmlFor="administrative"
+                className="card-register-radio-input-text"
+              >
+                Administrativos
+              </label>
+            </div>
           </div>
-          <div className="card-register-radio-input">
-            <input
-              type="radio"
-              id="administrative"
-              value="administrative"
-              {...register('typeDeclaration')}
-              name="typeDeclaration"
-            />
-            <label htmlFor="administrative">Administrativos</label>
-          </div>
-
-          <h2>Seleccione directivas</h2>
+          <h4 className="card-register-sworn-declaration-subtitle">
+            Seleccionar directivas
+          </h4>
           <div>
-            <h3 onClick={handleDirectives}>Directivas</h3>
-            {showDirectives && (
-              <div>
-                <label>
-                  <input
-                    type="checkbox"
-                    value="1"
-                    {...register('declarations')}
-                  />{' '}
-                  directiva 1
-                </label>
-                <label>
-                  <input
-                    type="checkbox"
-                    value="2"
-                    {...register('declarations')}
-                  />{' '}
-                  directiva 2
-                </label>
-                <label>
-                  <input
-                    type="checkbox"
-                    value="3"
-                    {...register('declarations')}
-                  />{' '}
-                  directiva 3
-                </label>
-                <label>
-                  <input
-                    type="checkbox"
-                    value="4"
-                    {...register('declarations')}
-                  />{' '}
-                  directiva 4
-                </label>
-                <label>
-                  <input
-                    type="checkbox"
-                    value="5"
-                    {...register('declarations')}
-                  />{' '}
-                  directiva 5
-                </label>
-              </div>
-            )}
+            <div className="card-register-sworn-declaration-select">
+              <input
+                type="checkbox"
+                className="card-register-dropdown-check"
+                defaultChecked={false}
+              />
+              <h3>Directivas</h3>
+              <img
+                src="/svg/down.svg"
+                className="card-register-sworn-declaration-arrow"
+              />
+            </div>
+            <div className="card-register-sworn-declaration-dropdown-content">
+              <ul className="card-register-sworn-declaration-dropdown-sub">
+                {generalFiles?.map(generalFile => (
+                  <label
+                    id={String(generalFile.id)}
+                    className="card-register-sworn-declaration-check-container"
+                  >
+                    <input
+                      type="checkbox"
+                      value="DIRECTIVA N° 001-2022 GRUPO"
+                      {...register('declarations')}
+                    />
+                    {generalFile.name}
+                  </label>
+                ))}
+              </ul>
+            </div>
           </div>
-          {!user?.id && (
-            <PDFDownloadLink
-              document={<SwornDeclarationPdf data={dataForm} />}
-              fileName={`Declaracion-Jurada.pdf`}
-              className="generateOrderService-preview-pdf"
-            >
-              <figure className="cardRegisteVoucher-figure">
-                <img src={`/svg/preview-pdf.svg`} />
-              </figure>
-              Declaracion Jurada
-            </PDFDownloadLink>
-          )}
+          <PDFDownloadLink
+            document={<SwornDeclarationPdf data={dataForm} />}
+            fileName={`Declaracion-Jurada.pdf`}
+            className="generateOrderService-preview-pdf"
+          >
+            <figure className="cardRegisteVoucher-figure">
+              <img src={`/svg/preview-pdf.svg`} />
+            </figure>
+            Declaracion Jurada
+          </PDFDownloadLink>
         </div>
       </div>
     </Modal>

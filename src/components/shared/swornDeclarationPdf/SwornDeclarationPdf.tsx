@@ -5,6 +5,7 @@ interface SwornDeclarationPdfProps {
   data: UserForm;
 }
 const SwornDeclarationPdf = ({ data }: SwornDeclarationPdfProps) => {
+  console.log(data);
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -22,21 +23,19 @@ const SwornDeclarationPdf = ({ data }: SwornDeclarationPdfProps) => {
           <Text style={styles.textBold}>
             {data.firstName} {data.lastName}
           </Text>{' '}
-          con DNI: <Text style={styles.textBold}>{data.dni}</Text>
+          con DNI: <Text style={styles.textBold}>{data.dni} </Text>
           domiciliado en <Text style={styles.textBold}>{data.address}</Text>,
-          del Distrito de
-          {data.district}, provincia de {data.province}, Departamento de{' '}
-          {data.department}, conste por el presente documento que me comprometo
-          a cumplir las directivas y condiciones que detalla el presente
-          documento.
+          del Distrito de {data.district}, provincia de {data.province},
+          Departamento de {data.department}, conste por el presente documento
+          que me comprometo a cumplir las directivas y condiciones que detalla
+          el presente documento.
         </Text>
         <View style={{ marginLeft: 50 }}>
-          <Text style={styles.text}>
-            ■ Cumplir con las directivas DIRECTIVA N° 001-2022-GRUPO
-          </Text>
-          <Text style={styles.text}>
-            ■ Cumplir con las directivas DIRECTIVA N° 003-2023-GRUPO
-          </Text>
+          {data?.declarations?.map(declaration => (
+            <Text style={styles.text} id={declaration}>
+              ■ Cumplir con las directivas: {declaration}
+            </Text>
+          ))}
         </View>
         <Text style={styles.subtitle}>PRIMERO: CARGO</Text>
         <Text style={styles.text}>

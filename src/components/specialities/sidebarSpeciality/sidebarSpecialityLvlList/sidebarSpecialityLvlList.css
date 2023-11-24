@@ -80,7 +80,15 @@
   cursor: pointer;
   height: 100%;
 }
-
+.card-register-sworn-declaration-select {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  color: var(--color-secondary);
+  font-size: var(--size-label);
+  align-items: center;
+  font-weight: 700;
+}
 .SidebarSpecialityLvlList-dropdown-arrow {
   width: 1.5rem;
   margin-left: auto;

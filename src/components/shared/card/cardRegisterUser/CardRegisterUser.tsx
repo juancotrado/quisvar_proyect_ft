@@ -45,6 +45,7 @@ const InitialValues: UserForm = {
   department: '',
   province: '',
   district: '',
+  typeDeclaration: 'technical',
 };
 
 const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
@@ -53,6 +54,7 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
   const [districts, setDistricts] = useState<Ubigeo[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const handleIsOpen = useRef<Subscription>(new Subscription());
+  const [showDirectives, setShowDirectives] = useState(false);
 
   useEffect(() => {
     handleIsOpen.current = isOpenCardRegisterUser$.getSubject.subscribe(value =>
@@ -142,6 +144,8 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
     formData.append('department', data.department);
     formData.append('province', data.province);
     formData.append('district', data.district);
+    console.log(data);
+    return;
     if (data.id) {
       axiosInstance.put(`/profile/${data.id}`, data).then(successfulShipment);
     } else {
@@ -195,157 +199,159 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
     setDistricts(districsData);
   };
   const dataForm = watch();
+  const handleDirectives = () => setShowDirectives(!showDirectives);
   return (
     <Modal size={50} isOpenProp={isOpen}>
-      <form onSubmit={handleSubmit(onSubmit)} className="card-register-users">
-        <span className="close-icon" onClick={closeFunctions}>
-          <img src="/svg/close.svg" alt="pencil" />
-        </span>
-        <h1>
-          {user ? 'EDITAR DATOS DE USUARIO' : 'REGISTRO DE NUEVO USUARIO'}
-        </h1>
-        <div className="col-input">
-          <InputText
-            {...register('dni', { required: true, maxLength: 9 })}
-            placeholder="N°"
-            label="DNI"
-            errors={errors}
-            type="number"
-          />
-          <InputText
-            {...register('firstName', { required: true })}
-            placeholder="Nombres"
-            label="Nombres"
-            errors={errors}
-          />
-          <InputText
-            {...register('lastName')}
-            placeholder="Apellidos"
-            errors={errors}
-            label="Apellidos"
-          />
-        </div>
-        {!user?.id && (
+      <div className="card-register">
+        <form onSubmit={handleSubmit(onSubmit)} className="card-register-users">
+          <span className="close-icon" onClick={closeFunctions}>
+            <img src="/svg/close.svg" alt="pencil" />
+          </span>
+          <h1>
+            {user ? 'EDITAR DATOS DE USUARIO' : 'REGISTRO DE NUEVO USUARIO'}
+          </h1>
           <div className="col-input">
-            {!user && (
-              <InputText
-                {...register('password', { required: true })}
-                errors={errors}
-                placeholder="Contraseña"
-                type="password"
-                autoComplete="no"
-                label="Contraseña"
-              />
-            )}
-            {!user && (
-              <InputText
-                errors={errorPassword}
-                name="verifyPassword"
-                onBlur={e => verifyPasswords(e)}
-                placeholder="Confirmar contraseña"
-                type="password"
-                autoComplete="no"
-                label="Confirmar contraseña"
-              />
-            )}
+            <InputText
+              {...register('dni', { required: true, maxLength: 9 })}
+              placeholder="N°"
+              label="DNI"
+              errors={errors}
+              type="number"
+            />
+            <InputText
+              {...register('firstName', { required: true })}
+              placeholder="Nombres"
+              label="Nombres"
+              errors={errors}
+            />
+            <InputText
+              {...register('lastName')}
+              placeholder="Apellidos"
+              errors={errors}
+              label="Apellidos"
+            />
           </div>
-        )}
-        <div className="col-input">
-          <InputText
-            {...register('email', {
-              required: true,
-              validate: validateEmail,
-            })}
-            errors={errors}
-            placeholder="Correo"
-            label="Correo"
-            name="email"
-          />
-          <InputText
-            {...register('address')}
-            placeholder="Dirección"
-            label="Dirección"
-            errors={errors}
-          />
-          <InputText
-            {...register('phone')}
-            placeholder="Celular"
-            label="Celular"
-            type="number"
-            errors={errors}
-          />
-        </div>
-        <div className="col-input">
-          <Select
-            isRelative
-            label="Departamento:"
-            {...register('department', {
-              validate: { validateWhiteSpace },
-            })}
-            name="department"
-            data={departamentsJson}
-            itemKey="nombre_ubigeo"
-            textField="nombre_ubigeo"
-            onChange={e => handleGetProvinces(e.target.value)}
-            errors={errors}
-          />
-          <Select
-            isRelative
-            label="Provincia:"
-            {...register('province', {
-              validate: { validateWhiteSpace },
-            })}
-            name="province"
-            data={provinces}
-            itemKey="nombre_ubigeo"
-            onChange={e => handleGetDistricts(e.target.value)}
-            textField="nombre_ubigeo"
-            errors={errors}
-          />
-          <Select
-            isRelative
-            label="Distrito:"
-            {...register('district', {
-              validate: { validateWhiteSpace },
-            })}
-            name="district"
-            data={districts}
-            itemKey="nombre_ubigeo"
-            textField="nombre_ubigeo"
-            errors={errors}
-          />
-        </div>
-        <div className="col-input">
-          <InputText
-            {...register('job')}
-            placeholder="Profesión"
-            type="text"
-            label="Profesión"
-            errors={errors}
-          />
-          <InputText
-            {...register('degree')}
-            placeholder="Grado"
-            type="text"
-            errors={errors}
-            label="Grado"
-          />
-          <InputText
-            {...register('description')}
-            placeholder="Cargo"
-            type="text"
-            errors={errors}
-            label="Cargo"
-          />
-          <InputText
-            {...register('ruc')}
-            placeholder="ruc"
-            type="text"
-            errors={errors}
-            label="ruc"
-          />
-        </div>
-        {/* <div className="col-station-area">
+          {!user?.id && (
+            <div className="col-input">
+              {!user && (
+                <InputText
+                  {...register('password', { required: true })}
+                  errors={errors}
+                  placeholder="Contraseña"
+                  type="password"
+                  autoComplete="no"
+                  label="Contraseña"
+                />
+              )}
+              {!user && (
+                <InputText
+                  errors={errorPassword}
+                  name="verifyPassword"
+                  onBlur={e => verifyPasswords(e)}
+                  placeholder="Confirmar contraseña"
+                  type="password"
+                  autoComplete="no"
+                  label="Confirmar contraseña"
+                />
+              )}
+            </div>
+          )}
+          <div className="col-input">
+            <InputText
+              {...register('email', {
+                required: true,
+                validate: validateEmail,
+              })}
+              errors={errors}
+              placeholder="Correo"
+              label="Correo"
+              name="email"
+            />
+            <InputText
+              {...register('address')}
+              placeholder="Dirección"
+              label="Dirección"
+              errors={errors}
+            />
+            <InputText
+              {...register('phone')}
+              placeholder="Celular"
+              label="Celular"
+              type="number"
+              errors={errors}
+            />
+          </div>
+          <div className="col-input">
+            <Select
+              isRelative
+              label="Departamento:"
+              {...register('department', {
+                validate: { validateWhiteSpace },
+              })}
+              name="department"
+              data={departamentsJson}
+              itemKey="nombre_ubigeo"
+              textField="nombre_ubigeo"
+              onChange={e => handleGetProvinces(e.target.value)}
+              errors={errors}
+            />
+            <Select
+              isRelative
+              label="Provincia:"
+              {...register('province', {
+                validate: { validateWhiteSpace },
+              })}
+              name="province"
+              data={provinces}
+              itemKey="nombre_ubigeo"
+              onChange={e => handleGetDistricts(e.target.value)}
+              textField="nombre_ubigeo"
+              errors={errors}
+            />
+            <Select
+              isRelative
+              label="Distrito:"
+              {...register('district', {
+                validate: { validateWhiteSpace },
+              })}
+              name="district"
+              data={districts}
+              itemKey="nombre_ubigeo"
+              textField="nombre_ubigeo"
+              errors={errors}
+            />
+          </div>
+          <div className="col-input">
+            <InputText
+              {...register('job')}
+              placeholder="Profesión"
+              type="text"
+              label="Profesión"
+              errors={errors}
+            />
+            <InputText
+              {...register('degree')}
+              placeholder="Grado"
+              type="text"
+              errors={errors}
+              label="Grado"
+            />
+            <InputText
+              {...register('description')}
+              placeholder="Cargo"
+              type="text"
+              errors={errors}
+              label="Cargo"
+            />
+            <InputText
+              {...register('ruc')}
+              placeholder="ruc"
+              type="text"
+              errors={errors}
+              label="ruc"
+            />
+          </div>
+          {/* <div className="col-station-area">
           <label className="input-label">Asignar equipo</label>
           <div className="user-station-list">
             {workStations &&
@@ -369,45 +375,132 @@ const CardRegisterUser = ({ user, onSave, onClose }: CardRegisterUserProps) => {
               })}
           </div>
         </div> */}
-        {!user?.id && (
-          <>
-            <div className="col-input">
-              <Input
-                type="file"
-                label="CV"
-                placeholder="cv"
-                {...register('cv', { required: !!user?.id })}
-                errors={errors}
-              />
-              <Input
-                type="file"
-                label="Declaracion Jurada"
-                placeholder="declaration"
-                {...register('declaration', { required: !!user?.id })}
-                errors={errors}
-              />
-              <PDFDownloadLink
-                document={<SwornDeclarationPdf data={dataForm} />}
-                fileName={`Declaracion-Jurada.pdf`}
-                className="generateOrderService-preview-pdf"
-              >
-                <figure className="cardRegisteVoucher-figure">
-                  <img src={`/svg/preview-pdf.svg`} />
-                </figure>
-                Declaracion Jurada
-              </PDFDownloadLink>
-            </div>
-          </>
-        )}
-        <div className="btn-build">
-          <Button
-            text={user ? 'GUARDAR' : 'CREAR'}
-            className="btn-area"
-            whileTap={{ scale: 0.9 }}
-            type="submit"
-          />
+          {!user?.id && (
+            <>
+              <div className="col-input">
+                <Input
+                  type="file"
+                  label="CV"
+                  placeholder="cv"
+                  {...register('cv', { required: !!user?.id })}
+                  errors={errors}
+                />
+                <Input
+                  type="file"
+                  label="Declaracion Jurada"
+                  placeholder="declaration"
+                  {...register('declaration', { required: !!user?.id })}
+                  errors={errors}
+                />
+                <PDFDownloadLink
+                  document={<SwornDeclarationPdf data={dataForm} />}
+                  fileName={`Declaracion-Jurada.pdf`}
+                  className="generateOrderService-preview-pdf"
+                >
+                  <figure className="cardRegisteVoucher-figure">
+                    <img src={`/svg/preview-pdf.svg`} />
+                  </figure>
+                  Declaracion Jurada
+                </PDFDownloadLink>
+              </div>
+            </>
+          )}
+          <div className="btn-build">
+            <Button
+              text={user ? 'GUARDAR' : 'CREAR'}
+              className="btn-area"
+              whileTap={{ scale: 0.9 }}
+              type="submit"
+            />
+          </div>
+        </form>
+        <div className="card-register-sworn-declaration">
+          <h2>Generar declaración jurada</h2>
+          <h4>Selecctionar tipo</h4>
+
+          <div className="card-register-radio-input">
+            <input
+              type="radio"
+              id="technical"
+              value="technical"
+              {...register('typeDeclaration')}
+              name="typeDeclaration"
+            />
+            <label htmlFor="technical">Técnico</label>
+          </div>
+          <div className="card-register-radio-input">
+            <input
+              type="radio"
+              id="administrative"
+              value="administrative"
+              {...register('typeDeclaration')}
+              name="typeDeclaration"
+            />
+            <label htmlFor="administrative">Administrativos</label>
+          </div>
+
+          <h2>Seleccione directivas</h2>
+          <div>
+            <h3 onClick={handleDirectives}>Directivas</h3>
+            {showDirectives && (
+              <div>
+                <label>
+                  <input
+                    type="checkbox"
+                    value="1"
+                    {...register('declarations')}
+                  />{' '}
+                  directiva 1
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    value="2"
+                    {...register('declarations')}
+                  />{' '}
+                  directiva 2
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    value="3"
+                    {...register('declarations')}
+                  />{' '}
+                  directiva 3
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    value="4"
+                    {...register('declarations')}
+                  />{' '}
+                  directiva 4
+                </label>
+                <label>
+                  <input
+                    type="checkbox"
+                    value="5"
+                    {...register('declarations')}
+                  />{' '}
+                  directiva 5
+                </label>
+              </div>
+            )}
+          </div>
+          {!user?.id && (
+            <PDFDownloadLink
+              document={<SwornDeclarationPdf data={dataForm} />}
+              fileName={`Declaracion-Jurada.pdf`}
+              className="generateOrderService-preview-pdf"
+            >
+              <figure className="cardRegisteVoucher-figure">
+                <img src={`/svg/preview-pdf.svg`} />
+              </figure>
+              Declaracion Jurada
+            </PDFDownloadLink>
+          )}
         </div>
-      </form>
+      </div>
     </Modal>
   );
 };

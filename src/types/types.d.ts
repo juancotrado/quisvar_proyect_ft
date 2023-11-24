@@ -375,6 +375,8 @@ export interface UserForm {
   job: string;
   cv: FileList | null;
   declaration: FileList | null;
+  declarations?: any;
+  typeDeclaration?: 'technical' | 'administrative';
 }
 
 export interface Level {

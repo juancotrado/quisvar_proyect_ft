@@ -1,3 +1,6 @@
+.card-register {
+  position: relative;
+}
 .content-area {
   width: 100%;
   min-height: calc(100vh - var(--header-height));
@@ -114,4 +117,22 @@ input[type='number']::-webkit-outer-spin-button {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.card-register-sworn-declaration {
+  position: absolute;
+  background-color: white;
+  left: 100%;
+  top: 0;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  border: 1px solid var(--color-secondary);
+  border-radius: 5px;
+}
+.card-register-radio-input {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }

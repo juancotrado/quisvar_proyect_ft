@@ -127,7 +127,7 @@ const MessagePage = () => {
     ({ user, role, type }) =>
       user.id === userSession.id && role === 'MAIN' && type == 'RECEIVER'
   );
-  console.log({ mainReceiverFinish });
+  // console.log({ mainReceiverFinish });
   const trandformData = (data: MessageReply) => {
     const sender = data.user;
     const header = data.header;
@@ -136,6 +136,7 @@ const MessagePage = () => {
     const to = sender.profile.firstName + ' ' + sender.profile.lastName;
     const toUser = listUsers.find(user => user.id === sender?.id);
     const from = message.users.find(user => user.type === 'SENDER');
+
     return {
       from: from?.user.profile.firstName + ' ' + from?.user.profile.lastName,
       header,

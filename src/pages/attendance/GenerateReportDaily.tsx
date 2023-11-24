@@ -40,6 +40,7 @@ export async function generateReportDaily({
       'cuarto llamado',
       'quinto llamado',
       'sexto llamado',
+      'septimo llamado',
     ];
 
     orderCalls.forEach(call => {

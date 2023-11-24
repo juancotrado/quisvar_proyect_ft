@@ -37,6 +37,7 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
       'cuarto llamado',
       'quinto llamado',
       'sexto llamado',
+      'septimo llamado',
     ];
 
     orderCalls.forEach(call => {
@@ -59,6 +60,7 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
       day: '2-digit',
     });
   };
+
   return (
     <Document>
       <Page

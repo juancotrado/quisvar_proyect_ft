@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
 import Modal from '../../../portal/Modal';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { Subscription } from 'rxjs';
@@ -9,8 +9,9 @@ import Button from '../../button/Button';
 import { isOpenCardAssing$ } from '../../../../services/sharingSubject';
 import InputText from '../../Input/Input';
 import { validateWhiteSpace } from '../../../../utils/customValidatesForm';
-import SelectOptions from '../../select/Select';
-import useListUsers from '../../../../hooks/useListUsers';
+import { Input } from '../../..';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../store';
 
 interface CardAssingProps {
   onSave: () => void;
@@ -20,8 +21,9 @@ const CardAssign = ({ onSave }: CardAssingProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hasId, setHasId] = useState<number>(0);
   const handleIsOpen = useRef<Subscription>(new Subscription());
-  const { users } = useListUsers();
-
+  const [searchTerm, setSearchTerm] = useState('');
+  // const { users } = useListUsers();
+  const { listUsers: users } = useSelector((state: RootState) => state);
   const {
     register,
     handleSubmit,
@@ -30,6 +32,7 @@ const CardAssign = ({ onSave }: CardAssingProps) => {
     // watch,
     formState: { errors },
   } = useForm<Equipment>();
+
   useEffect(() => {
     handleIsOpen.current = isOpenCardAssing$.getSubject.subscribe(value => {
       setIsOpen(value.isOpen);
@@ -39,12 +42,31 @@ const CardAssign = ({ onSave }: CardAssingProps) => {
       handleIsOpen.current.unsubscribe();
     };
   }, []);
+
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filterList = useMemo(() => {
+    if (!users) return [];
+    if (searchTerm === '') return [];
+
+    const filteredByStatus = users.filter(user => user.status === true);
+
+    if (!searchTerm) return filteredByStatus;
+
+    return filteredByStatus.filter(user =>
+      user.profile.dni.startsWith(searchTerm)
+    );
+  }, [searchTerm, users]);
+  console.log(filterList[0]);
+
   const onSubmit: SubmitHandler<Equipment> = async data => {
     const file = data.doc?.[0];
     const formData = new FormData();
     formData.append('file', file);
     formData.append('name', data.name);
-    formData.append('userId', data.userId.toString());
+    formData.append('userId', filterList[0].id.toString());
     formData.append('workStationId', hasId.toString());
     formData.append('description', data.description);
     const headers = {
@@ -73,13 +95,35 @@ const CardAssign = ({ onSave }: CardAssingProps) => {
         </span>
         <h1>Asignar Ordenador</h1>
         <div className="col-input">
+          <Input
+            type="text"
+            placeholder="Buscar por DNI"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            label="Busqueda"
+            // classNameMain="filter-user-input"
+          />
           <InputText
             {...register('name', {
               validate: { validateWhiteSpace },
             })}
-            placeholder="000"
+            placeholder="###"
             label="Remoto"
             errors={errors}
+          />
+        </div>
+        <div className="col-input">
+          <Input
+            type="text"
+            value={filterList.length > 0 ? filterList[0].profile.firstName : ''}
+            placeholder="Nombre"
+            disabled
+          />
+          <Input
+            type="text"
+            value={filterList.length > 0 ? filterList[0].profile.lastName : ''}
+            placeholder="Apellido"
+            disabled
           />
         </div>
         <div className="col-input">
@@ -98,15 +142,16 @@ const CardAssign = ({ onSave }: CardAssingProps) => {
             errors={errors}
             label="Documento"
             type="file"
+            required
           />
         </div>
 
-        <SelectOptions
+        {/* <SelectOptions
           data={users}
           textField="name"
           itemKey="id"
           {...register('userId')}
-        />
+        /> */}
         <div className="btn-build">
           <Button
             // text={user ? 'GUARDAR' : 'CREAR'}

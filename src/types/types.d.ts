@@ -185,7 +185,7 @@ export type User = {
   declaration: string | null;
   ruc: string;
   address: string;
-  equipment: {
+  equipment?: {
     id: number;
     name: string;
     doc: string;

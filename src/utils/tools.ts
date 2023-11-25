@@ -12,6 +12,8 @@ export const findProject = (data: Level[]): boolean => {
   return existProyect;
 };
 
+export const deleteExtension = (fileName: string) =>
+  fileName.split('.').slice(0, -1).join();
 export const getFirstLetterNames = (firstName: string, lastName: string) => {
   const firstLetterFirstName = firstName[0].toUpperCase();
   const firstLetterLastName = lastName[0].toUpperCase();

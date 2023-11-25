@@ -22,6 +22,7 @@ import { Subscription } from 'rxjs';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import SwornDeclarationPdf from '../../swornDeclarationPdf/SwornDeclarationPdf';
 import useJurisdiction from '../../../../hooks/useJurisdiction';
+import { deleteExtension } from '../../../../utils/tools';
 
 interface CardRegisterUserProps {
   onSave?: () => void;
@@ -130,6 +131,8 @@ const CardRegisterUser = ({
         district,
         declarations: [],
       });
+    } else {
+      reset({ declarations: [] });
     }
   }, [user]);
   const onSubmit: SubmitHandler<UserForm> = async data => {
@@ -424,10 +427,10 @@ const CardRegisterUser = ({
                   >
                     <input
                       type="checkbox"
-                      value="DIRECTIVA N° 001-2022 GRUPO"
+                      value={generalFile.name}
                       {...register('declarations')}
                     />
-                    {generalFile.name}
+                    {deleteExtension(generalFile.name)}
                   </label>
                 ))}
               </ul>

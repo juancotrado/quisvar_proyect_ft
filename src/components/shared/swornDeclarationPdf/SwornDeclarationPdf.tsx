@@ -1,6 +1,7 @@
 import { Document, Page, Text, View } from '@react-pdf/renderer';
 import { styles } from './swornDeclarationStyle';
 import { UserForm } from '../../../types/types';
+import { deleteExtension } from '../../../utils/tools';
 interface SwornDeclarationPdfProps {
   data: UserForm;
 }
@@ -33,7 +34,7 @@ const SwornDeclarationPdf = ({ data }: SwornDeclarationPdfProps) => {
         <View style={{ marginLeft: 50 }}>
           {data?.declarations?.map(declaration => (
             <Text style={styles.text} id={declaration}>
-              ■ Cumplir con las directivas: {declaration}
+              ■ Cumplir con las directivas: {deleteExtension(declaration)}
             </Text>
           ))}
         </View>

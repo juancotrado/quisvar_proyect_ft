@@ -6,8 +6,8 @@ Font.register({ family: 'Arial Narrow', src: ArialNarrow });
 export const styles = StyleSheet.create({
   page: {
     flexDirection: 'column',
-    paddingHorizontal: 30,
-    paddingVertical: 64,
+    paddingHorizontal: 20,
+    paddingVertical: 24,
     // flex: 1,
     // position: 'relative',
     // borderStyle: 'solid',
@@ -30,12 +30,13 @@ export const styles = StyleSheet.create({
     // justifyContent: 'space-between'
   },
   headers: {
-    fontSize: 8,
+    fontSize: 6,
     // border: '1px solid black',
     // paddingHorizontal: 10,
     // paddingVertical: 5,
     margin: 'auto',
     marginTop: 5,
+    textTransform: 'uppercase',
   },
   attendance: {
     flexDirection: 'row',
@@ -49,7 +50,7 @@ export const styles = StyleSheet.create({
     // border: '1px solid black',
     // paddingHorizontal: 5,
     width: '100%',
-    paddingVertical: 5,
+    paddingVertical: 4,
     display: 'flex',
     textAlign: 'center',
     justifyContent: 'center',

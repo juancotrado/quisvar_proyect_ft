@@ -4,7 +4,15 @@ interface GenerateReportDailyProps {
   startDate: string;
   printData: AttendanceRange[];
 }
-
+const orderCalls = [
+  'primer llamado',
+  'segundo llamado',
+  'tercer llamado',
+  'cuarto llamado',
+  'quinto llamado',
+  'sexto llamado',
+  'sétimo llamado',
+];
 export async function generateReportDaily({
   startDate,
   printData,
@@ -33,16 +41,6 @@ export async function generateReportDaily({
 
     const orderedStatus: string[] = [];
 
-    const orderCalls = [
-      'primer llamado',
-      'segundo llamado',
-      'tercer llamado',
-      'cuarto llamado',
-      'quinto llamado',
-      'sexto llamado',
-      'septimo llamado',
-    ];
-
     orderCalls.forEach(call => {
       const estadoEncontrado = data.list.find(item => item.list.title === call);
       if (estadoEncontrado) {
@@ -57,6 +55,24 @@ export async function generateReportDaily({
     return orderedStatus;
   };
 
+  const getTimers = (data: AttendanceRange) => {
+    const orderedTimers: string[] = [];
+
+    orderCalls.forEach(call => {
+      const estadoEncontrado = data.list.find(item => item.list.title === call);
+
+      if (estadoEncontrado) {
+        orderedTimers.push(estadoEncontrado.list.timer);
+      }
+    });
+
+    return orderedTimers;
+  };
+  const timerCells = 'GHIJKLM';
+  timerCells.split('').forEach((cell, index) => {
+    const timer = getTimers(printData[0]);
+    wk.getCell(`${cell}5`).value = timer[index];
+  });
   const getColor = (status: string) => {
     if (status === 'P') return '87E4BD';
     if (status === 'T') return 'FFE17F';

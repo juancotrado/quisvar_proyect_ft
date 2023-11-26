@@ -16,7 +16,15 @@ interface PDFGeneratorProps {
 interface ConfigProps {
   size: 'A4' | 'A5';
 }
-
+const orderCalls = [
+  'primer llamado',
+  'segundo llamado',
+  'tercer llamado',
+  'cuarto llamado',
+  'quinto llamado',
+  'sexto llamado',
+  'sétimo llamado',
+];
 const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
   const getStatus = (data: AttendanceRange) => {
     const mapStates = {
@@ -29,19 +37,11 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
     };
 
     const orderedStatus: string[] = [];
-
-    const orderCalls = [
-      'primer llamado',
-      'segundo llamado',
-      'tercer llamado',
-      'cuarto llamado',
-      'quinto llamado',
-      'sexto llamado',
-      'septimo llamado',
-    ];
+    // console.log(data.list);
 
     orderCalls.forEach(call => {
       const estadoEncontrado = data.list.find(item => item.list.title === call);
+      console.log(estadoEncontrado);
       if (estadoEncontrado) {
         const inicialEstado =
           (mapStates as Record<string, string>)[estadoEncontrado.status] || ' ';
@@ -53,6 +53,19 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
 
     return orderedStatus;
   };
+  const getTimers = (data: AttendanceRange) => {
+    const orderedTimers: string[] = [];
+
+    orderCalls.forEach(call => {
+      const estadoEncontrado = data.list.find(item => item.list.title === call);
+
+      if (estadoEncontrado) {
+        orderedTimers.push(estadoEncontrado.list.timer);
+      }
+    });
+
+    return orderedTimers;
+  };
   const parseDate = (value?: string) => {
     return formatDate(new Date(value ? value : new Date()), {
       year: 'numeric',
@@ -60,7 +73,6 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
       day: '2-digit',
     });
   };
-  console.log(value);
 
   return (
     <Document>
@@ -93,8 +105,10 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
             <View style={{ ...styles.tableCol, width: '5%' }}>
               <Text style={styles.headers}>N°</Text>
             </View>
-            <View style={{ ...styles.tableCol, width: '10%' }}>
-              <Text style={styles.headers}>CUARTOS</Text>
+            <View style={{ ...styles.tableCol, width: '7%' }}>
+              <Text style={{ ...styles.headers, fontSize: '6px' }}>
+                CUARTOS
+              </Text>
             </View>
             <View style={{ ...styles.tableCol, width: '22%' }}>
               <Text style={styles.headers}>APELLIDOS Y NOMBRES</Text>
@@ -111,8 +125,23 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
             <View style={{ ...styles.tableCol, width: '10%' }}>
               <Text style={styles.headers}>USUARIO</Text>
             </View>
-            <View style={{ ...styles.tableCol, width: '25%' }}>
+            <View style={{ ...styles.tableCol, width: '28%' }}>
               <Text style={styles.headers}>ASISTENCIAS</Text>
+            </View>
+          </View>
+          <View style={styles.tableRow}>
+            <View style={{ ...styles.tableCol, width: '72%' }}>
+              <Text style={styles.headers}></Text>
+            </View>
+            <View style={{ ...styles.attendance, width: '28%' }}>
+              {orderCalls.map((_, index) => {
+                const timer = getTimers(value.data[0]);
+                return (
+                  <View style={{ ...styles.attendanceItem }} key={index}>
+                    <Text style={styles.headers}>{timer[index]}</Text>
+                  </View>
+                );
+              })}
             </View>
           </View>
           {value.data &&
@@ -131,7 +160,7 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
                   <View style={{ ...styles.tableCol, width: '5%' }}>
                     <Text style={styles.headers}>{index + 1}</Text>
                   </View>
-                  <View style={{ ...styles.tableCol, width: '10%' }}>
+                  <View style={{ ...styles.tableCol, width: '7%' }}>
                     <Text style={styles.headers}> --- </Text>
                   </View>
                   <View style={{ ...styles.tableCol, width: '22%' }}>
@@ -142,7 +171,7 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
                         marginHorizontal: 5,
                       }}
                     >
-                      {value.profile.firstName + ' ' + value.profile.firstName}
+                      {value.profile.firstName + ' ' + value.profile.lastName}
                     </Text>
                   </View>
                   <View style={{ ...styles.tableCol, width: '10%' }}>
@@ -164,7 +193,7 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
                   <View style={{ ...styles.tableCol, width: '10%' }}>
                     <Text style={styles.headers}> ------ </Text>
                   </View>
-                  <View style={{ ...styles.attendance, width: '25%' }}>
+                  <View style={{ ...styles.attendance, width: '28%' }}>
                     {attendances &&
                       attendances.map((attendance, index) => {
                         return (

@@ -25,9 +25,14 @@ import { generateReportRange } from './GenerateReportRange';
 // import html2canvas from 'html2canvas';
 import { isOpenCardViewPdf$ } from '../../services/sharingSubject';
 import { generateReportDaily } from './GenerateReportDaily';
+import { validateWhiteSpace } from '../../utils/customValidatesForm';
+import { SubmitHandler, useForm } from 'react-hook-form';
 interface sendItemsProps {
   usersId: number;
   status: string;
+}
+interface listName {
+  name: string;
 }
 const llamados = [
   { title: 'primer llamado' },
@@ -49,6 +54,7 @@ const Attendance = () => {
   const [callList, setCallList] = useState<ListAttendance | null>(null);
   const [date, setDate] = useState(_date(today));
   const [license, setLicense] = useState<getLicenses[]>([]);
+  const [show, setShow] = useState<boolean>(false);
   const [rangeDate, setRangeDate] = useState<RangeDate>({
     startDate: '',
     endDate: '',
@@ -58,7 +64,30 @@ const Attendance = () => {
   const socket = useContext(SocketContext);
 
   const componentRef = useRef(null);
+  const {
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm<listName>();
 
+  const onSubmit: SubmitHandler<listName> = async values => {
+    const res = await axiosInstance.get(
+      `/list/attendance/?startDate=${_date(today)}`
+    );
+    if (!(llamados.length > res.data.length)) return;
+    const title = llamados[res.data.length];
+    // console.log({...body, timer: values.name});
+
+    axiosInstance
+      .post(`/list`, { ...title, timer: values?.name })
+      .then(async () => {
+        const data = await getTodayData();
+        setCallList(data[data.length - 1]);
+        setShow(false);
+        reset();
+      });
+  };
   // const handleCapture = () => {
   //   const currentComponent = componentRef.current;
   //   if (currentComponent) {
@@ -136,17 +165,17 @@ const Attendance = () => {
   const callNotification = () => {
     socket.emit('client:call-notification');
   };
-  const addCall = async () => {
-    const res = await axiosInstance.get(
-      `/list/attendance/?startDate=${_date(today)}`
-    );
-    if (!(llamados.length > res.data.length)) return;
-    const body = llamados[res.data.length];
-    axiosInstance.post(`/list`, body).then(async () => {
-      const data = await getTodayData();
-      setCallList(data[data.length - 1]);
-    });
-  };
+  // const addCall = async (value : string) => {
+  //   const res = await axiosInstance.get(
+  //     `/list/attendance/?startDate=${_date(today)}`
+  //   );
+  //   if (!(llamados.length > res.data.length)) return;
+  //   // const body = llamados[res.data.length];
+  //   axiosInstance.post(`/list`, value).then(async () => {
+  //     const data = await getTodayData();
+  //     setCallList(data[data.length - 1]);
+  //   });
+  // };
 
   const getDate = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -167,6 +196,7 @@ const Attendance = () => {
   const isCompletCallAttendance = callLists?.every(
     list => list.users.length > 0
   );
+
   const todayVerify = date === _date(today);
   const genarteReportRange = async (type: 'pdf' | 'excel') => {
     const { endDate, startDate } = rangeDate;
@@ -256,17 +286,57 @@ const Attendance = () => {
               }.svg`}
               className="attendance-img"
             />
-            <p className="attendance-text">{data.title}</p>
+            <p className="attendance-text">{data.timer}</p>
           </div>
         ))}
-        {isCompletCallAttendance && todayVerify && (
-          <Button
-            onClick={addCall}
-            className="attendance-add-btn"
-            // icon="plus"
-            text="Añadir Nueva Lista"
-          />
-        )}
+        {callLists?.length !== 7 &&
+          isCompletCallAttendance &&
+          todayVerify &&
+          (!show ? (
+            <Button
+              onClick={() => setShow(true)}
+              className="attendance-add-btn"
+              // icon="plus"
+              text="Añadir Nueva Lista"
+            />
+          ) : (
+            <form
+              className="stage-add-input"
+              onSubmit={handleSubmit(onSubmit)}
+              autoComplete="off"
+            >
+              <Input
+                placeholder="Hora 00:00"
+                className="stage-header-add-btn stage-add-btn-limit"
+                {...register('name', {
+                  validate: { validateWhiteSpace },
+                })}
+                name="name"
+                required={true}
+                errors={errors}
+              />
+              <div className="stage-icon-area">
+                <button type="submit" className="stage-icon-action">
+                  <img
+                    src="/svg/check-blue.svg"
+                    style={{ width: '20px', height: '20px' }}
+                  />
+                </button>
+                <button
+                  onClick={() => {
+                    setShow(false);
+                    reset();
+                  }}
+                  className="stage-icon-action"
+                >
+                  <img
+                    src="/svg/cross-red.svg"
+                    style={{ width: '20px', height: '20px' }}
+                  />
+                </button>
+              </div>
+            </form>
+          ))}
       </span>
       {callList && (
         <div className="attendance-card-container-main">

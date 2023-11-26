@@ -648,6 +648,7 @@ export interface ListAttendance {
   createdAt: string;
   id: number;
   title: string;
+  timer: string;
   users: userList[];
 }
 export interface userAttendance {
@@ -656,6 +657,7 @@ export interface userAttendance {
   list: {
     createdAt: string;
     title: string;
+    timer: string;
     id: number;
   };
 }

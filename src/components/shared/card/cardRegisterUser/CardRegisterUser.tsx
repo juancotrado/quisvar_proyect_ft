@@ -22,7 +22,8 @@ import { Subscription } from 'rxjs';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import SwornDeclarationPdf from '../../swornDeclarationPdf/SwornDeclarationPdf';
 import useJurisdiction from '../../../../hooks/useJurisdiction';
-import { deleteExtension } from '../../../../utils/tools';
+import { capitalizeText, deleteExtension } from '../../../../utils/tools';
+import { SnackbarUtilities } from '../../../../utils/SnackbarManager';
 
 interface CardRegisterUserProps {
   onSave?: () => void;
@@ -159,6 +160,28 @@ const CardRegisterUser = ({
     }
   };
 
+  const searchUserForDNI = () => {
+    const dni = watch('dni');
+    if (dni.length !== 8)
+      return SnackbarUtilities.warning(
+        'Asegurese de escribir los 8 digitos del DNI'
+      );
+    axiosInstance
+      .get(
+        `https://apiperu.dev/api/dni/${dni}?api_token=e2724cf7217bd44faf88d6bfdd964e512cbe34bd31e13f958e6de63a93a3709c`
+      )
+      .then(res => {
+        if (!res.data.success) return SnackbarUtilities.error(res.data.message);
+        const { apellido_paterno, apellido_materno, nombres } = res.data.data;
+        reset({
+          firstName: capitalizeText(nombres),
+          lastName: `${capitalizeText(apellido_paterno)} ${capitalizeText(
+            apellido_materno
+          )}`,
+          declarations: [],
+        });
+      });
+  };
   const successfulShipment = () => {
     onSave?.();
     setIsOpen(false);
@@ -194,11 +217,22 @@ const CardRegisterUser = ({
           </h1>
           <div className="col-input">
             <InputText
-              {...register('dni', { required: true, maxLength: 9 })}
+              {...register('dni', {
+                required: true,
+                maxLength: {
+                  value: 9,
+                  message: 'Asegurese de escribir los 8 digitos del DNI',
+                },
+                minLength: {
+                  value: 8,
+                  message: 'Asegurese de escribir los 8 digitos del DNI',
+                },
+              })}
               placeholder="N°"
               label="DNI"
               errors={errors}
               type="number"
+              handleSearch={searchUserForDNI}
             />
             <InputText
               {...register('firstName', { required: true })}
@@ -422,7 +456,7 @@ const CardRegisterUser = ({
               <ul className="card-register-sworn-declaration-dropdown-sub">
                 {generalFiles?.map(generalFile => (
                   <label
-                    id={String(generalFile.id)}
+                    key={generalFile.id}
                     className="card-register-sworn-declaration-check-container"
                   >
                     <input

@@ -19,6 +19,7 @@ interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   errorPosX?: number;
   errorPosY?: number;
   isRelative?: boolean;
+  handleSearch?: () => void;
 }
 
 const InputText = forwardRef<HTMLInputElement, InputTextProps>(
@@ -34,6 +35,7 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
       disabled,
       isRelative = false,
       classNameMain,
+      handleSearch,
       ...props
     },
     ref
@@ -71,14 +73,21 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
             type={typeAux}
             {...props}
           />
-          {type == 'password' ? (
+          {type == 'password' && (
             <img
               onClick={viewPassword}
               src={isShow ? Eye : EyeClose}
               alt={Eye}
               className="input-icon"
             />
-          ) : null}
+          )}
+          {handleSearch && (
+            <img
+              onClick={handleSearch}
+              src={'/svg/ic_baseline-search.svg'}
+              className="input-icon"
+            />
+          )}
         </div>
         {name && errors && errors[name] && (
           <span className="input-span-error" style={style}>

@@ -25,16 +25,12 @@ import { generateReportRange } from './GenerateReportRange';
 // import html2canvas from 'html2canvas';
 import { isOpenCardViewPdf$ } from '../../services/sharingSubject';
 import { generateReportDaily } from './GenerateReportDaily';
-import { validateWhiteSpace } from '../../utils/customValidatesForm';
-import { SubmitHandler, useForm } from 'react-hook-form';
 import { SnackbarUtilities } from '../../utils/SnackbarManager';
 interface sendItemsProps {
   usersId: number;
   status: string;
 }
-interface listName {
-  name: string;
-}
+
 const llamados = [
   { title: 'primer llamado' },
   { title: 'segundo llamado' },
@@ -55,7 +51,6 @@ const Attendance = () => {
   const [callList, setCallList] = useState<ListAttendance | null>(null);
   const [date, setDate] = useState(_date(today));
   const [license, setLicense] = useState<getLicenses[]>([]);
-  const [show, setShow] = useState<boolean>(false);
   const [rangeDate, setRangeDate] = useState<RangeDate>({
     startDate: '',
     endDate: '',
@@ -65,30 +60,7 @@ const Attendance = () => {
   const socket = useContext(SocketContext);
 
   const componentRef = useRef(null);
-  const {
-    handleSubmit,
-    register,
-    reset,
-    formState: { errors },
-  } = useForm<listName>();
 
-  const onSubmit: SubmitHandler<listName> = async values => {
-    const res = await axiosInstance.get(
-      `/list/attendance/?startDate=${_date(today)}`
-    );
-    if (!(llamados.length > res.data.length)) return;
-    const title = llamados[res.data.length];
-    // console.log({...body, timer: values.name});
-
-    axiosInstance
-      .post(`/list`, { ...title, timer: values?.name })
-      .then(async () => {
-        const data = await getTodayData();
-        setCallList(data[data.length - 1]);
-        setShow(false);
-        reset();
-      });
-  };
   // const handleCapture = () => {
   //   const currentComponent = componentRef.current;
   //   if (currentComponent) {
@@ -133,9 +105,7 @@ const Attendance = () => {
     return res.data;
   };
   const verifyLicenses = () => {
-    axiosInstance
-      .post('/license/expired')
-      .then(() => console.log('Datos limpiados'));
+    axiosInstance.post('/license/expired');
   };
   // borrar listas de ayer que no tengan asuarios
   const deleteLists = async () => {
@@ -143,6 +113,9 @@ const Attendance = () => {
     return res.data;
   };
   const generateAttendance = () => {
+    if (sendItems.length !== users?.length) {
+      return SnackbarUtilities.error('Upps, te olvidaste de alguien');
+    }
     axiosInstance
       .post(`/list/attendance/${callList?.id}`, sendItems)
       .then(async () => {
@@ -166,17 +139,20 @@ const Attendance = () => {
   const callNotification = () => {
     socket.emit('client:call-notification');
   };
-  // const addCall = async (value : string) => {
-  //   const res = await axiosInstance.get(
-  //     `/list/attendance/?startDate=${_date(today)}`
-  //   );
-  //   if (!(llamados.length > res.data.length)) return;
-  //   // const body = llamados[res.data.length];
-  //   axiosInstance.post(`/list`, value).then(async () => {
-  //     const data = await getTodayData();
-  //     setCallList(data[data.length - 1]);
-  //   });
-  // };
+  const addCall = async () => {
+    const hours = today.getHours().toString().padStart(2, '0');
+    const min = today.getMinutes().toString().padStart(2, '0');
+    const hour = `${hours}:${min}`;
+    const res = await axiosInstance.get(
+      `/list/attendance/?startDate=${_date(today)}`
+    );
+    if (!(llamados.length > res.data.length)) return;
+    const title = llamados[res.data.length];
+    axiosInstance.post(`/list`, { ...title, timer: hour }).then(async () => {
+      const data = await getTodayData();
+      setCallList(data[data.length - 1]);
+    });
+  };
 
   const getDate = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -231,9 +207,10 @@ const Attendance = () => {
     const response = await axiosInstance.get(
       `/list/attendance/range/?startDate=${date}&endDate=${date}`
     );
-    // console.log(response.data);
-
     const newData: AttendanceRange[] = response.data;
+    if (!newData[0].list.length) {
+      return SnackbarUtilities.error('Datos no guardados');
+    }
     if (type === 'pdf') {
       isOpenCardViewPdf$.setSubject = {
         isOpen: true,
@@ -293,54 +270,14 @@ const Attendance = () => {
             <p className="attendance-text">{data.timer}</p>
           </div>
         ))}
-        {callLists?.length !== 7 &&
-          isCompletCallAttendance &&
-          todayVerify &&
-          (!show ? (
-            <Button
-              onClick={() => setShow(true)}
-              className="attendance-add-btn"
-              // icon="plus"
-              text="Añadir Nueva Lista"
-            />
-          ) : (
-            <form
-              className="stage-add-input"
-              onSubmit={handleSubmit(onSubmit)}
-              autoComplete="off"
-            >
-              <Input
-                placeholder="Hora 00:00"
-                className="stage-header-add-btn stage-add-btn-limit"
-                {...register('name', {
-                  validate: { validateWhiteSpace },
-                })}
-                name="name"
-                required={true}
-                errors={errors}
-              />
-              <div className="stage-icon-area">
-                <button type="submit" className="stage-icon-action">
-                  <img
-                    src="/svg/check-blue.svg"
-                    style={{ width: '20px', height: '20px' }}
-                  />
-                </button>
-                <button
-                  onClick={() => {
-                    setShow(false);
-                    reset();
-                  }}
-                  className="stage-icon-action"
-                >
-                  <img
-                    src="/svg/cross-red.svg"
-                    style={{ width: '20px', height: '20px' }}
-                  />
-                </button>
-              </div>
-            </form>
-          ))}
+        {callLists?.length !== 7 && isCompletCallAttendance && todayVerify && (
+          <Button
+            onClick={addCall}
+            className="attendance-add-btn"
+            // icon="plus"
+            text="Añadir Nueva Lista"
+          />
+        )}
       </span>
       {callList && (
         <div className="attendance-card-container-main">

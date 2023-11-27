@@ -41,7 +41,6 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
 
     orderCalls.forEach(call => {
       const estadoEncontrado = data.list.find(item => item.list.title === call);
-      console.log(estadoEncontrado);
       if (estadoEncontrado) {
         const inicialEstado =
           (mapStates as Record<string, string>)[estadoEncontrado.status] || ' ';

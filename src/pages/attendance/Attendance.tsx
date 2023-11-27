@@ -27,6 +27,7 @@ import { isOpenCardViewPdf$ } from '../../services/sharingSubject';
 import { generateReportDaily } from './GenerateReportDaily';
 import { validateWhiteSpace } from '../../utils/customValidatesForm';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { SnackbarUtilities } from '../../utils/SnackbarManager';
 interface sendItemsProps {
   usersId: number;
   status: string;
@@ -200,6 +201,9 @@ const Attendance = () => {
   const todayVerify = date === _date(today);
   const genarteReportRange = async (type: 'pdf' | 'excel') => {
     const { endDate, startDate } = rangeDate;
+    if (!endDate && !startDate) {
+      return SnackbarUtilities.error('Ingresar rangos de fecha');
+    }
     const response = await axiosInstance.get(
       `/list/attendance/range/?startDate=${startDate}&endDate=${endDate}`
     );
@@ -434,6 +438,7 @@ const Attendance = () => {
                     onChange={handleRangeData}
                     classNameMain="attendace-date-filter"
                     max={_date(today)}
+                    required
                   />
                   <Input
                     label="Fecha fin"

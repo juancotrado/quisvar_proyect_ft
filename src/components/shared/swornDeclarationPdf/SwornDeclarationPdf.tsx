@@ -55,16 +55,12 @@ const SwornDeclarationPdf = ({ data }: SwornDeclarationPdfProps) => {
 
         {data.typeDeclaration === 'administrative' && (
           <>
-            <Text style={styles.subtitle}>
-              SEGUNDO: PERIODO MÍNIMO DE ESTADÍA{' '}
-            </Text>
+            <Text style={styles.subtitle}>SEGUNDO: RESPONSABILIDADES </Text>
             <Text style={styles.text}>
-              Me comprometo a cumplir el tiempo mínimo de estadía es de{' '}
-              <Text style={styles.textBold}>4 MESES</Text>, el Me comprometo a
-              no divulgar los derechos intelectuales del grupo fueran divulgados
-              de comprobarse me comprometo a ser procesado conforme al código
-              civil, código penal. Así mismo resarcir los daños y perjuicios
-              calculadas conforme ley.{'\n'}
+              Me comprometo a no divulgar los derechos intelectuales del grupo
+              fueran divulgados de comprobarse me comprometo a ser procesado
+              conforme al código civil, código penal. Así mismo resarcir los
+              daños y perjuicios calculadas conforme ley.{'\n'}
               Me comprometo a no llegar a agredir, denigrar, difamar y/o
               comentar en y estos contravenido con los derechos fundamentales de
               la empresa o las personas que laboran en la empresa, de

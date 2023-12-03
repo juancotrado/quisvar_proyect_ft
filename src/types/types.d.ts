@@ -197,10 +197,14 @@ export type User = {
 };
 type Profile = {
   id: number;
-  firstName: string;
   degree: string;
   description: string;
   job: string;
+  firstName: string;
+  firstNameRef: string;
+  lastNameRef: string;
+  phoneRef: string;
+  addressRef: string;
   lastName: string;
   dni: string;
   phone: string;
@@ -392,6 +396,10 @@ export interface UserForm {
   description: string;
   job: string;
   cv: FileList | null;
+  firstNameRef: string;
+  lastNameRef: string;
+  phoneRef: string;
+  addressRef: string;
   declaration: FileList | null;
   declarations?: string[];
   typeDeclaration?: 'technical' | 'administrative';

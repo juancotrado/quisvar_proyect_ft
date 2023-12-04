@@ -113,9 +113,9 @@ const Attendance = () => {
     return res.data;
   };
   const generateAttendance = () => {
-    if (sendItems.length !== users?.length) {
-      return SnackbarUtilities.error('Upps, te olvidaste de alguien');
-    }
+    // if (sendItems.length !== users?.length) {
+    //   return SnackbarUtilities.error('Upps, te olvidaste de alguien');
+    // }
     axiosInstance
       .post(`/list/attendance/${callList?.id}`, sendItems)
       .then(async () => {

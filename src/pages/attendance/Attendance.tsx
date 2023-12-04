@@ -140,11 +140,12 @@ const Attendance = () => {
     socket.emit('client:call-notification');
   };
   const addCall = async () => {
-    const hours = today.getHours().toString().padStart(2, '0');
-    const min = today.getMinutes().toString().padStart(2, '0');
+    const timer = new Date(); //si o si tiene que estar aqui
+    const hours = timer.getHours().toString().padStart(2, '0');
+    const min = timer.getMinutes().toString().padStart(2, '0');
     const hour = `${hours}:${min}`;
     const res = await axiosInstance.get(
-      `/list/attendance/?startDate=${_date(today)}`
+      `/list/attendance/?startDate=${_date(timer)}`
     );
     if (!(llamados.length > res.data.length)) return;
     const title = llamados[res.data.length];

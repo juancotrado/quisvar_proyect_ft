@@ -18,6 +18,7 @@ import Company from './company/Company';
 import Specialist from './specialist/Specialist';
 import SpecialistInformation from './specialist/information/SpecialistInformation';
 import CompanyInformation from './company/infomation/CompanyInformation';
+import Enterprice from './enterprise/Enterprice';
 export {
   CommingSoon,
   ListPersonalTask,
@@ -39,4 +40,5 @@ export {
   CompanyInformation,
   Specialist,
   SpecialistInformation,
+  Enterprice,
 };

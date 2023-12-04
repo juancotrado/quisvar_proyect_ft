@@ -113,9 +113,9 @@ const Attendance = () => {
     return res.data;
   };
   const generateAttendance = () => {
-    if (sendItems.length !== users?.length) {
-      return SnackbarUtilities.error('Upps, te olvidaste de alguien');
-    }
+    // if (sendItems.length !== users?.length) {
+    //   return SnackbarUtilities.error('Upps, te olvidaste de alguien');
+    // }
     axiosInstance
       .post(`/list/attendance/${callList?.id}`, sendItems)
       .then(async () => {
@@ -140,12 +140,12 @@ const Attendance = () => {
     socket.emit('client:call-notification');
   };
   const addCall = async () => {
-    const timer = new Date(); //si o si tiene que estar aqui
-    const hours = timer.getHours().toString().padStart(2, '0');
-    const min = timer.getMinutes().toString().padStart(2, '0');
+    const todayNow = new Date();
+    const hours = todayNow.getHours().toString().padStart(2, '0');
+    const min = todayNow.getMinutes().toString().padStart(2, '0');
     const hour = `${hours}:${min}`;
     const res = await axiosInstance.get(
-      `/list/attendance/?startDate=${_date(timer)}`
+      `/list/attendance/?startDate=${_date(todayNow)}`
     );
     if (!(llamados.length > res.data.length)) return;
     const title = llamados[res.data.length];

@@ -4,7 +4,11 @@ export const assitant_perms: UserRoleType[] = [
   'SUPER_ADMIN',
   'ASSISTANT',
 ];
-export const rolsFirstLevel: UserRoleType[] = ['SUPER_ADMIN', 'ADMIN'];
+export const rolsFirstLevel: UserRoleType[] = [
+  'SUPER_ADMIN',
+  'ADMIN',
+  'ASSISTANT',
+];
 export const rolSecondLevel: UserRoleType[] = [...rolsFirstLevel, 'SUPER_MOD'];
 
 export const rolThirdLevel: UserRoleType[] = [...rolSecondLevel, 'MOD'];

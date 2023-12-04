@@ -8,7 +8,17 @@
   justify-content: center;
   align-items: center;
 }
-
+.card-register-title-info {
+  padding: 0;
+  font-size: 1rem;
+  color: var(--color-secondary);
+  font-weight: 700;
+}
+.card-register-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
 .select-area {
   display: grid;
   gap: 2rem;
@@ -32,7 +42,7 @@ select:focus {
   padding: 2rem;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
   border: 1px solid var(--color-secondary);
   border-radius: 5px;
   background-color: white;

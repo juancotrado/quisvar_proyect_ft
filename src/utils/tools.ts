@@ -70,7 +70,6 @@ export const getDaysHistory = (
     );
     result.push({ participant: 'E', day: dayEmployee });
   }
-  console.log('ASD', JSON.stringify(result, null, 2));
   return result;
 };
 
@@ -225,6 +224,5 @@ export const drawDaysBars = (data: (RangeDays | RangeDays[])[]) => {
   });
   const myBase64Image = canvas.toDataURL('image/png'); // 'image/png' es el formato de la imagen
 
-  console.log(myBase64Image);
   return myBase64Image;
 };

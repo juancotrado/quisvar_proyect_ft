@@ -20,6 +20,7 @@ interface DataForm {
   stagesId?: number;
   name: string;
   isProject: boolean;
+  isArea: boolean;
   userId: number;
   typeItem: TypeItem;
 }
@@ -56,27 +57,30 @@ const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
   };
 
   const onSubmitData: SubmitHandler<DataForm> = async body => {
-    if (!idCoordinator && data.isProject)
+    if (!idCoordinator && data.isProject && data.nextLevel?.length !== 0)
       return SnackbarUtilities.warning(
         'Asegurese de elegir un coordinador antes.'
       );
     const { id, stagesId, rootTypeItem } = data;
     body = { ...body, rootId: firstLevel ? 0 : id, stagesId };
-    if (addLevel === 'area') {
-      body = { ...body, isProject: true };
+    if (
+      addLevel === 'area' ||
+      (data.isProject && data.nextLevel?.length !== 0)
+    ) {
+      body = { ...body, isArea: true };
     }
     if ((data.isProject || addLevel === 'area') && idCoordinator) {
       body = { ...body, userId: idCoordinator };
     }
-
     if (body.typeItem) {
+      let isArea = addLevel === 'area';
       if (body.rootId > 0) {
         await axiosInstance.patch(
-          `levels/${id}?item=${body.typeItem}&type=LEVEL`
+          `levels/${id}?item=${body.typeItem}&isArea=${isArea}&type=LEVEL`
         );
       } else {
         await axiosInstance.patch(
-          `levels/${stagesId}?item=${body.typeItem}&type=STAGE`
+          `levels/${stagesId}?item=${body.typeItem}&isArea=${isArea}&type=STAGE`
         );
       }
     } else {
@@ -114,7 +118,7 @@ const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
         </figure>
       </FloatingText>
 
-      {!data.isArea && !data.isProject && !data.isInclude && (
+      {!data.nextLevel?.length && !data.isInclude && !data.isArea && (
         <FloatingText text="Agregar Carpeta de Areas">
           <figure className="projectAddLevel-figure" onClick={hadleAddArea}>
             <img src={`/svg/${typeImgArea}.svg`} alt="W3Schools" />
@@ -168,7 +172,8 @@ const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
               errorPosX={errorPosX}
               errorPosY={-23}
             />
-            {(data.isProject || addLevel === 'area') && (
+            {((data.isProject && data.nextLevel?.length !== 0) ||
+              addLevel === 'area') && (
               <DropDownSimple
                 data={modedators}
                 itemKey="id"

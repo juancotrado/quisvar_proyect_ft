@@ -21,7 +21,11 @@ import {
 import { ProtectedRoute } from '../components';
 import Project from '../pages/specialities/project/Project';
 import ProtectedRole from '../components/protected/ProtectedRole/ProtectedRole';
-import { assitant_perms, rolThirdLevel } from '../utils/roles';
+import {
+  attendance_perms,
+  rolThirdLevel,
+  rolsFirstLevel,
+} from '../utils/roles';
 import Stage from '../pages/stage/Stage';
 import Task from '../pages/task/Task';
 import MailPage from '../pages/mail/MailPage';
@@ -43,7 +47,9 @@ const Navigation = () => {
               <Route path=":messageId" element={<MessagePage />} />
               <Route path="licencia/:id" element={<LicensePage />} />
             </Route>
-            <Route path="/asistencia" element={<Attendance />} />
+            <Route element={<ProtectedRole rols={attendance_perms} />}>
+              <Route path="/asistencia" element={<Attendance />} />
+            </Route>
             <Route path="/especialidades" element={<Specialities />}>
               <Route path="proyecto/:projectId" element={<Stage />}>
                 <Route path="etapa/:stageId" element={<Project />}>
@@ -71,7 +77,7 @@ const Navigation = () => {
                 element={<SpecialistInformation />}
               />
             </Route>
-            <Route element={<ProtectedRole rols={assitant_perms} />}>
+            <Route element={<ProtectedRole rols={rolsFirstLevel} />}>
               <Route path="/lista-de-usuarios" element={<UsersList />} />
             </Route>
             <Route element={<ProtectedRole rols={rolThirdLevel} />}>

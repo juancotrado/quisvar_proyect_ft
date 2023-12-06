@@ -165,6 +165,7 @@ export type UserRoleType =
   | 'SUPER_ADMIN'
   | 'ADMIN'
   | 'ASSISTANT'
+  | 'ASSISTANT_ADMINISTRATIVE'
   | 'SUPER_MOD'
   | 'MOD'
   | 'EMPLOYEE';
@@ -392,8 +393,8 @@ export interface UserForm {
   department: string;
   province: string;
   district: string;
+  role: string;
   ruc: string;
-  description: string;
   job: string;
   cv: FileList | null;
   firstNameRef: string;

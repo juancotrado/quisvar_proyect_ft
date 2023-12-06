@@ -1,4 +1,5 @@
 import { Feedback, Level, RangeDays } from '../types/types';
+import { getListByRole } from './roles';
 
 export const findProject = (data: Level[]): boolean => {
   let existProyect = false;
@@ -14,6 +15,7 @@ export const findProject = (data: Level[]): boolean => {
 
 export const deleteExtension = (fileName: string) =>
   fileName.split('.').slice(0, -1).join();
+
 export const getFirstLetterNames = (firstName: string, lastName: string) => {
   const firstLetterFirstName = firstName[0].toUpperCase();
   const firstLetterLastName = lastName[0].toUpperCase();
@@ -43,7 +45,8 @@ export const generateUniqueColorForDNI = (dni: string) => {
 
   return hexadecimalColo;
 };
-
+export const getRole = (role: string) =>
+  getListByRole('SUPER_ADMIN').find(e => e.id === role)?.value;
 export const getDayDiferency = (firsDate: string, lastDate: string) => {
   const untilDateTime =
     new Date(lastDate).getTime() - new Date(firsDate).getTime();

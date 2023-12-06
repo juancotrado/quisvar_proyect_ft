@@ -150,7 +150,6 @@ const UsersList = () => {
           <div className="header-list-text user-grid">USUARIO</div>
           <div className="header-list-text">ROL DE TRABAJO</div>
           <div className="header-list-text">ESTADO</div>
-          <div className="header-list-text">CARGO</div>
           <div className="header-list-text">CELULAR</div>
           <div className="header-list-text">Documentos</div>
           <div className="header-list-text">EDITAR</div>

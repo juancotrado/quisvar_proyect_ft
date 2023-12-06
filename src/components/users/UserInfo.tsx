@@ -8,7 +8,7 @@ import { axiosInstance } from '../../services/axiosInstance';
 import { getListByRole, verifyByRole } from '../../utils/roles';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import { getIconDefault } from '../../utils/tools';
+import { getIconDefault, getRole } from '../../utils/tools';
 
 interface UserInfoProps {
   user: User;
@@ -49,7 +49,7 @@ const UserInfo = ({
 
   return (
     <div className="user-container">
-      <div className="col-span col-span-2 email-container">
+      <div className="col-span user-grid email-container ">
         <figure className="user-profile-figure">
           <img src={getIconDefault(user.profile.dni)} alt={user.email} />
         </figure>
@@ -73,9 +73,7 @@ const UserInfo = ({
             data={getListByRole(userSession.role)}
           />
         ) : (
-          <span className="role-title">
-            {getListByRole('SUPER_ADMIN').find(e => e.id === user.role)?.value}
-          </span>
+          <span className="role-title">{getRole(user.role)}</span>
         )}
         {roleLimit && (
           <Button
@@ -102,24 +100,25 @@ const UserInfo = ({
           </div>
         )}
       </div>
-      <div className="col-span phone-container">{profile.description}</div>
       <div className="col-span phone-container">{profile.phone}</div>
       <div className="col-span">
         <Button className="role-btn" icon="folder-icon" onClick={onViewDocs} />
       </div>
-      {roleLimit && (
-        <div className="col-span actions-container">
-          <Button icon="pencil" className="role-btn" onClick={onUpdate} />
-          <ButtonDelete
-            icon="trash"
-            disabled={user.id === userSession.id}
-            url={`/users/${user.id}`}
-            className="role-delete-icon"
-            onSave={getUsers}
-            passwordRequired
-          />
-        </div>
-      )}
+      <div className="col-span actions-container">
+        {roleLimit && (
+          <>
+            <Button icon="pencil" className="role-btn" onClick={onUpdate} />
+            <ButtonDelete
+              icon="trash"
+              disabled={user.id === userSession.id}
+              url={`/users/${user.id}`}
+              className="role-delete-icon"
+              onSave={getUsers}
+              passwordRequired
+            />
+          </>
+        )}
+      </div>
       <div className="col-span">
         <Button className="role-btn" icon="print-report" onClick={onPrint} />
       </div>

@@ -83,16 +83,16 @@
   display: flex;
   font-weight: bold;
   font-size: 0.7rem;
-  gap: 0.1rem;
-  /* width: 10rem; */
-  justify-content: end;
+  gap: 0.5rem;
+  justify-content: space-between;
   z-index: 1;
 }
 
 .role-btn {
   border: none;
-  width: 2.5rem;
-  height: 2.5rem;
+  min-width: 0.8rem;
+  max-width: 0.8rem;
+  padding: 0;
 }
 
 .role-delete-icon {
@@ -105,7 +105,9 @@
 }
 
 .role-title {
-  text-align: right;
+  text-align: left;
+  font-size: 0.6rem;
+  text-wrap: wrap;
 }
 
 .role-options {

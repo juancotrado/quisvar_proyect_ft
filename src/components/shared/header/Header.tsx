@@ -8,8 +8,16 @@ import { SocketContext } from '../../../context/SocketContex';
 import { CardEditInformation, Menu } from '../..';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
-import { assitant_perms } from '../../../utils/roles';
-import { itemsAdmin, itemsEmployee } from '../../../utils/navigation/config';
+import {
+  assitant_perms,
+  attendance_perms,
+  rolsFirstLevel,
+} from '../../../utils/roles';
+import {
+  itemsAdmin,
+  itemsAsistantAdministrative,
+  itemsEmployee,
+} from '../../../utils/navigation/config';
 import ChipItem from './chipItem/ChipItem';
 import { getIconDefault } from '../../../utils/tools';
 
@@ -59,8 +67,10 @@ const Header = () => {
     return window.open('/public/tutorials/ADMIN_GUIDE.mkv', '_blank');
   };
 
-  const itemType = assitant_perms.includes(userSession.role)
+  const itemType = rolsFirstLevel.includes(userSession.role)
     ? itemsAdmin
+    : attendance_perms.includes(userSession.role)
+    ? itemsAsistantAdministrative
     : itemsEmployee;
 
   const openModal = () => setOpenModalInfo(true);

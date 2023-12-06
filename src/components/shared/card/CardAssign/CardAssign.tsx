@@ -36,7 +36,7 @@ const CardAssign = ({ onSave, onClose }: CardAssingProps) => {
   const {
     register,
     handleSubmit,
-    setValue,
+    //setValue,
     reset,
     // watch,
     formState: { errors },

@@ -2,8 +2,8 @@ import { Document, Image, Page, Text, View } from '@react-pdf/renderer';
 import { styles } from './swornDeclarationStyle';
 import { UserForm } from '../../../types/types';
 import { deleteExtension, getRole } from '../../../utils/tools';
-import formatDate, { _date } from '../../../utils/formatDate';
-import { roleList_SUPER_ADMIN } from '../../../utils/roles';
+import formatDate from '../../../utils/formatDate';
+// import { roleList_SUPER_ADMIN } from '../../../utils/roles';
 interface SwornDeclarationPdfProps {
   data: UserForm;
 }

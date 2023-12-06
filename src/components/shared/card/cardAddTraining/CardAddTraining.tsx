@@ -9,6 +9,7 @@ import { Subscription } from 'rxjs';
 import { isOpenAddTraining$ } from '../../../../services/sharingSubject';
 // import { useParams } from 'react-router-dom';
 import { axiosInstance } from '../../../../services/axiosInstance';
+import { _date } from '../../../../utils/formatDate';
 
 interface CardAddTrainingProps {
   onSave?: () => void;
@@ -42,6 +43,9 @@ const CardAddTraining = ({ onSave }: CardAddTrainingProps) => {
     if (!data) return;
     setValue('institution', data.institution);
     setValue('hours', data.hours);
+    setValue('issue', _date(data.issue as Date));
+    setValue('startDate', _date(data.startDate as Date));
+    setValue('untilDate', _date(data.untilDate as Date));
   }, [data, setValue]);
 
   const closeFunctions = () => {
@@ -77,7 +81,7 @@ const CardAddTraining = ({ onSave }: CardAddTrainingProps) => {
         <span className="close-icon" onClick={closeFunctions}>
           <img src="/svg/close.svg" alt="pencil" />
         </span>
-        <h1>{data ? 'Editar' : 'Registrar'}Registrar Capacitacion</h1>
+        <h1>{data ? 'Editar' : 'Registrar'} Capacitacion</h1>
 
         <div className="specialist-col">
           <Input

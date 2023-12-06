@@ -15,11 +15,20 @@ import { RootState } from '../../../../store';
 
 interface CardAssingProps {
   onSave: () => void;
+  onClose?: () => void;
 }
-
-const CardAssign = ({ onSave }: CardAssingProps) => {
+interface EquipmentForm {
+  name: string;
+  description: string;
+  doc?: string;
+  firstName: string;
+  lastName: string;
+  dni: string;
+}
+const CardAssign = ({ onSave, onClose }: CardAssingProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hasId, setHasId] = useState<number>(0);
+  const [data, setData] = useState<Equipment>();
   const handleIsOpen = useRef<Subscription>(new Subscription());
   const [searchTerm, setSearchTerm] = useState('');
   // const { users } = useListUsers();
@@ -27,21 +36,36 @@ const CardAssign = ({ onSave }: CardAssingProps) => {
   const {
     register,
     handleSubmit,
-    // setValue,
+    //setValue,
     reset,
     // watch,
     formState: { errors },
-  } = useForm<Equipment>();
-
+  } = useForm<EquipmentForm>();
   useEffect(() => {
     handleIsOpen.current = isOpenCardAssing$.getSubject.subscribe(value => {
       setIsOpen(value.isOpen);
       setHasId(value.id);
+      setData(value.data);
     });
     return () => {
       handleIsOpen.current.unsubscribe();
     };
   }, []);
+  useEffect(() => {
+    if (data) {
+      reset({
+        name: data?.name,
+        description: data?.description,
+        dni: data?.user?.profile.dni,
+        firstName: data?.user?.profile.firstName,
+        lastName: data?.user?.profile.lastName,
+      });
+      setSearchTerm(data.user?.profile.dni as string);
+      console.log(data?.name);
+    } else {
+      reset({});
+    }
+  }, [data, reset]);
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -59,22 +83,35 @@ const CardAssign = ({ onSave }: CardAssingProps) => {
       user.profile.dni.startsWith(searchTerm)
     );
   }, [searchTerm, users]);
-  console.log(filterList[0]);
+  // console.log(filterList[0]);
 
-  const onSubmit: SubmitHandler<Equipment> = async data => {
-    const file = data.doc?.[0];
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('name', data.name);
-    formData.append('userId', filterList[0].id.toString());
-    formData.append('workStationId', hasId.toString());
-    formData.append('description', data.description);
-    const headers = {
-      'Content-type': 'multipart/form-data',
-    };
-    axiosInstance
-      .post(`/equipment`, formData, { headers })
-      .then(successfulShipment);
+  const onSubmit: SubmitHandler<EquipmentForm> = async values => {
+    if (!data) {
+      const file = values.doc?.[0];
+      const formData = new FormData();
+      formData.append('file', file as string);
+      formData.append('name', values.name);
+      formData.append('userId', filterList[0].id.toString());
+      formData.append('workStationId', hasId.toString());
+      formData.append('description', values.description);
+      const headers = {
+        'Content-type': 'multipart/form-values',
+      };
+      axiosInstance
+        .post(`/equipment`, formData, { headers })
+        .then(successfulShipment);
+    } else {
+      // const file = values.doc?.[0];
+      const newData = {
+        name: values.name,
+        workStationId: data.workStationId,
+        userId: filterList[0].id,
+        description: values.description,
+      };
+      axiosInstance
+        .patch(`/equipment/${hasId}`, newData)
+        .then(successfulShipment);
+    }
   };
   const successfulShipment = () => {
     onSave?.();
@@ -83,7 +120,8 @@ const CardAssign = ({ onSave }: CardAssingProps) => {
   };
   const closeFunctions = () => {
     setIsOpen(false);
-    // onClose?.();
+    setSearchTerm('');
+    onClose?.();
     // setErrorPassword({});
     reset();
   };
@@ -95,37 +133,73 @@ const CardAssign = ({ onSave }: CardAssingProps) => {
         </span>
         <h1>Asignar Ordenador</h1>
         <div className="col-input">
-          <Input
-            type="text"
-            placeholder="Buscar por DNI"
-            value={searchTerm}
-            onChange={handleSearchChange}
-            label="Busqueda"
-            // classNameMain="filter-user-input"
-          />
+          {data ? (
+            <Input
+              {...register('dni', {
+                validate: { validateWhiteSpace },
+              })}
+              type="text"
+              label="DNI"
+              disabled
+            />
+          ) : (
+            <Input
+              type="text"
+              placeholder="Buscar por DNI"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              label="Busqueda"
+              // classNameMain="filter-user-input"
+            />
+          )}
           <InputText
             {...register('name', {
               validate: { validateWhiteSpace },
             })}
-            placeholder="###"
-            label="Remoto"
+            placeholder="00"
+            label="Usuario ##"
             errors={errors}
+            type="number"
           />
         </div>
-        <div className="col-input">
-          <Input
-            type="text"
-            value={filterList.length > 0 ? filterList[0].profile.firstName : ''}
-            placeholder="Nombre"
-            disabled
-          />
-          <Input
-            type="text"
-            value={filterList.length > 0 ? filterList[0].profile.lastName : ''}
-            placeholder="Apellido"
-            disabled
-          />
-        </div>
+        {data ? (
+          <div className="col-input">
+            <Input
+              type="text"
+              {...register('firstName', {
+                validate: { validateWhiteSpace },
+              })}
+              disabled
+            />
+            <Input
+              type="text"
+              {...register('lastName', {
+                validate: { validateWhiteSpace },
+              })}
+              disabled
+            />
+          </div>
+        ) : (
+          <div className="col-input">
+            <Input
+              type="text"
+              value={
+                filterList.length > 0 ? filterList[0].profile.firstName : ''
+              }
+              placeholder="Nombre"
+              disabled
+            />
+            <Input
+              type="text"
+              value={
+                filterList.length > 0 ? filterList[0].profile.lastName : ''
+              }
+              placeholder="Apellido"
+              disabled
+            />
+          </div>
+        )}
+
         <div className="col-input">
           <InputText
             {...register('description', {

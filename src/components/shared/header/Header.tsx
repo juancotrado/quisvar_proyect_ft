@@ -9,7 +9,7 @@ import { CardEditInformation, Menu } from '../..';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import {
-  assitant_perms,
+  //assitant_perms,
   attendance_perms,
   rolsFirstLevel,
 } from '../../../utils/roles';

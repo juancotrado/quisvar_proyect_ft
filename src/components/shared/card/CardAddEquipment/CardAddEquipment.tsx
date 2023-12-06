@@ -9,6 +9,7 @@ import InputText from '../../Input/Input';
 import { validateWhiteSpace } from '../../../../utils/customValidatesForm';
 import Button from '../../button/Button';
 import { axiosInstance } from '../../../../services/axiosInstance';
+import { TextArea } from '../../..';
 interface CardAddEquipmentProps {
   onSave: () => void;
 }
@@ -36,7 +37,7 @@ const CardAddEquipment = ({ onSave }: CardAddEquipmentProps) => {
     const file = data.doc?.[0];
     const formData = new FormData();
     formData.append('file', file);
-    formData.append('name', data.name);
+    formData.append('name', `Remoto ${data.name}`);
     formData.append('total', data.total.toString());
     formData.append('price', data.price);
     formData.append('description', data.description);
@@ -70,14 +71,15 @@ const CardAddEquipment = ({ onSave }: CardAddEquipmentProps) => {
             {...register('name', {
               validate: { validateWhiteSpace },
             })}
-            placeholder="Equipo ##"
-            label="Equipo N°"
+            placeholder="N° 000"
+            label="Equipo (remoto) N°"
             errors={errors}
+            type="number"
           />
           <InputText
             {...register('total')}
             placeholder="#"
-            label="Total"
+            label="Total de pantallas"
             errors={errors}
             type="number"
           />
@@ -96,17 +98,18 @@ const CardAddEquipment = ({ onSave }: CardAddEquipmentProps) => {
             })}
             placeholder="S/. 00.00"
             errors={errors}
-            label="Precio"
+            label="Precio S/."
             type="number"
           />
         </div>
-        <InputText
+        <TextArea
           {...register('description', {
             validate: { validateWhiteSpace },
           })}
           placeholder=""
           errors={errors}
           label="Description"
+          className="card-equipment-description"
         />
         <div className="btn-build">
           <Button

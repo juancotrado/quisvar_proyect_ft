@@ -145,7 +145,7 @@ const Attendance = () => {
     const min = todayNow.getMinutes().toString().padStart(2, '0');
     const hour = `${hours}:${min}`;
     const res = await axiosInstance.get(
-      `/list/attendance/?startDate=${_date(today)}`
+      `/list/attendance/?startDate=${_date(todayNow)}`
     );
     if (!(llamados.length > res.data.length)) return;
     const title = llamados[res.data.length];

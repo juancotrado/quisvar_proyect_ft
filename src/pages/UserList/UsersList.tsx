@@ -18,7 +18,12 @@ import {
   isOpenCardRegisterUser$,
   isOpenViewDocs$,
 } from '../../services/sharingSubject';
-import { GeneralFile, User, WorkStation } from '../../types/types';
+import {
+  Equipment as Equip,
+  GeneralFile,
+  User,
+  WorkStation,
+} from '../../types/types';
 import UserInfo from '../../components/users/UserInfo';
 import { AppDispatch, RootState } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -89,10 +94,11 @@ const UsersList = () => {
   const handleOpenAddEquipment = () => {
     isOpenCardAddEquipment$.setSubject = true;
   };
-  const handleOpenAssing = (id: number) => {
+  const handleOpenAssing = (isOpen: boolean, id: number, data?: Equip) => {
     isOpenCardAssing$.setSubject = {
-      isOpen: true,
+      isOpen,
       id,
+      data,
     };
   };
   return (
@@ -179,11 +185,18 @@ const UsersList = () => {
               data={workStation}
               openCard={handleOpenAssing}
               key={workStation.id}
+              handleEdit={handleOpenAssing}
+              onSave={() => getWorkStations()}
             />
           ))}
       </div>
       <CardAddEquipment onSave={() => getWorkStations()} />
-      <CardAssign onSave={() => getWorkStations()} />
+      <CardAssign
+        onSave={() => getWorkStations()}
+        onClose={() => {
+          setUserData(null);
+        }}
+      />
       <CardGenerateReport employeeId={printReportId} />
       {generalFiles && (
         <CardOpenFile

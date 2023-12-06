@@ -36,6 +36,7 @@
   display: grid;
   grid-template-columns: 0.5fr 1.5fr;
   font-size: 0.625rem;
+  cursor: context-menu;
 }
 
 .ule-size {
@@ -61,4 +62,20 @@
   border: 1px solid gray;
   width: fit-content;
   padding: 0.2rem 0.5rem;
+}
+.ule-icon-overlay {
+  position: relative;
+}
+.isOn-overlay {
+  position: absolute;
+  left: -45px;
+}
+.isOn-overlay-text {
+  width: 100px;
+  background-color: black;
+  color: white;
+  font-size: 0.7rem;
+  padding: 1rem 0.5rem;
+  text-align: justify;
+  border-radius: var(--radius-input);
 }

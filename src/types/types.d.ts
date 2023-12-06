@@ -904,9 +904,9 @@ export type TrainingSpecialty = {
   id: number;
   institution: string;
   hours: string;
-  issue: Date;
-  startDate: Date;
-  untilDate: Date;
+  issue: Date | string;
+  startDate: Date | string;
+  untilDate: Date | string;
   trainingFile: string;
   specialistId: number;
 };

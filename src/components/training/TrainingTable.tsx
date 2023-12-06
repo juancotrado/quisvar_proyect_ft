@@ -81,9 +81,9 @@ const TrainingTable = ({
                   })}
                 </div>
                 <div>
-                  {formattedDate(dato.startDate) +
+                  {formattedDate(dato.startDate as Date) +
                     ' - ' +
-                    formattedDate(dato.untilDate)}
+                    formattedDate(dato.untilDate as Date)}
                 </div>
                 <div>{dato.hours}</div>
                 <div className="tr-center">

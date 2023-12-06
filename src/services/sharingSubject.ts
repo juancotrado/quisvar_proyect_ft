@@ -2,6 +2,7 @@ import SubjectManager from '../models/subjectManager';
 import {
   AreaSpecialty,
   AttendanceRange,
+  Equipment,
   ProjectType,
   Specialists,
   SubTask,
@@ -51,6 +52,7 @@ interface OpenEspecialistTrainingDescription {
 interface OpenAssignCard {
   isOpen: boolean;
   id: number;
+  data?: Equipment;
 }
 export const loader$ = new SubjectManager<boolean>();
 export const toggle$ = new SubjectManager<boolean>();

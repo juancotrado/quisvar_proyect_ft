@@ -24,6 +24,10 @@ import SwornDeclarationPdf from '../../swornDeclarationPdf/SwornDeclarationPdf';
 import useJurisdiction from '../../../../hooks/useJurisdiction';
 import { capitalizeText, deleteExtension } from '../../../../utils/tools';
 import { SnackbarUtilities } from '../../../../utils/SnackbarManager';
+import { JOB_DATA } from './dataUserRegister';
+import { getListByRole } from '../../../../utils/roles';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../store';
 
 interface CardRegisterUserProps {
   onSave?: () => void;
@@ -39,6 +43,7 @@ const degreeData = [
   { id: 4, value: 'Magister' },
   { id: 5, value: 'Doctorado' },
 ];
+
 const InitialValues: UserForm = {
   id: 0,
   email: '',
@@ -50,7 +55,6 @@ const InitialValues: UserForm = {
   degree: '',
   address: '',
   ruc: '',
-  description: '',
   job: '',
   cv: null,
   declaration: null,
@@ -63,6 +67,7 @@ const InitialValues: UserForm = {
   lastNameRef: '',
   phoneRef: '',
   addressRef: '',
+  role: '',
 };
 
 const CardRegisterUser = ({
@@ -74,6 +79,7 @@ const CardRegisterUser = ({
   const [errorPassword, setErrorPassword] = useState<{}>();
   const [isOpen, setIsOpen] = useState(false);
   const handleIsOpen = useRef<Subscription>(new Subscription());
+  const { userSession } = useSelector((state: RootState) => state);
 
   const {
     departaments,
@@ -112,7 +118,6 @@ const CardRegisterUser = ({
         lastName,
         phone,
         degree,
-        description,
         job,
         department,
         district,
@@ -132,7 +137,6 @@ const CardRegisterUser = ({
         phone,
         degree,
         job,
-        description,
         address,
         ruc,
         department,
@@ -353,13 +357,32 @@ const CardRegisterUser = ({
               />
             </div>
             <div className="col-input">
-              <InputText
-                {...register('job')}
-                placeholder="Profesión"
-                type="text"
-                label="Profesión"
+              <Select
+                isRelative
+                label="Profesión:"
+                {...register('job', {
+                  validate: { validateWhiteSpace },
+                })}
+                data={JOB_DATA}
+                itemKey="value"
+                textField="value"
                 errors={errors}
               />
+              {!user?.id && (
+                <Select
+                  isRelative
+                  label="Rol:"
+                  {...register('role', {
+                    validate: { validateWhiteSpace },
+                  })}
+                  // defaultValue={user.role}
+                  name="role"
+                  itemKey="id"
+                  textField="value"
+                  data={getListByRole(userSession.role)}
+                />
+              )}
+
               <Select
                 isRelative
                 label="Grado:"
@@ -370,13 +393,7 @@ const CardRegisterUser = ({
                 textField="value"
                 errors={errors}
               />
-              <InputText
-                {...register('description')}
-                placeholder="Cargo"
-                type="text"
-                errors={errors}
-                label="Cargo"
-              />
+
               <InputText
                 {...register('ruc')}
                 placeholder="ruc"

@@ -1,13 +1,13 @@
 import { Document, Image, Page, Text, View } from '@react-pdf/renderer';
 import { styles } from './swornDeclarationStyle';
 import { UserForm } from '../../../types/types';
-import { deleteExtension } from '../../../utils/tools';
+import { deleteExtension, getRole } from '../../../utils/tools';
 import formatDate, { _date } from '../../../utils/formatDate';
+import { roleList_SUPER_ADMIN } from '../../../utils/roles';
 interface SwornDeclarationPdfProps {
   data: UserForm;
 }
 const SwornDeclarationPdf = ({ data }: SwornDeclarationPdfProps) => {
-  console.log(data);
   const dateNow = formatDate(new Date(), {
     year: 'numeric',
     month: 'long',
@@ -46,7 +46,7 @@ const SwornDeclarationPdf = ({ data }: SwornDeclarationPdfProps) => {
         </View>
         <Text style={styles.subtitle}>PRIMERO: CARGO</Text>
         <Text style={styles.text}>
-          Me comprometo a desempeñarme en el cargo de {data.description}, esta
+          Me comprometo a desempeñarme en el cargo de {getRole(data.role)}, esta
           regirá desde el día de inicio de labores en las instalaciones del
           grupo hasta el último día de labores, deberá entregar con un acta de
           entrega acompañado con un informe situacional detallando las labores

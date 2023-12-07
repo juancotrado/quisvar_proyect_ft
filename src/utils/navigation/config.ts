@@ -14,7 +14,12 @@ export const itemsAdmin = [
     icon: 'ant-design_delivered',
     link: '/tramites',
   },
-
+  {
+    id: 6,
+    title: 'Asistencia',
+    icon: 'attendance-white',
+    link: '/asistencia',
+  },
   {
     id: 7,
     title: 'Empresas',

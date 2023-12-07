@@ -28,10 +28,11 @@ const Stage = () => {
       getStages();
     }
   }, [projectId, id]);
+
   const getStages = () => {
     axiosInstance.get(`/projects/${projectId}`).then(res => {
       const isModsAuthProject =
-        rolSecondLevel.includes(role) || res.data.moderator.id === id;
+        rolSecondLevel.includes(role) || res.data?.moderator?.id === id;
       dispatch(setModAuthProject(isModsAuthProject));
       setProject(res.data);
     });

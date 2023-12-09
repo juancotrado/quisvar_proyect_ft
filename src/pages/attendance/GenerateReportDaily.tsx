@@ -68,9 +68,12 @@ export async function generateReportDaily({
 
     return orderedTimers;
   };
+  const filterdUsers: AttendanceRange[] = printData.filter(
+    user => user?.list.length !== 0
+  );
   const timerCells = 'GHIJKLM';
   timerCells.split('').forEach((cell, index) => {
-    const timer = getTimers(printData[0]);
+    const timer = getTimers(filterdUsers[0]);
     wk.getCell(`${cell}5`).value = timer[index];
   });
   const getColor = (status: string) => {
@@ -81,7 +84,8 @@ export async function generateReportDaily({
     if (status === 'M') return 'D2595B';
     if (status === 'L') return '83A8F0';
   };
-  printData.forEach((data: AttendanceRange, idx: number) => {
+
+  filterdUsers.forEach((data: AttendanceRange, idx: number) => {
     const _getStatus = getStatus(data);
     const dataRows = wk.insertRow(rowNumber, [
       null,

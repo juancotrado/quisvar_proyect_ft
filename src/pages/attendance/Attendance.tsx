@@ -176,6 +176,7 @@ const Attendance = () => {
   );
 
   const todayVerify = date === _date(today);
+
   const genarteReportRange = async (type: 'pdf' | 'excel') => {
     const { endDate, startDate } = rangeDate;
     if (!endDate && !startDate) {
@@ -209,9 +210,9 @@ const Attendance = () => {
       `/list/attendance/range/?startDate=${date}&endDate=${date}`
     );
     const newData: AttendanceRange[] = response.data;
-    if (!newData[0].list.length) {
-      return SnackbarUtilities.error('Datos no guardados');
-    }
+    // if (!newData[0].list.length) {
+    //   return SnackbarUtilities.error('Datos no guardados');
+    // }
     if (type === 'pdf') {
       isOpenCardViewPdf$.setSubject = {
         isOpen: true,

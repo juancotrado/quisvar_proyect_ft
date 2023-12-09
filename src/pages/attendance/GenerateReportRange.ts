@@ -22,10 +22,12 @@ export async function generateReportRange({
   let rowNumber = 6;
 
   wk.getCell('B3').value = `LISTA PERDIODO # DEL ${startDate} AL ${endDate}`;
-
+  const filterdUsers: AttendanceRange[] = printData.filter(
+    user => user?.list.length !== 0
+  );
   const moneyFormat =
     '_-"S/"* #,##0.00_-;-"S/"* #,##0.00_-;_-"S/"* "-"??_-;_-@_-';
-  printData.forEach((data: AttendanceRange, idx: number) => {
+  filterdUsers.forEach((data: AttendanceRange, idx: number) => {
     const counts = contarStatus(data);
     const dataRows = wk.insertRow(rowNumber, [
       null,

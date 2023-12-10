@@ -25,7 +25,7 @@ interface EquipmentForm {
   lastName: string;
   dni: string;
 }
-const CardAssign = ({ onSave, onClose }: CardAssingProps) => {
+const CardAssign = ({ onSave }: CardAssingProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hasId, setHasId] = useState<number>(0);
   const [data, setData] = useState<Equipment>();
@@ -46,27 +46,22 @@ const CardAssign = ({ onSave, onClose }: CardAssingProps) => {
       setIsOpen(value.isOpen);
       setHasId(value.id);
       setData(value.data);
+      if (value.data) {
+        setSearchTerm(value.data.user?.profile.dni as string);
+        reset({
+          name: value.data?.name,
+          description: value.data?.description,
+          dni: value.data?.user?.profile.dni,
+          firstName: value.data?.user?.profile.firstName,
+          lastName: value.data?.user?.profile.lastName,
+        });
+      }
     });
+
     return () => {
       handleIsOpen.current.unsubscribe();
     };
-  }, []);
-  useEffect(() => {
-    if (data) {
-      reset({
-        name: data?.name,
-        description: data?.description,
-        dni: data?.user?.profile.dni,
-        firstName: data?.user?.profile.firstName,
-        lastName: data?.user?.profile.lastName,
-      });
-      setSearchTerm(data.user?.profile.dni as string);
-      console.log(data?.name);
-    } else {
-      reset({});
-    }
-  }, [data, reset]);
-
+  }, [reset]);
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
   };
@@ -121,9 +116,9 @@ const CardAssign = ({ onSave, onClose }: CardAssingProps) => {
   const closeFunctions = () => {
     setIsOpen(false);
     setSearchTerm('');
-    onClose?.();
+    // onClose?.();
     // setErrorPassword({});
-    reset();
+    reset({});
   };
   return (
     <Modal size={50} isOpenProp={isOpen}>
@@ -228,8 +223,7 @@ const CardAssign = ({ onSave, onClose }: CardAssingProps) => {
         /> */}
         <div className="btn-build">
           <Button
-            // text={user ? 'GUARDAR' : 'CREAR'}
-            text="Crear"
+            text={data ? 'GUARDAR' : 'CREAR'}
             className="btn-area"
             whileTap={{ scale: 0.9 }}
             type="submit"

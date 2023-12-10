@@ -7,6 +7,7 @@ import {
   Specialists,
   SubTask,
   TrainingSpecialty,
+  WorkStation,
   licenseList,
 } from '../types/types';
 
@@ -54,12 +55,17 @@ interface OpenAssignCard {
   id: number;
   data?: Equipment;
 }
+interface CardWorkStationProps {
+  isOpen: boolean;
+  data?: WorkStation;
+}
 export const loader$ = new SubjectManager<boolean>();
 export const toggle$ = new SubjectManager<boolean>();
 export const isOpenModal$ = new SubjectManager<boolean>();
 export const isGenerateExcelReport$ = new SubjectManager<string>();
 export const isOpenCardRegisterUser$ = new SubjectManager<boolean>();
-export const isOpenCardAddEquipment$ = new SubjectManager<boolean>();
+export const isOpenCardAddEquipment$ =
+  new SubjectManager<CardWorkStationProps>();
 export const isOpenCardAssing$ = new SubjectManager<OpenAssignCard>();
 export const isOpenCardGenerateReport$ = new SubjectManager<boolean>();
 export const isOpenCardCompany$ = new SubjectManager<boolean>();

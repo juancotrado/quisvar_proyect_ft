@@ -15,6 +15,7 @@ interface CardAddEquipmentProps {
 }
 const CardAddEquipment = ({ onSave }: CardAddEquipmentProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [data, setData] = useState<WorkStation>();
   const handleIsOpen = useRef<Subscription>(new Subscription());
   const {
     register,
@@ -25,28 +26,52 @@ const CardAddEquipment = ({ onSave }: CardAddEquipmentProps) => {
     formState: { errors },
   } = useForm<WorkStation>();
   useEffect(() => {
-    handleIsOpen.current = isOpenCardAddEquipment$.getSubject.subscribe(value =>
-      setIsOpen(value)
+    handleIsOpen.current = isOpenCardAddEquipment$.getSubject.subscribe(
+      value => {
+        setIsOpen(value.isOpen);
+        setData(value.data);
+
+        if (value.data) {
+          reset({
+            name: value.data?.name.split(' ')[1],
+            description: value.data?.description,
+            total: value.data?.total,
+            price: value.data?.price,
+          });
+        }
+      }
     );
     return () => {
       handleIsOpen.current.unsubscribe();
     };
-  }, []);
-  const onSubmit: SubmitHandler<WorkStation> = async data => {
+  }, [reset]);
+  const onSubmit: SubmitHandler<WorkStation> = async values => {
     // console.log(data);
-    const file = data.doc?.[0];
-    const formData = new FormData();
-    formData.append('file', file);
-    formData.append('name', `Remoto ${data.name}`);
-    formData.append('total', data.total.toString());
-    formData.append('price', data.price);
-    formData.append('description', data.description);
-    const headers = {
-      'Content-type': 'multipart/form-data',
-    };
-    axiosInstance
-      .post(`/workStation`, formData, { headers })
-      .then(successfulShipment);
+    if (!data) {
+      const file = values.doc?.[0];
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('name', `Remoto ${values.name}`);
+      formData.append('total', values.total.toString());
+      formData.append('price', values.price);
+      formData.append('description', values.description);
+      const headers = {
+        'Content-type': 'multipart/form-data',
+      };
+      axiosInstance
+        .post(`/workStation`, formData, { headers })
+        .then(successfulShipment);
+    } else {
+      const newData = {
+        name: `Remoto ${values.name}`,
+        total: values.total,
+        price: values.price,
+        description: values.description,
+      };
+      axiosInstance
+        .patch(`/workStation/${data.id}`, newData)
+        .then(successfulShipment);
+    }
   };
   const successfulShipment = () => {
     onSave?.();
@@ -57,7 +82,7 @@ const CardAddEquipment = ({ onSave }: CardAddEquipmentProps) => {
     setIsOpen(false);
     // onClose?.();
     // setErrorPassword({});
-    reset();
+    reset({});
   };
   return (
     <Modal size={50} isOpenProp={isOpen}>
@@ -113,8 +138,7 @@ const CardAddEquipment = ({ onSave }: CardAddEquipmentProps) => {
         />
         <div className="btn-build">
           <Button
-            // text={user ? 'GUARDAR' : 'CREAR'}
-            text="Crear"
+            text={data ? 'GUARDAR' : 'CREAR'}
             className="btn-area"
             whileTap={{ scale: 0.9 }}
             type="submit"

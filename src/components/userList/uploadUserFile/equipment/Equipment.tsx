@@ -15,39 +15,65 @@ interface EquipmentProps {
   onSave?: () => void;
   openCard: (open: boolean, id: number) => void;
   handleEdit: (open: boolean, identifier: number, data: Equip) => void;
+  handleEditWS: (open: boolean, data: WorkStation) => void;
 }
 
-const Equipment = ({ data, openCard, handleEdit, onSave }: EquipmentProps) => {
+const Equipment = ({
+  data,
+  openCard,
+  handleEdit,
+  handleEditWS,
+  onSave,
+}: EquipmentProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [isHovered, setIsHovered] = useState<boolean>(false);
 
   const handleDelete = (id: number) => {
     axiosInstance.delete(`/equipment/${id}`).then(() => onSave?.());
   };
-
+  const handleDeleteWS = (id: number) => {
+    axiosInstance.delete(`/workStation/${id}`).then(() => onSave?.());
+  };
+  const options: Option[] = [
+    {
+      name: 'Editar',
+      type: 'button',
+      icon: 'pencil',
+      function: () => handleEditWS(true, data),
+    },
+    {
+      name: 'Eliminar',
+      type: 'button',
+      icon: 'trash-red',
+      function: () => handleDeleteWS(data.id),
+    },
+  ];
   return (
     <>
-      <div className="ule-items" onClick={() => setIsOpen(!isOpen)}>
-        <p className="ule-h3">{data.name}</p>
-        <div className="ule-info">
-          <p className="ule-h3">P. totales: {data.total}</p>
-          <p className="ule-h3">
-            P. disponibles: {data.total - data.equipment.length}
-          </p>
-        </div>
-        <div
-          className="ule-icon-overlay"
-          onMouseEnter={() => setIsHovered(true)}
-          onMouseLeave={() => setIsHovered(false)}
-        >
-          <img src="/svg/mdi_question.svg" className="ule-icon-size" />
-          {isHovered && (
-            <div className="isOn-overlay">
-              <p className="isOn-overlay-text">{data.description}</p>
-            </div>
-          )}
-        </div>
-        <img src="/svg/ep_arrow-up-bold.svg" className="ule-icon-size" />
+      <div onClick={() => setIsOpen(!isOpen)}>
+        <ContextMenuTrigger className="ule-items" id={`ws-${data.id}`}>
+          <p className="ule-h3">{data.name}</p>
+          <div className="ule-info">
+            <p className="ule-h3">P. totales: {data.total}</p>
+            <p className="ule-h3">
+              P. disponibles: {data.total - data.equipment.length}
+            </p>
+          </div>
+          <div
+            className="ule-icon-overlay"
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}
+          >
+            <img src="/svg/mdi_question.svg" className="ule-icon-size" />
+            {isHovered && (
+              <div className="isOn-overlay">
+                <p className="isOn-overlay-text">{data.description}</p>
+              </div>
+            )}
+          </div>
+          <img src="/svg/ep_arrow-up-bold.svg" className="ule-icon-size" />
+        </ContextMenuTrigger>
+        <DotsRight data={options} idContext={`ws-${data.id}`} />
       </div>
       {isOpen && (
         <div className="ule-items-area">

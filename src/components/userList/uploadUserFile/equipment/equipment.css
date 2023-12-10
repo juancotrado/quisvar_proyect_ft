@@ -10,6 +10,7 @@
   align-items: center;
   border-bottom: 1px solid rgb(129, 126, 126);
   cursor: pointer;
+  user-select: none;
 }
 
 .ule-info {
@@ -37,6 +38,7 @@
   grid-template-columns: 0.5fr 1.5fr;
   font-size: 0.625rem;
   cursor: context-menu;
+  user-select: none;
 }
 
 .ule-size {

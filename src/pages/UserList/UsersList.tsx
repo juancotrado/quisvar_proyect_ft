@@ -91,8 +91,11 @@ const UsersList = () => {
     setUserDocs(value);
     isOpenViewDocs$.setSubject = true;
   };
-  const handleOpenAddEquipment = () => {
-    isOpenCardAddEquipment$.setSubject = true;
+  const handleOpenAddEquipment = (isOpen: boolean, data?: WorkStation) => {
+    isOpenCardAddEquipment$.setSubject = {
+      isOpen,
+      data,
+    };
   };
   const handleOpenAssing = (isOpen: boolean, id: number, data?: Equip) => {
     isOpenCardAssing$.setSubject = {
@@ -175,7 +178,7 @@ const UsersList = () => {
             text="Agregar Equipo"
             icon="plus"
             className="userList-btn"
-            onClick={handleOpenAddEquipment}
+            onClick={() => handleOpenAddEquipment(true)}
           />
         </div>
         {workStations &&
@@ -185,6 +188,7 @@ const UsersList = () => {
               openCard={handleOpenAssing}
               key={workStation.id}
               handleEdit={handleOpenAssing}
+              handleEditWS={handleOpenAddEquipment}
               onSave={() => getWorkStations()}
             />
           ))}
@@ -192,9 +196,9 @@ const UsersList = () => {
       <CardAddEquipment onSave={() => getWorkStations()} />
       <CardAssign
         onSave={() => getWorkStations()}
-        onClose={() => {
-          setUserData(null);
-        }}
+        // onClose={() => {
+        //   setUserData(null);
+        // }}
       />
       <CardGenerateReport employeeId={printReportId} />
       {generalFiles && (

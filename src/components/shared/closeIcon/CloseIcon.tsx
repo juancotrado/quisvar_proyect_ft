@@ -14,7 +14,10 @@ const CloseIcon = ({ onClick, className, size = 1 }: CloseIconProps) => {
     <figure
       className={`closeIcon ${className}`}
       style={style}
-      onClick={onClick}
+      onClick={e => {
+        e.stopPropagation();
+        onClick?.();
+      }}
     >
       <img src="/svg/close.svg" alt="close" />
     </figure>

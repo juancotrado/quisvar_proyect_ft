@@ -45,7 +45,9 @@ const AttendanceList = ({
       }`}
     >
       <div className="attendanceList-col attendanceList-place">{index + 1}</div>
-      <div className="attendanceList-col attendanceList-place"> --- </div>
+      <div className="attendanceList-col attendanceList-place">
+        {user.profile.room ?? '---'}
+      </div>
       <div className="attendanceList-col">
         {user.profile.lastName} {user.profile.firstName}
       </div>

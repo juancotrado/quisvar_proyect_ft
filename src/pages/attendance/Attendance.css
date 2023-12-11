@@ -18,6 +18,9 @@
   align-items: center;
   /* background-color: var(--color-menu); */
 }
+.attendance-icon-close {
+  top: -0.5rem;
+}
 
 .attendance-card-container-main {
   display: flex;

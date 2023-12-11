@@ -68,6 +68,7 @@ const InitialValues: UserForm = {
   phoneRef: '',
   addressRef: '',
   role: '',
+  room: '',
 };
 
 const CardRegisterUser = ({
@@ -126,6 +127,7 @@ const CardRegisterUser = ({
         firstNameRef,
         lastNameRef,
         phoneRef,
+        room,
       } = profile;
       setJurisdictionSelectData(department, province);
       reset({
@@ -146,6 +148,7 @@ const CardRegisterUser = ({
         addressRef,
         firstNameRef,
         lastNameRef,
+        room,
         phoneRef,
       });
     } else {
@@ -299,20 +302,27 @@ const CardRegisterUser = ({
                 })}
                 errors={errors}
                 placeholder="Correo"
-                label="Correo"
+                label="Correo:"
                 name="email"
               />
               <InputText
                 {...register('address')}
                 placeholder="Dirección"
-                label="Dirección"
+                label="Dirección:"
                 errors={errors}
               />
               <InputText
                 {...register('phone')}
                 placeholder="Celular"
-                label="Celular"
+                label="Celular:"
                 type="number"
+                errors={errors}
+              />
+              <InputText
+                {...register('room')}
+                placeholder="Cuarto"
+                label="Cuarto:"
+                type="text"
                 errors={errors}
               />
             </div>

@@ -213,6 +213,7 @@ type Profile = {
   department: string;
   province: string;
   district: string;
+  room: string;
 };
 export type RangeDate = {
   startDate: string;
@@ -391,6 +392,7 @@ export interface UserForm {
   degree: string;
   address: string;
   department: string;
+  room: string;
   province: string;
   district: string;
   role: string;

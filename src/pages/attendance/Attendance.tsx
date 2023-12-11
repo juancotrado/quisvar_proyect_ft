@@ -8,8 +8,8 @@ import {
 } from 'react';
 import { AttendanceList, CardViewPdf, Input, Legend } from '../../components';
 import './Attendance.css';
-import { RootState } from '../../store';
-import { useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store';
+import { useDispatch, useSelector } from 'react-redux';
 import Button from '../../components/shared/button/Button';
 import { axiosInstance } from '../../services/axiosInstance';
 import { _date } from '../../utils/formatDate';
@@ -26,6 +26,8 @@ import { generateReportRange } from './GenerateReportRange';
 import { isOpenCardViewPdf$ } from '../../services/sharingSubject';
 import { generateReportDaily } from './GenerateReportDaily';
 import { SnackbarUtilities } from '../../utils/SnackbarManager';
+import CloseIcon from '../../components/shared/closeIcon/CloseIcon';
+import { getListUsers } from '../../store/slices/listUsers.slice';
 interface sendItemsProps {
   usersId: number;
   status: string;
@@ -46,6 +48,7 @@ interface RangeDate {
 }
 const today = new Date();
 const Attendance = () => {
+  const dispatch: AppDispatch = useDispatch();
   const [sendItems, setSendItems] = useState<sendItemsProps[]>([]);
   const [callLists, setCallLists] = useState<ListAttendance[] | null>(null);
   const [callList, setCallList] = useState<ListAttendance | null>(null);
@@ -78,6 +81,7 @@ const Attendance = () => {
     getTodayData();
     deleteLists();
     getLicenses();
+    dispatch(getListUsers());
   }, []);
   const handleRadioChange = (status: string, usersId: number) => {
     const findId = sendItems.find(item => item.usersId === usersId);
@@ -232,6 +236,11 @@ const Attendance = () => {
     const { name, value } = e.target;
     setRangeDate({ ...rangeDate, [name]: value });
   };
+  const deleteLastList = async () => {
+    await deleteLists();
+    await getTodayData();
+    setCallList(null);
+  };
   // console.log(users)
   return (
     <div className="attendance">
@@ -259,6 +268,12 @@ const Attendance = () => {
             }}
             key={data.id}
           >
+            {!data?.users.length && (
+              <CloseIcon
+                onClick={deleteLastList}
+                className="attendance-icon-close"
+              />
+            )}
             <img
               src={`/svg/${
                 !data?.users.length

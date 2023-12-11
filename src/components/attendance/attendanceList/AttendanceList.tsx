@@ -17,7 +17,7 @@ const AttendanceList = ({
   onRadioChange,
   user,
   index,
-  status = null,
+  status = 'PUNTUAL',
 }: AttendanceListProps) => {
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const [isActive, setisActive] = useState<boolean>(false);

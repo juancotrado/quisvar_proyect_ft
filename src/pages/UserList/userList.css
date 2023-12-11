@@ -92,10 +92,15 @@
   height: 100%;
 }
 
+.user-count {
+  padding: 0.2rem;
+}
+
 .userList-options-right {
   display: flex;
   height: 100%;
   gap: 0.5rem;
+  align-items: center;
 }
 
 .icon {

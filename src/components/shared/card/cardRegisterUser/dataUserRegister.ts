@@ -13,6 +13,7 @@ export const JOB_DATA = [
   { value: 'Ingeniería de Sistemas' },
   { value: 'Ingenieria de Minas' },
   { value: 'Ingeniería Química' },
+  { value: 'Ingeniería Sanitaria y Ambiental' },
   { value: 'Ciencias Biológicas' },
   { value: 'Ciencias Biológicas: Pesquería' },
   { value: 'Ciencias Biológicas: Microbiología' },

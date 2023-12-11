@@ -187,7 +187,7 @@ const CardRegisterUser = ({
       );
     axiosInstance
       .get(
-        `https://apiperu.dev/api/dni/${dni}?api_token=e2724cf7217bd44faf88d6bfdd964e512cbe34bd31e13f958e6de63a93a3709c`
+        `https://apiperu.dev/api/dni/${dni}?api_token=9a12c65ca41f46f89a08a564be455a611d07d54069b3454766309d35bcc35511`
       )
       .then(res => {
         if (!res.data.success) return SnackbarUtilities.error(res.data.message);

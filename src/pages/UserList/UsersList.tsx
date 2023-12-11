@@ -121,6 +121,18 @@ const UsersList = () => {
             classNameMain="filter-user-input"
           />
           <div className="userList-options-right">
+            <p>
+              Usuarios {isArchived ? 'Activos' : 'Inactivos'}:{' '}
+              <span
+                className={`${
+                  !isArchived
+                    ? 'btn-filter-unavailable'
+                    : 'btn-filter-available'
+                } user-count`}
+              >
+                {filterList.length}
+              </span>
+            </p>
             <Button
               text={`${isArchived ? 'Ver archivados' : 'Ver en actividad'}`}
               className={`btn-filter ${

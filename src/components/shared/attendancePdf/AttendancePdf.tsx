@@ -66,7 +66,9 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
     return orderedTimers;
   };
   const parseDate = (value?: string) => {
-    return formatDate(new Date(value ? value : new Date()), {
+    const dailyDate = new Date(value ? value : new Date());
+    dailyDate.setDate(dailyDate.getDate() + 1);
+    return formatDate(dailyDate, {
       year: 'numeric',
       month: 'long',
       day: '2-digit',

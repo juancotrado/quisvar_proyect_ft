@@ -209,6 +209,7 @@ type Profile = {
   lastName: string;
   dni: string;
   phone: string;
+  userPc: string;
   userId: number;
   department: string;
   province: string;
@@ -404,6 +405,7 @@ export interface UserForm {
   firstNameRef: string;
   lastNameRef: string;
   phoneRef: string;
+  userPc: string;
   addressRef: string;
   declaration: FileList | null;
   declarations?: string[];
@@ -960,6 +962,7 @@ export interface Equipment {
       firstName: string;
       lastName: string;
       dni: string;
+      userPc: string;
     };
   };
 }

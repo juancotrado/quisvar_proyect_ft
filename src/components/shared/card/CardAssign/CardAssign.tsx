@@ -23,6 +23,7 @@ interface EquipmentForm {
   doc?: string;
   firstName: string;
   lastName: string;
+  userPc: string;
   dni: string;
 }
 const CardAssign = ({ onSave }: CardAssingProps) => {
@@ -52,6 +53,7 @@ const CardAssign = ({ onSave }: CardAssingProps) => {
           name: value.data?.name,
           description: value.data?.description,
           dni: value.data?.user?.profile.dni,
+          userPc: value.data?.user?.profile.userPc,
           firstName: value.data?.user?.profile.firstName,
           lastName: value.data?.user?.profile.lastName,
         });
@@ -144,18 +146,24 @@ const CardAssign = ({ onSave }: CardAssingProps) => {
               value={searchTerm}
               onChange={handleSearchChange}
               label="Busqueda"
-              // classNameMain="filter-user-input"
             />
           )}
-          <InputText
-            {...register('name', {
-              validate: { validateWhiteSpace },
-            })}
-            placeholder="00"
-            label="Usuario ##"
-            errors={errors}
-            type="number"
-          />
+          {data ? (
+            <Input
+              type="text"
+              {...register('userPc', {
+                validate: { validateWhiteSpace },
+              })}
+              disabled
+            />
+          ) : (
+            <Input
+              type="text"
+              value={filterList.length > 0 ? filterList[0].profile.userPc : ''}
+              placeholder="Usuario"
+              disabled
+            />
+          )}
         </div>
         {data ? (
           <div className="col-input">
@@ -214,13 +222,6 @@ const CardAssign = ({ onSave }: CardAssingProps) => {
             required
           />
         </div>
-
-        {/* <SelectOptions
-          data={users}
-          textField="name"
-          itemKey="id"
-          {...register('userId')}
-        /> */}
         <div className="btn-build">
           <Button
             text={data ? 'GUARDAR' : 'CREAR'}

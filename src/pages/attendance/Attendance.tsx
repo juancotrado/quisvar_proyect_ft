@@ -210,9 +210,9 @@ const Attendance = () => {
   };
 
   const genarteReportDaily = async (type: 'pdf' | 'excel') => {
-    if (sendItems.length !== users?.length) {
-      return SnackbarUtilities.error('Upps, No guardaste la lista');
-    }
+    // if (sendItems.length !== users?.length) {
+    //   return SnackbarUtilities.error('Upps, No guardaste la lista');
+    // }
     const response = await axiosInstance.get(
       `/list/attendance/range/?startDate=${date}&endDate=${date}`
     );

@@ -26,6 +26,7 @@ export const INITIAL_STATE: User = {
     firstNameRef: '',
     lastNameRef: '',
     phoneRef: '',
+    room: '',
   },
   contract: null,
   cv: null,

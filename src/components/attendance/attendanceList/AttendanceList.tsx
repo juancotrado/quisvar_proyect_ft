@@ -65,10 +65,9 @@ const AttendanceList = ({
       {/* <div className="attendanceList-col">EQUIPO 01 (101)</div>
       <div className="attendanceList-col">USUARIO 01</div> */}
       <div className="attendanceList-col">
-        {user.equipment ? user.equipment.workStation.name : ''}
-        {user.equipment ? `(${user.equipment.name})` : '---'}
+        {user.equipment ? user.equipment.workStation.name : '---'}
       </div>
-      <div className="attendanceList-col"> --- </div>
+      <div className="attendanceList-col"> {user.profile.userPc ?? '---'} </div>
       <div className="attendanceList-col attendanceList-place attendanceList-config list-p">
         <Input
           type="radio"

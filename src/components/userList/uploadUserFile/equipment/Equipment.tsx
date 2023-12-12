@@ -105,7 +105,7 @@ const Equipment = ({
                 >
                   <h3 className="ule-size-pc">
                     <img src="/svg/pc-icon.svg" className="ule-icon-size" />
-                    {equipment.name}
+                    {equipment.user?.profile.userPc ?? '---'}
                   </h3>
                   <h3 className="ule-size">
                     {equipment.user?.profile.firstName}{' '}

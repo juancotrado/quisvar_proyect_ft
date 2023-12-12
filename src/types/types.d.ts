@@ -962,6 +962,7 @@ export interface Equipment {
       firstName: string;
       lastName: string;
       dni: string;
+      userPc: string;
     };
   };
 }

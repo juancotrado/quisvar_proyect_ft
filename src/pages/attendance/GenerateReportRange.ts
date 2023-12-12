@@ -21,7 +21,7 @@ export async function generateReportRange({
 
   let rowNumber = 6;
 
-  wk.getCell('B3').value = `LISTA PERDIODO # DEL ${startDate} AL ${endDate}`;
+  wk.getCell('B3').value = `LISTA DE ASISTENCIA DEL ${startDate} AL ${endDate}`;
   const filterdUsers: AttendanceRange[] = printData.filter(
     user => user?.list.length !== 0
   );
@@ -32,7 +32,7 @@ export async function generateReportRange({
     const dataRows = wk.insertRow(rowNumber, [
       null,
       idx + 1,
-      '000',
+      data.profile.userPc ?? '000',
       data.profile.lastName + ' ' + data.profile.firstName,
       data.profile.dni,
       data.profile.phone,

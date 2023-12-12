@@ -1,5 +1,6 @@
 import * as ExcelJS from 'exceljs';
 import { AttendanceRange } from '../../types/types';
+import formatDate from '../../utils/formatDate';
 interface GenerateReportDailyProps {
   startDate: string;
   printData: AttendanceRange[];
@@ -26,8 +27,16 @@ export async function generateReportDaily({
   const wk = workbook.getWorksheet('Hoja1');
 
   let rowNumber = 6;
-
-  wk.getCell('B3').value = `LISTA PERDIODO # DEL ${startDate}`;
+  const parseDate = (value?: string) => {
+    const dailyDate = new Date(value ? value : new Date());
+    dailyDate.setDate(dailyDate.getDate() + 1);
+    return formatDate(dailyDate, {
+      year: 'numeric',
+      month: 'long',
+      day: '2-digit',
+    });
+  };
+  wk.getCell('B3').value = `LISTA DE ASISTENCIA DEL ${parseDate(startDate)}`;
 
   const getStatus = (data: AttendanceRange) => {
     const mapStates = {
@@ -55,26 +64,26 @@ export async function generateReportDaily({
     return orderedStatus;
   };
 
-  const getTimers = (data: AttendanceRange) => {
-    const orderedTimers: string[] = [];
+  // const getTimers = (data: AttendanceRange) => {
+  //   const orderedTimers: string[] = [];
 
-    orderCalls.forEach(call => {
-      const estadoEncontrado = data.list.find(item => item.list.title === call);
+  //   orderCalls.forEach(call => {
+  //     const estadoEncontrado = data.list.find(item => item.list.title === call);
 
-      if (estadoEncontrado) {
-        orderedTimers.push(estadoEncontrado.list.timer);
-      }
-    });
+  //     if (estadoEncontrado) {
+  //       orderedTimers.push(estadoEncontrado.list.timer);
+  //     }
+  //   });
 
-    return orderedTimers;
-  };
+  //   return orderedTimers;
+  // };
   const filterdUsers: AttendanceRange[] = printData.filter(
     user => user?.list.length !== 0
   );
   const timerCells = 'GHIJKLM';
   timerCells.split('').forEach((cell, index) => {
-    const timer = getTimers(filterdUsers[0]);
-    wk.getCell(`${cell}5`).value = timer[index];
+    // const timer = getTimers(filterdUsers[0]);
+    wk.getCell(`${cell}5`).value = index + 1;
   });
   const getColor = (status: string) => {
     if (status === 'P') return '87E4BD';
@@ -90,7 +99,7 @@ export async function generateReportDaily({
     const dataRows = wk.insertRow(rowNumber, [
       null,
       idx + 1,
-      '000',
+      data.profile.room ?? '000',
       data.profile.lastName + ' ' + data.profile.firstName,
       data.profile.dni,
       data.profile.phone,

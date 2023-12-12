@@ -112,7 +112,9 @@ const generatePDF = (data: AttendanceRange[], rangeDate: RangeDate) => {
                     <Text style={styles.headers}>{index + 1}</Text>
                   </View>
                   <View style={{ ...styles.tableCol, width: '19%' }}>
-                    <Text style={styles.headers}>301</Text>
+                    <Text style={styles.headers}>
+                      {value.profile.dni ?? '---'}
+                    </Text>
                   </View>
                   <View style={{ ...styles.tableCol, width: '22%' }}>
                     <Text
@@ -122,7 +124,7 @@ const generatePDF = (data: AttendanceRange[], rangeDate: RangeDate) => {
                         marginHorizontal: 5,
                       }}
                     >
-                      {value.profile.firstName + ' ' + value.profile.firstName}
+                      {value.profile.lastName + ' ' + value.profile.firstName}
                     </Text>
                   </View>
                   <View style={{ ...styles.tableCol, width: '10%' }}>

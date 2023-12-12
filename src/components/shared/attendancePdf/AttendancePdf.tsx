@@ -171,7 +171,9 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
                     <Text style={styles.headers}>{index + 1}</Text>
                   </View>
                   <View style={{ ...styles.tableCol, width: '7%' }}>
-                    <Text style={styles.headers}> --- </Text>
+                    <Text style={styles.headers}>
+                      {value.profile.room ?? '---'}
+                    </Text>
                   </View>
                   <View style={{ ...styles.tableCol, width: '22%' }}>
                     <Text
@@ -181,7 +183,7 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
                         marginHorizontal: 5,
                       }}
                     >
-                      {value.profile.firstName + ' ' + value.profile.lastName}
+                      {value.profile.lastName + ' ' + value.profile.firstName}
                     </Text>
                   </View>
                   <View style={{ ...styles.tableCol, width: '10%' }}>
@@ -192,16 +194,14 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
                   </View>
                   <View style={{ ...styles.tableCol, width: '8%' }}>
                     <Text style={styles.headers}>
-                      {' '}
-                      {value.equipment ? value.equipment.workStation.name : ''}
-                      {value.equipment
-                        ? `(${value.equipment.name})`
-                        : '---'}{' '}
+                      {value?.equipment?.workStation?.name ?? '---'}
                     </Text>
                   </View>
 
                   <View style={{ ...styles.tableCol, width: '10%' }}>
-                    <Text style={styles.headers}> ------ </Text>
+                    <Text style={styles.headers}>
+                      {value.profile.userPc ?? '---'}
+                    </Text>
                   </View>
                   <View style={{ ...styles.attendance, width: '28%' }}>
                     {attendances &&

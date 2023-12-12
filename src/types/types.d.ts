@@ -697,6 +697,8 @@ export interface AttendanceRange {
     lastName: string;
     dni: string;
     phone: string;
+    room: string;
+    userPc: string;
   };
   list: userAttendance[];
 }

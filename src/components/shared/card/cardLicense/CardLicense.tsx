@@ -10,7 +10,6 @@ import { axiosInstance } from '../../../../services/axiosInstance';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
 import { licenseList } from '../../../../types/types';
-import { _date } from '../../../../utils/formatDate';
 type DataLicense = {
   reason: string;
   startDate: string;
@@ -86,8 +85,11 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
       });
     }
   };
-  const today = new Date();
 
+  const formatoFechaHora = () => {
+    const today = new Date();
+    return today.toISOString().slice(0, 16);
+  };
   return (
     <Modal size={50} isOpenProp={isOpen}>
       <form
@@ -107,7 +109,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
             {...register('startDate')}
             name="startDate"
             type="datetime-local"
-            min={_date(today)}
+            min={formatoFechaHora()}
             required
           />
           <Input
@@ -115,7 +117,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
             {...register('untilDate')}
             name="untilDate"
             type="datetime-local"
-            min={_date(today)}
+            min={formatoFechaHora()}
             required
           />
         </div>

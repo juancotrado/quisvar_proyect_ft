@@ -69,6 +69,7 @@ const InitialValues: UserForm = {
   addressRef: '',
   role: '',
   room: '',
+  userPc: '',
 };
 
 const CardRegisterUser = ({
@@ -128,6 +129,7 @@ const CardRegisterUser = ({
         lastNameRef,
         phoneRef,
         room,
+        userPc,
       } = profile;
       setJurisdictionSelectData(department, province);
       reset({
@@ -149,6 +151,7 @@ const CardRegisterUser = ({
         firstNameRef,
         lastNameRef,
         room,
+        userPc,
         phoneRef,
       });
     } else {
@@ -364,6 +367,13 @@ const CardRegisterUser = ({
                 itemKey="nombre_ubigeo"
                 textField="nombre_ubigeo"
                 errors={errors}
+              />
+              <InputText
+                {...register('userPc')}
+                placeholder="Usuario(00)"
+                type="text"
+                errors={errors}
+                label="Usuario(00)"
               />
             </div>
             <div className="col-input">

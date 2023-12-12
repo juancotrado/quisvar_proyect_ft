@@ -132,12 +132,9 @@ const Attendance = () => {
   };
   const getLicenses = () => {
     axiosInstance.get(`/license`).then(res => {
-      setLicense(res.data);
-      const listItems = res.data.map((item: getLicenses) => ({
-        ...item,
-        status: 'PERMISO',
-      }));
-      setSendItems(listItems);
+      setLicense(res.data.licenses);
+
+      setSendItems(res.data.mainData);
     });
   };
   const callNotification = () => {

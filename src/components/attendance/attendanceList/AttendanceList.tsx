@@ -19,21 +19,30 @@ const AttendanceList = ({
   index,
   status = null,
 }: AttendanceListProps) => {
-  const [selectedValue, setSelectedValue] = useState<string | null>(null);
+  const [selectedValue, setSelectedValue] = useState<string | null>();
   const [isActive, setisActive] = useState<boolean>(false);
   const haslength = list.find(lis => lis.usersId === user.id);
   const [usersId, setUserId] = useState<number>(user.id);
 
   const getLicense = useCallback(() => {
-    if (haslength) setisActive(!!haslength);
-    setSelectedValue(!status && haslength ? 'PERMISO' : status);
+    if (haslength) {
+      setisActive(!!haslength);
+    }
+
+    if (!status) {
+      setSelectedValue(haslength ? 'PERMISO' : 'PUNTUAL');
+    } else {
+      setSelectedValue(status);
+    }
   }, [haslength, status]);
 
   useEffect(() => {
     getLicense();
   }, [getLicense]);
   const handleRadioChange = (value: string, id: number) => {
-    setSelectedValue(value);
+    console.log(value, id);
+    const selectedValue = value !== undefined ? value : 'PUNTUAL';
+    setSelectedValue(selectedValue);
     setUserId(id);
     onRadioChange(value, id);
   };

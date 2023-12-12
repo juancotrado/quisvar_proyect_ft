@@ -79,7 +79,6 @@ const Attendance = () => {
   useEffect(() => {
     verifyLicenses();
     getTodayData();
-    deleteLists();
     getLicenses();
     dispatch(getListUsers());
   }, []);
@@ -217,19 +216,21 @@ const Attendance = () => {
     // if (!newData[0].list.length) {
     //   return SnackbarUtilities.error('Datos no guardados');
     // }
-    if (type === 'pdf') {
-      isOpenCardViewPdf$.setSubject = {
-        isOpen: true,
-        data: newData,
-        daily: date,
-        typeReport: 'daily',
-      };
-      return;
-    }
-    generateReportDaily({
-      startDate: date,
-      printData: newData,
-    });
+    console.log(response.data);
+
+    // if (type === 'pdf') {
+    //   isOpenCardViewPdf$.setSubject = {
+    //     isOpen: true,
+    //     data: newData,
+    //     daily: date,
+    //     typeReport: 'daily',
+    //   };
+    //   return;
+    // }
+    // generateReportDaily({
+    //   startDate: date,
+    //   printData: newData,
+    // });
   };
 
   const handleRangeData = (e: ChangeEvent<HTMLInputElement>) => {

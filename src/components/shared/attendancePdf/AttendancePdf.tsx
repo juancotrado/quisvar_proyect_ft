@@ -52,19 +52,19 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
 
     return orderedStatus;
   };
-  const getTimers = (data: AttendanceRange) => {
-    const orderedTimers: string[] = [];
+  // const getTimers = (data: AttendanceRange) => {
+  //   const orderedTimers: string[] = [];
 
-    orderCalls.forEach(call => {
-      const estadoEncontrado = data.list.find(item => item.list.title === call);
+  //   orderCalls.forEach(call => {
+  //     const estadoEncontrado = data.list.find(item => item.list.title === call);
 
-      if (estadoEncontrado) {
-        orderedTimers.push(estadoEncontrado.list.timer);
-      }
-    });
+  //     if (estadoEncontrado) {
+  //       orderedTimers.push(estadoEncontrado.list.timer);
+  //     }
+  //   });
 
-    return orderedTimers;
-  };
+  //   return orderedTimers;
+  // };
   const parseDate = (value?: string) => {
     const dailyDate = new Date(value ? value : new Date());
     dailyDate.setDate(dailyDate.getDate() + 1);
@@ -134,12 +134,21 @@ const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
             <View style={{ ...styles.tableCol, width: '72%' }}>
               <Text style={styles.headers}></Text>
             </View>
-            <View style={{ ...styles.attendance, width: '28%' }}>
+            {/* <View style={{ ...styles.attendance, width: '28%' }}>
               {orderCalls.map((_, index) => {
                 const timer = getTimers(value.data[0]);
                 return (
                   <View style={{ ...styles.attendanceItem }} key={index}>
                     <Text style={styles.headers}>{timer[index]}</Text>
+                  </View>
+                );
+              })}
+            </View> */}
+            <View style={{ ...styles.attendance, width: '28%' }}>
+              {orderCalls.map((_, index) => {
+                return (
+                  <View style={{ ...styles.attendanceItem }} key={index}>
+                    <Text style={styles.headers}>{index + 1}</Text>
                   </View>
                 );
               })}

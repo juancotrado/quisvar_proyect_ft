@@ -46,7 +46,6 @@ const CardViewPdf = () => {
         <span className="close-icon" onClick={closeFunctions}>
           <img src="/svg/close.svg" alt="pencil" />
         </span>
-        {/* <h1>VISTA PREVIA</h1> */}
         {data && typeReport === 'daily' && (
           <AttendancePdf data={data} daily={daily} />
         )}

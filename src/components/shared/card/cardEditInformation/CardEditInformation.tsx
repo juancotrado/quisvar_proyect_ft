@@ -4,12 +4,19 @@ import Button from '../../button/Button';
 import './cardEditInformation.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { RootState } from '../../../../store';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { User } from '../../../../types/types';
 import { axiosInstance } from '../../../../services/axiosInstance';
+import CardRecoveryPassword from './CardRecoveryPassword';
 
-const CardEditInformation = ({ isOpen, onClose }: any) => {
+interface CardEditInformationProps {
+  isOpen?: boolean;
+  onClose?: () => void;
+}
+
+const CardEditInformation = ({ isOpen, onClose }: CardEditInformationProps) => {
+  const [isOpenRecovery, setIsOpenRecovery] = useState(false);
   const { userSession } = useSelector((state: RootState) => state);
   const { register, handleSubmit, reset } = useForm<User>();
 
@@ -32,10 +39,13 @@ const CardEditInformation = ({ isOpen, onClose }: any) => {
         .then(successfulShipment);
     }
   };
+
   const successfulShipment = () => {
     window.location.reload();
   };
 
+  const handleOpenRecovery = () => setIsOpenRecovery(true);
+  const handleCloseRecovery = () => setIsOpenRecovery(false);
   return (
     <AnimatePresence>
       {isOpen && (
@@ -61,7 +71,13 @@ const CardEditInformation = ({ isOpen, onClose }: any) => {
             <div className="divider"></div>
             <div className="col-btns">
               <Button
-                text="CANCEL"
+                text="CAMBIAR CONTRASEÑA"
+                onClick={handleOpenRecovery}
+                className="bg-btn-close"
+                type="button"
+              />
+              <Button
+                text="CANCELAR"
                 onClick={onClose}
                 className="bg-btn-close"
                 type="button"
@@ -69,6 +85,9 @@ const CardEditInformation = ({ isOpen, onClose }: any) => {
               <Button text="GUARDAR" className="bg-inverse" type="submit" />
             </div>
           </form>
+          {isOpenRecovery && (
+            <CardRecoveryPassword onClose={handleCloseRecovery} />
+          )}
         </motion.div>
       )}
     </AnimatePresence>

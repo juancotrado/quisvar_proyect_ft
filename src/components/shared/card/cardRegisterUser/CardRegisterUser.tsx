@@ -78,7 +78,7 @@ const CardRegisterUser = ({
   onClose,
   generalFiles,
 }: CardRegisterUserProps) => {
-  const [errorPassword, setErrorPassword] = useState<{}>();
+  const [errorPassword, setErrorPassword] = useState<{ [key: string]: any }>();
   const [isOpen, setIsOpen] = useState(false);
   const handleIsOpen = useRef<Subscription>(new Subscription());
   const { userSession } = useSelector((state: RootState) => state);

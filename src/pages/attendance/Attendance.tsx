@@ -79,7 +79,6 @@ const Attendance = () => {
   useEffect(() => {
     verifyLicenses();
     getTodayData();
-    deleteLists();
     getLicenses();
     dispatch(getListUsers());
   }, []);

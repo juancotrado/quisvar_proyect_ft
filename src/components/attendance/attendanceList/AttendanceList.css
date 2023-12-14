@@ -91,3 +91,15 @@
   background-color: #2263e58f;
   accent-color: #2263e5;
 }
+@media (max-width: 768px) {
+  .attendanceList-col {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .attendanceList-config {
+    min-width: 0;
+    padding-bottom: 0.2rem;
+    justify-content: center;
+  }
+}

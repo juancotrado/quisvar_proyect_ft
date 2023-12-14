@@ -293,4 +293,7 @@
   .attendance-call-container {
     overflow-x: scroll;
   }
+  .attendance-config {
+    min-width: 0;
+  }
 }

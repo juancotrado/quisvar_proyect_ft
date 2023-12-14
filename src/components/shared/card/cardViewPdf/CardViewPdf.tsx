@@ -35,6 +35,7 @@ const CardViewPdf = () => {
   const closeFunctions = () => {
     setIsOpen(false);
   };
+
   return (
     <Modal size={60} isOpenProp={isOpen}>
       <div className="card-view-main">

@@ -84,6 +84,7 @@ export const generateAttendanceDailyPDF = (
       day: '2-digit',
     });
   };
+  // console.log(value.data);
 
   return (
     <Document>

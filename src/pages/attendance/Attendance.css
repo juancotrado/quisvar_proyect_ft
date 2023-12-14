@@ -26,9 +26,7 @@
   display: flex;
   background-color: #fff;
   padding: 0.5rem 0;
-  /* margin-top: 0.5rem; */
   height: 100%;
-  overflow-y: auto;
 }
 .attendance-card-container-list {
   flex-grow: 1;
@@ -212,6 +210,10 @@
   align-items: end;
   gap: 2rem;
 }
+.attendance-call-container {
+  display: flex;
+  gap: 0.5rem;
+}
 .attendance-btn-link {
   padding: 0;
   border-radius: 0.3125rem;
@@ -251,4 +253,44 @@
   justify-content: center;
   align-items: center;
   color: rgb(199, 199, 199);
+}
+@media (max-width: 768px) {
+  .attendance-card-container-main {
+    flex-wrap: wrap;
+    overflow-y: scroll;
+  }
+  .attendance-info-area {
+    max-width: 100%;
+  }
+  .attendance-card-container {
+    width: 100%;
+  }
+  .attendance-card-container-list {
+    overflow: auto;
+  }
+  .hide-field {
+    display: none;
+  }
+  .attendance-header {
+    grid-template-columns: 2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr;
+  }
+  .attendanceList-container {
+    grid-template-columns: 2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr;
+  }
+  .attendance-call-status {
+    min-width: 80px;
+    min-height: 46px;
+  }
+  .attendance-add-btn {
+    min-width: 80px;
+    min-height: 36px;
+    font-size: 0.5rem;
+  }
+  .attendance-icon-close {
+    top: 0.3rem;
+    right: 0;
+  }
+  .attendance-call-container {
+    overflow-x: scroll;
+  }
 }

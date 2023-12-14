@@ -53,21 +53,26 @@ const AttendanceList = ({
         index % 2 !== 0 && 'attendanceList-bg'
       }`}
     >
-      <div className="attendanceList-col attendanceList-place">{index + 1}</div>
-      <div className="attendanceList-col attendanceList-place">
+      <div className="attendanceList-col attendanceList-place hide-field">
+        {index + 1}
+      </div>
+      <div className="attendanceList-col attendanceList-place hide-field">
         {user.profile.room ?? '---'}
       </div>
       <div className="attendanceList-col">
         {user.profile.lastName} {user.profile.firstName}
       </div>
-      <div className="attendanceList-col">{user.profile.dni}</div>
-      <div className="attendanceList-col">{user.profile.phone}</div>
+      <div className="attendanceList-col hide-field">{user.profile.dni}</div>
+      <div className="attendanceList-col hide-field">{user.profile.phone}</div>
       {/* <div className="attendanceList-col">EQUIPO 01 (101)</div>
       <div className="attendanceList-col">USUARIO 01</div> */}
-      <div className="attendanceList-col">
+      <div className="attendanceList-col hide-field">
         {user.equipment ? user.equipment.workStation.name : '---'}
       </div>
-      <div className="attendanceList-col"> {user.profile.userPc ?? '---'} </div>
+      <div className="attendanceList-col hide-field">
+        {' '}
+        {user.profile.userPc ?? '---'}{' '}
+      </div>
       <div className="attendanceList-col attendanceList-place attendanceList-config list-p">
         <Input
           type="radio"

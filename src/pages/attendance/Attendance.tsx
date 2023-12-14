@@ -260,41 +260,45 @@ const Attendance = () => {
           max={_date(today)}
           defaultValue={_date(today)}
         />
-        {callLists?.map(data => (
-          <div
-            className="attendance-call-status"
-            onClick={() => {
-              showAttendanceUsers(data);
-            }}
-            key={data.id}
-          >
-            {!data?.users.length && (
-              <CloseIcon
-                onClick={deleteLastList}
-                className="attendance-icon-close"
+        <div className="attendance-call-container">
+          {callLists?.map(data => (
+            <div
+              className="attendance-call-status"
+              onClick={() => {
+                showAttendanceUsers(data);
+              }}
+              key={data.id}
+            >
+              {!data?.users.length && (
+                <CloseIcon
+                  onClick={deleteLastList}
+                  className="attendance-icon-close"
+                />
+              )}
+              <img
+                src={`/svg/${
+                  !data?.users.length
+                    ? 'arrow-pressed'
+                    : callList?.id !== data.id
+                    ? 'arrow-gray'
+                    : 'arrow-border'
+                }.svg`}
+                className="attendance-img"
+              />
+              <p className="attendance-text">{data.timer}</p>
+            </div>
+          ))}
+          {callLists?.length !== 7 &&
+            isCompletCallAttendance &&
+            todayVerify && (
+              <Button
+                onClick={addCall}
+                className="attendance-add-btn"
+                // icon="plus"
+                text="Añadir Nueva Lista"
               />
             )}
-            <img
-              src={`/svg/${
-                !data?.users.length
-                  ? 'arrow-pressed'
-                  : callList?.id !== data.id
-                  ? 'arrow-gray'
-                  : 'arrow-border'
-              }.svg`}
-              className="attendance-img"
-            />
-            <p className="attendance-text">{data.timer}</p>
-          </div>
-        ))}
-        {callLists?.length !== 7 && isCompletCallAttendance && todayVerify && (
-          <Button
-            onClick={addCall}
-            className="attendance-add-btn"
-            // icon="plus"
-            text="Añadir Nueva Lista"
-          />
-        )}
+        </div>
       </span>
       {callList && (
         <div className="attendance-card-container-main">
@@ -315,13 +319,13 @@ const Attendance = () => {
             )}
             <div className="attendance-card-container" ref={componentRef}>
               <div className="attendance-header">
-                <div className="attendance-list-text">ITEM</div>
-                <div className="attendance-list-text">CUARTOS</div>
+                <div className="attendance-list-text hide-field">ITEM</div>
+                <div className="attendance-list-text hide-field">CUARTOS</div>
                 <div className="attendance-list-text">APELLIDO Y NOMBRE</div>
-                <div className="attendance-list-text">DNI</div>
-                <div className="attendance-list-text">CELULAR</div>
-                <div className="attendance-list-text">EQUIPO</div>
-                <div className="attendance-list-text">USUARIO</div>
+                <div className="attendance-list-text hide-field">DNI</div>
+                <div className="attendance-list-text hide-field">CELULAR</div>
+                <div className="attendance-list-text hide-field">EQUIPO</div>
+                <div className="attendance-list-text hide-field">USUARIO</div>
                 <div className="attendance-list-text attendance-config head-p">
                   P
                 </div>
@@ -371,6 +375,7 @@ const Attendance = () => {
                     className="attendance-btn-link"
                     imageStyle="attendance-btn-link-image"
                   />
+
                   <Button
                     text="Descargar Excel"
                     icon="report-excel-icon"

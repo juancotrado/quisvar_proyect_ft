@@ -1,0 +1,12 @@
+.attendancePdf-download {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .attendancePdf-viewer {
+    display: none;
+  }
+  .attendancePdf-download {
+    display: block;
+  }
+}

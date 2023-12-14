@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import './header.css';
 import { useNavigate } from 'react-router-dom';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState, MouseEvent } from 'react';
 import { Subscription } from 'rxjs';
 import { toggle$ } from '../../../services/sharingSubject';
 import { SocketContext } from '../../../context/SocketContex';
@@ -23,6 +23,7 @@ import { getIconDefault } from '../../../utils/tools';
 
 const Header = () => {
   const navigate = useNavigate();
+  const [headerShow, setHeaderShow] = useState(false);
   const socket = useContext(SocketContext);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenMoreInfo, setIsOpenMoreInfo] = useState(false);
@@ -52,6 +53,10 @@ const Header = () => {
   const handleHome = () => {
     navigate('/home');
   };
+  const handleShowHeader = (e: MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    setHeaderShow(!headerShow);
+  };
 
   const selectPdfForUserRol = () => {
     if (userSession.role === 'EMPLOYEE')
@@ -78,6 +83,11 @@ const Header = () => {
   const toggleMenu = () => setIsOpen(!isOpen);
   const toggleMenuMoreInfo = () => setIsOpenMoreInfo(!isOpenMoreInfo);
 
+  useEffect(() => {
+    const handleClick = () => setHeaderShow(false);
+    window.addEventListener('click', handleClick);
+    return () => window.removeEventListener('click', handleClick);
+  }, []);
   const icons = [
     {
       id: 1,
@@ -133,50 +143,62 @@ const Header = () => {
     },
   ];
   return (
-    <header className="header">
-      <nav className="nav-container container">
-        <div className="nav-options">
-          <figure className="header-figure">
-            <img
-              className="nav-logo"
-              src="/img/logo_img.png"
-              onClick={handleHome}
-              alt="logo QuisVar"
-            />
-          </figure>
-          <ul className="items-list">
-            {itemType.map(item => (
-              <ChipItem key={item.id} item={item} />
+    <>
+      <header className={`header ${headerShow && 'header---show'}`}>
+        <nav className="nav-container container">
+          <div className="nav-options">
+            <figure className="header-figure">
+              <img
+                className="nav-logo"
+                src="/img/logo_img.png"
+                onClick={handleHome}
+                alt="logo QuisVar"
+              />
+            </figure>
+            <ul className="items-list">
+              {itemType.map(item => (
+                <ChipItem key={item.id} item={item} />
+              ))}
+            </ul>
+          </div>
+          <ul className="icons-list">
+            {icons.map(icon => (
+              <li key={icon.id} className="icon-list">
+                {(userSession.role !== 'EMPLOYEE' || icon.id !== 1) && (
+                  <figure
+                    className={`${
+                      icon.id === 3 ? 'user-profile-figure' : 'icon-list-item'
+                    } `}
+                  >
+                    <motion.img
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                      onClick={e => {
+                        icon.id === 3 && e.stopPropagation();
+                        icon.action();
+                      }}
+                      src={icon.name}
+                      alt={icon.name}
+                    />
+                  </figure>
+                )}
+                {icon.id === 2 && isOpenMoreInfo && (
+                  <Menu data={menuMoreInfo} />
+                )}
+                {icon.id === 3 && isOpen && <Menu data={menu} />}
+              </li>
             ))}
           </ul>
-        </div>
+        </nav>
 
-        <ul className="icons-list">
-          {icons.map(icon => (
-            <li key={icon.id} className="icon-list">
-              {(userSession.role !== 'EMPLOYEE' || icon.id !== 1) && (
-                <figure
-                  className={`${
-                    icon.id === 3 ? 'user-profile-figure' : 'icon-list-item'
-                  } `}
-                >
-                  <motion.img
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                    onClick={icon.action}
-                    src={icon.name}
-                    alt={icon.name}
-                  />
-                </figure>
-              )}
-              {icon.id === 2 && isOpenMoreInfo && <Menu data={menuMoreInfo} />}
-              {icon.id === 3 && isOpen && <Menu data={menu} />}
-            </li>
-          ))}
-        </ul>
-      </nav>
-      {<CardEditInformation isOpen={openModalInfo} onClose={closeModal} />}
-    </header>
+        {<CardEditInformation isOpen={openModalInfo} onClose={closeModal} />}
+      </header>
+      <div className="header-menu-open" onClick={handleShowHeader}>
+        <figure className="header-menu_figure">
+          <img src={`/svg/menu_default.svg`} alt="menu" />
+        </figure>
+      </div>
+    </>
   );
 };
 

@@ -1,9 +1,16 @@
-import { Document, Page, Text, View, PDFViewer } from '@react-pdf/renderer';
+import {
+  Document,
+  Page,
+  Text,
+  View,
+  PDFViewer,
+  PDFDownloadLink,
+} from '@react-pdf/renderer';
 import { AttendanceRange } from '../../../types/types';
 import { styles } from './styledComponents';
 import { information } from '../../../utils/constantsPdf';
 import formatDate from '../../../utils/formatDate';
-
+import './attendancePdf.css';
 export type TablesProps = {
   descripcion: string | null;
   encargados: string | null;
@@ -25,7 +32,10 @@ const orderCalls = [
   'sexto llamado',
   'sétimo llamado',
 ];
-const generatePDF = (value: PDFGeneratorProps, config?: ConfigProps) => {
+export const generateAttendanceDailyPDF = (
+  value: PDFGeneratorProps,
+  config?: ConfigProps
+) => {
   const getStatus = (data: AttendanceRange) => {
     const mapStates = {
       PUNTUAL: 'P',
@@ -284,9 +294,25 @@ const AttendancePdf = ({ data, daily }: PDFGeneratorProps) => {
     user => user?.list.length !== 0
   );
   return (
-    <PDFViewer width="100%" height="100%">
-      {generatePDF({ data: filterdUsers, daily }, { size: 'A4' })}
-    </PDFViewer>
+    <>
+      <PDFViewer width="100%" height="100%" className="attendancePdf-viewer">
+        {generateAttendanceDailyPDF(
+          { data: filterdUsers, daily },
+          { size: 'A4' }
+        )}
+      </PDFViewer>
+
+      <PDFDownloadLink
+        document={generateAttendanceDailyPDF(
+          { data: filterdUsers, daily },
+          { size: 'A4' }
+        )}
+        fileName={`${daily}.pdf`}
+        className="budgetsPage-filter-icon attendancePdf-download"
+      >
+        Descargar
+      </PDFDownloadLink>
+    </>
   );
 };
 

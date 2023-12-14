@@ -3,14 +3,9 @@ import Modal from '../../../portal/Modal';
 import { Subscription } from 'rxjs';
 import { isOpenCardViewPdf$ } from '../../../../services/sharingSubject';
 import { AttendancePdf } from '../../..';
-// import { AttendanceRange } from '../../../../types/types';
 import './CardViewPdf.css';
 import { AttendanceRange } from '../../../../types/types';
 import AttendanceRangePdf from '../../attendanceRangePdf/AttendanceRangePdf';
-// interface CardViewProps {
-//   exportPDF: AttendanceRange[];
-//   daily?: string;
-// }
 
 const CardViewPdf = () => {
   //   const filterdUsers = exportPDF.filter(user => user.list.length !== 0);

@@ -32,6 +32,8 @@ import MailPage from '../pages/mail/MailPage';
 import MessagePage from '../pages/mail/message/MessagePage';
 import BasicsPage from '../pages/specialities/project/basics/BasicsPage';
 import CustomizableInvoice from '../pages/customizableInvoice/CustomizableInvoice';
+import GeneralIndex from '../pages/generalIndex/GeneralIndex';
+import Contracts from '../pages/generalIndex/contracts/contracts';
 
 const Navigation = () => {
   return (
@@ -79,6 +81,9 @@ const Navigation = () => {
             </Route>
             <Route element={<ProtectedRole rols={rolsFirstLevel} />}>
               <Route path="/lista-de-usuarios" element={<UsersList />} />
+              <Route path="/indice-general" element={<GeneralIndex />}>
+                <Route path="contratos" element={<Contracts />} />
+              </Route>
             </Route>
             <Route element={<ProtectedRole rols={rolThirdLevel} />}>
               <Route

@@ -40,7 +40,7 @@ const GeneralIndex = () => {
         </div>
         <div className="generalIndex-header-indexData">
           {indexData.map(index => (
-            <NavLink to={index.route}>
+            <NavLink key={index.id} to={index.route}>
               {({ isActive }) => (
                 <span
                   className={
@@ -56,9 +56,7 @@ const GeneralIndex = () => {
           ))}
         </div>
       </div>
-      <div>
-        <Outlet />
-      </div>
+      <Outlet />
     </div>
   );
 };

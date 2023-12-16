@@ -1,4 +1,28 @@
+.contracts {
+  height: 100%;
+}
 .contracts-sidebar {
+  display: flex;
+  width: 19.6875rem;
+  height: 100%;
+  padding: 1.5rem;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: #f4f7fc;
+}
+.contracts-sidebar-tilte {
+  color: var(--color-secondary);
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%;
+}
+.contracts-add-content {
+  display: flex;
+  justify-content: space-between;
+}
+.contracts-sideba-figure {
+  width: 1rem;
 }
 .contracts-add-span {
   font-size: 0.7rem;

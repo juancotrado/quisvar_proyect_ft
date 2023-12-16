@@ -16,6 +16,9 @@ interface CardRegisteProject {
   typeSpecialityId: number | null;
   project?: ProjectType;
 }
+interface CardRegisteContract {
+  isOpen: boolean;
+}
 interface CardRegisteTask {
   isOpen: boolean;
   levelId: number | null;
@@ -81,6 +84,8 @@ export const isOpenCardLicense$ = new SubjectManager<CardLicenseProps>();
 export const isOpenViewDocs$ = new SubjectManager<boolean>();
 export const isOpenCardRegisteProject$ =
   new SubjectManager<CardRegisteProject>();
+export const isOpenCardRegisteContract$ =
+  new SubjectManager<CardRegisteContract>();
 export const isOpenCardRegisteTask$ = new SubjectManager<CardRegisteTask>();
 export const isTaskInformation$ = new SubjectManager<boolean>();
 export const errorToken$ = new SubjectManager();

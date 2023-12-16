@@ -261,6 +261,17 @@ export interface ProjectForm {
   district: string;
   typeSpecialityId: number | null;
 }
+export interface ContractForm {
+  id?: number;
+  CUI: string;
+  name: string;
+  projectName: string;
+  department: string;
+  province: string;
+  district: string;
+  bachelorCost: string;
+  professionalCost: string;
+}
 
 export interface WorkArea {
   id: number;

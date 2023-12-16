@@ -88,6 +88,9 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
 
   const formatoFechaHora = () => {
     const today = new Date();
+    today.setHours(today.getHours() - 5);
+    console.log(today.toISOString().slice(0, 16));
+
     return today.toISOString().slice(0, 16);
   };
   return (

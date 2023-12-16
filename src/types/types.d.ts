@@ -854,6 +854,7 @@ export type licenseList = {
   startDate: string;
   untilDate: string;
   createdAt: string;
+  checkout?: string;
 };
 export type getLicenses = {
   id: number;

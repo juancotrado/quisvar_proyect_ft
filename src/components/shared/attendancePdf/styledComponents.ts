@@ -8,6 +8,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
     paddingHorizontal: 20,
     paddingVertical: 24,
+    // alignItems: 'center',
     // flex: 1,
     // position: 'relative',
     // borderStyle: 'solid',

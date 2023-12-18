@@ -1,5 +1,5 @@
 import { Input, Select, TextArea } from '../../..';
-import { axiosInstance } from '../../../../services/axiosInstance';
+//import { axiosInstance } from '../../../../services/axiosInstance';
 import { isOpenCardRegisteContract$ } from '../../../../services/sharingSubject';
 import { _date } from '../../../../utils/formatDate';
 import Modal from '../../../portal/Modal';
@@ -81,7 +81,7 @@ const CardRegisterContract = () => {
       distritosJson[idProvince as keyof typeof distritosJson];
     setDistricts(districsData);
   };
-
+  /*
   const setJurisdictionSelectData = (departament: string, province: string) => {
     const findDepartament = departamentsJson.find(
       ubigeo => ubigeo.nombre_ubigeo === departament
@@ -98,7 +98,7 @@ const CardRegisterContract = () => {
     setProvinces(provinciasData);
     setDistricts(districsData);
   };
-
+*/
   const onSubmit: SubmitHandler<ContractForm> = data => {
     console.log('asdasd', data);
     // const { id, percentage, ...body } = values;

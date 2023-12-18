@@ -39,7 +39,13 @@ const MailPage = () => {
   const size = !!searchParams.get('size');
   const refresh = !!searchParams.get('refresh') || false;
   const [isNewMessage, setIsNewMessage] = useState(false);
-  const permissions = ['SUPER_MOD', 'MOD', 'EMPLOYEE'].includes(user.role);
+  const permissions = [
+    'SUPER_MOD',
+    'MOD',
+    'EMPLOYEE',
+    'ASSISTANT',
+    'ASSISTANT_ADMINISTRATIVE',
+  ].includes(user.role);
   //-----------------------------------------------------------------------
 
   //-----------------------------------------------------------------------

@@ -60,7 +60,7 @@ const Home = () => {
   return (
     <div className="home">
       <h1 className="home-title">
-        BIENVENIDO{' '}
+        BIENVENID@{' '}
         <span className="title-content-span">
           {userSession?.profile.firstName}
         </span>

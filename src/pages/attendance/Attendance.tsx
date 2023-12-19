@@ -143,6 +143,7 @@ const Attendance = () => {
     socket.emit('client:call-notification');
   };
   const addCall = async () => {
+    getLicenses();
     const todayNow = new Date();
     const hours = todayNow.getHours().toString().padStart(2, '0');
     const min = todayNow.getMinutes().toString().padStart(2, '0');

@@ -1,0 +1,25 @@
+.FileNameContainer-file-name-container {
+  width: 62.5rem;
+  display: flex;
+  justify-content: space-between;
+}
+.FileNameContainer-file-name-text {
+  display: flex;
+  color: #000;
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.25rem;
+  letter-spacing: 0.02rem;
+  align-items: center;
+}
+
+.FileNameContainer-file-name-icon {
+  width: 2rem;
+  aspect-ratio: 1;
+}
+.FileNameContainer-figure {
+  cursor: pointer;
+  width: 1rem;
+  aspect-ratio: 1;
+}

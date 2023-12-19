@@ -4,6 +4,8 @@ import { PDFDownloadLink } from '@react-pdf/renderer';
 import { CustomizableInvoicePdf } from '../../components/shared/CustomizableInvoicePdf/CustomizableInvoicePdf';
 import { InvoiceXML } from '../../types/typeFactura';
 import './customizableInvoice.css';
+import UploadFileInput from '../../components/shared/uploadFileInput/UploadFileInput';
+import FileNameContainer from '../../components/shared/fileNameContainer/FileNameContainer';
 
 const CustomizableInvoice = () => {
   const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
@@ -65,40 +67,19 @@ const CustomizableInvoice = () => {
           Suba la plantilla generada por publisher en formato .jpg
         </p>
         {!fileName.jpgName ? (
-          <div className={`customizableInvoice-file-area `}>
-            <input
-              type="file"
-              multiple
-              onChange={handleImageUpload}
-              className="customizableInvoice-file-input"
-              accept="image/*"
-            />
-            <div className="customizableInvoice-file-moreInfo">
-              <div className="customizableInvoice-file-btn">
-                Cargar Archivo JPG
-              </div>
-              <p className="customizableInvoice-file-text">
-                O arrastre el archivo JPG aquí
-              </p>
-            </div>
-          </div>
+          <UploadFileInput
+            name="Cargar Archivo JPG"
+            subName="O arrastre el archivo JPG aquí"
+            onChange={handleImageUpload}
+            accept="image/*"
+            multiple
+          />
         ) : (
-          <div className="customizableInvoice-file-name-container">
-            <p className="customizableInvoice-file-name-text">
-              <img
-                src="/svg/icon-xml.svg"
-                alt="W3Schools"
-                className="customizableInvoice-file-name-icon"
-              />
-              {fileName.jpgName}
-            </p>
-            <figure
-              className="customizableInvoice-figure"
-              onClick={() => handleDeleteFile('jpgName')}
-            >
-              <img src="/svg/close.svg" alt="W3Schools" />
-            </figure>
-          </div>
+          <FileNameContainer
+            fileName={fileName.jpgName}
+            icon="icon-xml"
+            onDelete={() => handleDeleteFile('jpgName')}
+          />
         )}
       </div>
       <div className="customizableInvoice-file-container">
@@ -106,40 +87,19 @@ const CustomizableInvoice = () => {
           Suba la factura generada por la SUNAT en formato .XML
         </p>
         {!fileName.xmlName ? (
-          <div className={`customizableInvoice-file-area `}>
-            <input
-              type="file"
-              multiple
-              onChange={handleFileUpload}
-              className="customizableInvoice-file-input"
-              accept=".xml"
-            />
-            <div className="customizableInvoice-file-moreInfo">
-              <div className="customizableInvoice-file-btn">
-                Cargar Archivo XML
-              </div>
-              <p className="customizableInvoice-file-text">
-                O arrastre el archivo XML aquí
-              </p>
-            </div>
-          </div>
+          <UploadFileInput
+            name=" Cargar Archivo XML"
+            subName=" O arrastre el archivo XML aquí"
+            onChange={handleFileUpload}
+            accept=".xml"
+            multiple
+          />
         ) : (
-          <div className="customizableInvoice-file-name-container">
-            <p className="customizableInvoice-file-name-text">
-              <img
-                src="/svg/icon-xml.svg"
-                alt="W3Schools"
-                className="customizableInvoice-file-name-icon"
-              />
-              {fileName.xmlName}
-            </p>
-            <figure
-              className="customizableInvoice-figure"
-              onClick={() => handleDeleteFile('xmlName')}
-            >
-              <img src="/svg/close.svg" alt="W3Schools" />
-            </figure>
-          </div>
+          <FileNameContainer
+            fileName={fileName.xmlName}
+            icon="icon-xml"
+            onDelete={() => handleDeleteFile('xmlName')}
+          />
         )}
       </div>
       {backgroundImage && invoiceXml && (

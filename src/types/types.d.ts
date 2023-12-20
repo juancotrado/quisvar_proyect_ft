@@ -379,6 +379,14 @@ export interface SubtaskIncludes extends SubTask {
   };
 }
 
+interface ContractIndexData {
+  id: string;
+  name: string;
+  nivel: number;
+  hasFile?: 'yes' | 'no';
+  nextLevel?: ContractIndexData[];
+}
+
 type FileType = 'MODEL' | 'UPLOADS' | 'REVIEW';
 interface Files {
   id: number;
@@ -865,7 +873,6 @@ export type licenseList = {
   startDate: string;
   untilDate: string;
   createdAt: string;
-  checkout?: string;
 };
 export type getLicenses = {
   id: number;

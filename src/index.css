@@ -36,6 +36,7 @@
   --color-includeLvl: #dbf0f9;
   --color-AreaLvl: #70ad474f;
   --color-SubtaskLvl: #fff;
+  --size-contract-header: 12vh;
 }
 
 html {

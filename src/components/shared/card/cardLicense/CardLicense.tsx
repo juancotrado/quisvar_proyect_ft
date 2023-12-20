@@ -23,6 +23,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const handleIsOpen = useRef<Subscription>(new Subscription());
   const [data, setData] = useState<licenseList>();
+  const [type, setType] = useState<string | undefined>('');
   const formattedDate = (value: string) => {
     const parts = value.split(':');
     const result = parts.slice(0, 2).join(':');
@@ -41,6 +42,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
     handleIsOpen.current = isOpenCardLicense$.getSubject.subscribe(value => {
       setIsOpen(value.isOpen);
       setData(value.data);
+      setType(value.type);
     });
     return () => {
       handleIsOpen.current.unsubscribe();
@@ -60,14 +62,24 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
   };
   const onSubmit: SubmitHandler<DataLicense> = values => {
     if (!data) {
-      axiosInstance
-        .post(`license`, { usersId: userSession.id, ...values })
-        .then(res => {
+      if (type === 'free') {
+        console.log('aqui');
+        axiosInstance.post(`license/free`, values).then(res => {
           console.log(res.data);
           setIsOpen(false);
           reset({});
           onSave?.();
         });
+      } else {
+        axiosInstance
+          .post(`license`, { usersId: userSession.id, ...values })
+          .then(res => {
+            console.log(res.data);
+            setIsOpen(false);
+            reset({});
+            onSave?.();
+          });
+      }
     } else {
       const updateLicense = {
         reason: values.reason,

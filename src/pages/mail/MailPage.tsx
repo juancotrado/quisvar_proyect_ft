@@ -139,6 +139,12 @@ const MailPage = () => {
       isOpen: true,
     };
   };
+  const showCardReportFreeDay = () => {
+    isOpenCardLicense$.setSubject = {
+      isOpen: true,
+      type: 'free',
+    };
+  };
   const showCardReportData = (data: licenseList) => {
     isOpenCardLicense$.setSubject = {
       isOpen: true,
@@ -235,13 +241,21 @@ const MailPage = () => {
                   textField="id"
                 />
               </div>
-              {permissions && (
+              {permissions ? (
                 <span className="mail-license" onClick={showCardReport}>
                   <img
                     className="mail-mail-options-title-filter-img"
                     src="/svg/license-icon.svg"
                   />
-                  Solicitar Licencia
+                  Solicitar Hoja de ruta
+                </span>
+              ) : (
+                <span className="mail-license" onClick={showCardReportFreeDay}>
+                  <img
+                    className="mail-mail-options-title-filter-img"
+                    src="/svg/license-icon.svg"
+                  />
+                  Día libre
                 </span>
               )}
               <Button

@@ -33,6 +33,7 @@ interface CardViewProps {
 }
 interface CardLicenseProps {
   isOpen: boolean;
+  type?: string;
   data?: licenseList;
 }
 interface CardSpecialistProps {

@@ -253,10 +253,13 @@ export const getPrice = (counts: UserAttendance) => {
   const F = 10;
   const G = 20;
   const M = 80;
-  const result =
-    T * counts.TARDE +
-    F * counts.SIMPLE +
-    G * counts.GRAVE +
-    M * counts.MUY_GRAVE;
+
+  const tarde = counts?.TARDE ?? 0;
+  const simple = counts?.SIMPLE ?? 0;
+  const grave = counts?.GRAVE ?? 0;
+  const muygrave = counts?.MUY_GRAVE ?? 0;
+
+  const result = T * tarde + F * simple + G * grave + M * muygrave;
+
   return result;
 };

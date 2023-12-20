@@ -31,11 +31,19 @@ const orderCalls = [
   'quinto llamado',
   'sexto llamado',
   'sétimo llamado',
+  'octavo llamado',
+  'noveno llamado',
+  'decimo llamado',
 ];
 export const generateAttendanceDailyPDF = (
   value: PDFGeneratorProps,
   config?: ConfigProps
 ) => {
+  const initialCalls =
+    value.data[0].list.length <= 6
+      ? orderCalls.slice(0, 6)
+      : orderCalls.slice(0, value.data[0].list.length);
+
   const getStatus = (data: AttendanceRange) => {
     const mapStates = {
       PUNTUAL: 'P',
@@ -49,7 +57,7 @@ export const generateAttendanceDailyPDF = (
     const orderedStatus: string[] = [];
     // console.log(data.list);
 
-    orderCalls.forEach(call => {
+    initialCalls.forEach(call => {
       const estadoEncontrado = data.list.find(item => item.list.title === call);
       if (estadoEncontrado) {
         const inicialEstado =
@@ -84,7 +92,7 @@ export const generateAttendanceDailyPDF = (
       day: '2-digit',
     });
   };
-  // console.log(value.data);
+  // console.log(value.data[0].list.length);
 
   return (
     <Document>
@@ -156,7 +164,7 @@ export const generateAttendanceDailyPDF = (
               })}
             </View> */}
             <View style={{ ...styles.attendance, width: '28%' }}>
-              {orderCalls.map((_, index) => {
+              {initialCalls.map((_, index) => {
                 return (
                   <View style={{ ...styles.attendanceItem }} key={index}>
                     <Text style={styles.headers}>{index + 1}</Text>

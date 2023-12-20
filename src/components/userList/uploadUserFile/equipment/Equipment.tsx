@@ -78,8 +78,8 @@ const Equipment = ({
       {isOpen && (
         <div className="ule-items-area">
           <div className="ule-item-header">
-            <h3 className="ule-size">PANTALLA</h3>
             <h3 className="ule-size">USUARIO</h3>
+            <h3 className="ule-size">PERSONAL ASIGNADO</h3>
           </div>
           {data.equipment.map(equipment => {
             const optionsData: Option[] = [

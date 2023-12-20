@@ -80,7 +80,7 @@ const CardRegisterContract = () => {
       distritosJson[idProvince as keyof typeof distritosJson];
     setDistricts(districsData);
   };
-
+  /*
   const setJurisdictionSelectData = (departament: string, province: string) => {
     const findDepartament = departamentsJson.find(
       ubigeo => ubigeo.nombre_ubigeo === departament
@@ -97,7 +97,7 @@ const CardRegisterContract = () => {
     setProvinces(provinciasData);
     setDistricts(districsData);
   };
-
+*/
   const onSubmit: SubmitHandler<ContractForm> = data => {
     console.log('asdasd', data);
     // const { id, percentage, ...body } = values;

@@ -13,13 +13,19 @@ const orderCalls = [
   'quinto llamado',
   'sexto llamado',
   'sétimo llamado',
+  'octavo llamado',
+  'noveno llamado',
+  'decimo llamado',
 ];
 export async function generateReportDaily({
   startDate,
   printData,
 }: GenerateReportDailyProps) {
   // console.log(printData);
-
+  const initialCalls =
+    printData[0].list.length <= 7
+      ? orderCalls.slice(0, 7)
+      : orderCalls.slice(0, printData[0].list.length);
   const response = await fetch('/templates/list_daily_template.xlsx');
   const buffer = await response.arrayBuffer();
   const workbook = new ExcelJS.Workbook();
@@ -36,8 +42,17 @@ export async function generateReportDaily({
       day: '2-digit',
     });
   };
+  const distance = 'NOP';
   wk.getCell('B3').value = `LISTA DE ASISTENCIA DEL ${parseDate(startDate)}`;
-
+  initialCalls.length > 7
+    ? wk.mergeCells(`B3:${distance.charAt(initialCalls.length - 8)}3`)
+    : wk.mergeCells('B3:M3');
+  wk.getCell('B3').alignment = { vertical: 'middle', horizontal: 'center' };
+  wk.getCell('G4').value = 'ASISTENCIAS';
+  initialCalls.length > 7
+    ? wk.mergeCells(`G4:${distance.charAt(initialCalls.length - 8)}4`)
+    : wk.mergeCells('G4:M4');
+  wk.getCell('G4').alignment = { vertical: 'middle', horizontal: 'center' };
   const getStatus = (data: AttendanceRange) => {
     const mapStates = {
       PUNTUAL: 'P',
@@ -50,7 +65,7 @@ export async function generateReportDaily({
 
     const orderedStatus: string[] = [];
 
-    orderCalls.forEach(call => {
+    initialCalls.forEach(call => {
       const estadoEncontrado = data.list.find(item => item.list.title === call);
       if (estadoEncontrado) {
         const inicialEstado =
@@ -80,10 +95,23 @@ export async function generateReportDaily({
   const filterdUsers: AttendanceRange[] = printData.filter(
     user => user?.list.length !== 0
   );
-  const timerCells = 'GHIJKLM';
-  timerCells.split('').forEach((cell, index) => {
+  const timerCells = 'GHIJKLMNOP';
+  const subtimer = timerCells.substring(0, initialCalls.length).split('');
+
+  subtimer.forEach((cell, index) => {
     // const timer = getTimers(filterdUsers[0]);
+    wk.getCell(`${cell}5`).fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: 'D9E1F2' },
+    };
     wk.getCell(`${cell}5`).value = index + 1;
+    wk.getCell(`${cell}5`).border = {
+      top: { style: 'thin' },
+      left: { style: 'thin' },
+      bottom: { style: 'thin' },
+      right: { style: 'thin' },
+    };
   });
   const getColor = (status: string) => {
     if (status === 'P') return '87E4BD';
@@ -105,8 +133,9 @@ export async function generateReportDaily({
       data.profile.phone,
       ..._getStatus,
     ]);
-    const columnLetters = 'BCDEFGHIJKLM';
-    columnLetters.split('').forEach(columnLetter => {
+    const columnLetters = 'BCDEFGHIJKLMNOP';
+    const cd = columnLetters.substring(0, initialCalls.length + 5).split('');
+    cd.forEach(columnLetter => {
       const cell = dataRows.getCell(columnLetter);
       cell.border = {
         top: { style: 'thin' },
@@ -115,9 +144,10 @@ export async function generateReportDaily({
         right: { style: 'thin' },
       };
     });
-    const fillColors = 'GHIJKLM';
+    const fillColors = 'GHIJKLMNOP';
+    const ad = fillColors.substring(0, initialCalls.length);
     for (let i = 0; i < _getStatus.length; i++) {
-      const columnFill = fillColors[i];
+      const columnFill = ad[i];
       const cell = dataRows.getCell(columnFill);
       cell.fill = {
         type: 'pattern',
@@ -128,7 +158,8 @@ export async function generateReportDaily({
     rowNumber++;
   });
   const endLine = rowNumber;
-  wk.pageSetup.printArea = 'A1:M' + (endLine + 9);
+  wk.pageSetup.printArea =
+    `A1:${timerCells.charAt(initialCalls.length)}` + (endLine + 9);
   workbook.xlsx.writeBuffer().then(data => {
     const blob = new Blob([data], {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheet.sheet',

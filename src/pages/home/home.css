@@ -6,6 +6,7 @@
   align-items: center;
   background-color: var(--color-menu);
   gap: 3rem;
+  position: relative;
 }
 
 .home-title {
@@ -14,21 +15,25 @@
   color: var(--color-tertiary);
   font-weight: 800;
 }
+
 .title-content-span {
   color: var(--color-primary);
 }
+
 .paragraph {
   width: 70%;
   text-align: center;
   font-size: var(--size-label);
   color: var(--color-secondary);
 }
+
 .btn-section {
   display: flex;
   justify-content: center;
   flex-wrap: wrap;
   gap: 48px;
 }
+
 .home-btn {
   min-width: 25rem;
   height: 3.5rem;
@@ -43,17 +48,59 @@
   border: 2px solid var(--color-tertiary);
   color: var(--color-tertiary);
 }
+
 .btn-color-2 {
   border: 2px solid var(--color-primary);
   color: var(--color-primary);
 }
+
 .btn-color-1:hover {
   background-color: var(--color-primary);
   border: 2px solid var(--color-primary);
   color: white;
 }
+
 .btn-color-2:hover {
   background-color: var(--color-secondary);
   border: 2px solid var(--color-secondary);
   color: white;
+}
+
+.home-license-card {
+  position: absolute;
+  bottom: 0;
+  right: 10px;
+  display: flex;
+  width: 24.5rem;
+  padding: 1.25rem;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.875rem;
+  border-radius: 0.625rem;
+  background: #fff;
+  box-shadow: 0px 2px 4px 0px rgba(0, 0, 0, 0.25);
+}
+
+.hl-info {
+  display: flex;
+  width: 100%;
+  gap: 0.9375rem;
+}
+
+.hl-date {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex: 1 0 0;
+  width: 50%;
+}
+
+.hl-btn {
+  border-radius: 0.3125rem;
+  border: 2px solid var(--color-tertiary);
+  color: var(--color-tertiary);
+  background: rgba(5, 50, 181, 0.09);
+  padding: 0.3125rem 0.625rem;
+  width: 100%;
+  cursor: pointer;
 }

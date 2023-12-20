@@ -39,7 +39,13 @@ const MailPage = () => {
   const size = !!searchParams.get('size');
   const refresh = !!searchParams.get('refresh') || false;
   const [isNewMessage, setIsNewMessage] = useState(false);
-  const permissions = ['SUPER_MOD', 'MOD', 'EMPLOYEE'].includes(user.role);
+  const permissions = [
+    'SUPER_MOD',
+    'MOD',
+    'EMPLOYEE',
+    'ASSISTANT',
+    'ASSISTANT_ADMINISTRATIVE',
+  ].includes(user.role);
   //-----------------------------------------------------------------------
 
   //-----------------------------------------------------------------------
@@ -131,6 +137,12 @@ const MailPage = () => {
   const showCardReport = () => {
     isOpenCardLicense$.setSubject = {
       isOpen: true,
+    };
+  };
+  const showCardReportFreeDay = () => {
+    isOpenCardLicense$.setSubject = {
+      isOpen: true,
+      type: 'free',
     };
   };
   const showCardReportData = (data: licenseList) => {
@@ -229,13 +241,21 @@ const MailPage = () => {
                   textField="id"
                 />
               </div>
-              {permissions && (
+              {permissions ? (
                 <span className="mail-license" onClick={showCardReport}>
                   <img
                     className="mail-mail-options-title-filter-img"
                     src="/svg/license-icon.svg"
                   />
-                  Solicitar Licencia
+                  Solicitar Hoja de ruta
+                </span>
+              ) : (
+                <span className="mail-license" onClick={showCardReportFreeDay}>
+                  <img
+                    className="mail-mail-options-title-filter-img"
+                    src="/svg/license-icon.svg"
+                  />
+                  Día libre
                 </span>
               )}
               <Button

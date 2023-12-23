@@ -1,21 +1,32 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import DropdownLevelContract from '../../../components/contracts/costTable/dropdownLevelContract/DropdownLevelContract';
 import CardRegisterContract from '../../../components/shared/card/cardRegisterContract/CardRegisterContract';
 import { isOpenCardRegisteContract$ } from '../../../services/sharingSubject';
 import './contracts.css';
 import { contractIndexData } from './contractsData';
-
-const contractsData = [
-  { id: 0, name: 'CONTRATO DE SERVICIOS N° 02-2020-MDP/GM', cui: 78116979 },
-  { id: 1, name: 'CONTRATO DE SERVICIOS N° 03-2020-MDP/GM', cui: 78116979 },
-  { id: 2, name: 'CONTRATO DE SERVICIOS N° 04-2020-MDP/GM', cui: 78116979 },
-  { id: 3, name: 'CONTRATO DE SERVICIOS N° 05-2020-MDP/GM', cui: 78116979 },
-];
+import { axiosInstance } from '../../../services/axiosInstance';
+import { Contract, Option } from '../../../types/types';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../store';
+import { rolSecondLevel } from '../../../utils/roles';
+import DotsRight from '../../../components/shared/dotsRight/DotsRight';
+import { ContextMenuTrigger } from 'rctx-contextmenu';
+import { SnackbarUtilities } from '../../../utils/SnackbarManager';
 
 const Contracts = () => {
   const [contractIndex, setContractIndex] = useState(contractIndexData);
+  const [contracts, setContracts] = useState<Contract[] | null>(null);
+  const { role } = useSelector((state: RootState) => state.userSession);
   const addContract = () => {
     isOpenCardRegisteContract$.setSubject = { isOpen: true };
+  };
+
+  useEffect(() => {
+    getContracts();
+  }, []);
+
+  const getContracts = () => {
+    axiosInstance.get('contract').then(res => setContracts(res.data));
   };
 
   const editFileContractIndex = (id: string, value: 'yes' | 'no') => {
@@ -37,24 +48,61 @@ const Contracts = () => {
   };
 
   const levelData = { id: '0', name: '', nivel: 0, nextLevel: contractIndex };
+  const authUsers = rolSecondLevel.includes(role);
 
-  console.log(levelData);
+  const sidebarDataContainer = (contract: Contract) => {
+    const handleEditContract = () =>
+      (isOpenCardRegisteContract$.setSubject = { isOpen: true, contract });
+
+    const handleDeleteContract = () =>
+      axiosInstance
+        .delete(`contract/${contract.id}`)
+        .then(() =>
+          SnackbarUtilities.success('El Contrato fue eliminado exitosamente')
+        );
+
+    const dataDots: Option[] = [
+      {
+        name: 'Editar',
+        type: 'button',
+        icon: 'pencil',
+        function: handleEditContract,
+      },
+      {
+        name: 'Eliminar',
+        type: 'button',
+        icon: 'trash-red',
+        function: handleDeleteContract,
+      },
+    ];
+    return (
+      <ContextMenuTrigger
+        id={`contracts-sidebar-${contract.id}`}
+        key={contract.id}
+        className="contracts-sidebar-data"
+      >
+        <figure className="contracts-sidebar-figure">
+          <img src="/svg/contracts-icon.svg" alt="W3Schools" />
+        </figure>
+        <div>
+          <h4 className="contracts-sidebar-name">{contract.name}</h4>
+          <h5 className="contracts-sidebar-cui">{contract.cui}</h5>
+        </div>
+        {authUsers && (
+          <DotsRight
+            data={dataDots}
+            idContext={`contracts-sidebar-${contract.id}`}
+          />
+        )}
+      </ContextMenuTrigger>
+    );
+  };
   return (
     <div className="contracts">
       <div className="contracts-sidebar">
         <h2 className="contracts-sidebar-tilte">14.CONTRATOS EN ACTIVIDAD</h2>
         <div className="contracts-sidebar-main">
-          {contractsData.map(contract => (
-            <div key={contract.id} className="contracts-sidebar-data">
-              <figure className="contracts-sidebar-figure">
-                <img src="/svg/contracts-icon.svg" alt="W3Schools" />
-              </figure>
-              <div>
-                <h4 className="contracts-sidebar-name">{contract.name}</h4>
-                <h5 className="contracts-sidebar-cui">{contract.cui}</h5>
-              </div>
-            </div>
-          ))}
+          {contracts?.map(sidebarDataContainer)}
           <div className="contracts-add-content" onClick={addContract}>
             <span className="contracts-add-span">Añadir Contrato</span>
             <figure className="contracts-sideba-figure">
@@ -77,7 +125,7 @@ const Contracts = () => {
         </div>
         <div className="contracts-main-info"></div>
       </div>
-      <CardRegisterContract />
+      <CardRegisterContract onSave={getContracts} />
     </div>
   );
 };

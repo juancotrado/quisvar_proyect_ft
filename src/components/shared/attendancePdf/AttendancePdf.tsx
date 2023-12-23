@@ -9,7 +9,7 @@ import {
 import { AttendanceRange } from '../../../types/types';
 import { styles } from './styledComponents';
 import { information } from '../../../utils/constantsPdf';
-import formatDate from '../../../utils/formatDate';
+import formatDate, { actualDate } from '../../../utils/formatDate';
 import './attendancePdf.css';
 export type TablesProps = {
   descripcion: string | null;
@@ -83,15 +83,7 @@ export const generateAttendanceDailyPDF = (
 
   //   return orderedTimers;
   // };
-  const parseDate = (value?: string) => {
-    const dailyDate = new Date(value ? value : new Date());
-    dailyDate.setDate(dailyDate.getDate() + 1);
-    return formatDate(dailyDate, {
-      year: 'numeric',
-      month: 'long',
-      day: '2-digit',
-    });
-  };
+
   // console.log(value.data[0].list.length);
 
   return (
@@ -118,7 +110,7 @@ export const generateAttendanceDailyPDF = (
             textTransform: 'uppercase',
           }}
         >
-          <Text>LISTA DE ASISTENCIA DEL {parseDate(value?.daily)}</Text>
+          <Text>LISTA DE ASISTENCIA DEL {actualDate(value?.daily)}</Text>
         </View>
         <View style={styles.table}>
           <View style={styles.tableRow}>

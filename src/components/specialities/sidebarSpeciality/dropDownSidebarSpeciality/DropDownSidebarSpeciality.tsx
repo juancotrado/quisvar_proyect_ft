@@ -21,6 +21,10 @@ const DropDownSidebarSpeciality = ({
   data,
   onSave,
 }: DropDownSidebarSpecialityProps) => {
+  const { role } = useSelector((state: RootState) => state.userSession);
+  const [indexSelected, setIndexSelected] = useState('');
+  const navigate = useNavigate();
+
   const levelData =
     data.specialities ?? data.typeSpecialities ?? data.projects ?? data.sectors;
   const type = data.specialities
@@ -38,9 +42,7 @@ const DropDownSidebarSpeciality = ({
     ? 'typespecialityId'
     : 'noId';
   if (!levelData) return <></>;
-  const { role } = useSelector((state: RootState) => state.userSession);
-  const [indexSelected, setIndexSelected] = useState('');
-  const navigate = useNavigate();
+
   const authUsers = rolSecondLevel.includes(role);
   const handleTaks = (name: string, especialties?: number) => {
     if (especialties === undefined) return;

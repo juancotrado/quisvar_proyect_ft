@@ -22,6 +22,13 @@ export const parseDate = (value: string, sing: string, replace: string) => {
   return parseValue; //retorna: yyyy/mm/dd
 };
 
+export const actualDate = (date: Date | string | undefined) => {
+  date = new Date(date ?? '');
+  const dailyDate = new Date(date);
+  dailyDate.setDate(dailyDate.getDate() + 1);
+  return _date(dailyDate);
+};
+
 export const _date = (date: Date) => {
   const _date = formatDate(new Date(date), {
     year: 'numeric',

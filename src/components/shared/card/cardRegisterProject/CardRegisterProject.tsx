@@ -1,7 +1,6 @@
 import { Input, Select, TextArea } from '../../..';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { isOpenCardRegisteProject$ } from '../../../../services/sharingSubject';
-import { _date } from '../../../../utils/formatDate';
 import Modal from '../../../portal/Modal';
 import Button from '../../button/Button';
 import './CardRegisterProject.css';
@@ -65,7 +64,7 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
     return () => {
       handleIsOpen.current.unsubscribe();
     };
-  }, []);
+  }, [reset]);
   const handleGetProvinces = (value: string) => {
     const findDepartament = departamentsJson.find(
       ubigeo => ubigeo.nombre_ubigeo === value

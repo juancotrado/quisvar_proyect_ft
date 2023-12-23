@@ -28,7 +28,7 @@ const CostTable = ({ mount = 0 }: CostTableProps) => {
         <tr>
           <th>Sueldo Bruto</th>
           <td>S/ {mount + 1000}</td>
-          <td>S/ {partialByMounth + stayByMounth}</td>
+          <td>S/ {(partialByMounth + stayByMounth).toFixed(2)}</td>
         </tr>
       </tbody>
     </table>

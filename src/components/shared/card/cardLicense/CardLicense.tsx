@@ -63,7 +63,6 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
   const onSubmit: SubmitHandler<DataLicense> = values => {
     if (!data) {
       if (type === 'free') {
-        console.log('aqui');
         axiosInstance.post(`license/free`, values).then(res => {
           console.log(res.data);
           setIsOpen(false);
@@ -101,7 +100,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
   const formatoFechaHora = () => {
     const today = new Date();
     today.setHours(today.getHours() - 5);
-    console.log(today.toISOString().slice(0, 16));
+    // console.log(today.toISOString().slice(0, 16));
 
     return today.toISOString().slice(0, 16);
   };

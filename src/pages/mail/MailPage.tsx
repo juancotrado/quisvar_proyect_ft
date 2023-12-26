@@ -200,9 +200,7 @@ const MailPage = () => {
                 />
                 <Button
                   icon="archiver-box"
-                  text={
-                    (contentVisible && 'Solicitud de Licencias') || undefined
-                  }
+                  text={(contentVisible && 'Salidas') || undefined}
                   className={`mail-main-options-btn
                   ${typeMail === 'LICENSE' && 'options-main-selected'}`}
                   onClick={handlelicense}

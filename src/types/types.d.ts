@@ -876,6 +876,7 @@ export type licenseList = {
   id: number;
   usersId: number;
   reason?: string;
+  checkout?: string;
   feedback?: string;
   status: licenseStatus;
   startDate: string;

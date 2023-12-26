@@ -6,6 +6,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
 import { licenseList } from '../../types/types';
 import formatDate from '../../utils/formatDate';
+const GMT = 5 * 60 * 60 * 1000;
 
 const Home = () => {
   const { userSession } = useSelector((state: RootState) => state);
@@ -23,11 +24,23 @@ const Home = () => {
     }
   };
   const viewLicense = useCallback(() => {
-    axiosInstance.get(`/license/employee/${userSession.id}`).then(res => {
-      setLicenseData(res.data);
-      setEnableBtn(res.data[0]?.status === 'ACTIVE');
-    });
+    axiosInstance
+      .get(`/license/employee/${userSession.id}?status=ACTIVE`)
+      .then(res => {
+        setLicenseData(res.data);
+        setEnableBtn(res.data[0]?.status === 'ACTIVE');
+      });
   }, [userSession.id]);
+  useEffect(() => {
+    const now = new Date();
+    const untilDate = new Date(licenseData[0]?.untilDate);
+    const timeDifference = untilDate.getTime() + GMT - now.getTime();
+    if (timeDifference >= 0) {
+      setTimeout(() => {
+        viewLicense();
+      }, timeDifference);
+    }
+  }, [licenseData, viewLicense]);
 
   useEffect(() => {
     if (userSession.id !== 0) {
@@ -35,7 +48,6 @@ const Home = () => {
     }
   }, [userSession.id, viewLicense]);
   const getDate = (value: string) => {
-    const GMT = 5 * 60 * 60 * 1000;
     const time = new Date(value);
     const gmtMinus5Time = new Date(time.getTime() + GMT);
     const res = formatDate(gmtMinus5Time, {

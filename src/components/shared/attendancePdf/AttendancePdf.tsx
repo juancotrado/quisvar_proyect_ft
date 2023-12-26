@@ -39,6 +39,13 @@ const orderCalls = [
   'decimotercero llamado',
   'decimocuarto llamado',
   'decimoquinto llamado',
+  'decimosexto llamado',
+  'decimosetimo llamado',
+  'decimooctavo llamado',
+  'decimonoveno llamado',
+  'vigesimo llamado',
+  'vigesimoprimero llamado',
+  'vigesimosegundo llamado',
 ];
 export const generateAttendanceDailyPDF = (
   value: PDFGeneratorProps,
@@ -136,18 +143,18 @@ export const generateAttendanceDailyPDF = (
             <View style={{ ...styles.tableCol, width: '10%' }}>
               <Text style={styles.headers}>CELULAR</Text>
             </View>
-            <View style={{ ...styles.tableCol, width: '8%' }}>
+            {/* <View style={{ ...styles.tableCol, width: '8%' }}>
               <Text style={styles.headers}>EQUIPO</Text>
-            </View>
-            <View style={{ ...styles.tableCol, width: '10%' }}>
+            </View> */}
+            {/* <View style={{ ...styles.tableCol, width: '10%' }}>
               <Text style={styles.headers}>USUARIO</Text>
-            </View>
-            <View style={{ ...styles.tableCol, width: '28%' }}>
+            </View> */}
+            <View style={{ ...styles.tableCol, width: '46%' }}>
               <Text style={styles.headers}>ASISTENCIAS</Text>
             </View>
           </View>
           <View style={styles.tableRow}>
-            <View style={{ ...styles.tableCol, width: '72%' }}>
+            <View style={{ ...styles.tableCol, width: '54%' }}>
               <Text style={styles.headers}></Text>
             </View>
             {/* <View style={{ ...styles.attendance, width: '28%' }}>
@@ -160,7 +167,7 @@ export const generateAttendanceDailyPDF = (
                 );
               })}
             </View> */}
-            <View style={{ ...styles.attendance, width: '28%' }}>
+            <View style={{ ...styles.attendance, width: '46%' }}>
               {initialCalls.map((_, index) => {
                 return (
                   <View style={{ ...styles.attendanceItem }} key={index}>
@@ -208,18 +215,18 @@ export const generateAttendanceDailyPDF = (
                   <View style={{ ...styles.tableCol, width: '10%' }}>
                     <Text style={styles.headers}>{value.profile.phone}</Text>
                   </View>
-                  <View style={{ ...styles.tableCol, width: '8%' }}>
+                  {/* <View style={{ ...styles.tableCol, width: '8%' }}>
                     <Text style={styles.headers}>
                       {value?.equipment?.workStation?.name ?? '---'}
                     </Text>
-                  </View>
+                  </View> */}
 
-                  <View style={{ ...styles.tableCol, width: '10%' }}>
+                  {/* <View style={{ ...styles.tableCol, width: '10%' }}>
                     <Text style={styles.headers}>
                       {value.profile.userPc ?? '---'}
                     </Text>
-                  </View>
-                  <View style={{ ...styles.attendance, width: '28%' }}>
+                  </View> */}
+                  <View style={{ ...styles.attendance, width: '46%' }}>
                     {attendances &&
                       attendances.map((attendance, index) => {
                         return (

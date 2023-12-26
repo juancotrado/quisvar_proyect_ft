@@ -44,6 +44,11 @@ const llamados = [
   { title: 'octavo llamado' },
   { title: 'noveno llamado' },
   { title: 'decimo llamado' },
+  { title: 'undecimo llamado' },
+  { title: 'duodecimo llamado' },
+  { title: 'decimotercero llamado' },
+  { title: 'decimocuarto llamado' },
+  { title: 'decimoquinto llamado' },
 ];
 interface RangeDate {
   startDate: string;
@@ -291,7 +296,7 @@ const Attendance = () => {
               <p className="attendance-text">{data.timer}</p>
             </div>
           ))}
-          {callLists?.length !== 10 &&
+          {callLists?.length !== 15 &&
             isCompletCallAttendance &&
             todayVerify && (
               <Button

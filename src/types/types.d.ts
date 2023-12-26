@@ -864,6 +864,13 @@ export type PdfDataProps = {
   fromPosition?: string;
 };
 type licenseStatus = 'PROCESS' | 'ACTIVE' | 'INACTIVE' | 'DENIED';
+type listDetails =
+  | 'PUNTUAL'
+  | 'TARDE'
+  | 'SIMPLE'
+  | 'GRAVE'
+  | 'MUY_GRAVE'
+  | 'PERMISO';
 export type licenseList = {
   id: number;
   usersId: number;
@@ -871,6 +878,7 @@ export type licenseList = {
   checkout?: string;
   feedback?: string;
   status: licenseStatus;
+  fine?: listDetails;
   startDate: string;
   untilDate: string;
   createdAt: string;

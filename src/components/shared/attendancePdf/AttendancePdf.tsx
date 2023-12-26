@@ -9,7 +9,7 @@ import {
 import { AttendanceRange } from '../../../types/types';
 import { styles } from './styledComponents';
 import { information } from '../../../utils/constantsPdf';
-import formatDate, { actualDate } from '../../../utils/formatDate';
+import { actualDate } from '../../../utils/formatDate';
 import './attendancePdf.css';
 export type TablesProps = {
   descripcion: string | null;

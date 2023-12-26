@@ -2,6 +2,7 @@ import SubjectManager from '../models/subjectManager';
 import {
   AreaSpecialty,
   AttendanceRange,
+  Contract,
   Equipment,
   ProjectType,
   Specialists,
@@ -18,6 +19,7 @@ interface CardRegisteProject {
 }
 interface CardRegisteContract {
   isOpen: boolean;
+  contract?: Contract;
 }
 interface CardRegisteTask {
   isOpen: boolean;

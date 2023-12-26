@@ -263,14 +263,22 @@ export interface ProjectForm {
 }
 export interface ContractForm {
   id?: number;
-  CUI: string;
+  cui: string;
   name: string;
   projectName: string;
   department: string;
   province: string;
   district: string;
-  bachelorCost: string;
-  professionalCost: string;
+  difficulty: 1 | 2 | 3;
+  shortName: string;
+  bachelorCost: number;
+  professionalCost: number;
+  createdAt: string;
+  indexContract: string;
+}
+
+interface Contract extends ContractForm {
+  number: number;
 }
 
 export interface WorkArea {

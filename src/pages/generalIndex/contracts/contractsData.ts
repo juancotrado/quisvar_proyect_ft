@@ -219,3 +219,18 @@ export const contractIndexData: ContractIndexData[] = [
     ],
   },
 ];
+
+export const PRICE_DIFFICULTY = {
+  1: {
+    bachelorCost: 1800,
+    professionalCost: 2500,
+  },
+  2: {
+    bachelorCost: 2550,
+    professionalCost: 3250,
+  },
+  3: {
+    bachelorCost: 3300,
+    professionalCost: 4000,
+  },
+};

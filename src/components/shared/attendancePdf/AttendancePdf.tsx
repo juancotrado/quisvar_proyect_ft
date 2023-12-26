@@ -39,6 +39,13 @@ const orderCalls = [
   'decimotercero llamado',
   'decimocuarto llamado',
   'decimoquinto llamado',
+  'decimosexto llamado',
+  'decimosetimo llamado',
+  'decimooctavo llamado',
+  'decimonoveno llamado',
+  'vigesimo llamado',
+  'vigesimoprimero llamado',
+  'vigesimosegundo llamado',
 ];
 export const generateAttendanceDailyPDF = (
   value: PDFGeneratorProps,

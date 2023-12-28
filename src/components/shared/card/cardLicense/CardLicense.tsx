@@ -97,13 +97,15 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
     }
   };
 
-  const formatoFechaHora = () => {
+  const formatDateAndHours = () => {
     const today = new Date();
-    today.setHours(today.getHours() - 5);
-    // console.log(today.toISOString().slice(0, 16));
-
-    return today.toISOString().slice(0, 16);
+    const desplazamientoZonaHoraria = today.getTimezoneOffset();
+    const fechaSinZonaHoraria = new Date(
+      today.getTime() - desplazamientoZonaHoraria * 60000
+    );
+    return fechaSinZonaHoraria.toISOString().slice(0, 16);
   };
+
   return (
     <Modal size={50} isOpenProp={isOpen}>
       <form
@@ -123,7 +125,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
             {...register('startDate')}
             name="startDate"
             type="datetime-local"
-            min={formatoFechaHora()}
+            min={formatDateAndHours()}
             required
           />
           <Input
@@ -131,7 +133,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
             {...register('untilDate')}
             name="untilDate"
             type="datetime-local"
-            min={formatoFechaHora()}
+            min={formatDateAndHours()}
             required
           />
         </div>

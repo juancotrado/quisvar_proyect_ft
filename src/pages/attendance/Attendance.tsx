@@ -112,7 +112,9 @@ const Attendance = () => {
   const filterUsers = useMemo(() => {
     const callListUserIds = callList?.users.map(user => user.usersId);
     return callList?.users.length
-      ? users?.filter(user => callListUserIds?.includes(user.id))
+      ? users?.filter(
+          user => callListUserIds?.includes(user.id) && user.status === true
+        )
       : users?.filter(user => user.status === true);
   }, [callList?.users, users]);
   const getTodayData = async () => {

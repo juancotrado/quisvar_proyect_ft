@@ -10,8 +10,8 @@ const GMT = 5 * 60 * 60 * 1000;
 
 const Home = () => {
   const { userSession } = useSelector((state: RootState) => state);
-  const [licenseData, setLicenseData] = useState<licenseList[]>([]);
-  const [enableBtn, setEnableBtn] = useState<boolean>(false);
+  const [licenseData, setLicenseData] = useState<licenseList>();
+  const [viewCard, setViewCard] = useState<boolean>(false);
   const navigate = useNavigate();
   const handleNavigateToAreas = () => navigate('/especialidades');
   const handleNavigateMyWorks = () => navigate('/mis-tareas');
@@ -25,20 +25,27 @@ const Home = () => {
   };
   const viewLicense = useCallback(() => {
     axiosInstance
-      .get(`/license/employee/${userSession.id}?status=ACTIVE`)
+      .get<licenseList[]>(`/license/employee/${userSession.id}`)
       .then(res => {
-        setLicenseData(res.data);
-        setEnableBtn(res.data[0]?.status === 'ACTIVE');
+        if (res.data[0]?.status === 'ACTIVE') {
+          setLicenseData(res.data[0]);
+        }
+        if (res.data[0]?.status === 'INACTIVE' && !res.data[0].fine) {
+          setLicenseData(res.data[0]);
+          setViewCard(true);
+        }
       });
   }, [userSession.id]);
   useEffect(() => {
-    const now = new Date();
-    const untilDate = new Date(licenseData[0]?.untilDate);
-    const timeDifference = untilDate.getTime() + GMT - now.getTime();
-    if (timeDifference >= 0) {
-      setTimeout(() => {
-        viewLicense();
-      }, timeDifference);
+    if (licenseData && !licenseData.fine) {
+      const now = new Date();
+      const untilDate = new Date(licenseData.untilDate);
+      const timeDifference = untilDate.getTime() + GMT - now.getTime();
+      if (timeDifference >= 0) {
+        setTimeout(() => {
+          viewLicense();
+        }, timeDifference);
+      }
     }
   }, [licenseData, viewLicense]);
 
@@ -60,13 +67,39 @@ const Home = () => {
     });
     return res;
   };
+  const calculateFineState = () => {
+    if (!licenseData || !licenseData.untilDate) {
+      return ''; // No hay datos suficientes para calcular el estado
+    }
 
+    const now = new Date();
+    const untilDate = new Date(licenseData.untilDate);
+    const timeDifference = now.getTime() - (untilDate.getTime() + GMT);
+    console.log(timeDifference);
+    if (timeDifference >= 20 * 60 * 1000) {
+      return 'MUY_GRAVE';
+    } else if (timeDifference >= 15 * 60 * 1000) {
+      return 'GRAVE';
+    } else if (timeDifference >= 10 * 60 * 1000) {
+      return 'SIMPLE';
+    } else if (timeDifference >= 3 * 60 * 1000) {
+      return 'TARDE';
+    }
+
+    return 'PUNTUAL';
+  };
   const handleCheckout = () => {
     const now = new Date();
     now.setHours(now.getHours() - 5);
     axiosInstance
-      .patch(`/license/${licenseData[0]?.id}`, { checkout: now })
-      .then(() => viewLicense());
+      .patch(`/license/${licenseData?.id}`, {
+        checkout: now,
+        fine: calculateFineState(),
+      })
+      .then(() => {
+        setViewCard(false);
+        viewLicense();
+      });
   };
 
   return (
@@ -97,30 +130,28 @@ const Home = () => {
           Proyectos
         </button>
       </div>
-      {licenseData.length > 0 &&
-        licenseData[0].status === 'ACTIVE' &&
-        !licenseData[0].checkout && (
-          <div className="home-license-card">
-            <h2>Licencia activa</h2>
-            <div className="hl-info">
-              <div className="hl-date">
-                <h4>Salida:</h4>
-                <p>{getDate(licenseData[0].startDate)}</p>
-              </div>
-              <div className="hl-date">
-                <h4>Retorno:</h4>
-                <p>{getDate(licenseData[0].untilDate)}</p>
-              </div>
+      {viewCard && licenseData && (
+        <div className="home-license-card">
+          <h2>Licencia activa</h2>
+          <div className="hl-info">
+            <div className="hl-date">
+              <h4>Salida:</h4>
+              <p>{getDate(licenseData.startDate)}</p>
             </div>
-            <button
-              className="hl-btn btn-color-2"
-              onClick={handleCheckout}
-              disabled={!enableBtn}
-            >
-              Marcar llegada
-            </button>
+            <div className="hl-date">
+              <h4>Retorno:</h4>
+              <p>{getDate(licenseData.untilDate)}</p>
+            </div>
           </div>
-        )}
+          <button
+            className="hl-btn btn-color-2"
+            onClick={handleCheckout}
+            // disabled={enableBtn}
+          >
+            Marcar llegada
+          </button>
+        </div>
+      )}
     </div>
   );
 };

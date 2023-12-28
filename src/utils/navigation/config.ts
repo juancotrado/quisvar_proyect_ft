@@ -37,7 +37,7 @@ export const itemsAdmin = [
   {
     id: 8,
     title: 'Indice General',
-    icon: 'specialist',
+    icon: 'generalIndex-icon',
     link: '/indice-general',
   },
 ];

@@ -1,8 +1,8 @@
-import { ContractIndexData } from '../../../../types/types';
+import { ContractIndexData } from '../../../types/types';
 import './dropdownLevelContract.css';
-import colors from '../../../../utils/json/colorsContract.json';
-import UploadFileInput from '../../../shared/uploadFileInput/UploadFileInput';
-import FileNameContainer from '../../../shared/fileNameContainer/FileNameContainer';
+import colors from '../../../utils/json/colorsContract.json';
+import UploadFileInput from '../../shared/uploadFileInput/UploadFileInput';
+import FileNameContainer from '../../shared/fileNameContainer/FileNameContainer';
 
 interface DropdownLevelContractProps {
   level: ContractIndexData;

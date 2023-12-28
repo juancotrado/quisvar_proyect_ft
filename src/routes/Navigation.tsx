@@ -17,23 +17,24 @@ import {
   Specialist,
   SpecialistInformation,
   CompanyInformation,
+  GeneralIndex,
+  Contracts,
+  MailPage,
+  MessagePage,
+  Stage,
+  Project,
+  BasicsPage,
+  Task,
+  CustomizableInvoice,
 } from '../pages';
 import { ProtectedRoute } from '../components';
-import Project from '../pages/specialities/project/Project';
 import ProtectedRole from '../components/protected/ProtectedRole/ProtectedRole';
 import {
   attendance_perms,
   rolThirdLevel,
   rolsFirstLevel,
 } from '../utils/roles';
-import Stage from '../pages/stage/Stage';
-import Task from '../pages/task/Task';
-import MailPage from '../pages/mail/MailPage';
-import MessagePage from '../pages/mail/message/MessagePage';
-import BasicsPage from '../pages/specialities/project/basics/BasicsPage';
-import CustomizableInvoice from '../pages/customizableInvoice/CustomizableInvoice';
-import GeneralIndex from '../pages/generalIndex/GeneralIndex';
-import Contracts from '../pages/generalIndex/contracts/contracts';
+import DetailsContracts from '../pages/generalIndex/contracts/detailsContracts/DetailsContracts';
 
 const Navigation = () => {
   return (
@@ -73,7 +74,6 @@ const Navigation = () => {
               />
             </Route>
             <Route path="/especialistas" element={<Specialist />}>
-              {/* <Route path="experiencia" element={<SpecialistExperience />} /> */}
               <Route
                 path="informacion/:infoId"
                 element={<SpecialistInformation />}
@@ -82,7 +82,9 @@ const Navigation = () => {
             <Route element={<ProtectedRole rols={rolsFirstLevel} />}>
               <Route path="/lista-de-usuarios" element={<UsersList />} />
               <Route path="/indice-general" element={<GeneralIndex />}>
-                <Route path="contratos" element={<Contracts />} />
+                <Route path="contratos" element={<Contracts />}>
+                  <Route path="detalles" element={<DetailsContracts />} />
+                </Route>
               </Route>
             </Route>
             <Route element={<ProtectedRole rols={rolThirdLevel} />}>

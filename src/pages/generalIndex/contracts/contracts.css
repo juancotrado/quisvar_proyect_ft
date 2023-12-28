@@ -1,11 +1,11 @@
 .contracts {
   height: calc(100vh - var(--size-contract-header));
   display: flex;
-  padding: 0.5rem;
+  background-color: #fff;
 }
 .contracts-sidebar {
   display: flex;
-  width: 19.6875rem;
+  flex: 1;
   height: 100%;
   padding: 1.5rem;
   flex-direction: column;
@@ -24,31 +24,7 @@
   flex-direction: column;
   gap: 0.5rem;
 }
-.contracts-sidebar-data {
-  display: flex;
-  gap: 0.5rem;
-  cursor: pointer;
-  align-items: center;
-}
-.contracts-sidebar-name {
-  overflow: hidden;
-  color: #000;
 
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 0.625rem;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-}
-.contracts-sidebar-cui {
-  color: #808080;
-  font-size: 0.625rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 0.89288rem; /* 142.857% */
-  letter-spacing: 0.0625rem;
-}
 .contracts-add-content {
   display: flex;
   justify-content: space-between;
@@ -65,6 +41,7 @@
 
 .contracts-main {
   display: flex;
+  flex: 5;
   height: 100%;
   padding: 0.5rem;
 }
@@ -82,12 +59,16 @@
   flex-direction: column;
 }
 .contracts-main-info {
-  flex: 1;
+  flex: 1.5;
 }
 .contracts-level-contain {
   height: 100%;
   overflow-y: auto;
 }
-.contracts-sidebar-figure {
-  width: 1rem;
+
+.contracts-select-empty {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding-top: 7rem;
 }

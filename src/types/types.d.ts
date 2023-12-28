@@ -27,7 +27,11 @@ export interface TypeSpecialities {
     projects: number;
   };
 }
-
+interface Schedule {
+  title: string;
+  initDate: string;
+  finishDate: string;
+}
 export interface ServiceOrderData {
   firstName: string;
   lastName: string;

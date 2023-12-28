@@ -19,6 +19,14 @@ import Specialist from './specialist/Specialist';
 import SpecialistInformation from './specialist/information/SpecialistInformation';
 import CompanyInformation from './company/infomation/CompanyInformation';
 import Enterprice from './enterprise/Enterprice';
+import GeneralIndex from './generalIndex/GeneralIndex';
+import Contracts from './generalIndex/contracts/contracts';
+import Project from './specialities/project/Project';
+import Stage from './stage/Stage';
+import Task from './task/Task';
+import MailPage from './mail/MailPage';
+import MessagePage from './mail/message/MessagePage';
+import CustomizableInvoice from './customizableInvoice/CustomizableInvoice';
 export {
   CommingSoon,
   ListPersonalTask,
@@ -41,4 +49,12 @@ export {
   Specialist,
   SpecialistInformation,
   Enterprice,
+  GeneralIndex,
+  Project,
+  Stage,
+  Task,
+  MailPage,
+  MessagePage,
+  CustomizableInvoice,
+  Contracts,
 };

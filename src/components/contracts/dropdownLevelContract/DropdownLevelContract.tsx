@@ -3,22 +3,47 @@ import './dropdownLevelContract.css';
 import colors from '../../../utils/json/colorsContract.json';
 import UploadFileInput from '../../shared/uploadFileInput/UploadFileInput';
 import FileNameContainer from '../../shared/fileNameContainer/FileNameContainer';
+import { URL, axiosInstance } from '../../../services/axiosInstance';
+import { ChangeEvent } from 'react';
 
 interface DropdownLevelContractProps {
   level: ContractIndexData;
+  idContract: number;
   editFileContractIndex: (id: string, value: 'yes' | 'no') => void;
 }
 
 const DropdownLevelContract = ({
   level,
+  idContract,
   editFileContractIndex,
 }: DropdownLevelContractProps) => {
   const firstLevel = level.nivel === 0;
   const style = {
     backgroundColor: colors[level.nivel],
   };
-  const handleUploadFile = () => editFileContractIndex(level.id, 'yes');
-  const handleDeleteFile = () => editFileContractIndex(level.id, 'no');
+
+  const handleUploadFile = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const headers = {
+        'Content-type': 'multipart/form-data',
+      };
+      const formdata = new FormData();
+      formdata.append('fileContract', file);
+      formdata.append('fileName', `${level.id} ${level.name}`);
+      const URL = `/contract/${idContract}/files`;
+      axiosInstance
+        .post(URL, formdata, { headers })
+        .then(() => editFileContractIndex(level.id, 'yes'));
+    }
+  };
+  const handleDeleteFile = () => {
+    axiosInstance
+      .delete(
+        `/contract/${idContract}/files?filename=${level.id} ${level.name}.pdf`
+      )
+      .then(() => editFileContractIndex(level.id, 'no'));
+  };
   return (
     <div
       className={`${!firstLevel && 'DropdownLevelContract-dropdown-content'}`}
@@ -30,14 +55,14 @@ const DropdownLevelContract = ({
               <UploadFileInput
                 name="Cargar documento"
                 subName="O arrastre y suelte el archivo aquí"
+                accept="application/pdf"
                 onChange={handleUploadFile}
-                accept="image/*"
-                multiple
               />
             ) : (
               <FileNameContainer
-                fileName={'prueba'}
-                icon="icon-xml"
+                fileName={'Documento'}
+                icon="pdf-icon"
+                Url={`${URL}/index/contracts/${idContract}/${level.id} ${level.name}.pdf`}
                 onDelete={handleDeleteFile}
               />
             )}
@@ -70,6 +95,7 @@ const DropdownLevelContract = ({
 
               <DropdownLevelContract
                 level={subLevel}
+                idContract={idContract}
                 editFileContractIndex={editFileContractIndex}
               />
             </li>

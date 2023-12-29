@@ -3,12 +3,14 @@ import userSession from './slices/userSession.slice';
 import listUsers from './slices/listUsers.slice';
 import modAuthProject from './slices/modAuthProject.slice';
 import listStage from './slices/listStages.slice';
+import contract from './slices/contract.slice';
 const store = configureStore({
   reducer: {
     userSession,
     listUsers,
     modAuthProject,
     listStage,
+    contract,
   },
 });
 // Infer the RootState and AppDispatch types from the store itself

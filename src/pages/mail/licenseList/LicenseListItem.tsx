@@ -74,7 +74,7 @@ const LicenseListItem = ({
       </div>
       <div className="license-header-items">{getDate(data.startDate)}</div>
       <div className="license-header-items">{getDate(data.untilDate)}</div>
-      {!isEmployee && data.status === 'PROCESS' ? (
+      {!isEmployee && data.status === 'PROCESO' ? (
         <div className="license-item-input">
           <input onBlur={handleFeedback} className="license-item-text" />
         </div>
@@ -85,9 +85,9 @@ const LicenseListItem = ({
         {!isEmployee ? (
           <>
             <button
-              onClick={() => handleChangeStatus('ACTIVE')}
+              onClick={() => handleChangeStatus('ACEPTADO')}
               className="license-btn-action"
-              disabled={data.status !== 'PROCESS'}
+              disabled={data.status !== 'PROCESO'}
             >
               <img
                 src="/svg/check-blue.svg"
@@ -96,9 +96,9 @@ const LicenseListItem = ({
               Aprobar
             </button>
             <button
-              onClick={() => handleChangeStatus('DENIED')}
+              onClick={() => handleChangeStatus('DENEGADO')}
               className="license-btn-action"
-              disabled={data.status !== 'PROCESS'}
+              disabled={data.status !== 'PROCESO'}
             >
               <img
                 src="/svg/cross-red.svg"
@@ -113,15 +113,14 @@ const LicenseListItem = ({
               icon="pencil"
               className="role-btn"
               onClick={editData}
-              disabled={
-                data && (data.status === 'ACTIVE' || data.status === 'INACTIVE')
-              }
+              disabled={data?.status !== 'PROCESO' ?? false}
             />
             <ButtonDelete
               icon="trash"
               className="role-delete-icon"
               onSave={onSave}
-              // url={`/###/${data.id}`}
+              url={`/license/${data.id}`}
+              disabled={data?.status !== 'PROCESO' ?? false}
               passwordRequired
             />
           </div>

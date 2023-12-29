@@ -45,30 +45,3 @@
   height: 100%;
   padding: 0.5rem;
 }
-.contracts-level-title {
-  color: var(--color-secondary);
-  font-size: 1.125rem;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 150%;
-}
-.contracts-main-level {
-  flex: 2;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-.contracts-main-info {
-  flex: 1.5;
-}
-.contracts-level-contain {
-  height: 100%;
-  overflow-y: auto;
-}
-
-.contracts-select-empty {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding-top: 7rem;
-}

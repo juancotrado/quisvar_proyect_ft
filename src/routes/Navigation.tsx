@@ -35,6 +35,7 @@ import {
   rolsFirstLevel,
 } from '../utils/roles';
 import DetailsContracts from '../pages/generalIndex/contracts/detailsContracts/DetailsContracts';
+import ContractsLevels from '../pages/generalIndex/contracts/contractsLevels/ContractsLevels';
 
 const Navigation = () => {
   return (
@@ -83,7 +84,12 @@ const Navigation = () => {
               <Route path="/lista-de-usuarios" element={<UsersList />} />
               <Route path="/indice-general" element={<GeneralIndex />}>
                 <Route path="contratos" element={<Contracts />}>
-                  <Route path="detalles" element={<DetailsContracts />} />
+                  <Route
+                    path="contrato/:contractId"
+                    element={<ContractsLevels />}
+                  >
+                    <Route path="detalles" element={<DetailsContracts />} />
+                  </Route>
                 </Route>
               </Route>
             </Route>

@@ -22,21 +22,25 @@
   border-radius: var(--radius-button);
   background-color: #f5f5f5;
 }
-.license-ACTIVE {
+.license-ACTIVO {
+  background-color: var(--color-bg-done);
+  color: var(--color-done);
+}
+.license-ACEPTADO {
   background-color: var(--color-bg-done);
   color: var(--color-done);
 }
 
-.license-INACTIVE {
+.license-INACTIVO {
   background-color: var(--color-bg-liquidation);
   color: var(--color-liquidation);
 }
 
-.license-PROCESS {
+.license-PROCESO {
   background-color: var(--color-bg-asigned);
   color: var(--color-asigned);
 }
-.license-DENIED {
+.license-DENEGADO {
   background-color: var(--color-bg-unresolved);
   color: var(--color-unresolved);
 }

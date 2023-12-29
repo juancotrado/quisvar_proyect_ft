@@ -875,7 +875,12 @@ export type PdfDataProps = {
   toPosition?: string;
   fromPosition?: string;
 };
-type licenseStatus = 'PROCESS' | 'ACTIVE' | 'INACTIVE' | 'DENIED';
+type licenseStatus =
+  | 'PROCESO'
+  | 'ACEPTADO'
+  | 'ACTIVO'
+  | 'INACTIVO'
+  | 'DENEGADO';
 type listDetails =
   | 'PUNTUAL'
   | 'TARDE'

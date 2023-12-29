@@ -27,10 +27,10 @@ const Home = () => {
     axiosInstance
       .get<licenseList[]>(`/license/employee/${userSession.id}`)
       .then(res => {
-        if (res.data[0]?.status === 'ACTIVE') {
+        if (res.data[0]?.status === 'ACTIVO') {
           setLicenseData(res.data[0]);
         }
-        if (res.data[0]?.status === 'INACTIVE' && !res.data[0].fine) {
+        if (res.data[0]?.status === 'INACTIVO' && !res.data[0].fine) {
           setLicenseData(res.data[0]);
           setViewCard(true);
         }

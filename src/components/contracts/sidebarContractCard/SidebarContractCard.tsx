@@ -5,21 +5,25 @@ import DotsRight from '../../shared/dotsRight/DotsRight';
 import { axiosInstance } from '../../../services/axiosInstance';
 import { SnackbarUtilities } from '../../../utils/SnackbarManager';
 import './sidebarContractCard.css';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface SidebarContractCardProps {
   contract: Contract;
-  contractSelected: Contract | null;
   onSave: () => void;
-  handleSelectContract: (contract: Contract) => void;
   authUsers: boolean;
 }
 const SidebarContractCard = ({
   contract,
   onSave,
   authUsers,
-  handleSelectContract,
-  contractSelected,
 }: SidebarContractCardProps) => {
+  const [contractId, setContractId] = useState<number | null>(null);
+  const navigate = useNavigate();
+  const handleSelectContract = () => {
+    setContractId(contract.id);
+    navigate(`contrato/${contract.id}/detalles`);
+  };
   const handleEditContract = () =>
     (isOpenCardRegisteContract$.setSubject = { isOpen: true, contract });
 
@@ -29,9 +33,6 @@ const SidebarContractCard = ({
       onSave();
     });
 
-  const onSelect = () => {
-    handleSelectContract(contract);
-  };
   const dataDots: Option[] = [
     {
       name: 'Editar',
@@ -53,9 +54,9 @@ const SidebarContractCard = ({
     >
       <div
         className={`SidebarContractCard-sidebar-data   ${
-          contractSelected?.id === contract.id && 'contract-selected'
+          contractId === contract.id && 'contract-selected'
         }`}
-        onClick={onSelect}
+        onClick={handleSelectContract}
       >
         <figure className="SidebarContractCard-sidebar-figure">
           <img src="/svg/contracts-icon.svg" alt="W3Schools" />

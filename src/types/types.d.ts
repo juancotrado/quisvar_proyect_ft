@@ -284,6 +284,7 @@ export interface ContractForm {
 interface Contract extends ContractForm {
   id: number;
   number: number;
+  details: string | null;
 }
 
 export interface WorkArea {

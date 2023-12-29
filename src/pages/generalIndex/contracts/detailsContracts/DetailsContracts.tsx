@@ -1,23 +1,29 @@
-import { useLocation } from 'react-router-dom';
 import './detailsContracts.css';
-import { Contract, Schedule } from '../../../../types/types';
+import { Schedule } from '../../../../types/types';
 import { _date } from '../../../../utils/formatDate';
-import { FocusEvent, useEffect, useState } from 'react';
+import { FocusEvent, useState } from 'react';
 import { SnackbarUtilities } from '../../../../utils/SnackbarManager';
 import Button from '../../../../components/shared/button/Button';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../../../store';
+import { axiosInstance } from '../../../../services/axiosInstance';
+import { getContractThunks } from '../../../../store/slices/contract.slice';
 
 const DetailsContracts = () => {
-  const [schedules, setSchedules] = useState<Schedule[] | null>(null);
-  const { state } = useLocation();
   const [textareaValue, setTextareaValue] = useState<string | null>(null);
-  const contract: Contract = state.contract;
+  const { contract } = useSelector((state: RootState) => state);
+  const dispatch: AppDispatch = useDispatch();
+  if (!contract) return <div></div>;
+  const { details } = contract;
   const dataProcedures = {
     ['Nomenclatura']: contract.name,
     ['Descripcion del Objeto']: contract.projectName,
     ['Fecha y Hora de Publicacion']: _date(new Date(contract.createdAt)),
   };
   const handleDelete = () => {
-    setSchedules(null);
+    axiosInstance
+      .put(`/contract/${contract.id}/details`, { details: null })
+      .then(() => dispatch(getContractThunks(String(contract.id))));
   };
   const transformShedule = () => {
     try {
@@ -43,7 +49,11 @@ const DetailsContracts = () => {
           });
         }
       }
-      setSchedules(data);
+      const details = JSON.stringify(data);
+      console.log(details);
+      axiosInstance
+        .put(`/contract/${contract.id}/details`, { details })
+        .then(() => dispatch(getContractThunks(String(contract.id))));
     } catch (err) {
       SnackbarUtilities.error('Formato Invalido');
     }
@@ -76,14 +86,14 @@ const DetailsContracts = () => {
             onClick={handleDelete}
           />
         </div>
-        {schedules ? (
+        {details ? (
           <>
             <div className="detailsContracts-row-schedule">
               <span className="detailsContracts-text-title">Etapa</span>
               <span className="detailsContracts-text-title">Fecha Inicio</span>
               <span className="detailsContracts-text-title">Fecha Fin</span>
             </div>
-            {schedules?.map(schedule => (
+            {(JSON.parse(details) as Schedule[])?.map(schedule => (
               <div
                 key={schedule.title}
                 className="detailsContracts-row-schedule"

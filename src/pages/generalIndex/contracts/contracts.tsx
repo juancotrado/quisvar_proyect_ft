@@ -7,15 +7,12 @@ import { Contract } from '../../../types/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import { rolSecondLevel } from '../../../utils/roles';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import SidebarContractCard from '../../../components/contracts/sidebarContractCard/SidebarContractCard';
 
 const Contracts = () => {
-  const [contract, setContract] = useState<Contract | null>(null);
-
   const [contracts, setContracts] = useState<Contract[] | null>(null);
   const { role } = useSelector((state: RootState) => state.userSession);
-  const navigate = useNavigate();
 
   const addContract = () => {
     isOpenCardRegisteContract$.setSubject = { isOpen: true };
@@ -33,10 +30,6 @@ const Contracts = () => {
 
   const authUsers = rolSecondLevel.includes(role);
 
-  const handleSelectContract = (contract: Contract) => {
-    setContract(contract);
-    navigate(`contrato/${contract.id}/detalles`, { state: { contract } });
-  };
   return (
     <div className="contracts">
       <div className="contracts-sidebar">
@@ -47,9 +40,7 @@ const Contracts = () => {
               key={agreement.id}
               contract={agreement}
               onSave={getContracts}
-              handleSelectContract={handleSelectContract}
               authUsers={authUsers}
-              contractSelected={contract}
             />
           ))}
           <div className="contracts-add-content" onClick={addContract}>

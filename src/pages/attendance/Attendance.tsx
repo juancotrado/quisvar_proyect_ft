@@ -124,8 +124,8 @@ const Attendance = () => {
     setCallLists(res.data);
     return res.data;
   };
-  const verifyLicenses = () => {
-    axiosInstance.post('/license/expired');
+  const verifyLicenses = async () => {
+    await axiosInstance.post('/license/expired');
   };
   // borrar listas de ayer que no tengan asuarios
   const deleteLists = async () => {
@@ -157,6 +157,8 @@ const Attendance = () => {
     socket.emit('client:call-notification');
   };
   const addCall = async () => {
+    await axiosInstance.get('/license/active');
+    verifyLicenses();
     getLicenses();
     const todayNow = new Date();
     const hours = todayNow.getHours().toString().padStart(2, '0');

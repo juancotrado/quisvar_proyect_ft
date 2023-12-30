@@ -171,10 +171,11 @@ const UsersList = () => {
           <div className="header-list-text">Reportes</div>
         </div>
         <div style={{ width: '100%', height: '750px', overflowY: 'auto' }}>
-          {filterList.map(user => (
+          {filterList.map((user, index) => (
             <UserInfo
               key={user.id}
               user={user}
+              index={index}
               getUsers={getUsers}
               onUpdate={() => editUser(user)}
               onPrint={() => printReport(user.id)}

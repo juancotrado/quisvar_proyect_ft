@@ -12,6 +12,7 @@ import { getIconDefault, getRole } from '../../utils/tools';
 
 interface UserInfoProps {
   user: User;
+  index: number;
   onUpdate?: () => void;
   getUsers?: () => void;
   onPrint?: () => void;
@@ -19,6 +20,7 @@ interface UserInfoProps {
 }
 const UserInfo = ({
   user,
+  index,
   onUpdate,
   getUsers,
   onPrint,
@@ -50,6 +52,7 @@ const UserInfo = ({
   return (
     <div className="user-container">
       <div className="col-span user-grid email-container ">
+        <span className="user-index">{index + 1}</span>
         <figure className="user-profile-figure">
           <img src={getIconDefault(user.profile.dni)} alt={user.email} />
         </figure>

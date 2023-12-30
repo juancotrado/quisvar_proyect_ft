@@ -6,7 +6,7 @@ import { axiosInstance } from '../../../services/axiosInstance';
 import { SnackbarUtilities } from '../../../utils/SnackbarManager';
 import './sidebarContractCard.css';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 interface SidebarContractCardProps {
   contract: Contract;
@@ -18,12 +18,6 @@ const SidebarContractCard = ({
   onSave,
   authUsers,
 }: SidebarContractCardProps) => {
-  const [contractId, setContractId] = useState<number | null>(null);
-  const navigate = useNavigate();
-  const handleSelectContract = () => {
-    setContractId(contract.id);
-    navigate(`contrato/${contract.id}/detalles`);
-  };
   const handleEditContract = () =>
     (isOpenCardRegisteContract$.setSubject = { isOpen: true, contract });
 
@@ -52,11 +46,16 @@ const SidebarContractCard = ({
       id={`SidebarContractCard-sidebar-${contract.id}`}
       key={contract.id}
     >
-      <div
-        className={`SidebarContractCard-sidebar-data   ${
-          contractId === contract.id && 'contract-selected'
-        }`}
-        onClick={handleSelectContract}
+      <NavLink
+        to={`contrato/${contract.id}/detalles`}
+        // className={`SidebarContractCard-sidebar-data   ${
+        //   contractId === contract.id && 'contract-selected'
+        // }`}
+        className={({ isActive }) =>
+          `SidebarContractCard-sidebar-data  ${
+            isActive && 'contract-selected'
+          } `
+        }
       >
         <figure className="SidebarContractCard-sidebar-figure">
           <img src="/svg/contracts-icon.svg" alt="W3Schools" />
@@ -71,7 +70,7 @@ const SidebarContractCard = ({
             idContext={`SidebarContractCard-sidebar-${contract.id}`}
           />
         )}
-      </div>
+      </NavLink>
     </ContextMenuTrigger>
   );
 };

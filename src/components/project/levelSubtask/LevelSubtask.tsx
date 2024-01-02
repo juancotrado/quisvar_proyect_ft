@@ -67,16 +67,16 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
           <div className="levelSubtask-header-title">NOMBRE</div>
         </div>
         <div className="levelSubtask-item">
-          <div className="levelSubtask-header-title">ESTADO</div>
+          <div className="levelSubtask-header-title">DIAS </div>
+        </div>
+        <div className="levelSubtask-item">
+          <div className="levelSubtask-header-title">PORCENTAJE </div>
         </div>
         <div className="levelSubtask-item">
           <div className="levelSubtask-header-title">PRECIO</div>
         </div>
         <div className="levelSubtask-item">
-          <div className="levelSubtask-header-title">PORCENTAJE</div>
-        </div>
-        <div className="levelSubtask-item">
-          <div className="levelSubtask-header-title">DIAS</div>
+          <div className="levelSubtask-header-title">ESTADO</div>
         </div>
         <div className="levelSubtask-item">
           <div className="levelSubtask-header-title">USUARIO ASIGNADO</div>
@@ -108,16 +108,16 @@ const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
                 </FloatingText>
               </div>
               <div className="levelSubtask-item">
-                <StatusText status={subtask.status} />
-              </div>
-              <div className="levelSubtask-item">
-                <div className="levelSubtask-text">S/.{subtask.price}</div>
+                <div className="levelSubtask-text">{subtask.days}</div>
               </div>
               <div className="levelSubtask-item">
                 <div className="levelSubtask-text">{subtask.percentage}%</div>
               </div>
               <div className="levelSubtask-item">
-                <div className="levelSubtask-text">{subtask.days}</div>
+                <div className="levelSubtask-text">S/.{subtask.price}</div>
+              </div>
+              <div className="levelSubtask-item">
+                <StatusText status={subtask.status} />
               </div>
               <div className="levelSubtask-item">
                 <div className="levelSubtask-user-image">

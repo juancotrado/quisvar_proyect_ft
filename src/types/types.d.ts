@@ -1,4 +1,3 @@
-import { IndexTask, FileInfo } from './types.d';
 export interface SpecialityType {
   id: number;
   name: string;
@@ -275,10 +274,10 @@ export interface ContractForm {
   district: string;
   difficulty: 1 | 2 | 3;
   shortName: string;
-  bachelorCost: number;
-  professionalCost: number;
   createdAt: string;
   indexContract: string;
+  company: number;
+  consortium: number;
 }
 
 interface Contract extends ContractForm {

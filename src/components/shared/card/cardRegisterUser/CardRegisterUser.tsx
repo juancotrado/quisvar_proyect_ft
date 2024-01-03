@@ -70,6 +70,7 @@ const InitialValues: UserForm = {
   role: '',
   room: '',
   userPc: '',
+  declarationDate: '',
 };
 
 const CardRegisterUser = ({
@@ -521,6 +522,13 @@ const CardRegisterUser = ({
               </label>
             </div>
           </div>
+          <h4 className="card-register-sworn-declaration-subtitle">Fecha</h4>
+          <input
+            type="text"
+            {...register('declarationDate')}
+            name="declarationDate"
+            placeholder="03 de Enero del 2023"
+          />
           <h4 className="card-register-sworn-declaration-subtitle">
             Seleccionar directivas
           </h4>

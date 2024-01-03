@@ -2,17 +2,12 @@ import { Document, Image, Page, Text, View } from '@react-pdf/renderer';
 import { styles } from './swornDeclarationStyle';
 import { UserForm } from '../../../types/types';
 import { deleteExtension, getRole } from '../../../utils/tools';
-import formatDate from '../../../utils/formatDate';
+
 // import { roleList_SUPER_ADMIN } from '../../../utils/roles';
 interface SwornDeclarationPdfProps {
   data: UserForm;
 }
 const SwornDeclarationPdf = ({ data }: SwornDeclarationPdfProps) => {
-  const dateNow = formatDate(new Date(), {
-    year: 'numeric',
-    month: 'long',
-    day: '2-digit',
-  });
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -90,7 +85,7 @@ const SwornDeclarationPdf = ({ data }: SwornDeclarationPdfProps) => {
               fue aprobado por Decreto Supremo Nº 004-2019-JUS, código civil y
               penal. Me afirmo y me ratifico en lo expresado, en señal de lo
               cual firmo el presente documento en la ciudad de Puno, en la fecha
-              11 de noviembre del 2023.
+              {data.declarationDate}.
             </Text>
           </>
         )}
@@ -199,7 +194,8 @@ const SwornDeclarationPdf = ({ data }: SwornDeclarationPdfProps) => {
               fue aprobado por Decreto Supremo Nº 004-2019-JUS, código civil y
               penal.{'\n'}
               Me afirmo y me ratifico en lo expresado, en señal de lo cual firmo
-              el presente documento en la ciudad de Puno, en la fecha {dateNow}.
+              el presente documento en la ciudad de Puno, en la fecha{' '}
+              {data.declarationDate}.
             </Text>
           </>
         )}

@@ -443,6 +443,7 @@ export interface UserForm {
   declaration: FileList | null;
   declarations?: string[];
   typeDeclaration?: 'technical' | 'administrative';
+  declarationDate: string;
 }
 
 export interface Level {

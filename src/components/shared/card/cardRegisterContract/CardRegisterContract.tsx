@@ -6,7 +6,7 @@ import Button from '../../button/Button';
 import './cardRegisterContract.css';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ContractForm } from '../../../../types/types';
+import { Companies, ContractForm } from '../../../../types/types';
 import {
   PRICE_DIFFICULTY,
   contractIndexData,
@@ -32,6 +32,7 @@ interface CardRegisterContractProps {
 }
 const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const [companies, setCompanies] = useState<null | Companies[]>(null);
   const {
     departaments,
     districts,
@@ -59,14 +60,12 @@ const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
           setJurisdictionSelectData(contract.department, contract.province);
           const {
             id,
-            bachelorCost,
             createdAt,
             cui,
             department,
             difficulty,
             district,
             name,
-            professionalCost,
             projectName,
             province,
             shortName,
@@ -74,14 +73,12 @@ const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
           } = contract;
           reset({
             id,
-            bachelorCost,
             createdAt: actualDate(createdAt),
             cui,
             department,
             difficulty,
             district,
             name,
-            professionalCost,
             projectName,
             indexContract,
             province,
@@ -95,7 +92,14 @@ const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
     };
   }, [reset, setJurisdictionSelectData]);
 
+  useEffect(() => {
+    getSpecialists();
+  }, []);
+  const getSpecialists = () => {
+    axiosInstance.get('/companies').then(el => setCompanies(el.data));
+  };
   const onSubmit: SubmitHandler<ContractForm> = async data => {
+    return console.log(data);
     const { id } = data;
     if (id) {
       await axiosInstance.patch(`contract/${id}`, data);
@@ -240,8 +244,32 @@ const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
               errors={errors}
             />
           </div>
+          <div className="col-input">
+            {companies && (
+              <>
+                <Select
+                  label="Empresa:"
+                  {...register('company')}
+                  name="company"
+                  data={companies}
+                  itemKey="id"
+                  textField="name"
+                  errors={errors}
+                />
+                <Select
+                  label="consorcio:"
+                  {...(register('consortium'), { valueAsNumber: true })}
+                  name="consortium"
+                  data={companies}
+                  itemKey="id"
+                  textField="name"
+                  errors={errors}
+                />
+              </>
+            )}
+          </div>
         </div>
-        <div className="col-input">
+        {/* <div className="col-input">
           <Input
             label="Costo titulado:"
             {...register('professionalCost', {
@@ -268,7 +296,7 @@ const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
         <div className="col-input">
           <CostTable mount={+watch('professionalCost')} />
           <CostTable mount={+watch('bachelorCost')} />
-        </div>
+        </div> */}
         <Button
           type="submit"
           text={`${watch('id') ? 'Actualizar' : 'Registrar'}`}

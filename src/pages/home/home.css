@@ -86,6 +86,10 @@
   width: 100%;
   gap: 0.9375rem;
 }
+.hl-details {
+  text-align: justify;
+  font-size: 0.7rem;
+}
 
 .hl-date {
   display: flex;

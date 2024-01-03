@@ -134,6 +134,13 @@ const Home = () => {
         <div className="home-license-card">
           <h2>Licencia activa</h2>
           <div className="hl-info">
+            <p className="hl-details">
+              Recuerda que: 3 min de retraso se considera TARDE, pasado los 10
+              min se considera FALTA SIMPLE, pasado los 15 min se considera
+              FALTA GRAVE, pasado los 20 min se considera FALTA MUY GRAVE.
+            </p>
+          </div>
+          <div className="hl-info">
             <div className="hl-date">
               <h4>Salida:</h4>
               <p>{getDate(licenseData.startDate)}</p>

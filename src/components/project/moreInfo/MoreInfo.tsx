@@ -63,6 +63,22 @@ const MoreInfo = ({ data }: MoreInfoProps) => {
   return (
     <>
       <div className="moreInfo-currency-contain">
+        <div className="moreInfo-currency moreInfo-currency-width">
+          <span className="moreInfo-currency-money">{data.days}</span>
+          {data.projectName && (
+            <span className="moreInfo-currency-info">
+              Dia{data.days !== 1 && 's'}
+            </span>
+          )}
+        </div>
+        <div className="moreInfo-currency">
+          <span className="moreInfo-currency-money">
+            {data?.percentage?.toFixed(2)}%
+          </span>
+          {data.projectName && (
+            <span className="moreInfo-currency-info">Porcentaje</span>
+          )}
+        </div>
         <div className="moreInfo-currency">
           <span className="moreInfo-currency-money">
             S/.{data.balance.toFixed(2)}
@@ -87,26 +103,11 @@ const MoreInfo = ({ data }: MoreInfoProps) => {
             <span className="moreInfo-currency-info">Total</span>
           )}
         </div>
-        <div className="moreInfo-currency">
-          <span className="moreInfo-currency-money">
-            {data?.percentage?.toFixed(2)}%
-          </span>
-          {data.projectName && (
-            <span className="moreInfo-currency-info">Porcentaje</span>
-          )}
-        </div>
+
         <div className="moreInfo-currency moreInfo-currency-width">
           <span className="moreInfo-currency-money">{data.total}</span>
           {data.projectName && (
             <span className="moreInfo-currency-info">Tareas</span>
-          )}
-        </div>
-        <div className="moreInfo-currency moreInfo-currency-width">
-          <span className="moreInfo-currency-money">{data.days}</span>
-          {data.projectName && (
-            <span className="moreInfo-currency-info">
-              Dia{data.days !== 1 && 's'}
-            </span>
           )}
         </div>
       </div>

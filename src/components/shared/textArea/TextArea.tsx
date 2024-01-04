@@ -9,6 +9,7 @@ interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   errorPosX?: number;
   errorPosY?: number;
   isRelative?: boolean;
+  disabled?: boolean;
 }
 const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   (
@@ -20,6 +21,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       errorPosX = 0,
       isRelative = false,
       errorPosY = 0,
+      disabled,
       ...props
     },
     ref
@@ -41,7 +43,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           name={name}
           className={`${className} input-container-textarea ${
             errors && name && errors[name] && 'input-text-area-error'
-          }`}
+          } ${disabled && 'input-disabled'} `}
         />
         {name && errors && errors[name] && (
           <span className="input-span-error" style={style}>

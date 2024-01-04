@@ -4,20 +4,13 @@ import { actualDate } from '../../../../utils/formatDate';
 import Modal from '../../../portal/Modal';
 import Button from '../../button/Button';
 import './cardRegisterContract.css';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Companies, ContractForm } from '../../../../types/types';
-import {
-  PRICE_DIFFICULTY,
-  contractIndexData,
-} from '../../../../pages/generalIndex/contracts/contractsData';
+import { contractIndexData } from '../../../../pages/generalIndex/contracts/contractsData';
 
 import { Subscription } from 'rxjs';
-import {
-  validateWhiteSpace,
-  validateOnlyNumbers,
-} from '../../../../utils/customValidatesForm';
-import CostTable from '../../../contracts/costTable/CostTable';
+import { validateWhiteSpace } from '../../../../utils/customValidatesForm';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import useJurisdiction from '../../../../hooks/useJurisdiction';
 
@@ -99,7 +92,6 @@ const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
     axiosInstance.get('/companies').then(el => setCompanies(el.data));
   };
   const onSubmit: SubmitHandler<ContractForm> = async data => {
-    return console.log(data);
     const { id } = data;
     if (id) {
       await axiosInstance.patch(`contract/${id}`, data);
@@ -116,14 +108,15 @@ const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
     setIsOpenModal(false);
   };
 
-  const handleDifficulty = (e: ChangeEvent<HTMLSelectElement>) => {
-    const value = +e.target.value as 1 | 2 | 3;
-    reset({
-      ...PRICE_DIFFICULTY[value],
-      id: watch('id'),
-      difficulty: value,
-    });
-  };
+  // const handleDifficulty = (e: ChangeEvent<HTMLSelectElement>) => {
+  //   const value = +e.target.value as 1 | 2 | 3;
+  //   reset({
+  //     ...PRICE_DIFFICULTY[value],
+  //     id: watch('id'),
+  //     difficulty: value,
+  //   });
+  // };
+  console.log(companies);
 
   return (
     <Modal size={50} isOpenProp={isOpenModal}>
@@ -140,13 +133,13 @@ const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
         <div className="card-register-project-container-details">
           <div className="col-input-top">
             <Input
-              label="Nombre del Contrato:"
+              label="Nomenclatura:"
               {...register('name', {
                 validate: { validateWhiteSpace },
               })}
               name="name"
               type="text"
-              placeholder="Nombre del Contrato"
+              placeholder="Nomenclatura"
               errors={errors}
             />
             <Input
@@ -192,7 +185,6 @@ const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
               data={difficultyLevel}
               itemKey="key"
               textField="name"
-              onChange={handleDifficulty}
               errors={errors}
             />
           </div>
@@ -244,7 +236,7 @@ const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
               errors={errors}
             />
           </div>
-          <div className="col-input">
+          {/* <div className="col-input">
             {companies && (
               <>
                 <Select
@@ -267,36 +259,9 @@ const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
                 />
               </>
             )}
-          </div>
+          </div> */}
         </div>
-        {/* <div className="col-input">
-          <Input
-            label="Costo titulado:"
-            {...register('professionalCost', {
-              validate: { validateOnlyNumbers },
-              valueAsNumber: true,
-            })}
-            name="professionalCost"
-            type="number"
-            placeholder="Nombre Corto "
-            errors={errors}
-          />
-          <Input
-            type="number"
-            label="Costo Egresadp/Bachiller:"
-            {...register('bachelorCost', {
-              validate: { validateOnlyNumbers },
-              valueAsNumber: true,
-            })}
-            name="bachelorCost"
-            placeholder="Egresadp/Bachiller"
-            errors={errors}
-          />
-        </div>
-        <div className="col-input">
-          <CostTable mount={+watch('professionalCost')} />
-          <CostTable mount={+watch('bachelorCost')} />
-        </div> */}
+
         <Button
           type="submit"
           text={`${watch('id') ? 'Actualizar' : 'Registrar'}`}

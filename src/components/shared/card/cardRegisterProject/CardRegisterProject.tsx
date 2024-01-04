@@ -57,10 +57,8 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
   }, [reset]);
 
   const onSubmit: SubmitHandler<ProjectForm> = values => {
-    const { id, ...body } = values;
-    const newBody = { ...body };
-    console.log(newBody);
-    return;
+    const { id, contractId, typeSpecialityId, name } = values;
+    const newBody = { contractId, typeSpecialityId, name };
     if (id) {
       axiosInstance.patch(`projects/${id}`, newBody).then(successfulShipment);
     } else {
@@ -82,7 +80,7 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
   const handleSearchCui = () => {
     const cui = watch('CUI');
     if (!cui) return SnackbarUtilities.warning('Campo vacio!!');
-    axiosInstance.get(`/contract?cui=${cui}`).then(res => {
+    axiosInstance.get(`contract?cui=${cui}`).then(res => {
       const [firstData] = res.data as Contract[];
       const { department, district, province, projectName, shortName, id } =
         firstData;

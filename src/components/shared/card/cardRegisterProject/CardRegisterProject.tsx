@@ -1,4 +1,4 @@
-import { Input, Select, TextArea } from '../../..';
+import { Input, TextArea } from '../../..';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { isOpenCardRegisteProject$ } from '../../../../services/sharingSubject';
 import Modal from '../../../portal/Modal';
@@ -6,25 +6,17 @@ import Button from '../../button/Button';
 import './CardRegisterProject.css';
 import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ProjectForm, Ubigeo } from '../../../../types/types';
-
-import provincesJson from '../../../../utils/ubigeo/provincias.json';
-import distritosJson from '../../../../utils/ubigeo/distritos.json';
-import departamentsJson from '../../../../utils/ubigeo/departamentos.json';
+import { Contract, ProjectForm } from '../../../../types/types';
 
 import { Subscription } from 'rxjs';
-import {
-  validateWhiteSpace,
-  validateOnlyNumbers,
-} from '../../../../utils/customValidatesForm';
+import { validateWhiteSpace } from '../../../../utils/customValidatesForm';
+import { SnackbarUtilities } from '../../../../utils/SnackbarManager';
 
 interface CardRegisterProjectProps {
   onSave?: () => void;
 }
 
 const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
-  const [provinces, setProvinces] = useState<Ubigeo[]>([]);
-  const [districts, setDistricts] = useState<Ubigeo[]>([]);
   const [isOpenModal, setIsOpenModal] = useState(false);
   const {
     handleSubmit,
@@ -43,13 +35,11 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
         setIsOpenModal(data.isOpen);
 
         if (project) {
-          setJurisdictionSelectData(project.department, project.province);
           reset({
             CUI: project.CUI,
             name: project.name,
             description: project.description,
             department: project.department,
-            percentage: project.percentage + '',
             province: project.province,
             district: project.district,
             id: project.id,
@@ -65,45 +55,10 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
       handleIsOpen.current.unsubscribe();
     };
   }, [reset]);
-  const handleGetProvinces = (value: string) => {
-    const findDepartament = departamentsJson.find(
-      ubigeo => ubigeo.nombre_ubigeo === value
-    );
-    const idDepartament = findDepartament?.id_ubigeo;
-    const provinciasData =
-      provincesJson[idDepartament as keyof typeof provincesJson];
-    setProvinces(provinciasData);
-  };
-  const handleGetDistricts = (value: string) => {
-    const findProvice = provinces.find(
-      ubigeo => ubigeo.nombre_ubigeo === value
-    );
-    const idProvince = findProvice?.id_ubigeo;
-    const districsData =
-      distritosJson[idProvince as keyof typeof distritosJson];
-    setDistricts(districsData);
-  };
-
-  const setJurisdictionSelectData = (departament: string, province: string) => {
-    const findDepartament = departamentsJson.find(
-      ubigeo => ubigeo.nombre_ubigeo === departament
-    );
-    const idDepartament = findDepartament?.id_ubigeo;
-    const provinciasData =
-      provincesJson[idDepartament as keyof typeof provincesJson];
-    const findProvice = provinciasData?.find(
-      ubigeo => ubigeo.nombre_ubigeo === province
-    );
-    const idProvince = findProvice?.id_ubigeo;
-    const districsData =
-      distritosJson[idProvince as keyof typeof distritosJson];
-    setProvinces(provinciasData);
-    setDistricts(districsData);
-  };
 
   const onSubmit: SubmitHandler<ProjectForm> = values => {
-    const { id, percentage, ...body } = values;
-    const newBody = { ...body, percentage: +percentage };
+    const { id, contractId, typeSpecialityId, name } = values;
+    const newBody = { contractId, typeSpecialityId, name };
     if (id) {
       axiosInstance.patch(`projects/${id}`, newBody).then(successfulShipment);
     } else {
@@ -119,11 +74,27 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
 
   const closeFunctions = () => {
     reset({});
-    setDistricts([]);
-    setProvinces([]);
     setIsOpenModal(false);
   };
 
+  const handleSearchCui = () => {
+    const cui = watch('CUI');
+    if (!cui) return SnackbarUtilities.warning('Campo vacio!!');
+    axiosInstance.get(`contract?cui=${cui}`).then(res => {
+      const [firstData] = res.data as Contract[];
+      const { department, district, province, projectName, shortName, id } =
+        firstData;
+      reset({
+        typeSpecialityId: watch('typeSpecialityId'),
+        department,
+        district,
+        province,
+        contractId: id,
+        description: projectName,
+        name: shortName,
+      });
+    });
+  };
   return (
     <Modal size={50} isOpenProp={isOpenModal}>
       <span className="close-add-card" onClick={closeFunctions}>
@@ -148,6 +119,7 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
                 name="CUI"
                 placeholder="CUI"
                 errors={errors}
+                handleSearch={handleSearchCui}
               />
             </div>
             <Input
@@ -159,22 +131,9 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
               name="name"
               type="text"
               placeholder="Nombre Corto "
+              disabled
               errors={errors}
             />
-            <div className="edit-this">
-              <Input
-                isRelative
-                label="Porcentaje"
-                {...register('percentage', {
-                  validate: { validateWhiteSpace, validateOnlyNumbers },
-                })}
-                name="percentage"
-                errors={errors}
-                defaultValue={'30'}
-                type="number"
-                placeholder="0"
-              />
-            </div>
           </div>
           <TextArea
             label="Nombre Completo del Proyecto:"
@@ -183,47 +142,40 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
             })}
             isRelative
             name="description"
+            disabled
             placeholder="Nombre completo del Proyecto"
             errors={errors}
           />
 
           <div className="col-input">
-            <Select
+            <Input
               isRelative
               label="Departamento:"
               {...register('department', {
                 validate: { validateWhiteSpace },
               })}
+              disabled
               name="department"
-              data={departamentsJson}
-              itemKey="nombre_ubigeo"
-              textField="nombre_ubigeo"
-              onChange={e => handleGetProvinces(e.target.value)}
               errors={errors}
             />
-            <Select
+            <Input
               isRelative
               label="Provincia:"
               {...register('province', {
                 validate: { validateWhiteSpace },
               })}
+              disabled
               name="province"
-              data={provinces}
-              itemKey="nombre_ubigeo"
-              onChange={e => handleGetDistricts(e.target.value)}
-              textField="nombre_ubigeo"
               errors={errors}
             />
-            <Select
+            <Input
               isRelative
               label="Distrito:"
               {...register('district', {
                 validate: { validateWhiteSpace },
               })}
+              disabled
               name="district"
-              data={districts}
-              itemKey="nombre_ubigeo"
-              textField="nombre_ubigeo"
               errors={errors}
             />
           </div>

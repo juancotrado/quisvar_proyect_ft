@@ -260,8 +260,8 @@ export interface ProjectForm {
   description: string;
   department: string;
   province: string;
-  percentage: string;
   district: string;
+  contractId: number;
   typeSpecialityId: number | null;
 }
 export interface ContractForm {
@@ -442,6 +442,7 @@ export interface UserForm {
   declaration: FileList | null;
   declarations?: string[];
   typeDeclaration?: 'technical' | 'administrative';
+  declarationDate: string;
 }
 
 export interface Level {

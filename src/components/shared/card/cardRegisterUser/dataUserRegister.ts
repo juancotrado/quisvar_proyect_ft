@@ -24,6 +24,7 @@ export const JOB_DATA = [
   { value: 'Medicina Veterinaria y Zootecnia' },
   { value: 'Ciencias Contables' },
   { value: 'Administración' },
+  { value: 'Gestión Pública y Desarrollo Social' },
   { value: 'Física' },
   { value: 'Inicial' },
   { value: 'Primaria' },

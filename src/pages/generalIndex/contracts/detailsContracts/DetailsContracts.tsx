@@ -17,8 +17,8 @@ const DetailsContracts = () => {
   const { details } = contract;
   const dataProcedures = {
     ['Nomenclatura']: contract.name,
-    ['Descripcion del Objeto']: contract.projectName,
-    ['Fecha y Hora de Publicacion']: _date(new Date(contract.createdAt)),
+    ['Nombre largo del proyecto']: contract.projectName,
+    ['Fecha de Publicacion']: _date(new Date(contract.createdAt)),
   };
   const handleDelete = () => {
     axiosInstance

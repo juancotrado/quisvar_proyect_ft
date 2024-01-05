@@ -67,7 +67,9 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
             id={name}
             className={`input-area ${
               errors && name && errors[name] && 'input-area-error'
-            } ${disabled && 'input-disabled'}`}
+            } ${disabled && 'input-disabled'} ${
+              (type == 'password' || handleSearch) && 'input-pading-right'
+            }`}
             disabled={disabled}
             ref={ref}
             type={typeAux}

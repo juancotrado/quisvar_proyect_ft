@@ -26,6 +26,11 @@ import {
   BasicsPage,
   Task,
   CustomizableInvoice,
+  Group,
+  GroupContent,
+  GroupProjects,
+  GroupDaily,
+  GroupWeekend,
 } from '../pages';
 import { ProtectedRoute } from '../components';
 import ProtectedRole from '../components/protected/ProtectedRole/ProtectedRole';
@@ -98,6 +103,13 @@ const Navigation = () => {
                 path="/lista-de-notificaciones"
                 element={<NotificationsList />}
               />
+            </Route>
+            <Route path="/grupos" element={<Group />}>
+              <Route path="contenido/:groupId/:name" element={<GroupContent />}>
+                <Route path="proyectos/:groupId" element={<GroupProjects />} />
+                <Route path="reuniones/:groupId" element={<GroupDaily />} />
+                <Route path="semanal/:groupId" element={<GroupWeekend />} />
+              </Route>
             </Route>
           </Route>
           <Route path="/*" element={<NotFound />} />

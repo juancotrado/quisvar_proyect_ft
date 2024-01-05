@@ -40,4 +40,10 @@ export const itemsAdmin = [
     icon: 'generalIndex-icon',
     link: '/indice-general',
   },
+  {
+    id: 9,
+    title: 'Grupos',
+    icon: 'groups',
+    link: '/grupos',
+  },
 ];

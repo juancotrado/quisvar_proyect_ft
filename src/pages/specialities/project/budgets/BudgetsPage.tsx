@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 import { SocketContext } from '../../../../context/SocketContex';
-import { Level, StatusType } from '../../../../types/types';
+import { DegreType, Level, StatusType } from '../../../../types/types';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import MoreInfo from '../../../../components/project/moreInfo/MoreInfo';
 import DropdownLevel from '../../../../components/project/dropdownLevel/DropdownLevel';
@@ -17,11 +17,24 @@ import { GenerateDetailedIndexPdf } from '../../../../components/shared/generate
 import FloatingText from '../../../../components/shared/floatingText/FloatingText';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
+import { Select } from '../../../../components';
+
+const COST_DATA = [
+  {
+    key: 'bachelor',
+    value: 'Bachiller',
+  },
+  {
+    key: 'professional',
+    value: 'Titulado',
+  },
+];
 
 const BudgetsPage = () => {
   const { stageId } = useParams();
   const { modAuthProject } = useSelector((state: RootState) => state);
-
+  const [status, setStatus] = useState<StatusType | ''>('');
+  const [degree, setDegree] = useState<DegreType | ''>('');
   const [levels, setlevels] = useState<Level | null>(null);
   const [openFilter, setOpenFilter] = useState(false);
   const socket = useContext(SocketContext);
@@ -45,17 +58,38 @@ const BudgetsPage = () => {
     };
   }, [socket, stageId]);
 
-  const levelFilter = (value: string) => {
-    axiosInstance.get(`/stages/${stageId}?&status=${value}`).then(res => {
-      if (stageId) {
-        setlevels({ ...res.data, stagesId: +stageId });
-      }
-    });
+  const levelFilter = (value: StatusType | '') => {
+    setStatus(value);
+    axiosInstance
+      .get(
+        `/stages/${stageId}?${value && `status=${value}`}${
+          degree && `&typecost=${degree}`
+        }`
+      )
+      .then(res => {
+        if (stageId) {
+          setlevels({ ...res.data, stagesId: +stageId });
+        }
+      });
+  };
+  const levelFilterForDegree = (value: DegreType) => {
+    setDegree(value);
+    axiosInstance
+      .get(
+        `/stages/${stageId}?${status && `status=${status}`}${
+          value && `&typecost=${value}`
+        }`
+      )
+      .then(res => {
+        if (stageId) {
+          setlevels({ ...res.data, stagesId: +stageId });
+        }
+      });
   };
 
   const closeFilter = () => {
-    getLevels();
     setOpenFilter(false);
+    levelFilter('');
   };
 
   const FilterOptions: StatusType[] = [
@@ -74,60 +108,73 @@ const BudgetsPage = () => {
     );
   return (
     <>
-      <div className="budgetsPage-filter">
-        <FloatingText text="Descargar Índice" xPos={-50}>
-          <PDFDownloadLink
-            document={GenerateIndexPdf({ data: levels })}
-            fileName={`${levels.projectName}.pdf`}
+      <div className="budgetsPage-filter-contain">
+        <div className="budgetsPage-filter">
+          <FloatingText text="Descargar Índice" xPos={-50}>
+            <PDFDownloadLink
+              document={GenerateIndexPdf({ data: levels })}
+              fileName={`${levels.projectName}.pdf`}
+              className="budgetsPage-filter-icon"
+            >
+              <figure className="budgetsPage-figure-icon">
+                <img src={`/svg/index-icon.svg`} />
+              </figure>
+              Índice
+            </PDFDownloadLink>
+          </FloatingText>
+          <FloatingText text="Descargar Índice" xPos={-50}>
+            <PDFDownloadLink
+              document={GenerateDetailedIndexPdf({ data: levels })}
+              fileName={`${levels.projectName}.pdf`}
+              className="budgetsPage-filter-icon"
+            >
+              <figure className="budgetsPage-figure-icon">
+                <img src={`/svg/index-icon.svg`} />
+              </figure>
+              Índice Detallado
+            </PDFDownloadLink>
+          </FloatingText>
+          <span
             className="budgetsPage-filter-icon"
+            onClick={() => setOpenFilter(true)}
           >
-            <figure className="budgetsPage-figure-icon">
-              <img src={`/svg/index-icon.svg`} />
-            </figure>
-            Índice
-          </PDFDownloadLink>
-        </FloatingText>
-        <FloatingText text="Descargar Índice" xPos={-50}>
-          <PDFDownloadLink
-            document={GenerateDetailedIndexPdf({ data: levels })}
-            fileName={`${levels.projectName}.pdf`}
-            className="budgetsPage-filter-icon"
-          >
-            <figure className="budgetsPage-figure-icon">
-              <img src={`/svg/index-icon.svg`} />
-            </figure>
-            Índice Detallado
-          </PDFDownloadLink>
-        </FloatingText>
-        <span
-          className="budgetsPage-filter-icon"
-          onClick={() => setOpenFilter(true)}
-        >
-          <img src="/svg/filter.svg" />
-          Filtrar
-        </span>
-        {openFilter && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.5 }}
-            className="budgetsPage-filter-area"
-          >
-            {FilterOptions.map(option => (
-              <StatusText
-                key={option}
-                status={option}
-                onClick={() => levelFilter(option)}
+            <img src="/svg/filter.svg" />
+            Filtrar
+          </span>
+          {openFilter && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5 }}
+              className="budgetsPage-filter-area"
+            >
+              {FilterOptions.map(option => (
+                <StatusText
+                  key={option}
+                  status={option}
+                  onClick={() => levelFilter(option)}
+                />
+              ))}
+              <Button
+                onClick={closeFilter}
+                icon="close"
+                className="budgetsPage-filter-close"
               />
-            ))}
-
-            <Button
-              onClick={closeFilter}
-              icon="close"
-              className="budgetsPage-filter-close"
-            />
-          </motion.div>
-        )}
+            </motion.div>
+          )}
+        </div>
+        <div className="budgetsPage-filter-select">
+          <Select
+            name="difficulty"
+            data={COST_DATA}
+            itemKey="key"
+            textField="value"
+            defaultValue={degree}
+            onChange={({ target }) =>
+              levelFilterForDegree(target.value as DegreType)
+            }
+          />
+        </div>
       </div>
       <div className="budgetsPage-title-contain">
         <div className="budgetsPage-contain-left">

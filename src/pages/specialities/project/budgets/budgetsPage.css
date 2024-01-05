@@ -1,3 +1,8 @@
+.budgetsPage-filter-contain {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
 .budgetsPage-filter {
   display: flex;
   gap: 1rem;
@@ -14,7 +19,9 @@
   cursor: pointer;
   color: black;
 }
-
+.budgetsPage-filter-select {
+  width: 10rem;
+}
 .budgetsPage-figure-icon {
   width: 1rem;
 }

@@ -100,6 +100,12 @@ export interface GroupProject {
   id: number;
   projects: ProjectType[];
 }
+
+interface Group {
+  id: number;
+  name: string;
+  groups: [];
+}
 export interface TaskType {
   id: number;
   name: string;
@@ -279,6 +285,14 @@ export interface ContractForm {
   company: number;
   consortium: number;
 }
+
+interface StageForm {
+  bachelorCost: number;
+  professionalCost: number;
+  groupId: number;
+}
+
+type DegreType = 'professional' | 'bachelor';
 
 interface Contract extends ContractForm {
   id: number;
@@ -550,6 +564,23 @@ export interface Option {
 export interface Stage {
   id: number;
   name: string;
+}
+export interface StageInfo extends Stage {
+  startDate: string;
+  untilDate: string;
+  status: boolean;
+  isProject: boolean;
+  moderatorId: null | number;
+  rootTypeItem: string;
+  bachelorCost: number;
+  professionalCost: number;
+  groupId: number;
+  createdAt: string;
+  updatedAt: string;
+  projectId: number;
+  project: {
+    contract: Contract;
+  };
 }
 export interface Ubigeo {
   id_ubigeo: string;

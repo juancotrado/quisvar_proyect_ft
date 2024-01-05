@@ -1054,3 +1054,19 @@ export interface ServiceOrderForm {
   acountCheck: string;
   companyId: string;
 }
+export interface UserGroup {
+  users: {
+    id: number;
+    profile: {
+      firstName: string;
+      lastName: string;
+      userPc: string;
+    };
+    role: UserRoleType;
+  };
+}
+export interface Group {
+  id: number;
+  name: string;
+  groups?: UserGroup[];
+}

@@ -27,6 +27,11 @@ import Task from './task/Task';
 import MailPage from './mail/MailPage';
 import MessagePage from './mail/message/MessagePage';
 import CustomizableInvoice from './customizableInvoice/CustomizableInvoice';
+import Group from './group/Group';
+import GroupContent from './group/groupContent/GroupContent';
+import GroupDaily from './group/groupDaily/GroupDaily';
+import GroupWeekend from './group/groupWeekend/GroupWeekend';
+import GroupProjects from './group/groupProjects/GroupProjects';
 export {
   CommingSoon,
   ListPersonalTask,
@@ -57,4 +62,9 @@ export {
   MessagePage,
   CustomizableInvoice,
   Contracts,
+  Group,
+  GroupContent,
+  GroupProjects,
+  GroupDaily,
+  GroupWeekend,
 };

@@ -36,6 +36,8 @@ import CardAddTraining from './shared/card/cardAddTraining/CardAddTraining';
 import TrainingTable from './training/TrainingTable';
 import Equipment from './userList/uploadUserFile/equipment/Equipment';
 import CardAssign from './shared/card/CardAssign/CardAssign';
+import GroupListBar from './groups/groupListBar/GroupListBar';
+import GroupBtnAdd from './groups/groupBtnAdd/GroupBtnAdd';
 
 export {
   Alert,
@@ -76,4 +78,6 @@ export {
   ExperienceTable,
   TrainingTable,
   Equipment,
+  GroupListBar,
+  GroupBtnAdd,
 };

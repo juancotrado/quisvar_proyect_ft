@@ -573,6 +573,7 @@ export interface StageInfo extends Stage {
   moderatorId: null | number;
   rootTypeItem: string;
   bachelorCost: number;
+  group: Groups;
   professionalCost: number;
   groupId: number;
   createdAt: string;
@@ -581,6 +582,11 @@ export interface StageInfo extends Stage {
   project: {
     contract: Contract;
   };
+}
+interface Groups {
+  id: number;
+  name: string;
+  groups: { users: User }[];
 }
 export interface Ubigeo {
   id_ubigeo: string;

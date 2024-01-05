@@ -34,3 +34,7 @@
 .text-title {
   font-weight: 600;
 }
+.costTable-content-text-main {
+  color: var(--color-secondary);
+  font-weight: 700;
+}

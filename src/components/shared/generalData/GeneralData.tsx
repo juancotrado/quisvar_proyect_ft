@@ -13,6 +13,7 @@ import { useEffect, useState } from 'react';
 import './GeneralData.css';
 import { axiosInstance } from '../../../services/axiosInstance';
 import { useParams } from 'react-router-dom';
+import { capitalizeText, getRole } from '../../../utils/tools';
 
 const GeneralData = () => {
   const { stageId } = useParams();
@@ -35,18 +36,10 @@ const GeneralData = () => {
   const getStageDetails = () => {
     axiosInstance.get(`/stages/details/${stageId}`).then(res => {
       const { professionalCost, bachelorCost, groupId } = res.data as StageInfo;
-      reset({ bachelorCost, groupId, professionalCost });
+      reset({ bachelorCost, groupId: groupId ?? '', professionalCost });
       setStageInfo(res.data);
     });
   };
-  // const dataInfoStage = {
-  //   Etapa: '',
-  //   Proyecto: '',
-  //   CUI: '',
-  //   Departamento: '',
-  //   Provincia: '',
-  //   Distrito: '',
-  // };
 
   const dataInfoStage = () => {
     if (!stageInfo) return {};
@@ -65,10 +58,13 @@ const GeneralData = () => {
     axiosInstance.get(`/groups/all`).then(res => setGroups(res.data));
   };
   const onSubmitStage: SubmitHandler<StageForm> = async body => {
+    console.log(body);
     axiosInstance
       .patch(`/stages/details/${stageId}`, body)
       .then(() => getStageDetails());
   };
+
+  const groupsStage = stageInfo?.group?.groups ?? [];
   return (
     <div className="generalData">
       <div className="generalData-main-info">
@@ -80,7 +76,43 @@ const GeneralData = () => {
             </div>
           ))}
         </div>
-        <div className="generalData-info-group"></div>
+        {groupsStage.length > 0 && (
+          <div className="generalData-info-group">
+            <h2 className="generalData-edit-info-title">
+              CONFORMACIÓN DEL GRUPO
+            </h2>
+            <div className="generalData-infor-group-table">
+              <div className="generalData-infor-group-header">
+                <span className="generalData-infor-group-text">#</span>
+                <span className="generalData-infor-group-text">NOMBRE</span>
+                <span className="generalData-infor-group-text">ROL</span>
+                <span className="generalData-infor-group-text">PROFESIÓN</span>
+                <span className="generalData-infor-group-text">GRADO</span>
+              </div>
+              {groupsStage.map(({ users }, i) => (
+                <div className="generalData-infor-group-contain">
+                  <span className="generalData-infor-group-text generalData-table-text-alter">
+                    {i + 1}
+                  </span>
+                  <span className="generalData-infor-group-text generalData-table-text-alter">
+                    {users.profile.firstName} {users.profile.lastName}
+                  </span>
+                  <span className="generalData-infor-group-text generalData-table-text-alter">
+                    {capitalizeText(
+                      `${getRole(users.role)} ${users.profile.description}`
+                    )}
+                  </span>
+                  <span className="generalData-infor-group-text generalData-table-text-alter">
+                    {users.profile.job}
+                  </span>
+                  <span className="generalData-infor-group-text generalData-table-text-alter">
+                    {users.profile.degree}
+                  </span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
       <form
         className="generalData-edit-info"

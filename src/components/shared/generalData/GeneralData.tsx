@@ -161,8 +161,8 @@ const GeneralData = () => {
           />
         </div>
         <div className="col-input">
-          <CostTable mount={+watch('professionalCost')} text="Bachiller" />
-          <CostTable mount={+watch('bachelorCost')} text="Titulado" />
+          <CostTable mount={+watch('bachelorCost')} text="Bachiller" />
+          <CostTable mount={+watch('professionalCost')} text="Titulado" />
         </div>
         <Button type="submit" text={`Guardar`} className="send-button" />
       </form>

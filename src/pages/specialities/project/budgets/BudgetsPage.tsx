@@ -58,6 +58,11 @@ const BudgetsPage = () => {
     };
   }, [socket, stageId]);
 
+  const getLevelsForSocket = () => {
+    axiosInstance.get(`/stages/${stageId}`).then(res => {
+      socket.emit('client:update-project', { ...res.data, stagesId: stageId });
+    });
+  };
   const levelFilter = (value: StatusType | '') => {
     setStatus(value);
     axiosInstance
@@ -190,7 +195,7 @@ const BudgetsPage = () => {
         )}
       </div>
       <div className="budgetsPage-contain">
-        {levels && <DropdownLevel level={levels} onSave={getLevels} />}
+        {levels && <DropdownLevel level={levels} onSave={getLevelsForSocket} />}
       </div>
 
       <Outlet />

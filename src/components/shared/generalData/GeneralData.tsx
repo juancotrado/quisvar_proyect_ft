@@ -138,23 +138,23 @@ const GeneralData = () => {
         </div>
         <div className="col-input">
           <Input
-            {...register('professionalCost', {
+            {...register('bachelorCost', {
               validate: { validateOnlyNumbers },
               valueAsNumber: true,
             })}
-            name="professionalCost"
+            name="bachelorCost"
             type="number"
             placeholder="Costo - Bachiller "
             errors={errors}
             className="generalData-edit-info-input"
           />
           <Input
-            {...register('bachelorCost', {
+            {...register('professionalCost', {
               validate: { validateOnlyNumbers },
               valueAsNumber: true,
             })}
             type="number"
-            name="bachelorCost"
+            name="professionalCost"
             placeholder="Costo - Titulado"
             errors={errors}
             className="generalData-edit-info-input"

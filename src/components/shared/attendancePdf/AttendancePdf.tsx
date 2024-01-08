@@ -51,11 +51,14 @@ export const generateAttendanceDailyPDF = (
   value: PDFGeneratorProps,
   config?: ConfigProps
 ) => {
+  const totalAttendance = value.data.map(user => user.list.length);
+  const maxAttendance = Math.max(...totalAttendance);
   const initialCalls =
     value.data[0].list.length <= 6
       ? orderCalls.slice(0, 6)
-      : orderCalls.slice(0, value.data[0].list.length);
-
+      : orderCalls.slice(0, maxAttendance);
+  console.log(value.data);
+  // console.log(initialCalls)
   const getStatus = (data: AttendanceRange) => {
     const mapStates = {
       PUNTUAL: 'P',
@@ -180,6 +183,8 @@ export const generateAttendanceDailyPDF = (
           {value.data &&
             value.data.map((value, index) => {
               const attendances = getStatus(value);
+              console.log(attendances);
+
               const getColor = (status: string) => {
                 if (status === 'P') return '#87E4BD';
                 if (status === 'T') return '#FFE17F';

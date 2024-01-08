@@ -101,11 +101,11 @@ export interface GroupProject {
   projects: ProjectType[];
 }
 
-interface Group {
-  id: number;
-  name: string;
-  groups: [];
-}
+// interface Group {
+//   id: number;
+//   name: string;
+//   groups: [];
+// }
 export interface TaskType {
   id: number;
   name: string;

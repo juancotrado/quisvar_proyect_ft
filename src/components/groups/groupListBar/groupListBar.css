@@ -6,7 +6,6 @@
   cursor: pointer;
   padding: 0.3rem 1.5rem;
   width: 150px;
-  max-width: 120px;
 }
 
 .contract-selected {
@@ -38,6 +37,11 @@
   font-style: normal;
   font-weight: 400;
   line-height: 0.89288rem;
-  /* 142.857% */
   letter-spacing: 0.0625rem;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }

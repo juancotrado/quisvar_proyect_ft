@@ -57,7 +57,6 @@ export const generateAttendanceDailyPDF = (
     value.data[0].list.length <= 6
       ? orderCalls.slice(0, 6)
       : orderCalls.slice(0, maxAttendance);
-  console.log(value.data);
   // console.log(initialCalls)
   const getStatus = (data: AttendanceRange) => {
     const mapStates = {
@@ -71,7 +70,6 @@ export const generateAttendanceDailyPDF = (
 
     const orderedStatus: string[] = [];
     // console.log(data.list);
-
     initialCalls.forEach(call => {
       const estadoEncontrado = data.list.find(item => item.list.title === call);
       if (estadoEncontrado) {
@@ -183,8 +181,6 @@ export const generateAttendanceDailyPDF = (
           {value.data &&
             value.data.map((value, index) => {
               const attendances = getStatus(value);
-              console.log(attendances);
-
               const getColor = (status: string) => {
                 if (status === 'P') return '#87E4BD';
                 if (status === 'T') return '#FFE17F';

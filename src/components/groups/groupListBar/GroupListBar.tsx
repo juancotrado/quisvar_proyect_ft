@@ -56,7 +56,7 @@ const GroupListBar = ({ group, onSave, index }: GroupListBarProps) => {
               style={{ width: 18 }}
             />
           </figure>
-          <div>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
             <h4 className="gr-sidebar-name">GRUPO {index}</h4>
             <h5 className="gr-sidebar-cui">{group.name}</h5>
           </div>

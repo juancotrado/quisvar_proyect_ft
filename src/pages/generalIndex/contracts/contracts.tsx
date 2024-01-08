@@ -43,12 +43,12 @@ const Contracts = () => {
               authUsers={authUsers}
             />
           ))}
-          <div className="contracts-add-content" onClick={addContract}>
-            <span className="contracts-add-span">Añadir Contrato</span>
-            <figure className="contracts-sideba-figure">
-              <img src="/svg/plus.svg" alt="W3Schools" />
-            </figure>
-          </div>
+        </div>
+        <div className="contracts-add-content" onClick={addContract}>
+          <span className="contracts-add-span">Añadir Contrato</span>
+          <figure className="contracts-sideba-figure">
+            <img src="/svg/plus.svg" alt="W3Schools" />
+          </figure>
         </div>
       </div>
       <div className="contracts-main">

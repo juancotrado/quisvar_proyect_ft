@@ -354,6 +354,7 @@ export interface SubTask {
   indexTaskId: number;
   Levels: {
     userId: number;
+    group: Groups;
   };
   task_2_Id: number;
   task_3_Id: number;
@@ -564,6 +565,9 @@ export interface Option {
 export interface Stage {
   id: number;
   name: string;
+}
+interface StageSubtask extends Stage {
+  group: Groups;
 }
 export interface StageInfo extends Stage {
   startDate: string;

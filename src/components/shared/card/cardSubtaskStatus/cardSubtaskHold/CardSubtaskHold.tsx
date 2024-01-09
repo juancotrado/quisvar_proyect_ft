@@ -31,8 +31,10 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
   const [addBtn, setAddBtn] = useState(false);
   const [usersData, setUsersData] = useState<DataUser[]>([]);
   const { stageId } = useParams();
-
-  const { users } = useListUsers();
+  const userList = subTask.Levels.stages.group?.groups?.map(
+    ({ users }) => users
+  );
+  const { users } = useListUsers(null, false, userList);
   const { status } = subTask;
   const handleAddUser = (user: DataUser) => {
     setAddBtn(true);

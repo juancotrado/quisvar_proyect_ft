@@ -1,15 +1,17 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
-import { UserRoleType } from '../types/types';
+import { User, UserRoleType } from '../types/types';
 
 const useListUsers = (
   roleType: UserRoleType[] | null = null,
-  onlyActive: boolean = true
+  onlyActive: boolean = true,
+  usersData: User[] | null = null
 ) => {
   const { listUsers } = useSelector((state: RootState) => state);
+  const usersList = usersData ?? listUsers;
   const users =
-    (listUsers &&
-      listUsers
+    (usersList &&
+      usersList
         .filter(user => (roleType ? roleType.includes(user.role) : user))
         .filter(user => (onlyActive ? user.status : user))
         .map(({ profile, ...props }) => ({

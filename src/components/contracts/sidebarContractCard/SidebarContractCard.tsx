@@ -5,8 +5,11 @@ import DotsRight from '../../shared/dotsRight/DotsRight';
 import { axiosInstance } from '../../../services/axiosInstance';
 import { SnackbarUtilities } from '../../../utils/SnackbarManager';
 import './sidebarContractCard.css';
-import { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+// import { useState } from 'react';
+import {
+  NavLink,
+  // useNavigate
+} from 'react-router-dom';
 
 interface SidebarContractCardProps {
   contract: Contract;

@@ -75,7 +75,7 @@ const Home = () => {
     const now = new Date();
     const untilDate = new Date(licenseData.untilDate);
     const timeDifference = now.getTime() - (untilDate.getTime() + GMT);
-    console.log(timeDifference);
+    // console.log(timeDifference);
     if (timeDifference >= 20 * 60 * 1000) {
       return 'MUY_GRAVE';
     } else if (timeDifference >= 15 * 60 * 1000) {

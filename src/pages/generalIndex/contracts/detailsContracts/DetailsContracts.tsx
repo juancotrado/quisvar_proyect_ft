@@ -17,6 +17,7 @@ const DetailsContracts = () => {
   const { details } = contract;
   const dataProcedures = {
     ['Nomenclatura']: contract.name,
+    ['Nombre de Contrato']: contract.contractNumber,
     ['Nombre largo del proyecto']: contract.projectName,
     ['Fecha de Publicacion']: _date(new Date(contract.createdAt)),
   };

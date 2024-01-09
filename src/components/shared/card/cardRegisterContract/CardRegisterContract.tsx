@@ -63,6 +63,7 @@ const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
             province,
             shortName,
             indexContract,
+            contractNumber,
           } = contract;
           reset({
             id,
@@ -76,6 +77,11 @@ const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
             indexContract,
             province,
             shortName,
+            contractNumber,
+          });
+        } else {
+          reset({
+            contractNumber: 'Contrato N° 00',
           });
         }
       }
@@ -140,6 +146,16 @@ const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
               name="name"
               type="text"
               placeholder="Nomenclatura"
+              errors={errors}
+            />
+            <Input
+              label="Nombre de Contrato:"
+              {...register('contractNumber', {
+                validate: { validateWhiteSpace },
+              })}
+              name="contractNumber"
+              type="text"
+              placeholder="N° de Contrato"
               errors={errors}
             />
             <Input

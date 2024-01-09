@@ -101,11 +101,11 @@ export interface GroupProject {
   projects: ProjectType[];
 }
 
-// interface Group {
-//   id: number;
-//   name: string;
-//   groups: [];
-// }
+interface Group {
+  id: number;
+  name: string;
+  groups: [];
+}
 export interface TaskType {
   id: number;
   name: string;
@@ -274,6 +274,7 @@ export interface ContractForm {
   id?: number;
   cui: string;
   name: string;
+  contractNumber: string;
   projectName: string;
   department: string;
   province: string;
@@ -354,13 +355,20 @@ export interface SubTask {
   indexTaskId: number;
   Levels: {
     userId: number;
-    group: Groups;
+    stages: StageSubtask;
   };
   task_2_Id: number;
   task_3_Id: number;
   users: Users[];
   assignedAt?: string;
   createdAt?: Date;
+}
+
+interface CoorpEntity {
+  id: number;
+  name: string;
+  type: string;
+  newId: string;
 }
 export interface Feedback {
   id: number;

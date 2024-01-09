@@ -880,6 +880,10 @@ interface MessageSendType {
   receiverId: number;
   type: MessageType['type'];
 }
+type ListItemElement = {
+  type: 'listItem';
+  content: string;
+};
 export type ElementType =
   | {
       type: 'paragraph';
@@ -888,6 +892,14 @@ export type ElementType =
   | {
       type: 'table';
       data: string[][];
+    }
+  | {
+      type: 'orderedList';
+      items: ListItemElement[];
+    }
+  | {
+      type: 'unorderedList';
+      items: ListItemElement[];
     };
 export interface ListUserExtend extends Omit<User, 'profile'> {
   name: string;

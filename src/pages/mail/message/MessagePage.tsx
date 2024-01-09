@@ -77,7 +77,7 @@ const MessagePage = () => {
   const getMessage = useCallback(
     (id: string) => {
       axiosInstance.get(`/mail/${id}`).then(res => {
-        const data = transformDataPdf({ listUsers, data: res.data });
+        const data = transformDataPdf({ data: res.data });
         setData(data);
         setMessage(res.data);
       });

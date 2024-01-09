@@ -1,26 +1,34 @@
-import { ListUserExtend, PdfDataProps, PdfGeneratorPick } from '../types/types';
+import { PdfDataProps, PdfGeneratorPick } from '../types/types';
 import formatDate from './formatDate';
 import { convertToDynamicObject } from './pdfReportFunctions';
 
 interface transformDataPdfProps {
-  listUsers?: ListUserExtend[];
   data: PdfGeneratorPick;
 }
-export const transformDataPdf = ({
-  listUsers,
-  data,
-}: transformDataPdfProps) => {
+export const transformDataPdf = ({ data }: transformDataPdfProps) => {
   const userTo = data.users?.find(
     user => user.type === 'RECEIVER' && user.role === 'MAIN'
   );
   const userFrom = data.users?.find(
     user => user.type === 'SENDER' && user.role === 'MAIN'
   );
-  const secondaryReceiver = data.users?.find(user => user.role === 'SECONDARY');
-  const cc =
-    (Array.isArray(listUsers) &&
-      listUsers.filter(user => user.id === secondaryReceiver?.user.id)) ||
-    undefined;
+
+  const cc = data.users
+    ?.filter(user => user.role === 'SECONDARY')
+    .map(item => {
+      return {
+        name: `${item.user.profile.firstName} ${item.user.profile.lastName}`,
+        degree: item.user.profile.degree,
+        position: item.user.profile.description || '',
+      };
+    });
+  // console.log({data: secondaryReceiver});
+  // const cc =
+  //   (Array.isArray(listUsers) &&
+  //     listUsers.filter(user => user.id === secondaryReceiver?.)) ||
+  //   undefined;
+  // console.log(cc)
+
   const result: PdfDataProps = {
     from:
       userFrom?.user.profile.firstName + ' ' + userFrom?.user.profile.lastName,

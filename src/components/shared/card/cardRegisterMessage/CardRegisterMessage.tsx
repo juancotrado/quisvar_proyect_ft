@@ -185,11 +185,11 @@ const CardRegisterMessage = ({
       }
       return { name: '', degree: '', position: '' };
     });
+
     const header = watch('header');
     const description = watch('description');
     const to = receiver?.value ?? '';
     const toUser = listUser.find(user => user.id === receiver?.id);
-
     setpdfData({
       from: userSession.profile.firstName + ' ' + userSession.profile.lastName,
       header,

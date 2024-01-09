@@ -101,11 +101,11 @@ export interface GroupProject {
   projects: ProjectType[];
 }
 
-interface Group {
-  id: number;
-  name: string;
-  groups: [];
-}
+// interface Group {
+//   id: number;
+//   name: string;
+//   groups: [];
+// }
 export interface TaskType {
   id: number;
   name: string;
@@ -884,6 +884,10 @@ interface MessageSendType {
   receiverId: number;
   type: MessageType['type'];
 }
+type ListItemElement = {
+  type: 'listItem';
+  content: string;
+};
 export type ElementType =
   | {
       type: 'paragraph';
@@ -892,6 +896,14 @@ export type ElementType =
   | {
       type: 'table';
       data: string[][];
+    }
+  | {
+      type: 'orderedList';
+      items: ListItemElement[];
+    }
+  | {
+      type: 'unorderedList';
+      items: ListItemElement[];
     };
 export interface ListUserExtend extends Omit<User, 'profile'> {
   name: string;

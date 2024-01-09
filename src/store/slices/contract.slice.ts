@@ -1,5 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { Contract, Stage } from '../../types/types';
+import { Contract } from '../../types/types';
 import { AppDispatch } from '..';
 import { axiosInstance } from '../../services/axiosInstance';
 

@@ -44,7 +44,10 @@ export const generateReportPDF = (
           </View>
           <View style={styles.rigthInfo}>
             <Text style={styles.header}>
-              {value.data.toDegree?.slice(0, 3)}. {value.data?.to}
+              {value.data.toDegree?.slice(0, 3) === 'Tit'
+                ? 'ING'
+                : value.data.toDegree?.slice(0, 3)}
+              . {value.data?.to}
             </Text>
             <Text style={styles.header}>{value.data.toPosition}</Text>
           </View>
@@ -60,7 +63,10 @@ export const generateReportPDF = (
               </View>
               <View>
                 <Text style={styles.header}>
-                  {item.degree.slice(0, 3)}. {item.name}
+                  {item.degree?.slice(0, 3) === 'Tit'
+                    ? 'ING'
+                    : item.degree?.slice(0, 3)}
+                  . {item.name}
                 </Text>
                 <Text style={styles.header}>{item.position}</Text>
               </View>
@@ -74,7 +80,10 @@ export const generateReportPDF = (
           </View>
           <View>
             <Text style={{ ...styles.header, textTransform: 'uppercase' }}>
-              {value.data.fromDegree?.slice(0, 3)}. {value.data?.from}
+              {value.data.fromDegree?.slice(0, 3) === 'Tit'
+                ? 'ING'
+                : value.data.fromDegree?.slice(0, 3)}
+              . {value.data?.from}
             </Text>
             <Text style={styles.header}>{value.data.fromPosition}</Text>
           </View>
@@ -125,6 +134,24 @@ export const generateReportPDF = (
                   </View>
                 ))}
               </View>
+            ) : element.type === 'orderedList' ? (
+              <View style={styles.listContainer}>
+                {element.items.map((item, itemIndex) => (
+                  <View key={itemIndex} style={styles.rowList}>
+                    <Text style={styles.listItem}>{itemIndex + 1}.</Text>
+                    <Text style={styles.listItem}>{item.content}</Text>
+                  </View>
+                ))}
+              </View>
+            ) : element.type === 'unorderedList' ? (
+              <View style={styles.listContainer}>
+                {element.items.map((item, itemIndex) => (
+                  <View key={itemIndex} style={styles.rowList}>
+                    <Text style={styles.listItem}>•</Text>
+                    <Text style={styles.listItem}>{item.content}</Text>
+                  </View>
+                ))}
+              </View>
             ) : null}
           </View>
         ))}
@@ -132,8 +159,10 @@ export const generateReportPDF = (
       <View style={styles.signArea}>
         <View style={styles.sign} />
         <Text style={styles.header}>
-          {value.data.fromDegree && value.data.fromDegree?.slice(0, 3) + '.'}{' '}
-          {value.data.from}
+          {value.data.fromDegree && value.data.fromDegree?.slice(0, 3) === 'Tit'
+            ? 'ING'
+            : value.data.fromDegree?.slice(0, 3)}
+          . {value.data.from}
         </Text>
         <Text style={styles.header}>DNI: {value.data.dni}</Text>
       </View>

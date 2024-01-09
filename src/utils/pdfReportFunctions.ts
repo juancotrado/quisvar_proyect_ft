@@ -10,7 +10,27 @@ type TableElement = {
   data: string[][];
 };
 
-type DynamicHTMLElement = ParagraphElement | TableElement;
+type ListItemElement = {
+  type: 'listItem';
+  content: string;
+};
+
+type OrderedListElement = {
+  type: 'orderedList';
+  items: ListItemElement[];
+};
+
+type UnorderedListElement = {
+  type: 'unorderedList';
+  items: ListItemElement[];
+};
+
+type DynamicHTMLElement =
+  | ParagraphElement
+  | TableElement
+  | OrderedListElement
+  | UnorderedListElement;
+
 export const convertToDynamicObject = (
   htmlString: string
 ): DynamicHTMLElement[] => {
@@ -19,20 +39,18 @@ export const convertToDynamicObject = (
 
   const elements: DynamicHTMLElement[] = [];
 
-  const childNodes = tempElement.childNodes;
-
-  for (let i = 0; i < childNodes.length; i++) {
-    const node = childNodes[i];
-
+  const parseNode = (node: Node): DynamicHTMLElement | null => {
     if (node.nodeType === Node.ELEMENT_NODE) {
-      if (node.nodeName === 'P') {
-        const content = (node.textContent || '').trim();
+      const element = node as Element;
+
+      if (element.nodeName === 'P') {
+        const content = (element.textContent || '').trim();
         if (content) {
-          elements.push({ type: 'paragraph', content });
+          return { type: 'paragraph', content };
         }
-      } else if (node.nodeName === 'TABLE') {
+      } else if (element.nodeName === 'TABLE') {
         const tableData: string[][] = [];
-        const rows = (node as Element).querySelectorAll('tr');
+        const rows = element.querySelectorAll('tr');
         rows.forEach(row => {
           const rowData: string[] = [];
           row.querySelectorAll('td').forEach(cell => {
@@ -40,11 +58,39 @@ export const convertToDynamicObject = (
           });
           tableData.push(rowData);
         });
-        elements.push({ type: 'table', data: tableData });
+        return { type: 'table', data: tableData };
+      } else if (element.nodeName === 'OL' || element.nodeName === 'UL') {
+        const listItems: ListItemElement[] = [];
+        element.querySelectorAll('li').forEach(li => {
+          const listItemContent = (li.textContent || '').trim();
+          if (listItemContent) {
+            listItems.push({ type: 'listItem', content: listItemContent });
+          }
+        });
+
+        const listType =
+          element.nodeName === 'OL' ? 'orderedList' : 'unorderedList';
+
+        return { type: listType, items: listItems };
       }
     }
-  }
 
+    return null;
+  };
+
+  const traverseAndParse = (node: Node) => {
+    const parsedNode = parseNode(node);
+    if (parsedNode) {
+      elements.push(parsedNode);
+    }
+
+    node.childNodes.forEach(childNode => {
+      traverseAndParse(childNode);
+    });
+  };
+
+  traverseAndParse(tempElement);
+  console.log(elements);
   return elements;
 };
 export const dataInitialPdf = {

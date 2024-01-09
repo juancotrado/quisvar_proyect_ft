@@ -18,7 +18,6 @@ const CardAddExperience = ({ onSave }: CardExperienceProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [hasId, setHasId] = useState<number>();
   const [data, setData] = useState<AreaSpecialty>();
-  console.log(data);
 
   const handleIsOpen = useRef<Subscription>(new Subscription());
   const {

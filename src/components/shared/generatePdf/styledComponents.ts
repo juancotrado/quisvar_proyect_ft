@@ -53,7 +53,7 @@ export const styles = StyleSheet.create({
   body: {
     fontSize: 11,
     textAlign: 'justify',
-    marginBottom: 15,
+    marginBottom: 10,
     fontFamily: 'Arial Narrow',
   },
   headerContent: {
@@ -95,5 +95,20 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
     width: '100%',
     top: 64,
+  },
+  listItem: {
+    flexDirection: 'row',
+    fontSize: 11,
+    textAlign: 'justify',
+    fontFamily: 'Arial Narrow',
+  },
+  listContainer: {
+    marginBottom: 15,
+    flexDirection: 'column',
+    gap: 5,
+  },
+  rowList: {
+    flexDirection: 'row',
+    gap: 3,
   },
 });

@@ -292,6 +292,8 @@ type DegreType = 'professional' | 'bachelor';
 interface Contract extends ContractForm {
   id: number;
   number: number;
+  companyId: number | null;
+  consortiumId: number | null;
   details: string | null;
 }
 

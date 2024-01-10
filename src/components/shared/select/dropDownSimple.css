@@ -20,6 +20,12 @@
   border-bottom: 2px solid var(--color-quaternay);
   /* border-radius: var(--radius-input); */
 }
+.dropdown-figure {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  overflow: hidden;
+}
 .dropdown-icon {
   width: 1.2rem;
   height: 1.2rem;
@@ -42,10 +48,16 @@
   filter: drop-shadow(-2px 2px 3px rgba(33, 103, 255, 0.568));
 }
 .dropdown-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
   padding: 0.4rem;
-  font-size: var(--size-input);
   cursor: pointer;
   transition: 0.5s ease;
+}
+.dropdown-option-text {
+  font-size: var(--size-input);
 }
 .dropdown-none {
   border: none;

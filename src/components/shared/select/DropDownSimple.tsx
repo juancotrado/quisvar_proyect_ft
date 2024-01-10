@@ -11,16 +11,21 @@ interface DropDownSimpleProps extends InputHTMLAttributes<HTMLInputElement> {
   data: typeObj[] | string[];
   selector?: boolean;
   textField: string;
+  imgField?: string;
   itemKey: string;
   defaultInput?: string;
   label?: string;
   className?: string;
   classNameInput?: string;
+  classNameInputText?: string;
+  classNameSelectText?: string;
   classNameListOption?: string;
   droper?: boolean;
   valueInput?: (event: string, index: string) => void;
+  allData?: (data: typeObj) => void;
   onChangeInput?: (event: ChangeEvent<HTMLInputElement>) => void;
   deleteUser?: () => void;
+  value?: string;
 }
 
 const DropDownSimple = ({
@@ -28,16 +33,20 @@ const DropDownSimple = ({
   itemKey,
   textField,
   label,
+  imgField,
   valueInput,
   defaultInput,
   placeholder,
+  classNameSelectText,
   droper,
   onChangeInput,
   selector,
+  classNameInputText,
   className,
   classNameInput,
+  allData,
   classNameListOption,
-
+  value,
   deleteUser,
   ...otherProps
 }: DropDownSimpleProps) => {
@@ -87,7 +96,7 @@ const DropDownSimple = ({
           {label && <label className="select-label">{label}</label>}
           <div className={`${classNameInput} dropdown-input-container `}>
             <input
-              className={`dropdown-field`}
+              className={`${classNameInputText} dropdown-field`}
               placeholder={!isActive ? placeholder : 'Buscar...'}
               onClick={toogleIsActive}
               onChange={e => {
@@ -121,10 +130,20 @@ const DropDownSimple = ({
                   onClick={() => {
                     setQuery(selector ? item[textField] : '');
                     valueInput?.(item[textField], item[itemKey]);
+                    allData?.(item);
                     setIsActive(false);
                   }}
                 >
-                  {item[textField]}
+                  <span
+                    className={`${classNameSelectText} dropdown-option-text`}
+                  >
+                    {item[textField]}
+                  </span>
+                  {imgField && (
+                    <figure className="dropdown-figure">
+                      <img src={item[imgField]} alt="W3Schools" />
+                    </figure>
+                  )}
                 </li>
               ))}
             </motion.ul>

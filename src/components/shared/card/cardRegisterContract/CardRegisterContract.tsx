@@ -6,7 +6,7 @@ import Button from '../../button/Button';
 import './cardRegisterContract.css';
 import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Companies, ContractForm } from '../../../../types/types';
+import { ContractForm, CoorpEntity } from '../../../../types/types';
 import { contractIndexData } from '../../../../pages/generalIndex/contracts/contractsData';
 
 import { Subscription } from 'rxjs';
@@ -25,7 +25,7 @@ interface CardRegisterContractProps {
 }
 const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
-  const [companies, setCompanies] = useState<null | Companies[]>(null);
+  const [companies, setCompanies] = useState<null | CoorpEntity[]>(null);
   const {
     departaments,
     districts,
@@ -95,15 +95,20 @@ const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
     getSpecialists();
   }, []);
   const getSpecialists = () => {
-    axiosInstance.get('/companies').then(el => setCompanies(el.data));
+    axiosInstance.get('/consortium/both').then(el => setCompanies(el.data));
   };
   const onSubmit: SubmitHandler<ContractForm> = async data => {
-    const { id } = data;
+    const { id, idCoorp, ...resData } = data;
+    const [keyName, newIdCoorp] = idCoorp.split('-');
+    const body = {
+      ...resData,
+      [keyName]: +newIdCoorp,
+    };
     if (id) {
-      await axiosInstance.patch(`contract/${id}`, data);
+      await axiosInstance.patch(`contract/${id}`, body);
     } else {
-      data.indexContract = JSON.stringify(contractIndexData);
-      await axiosInstance.post('contract', data);
+      body.indexContract = JSON.stringify(contractIndexData);
+      await axiosInstance.post('contract', body);
     }
     closeFunctions();
     onSave();
@@ -122,7 +127,6 @@ const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
   //     difficulty: value,
   //   });
   // };
-  console.log(companies);
 
   return (
     <Modal size={50} isOpenProp={isOpenModal}>
@@ -252,30 +256,19 @@ const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
               errors={errors}
             />
           </div>
-          {/* <div className="col-input">
+          <div className="col-input">
             {companies && (
-              <>
-                <Select
-                  label="Empresa:"
-                  {...register('company')}
-                  name="company"
-                  data={companies}
-                  itemKey="id"
-                  textField="name"
-                  errors={errors}
-                />
-                <Select
-                  label="consorcio:"
-                  {...(register('consortium'), { valueAsNumber: true })}
-                  name="consortium"
-                  data={companies}
-                  itemKey="id"
-                  textField="name"
-                  errors={errors}
-                />
-              </>
+              <Select
+                label="Empresa o Consorcio :"
+                {...register('idCoorp')}
+                name="idCoorp"
+                data={companies}
+                itemKey="newId"
+                textField="name"
+                errors={errors}
+              />
             )}
-          </div> */}
+          </div>
         </div>
 
         <Button

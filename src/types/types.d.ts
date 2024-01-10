@@ -363,6 +363,7 @@ interface CoorpEntity {
   name: string;
   type: string;
   newId: string;
+  urlImg: string;
 }
 export interface Feedback {
   id: number;

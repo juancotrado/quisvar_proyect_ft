@@ -8,6 +8,7 @@ import './sidebarContractCard.css';
 // import { useState } from 'react';
 import {
   NavLink,
+  useLocation,
   // useNavigate
 } from 'react-router-dom';
 
@@ -23,7 +24,7 @@ const SidebarContractCard = ({
 }: SidebarContractCardProps) => {
   const handleEditContract = () =>
     (isOpenCardRegisteContract$.setSubject = { isOpen: true, contract });
-
+  const location = useLocation();
   const handleDeleteContract = () =>
     axiosInstance.delete(`contract/${contract.id}`).then(() => {
       SnackbarUtilities.success('El Contrato fue eliminado exitosamente');
@@ -50,10 +51,10 @@ const SidebarContractCard = ({
       key={contract.id}
     >
       <NavLink
-        to={`contrato/${contract.id}/detalles`}
-        // className={`SidebarContractCard-sidebar-data   ${
-        //   contractId === contract.id && 'contract-selected'
-        // }`}
+        to={{
+          pathname: `contrato/${contract.id}/detalles`,
+          search: location.search,
+        }}
         className={({ isActive }) =>
           `SidebarContractCard-sidebar-data  ${
             isActive && 'contract-selected'

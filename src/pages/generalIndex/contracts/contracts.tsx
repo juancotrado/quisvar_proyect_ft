@@ -7,11 +7,12 @@ import { Contract } from '../../../types/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import { rolSecondLevel } from '../../../utils/roles';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useSearchParams } from 'react-router-dom';
 import SidebarContractCard from '../../../components/contracts/sidebarContractCard/SidebarContractCard';
 
 const Contracts = () => {
   const [contracts, setContracts] = useState<Contract[] | null>(null);
+  const [params] = useSearchParams();
   const { role } = useSelector((state: RootState) => state.userSession);
 
   const addContract = () => {
@@ -20,12 +21,16 @@ const Contracts = () => {
 
   useEffect(() => {
     getContracts();
-  }, []);
+  }, [params]);
 
   const getContracts = () => {
-    axiosInstance.get('contract').then(res => {
-      setContracts(res.data);
-    });
+    const typeCompany = params.get('typeCompany');
+    const id = params.get('idCompany');
+    axiosInstance
+      .get(`/contract/?${id ? `${typeCompany}=${id}` : ''}`)
+      .then(res => {
+        setContracts(res.data);
+      });
   };
 
   const authUsers = rolSecondLevel.includes(role);

@@ -15,9 +15,38 @@
 .generalIndex-header-search-company {
   display: flex;
   gap: 1.5rem;
+  align-items: center;
 }
 .generalIndex-header-figure {
-  width: 1rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  overflow: hidden;
+}
+.generalIndex-header-selector-cotainer {
+  border-radius: 0.3125rem;
+  background: #fff;
+  box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  filter: none;
+}
+.generalIndex-header-selector-cotainer li:hover {
+  background-color: #e9f8ff;
+}
+.generalIndex-header-selector {
+  border-bottom: none;
+  background-color: white;
+}
+.generalIndex-header-selector-text {
+  color: #000;
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%;
+  letter-spacing: 0.02rem;
+}
+.generalIndex-header-option-text {
+  font-size: 1rem;
+  font-weight: 300;
 }
 .generalIndex-header-search {
   display: flex;

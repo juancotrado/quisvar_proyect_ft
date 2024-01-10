@@ -70,7 +70,7 @@ const GeneralData = () => {
       <div className="generalData-main-info">
         <div className="generalData-info-stage">
           {Object.entries(dataInfoStage()).map(([key, value]) => (
-            <div className="generalData-info-stage-content">
+            <div key={key} className="generalData-info-stage-content">
               <h4 className="generalData-info-stage-label">{key}</h4>
               <p className="generalData-info-stage-text">{value}</p>
             </div>

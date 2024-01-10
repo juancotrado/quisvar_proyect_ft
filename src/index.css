@@ -114,7 +114,7 @@ h3 {
 }
 
 ::-webkit-search-cancel-button {
-  background-image: url('./../public/svg/circle-xmark-solid.svg');
+  background-image: url('./../svg/circle-xmark-solid.svg');
   background-repeat: no-repeat;
   background-position: center;
   -webkit-appearance: none;

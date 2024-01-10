@@ -65,7 +65,9 @@ const SidebarContractCard = ({
           <img src="/svg/contracts-icon.svg" alt="W3Schools" />
         </figure>
         <div>
-          <h4 className="SidebarContractCard-sidebar-name">{contract.name}</h4>
+          <h4 className="SidebarContractCard-sidebar-name">
+            {contract.contractNumber}
+          </h4>
           <h5 className="SidebarContractCard-sidebar-cui">{contract.cui}</h5>
         </div>
         {authUsers && (

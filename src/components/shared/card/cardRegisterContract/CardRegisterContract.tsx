@@ -51,6 +51,7 @@ const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
         setIsOpenModal(data.isOpen);
         if (contract) {
           setJurisdictionSelectData(contract.department, contract.province);
+          console.log(contract);
           const {
             id,
             createdAt,
@@ -64,6 +65,8 @@ const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
             shortName,
             indexContract,
             contractNumber,
+            companyId,
+            consortiumId,
           } = contract;
           reset({
             id,
@@ -78,6 +81,9 @@ const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
             province,
             shortName,
             contractNumber,
+            idCoorp: companyId
+              ? 'companyId-' + companyId
+              : 'consortiumId-' + consortiumId,
           });
         } else {
           reset({
@@ -102,6 +108,8 @@ const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
     const [keyName, newIdCoorp] = idCoorp.split('-');
     const body = {
       ...resData,
+      companyId: null,
+      consortiumId: null,
       [keyName]: +newIdCoorp,
     };
     if (id) {

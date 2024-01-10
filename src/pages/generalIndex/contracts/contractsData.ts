@@ -20,8 +20,70 @@ export const contractIndexData: ContractIndexData[] = [
     name: 'EJECUCIÓN CONTRACTUAL',
     nivel: 1,
     nextLevel: [
-      { id: '2.1', name: 'CARTA DEL NÚMERO DE PAGOS', nivel: 2, hasFile: 'no' },
-      { id: '2.2', name: 'CARTAS ENTREGABLES', nivel: 2, hasFile: 'no' },
+      {
+        id: '2.1',
+        name: 'CARTA DEL NÚMERO DE PAGOS',
+        nivel: 2,
+        nextLevel: [
+          {
+            id: '2.1.1',
+            name: 'CARTA DE PAGO 1',
+            nivel: 3,
+            hasFile: 'no',
+          },
+          { id: '2.1.2', name: 'CARTA DE PAGO 2', nivel: 3, hasFile: 'no' },
+          {
+            id: '2.1.3',
+            name: 'CARTA DE PAGO 3',
+            nivel: 3,
+            hasFile: 'no',
+          },
+          {
+            id: '2.1.4',
+            name: 'CARTA DE PAGO 4',
+            nivel: 3,
+            hasFile: 'no',
+          },
+          {
+            id: '2.1.5',
+            name: 'CARTA DE PAGO 5',
+            nivel: 3,
+            hasFile: 'no',
+          },
+        ],
+      },
+      {
+        id: '2.2',
+        name: 'CARTAS ENTREGABLES',
+        nivel: 2,
+        nextLevel: [
+          {
+            id: '2.2.1',
+            name: 'CARTA ENTREGABLE 1',
+            nivel: 3,
+            hasFile: 'no',
+          },
+          { id: '2.2.2', name: 'CARTA ENTREGABLE 2', nivel: 3, hasFile: 'no' },
+          {
+            id: '2.2.3',
+            name: 'CARTA ENTREGABLE 3',
+            nivel: 3,
+            hasFile: 'no',
+          },
+          {
+            id: '2.2.4',
+            name: 'CARTA ENTREGABLE 4',
+            nivel: 3,
+            hasFile: 'no',
+          },
+          {
+            id: '2.2.5',
+            name: 'CARTA ENTREGABLE 5',
+            nivel: 3,
+            hasFile: 'no',
+          },
+        ],
+      },
       {
         id: '2.3',
         name: 'PROGRAMA DE PLAZOS DE ENTREGA SEGÚN CONTRATO',
@@ -163,44 +225,7 @@ export const contractIndexData: ContractIndexData[] = [
         id: '4.3',
         name: 'OFERTA TÉCNICA',
         nivel: 2,
-        nextLevel: [
-          {
-            id: '4.3.1',
-            name: 'Declaración jurada de datos del postor',
-            nivel: 3,
-            hasFile: 'no',
-          },
-          {
-            id: '4.3.2',
-            name: 'Documento que acredite la representación de quien suscribe la oferta',
-            nivel: 3,
-            hasFile: 'no',
-          },
-          {
-            id: '4.3.3',
-            name: 'Declaración jurada de acuerdo con el literal b) del artículo 52 del Reglamento',
-            nivel: 3,
-            hasFile: 'no',
-          },
-          {
-            id: '4.3.4',
-            name: 'Declaración jurada de cumplimiento de los Términos de Referencia contenidos en el numeral 3.1 del Capítulo III de la presente sección',
-            nivel: 3,
-            hasFile: 'no',
-          },
-          {
-            id: '4.3.5',
-            name: 'Declaración jurada de plazo de prestación del servicio de consultoría de obra',
-            nivel: 3,
-            hasFile: 'no',
-          },
-          {
-            id: '4.3.6',
-            name: 'Promesa de consorcio con firmas legalizadas',
-            nivel: 3,
-            hasFile: 'no',
-          },
-        ],
+        hasFile: 'no',
       },
     ],
   },

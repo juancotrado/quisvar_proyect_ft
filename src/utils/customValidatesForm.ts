@@ -30,3 +30,11 @@ export const validateEmail = (value: string) => {
 export const validateDNI = (value: string) => {
   return value.length !== 8 ? 'Ingresar un dni' : true;
 };
+export const validateRuc = (value: string) => {
+  return value.length !== 11 ? 'Ingresar un ruc valido' : true;
+};
+export const validateJPGExtension = (value: any) => {
+  if (!value?.[0]) return 'Inserte una imagen'; // puede que se tenga imagen o no
+  const regex = /\.(jpg|jpeg|png|gif)$/i;
+  return !regex.test(value?.[0].name) ? 'Ingrese un archivo .jpg' : true;
+};

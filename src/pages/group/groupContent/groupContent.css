@@ -32,6 +32,9 @@
   font-size: 0.75rem;
   color: var(--color-secondary);
 }
+.grc-options:hover {
+  background-color: white;
+}
 .grc-selected {
   background-color: white;
   border-bottom: 2px solid var(--color-primary);

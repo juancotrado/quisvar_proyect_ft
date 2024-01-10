@@ -32,6 +32,7 @@ import GroupContent from './group/groupContent/GroupContent';
 import GroupDaily from './group/groupDaily/GroupDaily';
 import GroupWeekend from './group/groupWeekend/GroupWeekend';
 import GroupProjects from './group/groupProjects/GroupProjects';
+import Consortium from './company/consortium/Consortium';
 export {
   CommingSoon,
   ListPersonalTask,
@@ -67,4 +68,5 @@ export {
   GroupProjects,
   GroupDaily,
   GroupWeekend,
+  Consortium,
 };

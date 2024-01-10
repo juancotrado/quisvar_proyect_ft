@@ -31,6 +31,7 @@ import {
   GroupProjects,
   GroupDaily,
   GroupWeekend,
+  Consortium,
 } from '../pages';
 import { ProtectedRoute } from '../components';
 import ProtectedRole from '../components/protected/ProtectedRole/ProtectedRole';
@@ -78,6 +79,7 @@ const Navigation = () => {
                 path="informacion/:infoId"
                 element={<CompanyInformation />}
               />
+              <Route path="consorcio/:id" element={<Consortium />} />
             </Route>
             <Route path="/especialistas" element={<Specialist />}>
               <Route

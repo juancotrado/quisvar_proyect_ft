@@ -631,6 +631,7 @@ export type ConsortiumType = {
   id: number;
   manager: string;
   name: string;
+  img?: string;
   companies: CompanyForm[];
 };
 
@@ -973,6 +974,7 @@ export type Companies = {
   activities?: Date;
   SEE?: Date;
   CCI: string;
+  img?: string | FileList;
   description: string;
 };
 export type SpecialistProject = {

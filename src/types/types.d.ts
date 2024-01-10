@@ -278,8 +278,7 @@ export interface ContractForm {
   shortName: string;
   createdAt: string;
   indexContract: string;
-  company: number;
-  consortium: number;
+  idCoorp: string;
 }
 
 interface StageForm {

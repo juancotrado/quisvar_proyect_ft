@@ -80,6 +80,7 @@ export const isOpenCardAssing$ = new SubjectManager<OpenAssignCard>();
 export const isOpenCardAddGroup$ = new SubjectManager<OpenAddGroup>();
 export const isOpenCardGenerateReport$ = new SubjectManager<boolean>();
 export const isOpenCardCompany$ = new SubjectManager<boolean>();
+export const isOpenCardConsortium$ = new SubjectManager<boolean>();
 export const isOpenCardSpecialist$ = new SubjectManager<CardSpecialistProps>();
 export const isOpenCardViewPdf$ = new SubjectManager<CardViewProps>();
 export const isOpenCardFiles$ = new SubjectManager<boolean>();

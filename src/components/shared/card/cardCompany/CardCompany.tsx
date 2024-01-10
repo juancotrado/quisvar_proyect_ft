@@ -8,6 +8,10 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import Button from '../../button/Button';
 import { Companies } from '../../../../types/types';
 import { axiosInstance } from '../../../../services/axiosInstance';
+import {
+  validateJPGExtension,
+  validateRuc,
+} from '../../../../utils/customValidatesForm';
 type CardCompanyProps = {
   onSave?: () => void;
 };
@@ -25,7 +29,7 @@ const CardCompany = ({ onSave }: CardCompanyProps) => {
   const closeFunctions = () => {
     setIsOpen(false);
     reset({});
-    onSave?.();
+    // onSave?.();
   };
   useEffect(() => {
     handleIsOpen.current = isOpenCardCompany$.getSubject.subscribe(value =>
@@ -35,8 +39,33 @@ const CardCompany = ({ onSave }: CardCompanyProps) => {
       handleIsOpen.current.unsubscribe();
     };
   }, []);
-  const onSubmit: SubmitHandler<Companies> = async data => {
-    axiosInstance.post(`/companies`, data).then(closeFunctions);
+  const onSubmit: SubmitHandler<Companies> = data => {
+    const img = data.img?.[0];
+    const formData = new FormData();
+    formData.append('img', img ?? '');
+    formData.append('name', data.name);
+    formData.append('ruc', data.ruc);
+    formData.append('manager', data.manager);
+    formData.append('address', data.address);
+    formData.append('departure', data.departure);
+    if (data.inscription) {
+      formData.append('inscription', data.inscription.toString());
+    }
+    if (data.activities) {
+      formData.append('activities', data.activities.toString());
+    }
+    if (data.SEE) {
+      formData.append('SEE', data.SEE.toString());
+    }
+    formData.append('CCI', data.CCI);
+    formData.append('description', data.description);
+    const headers = {
+      'Content-type': 'multipart/form-data',
+    };
+    axiosInstance.post(`/companies`, formData, { headers }).then(() => {
+      closeFunctions();
+      onSave?.();
+    });
   };
   return (
     <Modal size={50} isOpenProp={isOpen}>
@@ -55,7 +84,7 @@ const CardCompany = ({ onSave }: CardCompanyProps) => {
           <Input
             label="Ruc"
             type="number"
-            {...register('ruc', { required: true, maxLength: 11 })}
+            {...register('ruc', { validate: validateRuc })}
             name="ruc"
             errors={errors}
           />
@@ -106,12 +135,21 @@ const CardCompany = ({ onSave }: CardCompanyProps) => {
           />
           <Input label="CCI" {...register('CCI')} name="CCI" errors={errors} />
         </div>
-        <Input
-          label="Actividad economica"
-          {...register('description')}
-          name="description"
-          errors={errors}
-        />
+        <div className="company-col">
+          <Input
+            label="Actividad economica"
+            {...register('description')}
+            name="description"
+            errors={errors}
+          />
+          <Input
+            {...register('img', { validate: validateJPGExtension })}
+            placeholder=""
+            errors={errors}
+            label="Imagen de la empresa (.jpg)"
+            type="file"
+          />
+        </div>
         <Button text="Guardar" type="submit" />
       </form>
     </Modal>

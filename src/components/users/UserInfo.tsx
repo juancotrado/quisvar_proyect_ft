@@ -1,6 +1,5 @@
 import { User } from '../../types/types';
 import Button from '../shared/button/Button';
-import ButtonDelete from '../shared/button/ButtonDelete';
 import './userinfo.css';
 import { useState } from 'react';
 import SelectOptions from '../shared/select/Select';

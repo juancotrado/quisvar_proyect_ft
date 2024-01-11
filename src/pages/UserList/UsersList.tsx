@@ -176,7 +176,6 @@ const UsersList = () => {
               key={user.id}
               user={user}
               index={index}
-              getUsers={getUsers}
               onUpdate={() => editUser(user)}
               onPrint={() => printReport(user.id)}
               onViewDocs={() => handleViewDocs(user)}
@@ -207,12 +206,7 @@ const UsersList = () => {
           ))}
       </div>
       <CardAddEquipment onSave={() => getWorkStations()} />
-      <CardAssign
-        onSave={() => getWorkStations()}
-        // onClose={() => {
-        //   setUserData(null);
-        // }}
-      />
+      <CardAssign onSave={() => getWorkStations()} />
       <CardGenerateReport employeeId={printReportId} />
       {generalFiles && (
         <CardOpenFile

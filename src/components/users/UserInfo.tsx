@@ -6,15 +6,16 @@ import { useState } from 'react';
 import SelectOptions from '../shared/select/Select';
 import { axiosInstance } from '../../services/axiosInstance';
 import { getListByRole, verifyByRole } from '../../utils/roles';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store';
 import { getIconDefault, getRole } from '../../utils/tools';
+import { SnackbarUtilities } from '../../utils/SnackbarManager';
+import { getListUsers } from '../../store/slices/listUsers.slice';
 
 interface UserInfoProps {
   user: User;
   index: number;
   onUpdate?: () => void;
-  getUsers?: () => void;
   onPrint?: () => void;
   onViewDocs?: () => void;
 }
@@ -22,7 +23,6 @@ const UserInfo = ({
   user,
   index,
   onUpdate,
-  getUsers,
   onPrint,
   onViewDocs,
 }: UserInfoProps) => {
@@ -30,13 +30,24 @@ const UserInfo = ({
   const [openRole, setOpenRole] = useState(false);
   const { userSession } = useSelector((state: RootState) => state);
   const { profile } = user;
-  const toggleSwitch = () => {
-    setIsOn(!isOn);
+  const dispatch: AppDispatch = useDispatch();
+
+  const getUsers = () => {
+    dispatch(getListUsers());
   };
 
+  const sendInfo = () => {
+    const { firstName, lastName } = user.profile;
+    SnackbarUtilities.info(
+      `Usuario ${firstName} ${lastName} ${isOn ? 'archivado' : 'activado'}`
+    );
+  };
   const handleChangeStatus = async () => {
     const _data = { status: !isOn, id: user.id };
-    await axiosInstance.patch(`users/${user.id}`, _data).then(getUsers);
+    await axiosInstance.patch(`users/${user.id}`, _data).then(() => {
+      setIsOn(!isOn);
+      dispatch(getListUsers(sendInfo));
+    });
   };
 
   const handleChangeRole = async ({
@@ -94,10 +105,7 @@ const UserInfo = ({
           <div
             className="switch-status"
             data-ison={isOn}
-            onClick={() => {
-              toggleSwitch();
-              handleChangeStatus();
-            }}
+            onClick={handleChangeStatus}
           >
             <div className={`handle-statuts ${isOn && 'handle-on'}`}></div>
           </div>

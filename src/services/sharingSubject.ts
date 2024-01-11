@@ -8,6 +8,7 @@ import {
   Specialists,
   SubTask,
   TrainingSpecialty,
+  User,
   WorkStation,
   licenseList,
 } from '../types/types';
@@ -69,6 +70,10 @@ interface OpenAddGroup {
   isOpen: boolean;
   id: number;
 }
+interface OpenViewDocs {
+  isOpen: boolean;
+  user: User;
+}
 export const loader$ = new SubjectManager<boolean>();
 export const toggle$ = new SubjectManager<boolean>();
 export const isOpenModal$ = new SubjectManager<boolean>();
@@ -90,7 +95,7 @@ export const isOpenAddTraining$ =
   new SubjectManager<OpenEspecialistTrainingDescription>();
 export const isOpenButtonDelete$ = new SubjectManager<OpenButtonDelete>();
 export const isOpenCardLicense$ = new SubjectManager<CardLicenseProps>();
-export const isOpenViewDocs$ = new SubjectManager<boolean>();
+export const isOpenViewDocs$ = new SubjectManager<OpenViewDocs>();
 export const isOpenCardRegisteProject$ =
   new SubjectManager<CardRegisteProject>();
 export const isOpenCardRegisteContract$ =

@@ -5,23 +5,29 @@ import Modal from '../../../portal/Modal';
 import { isOpenViewDocs$ } from '../../../../services/sharingSubject';
 import { Subscription } from 'rxjs';
 import UploadUserFile from '../../../userList/uploadUserFile/UploadUserFile';
-import { User } from '../../../../types/types';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch, RootState } from '../../../../store';
+import { TypeFileUser, User } from '../../../../types/types';
+import { axiosInstance } from '../../../../services/axiosInstance';
+import { useDispatch } from 'react-redux';
 import { getListUsers } from '../../../../store/slices/listUsers.slice';
+import { AppDispatch } from '../../../../store';
 
-interface CardViewProps {
-  user: User | null;
+interface UserDocument {
+  [key: string]: {
+    fileName: string | null | undefined;
+    typeFile: TypeFileUser;
+  };
 }
 
-const CardViewDocs = ({ user }: CardViewProps) => {
-  const { listUsers } = useSelector((state: RootState) => state);
-  const [isOpen, setIsOpen] = useState(false);
-  const [docs, setDocs] = useState<User>();
+const CardViewDocs = () => {
   const dispatch: AppDispatch = useDispatch();
+  const [user, setUser] = useState<User | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
   const handleIsOpen = useRef<Subscription>(new Subscription());
-  const getUsers = async () => {
-    dispatch(getListUsers());
+  const updateUser = () => {
+    axiosInstance.get(`/users/${user?.id}`).then(res => {
+      setUser(res.data);
+      dispatch(getListUsers());
+    });
   };
 
   const closeFunctions = () => {
@@ -29,20 +35,28 @@ const CardViewDocs = ({ user }: CardViewProps) => {
   };
 
   useEffect(() => {
-    if (listUsers && listUsers.length > 0) {
-      const filterUser = listUsers?.find(data => data.id === user?.id);
-      setDocs(filterUser);
-    }
-  }, [user, listUsers]);
-
-  useEffect(() => {
-    handleIsOpen.current = isOpenViewDocs$.getSubject.subscribe(value =>
-      setIsOpen(value)
-    );
+    handleIsOpen.current = isOpenViewDocs$.getSubject.subscribe(data => {
+      const { isOpen, user } = data;
+      setUser(user);
+      setIsOpen(isOpen);
+    });
     return () => {
       handleIsOpen.current.unsubscribe();
     };
   }, []);
+
+  const dataDocuments: UserDocument = {
+    ['Curriculum Vitae']: { fileName: user?.cv, typeFile: 'cv' },
+    ['Declaración Jurada']: {
+      fileName: user?.declaration,
+      typeFile: 'declaration',
+    },
+    ['Contrato']: { fileName: user?.contract, typeFile: 'contract' },
+    ['Declaracion Jurada al retirarse']: {
+      fileName: user?.withdrawalDeclaration,
+      typeFile: 'withdrawalDeclaration',
+    },
+  };
 
   return (
     <Modal size={50} isOpenProp={isOpen}>
@@ -52,33 +66,19 @@ const CardViewDocs = ({ user }: CardViewProps) => {
         </span>
         <h1>Documentos</h1>
         <div className="vd-docs-area">
-          <div className="vd-list-text">
-            <label>Curriculum Vitae</label>
-            <UploadUserFile
-              fileName={docs?.cv}
-              typeFile="cv"
-              userId={docs?.id}
-              onSave={getUsers}
-            />
-          </div>
-          <div className="vd-list-text">
-            <label>Declaración Jurada</label>
-            <UploadUserFile
-              fileName={docs?.declaration}
-              typeFile="declaration"
-              userId={docs?.id}
-              onSave={getUsers}
-            />
-          </div>
-          <div className="vd-list-text">
-            <label>Contrato</label>
-            <UploadUserFile
-              fileName={docs?.contract}
-              typeFile="contract"
-              userId={docs?.id}
-              onSave={getUsers}
-            />
-          </div>
+          {Object.entries(dataDocuments).map(
+            ([key, { fileName, typeFile }]) => (
+              <div className="vd-list-text">
+                <label>{key}</label>
+                <UploadUserFile
+                  fileName={fileName}
+                  typeFile={typeFile}
+                  userId={user?.id}
+                  onSave={updateUser}
+                />
+              </div>
+            )
+          )}
         </div>
       </div>
     </Modal>

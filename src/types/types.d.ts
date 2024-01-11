@@ -188,6 +188,7 @@ export type User = {
   contract: string | null;
   cv: string | null;
   declaration: string | null;
+  withdrawalDeclaration: string | null;
   ruc: string;
   address: string;
   equipment?: {
@@ -327,7 +328,11 @@ export interface Task extends DataTask {
 export interface Task2 extends DataTask {
   tasks_3: DataTask[];
 }
-export type TypeFileUser = 'contract' | 'cv' | 'declaration';
+export type TypeFileUser =
+  | 'contract'
+  | 'cv'
+  | 'declaration'
+  | 'withdrawalDeclaration';
 
 // export interface SubTask {
 //   id: number;

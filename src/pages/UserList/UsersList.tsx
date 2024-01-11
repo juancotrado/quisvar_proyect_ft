@@ -34,7 +34,6 @@ import { axiosInstance } from '../../services/axiosInstance';
 const UsersList = () => {
   const dispatch: AppDispatch = useDispatch();
   const { listUsers: users } = useSelector((state: RootState) => state);
-  const [userDocs, setUserDocs] = useState<User | null>(null);
   const [userData, setUserData] = useState<User | null>(null);
   const [isArchived, setIsArchived] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -87,9 +86,8 @@ const UsersList = () => {
   const handleOpenCardFiles = () => {
     isOpenCardFiles$.setSubject = true;
   };
-  const handleViewDocs = (value: User) => {
-    setUserDocs(value);
-    isOpenViewDocs$.setSubject = true;
+  const handleViewDocs = (user: User) => {
+    isOpenViewDocs$.setSubject = { isOpen: true, user };
   };
   const handleOpenAddEquipment = (isOpen: boolean, data?: WorkStation) => {
     isOpenCardAddEquipment$.setSubject = {
@@ -215,7 +213,7 @@ const UsersList = () => {
           getGeneralFiles={getGeneralFiles}
         />
       )}
-      <CardViewDocs user={userDocs} />
+      <CardViewDocs />
       <CardRegisterUser
         user={userData}
         onClose={() => {

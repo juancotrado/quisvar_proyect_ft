@@ -61,8 +61,8 @@ const UserInfo = ({
   const roleLimit = verifyByRole(user.role, userSession.role);
 
   return (
-    <div className="user-container">
-      <div className="col-span user-grid email-container ">
+    <div className="user-container header-grid-row">
+      <div className="col-span  email-container ">
         <span className="user-index">{index + 1}</span>
         <figure className="user-profile-figure">
           <img src={getIconDefault(user.profile.dni)} alt={user.email} />
@@ -100,6 +100,8 @@ const UserInfo = ({
           />
         )}
       </div>
+      <div className="col-span job-container">{profile.job}</div>
+      <div className="col-span phone-container">{profile.phone}</div>
       <div className="col-span">
         {user.id !== userSession.id && (
           <div
@@ -111,27 +113,30 @@ const UserInfo = ({
           </div>
         )}
       </div>
-      <div className="col-span phone-container">{profile.phone}</div>
       <div className="col-span">
         <Button className="role-btn" icon="folder-icon" onClick={onViewDocs} />
       </div>
       <div className="col-span actions-container">
         {roleLimit && (
           <>
-            <Button icon="pencil" className="role-btn" onClick={onUpdate} />
-            <ButtonDelete
+            <Button icon="pencil" className="role-btn-big" onClick={onUpdate} />
+            {/* <ButtonDelete
               icon="trash"
               disabled={user.id === userSession.id}
               url={`/users/${user.id}`}
               className="role-delete-icon"
               onSave={getUsers}
               passwordRequired
-            />
+            /> */}
           </>
         )}
       </div>
       <div className="col-span">
-        <Button className="role-btn" icon="print-report" onClick={onPrint} />
+        <Button
+          className="role-btn-big"
+          icon="print-report"
+          onClick={onPrint}
+        />
       </div>
     </div>
   );

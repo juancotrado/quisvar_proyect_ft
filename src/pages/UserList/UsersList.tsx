@@ -161,14 +161,15 @@ const UsersList = () => {
             </div>
           </div>
         </div>
-        <div className="header-container-list">
-          <div className="header-list-text user-grid">USUARIO</div>
+        <div className="header-container-list header-grid-row">
+          <div className="header-list-text">USUARIO</div>
           <div className="header-list-text">ROL DE TRABAJO</div>
-          <div className="header-list-text">ESTADO</div>
+          <div className="header-list-text">PROFESIÓN</div>
           <div className="header-list-text">CELULAR</div>
-          <div className="header-list-text">Documentos</div>
+          <div className="header-list-text">ESTADO</div>
+          <div className="header-list-text">DOCUMENTOS</div>
           <div className="header-list-text">EDITAR</div>
-          <div className="header-list-text">Reportes</div>
+          <div className="header-list-text">REPORTES</div>
         </div>
         <div style={{ width: '100%', height: '750px', overflowY: 'auto' }}>
           {filterList.map((user, index) => (

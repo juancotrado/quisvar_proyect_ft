@@ -2,7 +2,6 @@ import { ContractIndexData } from '../../../types/types';
 import './dropdownLevelContract.css';
 import colors from '../../../utils/json/colorsContract.json';
 import UploadFileInput from '../../shared/uploadFileInput/UploadFileInput';
-import FileNameContainer from '../../shared/fileNameContainer/FileNameContainer';
 import { URL, axiosInstance } from '../../../services/axiosInstance';
 import { ChangeEvent } from 'react';
 
@@ -37,13 +36,16 @@ const DropdownLevelContract = ({
         .then(() => editFileContractIndex(level.id, 'yes'));
     }
   };
-  const handleDeleteFile = () => {
+  const handleDeleteFile = (subLevel: ContractIndexData) => {
     axiosInstance
       .delete(
-        `/contract/${idContract}/files?filename=${level.id} ${level.name}.pdf`
+        `/contract/${idContract}/files?filename=${subLevel.id} ${subLevel.name}.pdf`
       )
-      .then(() => editFileContractIndex(level.id, 'no'));
+      .then(() => editFileContractIndex(subLevel.id, 'no'));
   };
+
+  const noHaveFile = (subLevel: ContractIndexData) =>
+    !subLevel.hasFile || subLevel.hasFile === 'no';
   return (
     <div
       className={`${!firstLevel && 'DropdownLevelContract-dropdown-content'}`}
@@ -51,19 +53,12 @@ const DropdownLevelContract = ({
       <ul className={`${!firstLevel && 'DropdownLevelContract-dropdown-sub'}`}>
         {level.hasFile ? (
           <div className="DropdownLevelContract-upload-file">
-            {level.hasFile === 'no' ? (
+            {level.hasFile === 'no' && (
               <UploadFileInput
                 name="Cargar documento"
                 subName="O arrastre y suelte el archivo aquí"
                 accept="application/pdf"
                 onChange={handleUploadFile}
-              />
-            ) : (
-              <FileNameContainer
-                fileName={'Documento'}
-                icon="pdf-icon"
-                Url={`${URL}/index/contracts/${idContract}/${level.id} ${level.name}.pdf`}
-                onDelete={handleDeleteFile}
               />
             )}
           </div>
@@ -75,21 +70,49 @@ const DropdownLevelContract = ({
                 style={style}
               >
                 <div className={`DropdownLevelContract-section `}>
-                  <img
-                    src="/svg/down.svg"
-                    className={`DropdownLevelContract-dropdown-arrow`}
-                  />
-                  <input
-                    type="checkbox"
-                    className="DropdownLevelContract-dropdown-check"
-                    defaultChecked={false}
-                  />
-                  <h4 className={`DropdownLevelContract-sub-list-name`}>
-                    <span className="DropdownLevelContract-sub-list-span">
-                      {subLevel.id}
-                    </span>
-                    {subLevel.name}
-                  </h4>
+                  <div className="DropdownLevelContract-section-names">
+                    <img
+                      src="/svg/down.svg"
+                      className={`DropdownLevelContract-dropdown-arrow ${
+                        !noHaveFile(subLevel) && 'DropdownLevelContract-hide'
+                      }`}
+                    />
+                    {noHaveFile(subLevel) && (
+                      <input
+                        type="checkbox"
+                        className="DropdownLevelContract-dropdown-check"
+                        defaultChecked={false}
+                      />
+                    )}
+                    <h4 className={`DropdownLevelContract-sub-list-name`}>
+                      <span className="DropdownLevelContract-sub-list-span">
+                        {subLevel.id}
+                      </span>
+                      {subLevel.name}
+                    </h4>
+                  </div>
+                  {subLevel.hasFile === 'yes' && (
+                    <div className="DropdownLevelContract-file-container">
+                      <a
+                        href={`${URL}/index/contracts/${idContract}/${subLevel.id} ${subLevel.name}.pdf`}
+                        target="_blank"
+                        className="DropdownLevelContract-file-container-anchor"
+                      >
+                        <figure className="DropdownLevelContract-figure">
+                          <img src="/svg/pdf-red.svg" alt="W3Schools" />
+                        </figure>
+                        <span className="DropdownLevelContract-file-container-name">
+                          Ver pdf
+                        </span>
+                      </a>
+                      <figure
+                        className="DropdownLevelContract-figure DropdownLevelContract-figure-trash"
+                        onClick={() => handleDeleteFile(subLevel)}
+                      >
+                        <img src="/svg/trash-gray.svg" alt="W3Schools" />
+                      </figure>
+                    </div>
+                  )}
                 </div>
               </div>
 

@@ -26,7 +26,12 @@ const ContractsLevels = () => {
     const contractIndex: ContractIndexData[] = JSON.parse(
       contract?.indexContract
     );
-    return { id: '0', name: '', nivel: 0, nextLevel: contractIndex };
+    return {
+      id: '0',
+      name: '',
+      nivel: 0,
+      nextLevel: contractIndex,
+    };
   };
   const editFileContractIndex = (id: string, value: 'yes' | 'no') => {
     if (!contract) return;

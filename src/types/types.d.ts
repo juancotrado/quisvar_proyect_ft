@@ -635,9 +635,11 @@ export type ConsortiumType = {
   manager: string;
   name: string;
   img?: string;
-  companies: CompanyForm[];
+  companies: SubCompany[];
 };
-
+type SubCompany = {
+  companies: Pick<Companies, 'id' | 'name' | 'img'>;
+};
 export type ExpertType = {
   id: number;
   career: string;
@@ -973,11 +975,11 @@ export type Companies = {
   manager: string;
   address: string;
   departure: string;
-  inscription?: Date;
-  activities?: Date;
-  SEE?: Date;
+  inscription?: Date | string;
+  activities?: Date | string;
+  SEE?: Date | string;
   CCI: string;
-  img?: string | FileList;
+  img?: string;
   description: string;
 };
 export type SpecialistProject = {

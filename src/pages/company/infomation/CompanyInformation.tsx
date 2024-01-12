@@ -2,8 +2,7 @@ import { useParams } from 'react-router-dom';
 import './companyInformation.css';
 import { useCallback, useEffect, useState } from 'react';
 import { Companies } from '../../../types/types';
-import { axiosInstance } from '../../../services/axiosInstance';
-import { getIconDefault } from '../../../utils/tools';
+import { URL, axiosInstance } from '../../../services/axiosInstance';
 // import { AnimatePresence, motion } from 'framer-motion';
 
 const CompanyInformation = () => {
@@ -35,7 +34,11 @@ const CompanyInformation = () => {
           <span className="company-main-img">
             <img
               className="company-img-size"
-              src={data ? getIconDefault(data?.name) : '/svg/user_icon.svg'}
+              src={
+                data?.img
+                  ? `${URL}/images/img/companies/${data.img}`
+                  : '/svg/user_icon.svg'
+              }
             />
           </span>
           <div className="company-info-text">

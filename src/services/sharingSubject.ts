@@ -70,6 +70,18 @@ interface OpenAddGroup {
   isOpen: boolean;
   id: number;
 }
+interface OpenAddCompany {
+  isOpen: boolean;
+  id: number;
+}
+interface OpenCardCompanies {
+  isOpen: boolean;
+  id?: number;
+}
+interface OpenCardConsortium {
+  isOpen: boolean;
+  id?: number;
+}
 interface OpenViewDocs {
   isOpen: boolean;
   user: User;
@@ -83,9 +95,10 @@ export const isOpenCardAddEquipment$ =
   new SubjectManager<CardWorkStationProps>();
 export const isOpenCardAssing$ = new SubjectManager<OpenAssignCard>();
 export const isOpenCardAddGroup$ = new SubjectManager<OpenAddGroup>();
+export const isOpenCardAddCompany$ = new SubjectManager<OpenAddCompany>();
 export const isOpenCardGenerateReport$ = new SubjectManager<boolean>();
-export const isOpenCardCompany$ = new SubjectManager<boolean>();
-export const isOpenCardConsortium$ = new SubjectManager<boolean>();
+export const isOpenCardCompany$ = new SubjectManager<OpenCardCompanies>();
+export const isOpenCardConsortium$ = new SubjectManager<OpenCardConsortium>();
 export const isOpenCardSpecialist$ = new SubjectManager<CardSpecialistProps>();
 export const isOpenCardViewPdf$ = new SubjectManager<CardViewProps>();
 export const isOpenCardFiles$ = new SubjectManager<boolean>();

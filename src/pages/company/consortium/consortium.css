@@ -1,0 +1,28 @@
+.consortium-table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.consortium-header {
+  display: grid;
+  grid-template-columns: 0.5fr 5fr 0.5fr;
+  background-color: #d7e2ed;
+  padding: 0.5rem 0.4rem;
+}
+
+.consortium-member {
+  font-size: 0.6875rem;
+  font-style: normal;
+  font-weight: 600;
+}
+.consortium-company-members {
+  display: grid;
+  grid-template-columns: 0.5fr 5fr 0.5fr;
+  padding: 0rem 0.625rem;
+  align-items: center;
+}
+.consortium-company-name {
+  font-size: 0.8rem;
+  font-weight: 400;
+}

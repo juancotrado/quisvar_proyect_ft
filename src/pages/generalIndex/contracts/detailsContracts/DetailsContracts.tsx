@@ -19,7 +19,7 @@ const DetailsContracts = () => {
     ['Nombre de Contrato']: contract.contractNumber,
     ['Nomenclatura']: contract.name,
     ['Nombre largo del proyecto']: contract.projectName,
-    ['Fecha de Publicacion']: _date(new Date(contract.createdAt)),
+    ['Fecha de firma de contrato']: _date(new Date(contract.createdAt)),
   };
   const handleDelete = () => {
     axiosInstance

@@ -41,11 +41,11 @@ const UserInfo = ({
       `Usuario ${firstName} ${lastName} ${isOn ? 'archivado' : 'activado'}`
     );
   };
-  const handleChangeStatus = async () => {
+  const handleChangeStatus = () => {
     const _data = { status: !isOn, id: user.id };
-    await axiosInstance.patch(`users/${user.id}`, _data).then(() => {
+    axiosInstance.patch(`users/${user.id}`, _data).then(() => {
       setIsOn(!isOn);
-      dispatch(getListUsers(sendInfo));
+      dispatch(getListUsers()).then(sendInfo);
     });
   };
 

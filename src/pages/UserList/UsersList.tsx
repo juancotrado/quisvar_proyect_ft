@@ -31,7 +31,7 @@ import { getListUsers } from '../../store/slices/listUsers.slice';
 import CardAddEquipment from '../../components/shared/card/CardAddEquipment/CardAddEquipment';
 import { axiosInstance } from '../../services/axiosInstance';
 
-const UsersList = () => {
+export const UsersList = () => {
   const dispatch: AppDispatch = useDispatch();
   const { listUsers: users } = useSelector((state: RootState) => state);
   const [userData, setUserData] = useState<User | null>(null);
@@ -229,5 +229,3 @@ const UsersList = () => {
     </div>
   );
 };
-
-export default UsersList;

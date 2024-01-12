@@ -1,4 +1,6 @@
-import { typeStatus } from '../../../../pages/mail/utils';
+// import { typeStatus } from '../../../../pages/mail/models/definitions.models';
+// import { typeStatus } from '../../../../pages';
+import { typeStatus } from '../../../../pages/mail/models';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { MessageSender, MessageType, User } from '../../../../types/types';
 import formatDate from '../../../../utils/formatDate';

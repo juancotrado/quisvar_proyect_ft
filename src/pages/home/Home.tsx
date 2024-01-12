@@ -8,7 +8,7 @@ import { licenseList } from '../../types/types';
 import formatDate from '../../utils/formatDate';
 const GMT = 5 * 60 * 60 * 1000;
 
-const Home = () => {
+export const Home = () => {
   const { userSession } = useSelector((state: RootState) => state);
   const [licenseData, setLicenseData] = useState<licenseList>();
   const [viewCard, setViewCard] = useState<boolean>(false);
@@ -162,5 +162,3 @@ const Home = () => {
     </div>
   );
 };
-
-export default Home;

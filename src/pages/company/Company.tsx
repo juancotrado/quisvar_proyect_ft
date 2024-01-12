@@ -14,7 +14,8 @@ import { URL } from '../../services/axiosInstance';
 import CardConsortium from '../../components/shared/card/cardConsortium/CardConsortium';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import DotsRight from '../../components/shared/dotsRight/DotsRight';
-const Company = () => {
+
+export const Company = () => {
   const [companies, setCompanies] = useState<Companies[]>();
   const [consortiums, setConsortiums] = useState<any[]>();
   const [swap, setSwap] = useState<boolean>(false);
@@ -162,5 +163,3 @@ const Company = () => {
     </div>
   );
 };
-
-export default Company;

@@ -29,7 +29,7 @@ const DEFAULT_COMPANY: CoorpEntity = {
   newId: '',
   urlImg: '/img/quisvar_logo.png',
 };
-const GeneralIndex = () => {
+export const GeneralIndex = () => {
   const [coorpEntity, setCoorpEntity] = useState<CoorpEntity[] | null>(null);
   const [urlImgCompany, setUrlImgCompany] = useState('');
   const [params, setParams] = useSearchParams();
@@ -121,5 +121,3 @@ const GeneralIndex = () => {
     </div>
   );
 };
-
-export default GeneralIndex;

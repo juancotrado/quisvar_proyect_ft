@@ -1,7 +1,7 @@
 import './notFound.css';
 import { useNavigate } from 'react-router-dom';
 
-const NotFound = () => {
+export const NotFound = () => {
   const navigation = useNavigate();
 
   const handleReturn = () => navigation('login');

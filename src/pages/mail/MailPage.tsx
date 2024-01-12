@@ -18,10 +18,10 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { CardGenerateReport, CardLicense } from '../../components';
 import { isOpenCardLicense$ } from '../../services/sharingSubject';
-import { LicenseListHeader, LicenseListItem } from '..';
+import { LicenseListHeader, LicenseListItem } from './components';
 
 const InitTMail: MailType['type'] = 'RECEIVER';
-const MailPage = () => {
+export const MailPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { userSession: user } = useSelector((state: RootState) => state);
@@ -363,5 +363,3 @@ const MailPage = () => {
     </div>
   );
 };
-
-export default MailPage;

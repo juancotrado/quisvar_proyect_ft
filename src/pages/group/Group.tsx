@@ -6,7 +6,7 @@ import { Group as GroupData } from '../../types/types';
 import { GroupBtnAdd, GroupListBar } from '../../components';
 import { Outlet } from 'react-router-dom';
 
-const Group = () => {
+export const Group = () => {
   const [groups, setGroups] = useState<GroupData[]>();
   const [add, setAdd] = useState<boolean>(false);
   const getgroups = useCallback(async () => {
@@ -47,5 +47,3 @@ const Group = () => {
     </div>
   );
 };
-
-export default Group;

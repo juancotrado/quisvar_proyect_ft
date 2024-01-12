@@ -20,14 +20,13 @@ import {
   getLicenses,
 } from '../../types/types';
 import { SocketContext } from '../../context/SocketContex';
-import { generateReportRange } from './GenerateReportRange';
 // import { generateReportDaily } from './GenerateReportDaily';
 // import html2canvas from 'html2canvas';
 import { isOpenCardViewPdf$ } from '../../services/sharingSubject';
-import { generateReportDaily } from './GenerateReportDaily';
 import { SnackbarUtilities } from '../../utils/SnackbarManager';
 import CloseIcon from '../../components/shared/closeIcon/CloseIcon';
 import { getListUsers } from '../../store/slices/listUsers.slice';
+import { generateReportDaily, generateReportRange } from './excelGenerator';
 interface sendItemsProps {
   usersId: number;
   status: string;
@@ -62,7 +61,7 @@ interface RangeDate {
   endDate: string;
 }
 const today = new Date();
-const Attendance = () => {
+export const Attendance = () => {
   const dispatch: AppDispatch = useDispatch();
   const [sendItems, setSendItems] = useState<sendItemsProps[]>([]);
   const [callLists, setCallLists] = useState<ListAttendance[] | null>(null);
@@ -459,5 +458,3 @@ const Attendance = () => {
     </div>
   );
 };
-
-export default Attendance;

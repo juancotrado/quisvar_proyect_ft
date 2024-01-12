@@ -6,7 +6,7 @@ import { ReviewList } from '../../types/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 
-const NotificationsList = () => {
+export const NotificationsList = () => {
   const { userSession } = useSelector((state: RootState) => state);
   const [subTasks, setSubTasks] = useState<ReviewList[]>();
 
@@ -34,5 +34,3 @@ const NotificationsList = () => {
     </div>
   );
 };
-
-export default NotificationsList;

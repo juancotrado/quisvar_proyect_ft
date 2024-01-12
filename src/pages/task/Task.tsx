@@ -10,7 +10,7 @@ import {
 } from '../../components';
 import { SocketContext } from '../../context/SocketContex';
 import LoaderForComponent from '../../components/shared/loaderForComponent/LoaderForComponent';
-const Task = () => {
+export const Task = () => {
   const [task, setTask] = useState<SubTask | null>(null);
   const socket = useContext(SocketContext);
 
@@ -73,5 +73,3 @@ const Task = () => {
     </div>
   );
 };
-
-export default Task;

@@ -1,38 +1,5 @@
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
-import {
-  Dashboard,
-  Home,
-  Login,
-  NotFound,
-  Specialities,
-  UsersList,
-  NotificationsList,
-  ListPersonalTask,
-  CommingSoon,
-  Attendance,
-  DetailsPage,
-  BudgetsPage,
-  LicensePage,
-  Company,
-  Specialist,
-  SpecialistInformation,
-  CompanyInformation,
-  GeneralIndex,
-  Contracts,
-  MailPage,
-  MessagePage,
-  Stage,
-  Project,
-  BasicsPage,
-  Task,
-  CustomizableInvoice,
-  Group,
-  GroupContent,
-  GroupProjects,
-  GroupDaily,
-  GroupWeekend,
-  Consortium,
-} from '../pages';
+
 import { ProtectedRoute } from '../components';
 import ProtectedRole from '../components/protected/ProtectedRole/ProtectedRole';
 import {
@@ -40,8 +7,42 @@ import {
   rolThirdLevel,
   rolsFirstLevel,
 } from '../utils/roles';
-import DetailsContracts from '../pages/generalIndex/contracts/detailsContracts/DetailsContracts';
-import ContractsLevels from '../pages/generalIndex/contracts/contractsLevels/ContractsLevels';
+import {
+  Attendance,
+  BasicsPage,
+  BudgetsPage,
+  CommingSoon,
+  Company,
+  CompanyInformation,
+  Consortium,
+  Contracts,
+  ContractsLevels,
+  CustomizableInvoice,
+  Dashboard,
+  DetailsContracts,
+  DetailsPage,
+  GeneralIndex,
+  Group,
+  GroupContent,
+  GroupDaily,
+  GroupProjects,
+  GroupWeekend,
+  Home,
+  LicensePage,
+  ListPersonalTask,
+  Login,
+  MailPage,
+  MessagePage,
+  NotFound,
+  NotificationsList,
+  Project,
+  Specialist,
+  SpecialistInformation,
+  Specialities,
+  Stage,
+  Task,
+  UsersList,
+} from '../pages';
 
 const Navigation = () => {
   return (

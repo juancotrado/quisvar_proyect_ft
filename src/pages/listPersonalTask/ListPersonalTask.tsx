@@ -13,7 +13,7 @@ const spring = {
   damping: 30,
 };
 
-const ListPersonalTask = () => {
+export const ListPersonalTask = () => {
   const [isOn, setIsOn] = useState(false);
   const { userSession } = useSelector((state: RootState) => state);
   const { id } = userSession;
@@ -67,5 +67,3 @@ const ListPersonalTask = () => {
     </div>
   );
 };
-
-export default ListPersonalTask;

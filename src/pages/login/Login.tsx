@@ -10,7 +10,7 @@ interface UserForm {
   dni: string;
   password: string;
 }
-const Login = () => {
+export const Login = () => {
   const navigate = useNavigate();
 
   const {
@@ -86,5 +86,3 @@ const Login = () => {
     </div>
   );
 };
-
-export default Login;

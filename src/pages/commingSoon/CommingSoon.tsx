@@ -1,7 +1,7 @@
 import './commingSoon.css';
 import { useNavigate } from 'react-router-dom';
 
-const CommingSoon = () => {
+export const CommingSoon = () => {
   const navigation = useNavigate();
 
   const handleReturn = () => navigation('/login');
@@ -36,5 +36,3 @@ const CommingSoon = () => {
     </div>
   );
 };
-
-export default CommingSoon;

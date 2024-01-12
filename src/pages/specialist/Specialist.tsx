@@ -10,7 +10,7 @@ import { getIconDefault } from '../../utils/tools';
 import { NavLink, Outlet } from 'react-router-dom';
 import { Subject, debounceTime, switchMap } from 'rxjs';
 
-const Specialist = () => {
+export const Specialist = () => {
   const [specialist, setSpecialist] = useState<SpecialistList[]>();
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -93,5 +93,3 @@ const Specialist = () => {
     </div>
   );
 };
-
-export default Specialist;

@@ -27,8 +27,7 @@ import AttendanceList from './attendance/attendanceList/AttendanceList';
 import Legend from './shared/legend/Legend';
 import GeneralData from './shared/generalData/GeneralData';
 import PDFGenerator from './shared/generatePdf/GeneratePdf';
-import AttendancePdf from './shared/attendancePdf/AttendancePdf';
-import CardViewPdf from './shared/card/cardViewPdf/CardViewPdf';
+import CardViewPdf from '../pages/attendance/components/cardViewPdf/CardViewPdf';
 import CardLicense from './shared/card/cardLicense/CardLicense';
 import CardCompany from './shared/card/cardCompany/CardCompany';
 import ExperienceTable from './experience/ExperienceTable';
@@ -72,7 +71,6 @@ export {
   Legend,
   GeneralData,
   PDFGenerator,
-  AttendancePdf,
   CardViewPdf,
   CardLicense,
   ExperienceTable,

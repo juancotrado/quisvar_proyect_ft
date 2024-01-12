@@ -7,7 +7,7 @@ import './customizableInvoice.css';
 import UploadFileInput from '../../components/shared/uploadFileInput/UploadFileInput';
 import FileNameContainer from '../../components/shared/fileNameContainer/FileNameContainer';
 
-const CustomizableInvoice = () => {
+export const CustomizableInvoice = () => {
   const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
   const [fileName, setFileName] = useState({ xmlName: '', jpgName: '' });
   const [invoiceXml, setInvoiceXml] = useState<InvoiceXML | null>(null);
@@ -119,5 +119,3 @@ const CustomizableInvoice = () => {
     </div>
   );
 };
-
-export default CustomizableInvoice;

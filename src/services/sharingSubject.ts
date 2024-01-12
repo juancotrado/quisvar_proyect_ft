@@ -4,7 +4,6 @@ import {
   AttendanceRange,
   Contract,
   Equipment,
-  ProjectType,
   Specialists,
   SubTask,
   TrainingSpecialty,
@@ -16,7 +15,8 @@ import {
 interface CardRegisteProject {
   isOpen: boolean;
   typeSpecialityId: number | null;
-  project?: ProjectType;
+  isDuplicate: boolean;
+  idProject?: number;
 }
 interface CardRegisteContract {
   isOpen: boolean;

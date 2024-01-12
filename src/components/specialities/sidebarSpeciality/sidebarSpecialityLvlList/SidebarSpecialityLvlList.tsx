@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import {
   DataSidebarSpeciality,
-  ProjectType,
   typeSidebarSpecility,
 } from '../../../../types/types';
 import './sidebarSpecialityLvlList.css';
@@ -57,12 +56,12 @@ const SidebarSpecialityLvlList = ({
   }, []);
 
   const handleDuplicate = () => {
-    const body = {
-      name: data.name + ' copia',
+    isOpenCardRegisteProject$.setSubject = {
+      isOpen: true,
+      typeSpecialityId: null,
+      isDuplicate: true,
+      idProject: data.id,
     };
-    axiosInstance
-      .post(`/duplicates/project/${data.id}`, body)
-      .then(() => onSave?.());
   };
 
   const handleForm: SubmitHandler<FormData> = async body => {
@@ -85,14 +84,6 @@ const SidebarSpecialityLvlList = ({
     };
   };
   const handleEdit = () => {
-    if (type === 'projects') {
-      isOpenCardRegisteProject$.setSubject = {
-        isOpen: true,
-        typeSpecialityId: null,
-        project: data as ProjectType,
-      };
-      return;
-    }
     reset({ name: data.name, cod: data.cod });
     setOpenEditData(!openEditData);
   };

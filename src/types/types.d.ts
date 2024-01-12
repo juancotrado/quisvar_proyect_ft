@@ -228,17 +228,11 @@ export type RangeDate = {
 };
 export interface ProjectType {
   id: number;
-  description: string;
-  CUI: string;
   name: string;
   stage?: Stage;
   stages: Stages[];
   specialityId: number;
-  department: string;
-  province: string;
-  percentage: string;
   userId: number;
-  district: string;
 }
 
 interface Stages {
@@ -265,6 +259,7 @@ export interface ProjectForm {
   district: string;
   contractId: number;
   typeSpecialityId: number | null;
+  isDuplicate: boolean;
 }
 export interface ContractForm {
   id?: number;

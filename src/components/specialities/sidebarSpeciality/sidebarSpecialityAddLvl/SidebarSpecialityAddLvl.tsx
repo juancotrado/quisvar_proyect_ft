@@ -76,6 +76,7 @@ const SidebarSpecialityAddLvl = ({
       isOpenCardRegisteProject$.setSubject = {
         isOpen: true,
         typeSpecialityId: idValue,
+        isDuplicate: false,
       };
       return;
     }

@@ -169,16 +169,15 @@ const CardRegisterUser = ({
       const fileDeclaration = declaration?.[0] as File;
       const formData = new FormData();
       for (const [key, value] of Object.entries(newData)) {
-        console.log(key, value);
         formData.append(key, String(value));
       }
-      formData.append('fileUser', fileCv);
-      formData.append('fileUser', fileDeclaration);
+      formData.append('fileUserCv', fileCv);
+      formData.append('fileUserDeclaration', fileDeclaration);
       const headers = {
         'Content-type': 'multipart/form-data',
       };
       axiosInstance
-        .post(`/users?typeFile=cv`, formData, { headers })
+        .post(`/users`, formData, { headers })
         .then(successfulShipment);
     }
   };

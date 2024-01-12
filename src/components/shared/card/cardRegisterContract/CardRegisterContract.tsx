@@ -181,7 +181,7 @@ const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
             />
           </div>
           <div className="col-input">
-            <Input
+            {/* <Input
               label="Nombre Corto del Proyecto:"
               {...register('shortName', {
                 validate: { validateWhiteSpace },
@@ -190,9 +190,20 @@ const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
               type="text"
               placeholder="Nombre Corto del Proyecto "
               errors={errors}
-            />
+            /> */}
+            {companies && (
+              <Select
+                label="Empresa o Consorcio :"
+                {...register('idCoorp')}
+                name="idCoorp"
+                data={companies}
+                itemKey="newId"
+                textField="name"
+                errors={errors}
+              />
+            )}
             <Input
-              label="Fecha de Inicio:"
+              label="Fecha de firma de contrato:"
               {...register('createdAt', {
                 validate: { validateWhiteSpace },
                 valueAsDate: true,
@@ -263,19 +274,6 @@ const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
               textField="nombre_ubigeo"
               errors={errors}
             />
-          </div>
-          <div className="col-input">
-            {companies && (
-              <Select
-                label="Empresa o Consorcio :"
-                {...register('idCoorp')}
-                name="idCoorp"
-                data={companies}
-                itemKey="newId"
-                textField="name"
-                errors={errors}
-              />
-            )}
           </div>
         </div>
 

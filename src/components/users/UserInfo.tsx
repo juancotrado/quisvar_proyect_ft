@@ -1,20 +1,20 @@
 import { User } from '../../types/types';
 import Button from '../shared/button/Button';
-import ButtonDelete from '../shared/button/ButtonDelete';
 import './userinfo.css';
 import { useState } from 'react';
 import SelectOptions from '../shared/select/Select';
 import { axiosInstance } from '../../services/axiosInstance';
 import { getListByRole, verifyByRole } from '../../utils/roles';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store';
 import { getIconDefault, getRole } from '../../utils/tools';
+import { SnackbarUtilities } from '../../utils/SnackbarManager';
+import { getListUsers } from '../../store/slices/listUsers.slice';
 
 interface UserInfoProps {
   user: User;
   index: number;
   onUpdate?: () => void;
-  getUsers?: () => void;
   onPrint?: () => void;
   onViewDocs?: () => void;
 }
@@ -22,7 +22,6 @@ const UserInfo = ({
   user,
   index,
   onUpdate,
-  getUsers,
   onPrint,
   onViewDocs,
 }: UserInfoProps) => {
@@ -30,13 +29,24 @@ const UserInfo = ({
   const [openRole, setOpenRole] = useState(false);
   const { userSession } = useSelector((state: RootState) => state);
   const { profile } = user;
-  const toggleSwitch = () => {
-    setIsOn(!isOn);
+  const dispatch: AppDispatch = useDispatch();
+
+  const getUsers = () => {
+    dispatch(getListUsers());
   };
 
+  const sendInfo = () => {
+    const { firstName, lastName } = user.profile;
+    SnackbarUtilities.info(
+      `Usuario ${firstName} ${lastName} ${isOn ? 'archivado' : 'activado'}`
+    );
+  };
   const handleChangeStatus = async () => {
     const _data = { status: !isOn, id: user.id };
-    await axiosInstance.patch(`users/${user.id}`, _data).then(getUsers);
+    await axiosInstance.patch(`users/${user.id}`, _data).then(() => {
+      setIsOn(!isOn);
+      dispatch(getListUsers(sendInfo));
+    });
   };
 
   const handleChangeRole = async ({
@@ -50,8 +60,8 @@ const UserInfo = ({
   const roleLimit = verifyByRole(user.role, userSession.role);
 
   return (
-    <div className="user-container">
-      <div className="col-span user-grid email-container ">
+    <div className="user-container header-grid-row">
+      <div className="col-span  email-container ">
         <span className="user-index">{index + 1}</span>
         <figure className="user-profile-figure">
           <img src={getIconDefault(user.profile.dni)} alt={user.email} />
@@ -89,41 +99,43 @@ const UserInfo = ({
           />
         )}
       </div>
+      <div className="col-span job-container">{profile.job}</div>
+      <div className="col-span phone-container">{profile.phone}</div>
       <div className="col-span">
         {user.id !== userSession.id && (
           <div
             className="switch-status"
             data-ison={isOn}
-            onClick={() => {
-              toggleSwitch();
-              handleChangeStatus();
-            }}
+            onClick={handleChangeStatus}
           >
             <div className={`handle-statuts ${isOn && 'handle-on'}`}></div>
           </div>
         )}
       </div>
-      <div className="col-span phone-container">{profile.phone}</div>
       <div className="col-span">
         <Button className="role-btn" icon="folder-icon" onClick={onViewDocs} />
       </div>
       <div className="col-span actions-container">
         {roleLimit && (
           <>
-            <Button icon="pencil" className="role-btn" onClick={onUpdate} />
-            <ButtonDelete
+            <Button icon="pencil" className="role-btn-big" onClick={onUpdate} />
+            {/* <ButtonDelete
               icon="trash"
               disabled={user.id === userSession.id}
               url={`/users/${user.id}`}
               className="role-delete-icon"
               onSave={getUsers}
               passwordRequired
-            />
+            /> */}
           </>
         )}
       </div>
       <div className="col-span">
-        <Button className="role-btn" icon="print-report" onClick={onPrint} />
+        <Button
+          className="role-btn-big"
+          icon="print-report"
+          onClick={onPrint}
+        />
       </div>
     </div>
   );

@@ -34,7 +34,6 @@ import { axiosInstance } from '../../services/axiosInstance';
 const UsersList = () => {
   const dispatch: AppDispatch = useDispatch();
   const { listUsers: users } = useSelector((state: RootState) => state);
-  const [userDocs, setUserDocs] = useState<User | null>(null);
   const [userData, setUserData] = useState<User | null>(null);
   const [isArchived, setIsArchived] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -87,9 +86,8 @@ const UsersList = () => {
   const handleOpenCardFiles = () => {
     isOpenCardFiles$.setSubject = true;
   };
-  const handleViewDocs = (value: User) => {
-    setUserDocs(value);
-    isOpenViewDocs$.setSubject = true;
+  const handleViewDocs = (user: User) => {
+    isOpenViewDocs$.setSubject = { isOpen: true, user };
   };
   const handleOpenAddEquipment = (isOpen: boolean, data?: WorkStation) => {
     isOpenCardAddEquipment$.setSubject = {
@@ -161,14 +159,15 @@ const UsersList = () => {
             </div>
           </div>
         </div>
-        <div className="header-container-list">
-          <div className="header-list-text user-grid">USUARIO</div>
+        <div className="header-container-list header-grid-row">
+          <div className="header-list-text">USUARIO</div>
           <div className="header-list-text">ROL DE TRABAJO</div>
-          <div className="header-list-text">ESTADO</div>
+          <div className="header-list-text">PROFESIÓN</div>
           <div className="header-list-text">CELULAR</div>
-          <div className="header-list-text">Documentos</div>
+          <div className="header-list-text">ESTADO</div>
+          <div className="header-list-text">DOCUMENTOS</div>
           <div className="header-list-text">EDITAR</div>
-          <div className="header-list-text">Reportes</div>
+          <div className="header-list-text">REPORTES</div>
         </div>
         <div style={{ width: '100%', height: '750px', overflowY: 'auto' }}>
           {filterList.map((user, index) => (
@@ -176,7 +175,6 @@ const UsersList = () => {
               key={user.id}
               user={user}
               index={index}
-              getUsers={getUsers}
               onUpdate={() => editUser(user)}
               onPrint={() => printReport(user.id)}
               onViewDocs={() => handleViewDocs(user)}
@@ -207,12 +205,7 @@ const UsersList = () => {
           ))}
       </div>
       <CardAddEquipment onSave={() => getWorkStations()} />
-      <CardAssign
-        onSave={() => getWorkStations()}
-        // onClose={() => {
-        //   setUserData(null);
-        // }}
-      />
+      <CardAssign onSave={() => getWorkStations()} />
       <CardGenerateReport employeeId={printReportId} />
       {generalFiles && (
         <CardOpenFile
@@ -220,7 +213,7 @@ const UsersList = () => {
           getGeneralFiles={getGeneralFiles}
         />
       )}
-      <CardViewDocs user={userDocs} />
+      <CardViewDocs />
       <CardRegisterUser
         user={userData}
         onClose={() => {

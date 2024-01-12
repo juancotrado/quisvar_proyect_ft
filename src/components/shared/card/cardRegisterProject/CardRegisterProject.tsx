@@ -31,18 +31,13 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
   useEffect(() => {
     handleIsOpen.current = isOpenCardRegisteProject$.getSubject.subscribe(
       data => {
-        const { project } = data;
+        const { idProject, isDuplicate } = data;
         setIsOpenModal(data.isOpen);
-
-        if (project) {
+        console.log(data);
+        if (idProject) {
           reset({
-            CUI: project.CUI,
-            name: project.name,
-            description: project.description,
-            department: project.department,
-            province: project.province,
-            district: project.district,
-            id: project.id,
+            id: idProject,
+            isDuplicate,
           });
         } else {
           reset({
@@ -57,10 +52,16 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
   }, [reset]);
 
   const onSubmit: SubmitHandler<ProjectForm> = values => {
-    const { id, contractId, typeSpecialityId, name } = values;
+    const { id, contractId, typeSpecialityId, name, isDuplicate } = values;
     const newBody = { contractId, typeSpecialityId, name };
     if (id) {
-      axiosInstance.patch(`projects/${id}`, newBody).then(successfulShipment);
+      if (isDuplicate) {
+        axiosInstance
+          .post(`/duplicates/project/${id}`, newBody)
+          .then(successfulShipment);
+      } else {
+        axiosInstance.patch(`projects/${id}`, newBody).then(successfulShipment);
+      }
     } else {
       axiosInstance.post('projects', newBody).then(successfulShipment);
     }
@@ -82,16 +83,15 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
     if (!cui) return SnackbarUtilities.warning('Campo vacio!!');
     axiosInstance.get(`contract?cui=${cui}`).then(res => {
       const [firstData] = res.data as Contract[];
-      const { department, district, province, projectName, shortName, id } =
-        firstData;
+      const { department, district, province, projectName, id } = firstData;
       reset({
+        ...watch(),
         typeSpecialityId: watch('typeSpecialityId'),
         department,
         district,
         province,
         contractId: id,
         description: projectName,
-        name: shortName,
       });
     });
   };
@@ -105,7 +105,9 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
         className="card-register-project"
         autoComplete="off"
       >
-        <h2>{watch('id') ? 'ACTUALIZAR PROYECTO' : 'REGISTRAR PROYECTO'}</h2>
+        <h2>
+          {watch('isDuplicate') ? 'DUPLICAR PROYECTO' : 'REGISTRAR PROYECTO'}
+        </h2>
         <hr />
         <div className="card-register-project-container-details">
           <div className="col-input-top">
@@ -131,7 +133,6 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
               name="name"
               type="text"
               placeholder="Nombre Corto "
-              disabled
               errors={errors}
             />
           </div>
@@ -146,7 +147,6 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
             placeholder="Nombre completo del Proyecto"
             errors={errors}
           />
-
           <div className="col-input">
             <Input
               isRelative
@@ -183,7 +183,7 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
 
         <Button
           type="submit"
-          text={`${watch('id') ? 'Actualizar' : 'Registrar'}`}
+          text={`${watch('id') ? 'Duplicar' : 'Registrar'}`}
           className="send-button"
         />
       </form>

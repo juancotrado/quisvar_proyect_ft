@@ -4,10 +4,10 @@ import {
   AttendanceRange,
   Contract,
   Equipment,
-  ProjectType,
   Specialists,
   SubTask,
   TrainingSpecialty,
+  User,
   WorkStation,
   licenseList,
 } from '../types/types';
@@ -15,7 +15,8 @@ import {
 interface CardRegisteProject {
   isOpen: boolean;
   typeSpecialityId: number | null;
-  project?: ProjectType;
+  isDuplicate: boolean;
+  idProject?: number;
 }
 interface CardRegisteContract {
   isOpen: boolean;
@@ -81,6 +82,10 @@ interface OpenCardConsortium {
   isOpen: boolean;
   id?: number;
 }
+interface OpenViewDocs {
+  isOpen: boolean;
+  user: User;
+}
 export const loader$ = new SubjectManager<boolean>();
 export const toggle$ = new SubjectManager<boolean>();
 export const isOpenModal$ = new SubjectManager<boolean>();
@@ -103,7 +108,7 @@ export const isOpenAddTraining$ =
   new SubjectManager<OpenEspecialistTrainingDescription>();
 export const isOpenButtonDelete$ = new SubjectManager<OpenButtonDelete>();
 export const isOpenCardLicense$ = new SubjectManager<CardLicenseProps>();
-export const isOpenViewDocs$ = new SubjectManager<boolean>();
+export const isOpenViewDocs$ = new SubjectManager<OpenViewDocs>();
 export const isOpenCardRegisteProject$ =
   new SubjectManager<CardRegisteProject>();
 export const isOpenCardRegisteContract$ =

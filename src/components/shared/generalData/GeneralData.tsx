@@ -90,7 +90,7 @@ const GeneralData = () => {
                 <span className="generalData-infor-group-text">GRADO</span>
               </div>
               {groupsStage.map(({ users }, i) => (
-                <div className="generalData-infor-group-contain">
+                <div key={users.id} className="generalData-infor-group-contain">
                   <span className="generalData-infor-group-text generalData-table-text-alter">
                     {i + 1}
                   </span>
@@ -122,6 +122,7 @@ const GeneralData = () => {
         <div className="col-input">
           {groups && (
             <Select
+              label="Grupo:"
               {...register('groupId', {
                 validate: { validateWhiteSpace },
                 valueAsNumber: true,
@@ -138,6 +139,7 @@ const GeneralData = () => {
         </div>
         <div className="col-input">
           <Input
+            label="Costo Bachiller:"
             {...register('bachelorCost', {
               validate: { validateOnlyNumbers },
               valueAsNumber: true,
@@ -149,6 +151,7 @@ const GeneralData = () => {
             className="generalData-edit-info-input"
           />
           <Input
+            label="Costo Titulado:"
             {...register('professionalCost', {
               validate: { validateOnlyNumbers },
               valueAsNumber: true,

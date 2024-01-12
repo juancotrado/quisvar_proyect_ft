@@ -188,6 +188,7 @@ export type User = {
   contract: string | null;
   cv: string | null;
   declaration: string | null;
+  withdrawalDeclaration: string | null;
   ruc: string;
   address: string;
   equipment?: {
@@ -227,17 +228,11 @@ export type RangeDate = {
 };
 export interface ProjectType {
   id: number;
-  description: string;
-  CUI: string;
   name: string;
   stage?: Stage;
   stages: Stages[];
   specialityId: number;
-  department: string;
-  province: string;
-  percentage: string;
   userId: number;
-  district: string;
 }
 
 interface Stages {
@@ -264,6 +259,7 @@ export interface ProjectForm {
   district: string;
   contractId: number;
   typeSpecialityId: number | null;
+  isDuplicate: boolean;
 }
 export interface ContractForm {
   id?: number;
@@ -327,7 +323,11 @@ export interface Task extends DataTask {
 export interface Task2 extends DataTask {
   tasks_3: DataTask[];
 }
-export type TypeFileUser = 'contract' | 'cv' | 'declaration';
+export type TypeFileUser =
+  | 'contract'
+  | 'cv'
+  | 'declaration'
+  | 'withdrawalDeclaration';
 
 // export interface SubTask {
 //   id: number;

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import Modal from '../../../portal/Modal';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { isOpenCardRegisterUser$ } from '../../../../services/sharingSubject';
-import Button from '../../button/Button';
+import Button from '../../../button/Button';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import InputText from '../../Input/Input';
 import {

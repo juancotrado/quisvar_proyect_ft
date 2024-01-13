@@ -3,8 +3,8 @@ import { useParams } from 'react-router-dom';
 import { ConsortiumType } from '../../../../types/types';
 import { URL, axiosInstance } from '../../../../services/axiosInstance';
 import './consortium.css';
-import ButtonDelete from '../../../../components/shared/button/ButtonDelete';
-import Button from '../../../../components/shared/button/Button';
+import ButtonDelete from '../../../../components/button/ButtonDelete';
+import Button from '../../../../components/button/Button';
 import { isOpenCardAddCompany$ } from '../../../../services/sharingSubject';
 import CardAddCompany from '../../../../components/shared/card/cardAddCompany/CardAddCompany';
 

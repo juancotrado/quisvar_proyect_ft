@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import Button from '../../components/shared/button/Button';
+import Button from '../../components/button/Button';
 import './group.css';
 import { axiosInstance } from '../../services/axiosInstance';
 import { Group as GroupData } from '../../types/types';

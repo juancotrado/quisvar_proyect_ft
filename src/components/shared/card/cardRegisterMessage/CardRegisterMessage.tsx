@@ -2,8 +2,8 @@ import './cardRegisterMessage.css';
 import { useEffect, useMemo, useState } from 'react';
 import InputFile from '../../Input/InputFile';
 import useListUsers from '../../../../hooks/useListUsers';
-import Button from '../../button/Button';
-import DropDownSimple from '../../select/DropDownSimple';
+import Button from '../../../button/Button';
+import DropDownSimple from '../../../dropDownSimple/DropDownSimple';
 import ChipFileMessage from './ChipFileMessage';
 import {
   ListUser,

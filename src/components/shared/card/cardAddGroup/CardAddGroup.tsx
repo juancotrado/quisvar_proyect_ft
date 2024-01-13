@@ -4,7 +4,7 @@ import { isOpenCardAddGroup$ } from '../../../../services/sharingSubject';
 import { Subscription } from 'rxjs';
 import Modal from '../../../portal/Modal';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import Button from '../../button/Button';
+import Button from '../../../button/Button';
 import { Input } from '../../..';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';

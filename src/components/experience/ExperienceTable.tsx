@@ -3,7 +3,7 @@ import { URL } from '../../services/axiosInstance';
 import { AreaSpecialty, Experience, Option } from '../../types/types';
 import { calcDates } from '../../utils/experienceFunctions/experienceFunctions';
 import formatDate from '../../utils/formatDate';
-import Button from '../shared/button/Button';
+import Button from '../button/Button';
 import './experienceTable.css';
 import DotsRight from '../shared/dotsRight/DotsRight';
 interface ExperienceTableProps {

@@ -4,7 +4,7 @@ import { axiosInstance } from '../../../../services/axiosInstance';
 import { Input, PDFGenerator, Select } from '../../..';
 import InputFile from '../../Input/InputFile';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import Button from '../../button/Button';
+import Button from '../../../button/Button';
 import {
   MessageType,
   MessageTypeImbox,
@@ -34,7 +34,7 @@ import { validateWhiteSpace } from '../../../../utils/customValidatesForm';
 import { motion } from 'framer-motion';
 import Portal from '../../../portal/Portal';
 import { dropIn } from '../../../../animations/animations';
-import DropDownSimple from '../../select/DropDownSimple';
+import DropDownSimple from '../../../dropDownSimple/DropDownSimple';
 import { SnackbarUtilities } from '../../../../utils/SnackbarManager';
 
 interface MessageSendType {

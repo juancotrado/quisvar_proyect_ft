@@ -5,11 +5,11 @@ import './cardConsortium.css';
 import { isOpenCardConsortium$ } from '../../../../services/sharingSubject';
 import { Input } from '../../..';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import Button from '../../button/Button';
+import Button from '../../../button/Button';
 import { ConsortiumType } from '../../../../types/types';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { validateJPGExtension } from '../../../../utils/customValidatesForm';
-import ButtonDelete from '../../button/ButtonDelete';
+import ButtonDelete from '../../../button/ButtonDelete';
 
 type CardConsortiumProps = {
   onSave?: () => void;

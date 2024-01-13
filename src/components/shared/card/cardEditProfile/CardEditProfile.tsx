@@ -3,7 +3,7 @@ import './CardEditProfile.css';
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import Modal from '../../../portal/Modal';
-import Button from '../../button/Button';
+import Button from '../../../button/Button';
 
 interface CardEdtiUserProps {
   onSave?: () => void;

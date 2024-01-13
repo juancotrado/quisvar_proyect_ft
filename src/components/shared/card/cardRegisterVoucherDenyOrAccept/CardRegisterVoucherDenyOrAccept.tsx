@@ -1,6 +1,6 @@
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { MessageType } from '../../../../types/types';
-import Button from '../../button/Button';
+import Button from '../../../button/Button';
 import ChipFileMessage from '../cardRegisterMessage/ChipFileMessage';
 import './cardRegisterVoucherDenyOrAccept.css';
 interface CardRegisterVoucherDenyOrAcceptProps {

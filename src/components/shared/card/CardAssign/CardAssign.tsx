@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import './cardAssing.css';
 import { Equipment } from '../../../../types/types';
-import Button from '../../button/Button';
+import Button from '../../../button/Button';
 import { isOpenCardAssing$ } from '../../../../services/sharingSubject';
 import InputText from '../../Input/Input';
 import { validateWhiteSpace } from '../../../../utils/customValidatesForm';

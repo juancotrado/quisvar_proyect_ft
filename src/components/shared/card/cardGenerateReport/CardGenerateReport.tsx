@@ -3,7 +3,7 @@ import './CardGenerateReport.css';
 import { isOpenCardGenerateReport$ } from '../../../../services/sharingSubject';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Input, TextArea } from '../../..';
-import Button from '../../button/Button';
+import Button from '../../../button/Button';
 import {
   validateCorrectTyping,
   validateWhiteSpace,

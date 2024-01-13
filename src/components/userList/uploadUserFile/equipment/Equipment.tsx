@@ -5,7 +5,7 @@ import {
   WorkStation,
 } from '../../../../types/types';
 import './equipment.css';
-import Button from '../../../shared/button/Button';
+import Button from '../../../button/Button';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import DotsRight from '../../../shared/dotsRight/DotsRight';
 import { axiosInstance } from '../../../../services/axiosInstance';

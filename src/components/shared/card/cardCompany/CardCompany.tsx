@@ -5,14 +5,14 @@ import './CardCompany.css';
 import { isOpenCardCompany$ } from '../../../../services/sharingSubject';
 import { Input } from '../../..';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import Button from '../../button/Button';
+import Button from '../../../button/Button';
 import { Companies } from '../../../../types/types';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import {
   validateJPGExtension,
   validateRuc,
 } from '../../../../utils/customValidatesForm';
-import ButtonDelete from '../../button/ButtonDelete';
+import ButtonDelete from '../../../button/ButtonDelete';
 type CardCompanyProps = {
   onSave?: () => void;
 };

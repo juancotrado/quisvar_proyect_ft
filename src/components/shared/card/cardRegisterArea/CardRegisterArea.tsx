@@ -5,7 +5,7 @@ import './CardRegisterArea.css';
 import { useEffect, useState } from 'react';
 import { container } from '../../../../animations/animations';
 import InputText from '../../Input/Input';
-import DropDownSimple from '../../select/DropDownSimple';
+import DropDownSimple from '../../../dropDownSimple/DropDownSimple';
 import { WorkAreaForm } from '../../../../types/types';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import useListUsers from '../../../../hooks/useListUsers';

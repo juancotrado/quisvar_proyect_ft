@@ -4,7 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import './cardAddExperience.css';
 import { Input } from '../../..';
 import { AreaSpecialty } from '../../../../types/types';
-import Button from '../../button/Button';
+import Button from '../../../button/Button';
 import { Subscription } from 'rxjs';
 import { isOpenAddExperience$ } from '../../../../services/sharingSubject';
 // import { useParams } from 'react-router-dom';

@@ -6,11 +6,11 @@ import {
   PDFViewer,
   PDFDownloadLink,
 } from '@react-pdf/renderer';
-import { AttendanceRange } from '../../../../types/types';
-import { information } from '../../../../utils/constantsPdf';
-import { actualDate } from '../../../../utils/formatDate';
+import { AttendanceRange } from '../../../../types';
+import { information, actualDate } from '../../../../utils';
 import './attendancePdf.css';
 import { styles } from './styledComponents';
+
 export type TablesProps = {
   descripcion: string | null;
   encargados: string | null;

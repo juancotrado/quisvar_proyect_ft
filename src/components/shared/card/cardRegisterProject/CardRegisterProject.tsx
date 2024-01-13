@@ -2,7 +2,7 @@ import { Input, TextArea } from '../../..';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { isOpenCardRegisteProject$ } from '../../../../services/sharingSubject';
 import Modal from '../../../portal/Modal';
-import Button from '../../button/Button';
+import Button from '../../../button/Button';
 import './CardRegisterProject.css';
 import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';

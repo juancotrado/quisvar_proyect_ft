@@ -1,23 +1,25 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
-import { SocketContext } from '../../../../../../context/SocketContex';
-import { DegreType, Level, StatusType } from '../../../../../../types/types';
+import { SocketContext } from '../../../../../../context';
+import { DegreType, Level, StatusType } from '../../../../../../types';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
-import MoreInfo from '../../../../../../components/project/moreInfo/MoreInfo';
-import DropdownLevel from '../../../../../../components/project/dropdownLevel/DropdownLevel';
+import MoreInfo from './components/moreInfo/MoreInfo';
 import CardRegisterSubTask from '../../../../../../components/shared/card/cardRegisterSubTask/CardRegisterSubTask';
-import Button from '../../../../../../components/shared/button/Button';
 import { motion } from 'framer-motion';
 import './budgetsPage.css';
-import StatusText from '../../../../../../components/shared/statusText/StatusText';
-import LoaderForComponent from '../../../../../../components/shared/loaderForComponent/LoaderForComponent';
+import StatusText from './components/statusText/StatusText';
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { GenerateIndexPdf } from '../../../../../../components/shared/generateIndexPdf/GenerateIndexPdf';
 import { GenerateDetailedIndexPdf } from '../../../../../../components/shared/generateDetailedIndexPdf/GenerateDetailedIndexPdf';
-import FloatingText from '../../../../../../components/shared/floatingText/FloatingText';
+import FloatingText from '../../../../../../components/floatingText/FloatingText';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../store';
-import { Select } from '../../../../../../components';
+import {
+  Button,
+  LoaderForComponent,
+  Select,
+} from '../../../../../../components';
+import { DropdownLevel } from './components';
 
 const COST_DATA = [
   {

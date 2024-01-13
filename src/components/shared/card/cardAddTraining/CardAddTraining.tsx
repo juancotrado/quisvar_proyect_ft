@@ -4,7 +4,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import './cardAddTraining.css';
 import { Input } from '../../..';
 import { TrainingSpecialty } from '../../../../types/types';
-import Button from '../../button/Button';
+import Button from '../../../button/Button';
 import { Subscription } from 'rxjs';
 import { isOpenAddTraining$ } from '../../../../services/sharingSubject';
 // import { useParams } from 'react-router-dom';

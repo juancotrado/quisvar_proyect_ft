@@ -5,7 +5,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { SocketContext } from '../../../../context/SocketContex';
 import { isOpenCardRegisteTask$ } from '../../../../services/sharingSubject';
-import Button from '../../button/Button';
+import Button from '../../../button/Button';
 import Modal from '../../../portal/Modal';
 import { Subscription } from 'rxjs';
 import { useParams } from 'react-router-dom';

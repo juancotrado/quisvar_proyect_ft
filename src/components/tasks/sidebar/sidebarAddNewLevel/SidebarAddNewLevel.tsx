@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import Button from '../../../shared/button/Button';
+import Button from '../../../button/Button';
 import { Input } from '../../..';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { axiosInstance } from '../../../../services/axiosInstance';
-import DotsOption from '../../../shared/dots/DotsOption';
+import DotsOption from '../../../dots/DotsOption';
 import { Option } from '../../../../types/types';
 import './sidebarAddNewLevel.css';
 import {

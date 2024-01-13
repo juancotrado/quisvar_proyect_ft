@@ -1,6 +1,6 @@
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import Modal from '../../portal/Modal';
-import Button from '../../shared/button/Button';
+import Button from '../../button/Button';
 import { isOpenModal$ } from '../../../services/sharingSubject';
 import { Input } from '../..';
 import { useParams } from 'react-router-dom';

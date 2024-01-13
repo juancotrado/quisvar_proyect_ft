@@ -4,7 +4,7 @@ import { typeStatus } from '../../../../pages/mail/models';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { MessageSender, MessageType, User } from '../../../../types/types';
 import formatDate from '../../../../utils/formatDate';
-import Button from '../../button/Button';
+import Button from '../../../button/Button';
 import './cardMessage.css';
 interface CardMessageProps {
   message: MessageType;

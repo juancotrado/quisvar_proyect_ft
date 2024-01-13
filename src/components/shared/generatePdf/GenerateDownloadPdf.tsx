@@ -1,7 +1,7 @@
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { generatePDF } from './template/pdfTemplates';
 import { PdfDataProps } from '../../../types/types';
-import Button from '../button/Button';
+import Button from '../../button/Button';
 
 interface GenerateDownloadPdfProps {
   data: PdfDataProps;

@@ -1,5 +1,5 @@
 import { FocusEvent, useEffect, useState } from 'react';
-import Button from '../../button/Button';
+import Button from '../../../button/Button';
 import { ExpertForm, ExpertType } from '../../../../types/types';
 import { Input } from '../../..';
 

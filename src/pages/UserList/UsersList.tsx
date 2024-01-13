@@ -9,7 +9,7 @@ import {
   Equipment,
   Input,
 } from '../../components';
-import Button from '../../components/shared/button/Button';
+import Button from '../../components/button/Button';
 import {
   isOpenCardAddEquipment$,
   isOpenCardAssing$,

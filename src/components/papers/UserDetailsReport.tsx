@@ -1,5 +1,5 @@
-import Button from '../shared/button/Button';
-import DropDownSimple from '../shared/select/DropDownSimple';
+import Button from '../button/Button';
+import DropDownSimple from '../dropDownSimple/DropDownSimple';
 import UploadFile from '../shared/uploadFile/UploadFile';
 
 interface UserDetailsReportProps {

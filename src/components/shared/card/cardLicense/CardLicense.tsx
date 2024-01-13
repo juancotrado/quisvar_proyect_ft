@@ -5,7 +5,7 @@ import { isOpenCardLicense$ } from '../../../../services/sharingSubject';
 import Modal from '../../../portal/Modal';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Input, TextArea } from '../../..';
-import Button from '../../button/Button';
+import Button from '../../../button/Button';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';

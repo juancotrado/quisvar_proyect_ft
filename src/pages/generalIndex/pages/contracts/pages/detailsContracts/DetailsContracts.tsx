@@ -3,7 +3,7 @@ import { Schedule } from '../../../../../../types/types';
 import { _date } from '../../../../../../utils/formatDate';
 import { FocusEvent, useState } from 'react';
 import { SnackbarUtilities } from '../../../../../../utils/SnackbarManager';
-import Button from '../../../../../../components/shared/button/Button';
+import Button from '../../../../../../components/button/Button';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../../store';
 import { axiosInstance } from '../../../../../../services/axiosInstance';

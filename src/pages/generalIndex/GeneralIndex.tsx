@@ -3,7 +3,7 @@ import './generalIndex.css';
 import { axiosInstance } from '../../services/axiosInstance';
 import { useEffect, useState } from 'react';
 import { CoorpEntity } from '../../types/types';
-import DropDownSimple from '../../components/shared/select/DropDownSimple';
+import DropDownSimple from '../../components/dropDownSimple/DropDownSimple';
 
 const indexData = [
   { id: 14, name: 'CAEC', route: 'contratos' },

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './cardRegisterVoucher.css';
 import ChipFileMessage from '../cardRegisterMessage/ChipFileMessage';
 import InputFile from '../../Input/InputFile';
-import Button from '../../button/Button';
+import Button from '../../../button/Button';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { MessageType } from '../../../../types/types';
 import { PDFDownloadLink } from '@react-pdf/renderer';

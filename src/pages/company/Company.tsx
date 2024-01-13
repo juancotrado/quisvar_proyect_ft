@@ -1,6 +1,6 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import { CardCompany, Input } from '../../components';
-import Button from '../../components/shared/button/Button';
+import Button from '../../components/button/Button';
 import {
   isOpenCardCompany$,
   isOpenCardConsortium$,

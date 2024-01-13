@@ -4,8 +4,8 @@ import { Input, PDFGenerator, Select } from '../../..';
 import InputFile from '../../Input/InputFile';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import useListUsers from '../../../../hooks/useListUsers';
-import Button from '../../button/Button';
-import DropDownSimple from '../../select/DropDownSimple';
+import Button from '../../../button/Button';
+import DropDownSimple from '../../../dropDownSimple/DropDownSimple';
 import {
   MessageType,
   MessageTypeImbox,

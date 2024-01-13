@@ -1,11 +1,10 @@
 import { FocusEvent, useCallback, useState } from 'react';
 import './sidebarSpeciality.css';
 import { SectorType } from '../../../types/types';
-import { CardRegisterProject, Select } from '../..';
+import { CardRegisterProject, LoaderForComponent, Select } from '../..';
 import { yearData } from '../const';
 import { axiosInstance } from '../../../services/axiosInstance';
 import { useMotionValue, motion, PanInfo } from 'framer-motion';
-import LoaderForComponent from '../../shared/loaderForComponent/LoaderForComponent';
 import DropDownSidebarSpeciality from './dropDownSidebarSpeciality/DropDownSidebarSpeciality';
 import useSector from '../../../hooks/useSector';
 

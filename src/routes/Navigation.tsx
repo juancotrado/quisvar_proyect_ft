@@ -1,6 +1,6 @@
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 
-import { ProtectedRoute } from '../components';
+import { GeneralData, ProtectedRoute } from '../components';
 import ProtectedRole from '../components/protected/ProtectedRole/ProtectedRole';
 import {
   attendance_perms,
@@ -20,7 +20,6 @@ import {
   CustomizableInvoice,
   Dashboard,
   DetailsContracts,
-  DetailsPage,
   GeneralIndex,
   Group,
   GroupContent,
@@ -64,7 +63,7 @@ const Navigation = () => {
             <Route path="/especialidades" element={<Specialities />}>
               <Route path="proyecto/:projectId" element={<Stage />}>
                 <Route path="etapa/:stageId" element={<Project />}>
-                  <Route path="detalles" element={<DetailsPage />} />
+                  <Route path="detalles" element={<GeneralData />} />
                   <Route path="basicos" element={<BasicsPage />} />
                   <Route path="presupuestos" element={<BudgetsPage />}>
                     <Route path="tarea/:taskId" element={<Task />} />

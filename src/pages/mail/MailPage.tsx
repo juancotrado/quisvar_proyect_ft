@@ -11,8 +11,8 @@ import {
 import CardMessage from '../../components/shared/card/cardMessage/CardMessage';
 import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
 import CardRegisterMessage from '../../components/shared/card/cardRegisterMessage/CardRegisterMessage';
-import Button from '../../components/shared/button/Button';
-import SelectOptions from '../../components/shared/select/Select';
+import Button from '../../components/button/Button';
+import SelectOptions from '../../components/select/Select';
 import { listStatusMsg, listTypeMsg } from '../../utils/files/files.utils';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';

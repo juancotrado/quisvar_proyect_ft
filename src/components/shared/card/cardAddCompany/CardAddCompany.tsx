@@ -5,7 +5,7 @@ import { isOpenCardAddCompany$ } from '../../../../services/sharingSubject';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { Companies } from '../../../../types/types';
 import Modal from '../../../portal/Modal';
-import Button from '../../button/Button';
+import Button from '../../../button/Button';
 import { Input } from '../../..';
 
 interface UserId {

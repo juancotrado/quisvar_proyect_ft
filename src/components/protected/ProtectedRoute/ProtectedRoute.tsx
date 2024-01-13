@@ -8,8 +8,8 @@ import { SocketProvider } from '../../../context/SocketContex';
 import { Subscription } from 'rxjs';
 import './protecdRoute.css';
 import { getAllServices } from '../../../store/thunks/getAllInitServices..thunks';
-import AlertNotification from '../../shared/alertNotification/AlertNotification';
-import ButtonDelete from '../../shared/button/ButtonDelete';
+import AlertNotification from '../../alertNotification/AlertNotification';
+import ButtonDelete from '../../button/ButtonDelete';
 
 export const ProtectedRoute = () => {
   const dispatch: AppDispatch = useDispatch();

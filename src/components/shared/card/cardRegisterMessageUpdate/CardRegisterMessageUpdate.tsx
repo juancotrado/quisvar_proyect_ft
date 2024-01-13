@@ -4,7 +4,7 @@ import { axiosInstance } from '../../../../services/axiosInstance';
 import { Input, PDFGenerator, Select } from '../../..';
 import InputFile from '../../Input/InputFile';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import Button from '../../button/Button';
+import Button from '../../../button/Button';
 import {
   MessageType,
   PdfDataProps,
@@ -29,7 +29,7 @@ import {
 } from '../../../../utils/pdfReportFunctions';
 import useListUsers from '../../../../hooks/useListUsers';
 import { validateWhiteSpace } from '../../../../utils/customValidatesForm';
-import DropDownSimple from '../../select/DropDownSimple';
+import DropDownSimple from '../../../dropDownSimple/DropDownSimple';
 
 interface MessageSendType {
   title: string;

@@ -1,8 +1,7 @@
 import { Document, PDFViewer, Page, Text, View } from '@react-pdf/renderer';
-import { AttendanceRange, RangeDate } from '../../../../types/types';
+import { AttendanceRange, RangeDate } from '../../../../types';
 import { styles } from './attendaceRangeStyle';
-import { information } from '../../../../utils/constantsPdf';
-import { getPrice } from '../../../../utils/excelGenerate/utils/excelTools';
+import { information, getPrice } from '../../../../utils';
 import { countStatusAttendance } from '../../utils';
 interface AttendanceRangePdfProps {
   data: AttendanceRange[];

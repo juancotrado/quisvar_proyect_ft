@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom';
 import './areaCard.css';
 import useRole from '../../../hooks/useRole';
-import ButtonDelete from '../../shared/button/ButtonDelete';
-import Button from '../../shared/button/Button';
+import ButtonDelete from '../../button/ButtonDelete';
+import Button from '../../button/Button';
 
 interface AreaCardProps {
   name: string;

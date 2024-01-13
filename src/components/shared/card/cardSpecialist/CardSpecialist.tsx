@@ -6,7 +6,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { Specialists } from '../../../../types/types';
 import { isOpenCardSpecialist$ } from '../../../../services/sharingSubject';
 import { Input } from '../../..';
-import Button from '../../button/Button';
+import Button from '../../../button/Button';
 import { axiosInstance } from '../../../../services/axiosInstance';
 type CardSpecialistProps = {
   onSave?: () => void;

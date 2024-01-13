@@ -16,7 +16,7 @@ import formatDate from '../../../../utils/formatDate';
 import ChipFileMessage from '../../../../components/shared/card/cardRegisterMessage/ChipFileMessage';
 import CardRegisterMessageReply from '../../../../components/shared/card/cardRegisterMessageReply/CardRegisterMessageReply';
 import { motion } from 'framer-motion';
-import Button from '../../../../components/shared/button/Button';
+import Button from '../../../../components/button/Button';
 import { filterFilesByAttempt } from '../../../../utils/files/files.utils';
 import CardRegisterMessageForward from '../../../../components/shared/card/cardRegisterMessageFordward/CardRegisterMessageFordward';
 import {

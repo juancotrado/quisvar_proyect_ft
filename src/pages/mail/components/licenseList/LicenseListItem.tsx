@@ -1,7 +1,7 @@
 // import { Input } from '../../../components';
 import { useState } from 'react';
-import Button from '../../../../components/shared/button/Button';
-import ButtonDelete from '../../../../components/shared/button/ButtonDelete';
+import Button from '../../../../components/button/Button';
+import ButtonDelete from '../../../../components/button/ButtonDelete';
 import useListUsers from '../../../../hooks/useListUsers';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { licenseList } from '../../../../types/types';

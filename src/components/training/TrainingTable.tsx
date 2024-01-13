@@ -2,7 +2,7 @@ import { ContextMenuTrigger } from 'rctx-contextmenu';
 import { URL } from '../../services/axiosInstance';
 import { Option, Training, TrainingSpecialty } from '../../types/types';
 import formatDate from '../../utils/formatDate';
-import Button from '../shared/button/Button';
+import Button from '../button/Button';
 import './trainingTable.css';
 import DotsRight from '../shared/dotsRight/DotsRight';
 interface ExperienceTableProps {

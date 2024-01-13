@@ -963,6 +963,13 @@ export type licenseList = {
   untilDate: string;
   createdAt: string;
 };
+export interface Option {
+  name?: string;
+  icon?: string;
+  url?: string;
+  function?: () => void;
+  type?: 'button' | 'reset' | 'submit';
+}
 export type getLicenses = {
   id: number;
   // status: licenseStatus;

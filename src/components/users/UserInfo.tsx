@@ -1,8 +1,8 @@
 import { User } from '../../types/types';
-import Button from '../shared/button/Button';
+import Button from '../button/Button';
 import './userinfo.css';
 import { useState } from 'react';
-import SelectOptions from '../shared/select/Select';
+import SelectOptions from '../select/Select';
 import { axiosInstance } from '../../services/axiosInstance';
 import { getListByRole, verifyByRole } from '../../utils/roles';
 import { useDispatch, useSelector } from 'react-redux';

@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
 import InputText from '../../Input/Input';
-import Button from '../../button/Button';
+import Button from '../../../button/Button';
 import { axiosInstance } from '../../../../services/axiosInstance';
 
 interface Recovery {

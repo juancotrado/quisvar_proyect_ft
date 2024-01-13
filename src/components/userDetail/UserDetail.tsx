@@ -1,7 +1,7 @@
 import { User } from '../../types/types';
 import { getIconDefault } from '../../utils/tools';
-import Button from '../shared/button/Button';
-import ButtonDelete from '../shared/button/ButtonDelete';
+import Button from '../button/Button';
+import ButtonDelete from '../button/ButtonDelete';
 import './UserDetail.css';
 interface UserDetailProps {
   user: User;

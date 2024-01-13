@@ -2,8 +2,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import './sidebarSpecialityAddLvl.css';
 import { useEffect, useState } from 'react';
 import { Input } from '../../..';
-import Button from '../../../shared/button/Button';
-import { Option } from '../../../shared/dots/DotsOption';
+import Button from '../../../button/Button';
+import { Option } from '../../../dots/DotsOption';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import {
   validateCorrectTyping,

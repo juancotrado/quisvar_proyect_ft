@@ -3,13 +3,16 @@ import { Outlet, useParams } from 'react-router-dom';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import './stage.css';
 import { ProjectType } from '../../../../types/types';
-import Button from '../../../../components/shared/button/Button';
-import { StageAddButton, StageItem } from '../../../../components';
+import Button from '../../../../components/button/Button';
+import {
+  StageAddButton,
+  StageItem,
+  LoaderForComponent,
+} from '../../../../components';
 import { rolSecondLevel } from '../../../../utils/roles';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../store';
 import { setModAuthProject } from '../../../../store/slices/modAuthProject.slice';
-import LoaderForComponent from '../../../../components/shared/loaderForComponent/LoaderForComponent';
 
 export const Stage = () => {
   const { projectId } = useParams();

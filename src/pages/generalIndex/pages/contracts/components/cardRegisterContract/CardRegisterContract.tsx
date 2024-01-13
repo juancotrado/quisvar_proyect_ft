@@ -2,7 +2,7 @@ import { Input, Select, TextArea } from '../../../../../../components';
 import { isOpenCardRegisteContract$ } from '../../../../../../services/sharingSubject';
 import { actualDate } from '../../../../../../utils/formatDate';
 import Modal from '../../../../../../components/portal/Modal';
-import Button from '../../../../../../components/shared/button/Button';
+import Button from '../../../../../../components/button/Button';
 import './cardRegisterContract.css';
 import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';

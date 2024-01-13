@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import InputText from '../../Input/Input';
-import Button from '../../button/Button';
+import Button from '../../../button/Button';
 import './cardEditInformation.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { RootState } from '../../../../store';

@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Input } from '../../components';
-import Button from '../../components/shared/button/Button';
+import Button from '../../components/button/Button';
 import CardSpecialist from '../../components/shared/card/cardSpecialist/CardSpecialist';
 import { isOpenCardSpecialist$ } from '../../services/sharingSubject';
 import './specialist.css';

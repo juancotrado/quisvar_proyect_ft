@@ -6,27 +6,25 @@ import {
   useState,
   useRef,
 } from 'react';
-import { AttendanceList, CardViewPdf, Input, Legend } from '../../components';
+import { useDispatch, useSelector } from 'react-redux';
+import { Input, Legend } from '../../components';
 import './Attendance.css';
 import { AppDispatch, RootState } from '../../store';
-import { useDispatch, useSelector } from 'react-redux';
-import Button from '../../components/shared/button/Button';
+import Button from '../../components/button/Button';
 import { axiosInstance } from '../../services/axiosInstance';
-import { _date } from '../../utils/formatDate';
+import { _date, SnackbarUtilities } from '../../utils';
 import {
   AttendanceRange,
   ListAttendance,
   User,
   getLicenses,
-} from '../../types/types';
+} from '../../types';
 import { SocketContext } from '../../context/SocketContex';
-// import { generateReportDaily } from './GenerateReportDaily';
-// import html2canvas from 'html2canvas';
 import { isOpenCardViewPdf$ } from '../../services/sharingSubject';
-import { SnackbarUtilities } from '../../utils/SnackbarManager';
-import CloseIcon from '../../components/shared/closeIcon/CloseIcon';
+import CloseIcon from '../../components/closeIcon/CloseIcon';
 import { getListUsers } from '../../store/slices/listUsers.slice';
 import { generateReportDaily, generateReportRange } from './excelGenerator';
+import { AttendanceList, CardViewPdf } from './components';
 interface sendItemsProps {
   usersId: number;
   status: string;

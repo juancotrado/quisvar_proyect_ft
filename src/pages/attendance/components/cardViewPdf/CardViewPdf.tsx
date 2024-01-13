@@ -3,10 +3,10 @@ import Modal from '../../../../components/portal/Modal';
 import { Subscription } from 'rxjs';
 import { isOpenCardViewPdf$ } from '../../../../services/sharingSubject';
 import './CardViewPdf.css';
-import { AttendanceRange } from '../../../../types/types';
+import { AttendanceRange } from '../../../../types';
 import { AttendancePdf, AttendanceRangePdf } from '..';
 
-const CardViewPdf = () => {
+export const CardViewPdf = () => {
   //   const filterdUsers = exportPDF.filter(user => user.list.length !== 0);
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState<AttendanceRange[]>();

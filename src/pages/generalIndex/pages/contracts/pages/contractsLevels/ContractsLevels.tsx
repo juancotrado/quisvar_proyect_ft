@@ -1,12 +1,12 @@
 import { useEffect } from 'react';
-import DropdownLevelContract from '../../../../../../components/contracts/dropdownLevelContract/DropdownLevelContract';
-import { Contract, ContractIndexData } from '../../../../../../types/types';
+import { Contract, ContractIndexData } from '../../../../../../types';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { Outlet, useParams } from 'react-router-dom';
 import { AppDispatch, RootState } from '../../../../../../store';
 import { useDispatch, useSelector } from 'react-redux';
 import { getContractThunks } from '../../../../../../store/slices/contract.slice';
 import './contractsLevels.css';
+import { DropdownLevelContract } from './components';
 
 export const ContractsLevels = () => {
   const dispatch: AppDispatch = useDispatch();

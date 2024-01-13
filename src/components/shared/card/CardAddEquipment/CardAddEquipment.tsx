@@ -7,7 +7,7 @@ import { isOpenCardAddEquipment$ } from '../../../../services/sharingSubject';
 import { WorkStation } from '../../../../types/types';
 import InputText from '../../Input/Input';
 import { validateWhiteSpace } from '../../../../utils/customValidatesForm';
-import Button from '../../button/Button';
+import Button from '../../../button/Button';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { TextArea } from '../../..';
 interface CardAddEquipmentProps {

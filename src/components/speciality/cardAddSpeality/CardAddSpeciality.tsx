@@ -3,7 +3,7 @@ import './cardAddSpeciality.css';
 import { Option, SpecialityType } from '../../../types/types';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { axiosInstance } from '../../../services/axiosInstance';
-import DotsOption from '../../shared/dots/DotsOption';
+import DotsOption from '../../dots/DotsOption';
 
 interface CardAddSpecialityProps {
   onSave?: () => void;

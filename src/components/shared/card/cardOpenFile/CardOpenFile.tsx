@@ -5,7 +5,7 @@ import Modal from '../../../portal/Modal';
 import { isOpenCardFiles$ } from '../../../../services/sharingSubject';
 import { Subscription } from 'rxjs';
 import { URL } from '../../../../services/axiosInstance';
-import ButtonDelete from '../../button/ButtonDelete';
+import ButtonDelete from '../../../button/ButtonDelete';
 import UploadFile from '../../uploadFile/UploadFile';
 import formatDate from '../../../../utils/formatDate';
 import { GeneralFile } from '../../../../types/types';

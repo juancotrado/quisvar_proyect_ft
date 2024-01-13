@@ -1,6 +1,6 @@
 import { URL } from '../../../services/axiosInstance';
 import { TypeFileUser } from '../../../types/types';
-import ButtonDelete from '../../shared/button/ButtonDelete';
+import ButtonDelete from '../../button/ButtonDelete';
 import UploadFile from '../../shared/uploadFile/UploadFile';
 import './uploadUserFile.css';
 

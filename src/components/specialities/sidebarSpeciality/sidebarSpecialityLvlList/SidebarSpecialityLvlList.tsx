@@ -4,7 +4,7 @@ import {
   typeSidebarSpecility,
 } from '../../../../types/types';
 import './sidebarSpecialityLvlList.css';
-import { Option } from '../../../shared/dots/DotsOption';
+import { Option } from '../../../dots/DotsOption';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { Input } from '../../..';
 import {

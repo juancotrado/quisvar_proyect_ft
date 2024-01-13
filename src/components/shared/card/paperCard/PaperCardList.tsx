@@ -1,6 +1,6 @@
 import { URL } from '../../../../services/axiosInstance';
 import { ListReport } from '../../../../types/types';
-import Button from '../../button/Button';
+import Button from '../../../button/Button';
 import PaperCard from './PaperCard';
 import './paperCardList.css';
 interface PaperCardListProps {

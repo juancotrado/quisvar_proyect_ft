@@ -11,7 +11,7 @@ import {
   ServiceOrderData,
   ServiceOrderForm,
 } from '../../../types/types';
-import Button from '../button/Button';
+import Button from '../../button/Button';
 import { useEffect, useState } from 'react';
 import { axiosInstance } from '../../../services/axiosInstance';
 

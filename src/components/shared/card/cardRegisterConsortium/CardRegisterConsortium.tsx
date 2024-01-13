@@ -1,7 +1,7 @@
 import { FocusEvent, useEffect, useState } from 'react';
 import { CompanyType, ConsortiumForm } from '../../../../types/types';
 import { Input } from '../../..';
-import Button from '../../button/Button';
+import Button from '../../../button/Button';
 import './cardRegisgterConsortium.css';
 
 const InitialValues: ConsortiumForm = {

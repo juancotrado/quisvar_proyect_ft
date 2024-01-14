@@ -4,7 +4,7 @@ import { Option, Training, TrainingSpecialty } from '../../types/types';
 import formatDate from '../../utils/formatDate';
 import Button from '../button/Button';
 import './trainingTable.css';
-import DotsRight from '../shared/dotsRight/DotsRight';
+import { DotsRight } from '..';
 interface ExperienceTableProps {
   datos: Training['trainingSpecialistName'];
   id: number;

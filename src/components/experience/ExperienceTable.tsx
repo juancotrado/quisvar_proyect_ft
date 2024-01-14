@@ -5,7 +5,7 @@ import { calcDates } from '../../utils/experienceFunctions/experienceFunctions';
 import formatDate from '../../utils/formatDate';
 import Button from '../button/Button';
 import './experienceTable.css';
-import DotsRight from '../shared/dotsRight/DotsRight';
+import { DotsRight } from '..';
 interface ExperienceTableProps {
   datos: Experience['areaSpecialtyName'];
   id: number;

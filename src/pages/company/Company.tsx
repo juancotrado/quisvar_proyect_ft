@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { CardCompany, Input } from '../../components';
+import { CardCompany, DotsRight, Input } from '../../components';
 import Button from '../../components/button/Button';
 import {
   isOpenCardCompany$,
@@ -13,7 +13,6 @@ import { Companies, Option } from '../../types/types';
 import { URL } from '../../services/axiosInstance';
 import CardConsortium from '../../components/shared/card/cardConsortium/CardConsortium';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
-import DotsRight from '../../components/shared/dotsRight/DotsRight';
 
 export const Company = () => {
   const [companies, setCompanies] = useState<Companies[]>();

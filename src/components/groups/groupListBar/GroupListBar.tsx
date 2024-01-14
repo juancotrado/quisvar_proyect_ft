@@ -1,13 +1,12 @@
 import { Group, Option } from '../../../types/types';
 // import { isOpenCardRegisteContract$ } from '../../../services/sharingSubject';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
-import DotsRight from '../../shared/dotsRight/DotsRight';
 // import { axiosInstance } from '../../../services/axiosInstance';
 // import { SnackbarUtilities } from '../../../utils/SnackbarManager';
 import './groupListBar.css';
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
-import { GroupBtnAdd } from '../..';
+import { DotsRight, GroupBtnAdd } from '../..';
 
 interface GroupListBarProps {
   group: Group;

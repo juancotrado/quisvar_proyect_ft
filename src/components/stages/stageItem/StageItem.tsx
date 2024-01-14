@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Option, Stage } from '../../../types/types';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { Input } from '../..';
+import { DotsRight, Input } from '../..';
 import {
   validateCorrectTyping,
   validateWhiteSpace,
@@ -9,7 +9,6 @@ import {
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { axiosInstance } from '../../../services/axiosInstance';
 import './StageItem.css';
-import DotsRight from '../../shared/dotsRight/DotsRight';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import { RootState } from '../../../store';
 import { useSelector } from 'react-redux';

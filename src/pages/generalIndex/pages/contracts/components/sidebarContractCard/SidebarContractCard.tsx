@@ -1,7 +1,6 @@
-import { Contract, Option } from '../../../../../../types/types';
+import { Contract, Option } from '../../../../../../types';
 import { isOpenCardRegisteContract$ } from '../../../../../../services/sharingSubject';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
-import DotsRight from '../../../../../../components/shared/dotsRight/DotsRight';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { SnackbarUtilities } from '../../../../../../utils/SnackbarManager';
 import './sidebarContractCard.css';
@@ -11,6 +10,7 @@ import {
   useLocation,
   // useNavigate
 } from 'react-router-dom';
+import { DotsRight } from '../../../../../../components';
 
 interface SidebarContractCardProps {
   contract: Contract;

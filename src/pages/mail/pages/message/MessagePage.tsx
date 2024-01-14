@@ -23,8 +23,7 @@ import {
   convertToDynamicObject,
   dataInitialPdf,
 } from '../../../../utils/pdfReportFunctions';
-import { PDFGenerator } from '../../../../components';
-import LoaderForComponent from '../../../../components/shared/loaderForComponent/LoaderForComponent';
+import { LoaderForComponent, PDFGenerator } from '../../../../components';
 import { transformDataPdf } from '../../../../utils/transformDataPdf';
 import useListUsers from '../../../../hooks/useListUsers';
 import CardRegisterVoucher from '../../../../components/shared/card/cardRegisterVoucher/CardRegisterVoucher';

@@ -1,24 +1,25 @@
 import { useState } from 'react';
-import { Level } from '../../../../../../../../types/types';
+import { Level, Option } from '../../../../../../../../types';
 import './projectLevel.css';
-import { Input } from '../../../../../../../../components';
+import {
+  DotsRight,
+  Input,
+  DropDownSimple,
+} from '../../../../../../../../components';
 import colors from '../../../../../../../../utils/json/colors.json';
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   validateCorrectTyping,
   validateWhiteSpace,
-} from '../../../../../../../../utils/customValidatesForm';
-import { Option } from '../../../../../../../../components/dots/DotsOption';
+} from '../../../../../../../../utils';
 import { axiosInstance } from '../../../../../../../../services/axiosInstance';
-import MoreInfo from '../moreInfo/MoreInfo';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../../../store';
-import DotsRight from '../../../../../../../../components/shared/dotsRight/DotsRight';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
-import useListUsers from '../../../../../../../../hooks/useListUsers';
-import DropDownSimple from '../../../../../../../../components/dropDownSimple/DropDownSimple';
+import { useListUsers } from '../../../../../../../../hooks';
 import { isOpenButtonDelete$ } from '../../../../../../../../services/sharingSubject';
+import { MoreInfo } from '..';
 interface ProjectLevelProps {
   data: Level;
   onSave?: () => void;

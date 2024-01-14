@@ -1,9 +1,8 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import './sidebarSpecialityAddLvl.css';
 import { useEffect, useState } from 'react';
-import { Input } from '../../..';
+import { DotsRight, Input } from '../../..';
 import Button from '../../../button/Button';
-import { Option } from '../../../dots/DotsOption';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import {
   validateCorrectTyping,
@@ -11,8 +10,8 @@ import {
 } from '../../../../utils/customValidatesForm';
 import { isOpenCardRegisteProject$ } from '../../../../services/sharingSubject';
 import colors from '../../../../utils/json/colorSidebar.json';
-import DotsRight from '../../../shared/dotsRight/DotsRight';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
+import { Option } from '../../../../types';
 
 type DataForm = { name: string; cod: string };
 interface SidebarSpecialityAddLvlProps {

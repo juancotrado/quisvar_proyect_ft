@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import {
   DataSidebarSpeciality,
+  Option,
   typeSidebarSpecility,
 } from '../../../../types/types';
 import './sidebarSpecialityLvlList.css';
-import { Option } from '../../../dots/DotsOption';
 import { axiosInstance } from '../../../../services/axiosInstance';
-import { Input } from '../../..';
+import { DotsRight, Input } from '../../..';
 import {
   validateCorrectTyping,
   validateWhiteSpace,
@@ -18,7 +18,6 @@ import {
   isOpenCardRegisteProject$,
 } from '../../../../services/sharingSubject';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
-import DotsRight from '../../../shared/dotsRight/DotsRight';
 import { SubmitHandler, useForm } from 'react-hook-form';
 interface SidebarSpecialityLvlListProps {
   data: DataSidebarSpeciality;

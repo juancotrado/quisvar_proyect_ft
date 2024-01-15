@@ -9,13 +9,13 @@ import {
 import {
   validateCorrectTyping,
   validateWhiteSpace,
-} from '../../../../../../../../utils/customValidatesForm';
+  SnackbarUtilities,
+} from '../../../../../../../../utils';
 import { axiosInstance } from '../../../../../../../../services/axiosInstance';
 import { Level } from '../../../../../../../../types';
 import { isOpenCardRegisteTask$ } from '../../../../../../../../services/sharingSubject';
 import { useListUsers } from '../../../../../../../../hooks';
 import colors from '../../../../../../../../utils/json/colors.json';
-import { SnackbarUtilities } from '../../../../../../../../utils';
 
 interface DataForm {
   rootId: number;

@@ -14,10 +14,10 @@ export const validateOnlyNumbers = (value: string | undefined | number) => {
   return !regex.test(value) ? 'Ingrese solo caracteres numericos ' : true;
 };
 
-export const validateCorrectTyping = (value: string | undefined) => {
-  if (!value) return 'Este campo no puede estar vacío';
-
-  const regex = /^[a-zA-Z0-9,áéíóúÁÉÍÓÚñÑ _-]+$/;
+export const validateCorrectTyping = <T>(value: T) => {
+  if (!value || typeof value !== 'string')
+    return 'Este campo no puede estar vacío';
+  const regex = /^[a-zA-Z0-9,áéíóúÁÉÍÓÚñÑ()° _-]+$/;
   return !regex.test(value)
     ? 'Ingresar nombre que no contenga lo siguiente ^*/?@|<>": '
     : true;

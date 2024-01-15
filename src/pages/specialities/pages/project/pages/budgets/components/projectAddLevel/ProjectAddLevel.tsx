@@ -64,7 +64,7 @@ export const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
         'Asegurese de elegir un coordinador antes.'
       );
     const { id, stagesId, rootTypeItem } = data;
-    body = { ...body, rootId: firstLevel ? 0 : id, stagesId };
+    body = { ...body, rootId: firstLevel ? 0 : id, stagesId: +stagesId };
     if (
       addLevel === 'area' ||
       (data.isProject && data.nextLevel?.length !== 0)

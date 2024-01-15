@@ -1,24 +1,17 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { ConsortiumType } from '../../../../types/types';
+import { ConsortiumType } from '../../../../types';
 import { URL, axiosInstance } from '../../../../services/axiosInstance';
 import './consortium.css';
-import ButtonDelete from '../../../../components/button/ButtonDelete';
-import Button from '../../../../components/button/Button';
 import { isOpenCardAddCompany$ } from '../../../../services/sharingSubject';
-import CardAddCompany from '../../../../components/shared/card/cardAddCompany/CardAddCompany';
+import { Button, ButtonDelete } from '../../../../components';
+import { CardAddCompany } from './views';
 
 export const Consortium = () => {
   const { id } = useParams();
   const [data, setData] = useState<ConsortiumType>();
   const [, setProjectSelected] = useState<number | null>(null);
-  // const toggleDetalleProyecto = (projectID: number) => {
-  //   if (projectSelected === projectID) {
-  //     setProjectSelected(null);
-  //   } else {
-  //     setProjectSelected(projectID);
-  //   }
-  // };
+
   const getConsortium = useCallback(() => {
     axiosInstance.get(`/consortium/${id}`).then(item => setData(item.data));
   }, [id]);

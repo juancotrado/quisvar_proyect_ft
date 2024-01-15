@@ -10,7 +10,7 @@ import { useSelector } from 'react-redux';
 import { axiosInstance } from '../../../../../../../../services/axiosInstance';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import { useContext } from 'react';
-import { SocketContext } from '../../../../../../../../context/SocketContex';
+import { SocketContext } from '../../../../../../../../context';
 import { StatusText } from '..';
 import {
   DefaultUserImage,

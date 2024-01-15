@@ -1,8 +1,8 @@
-import { statusText } from '../../../../../../../../../../components/shared/card/cardTaskInformation/constans';
+import { STATUS_TEXT } from '../../../../models';
 import './subTaskStatusLabel.css';
 
 interface SubTaskStatusLabelProps {
-  status: keyof typeof statusText;
+  status: keyof typeof STATUS_TEXT;
 }
 
 const SubTaskStatusLabel = ({ status }: SubTaskStatusLabelProps) => {
@@ -11,7 +11,7 @@ const SubTaskStatusLabel = ({ status }: SubTaskStatusLabelProps) => {
       <label
         className={`subTaskStatusLabel-text subTaskStatusLabel-${status} `}
       >
-        {statusText[status]}
+        {STATUS_TEXT[status]}
       </label>
     </div>
   );

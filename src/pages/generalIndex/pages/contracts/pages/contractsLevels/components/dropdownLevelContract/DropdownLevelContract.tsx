@@ -1,12 +1,12 @@
-import { ContractIndexData } from '../../../../../../../../types/types';
+import { ContractIndexData } from '../../../../../../../../types';
 import './dropdownLevelContract.css';
 import colors from '../../../../../../../../utils/json/colorsContract.json';
-import UploadFileInput from '../../../../../../../../components/shared/uploadFileInput/UploadFileInput';
 import {
   URL,
   axiosInstance,
 } from '../../../../../../../../services/axiosInstance';
 import { ChangeEvent } from 'react';
+import { UploadFileInput } from '../../../../../../../../components';
 
 interface DropdownLevelContractProps {
   level: ContractIndexData;

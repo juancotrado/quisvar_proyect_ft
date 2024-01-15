@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useState } from 'react';
-import Button from '../../components/button/Button';
 import './group.css';
 import { axiosInstance } from '../../services/axiosInstance';
-import { Group as GroupData } from '../../types/types';
-import { GroupBtnAdd, GroupListBar } from '../../components';
+import { Group as GroupData } from '../../types';
 import { Outlet } from 'react-router-dom';
+import { GroupBtnAdd, GroupListBar } from './components';
+import { Button } from '../../components';
 
 export const Group = () => {
   const [groups, setGroups] = useState<GroupData[]>();

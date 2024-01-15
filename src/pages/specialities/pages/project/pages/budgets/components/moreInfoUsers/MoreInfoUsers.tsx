@@ -1,4 +1,4 @@
-import { ListUsers } from '../../../../../../../../types/types';
+import { ListUsers } from '../../../../../../../../types';
 import './moreInfoUsers.css';
 interface MoreInfoUsersProps {
   users: ListUsers[];

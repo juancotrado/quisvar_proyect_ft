@@ -1,7 +1,9 @@
+export * from './SnackbarManager';
 export * from './canvas';
 export * from './constantsPdf';
 export * from './customValidatesForm';
 export * from './excelGenerate';
+export * from './excelGenerate/utils';
 export * from './experienceFunctions';
 export * from './files';
 export * from './formatDate';
@@ -10,6 +12,5 @@ export * from './navigation';
 export * from './numerosALetras';
 export * from './pdfReportFunctions';
 export * from './roles';
-export * from './SnackbarManager';
 export * from './tools';
 export * from './transformDataPdf';

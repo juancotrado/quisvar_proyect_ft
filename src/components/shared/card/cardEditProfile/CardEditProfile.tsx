@@ -1,4 +1,4 @@
-import Input from '../../Input/Input';
+import Input from '../../../Input/Input';
 import './CardEditProfile.css';
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 import { axiosInstance } from '../../../../services/axiosInstance';

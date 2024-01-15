@@ -1,7 +1,5 @@
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 
-import { GeneralData, ProtectedRoute } from '../components';
-import ProtectedRole from '../components/protected/ProtectedRole/ProtectedRole';
 import {
   attendance_perms,
   rolThirdLevel,
@@ -41,7 +39,9 @@ import {
   Stage,
   Task,
   UsersList,
+  GeneralData,
 } from '../pages';
+import { ProtectedRole, ProtectedRoute } from '../guards';
 
 const Navigation = () => {
   return (

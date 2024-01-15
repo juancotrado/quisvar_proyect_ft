@@ -3,34 +3,21 @@ import { Outlet, useParams } from 'react-router-dom';
 import { SocketContext } from '../../../../../../context';
 import { DegreType, Level, StatusType } from '../../../../../../types';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
-import MoreInfo from './components/moreInfo/MoreInfo';
-import CardRegisterSubTask from '../../../../../../components/shared/card/cardRegisterSubTask/CardRegisterSubTask';
 import { motion } from 'framer-motion';
 import './budgetsPage.css';
-import StatusText from './components/statusText/StatusText';
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import { GenerateIndexPdf } from '../../../../../../components/shared/generateIndexPdf/GenerateIndexPdf';
-import { GenerateDetailedIndexPdf } from '../../../../../../components/shared/generateDetailedIndexPdf/GenerateDetailedIndexPdf';
-import FloatingText from '../../../../../../components/floatingText/FloatingText';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../store';
 import {
   Button,
+  FloatingText,
   LoaderForComponent,
   Select,
 } from '../../../../../../components';
-import { DropdownLevel } from './components';
-
-const COST_DATA = [
-  {
-    key: 'bachelor',
-    value: 'Bachiller',
-  },
-  {
-    key: 'professional',
-    value: 'Titulado',
-  },
-];
+import { DropdownLevel, MoreInfo, StatusText } from './components';
+import { COST_DATA, FILTER_OPTIONS } from './models';
+import { GenerateDetailedIndexPdf, GenerateIndexPdf } from './pdfgenerator';
+import { CardRegisterSubTask } from './views';
 
 export const BudgetsPage = () => {
   const { stageId } = useParams();
@@ -99,14 +86,6 @@ export const BudgetsPage = () => {
     levelFilter('');
   };
 
-  const FilterOptions: StatusType[] = [
-    'UNRESOLVED',
-    'PROCESS',
-    'INREVIEW',
-    'DENIED',
-    'DONE',
-    'LIQUIDATION',
-  ];
   if (!levels)
     return (
       <div className="task-loader">
@@ -119,7 +98,8 @@ export const BudgetsPage = () => {
         <div className="budgetsPage-filter">
           <FloatingText text="Descargar Índice" xPos={-50}>
             <PDFDownloadLink
-              document={GenerateIndexPdf({ data: levels })}
+              // document={GenerateIndexPdf({ data: levels })}
+              document={<GenerateIndexPdf data={levels} />}
               fileName={`${levels.projectName}.pdf`}
               className="budgetsPage-filter-icon"
             >
@@ -131,7 +111,7 @@ export const BudgetsPage = () => {
           </FloatingText>
           <FloatingText text="Descargar Índice" xPos={-50}>
             <PDFDownloadLink
-              document={GenerateDetailedIndexPdf({ data: levels })}
+              document={<GenerateDetailedIndexPdf data={levels} />}
               fileName={`${levels.projectName}.pdf`}
               className="budgetsPage-filter-icon"
             >
@@ -155,7 +135,7 @@ export const BudgetsPage = () => {
               transition={{ duration: 0.5 }}
               className="budgetsPage-filter-area"
             >
-              {FilterOptions.map(option => (
+              {FILTER_OPTIONS.map(option => (
                 <StatusText
                   key={option}
                   status={option}

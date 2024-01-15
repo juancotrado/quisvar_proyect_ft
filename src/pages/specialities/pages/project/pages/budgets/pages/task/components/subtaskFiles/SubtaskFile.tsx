@@ -3,12 +3,12 @@ import {
   URL,
   axiosInstance,
 } from '../../../../../../../../../../services/axiosInstance';
-import { FileType, Files } from '../../../../../../../../../../types/types';
-import { SocketContext } from '../../../../../../../../../../context/SocketContex';
+import { FileType, Files } from '../../../../../../../../../../types';
+import { SocketContext } from '../../../../../../../../../../context';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../../../../../store';
 import './SubtaskFile.css';
-import Button from '../../../../../../../../../../components/button/Button';
+import { Button } from '../../../../../../../../../../components';
 interface SubtaskFileProps {
   files: Files[];
   typeFile?: FileType;

@@ -1,6 +1,6 @@
-import { Feedback, SubTask } from '../../../../../../../../../../types/types';
-import { _date } from '../../../../../../../../../../utils/formatDate';
-import StatusText from '../../../../components/statusText/StatusText';
+import { Feedback, SubTask } from '../../../../../../../../../../types';
+import { _date } from '../../../../../../../../../../utils';
+import { StatusText } from '../../../../components';
 import './subtasksMoreInfo.css';
 interface SubtasksMoreInfoProps {
   task: SubTask;

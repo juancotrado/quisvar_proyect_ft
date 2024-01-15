@@ -1,5 +1,5 @@
-import { PdfDataProps, PdfGeneratorPick } from '../types/types';
-import formatDate from './formatDate';
+import { formatDate } from '.';
+import { PdfDataProps, PdfGeneratorPick } from '../types';
 import { convertToDynamicObject } from './pdfReportFunctions';
 
 interface transformDataPdfProps {

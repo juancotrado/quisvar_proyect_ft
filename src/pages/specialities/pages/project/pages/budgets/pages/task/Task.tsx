@@ -6,6 +6,7 @@ import { axiosInstance } from '../../../../../../../../services/axiosInstance';
 import { CardSubtaskDone, CardSubtaskHold, CardSubtaskProcess } from './views';
 import { SocketContext } from '../../../../../../../../context';
 import { LoaderForComponent } from '../../../../../../../../components';
+
 export const Task = () => {
   const [task, setTask] = useState<SubTask | null>(null);
   const socket = useContext(SocketContext);

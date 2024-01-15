@@ -1,15 +1,6 @@
 import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import './userList.css';
-import {
-  CardAssign,
-  CardGenerateReport,
-  CardOpenFile,
-  CardRegisterUser,
-  CardViewDocs,
-  Equipment,
-  Input,
-} from '../../components';
-import Button from '../../components/button/Button';
+import { Button, CardGenerateReport, Input } from '../../components';
 import {
   isOpenCardAddEquipment$,
   isOpenCardAssing$,
@@ -23,13 +14,19 @@ import {
   GeneralFile,
   User,
   WorkStation,
-} from '../../types/types';
-import UserInfo from '../../components/users/UserInfo';
+} from '../../types';
 import { AppDispatch, RootState } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
 import { getListUsers } from '../../store/slices/listUsers.slice';
-import CardAddEquipment from '../../components/shared/card/CardAddEquipment/CardAddEquipment';
 import { axiosInstance } from '../../services/axiosInstance';
+import { Equipment, UserInfo } from './components';
+import {
+  CardAddEquipment,
+  CardAssign,
+  CardOpenFile,
+  CardRegisterUser,
+  CardViewDocs,
+} from './views';
 
 export const UsersList = () => {
   const dispatch: AppDispatch = useDispatch();

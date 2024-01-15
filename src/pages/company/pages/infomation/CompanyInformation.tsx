@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import './companyInformation.css';
 import { useCallback, useEffect, useState } from 'react';
-import { Companies } from '../../../../types/types';
+import { Companies } from '../../../../types';
 import { URL, axiosInstance } from '../../../../services/axiosInstance';
 // import { AnimatePresence, motion } from 'framer-motion';
 

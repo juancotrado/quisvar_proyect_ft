@@ -3,13 +3,13 @@ import {
   DataFeedback,
   Feedback,
   Profile,
-} from '../../../../../../../../../../types/types';
+} from '../../../../../../../../../../types';
 import { motion } from 'framer-motion';
 import { TextArea } from '../../../../../../../../../../components';
-import SubtaskFile from '../subtaskFiles/SubtaskFile';
 import './subtaskInfoHistory.css';
-import { container } from '../../../../../../../../../../animations/animations';
-import { _date } from '../../../../../../../../../../utils/formatDate';
+import { container } from '../../../../../../../../../../animations';
+import { _date } from '../../../../../../../../../../utils';
+import { SubtaskFile } from '..';
 interface SubtaskInfoHistoryProps {
   feedBack: Feedback;
   className?: string;

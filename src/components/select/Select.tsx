@@ -14,7 +14,7 @@ interface SelectOptionsProps extends SelectHTMLAttributes<HTMLSelectElement> {
   isRelative?: boolean;
   className?: string;
 }
-const SelectOptions = forwardRef<HTMLSelectElement, SelectOptionsProps>(
+export const SelectOptions = forwardRef<HTMLSelectElement, SelectOptionsProps>(
   (
     {
       label,

@@ -2,11 +2,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { NavLink, Outlet, useParams } from 'react-router-dom';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import './groupContent.css';
-import Button from '../../../../components/button/Button';
-import { Group } from '../../../../types/types';
+import { Group } from '../../../../types';
 import { isOpenCardAddGroup$ } from '../../../../services/sharingSubject';
-import CardAddGroup from '../../../../components/shared/card/cardAddGroup/CardAddGroup';
-import ButtonDelete from '../../../../components/button/ButtonDelete';
+import { Button, ButtonDelete } from '../../../../components';
+import { CardAddGroup } from './views';
+
 export const GroupContent = () => {
   const { groupId, name } = useParams();
   const [members, setMembers] = useState<Group>();

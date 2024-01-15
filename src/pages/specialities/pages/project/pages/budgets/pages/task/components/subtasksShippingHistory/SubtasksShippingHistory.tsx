@@ -1,8 +1,5 @@
-import {
-  DataFeedback,
-  Feedback,
-} from '../../../../../../../../../../types/types';
-import SubtaskInfoHistory from '../subtaskInfoHistory/SubtaskInfoHistory';
+import { SubtaskInfoHistory } from '..';
+import { DataFeedback, Feedback } from '../../../../../../../../../../types';
 import './subtasksShippingHistory.css';
 
 interface SubtasksShippingHistoryProps {

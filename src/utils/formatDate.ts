@@ -4,7 +4,7 @@ const CONFIG_DATE_TIME_FORMAT: Intl.DateTimeFormatOptions = {
   timeZone: 'America/Lima',
 };
 
-const formatDate = (
+export const formatDate = (
   date: Date,
   config?: Intl.DateTimeFormatOptions
 ): string => {
@@ -69,4 +69,3 @@ export const getTimeOut = (
   const transformToHours = Math.floor(untilDateTime / 1000 / 60 / 60);
   return transformToHours;
 };
-export default formatDate;

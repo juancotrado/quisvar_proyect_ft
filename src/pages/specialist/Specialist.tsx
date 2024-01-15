@@ -1,14 +1,13 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { Input } from '../../components';
-import Button from '../../components/button/Button';
-import CardSpecialist from '../../components/shared/card/cardSpecialist/CardSpecialist';
+import { Input, Button } from '../../components';
 import { isOpenCardSpecialist$ } from '../../services/sharingSubject';
 import './specialist.css';
-import { SpecialistList } from '../../types/types';
+import { SpecialistList } from '../../types';
 import { axiosInstance } from '../../services/axiosInstance';
-import { getIconDefault } from '../../utils/tools';
+import { getIconDefault } from '../../utils';
 import { NavLink, Outlet } from 'react-router-dom';
 import { Subject, debounceTime, switchMap } from 'rxjs';
+import { CardSpecialist } from './views';
 
 export const Specialist = () => {
   const [specialist, setSpecialist] = useState<SpecialistList[]>();

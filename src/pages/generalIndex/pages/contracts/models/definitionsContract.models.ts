@@ -1,6 +1,6 @@
 import { ContractIndexData } from '../../../../../types/types';
 
-export const contractIndexData: ContractIndexData[] = [
+export const CONTRACT_INDEX_DATA: ContractIndexData[] = [
   {
     id: '1',
     name: 'CONFORMIDAD',
@@ -259,3 +259,9 @@ export const PRICE_DIFFICULTY = {
     professionalCost: 4000,
   },
 };
+
+export const DIFFICULTY_LEVEL = [
+  { key: 1, name: 'Level 1' },
+  { key: 2, name: 'Level 2' },
+  { key: 3, name: 'Level 3' },
+];

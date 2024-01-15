@@ -1,7 +1,7 @@
 import { ChangeEvent, useContext } from 'react';
-import { FileType } from '../../../../../../../../../../types/types';
+import { FileType } from '../../../../../../../../../../types';
 import { axiosInstance } from '../../../../../../../../../../services/axiosInstance';
-import { SocketContext } from '../../../../../../../../../../context/SocketContex';
+import { SocketContext } from '../../../../../../../../../../context';
 import './subtaskUploadFiles.css';
 interface SubtaskUploadFilesProps {
   type: FileType;

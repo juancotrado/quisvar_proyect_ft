@@ -1,6 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { CardCompany, DotsRight, Input } from '../../components';
-import Button from '../../components/button/Button';
+import { DotsRight, Input, Button } from '../../components';
 import {
   isOpenCardCompany$,
   isOpenCardConsortium$,
@@ -8,11 +7,10 @@ import {
 import './company.css';
 import { useEffect, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
-import { Companies, Option } from '../../types/types';
-// import { getIconDefault } from '../../utils/tools';
+import { Companies, Option } from '../../types';
 import { URL } from '../../services/axiosInstance';
-import CardConsortium from '../../components/shared/card/cardConsortium/CardConsortium';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
+import { CardCompany, CardConsortium } from './views';
 
 export const Company = () => {
   const [companies, setCompanies] = useState<Companies[]>();
@@ -156,7 +154,6 @@ export const Company = () => {
       <section className="specialist-info">
         <Outlet />
       </section>
-      {/* <Button text="Agregar" onClick={viewCompany} /> */}
       <CardCompany onSave={getCompanies} />
       <CardConsortium onSave={getConsortium} />
     </div>

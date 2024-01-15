@@ -1,6 +1,6 @@
-import { statusText } from '../../../../../../../../components/shared/card/cardTaskInformation/constans';
 import './statusText.css';
 import { StatusType } from '../../../../../../../../types/types';
+import { STATUS_TEXT } from '../../models';
 interface StatusTextProps {
   status: StatusType;
   onClick?: () => void;
@@ -12,7 +12,7 @@ export const StatusText = ({ status, onClick }: StatusTextProps) => {
       onClick={onClick}
       className={`statusText  ${status} ${onClick && 'statusText-cursor'}`}
     >
-      {statusText[status]}
+      {STATUS_TEXT[status]}
     </div>
   );
 };

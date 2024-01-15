@@ -1,12 +1,12 @@
 // import { Input } from '../../../components';
 import { useState } from 'react';
-import Button from '../../../../components/button/Button';
-import ButtonDelete from '../../../../components/button/ButtonDelete';
-import useListUsers from '../../../../hooks/useListUsers';
+import { useListUsers } from '../../../../hooks';
 import { axiosInstance } from '../../../../services/axiosInstance';
-import { licenseList } from '../../../../types/types';
+import { licenseList } from '../../../../types';
 import './LicenseListItem.css';
-import formatDate from '../../../../utils/formatDate';
+import { formatDate } from '../../../../utils';
+import ButtonDelete from '../../../../components/button/ButtonDelete';
+import { Button } from '../../../../components';
 type license = {
   isEmployee: boolean;
   data: licenseList;

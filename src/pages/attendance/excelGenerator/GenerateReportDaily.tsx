@@ -1,6 +1,6 @@
 import * as ExcelJS from 'exceljs';
 import { AttendanceRange } from '../../../types/types';
-import formatDate from '../../../utils/formatDate';
+import { formatDate } from '../../../utils';
 interface GenerateReportDailyProps {
   startDate: string;
   printData: AttendanceRange[];

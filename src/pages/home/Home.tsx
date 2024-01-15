@@ -4,8 +4,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { useCallback, useEffect, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
-import { licenseList } from '../../types/types';
-import formatDate from '../../utils/formatDate';
+import { licenseList } from '../../types';
+import { formatDate } from '../../utils';
 const GMT = 5 * 60 * 60 * 1000;
 
 export const Home = () => {

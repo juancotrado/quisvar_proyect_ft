@@ -174,3 +174,15 @@ td {
   border: 1px solid black;
   border-collapse: collapse;
 }
+.close-icon {
+  cursor: pointer;
+  position: absolute;
+  top: 0.7rem;
+  right: 0.7rem;
+  width: 1rem;
+  border-radius: 50%;
+  transition: 0.5s ease;
+}
+.close-icon:hover {
+  transform: rotate(-90deg);
+}

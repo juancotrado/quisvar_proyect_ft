@@ -2,7 +2,7 @@ import { Contract, Option } from '../../../../../../types';
 import { isOpenCardRegisteContract$ } from '../../../../../../services/sharingSubject';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
-import { SnackbarUtilities } from '../../../../../../utils/SnackbarManager';
+import { SnackbarUtilities } from '../../../../../../utils';
 import './sidebarContractCard.css';
 // import { useState } from 'react';
 import {

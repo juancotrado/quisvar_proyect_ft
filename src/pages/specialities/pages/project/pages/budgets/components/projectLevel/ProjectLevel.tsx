@@ -7,7 +7,6 @@ import {
   DropDownSimple,
 } from '../../../../../../../../components';
 import colors from '../../../../../../../../utils/json/colors.json';
-
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   validateCorrectTyping,
@@ -20,6 +19,7 @@ import { ContextMenuTrigger } from 'rctx-contextmenu';
 import { useListUsers } from '../../../../../../../../hooks';
 import { isOpenButtonDelete$ } from '../../../../../../../../services/sharingSubject';
 import { MoreInfo } from '..';
+
 interface ProjectLevelProps {
   data: Level;
   onSave?: () => void;

@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import './notificationsList.css';
-import SubtaskDetail from '../../components/subtasks/SubtaskDetail';
 import { axiosInstance } from '../../services/axiosInstance';
 import { ReviewList } from '../../types/types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
+import { SubtaskDetail } from './components';
 
 export const NotificationsList = () => {
   const { userSession } = useSelector((state: RootState) => state);

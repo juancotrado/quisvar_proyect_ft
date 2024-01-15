@@ -1,5 +1,5 @@
 import { Input } from '../../../../../../../../../../components';
-import { DataUser } from '../../../../../../../../../../types/types';
+import { DataUser } from '../../../../../../../../../../types';
 import './subtaskUsers.css';
 import { FocusEvent, useEffect, useState, ChangeEvent } from 'react';
 

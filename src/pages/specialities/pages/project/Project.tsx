@@ -1,29 +1,8 @@
 import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import './project.css';
 import { useEffect } from 'react';
-const projectOptions = [
-  {
-    id: 1,
-    text: 'DATOS GENERALES',
-    iconOn: 'ntbook-blue',
-    iconOff: 'ntbook-black',
-    navigation: 'detalles',
-  },
-  {
-    id: 2,
-    text: 'HOJA DE PRESUPUESTOS',
-    iconOn: 'spread-blue',
-    iconOff: 'spread-black',
-    navigation: 'presupuestos',
-  },
-  {
-    id: 3,
-    text: 'BÁSICOS',
-    iconOn: 'brief-blue',
-    iconOff: 'brief-black',
-    navigation: 'basicos',
-  },
-];
+import { PROJECT_OPTIONS } from './models';
+
 export const Project = () => {
   const navigation = useNavigate();
   const location = useLocation();
@@ -35,7 +14,7 @@ export const Project = () => {
   return (
     <div className="project">
       <div className="project-options">
-        {projectOptions.map(option => (
+        {PROJECT_OPTIONS.map(option => (
           <div key={option.id}>
             <NavLink to={option.navigation}>
               {({ isActive }) => (

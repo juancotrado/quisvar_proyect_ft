@@ -7,18 +7,15 @@ import {
   MessageStatus,
   MessageTypeImbox,
   licenseList,
-} from '../../types/types';
-import CardMessage from '../../components/shared/card/cardMessage/CardMessage';
+} from '../../types';
 import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
-import CardRegisterMessage from '../../components/shared/card/cardRegisterMessage/CardRegisterMessage';
-import Button from '../../components/button/Button';
-import SelectOptions from '../../components/select/Select';
-import { listStatusMsg, listTypeMsg } from '../../utils/files/files.utils';
+import { listStatusMsg, listTypeMsg } from '../../utils';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import { CardGenerateReport, CardLicense } from '../../components';
+import { Button, CardGenerateReport, Select } from '../../components';
 import { isOpenCardLicense$ } from '../../services/sharingSubject';
-import { LicenseListHeader, LicenseListItem } from './components';
+import { CardMessage, LicenseListHeader, LicenseListItem } from './components';
+import { CardLicense, CardRegisterMessage } from './views';
 
 const InitTMail: MailType['type'] = 'RECEIVER';
 export const MailPage = () => {
@@ -214,7 +211,7 @@ export const MailPage = () => {
                   />
                   Filtrar
                 </span>
-                <SelectOptions
+                <Select
                   data={listStatusMsg}
                   className="mail-option-select"
                   placeholder="Estado"
@@ -226,7 +223,7 @@ export const MailPage = () => {
                   itemKey="id"
                   textField="id"
                 />
-                <SelectOptions
+                <Select
                   className="mail-option-select"
                   placeholder="Documento"
                   data={listTypeMsg}

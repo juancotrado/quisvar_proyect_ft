@@ -1,2 +1,4 @@
-export * from './experience';
-export * from './training';
+export * from './experienceInformation';
+export * from './experienceTable';
+export * from './trainingInformation';
+export * from './trainingTable';

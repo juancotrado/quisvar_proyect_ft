@@ -7,10 +7,9 @@ import {
   useRef,
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Input, Legend } from '../../components';
+import { Input, Button, CloseIcon } from '../../components';
 import './Attendance.css';
 import { AppDispatch, RootState } from '../../store';
-import Button from '../../components/button/Button';
 import { axiosInstance } from '../../services/axiosInstance';
 import { _date, SnackbarUtilities } from '../../utils';
 import {
@@ -19,41 +18,17 @@ import {
   User,
   getLicenses,
 } from '../../types';
-import { SocketContext } from '../../context/SocketContex';
+import { SocketContext } from '../../context';
 import { isOpenCardViewPdf$ } from '../../services/sharingSubject';
-import CloseIcon from '../../components/closeIcon/CloseIcon';
 import { getListUsers } from '../../store/slices/listUsers.slice';
 import { generateReportDaily, generateReportRange } from './excelGenerator';
-import { AttendanceList, CardViewPdf } from './components';
+import { AttendanceList, CardViewPdf, Legend } from './components';
+import { CALLS } from './models';
 interface sendItemsProps {
   usersId: number;
   status: string;
 }
 
-const llamados = [
-  { title: 'primer llamado' },
-  { title: 'segundo llamado' },
-  { title: 'tercer llamado' },
-  { title: 'cuarto llamado' },
-  { title: 'quinto llamado' },
-  { title: 'sexto llamado' },
-  { title: 'sétimo llamado' },
-  { title: 'octavo llamado' },
-  { title: 'noveno llamado' },
-  { title: 'decimo llamado' },
-  { title: 'undecimo llamado' },
-  { title: 'duodecimo llamado' },
-  { title: 'decimotercero llamado' },
-  { title: 'decimocuarto llamado' },
-  { title: 'decimoquinto llamado' },
-  { title: 'decimosexto llamado' },
-  { title: 'decimosetimo llamado' },
-  { title: 'decimooctavo llamado' },
-  { title: 'decimonoveno llamado' },
-  { title: 'vigesimo llamado' },
-  { title: 'vigesimoprimero llamado' },
-  { title: 'vigesimosegundo llamado' },
-];
 interface RangeDate {
   startDate: string;
   endDate: string;
@@ -164,8 +139,8 @@ export const Attendance = () => {
     const res = await axiosInstance.get(
       `/list/attendance/?startDate=${_date(todayNow)}`
     );
-    if (!(llamados.length > res.data.length)) return;
-    const title = llamados[res.data.length];
+    if (!(CALLS.length > res.data.length)) return;
+    const title = CALLS[res.data.length];
     axiosInstance.post(`/list`, { ...title, timer: hour }).then(async () => {
       const data = await getTodayData();
       setCallList(data[data.length - 1]);

@@ -1,1 +1,1 @@
-export * from './GeneralData';
+export { default as GeneralData } from './GeneralData';

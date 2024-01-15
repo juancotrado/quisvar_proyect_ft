@@ -1,16 +1,16 @@
-import Button from '../../../../../../../../../../components/button/Button';
-import { statusBody } from '../../../../../../../../../../components/shared/card/cardTaskInformation/constans';
-import { SnackbarUtilities } from '../../../../../../../../../../utils/SnackbarManager';
+import { SnackbarUtilities } from '../../../../../../../../../../utils';
 import { useContext } from 'react';
 import { axiosInstance } from '../../../../../../../../../../services/axiosInstance';
-import { SocketContext } from '../../../../../../../../../../context/SocketContex';
+import { SocketContext } from '../../../../../../../../../../context';
 import './subtaskChangeStatusBtn.css';
 import {
   DataFeedback,
   Files,
   StatusType,
-} from '../../../../../../../../../../types/types';
+} from '../../../../../../../../../../types';
 import { useParams } from 'react-router-dom';
+import { Button } from '../../../../../../../../../../components';
+import { STATUS_BODY } from '../../models';
 
 interface SubtaskChangeStatusBtn {
   isAssignedAdminTask?: boolean;
@@ -56,7 +56,7 @@ const SubtaskChangeStatusBtn = ({
     role: string,
     state: string
   ): { status: string } | undefined => {
-    return statusBody[category]?.[role]?.[state];
+    return STATUS_BODY[category]?.[role]?.[state];
   };
 
   const handleEditStatus = async () => {
@@ -78,41 +78,6 @@ const SubtaskChangeStatusBtn = ({
     SnackbarUtilities.success('Se realizo la operación con exito');
   };
 
-  // const handleSendToReviewFormData = async () => {
-  //   if (!files?.length)
-  //     return SnackbarUtilities.warning(
-  //       'Asegurese de subir una archivo  antes.',
-  //     );
-
-  //   const hasPdf = Array.from(files).some(
-  //     file => file.type === 'application/pdf',
-  //   );
-  //   if (!hasPdf)
-  //     return SnackbarUtilities.warning(
-  //       'Asegurese de subir una archivo PDF antes.',
-  //     );
-  //   const message = validateValuesPorcentage();
-  //   if (message) return SnackbarUtilities.warning(message);
-  //   const formdata = new FormData();
-  //   for (const file of files) {
-  //     formdata.append('files', file);
-  //   }
-
-  //   await axiosInstance.post(
-  //     `/files/uploads/${subtaskId}/?status=REVIEW`,
-  //     formdata,
-  //   );
-
-  //   const feedbackBody = {
-  //     subTasksId: subtaskId,
-  //   };
-  //   await axiosInstance.post(`/feedbacks`, feedbackBody);
-  //   await axiosInstance.patch(
-  //     `/subtasks/percentage/${subtaskId}`,
-  //     porcentagesForUser,
-  //   );
-  //   await handleEditStatus();
-  // };
   const handleSendToReview = async () => {
     if (!files?.length)
       return SnackbarUtilities.warning(

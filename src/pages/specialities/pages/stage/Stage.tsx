@@ -2,17 +2,13 @@ import { useEffect, useState } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import './stage.css';
-import { ProjectType } from '../../../../types/types';
-import Button from '../../../../components/button/Button';
-import {
-  StageAddButton,
-  StageItem,
-  LoaderForComponent,
-} from '../../../../components';
-import { rolSecondLevel } from '../../../../utils/roles';
+import { ProjectType } from '../../../../types';
+import { Button, LoaderForComponent } from '../../../../components';
+import { rolSecondLevel } from '../../../../utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../store';
 import { setModAuthProject } from '../../../../store/slices/modAuthProject.slice';
+import { StageAddButton, StageItem } from './components';
 
 export const Stage = () => {
   const { projectId } = useParams();

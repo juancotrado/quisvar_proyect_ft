@@ -1,9 +1,8 @@
 import './detailsContracts.css';
-import { Schedule } from '../../../../../../types/types';
-import { _date } from '../../../../../../utils/formatDate';
+import { Schedule } from '../../../../../../types';
+import { _date, SnackbarUtilities } from '../../../../../../utils';
 import { FocusEvent, useState } from 'react';
-import { SnackbarUtilities } from '../../../../../../utils/SnackbarManager';
-import Button from '../../../../../../components/button/Button';
+import { Button } from '../../../../../../components';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../../store';
 import { axiosInstance } from '../../../../../../services/axiosInstance';

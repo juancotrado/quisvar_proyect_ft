@@ -1,19 +1,21 @@
 import { useEffect, useState } from 'react';
 import './projectAddLevel.css';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Input } from '../../../../../../../../components';
+import {
+  DropDownSimple,
+  FloatingText,
+  Input,
+} from '../../../../../../../../components';
 import {
   validateCorrectTyping,
   validateWhiteSpace,
 } from '../../../../../../../../utils/customValidatesForm';
 import { axiosInstance } from '../../../../../../../../services/axiosInstance';
-import { Level } from '../../../../../../../../types/types';
+import { Level } from '../../../../../../../../types';
 import { isOpenCardRegisteTask$ } from '../../../../../../../../services/sharingSubject';
-import DropDownSimple from '../../../../../../../../components/dropDownSimple/DropDownSimple';
-import useListUsers from '../../../../../../../../hooks/useListUsers';
+import { useListUsers } from '../../../../../../../../hooks';
 import colors from '../../../../../../../../utils/json/colors.json';
-import FloatingText from '../../../../../../../../components/floatingText/FloatingText';
-import { SnackbarUtilities } from '../../../../../../../../utils/SnackbarManager';
+import { SnackbarUtilities } from '../../../../../../../../utils';
 
 interface DataForm {
   rootId: number;

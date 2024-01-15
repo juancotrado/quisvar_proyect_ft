@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import './specialistInformation.css';
-import { getIconDefault } from '../../../../utils/tools';
+import { getIconDefault } from '../../../../utils';
 import {
   AreaSpecialty,
   Experience,
@@ -8,18 +8,17 @@ import {
   Specialists,
   Training,
   TrainingSpecialty,
-} from '../../../../types/types';
+} from '../../../../types';
 import { useCallback, useEffect, useState } from 'react';
 import { URL, axiosInstance } from '../../../../services/axiosInstance';
-import formatDate from '../../../../utils/formatDate';
 import { AnimatePresence, motion } from 'framer-motion';
 import {
   isOpenAddExperience$,
   isOpenAddTraining$,
 } from '../../../../services/sharingSubject';
-import CardAddExperience from '../../../../components/shared/card/cardAddExperience/CardAddExperience';
-import CardAddTraining from '../../../../components/shared/card/cardAddTraining/CardAddTraining';
 import { ExperienceInformation, TrainingInformation } from './components';
+import { formatDate } from '../../../../utils';
+import { CardAddExperience, CardAddTraining } from './views';
 
 export const SpecialistInformation = () => {
   const { infoId } = useParams();

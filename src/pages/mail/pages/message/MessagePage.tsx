@@ -6,42 +6,37 @@ import {
   MessageReply,
   MessageType,
   PdfDataProps,
-  UserRoleType,
   quantityType,
-} from '../../../../types/types';
+} from '../../../../types';
 import './messagePage.css';
 import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
-import formatDate from '../../../../utils/formatDate';
-import ChipFileMessage from '../../../../components/shared/card/cardRegisterMessage/ChipFileMessage';
-import CardRegisterMessageReply from '../../../../components/shared/card/cardRegisterMessageReply/CardRegisterMessageReply';
 import { motion } from 'framer-motion';
-import Button from '../../../../components/button/Button';
-import { filterFilesByAttempt } from '../../../../utils/files/files.utils';
-import CardRegisterMessageForward from '../../../../components/shared/card/cardRegisterMessageFordward/CardRegisterMessageFordward';
 import {
   convertToDynamicObject,
   dataInitialPdf,
-} from '../../../../utils/pdfReportFunctions';
-import { LoaderForComponent, PDFGenerator } from '../../../../components';
-import { transformDataPdf } from '../../../../utils/transformDataPdf';
-import useListUsers from '../../../../hooks/useListUsers';
-import CardRegisterVoucher from '../../../../components/shared/card/cardRegisterVoucher/CardRegisterVoucher';
-import CardRegisterVoucherDenyOrAccept from '../../../../components/shared/card/cardRegisterVoucherDenyOrAccept/CardRegisterVoucherDenyOrAccept';
+  filterFilesByAttempt,
+  formatDate,
+  transformDataPdf,
+} from '../../../../utils';
+import { Button, LoaderForComponent } from '../../../../components';
+import { useListUsers } from '../../../../hooks';
 import { isResizing$ } from '../../../../services/sharingSubject';
-import CardRegisterMessageUpdate from '../../../../components/shared/card/cardRegisterMessageUpdate/CardRegisterMessageUpdate';
-import { generateReportPDF } from '../../../../components/shared/generatePdf/GeneratePdf';
 import { PDFViewer } from '@react-pdf/renderer';
-// import { typeStatus } from '../.X./models/definitions.models';
-import GenerateOrderService from '../../../../components/shared/generateOrderService/GenerateOrderService';
-import { typeStatus } from '../../models';
-// import { typeStatus } from '../..';
+import { ROLE_PERM, TYPE_STATUS } from '../../models';
+import { ChipFileMessage } from '../../components';
+import { SPRING } from './models/definitionsMessage';
+import {
+  CardRegisterMessageForward,
+  CardRegisterMessageReply,
+  CardRegisterMessageUpdate,
+  CardRegisterVoucher,
+  CardRegisterVoucherDenyOrAccept,
+  GenerateOrderService,
+} from './views';
+import { PDFGenerator, generateReportPDF } from '../../pdfGenerate';
 
-const spring = {
-  type: 'spring',
-  stiffness: 150,
-  damping: 30,
-};
+const parseName = (title: string) => title.split('$').at(-1) || '';
 
 const parseDate = (date: Date) =>
   formatDate(new Date(date), {
@@ -53,14 +48,11 @@ const parseDate = (date: Date) =>
     minute: '2-digit',
   });
 
-const parseName = (title: string) => title.split('$').at(-1) || '';
-const RolePerm: UserRoleType[] = ['SUPER_ADMIN', 'ADMIN', 'SUPER_MOD', 'MOD'];
-
 export const MessagePage = () => {
   const navigate = useNavigate();
   const { messageId } = useParams();
   const [isResize, setIsResize] = useState(false);
-  const { users: listUsers } = useListUsers(RolePerm);
+  const { users: listUsers } = useListUsers(ROLE_PERM);
   const { userSession } = useSelector((state: RootState) => state);
   const [isReply, setIsReply] = useState(true);
   const [data, setData] = useState<PdfDataProps>(dataInitialPdf);
@@ -221,7 +213,7 @@ export const MessagePage = () => {
                     <motion.div
                       className={`message-handle`}
                       layout
-                      transition={spring}
+                      transition={SPRING}
                     >
                       <span className="span-list-task">
                         {isReply ? 'Procede' : 'No Procede'}
@@ -320,7 +312,7 @@ export const MessagePage = () => {
             <span
               className={`message-card-status-message message-status-${message.status}`}
             >
-              {typeStatus[message.status]}
+              {TYPE_STATUS[message.status]}
             </span>
           </div>
         </div>

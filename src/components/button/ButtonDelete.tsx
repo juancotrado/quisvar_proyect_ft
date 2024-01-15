@@ -8,7 +8,7 @@ import { dropIn } from '../../animations/animations';
 import Portal from '../portal/Portal';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import InputText from '../shared/Input/Input';
+import InputText from '../Input/Input';
 import { Subscription } from 'rxjs';
 import { isOpenButtonDelete$ } from '../../services/sharingSubject';
 interface ButtonProps extends HTMLMotionProps<'button'> {

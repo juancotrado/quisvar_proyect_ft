@@ -2,12 +2,13 @@ import { useEffect, useState } from 'react';
 import { isOpenCardRegisteContract$ } from '../../../../services/sharingSubject';
 import './contracts.css';
 import { axiosInstance } from '../../../../services/axiosInstance';
-import { Contract } from '../../../../types/types';
+import { Contract } from '../../../../types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
-import { rolSecondLevel } from '../../../../utils/roles';
+import { rolSecondLevel } from '../../../../utils';
 import { Outlet, useSearchParams } from 'react-router-dom';
-import { CardRegisterContract, SidebarContractCard } from './components';
+import { SidebarContractCard } from './components';
+import { CardRegisterContract } from './views';
 
 export const Contracts = () => {
   const [contracts, setContracts] = useState<Contract[] | null>(null);

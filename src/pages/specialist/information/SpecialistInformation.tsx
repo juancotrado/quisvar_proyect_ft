@@ -4,15 +4,15 @@ import { getIconDefault } from '../../../utils/tools';
 import {
   AreaSpecialty,
   Experience,
-  SpecialistProject,
+  // SpecialistProject,
   Specialists,
   Training,
   TrainingSpecialty,
 } from '../../../types/types';
 import { useCallback, useEffect, useState } from 'react';
 import { URL, axiosInstance } from '../../../services/axiosInstance';
-import formatDate from '../../../utils/formatDate';
-import { AnimatePresence, motion } from 'framer-motion';
+// import formatDate from '../../../utils/formatDate';
+// import { AnimatePresence, motion } from 'framer-motion';
 import {
   isOpenAddExperience$,
   isOpenAddTraining$,
@@ -28,15 +28,15 @@ const SpecialistInformation = () => {
   const [data, setData] = useState<Specialists>();
   const [experiences, setExperiences] = useState<Experience[]>();
   const [training, setTraining] = useState<Training[]>();
-  const [projectSelected, setProjectSelected] = useState<number | null>(null);
+  const [, setProjectSelected] = useState<number | null>(null);
 
-  const toggleDetailProject = (projectID: number) => {
-    if (projectSelected === projectID) {
-      setProjectSelected(null);
-    } else {
-      setProjectSelected(projectID);
-    }
-  };
+  // const toggleDetailProject = (projectID: number) => {
+  //   if (projectSelected === projectID) {
+  //     setProjectSelected(null);
+  //   } else {
+  //     setProjectSelected(projectID);
+  //   }
+  // };
   const getSpecialist = useCallback(() => {
     axiosInstance
       .get(`/specialists/information/${infoId}`)
@@ -61,14 +61,14 @@ const SpecialistInformation = () => {
     };
   }, [getExperience, getSpecialist, getTraining]);
 
-  const getDate = (value: string) => {
-    const date = formatDate(new Date(value), {
-      day: '2-digit',
-      month: '2-digit',
-      year: '2-digit',
-    });
-    return date;
-  };
+  // const getDate = (value: string) => {
+  //   const date = formatDate(new Date(value), {
+  //     day: '2-digit',
+  //     month: '2-digit',
+  //     year: '2-digit',
+  //   });
+  //   return date;
+  // };
   const handleAddExperience = (value: boolean, identifier: number) => {
     isOpenAddExperience$.setSubject = {
       isOpen: value,
@@ -168,7 +168,7 @@ const SpecialistInformation = () => {
           </div>
         </div>
         <hr className="specialist-hr" />
-        <div className="specialist-projects-list">
+        {/* <div className="specialist-projects-list">
           <h3 className="specialist-sub-title">Proyectos</h3>
           {data &&
             data?.projects.map(({ project }: SpecialistProject) => (
@@ -204,7 +204,7 @@ const SpecialistInformation = () => {
                 </AnimatePresence>
               </div>
             ))}
-        </div>
+        </div> */}
       </div>
       <CardAddExperience onSave={getExperience} />
       <CardAddTraining onSave={getTraining} />

@@ -34,6 +34,7 @@ export const INITIAL_STATE: User = {
   ruc: '',
   address: '',
   declaration: null,
+  withdrawalDeclaration: null,
 };
 
 const userSessionSlice = createSlice({

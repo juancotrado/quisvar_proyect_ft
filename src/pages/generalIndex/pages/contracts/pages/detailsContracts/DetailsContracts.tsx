@@ -17,6 +17,7 @@ export const DetailsContracts = () => {
   const dataProcedures = {
     ['Nombre de Contrato']: contract.contractNumber,
     ['Nomenclatura']: contract.name,
+    ['CUI']: contract.cui,
     ['Nombre largo del proyecto']: contract.projectName,
     ['Fecha de firma de contrato']: _date(new Date(contract.createdAt)),
   };

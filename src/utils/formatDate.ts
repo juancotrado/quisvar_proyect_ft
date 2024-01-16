@@ -69,3 +69,21 @@ export const getTimeOut = (
   const transformToHours = Math.floor(untilDateTime / 1000 / 60 / 60);
   return transformToHours;
 };
+
+export const formatDateLongSpanish = (date?: string | Date) => {
+  const format = formatDate(new Date(date ?? ''), {
+    day: 'numeric',
+    weekday: 'long',
+    month: 'long',
+    year: 'numeric',
+  });
+  return format;
+};
+export const formatDateShortSpanish = (date?: string | Date) => {
+  const format = formatDate(new Date(date ?? ''), {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  });
+  return format;
+};

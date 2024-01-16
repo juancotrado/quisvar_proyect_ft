@@ -1117,6 +1117,14 @@ export interface UserGroup {
 export interface Group {
   id: number;
   name: string;
+  modId?: number;
+  moderator: {
+    profile: {
+      firstName: string;
+      lastName: string;
+      userPc: string;
+    };
+  };
   groups?: UserGroup[];
 }
 

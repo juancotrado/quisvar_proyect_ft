@@ -68,23 +68,6 @@ export const GroupContent = () => {
         <section className="grc-list-users">
           <div className="grc-title-list">
             <h1 className="grc-title-name">INTEGRANTES</h1>
-            {/* {hasCoordinator ? (
-              <Button
-                text="Agregar"
-                icon="plus"
-                className="grc-btn-add"
-                onClick={() => groupId && handleOpenCard(+groupId)}
-              />
-            ) : (
-              <div>
-                <Button
-                  text="Agregar Coordinador"
-                  icon="plus"
-                  className="grc-btn-add"
-                  onClick={() => groupId && handleOpenCard(+groupId)}
-                />
-              </div>
-            )} */}
             <Button
               text="Agregar"
               icon="plus"
@@ -99,15 +82,37 @@ export const GroupContent = () => {
               <h1 className="grc-title-member">USUARIO</h1>
               <h1 className="grc-title-member">Borrar</h1>
             </div>
+            <div className="grc-list-members">
+              <h1 className="grc-member-name">1</h1>
+              <h1 className="grc-member-mod">
+                {members?.modId
+                  ? `${
+                      members.moderator.profile.firstName +
+                      ' ' +
+                      members.moderator.profile.lastName
+                    }`
+                  : 'Sin coordinador'}
+              </h1>
+              <span className="ule-size-pc">
+                <img src="/svg/pc-icon.svg" className="ule-icon-size" />
+                {members?.modId ? members.moderator.profile.userPc : '---'}
+              </span>
+              {members?.modId && (
+                <span className="ule-size-pc">
+                  <ButtonDelete
+                    icon="trash"
+                    url={`/groups/mod/${groupId}`}
+                    className="role-delete-icon"
+                    onSave={getUserGroup}
+                  />
+                </span>
+              )}
+            </div>
             {members?.groups &&
               members.groups.map((member, index) => (
                 <div className="grc-list-members" key={member?.users.id}>
-                  <h1 className="grc-member-name">{index + 1}</h1>
-                  <h1
-                    className={`grc-member-${
-                      member?.users.role === 'MOD' ? 'mod' : 'name'
-                    }`}
-                  >
+                  <h1 className="grc-member-name">{index + 2}</h1>
+                  <h1 className="grc-member-name">
                     {member.users.profile.firstName}{' '}
                     {member.users.profile.lastName}
                   </h1>
@@ -128,7 +133,7 @@ export const GroupContent = () => {
           </div>
         </section>
       </div>
-      <CardAddGroup onSave={getUserGroup} />
+      <CardAddGroup onSave={getUserGroup} modId={members?.modId} />
     </div>
   );
 };

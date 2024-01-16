@@ -232,7 +232,7 @@ export const Attendance = () => {
     await getTodayData();
     setCallList(null);
   };
-  // console.log(users)
+  // console.log(callLists)
   return (
     <div className="attendance">
       <div className="attendance-head">
@@ -365,6 +365,7 @@ export const Attendance = () => {
                     onClick={() => genarteReportDaily('pdf')}
                     className="attendance-btn-link"
                     imageStyle="attendance-btn-link-image"
+                    disabled={callLists?.[0].users.length === 0}
                   />
 
                   <Button

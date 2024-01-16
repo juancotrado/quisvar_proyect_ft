@@ -15,8 +15,9 @@ interface UserId {
 }
 interface CardAddGroupProps {
   onSave: () => void;
+  modId?: number;
 }
-const CardAddGroup = ({ onSave }: CardAddGroupProps) => {
+const CardAddGroup = ({ onSave, modId }: CardAddGroupProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [hasId, setHasId] = useState<number>();
   const handleIsOpen = useRef<Subscription>(new Subscription());
@@ -43,13 +44,23 @@ const CardAddGroup = ({ onSave }: CardAddGroupProps) => {
     };
   }, []);
   const onSubmit: SubmitHandler<UserId> = async () => {
-    await axiosInstance
-      .post(`groups/relation/${filterList[0].id}/${hasId}`)
-      .then(() => {
-        setIsOpen(false);
-        setSearchTerm('');
-        onSave();
-      });
+    if (modId) {
+      await axiosInstance
+        .post(`groups/relation/${filterList[0].id}/${hasId}`)
+        .then(() => {
+          setIsOpen(false);
+          setSearchTerm('');
+          onSave();
+        });
+    } else {
+      await axiosInstance
+        .patch(`groups/${hasId}`, { modId: filterList[0].id })
+        .then(() => {
+          setIsOpen(false);
+          setSearchTerm('');
+          onSave();
+        });
+    }
   };
 
   const closeFunctions = () => {
@@ -77,7 +88,7 @@ const CardAddGroup = ({ onSave }: CardAddGroupProps) => {
         <span className="close-icon" onClick={closeFunctions}>
           <img src="/svg/close.svg" alt="pencil" />
         </span>
-        <h1>Asignar Grupo</h1>
+        <h1>Asignar {modId ? 'Integrante' : 'Coordinador'}</h1>
         <div className="col-input">
           <Input
             type="text"

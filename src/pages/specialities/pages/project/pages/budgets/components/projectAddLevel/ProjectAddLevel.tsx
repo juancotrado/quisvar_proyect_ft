@@ -9,13 +9,13 @@ import {
 import {
   validateCorrectTyping,
   validateWhiteSpace,
-} from '../../../../../../../../utils/customValidatesForm';
+  SnackbarUtilities,
+} from '../../../../../../../../utils';
 import { axiosInstance } from '../../../../../../../../services/axiosInstance';
 import { Level } from '../../../../../../../../types';
 import { isOpenCardRegisteTask$ } from '../../../../../../../../services/sharingSubject';
 import { useListUsers } from '../../../../../../../../hooks';
 import colors from '../../../../../../../../utils/json/colors.json';
-import { SnackbarUtilities } from '../../../../../../../../utils';
 
 interface DataForm {
   rootId: number;
@@ -64,7 +64,7 @@ export const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
         'Asegurese de elegir un coordinador antes.'
       );
     const { id, stagesId, rootTypeItem } = data;
-    body = { ...body, rootId: firstLevel ? 0 : id, stagesId };
+    body = { ...body, rootId: firstLevel ? 0 : id, stagesId: +stagesId };
     if (
       addLevel === 'area' ||
       (data.isProject && data.nextLevel?.length !== 0)

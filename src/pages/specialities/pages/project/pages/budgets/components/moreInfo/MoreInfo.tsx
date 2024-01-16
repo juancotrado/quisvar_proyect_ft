@@ -1,18 +1,21 @@
 import { useParams } from 'react-router-dom';
 import { axiosInstance } from '../../../../../../../../services/axiosInstance';
-import { Level } from '../../../../../../../../types';
+import { InfoDataReport, Level } from '../../../../../../../../types';
 import './moreInfo.css';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
 import { toggle$ } from '../../../../../../../../services/sharingSubject';
-import { excelSimpleReport } from '../../../../../../../../utils';
+import {
+  excelSimpleReport,
+  formatDateLongSpanish,
+} from '../../../../../../../../utils';
 import { MoreInfoUsers } from '..';
 import { useArchiver } from '../../../../../../../../hooks';
 interface MoreInfoProps {
   data: Level;
 }
 export const MoreInfo = ({ data }: MoreInfoProps) => {
-  const { projectId } = useParams();
+  const { stageId } = useParams();
   const [showArchiverOption, setShowArchiverOption] = useState(false);
   const [showUsers, setShowUsers] = useState(false);
   const handleToggleRef = useRef<Subscription>(new Subscription());
@@ -26,19 +29,27 @@ export const MoreInfo = ({ data }: MoreInfoProps) => {
     };
   }, []);
   const handleReports = () => {
-    axiosInstance.get(`/projects/${projectId}`).then(res => {
-      const { department, district, province, description, CUI } = res.data;
-      const { firstName, lastName } = res.data.moderator.profile;
+    axiosInstance.get<InfoDataReport>(`/stages/report/${stageId}`).then(res => {
+      const {
+        department,
+        district,
+        province,
+        initialDate,
+        cui,
+        projectName,
+        moderatorName,
+        finishDate,
+      } = res.data;
 
       const infoData = {
         department,
         district,
         province,
-        initialDate: 'Fecha de inicio',
-        finishDate: 'fecha Final',
-        description,
-        CUI,
-        fullName: firstName + ' ' + lastName,
+        initialDate: formatDateLongSpanish(initialDate),
+        cui,
+        projectName,
+        moderatorName,
+        finishDate,
       };
       excelSimpleReport(data, infoData, 'areas');
     });

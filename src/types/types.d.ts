@@ -235,6 +235,17 @@ export interface ProjectType {
   userId: number;
 }
 
+export interface InfoDataReport {
+  department: string;
+  district: string;
+  province: string;
+  initialDate: string;
+  finishDate: string;
+  moderatorName: string;
+  projectName: string;
+  cui: string;
+}
+
 interface Stages {
   id: number;
   name: string;

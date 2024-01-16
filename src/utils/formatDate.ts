@@ -77,7 +77,7 @@ export const formatDateLongSpanish = (date?: string | Date) => {
     month: 'long',
     year: 'numeric',
   });
-  return format;
+  return format; // martes, 2 de enero de 2024;
 };
 export const formatDateShortSpanish = (date?: string | Date) => {
   const format = formatDate(new Date(date ?? ''), {
@@ -85,5 +85,5 @@ export const formatDateShortSpanish = (date?: string | Date) => {
     month: 'long',
     year: 'numeric',
   });
-  return format;
+  return format; // 2 de enero de 2024;
 };

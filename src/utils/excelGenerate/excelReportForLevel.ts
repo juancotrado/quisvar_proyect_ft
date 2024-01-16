@@ -1,6 +1,6 @@
 import * as ExcelJS from 'exceljs';
 
-import { Level } from '../../types/types';
+import { InfoDataReport, Level } from '../../types/types';
 import {
   borderProjectStyle,
   exportExcel,
@@ -10,16 +10,6 @@ import {
   moneyFormat,
 } from './utils/excelTools';
 
-interface InfoDataReport {
-  department: string;
-  district: string;
-  province: string;
-  initialDate: string;
-  finishDate: string;
-  fullName: string;
-  description: string;
-  CUI: string;
-}
 const reportCoordinator = {
   areas: 'CC  COORDINADOR DEL PROYECTO : ',
   indexTasks: 'CC  COORDINADOR DEL AREA : ',
@@ -39,9 +29,9 @@ const excelSimpleReport = async (
   const wk = workbook.getWorksheet('REPORTE');
   wk.getCell(
     'C1'
-  ).value = `INFORME PARCIAL DEL PROYECTO: ${infoData.description}-${infoData.CUI} `;
+  ).value = `INFORME PARCIAL DEL PROYECTO: ${infoData.projectName}-${infoData.cui} `;
   wk.getCell('C5').value = reportCoordinator[option];
-  wk.getCell('D5').value = infoData.fullName;
+  wk.getCell('D5').value = infoData.moderatorName;
   wk.getCell('D7').value = infoData.department;
   wk.getCell('D8').value = infoData.province;
   wk.getCell('D9').value = infoData.district;

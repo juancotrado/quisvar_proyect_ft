@@ -133,7 +133,7 @@ const CardRegisterMessageForward = ({
     const to = sender.profile.firstName + ' ' + sender.profile.lastName;
     const toUser = users.find(user => user.id === sender?.id);
     const filterJob = (value?: string, job?: string) => {
-      if (value !== 'Titulado') value;
+      if (value !== 'Titulado') return value;
       return JOB_DATA.filter(item => item.value === job)[0].abrv;
     };
     setpdfData({

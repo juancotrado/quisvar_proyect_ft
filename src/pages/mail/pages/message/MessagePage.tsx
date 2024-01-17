@@ -131,7 +131,7 @@ export const MessagePage = () => {
     const toUser = listUsers.find(user => user.id === sender?.id);
     const from = message.users.find(user => user.type === 'SENDER');
     const filterJob = (value?: string, job?: string) => {
-      if (value !== 'Titulado') value;
+      if (value !== 'Titulado') return value;
       return JOB_DATA.filter(item => item.value === job)[0].abrv;
     };
     return {

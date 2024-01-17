@@ -865,7 +865,7 @@ export interface PdfGeneratorPick {
   users?: userMessage[];
   user?: {
     id: number;
-    profile: Pick<Profile, 'firstName' | 'lastName' | 'dni' | 'phone'>;
+    profile: Pick<Profile, 'firstName' | 'lastName' | 'dni' | 'phone' | 'job'>;
   };
   history?: MessageReply[];
 }

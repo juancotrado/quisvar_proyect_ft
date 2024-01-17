@@ -229,3 +229,11 @@ export const drawDaysBars = (data: (RangeDays | RangeDays[])[]) => {
 
   return myBase64Image;
 };
+
+export const normalizeFileName = (fileName: string) => {
+  const splitFileName = fileName.split('$$');
+  console.log('splitFileName', splitFileName);
+  if (splitFileName.length === 2) return splitFileName[1];
+  if (splitFileName.length === 1) return fileName.split('$')[1];
+  return fileName;
+};

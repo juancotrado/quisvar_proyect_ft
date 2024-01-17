@@ -20,6 +20,7 @@ interface ButtonProps extends HTMLMotionProps<'button'> {
   customOnClick?: () => void;
   notIsVisible?: boolean;
   imageStyle?: string;
+  fileName?: string;
   // sizeIcon?: boolean;
   passwordRequired?: boolean;
 }
@@ -29,6 +30,7 @@ const ButtonDelete = ({
   text,
   type,
   url,
+  fileName = '',
   icon,
   onSave,
   imageStyle = '',
@@ -130,8 +132,8 @@ const ButtonDelete = ({
               {!askPassword ? (
                 <>
                   <img src="/svg/trashdark.svg" className="alert-modal-trash" />
-                  <h3>{`¿Estas seguro que deseas eliminar este registro ${
-                    customFuction ? '' : url
+                  <h3>{`¿Estas seguro que deseas eliminar este registro${
+                    fileName && ', ' + fileName
                   }?`}</h3>
                   <div className="container-btn">
                     <Button

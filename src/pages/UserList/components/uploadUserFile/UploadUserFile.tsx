@@ -1,10 +1,11 @@
 import { ButtonDelete, UploadFile } from '../../../../components';
 import { URL } from '../../../../services/axiosInstance';
 import { TypeFileUser } from '../../../../types';
+import { normalizeFileName } from '../../../../utils';
 import './uploadUserFile.css';
 
 interface UploadUserFileProps {
-  fileName: string | null | undefined;
+  fileName: string;
   onSave?: () => void;
   userId: number | undefined;
   typeFile: TypeFileUser;
@@ -15,8 +16,7 @@ const UploadUserFile = ({
   userId,
   typeFile,
 }: UploadUserFileProps) => {
-  const formatedName = fileName?.split('$$');
-
+  const fileNameTransform = normalizeFileName(fileName);
   return (
     <div className="uploadUserFile">
       {!fileName ? (
@@ -36,9 +36,7 @@ const UploadUserFile = ({
             <figure className="uploadUserFile-files-icon">
               <img src="/svg/pdf-icon.svg" alt="W3Schools" />
             </figure>
-            <label className="uploadUserFile-name">
-              {formatedName && formatedName[1]}
-            </label>
+            <label className="uploadUserFile-name">{fileNameTransform}</label>
           </a>
           <ButtonDelete
             icon="close"
@@ -46,6 +44,7 @@ const UploadUserFile = ({
             url={`/files/removeFileUser/${userId}/${fileName}?typeFile=${typeFile}`}
             className="uploadUserFile-files-btn-delete"
             passwordRequired
+            fileName={fileNameTransform}
           />
         </div>
       )}

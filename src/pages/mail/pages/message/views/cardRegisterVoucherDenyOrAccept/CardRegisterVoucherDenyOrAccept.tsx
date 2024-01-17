@@ -40,7 +40,7 @@ const CardRegisterVoucherDenyOrAccept = ({
       ))}
       <h4>Historial</h4>
       {historyFiles.map(history => (
-        <>
+        <div key={history.files[0].id}>
           {history.files.map(file => (
             <ChipFileMessage
               key={file.id}
@@ -50,7 +50,7 @@ const CardRegisterVoucherDenyOrAccept = ({
             />
           ))}
           <hr />
-        </>
+        </div>
       ))}
       <div className="CardRegisterVoucherDenyOrAccept-btns">
         <Button

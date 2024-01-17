@@ -12,7 +12,7 @@ import { UploadUserFile } from '../../components';
 
 interface UserDocument {
   [key: string]: {
-    fileName: string | null | undefined;
+    fileName: string;
     typeFile: TypeFileUser;
   };
 }
@@ -45,14 +45,14 @@ const CardViewDocs = () => {
   }, []);
 
   const dataDocuments: UserDocument = {
-    ['Curriculum Vitae']: { fileName: user?.cv, typeFile: 'cv' },
-    ['Declaración Jurada']: {
-      fileName: user?.declaration,
+    ['Curriculum Vitae:']: { fileName: user?.cv ?? '', typeFile: 'cv' },
+    ['Declaración Jurada:']: {
+      fileName: user?.declaration ?? '',
       typeFile: 'declaration',
     },
-    ['Contrato']: { fileName: user?.contract, typeFile: 'contract' },
-    ['Declaracion Jurada al retirarse']: {
-      fileName: user?.withdrawalDeclaration,
+    ['Contrato:']: { fileName: user?.contract ?? '', typeFile: 'contract' },
+    ['Declaracion Jurada al retirarse:']: {
+      fileName: user?.withdrawalDeclaration ?? '',
       typeFile: 'withdrawalDeclaration',
     },
   };

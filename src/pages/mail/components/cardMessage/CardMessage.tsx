@@ -34,7 +34,7 @@ const CardMessage = ({
     });
 
   const handleArchiverAction = () => {
-    axiosInstance.patch(`/mail/archived/${message.id}`).then(onArchiver);
+    axiosInstance.patch(`/paymail/archived/${message.id}`).then(onArchiver);
   };
 
   return (

@@ -113,7 +113,9 @@ const CardRegisterMessageUpdate = ({
     const formData = new FormData();
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
     formData.append('data', JSON.stringify(value));
-    axiosInstance.put(`/mail/${messageId}`, formData, { headers }).then(onSave);
+    axiosInstance
+      .put(`/paymail/${messageId}`, formData, { headers })
+      .then(onSave);
   };
 
   const sender = message.users.filter(user => user.type === 'SENDER')[0].user;

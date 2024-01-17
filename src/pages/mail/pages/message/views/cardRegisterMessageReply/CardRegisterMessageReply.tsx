@@ -122,12 +122,12 @@ const CardRegisterMessageReply = ({
     formData.append('data', JSON.stringify(values));
     if (receiver)
       axiosInstance
-        .post(`/mail/reply?status=PROCESO`, formData, { headers })
+        .post(`/paymail/reply?status=PROCESO`, formData, { headers })
         .then(onSave);
   };
 
   // const handleDoneMessage = () => {
-  //   axiosInstance.patch(`/mail/done/${message.id}`).then(onSave);
+  //   axiosInstance.patch(`/paymail/done/${message.id}`).then(onSave);
   // };
   const handleReportPDF = () => {
     const header = watch('header');

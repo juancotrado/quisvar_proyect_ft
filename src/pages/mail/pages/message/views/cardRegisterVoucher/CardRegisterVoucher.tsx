@@ -30,7 +30,7 @@ const CardRegisterVoucher = ({ message, onSave }: CardRegisterVoucherProps) => {
     const formData = new FormData();
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
 
-    await axiosInstance.patch(`/mail/voucher/${message.id}`, formData);
+    await axiosInstance.patch(`/paymail/voucher/${message.id}`, formData);
     onSave?.();
   };
   const dataServiceOrder = JSON.parse(message.paymentPdfData);

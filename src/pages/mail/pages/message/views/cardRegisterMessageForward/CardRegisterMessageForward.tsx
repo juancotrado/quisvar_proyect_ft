@@ -118,12 +118,12 @@ const CardRegisterMessageForward = ({
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
     formData.append('data', JSON.stringify(values));
     axiosInstance
-      .post(`/mail/reply?status=RECHAZADO`, formData, { headers })
+      .post(`/paymail/reply?status=RECHAZADO`, formData, { headers })
       .then(onSave);
   };
   const sender = message.users.filter(user => user.type === 'SENDER')[0].user;
   const handleArchiverMessage = () => {
-    axiosInstance.patch(`/mail/archived/${message.id}`).then(onSave);
+    axiosInstance.patch(`/paymail/archived/${message.id}`).then(onSave);
   };
 
   const handleReportPDF = () => {

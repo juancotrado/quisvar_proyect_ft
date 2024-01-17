@@ -65,7 +65,7 @@ const GenerateOrderService = ({
   const onSubmit: SubmitHandler<ServiceOrderForm> = async () => {
     const data = handleFocus();
     axiosInstance
-      .patch(`/mail/done/${message.id}`, {
+      .patch(`/paymail/done/${message.id}`, {
         paymentPdfData: JSON.stringify(data),
       })
       .then(onSave);

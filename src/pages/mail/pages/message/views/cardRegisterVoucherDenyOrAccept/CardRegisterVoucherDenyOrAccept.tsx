@@ -13,7 +13,7 @@ const CardRegisterVoucherDenyOrAccept = ({
   onSave,
 }: CardRegisterVoucherDenyOrAcceptProps) => {
   const handleDenyOrAccept = async (type: 'PAGADO' | 'FINALIZADO') => {
-    axiosInstance.delete(`/mail/voucher/${message.id}?status=${type}`);
+    axiosInstance.delete(`/paymail/voucher/${message.id}?status=${type}`);
     onSave?.();
   };
 

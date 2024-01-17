@@ -75,7 +75,7 @@ export const MailPage = () => {
     const status = (statusMsg && `&status=${statusMsg}`) || '';
     const typeMessage = (typeMsg && `&typeMessage=${typeMsg}`) || '';
     const offset = `&skip=${skip}`;
-    const query = `/mail?${type}${status}${typeMessage}${offset}`;
+    const query = `/paymail?${type}${status}${typeMessage}${offset}`;
     if (typeMail !== 'LICENSE') {
       axiosInstance.get(query).then(res => {
         setListMessage(res.data.mail);

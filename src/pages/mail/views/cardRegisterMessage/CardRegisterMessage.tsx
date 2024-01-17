@@ -104,7 +104,7 @@ const CardRegisterMessage = ({
 
   const getQuantityServices = () =>
     axiosInstance
-      .get('/mail/imbox/quantity')
+      .get('/paymail/imbox/quantity')
       .then(res => setCountMessage(res.data));
 
   const handleAddUser = (user: receiverType) => {
@@ -227,7 +227,7 @@ const CardRegisterMessage = ({
     formData.append('data', JSON.stringify(values));
     formData.append('senderId', `${userSession.id}`);
 
-    axiosInstance.post(`/mail`, formData, { headers }).then(handleSave);
+    axiosInstance.post(`/paymail`, formData, { headers }).then(handleSave);
   };
 
   const handleSave = () => {

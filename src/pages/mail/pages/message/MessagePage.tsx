@@ -69,7 +69,7 @@ export const MessagePage = () => {
   const files = filterFilesByAttempt(getFiles);
   const getMessage = useCallback(
     (id: string) => {
-      axiosInstance.get(`/mail/${id}`).then(res => {
+      axiosInstance.get(`/paymail/${id}`).then(res => {
         const data = transformDataPdf({ data: res.data });
         setData(data);
         setMessage(res.data);
@@ -85,7 +85,7 @@ export const MessagePage = () => {
 
   const getQuantityServices = () =>
     axiosInstance
-      .get('/mail/imbox/quantity')
+      .get('/paymail/imbox/quantity')
       .then(res => setCountMessage(res.data));
 
   const handleClose = () => {

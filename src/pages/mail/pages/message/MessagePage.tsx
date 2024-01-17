@@ -51,7 +51,7 @@ const parseDate = (date: Date) =>
 
 export const MessagePage = () => {
   const navigate = useNavigate();
-  const { messageId } = useParams();
+  const { paymessageId } = useParams();
   const [isResize, setIsResize] = useState(false);
   const { users: listUsers } = useListUsers(ROLE_PERM);
   const { userSession } = useSelector((state: RootState) => state);
@@ -79,10 +79,10 @@ export const MessagePage = () => {
     [userSession]
   );
   useEffect(() => {
-    if (messageId && userSession.id) getMessage(messageId);
+    if (paymessageId && userSession.id) getMessage(paymessageId);
     getQuantityServices();
     return () => setMessage(null);
-  }, [getMessage, messageId, userSession.id]);
+  }, [getMessage, paymessageId, userSession.id]);
 
   const getQuantityServices = () =>
     axiosInstance

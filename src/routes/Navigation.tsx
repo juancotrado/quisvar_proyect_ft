@@ -54,7 +54,7 @@ const Navigation = () => {
             <Route path="/home" element={<Home />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/tramites" element={<MailPage />}>
-              <Route path=":messageId" element={<MessagePage />} />
+              <Route path=":paymessageId" element={<MessagePage />} />
               <Route path="licencia/:id" element={<LicensePage />} />
             </Route>
             <Route element={<ProtectedRole rols={attendance_perms} />}>

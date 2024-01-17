@@ -102,7 +102,7 @@ const CardRegisterMessageUpdate = ({
   };
   const onSubmit: SubmitHandler<MessageSendType> = async data => {
     if (!receiver) return;
-    const messageId = message.id;
+    const paymessageId = message.id;
     const value = {
       ...data,
       receiverId: receiver.id,
@@ -115,7 +115,7 @@ const CardRegisterMessageUpdate = ({
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
     formData.append('data', JSON.stringify(value));
     axiosInstance
-      .put(`/paymail/${messageId}`, formData, { headers })
+      .put(`/paymail/${paymessageId}`, formData, { headers })
       .then(onSave);
   };
 

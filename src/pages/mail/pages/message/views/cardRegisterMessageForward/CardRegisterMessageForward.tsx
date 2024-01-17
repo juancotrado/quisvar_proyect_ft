@@ -108,7 +108,7 @@ const CardRegisterMessageForward = ({
       );
     const values = {
       ...data,
-      messageId: message.id,
+      paymessageId: message.id,
       receiverId: receiver.id,
       title: handleTitle(watch('type')),
     };

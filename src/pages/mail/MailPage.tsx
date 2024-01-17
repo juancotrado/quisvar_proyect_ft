@@ -301,15 +301,15 @@ export const MailPage = () => {
           <div className="mail-grid-container">
             {!viewLicense ? (
               listMessage &&
-              listMessage.map(({ message, messageId, type }) => (
+              listMessage.map(({ paymessage, paymessageId, type }) => (
                 <CardMessage
                   user={user}
                   isActive={!contentVisible}
-                  key={messageId}
+                  key={paymessageId}
                   type={type}
                   onArchiver={handleSaveMessage}
-                  onClick={() => handleViewMessage(messageId, type)}
-                  message={message}
+                  onClick={() => handleViewMessage(paymessageId, type)}
+                  message={paymessage}
                 />
               ))
             ) : listLicense.length > 0 ? (

@@ -798,10 +798,10 @@ export interface AttendanceRange {
 }
 
 export interface MailType {
-  messageId: number;
+  paymessageId: number;
   status: boolean;
   type: MessageSender;
-  message: MessageType;
+  paymessage: MessageType;
 }
 export type MessageSender = 'SENDER' | 'RECEIVER' | 'LICENSE';
 export type MessageStatus =

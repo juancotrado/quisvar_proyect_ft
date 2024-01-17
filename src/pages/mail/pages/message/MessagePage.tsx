@@ -35,6 +35,7 @@ import {
   GenerateOrderService,
 } from './views';
 import { PDFGenerator, generateReportPDF } from '../../pdfGenerate';
+import { JOB_DATA } from '../../../UserList/models';
 
 const parseName = (title: string) => title.split('$').at(-1) || '';
 
@@ -129,7 +130,10 @@ export const MessagePage = () => {
     const to = sender.profile.firstName + ' ' + sender.profile.lastName;
     const toUser = listUsers.find(user => user.id === sender?.id);
     const from = message.users.find(user => user.type === 'SENDER');
-
+    const filterJob = (value?: string, job?: string) => {
+      if (value !== 'Titulado') value;
+      return JOB_DATA.filter(item => item.value === job)[0].abrv;
+    };
     return {
       from: from?.user.profile.firstName + ' ' + from?.user.profile.lastName,
       header,
@@ -142,10 +146,10 @@ export const MessagePage = () => {
         day: 'numeric',
         hour12: true,
       }),
-      toDegree: toUser?.degree,
+      toDegree: filterJob(toUser?.degree, toUser?.job),
       toPosition: toUser?.position,
       dni: from?.user.profile.dni,
-      fromDegree: from?.user.profile.degree,
+      fromDegree: filterJob(from?.user.profile.degree, from?.user.profile.job),
       fromPosition: from?.user.profile.description,
     };
   };

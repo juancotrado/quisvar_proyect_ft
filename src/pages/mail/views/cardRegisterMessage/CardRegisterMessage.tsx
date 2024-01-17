@@ -37,6 +37,7 @@ import { isOpenCardGenerateReport$ } from '../../../../services/sharingSubject';
 import { ChipFileMessage } from '../../components';
 import { PDFGenerator } from '../../pdfGenerate';
 import { ROLE_PERM } from '../../models';
+import { JOB_DATA } from '../../../UserList/models';
 
 const YEAR = new Date().getFullYear();
 
@@ -140,49 +141,14 @@ const CardRegisterMessage = ({
     const newIndex = (countFile ? countFile._count.type : 0) + 1;
     return `${value} N°${newIndex} DHYRIUM-${HashUser}-${YEAR}`;
   };
-  // useEffect(() => {
-  //   const secondaryReceiver = listCopy.map(list => ({ userId: list.id }));
-  //   const cc: ListUser[] = secondaryReceiver.map(item => {
-  //     const toUser = listUser.find(user => user.id === item.userId);
-  //     if (toUser) {
-  //       const { name, degree, position } = toUser;
-  //       return { name, degree, position };
-  //     }
-  //     return { name: '', degree: '', position: '' };
-  //   });
-  //   const header = watch('header');
-  //   const description = watch('description');
-  //   const to = receiver?.value ?? '';
-  //   const toUser = listUser.find(user => user.id === receiver?.id);
-
-  //   setpdfData({
-  //     from: userSession.profile.firstName + ' ' + userSession.profile.lastName,
-  //     header,
-  //     body: convertToDynamicObject(description ?? ''),
-  //     title: handleTitle(watch('type')),
-  //     cc,
-  //     to,
-  //     date: formatDate(new Date(), {
-  //       year: 'numeric',
-  //       month: 'long',
-  //       day: 'numeric',
-  //       hour12: true,
-  //     }),
-  //     toDegree: toUser?.degree,
-  //     toPosition: toUser?.position,
-  //     dni: userSession.profile.dni,
-  //     fromDegree: userSession.profile.degree,
-  //     fromPosition: userSession.profile.description,
-  //   });
-  // }, [watch('description'), watch('header'), watch('title'), watch('type')]);
 
   const handleReportPDF = () => {
     const secondaryReceiver = listCopy.map(list => ({ userId: list.id }));
     const cc: ListUser[] = secondaryReceiver.map(item => {
       const toUser = listUser.find(user => user.id === item.userId);
       if (toUser) {
-        const { name, degree, position } = toUser;
-        return { name, degree, position };
+        const { name, degree, position, job } = toUser;
+        return { name, degree: filterJob(degree, job) as string, position };
       }
       return { name: '', degree: '', position: '' };
     });
@@ -191,6 +157,10 @@ const CardRegisterMessage = ({
     const description = watch('description');
     const to = receiver?.value ?? '';
     const toUser = listUser.find(user => user.id === receiver?.id);
+    const filterJob = (value?: string, job?: string) => {
+      if (value !== 'Titulado') value;
+      return JOB_DATA.filter(item => item.value === job)[0].abrv;
+    };
     setpdfData({
       from: userSession.profile.firstName + ' ' + userSession.profile.lastName,
       header,
@@ -204,10 +174,13 @@ const CardRegisterMessage = ({
         day: 'numeric',
         hour12: true,
       }),
-      toDegree: toUser?.degree,
+      toDegree: filterJob(toUser?.degree, toUser?.job),
       toPosition: toUser?.position,
       dni: userSession.profile.dni,
-      fromDegree: userSession.profile.degree,
+      fromDegree: filterJob(
+        userSession.profile.degree,
+        userSession.profile.job
+      ),
       fromPosition: userSession.profile.description,
     });
   };

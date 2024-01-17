@@ -67,7 +67,7 @@ const CardViewDocs = () => {
         <div className="vd-docs-area">
           {Object.entries(dataDocuments).map(
             ([key, { fileName, typeFile }]) => (
-              <div className="vd-list-text">
+              <div key={key} className="vd-list-text">
                 <label>{key}</label>
                 <UploadUserFile
                   fileName={fileName}

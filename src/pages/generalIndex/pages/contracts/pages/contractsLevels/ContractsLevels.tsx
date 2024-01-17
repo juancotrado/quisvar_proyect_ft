@@ -13,7 +13,6 @@ export const ContractsLevels = () => {
 
   const { contract } = useSelector((state: RootState) => state);
   const { contractId } = useParams();
-
   useEffect(() => {
     getContract();
   }, [contractId]);

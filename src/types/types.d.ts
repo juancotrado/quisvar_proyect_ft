@@ -302,6 +302,7 @@ interface Contract extends ContractForm {
   companyId: number | null;
   consortiumId: number | null;
   details: string | null;
+  phases: string;
 }
 
 export interface WorkArea {

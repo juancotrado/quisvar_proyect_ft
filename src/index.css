@@ -186,3 +186,16 @@ td {
 .close-icon:hover {
   transform: rotate(-90deg);
 }
+
+.bg-color-done {
+  background-color: var(--color-done);
+}
+.bg-color-unresolved {
+  background-color: var(--color-unresolved);
+}
+.bg-color-process {
+  background-color: var(--color-process);
+}
+.bg-color-review {
+  background-color: var(--color-review);
+}

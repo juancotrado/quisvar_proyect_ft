@@ -2,15 +2,12 @@ import { Contract, Option } from '../../../../../../types';
 import { isOpenCardRegisteContract$ } from '../../../../../../services/sharingSubject';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
-import { SnackbarUtilities } from '../../../../../../utils';
+import { SnackbarUtilities, millisecondsToDays } from '../../../../../../utils';
 import './sidebarContractCard.css';
-// import { useState } from 'react';
-import {
-  NavLink,
-  useLocation,
-  // useNavigate
-} from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import { DotsRight } from '../../../../../../components';
+import { PhaseData } from '../../pages/detailsContracts/models';
+import { useCallback } from 'react';
 
 interface SidebarContractCardProps {
   contract: Contract;
@@ -45,10 +42,31 @@ export const SidebarContractCard = ({
       function: handleDeleteContract,
     },
   ];
+
+  const getColorStatus = useCallback(() => {
+    const { createdAt, phases } = contract;
+    const phasesParse: PhaseData[] = JSON.parse(phases);
+    const findPhase = phasesParse.find(phase => phase.isActive);
+    if (!findPhase) return 'bg-color-review';
+    const dayPhase = findPhase?.days ?? 0;
+    const contractSigningDate = new Date(createdAt);
+    const actualDate = new Date();
+    contractSigningDate.setDate(
+      contractSigningDate.getDate() + Number(dayPhase) + 1
+    );
+    const daysDifference = millisecondsToDays(
+      contractSigningDate.valueOf() - actualDate.valueOf()
+    );
+    if (Math.sign(daysDifference) === -1) return 'bg-color-unresolved';
+    if (daysDifference - 14 < 0) return 'bg-color-process';
+    return 'bg-color-done';
+  }, [contract]);
+
   return (
     <ContextMenuTrigger
       id={`SidebarContractCard-sidebar-${contract.id}`}
       key={contract.id}
+      className="SidebarContractCard"
     >
       <NavLink
         to={{
@@ -73,10 +91,12 @@ export const SidebarContractCard = ({
         {authUsers && (
           <DotsRight
             data={dataDots}
-            idContext={`SidebarContractCard-sidebar-${contract.id}`}
+            idContext={`SidebarContractCard-sidebar-${contract.id} `}
           />
         )}
       </NavLink>
+
+      <div className={`contractCard-circle-status  ${getColorStatus()}`} />
     </ContextMenuTrigger>
   );
 };

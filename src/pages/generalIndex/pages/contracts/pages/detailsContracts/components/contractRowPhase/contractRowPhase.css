@@ -1,0 +1,38 @@
+.contractRowPhase-row {
+  position: relative;
+  gap: 0.2rem;
+  padding: 0.3rem;
+}
+.contractRowPhase-input {
+  width: 100%;
+  border-radius: 0.25rem;
+  border: 0.5px solid #00000033;
+  background: #fff;
+  padding: 0.3125rem;
+
+  color: #20388166;
+  font-size: 0.8rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 1.5rem;
+}
+.contractRowPhase-input-day {
+  display: flex;
+  gap: 0.2rem;
+  align-items: center;
+}
+.contractRowPhase-text {
+  color: #000;
+  font-size: 0.8rem;
+  font-style: normal;
+  font-weight: 400;
+}
+.contractRowPhase-input-radio-contain {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.contractRowPhase-input-radio {
+  width: 1.2rem;
+  height: 1.2rem;
+}

@@ -1,3 +1,7 @@
+.SidebarContractCard {
+  position: relative;
+}
+
 .SidebarContractCard-sidebar-data {
   display: flex;
   gap: 0.5rem;
@@ -33,4 +37,15 @@
   font-weight: 400;
   line-height: 0.89288rem; /* 142.857% */
   letter-spacing: 0.0625rem;
+}
+.contractCard-circle-status {
+  position: absolute;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  right: 1rem;
 }

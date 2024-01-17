@@ -10,10 +10,8 @@ import { CardAddGroup } from './views';
 export const GroupContent = () => {
   const { groupId, name } = useParams();
   const [members, setMembers] = useState<Group>();
-  const getUserGroup = useCallback(async () => {
-    await axiosInstance
-      .get(`/groups/${groupId}`)
-      .then(res => setMembers(res.data));
+  const getUserGroup = useCallback(() => {
+    axiosInstance.get(`/groups/${groupId}`).then(res => setMembers(res.data));
   }, [groupId]);
 
   useEffect(() => {

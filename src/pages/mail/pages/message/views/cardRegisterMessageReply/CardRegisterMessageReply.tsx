@@ -30,6 +30,7 @@ import {
 import { ROLE_PERM } from '../../../../models';
 import { PDFGenerator } from '../../../../pdfGenerate';
 import { ChipFileMessage } from '../../../../components';
+import { JOB_DATA } from '../../../../../UserList/models';
 
 interface MessageSendType {
   title: string;
@@ -40,7 +41,10 @@ interface MessageSendType {
   idMessageResend?: number;
   type: MessageTypeImbox;
 }
-
+interface JobData {
+  value: string;
+  abrv?: string;
+}
 type receiverType = { id: number; value: string };
 
 const YEAR = new Date().getFullYear();
@@ -134,6 +138,11 @@ const CardRegisterMessageReply = ({
     const description = watch('description');
     const to = receiver?.value ?? '';
     const toUser = users.find(user => user.id === receiver?.id);
+    const filterJob = (value?: string, job?: string) => {
+      if (value !== 'Titulado') value;
+      return JOB_DATA.filter(item => item.value === job)[0].abrv;
+    };
+
     setpdfData({
       from: userSession.profile.firstName + ' ' + userSession.profile.lastName,
       header,
@@ -146,10 +155,13 @@ const CardRegisterMessageReply = ({
         day: 'numeric',
         hour12: true,
       }),
-      toDegree: toUser?.degree,
+      toDegree: filterJob(toUser?.degree, toUser?.job),
       toPosition: toUser?.position,
       dni: userSession.profile.dni,
-      fromDegree: userSession.profile.degree,
+      fromDegree: filterJob(
+        userSession.profile.degree,
+        userSession.profile.job
+      ),
       fromPosition: userSession.profile.description,
     });
   };

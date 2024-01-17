@@ -18,6 +18,7 @@ const useListUsers = (
           name: `${profile.firstName} ${profile.lastName}`,
           degree: profile.degree,
           position: profile.description,
+          job: profile.job,
           ...props,
         }))) ||
     [];

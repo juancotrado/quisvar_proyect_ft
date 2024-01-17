@@ -879,7 +879,13 @@ export interface userMessage {
     address: string;
     profile: Pick<
       Profile,
-      'firstName' | 'lastName' | 'dni' | 'phone' | 'degree' | 'description'
+      | 'firstName'
+      | 'lastName'
+      | 'dni'
+      | 'phone'
+      | 'degree'
+      | 'description'
+      | 'job'
     >;
   };
   userId: number;

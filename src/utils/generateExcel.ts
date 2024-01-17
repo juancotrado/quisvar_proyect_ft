@@ -33,7 +33,8 @@ import { drawDaysBars, getDaysHistory, transformDaysObject } from './tools';
 const excelReport = async (
   data: ProjectReport[],
   infoData: ExcelData,
-  attendance: UserAttendance
+  attendance: UserAttendance,
+  fees: UserAttendance
 ) => {
   // Cargar la plantilla desde un archivo
   const response = await fetch('/templates/report_templateV5.xlsx');
@@ -171,6 +172,7 @@ const excelReport = async (
     date1904: false,
   };
   wk.getCell('I' + (endLine + 4)).value = getPrice(attendance);
+  wk.getCell('I' + (endLine + 5)).value = getPrice(fees);
   wk.getCell('I' + (endLine + 6)).value = {
     formula: `${salaryAdvanceCell}-I${endLine + 4}-I${endLine + 5}`,
     date1904: false,

@@ -36,6 +36,7 @@ import { motion } from 'framer-motion';
 import { dropIn } from '../../../../../../animations';
 import { ChipFileMessage } from '../../../../components';
 import { PDFGenerator } from '../../../../pdfGenerate';
+import { JOB_DATA } from '../../../../../UserList/models';
 
 interface MessageSendType {
   title: string;
@@ -131,6 +132,10 @@ const CardRegisterMessageForward = ({
     const description = watch('description');
     const to = sender.profile.firstName + ' ' + sender.profile.lastName;
     const toUser = users.find(user => user.id === sender?.id);
+    const filterJob = (value?: string, job?: string) => {
+      if (value !== 'Titulado') value;
+      return JOB_DATA.filter(item => item.value === job)[0].abrv;
+    };
     setpdfData({
       from: userSession.profile.firstName + ' ' + userSession.profile.lastName,
       header,
@@ -143,10 +148,13 @@ const CardRegisterMessageForward = ({
         day: 'numeric',
         hour12: true,
       }),
-      toDegree: toUser?.degree,
+      toDegree: filterJob(toUser?.degree, toUser?.job),
       toPosition: toUser?.position,
       dni: userSession.profile.dni,
-      fromDegree: userSession.profile.degree,
+      fromDegree: filterJob(
+        userSession.profile.degree,
+        userSession.profile.job
+      ),
       fromPosition: userSession.profile.description,
     });
   };

@@ -90,7 +90,6 @@ export const convertToDynamicObject = (
   };
 
   traverseAndParse(tempElement);
-  console.log(elements);
   return elements;
 };
 export const dataInitialPdf = {

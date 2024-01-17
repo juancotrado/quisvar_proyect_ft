@@ -45,7 +45,7 @@ const CardGenerateReport = ({ employeeId }: CardGenerateReportProps) => {
     reset({});
     setIsOpen(false);
   };
-  const onSubmit: SubmitHandler<ReportForm> = data => {
+  const onSubmit: SubmitHandler<ReportForm> = async data => {
     const initialDate = formatDate(new Date(data.initialDate), {
       day: 'numeric',
       weekday: 'long',
@@ -60,6 +60,10 @@ const CardGenerateReport = ({ employeeId }: CardGenerateReportProps) => {
     });
     const totalDays = getTimeOut(data.initialDate, data.untilDate) / 24;
     const idGenerate = employeeId ?? userSession.id;
+
+    const licencesFee = await axiosInstance.get(
+      `/license/fee/${idGenerate}?startDate=${data.initialDate}&endDate=${data.untilDate}`
+    );
     axiosInstance
       .get(
         `/reports/user/${idGenerate}?initial=${data.initialDate}&until=${data.untilDate}&status=DONE`
@@ -78,7 +82,12 @@ const CardGenerateReport = ({ employeeId }: CardGenerateReportProps) => {
           phone,
           degree,
         };
-        excelReport(res.data.projects, infoData, res.data.attendance);
+        excelReport(
+          res.data.projects,
+          infoData,
+          res.data.attendance,
+          licencesFee.data
+        );
       });
   };
 

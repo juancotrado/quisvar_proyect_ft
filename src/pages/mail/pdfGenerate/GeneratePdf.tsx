@@ -42,10 +42,7 @@ export const generateReportPDF = (
           </View>
           <View style={styles.rigthInfo}>
             <Text style={styles.header}>
-              {value.data.toDegree?.slice(0, 3) === 'Tit'
-                ? 'ING'
-                : value.data.toDegree?.slice(0, 3)}
-              . {value.data?.to}
+              {value.data.toDegree?.slice(0, 3)}. {value.data?.to}
             </Text>
             <Text style={styles.header}>{value.data.toPosition}</Text>
           </View>

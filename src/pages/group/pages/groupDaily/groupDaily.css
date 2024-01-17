@@ -1,0 +1,14 @@
+.gd-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  height: 100%;
+}
+.gd-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.gd-body {
+}

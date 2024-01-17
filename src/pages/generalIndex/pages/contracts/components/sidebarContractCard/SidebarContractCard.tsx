@@ -91,7 +91,7 @@ export const SidebarContractCard = ({
         {authUsers && (
           <DotsRight
             data={dataDots}
-            idContext={`SidebarContractCard-sidebar-${contract.id} `}
+            idContext={`SidebarContractCard-sidebar-${contract.id}`}
           />
         )}
       </NavLink>

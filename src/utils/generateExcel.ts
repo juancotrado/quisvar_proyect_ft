@@ -75,7 +75,8 @@ const excelReport = async (
       project.name.toUpperCase(),
     ]);
     wk.mergeCells(`D${rowNumber}:I${rowNumber}`);
-    const { firstName, lastName } = project.moderator.profile;
+    // const { firstName, lastName } = project.moderator.profile;
+    const { firstName, lastName } = { firstName: '-', lastName: '-' };
     projectRow.getCell('D').value = (
       'COORDINADOR: ' +
       firstName +

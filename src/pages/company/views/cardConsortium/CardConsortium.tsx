@@ -6,7 +6,7 @@ import { Button, ButtonDelete, Input, Modal } from '../../../../components';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ConsortiumType } from '../../../../types';
 import { axiosInstance } from '../../../../services/axiosInstance';
-import { validateJPGExtension } from '../../../../utils';
+import { normalizeFileName, validateJPGExtension } from '../../../../utils';
 
 type CardConsortiumProps = {
   onSave?: () => void;
@@ -112,7 +112,7 @@ const CardConsortium = ({ onSave }: CardConsortiumProps) => {
         {hasId ? (
           data?.img ? (
             <div className="cc-img-area">
-              <h4 className="cc-img-title">{data?.img.split('$$')[1]}</h4>
+              <h4 className="cc-img-title">{normalizeFileName(data?.img)}</h4>
               <ButtonDelete
                 icon="trash"
                 className="role-delete-icon"

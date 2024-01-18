@@ -1,4 +1,5 @@
 import { URL } from '../../../../services/axiosInstance';
+import { normalizeFileName } from '../../../../utils';
 import './chipFileMessage.css';
 
 interface ChipFileMessageProps {
@@ -34,7 +35,7 @@ const ChipFileMessage = ({
       <a target="_blank" href={link && dir} className="chip-file-link">
         <div className="chip-file-information">
           <img className="chip-file-icon-doc" src={`/svg/${icon}.svg`} />
-          <span className="chip-file-text">{text}</span>
+          <span className="chip-file-text">{normalizeFileName(text)}</span>
         </div>
         {onClose && (
           <img

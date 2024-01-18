@@ -6,7 +6,11 @@ import { Input, Modal, Button, ButtonDelete } from '../../../../components';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Companies } from '../../../../types';
 import { axiosInstance } from '../../../../services/axiosInstance';
-import { validateJPGExtension, validateRuc } from '../../../../utils';
+import {
+  normalizeFileName,
+  validateJPGExtension,
+  validateRuc,
+} from '../../../../utils';
 
 type CardCompanyProps = {
   onSave?: () => void;
@@ -216,7 +220,7 @@ const CardCompany = ({ onSave }: CardCompanyProps) => {
           {hasId ? (
             data?.img ? (
               <div className="cc-img-area">
-                <h4 className="cc-img-title">{data?.img.split('$$')[1]}</h4>
+                <h4 className="cc-img-title">{normalizeFileName(data?.img)}</h4>
                 <ButtonDelete
                   icon="trash"
                   className="role-delete-icon"

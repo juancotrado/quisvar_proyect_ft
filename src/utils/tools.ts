@@ -148,7 +148,6 @@ export const transformDaysObject = (days: RangeDays[]) => {
               0
             );
             if (sumFloatDay + copyDays[j].day < 1) {
-              console.log(sumFloatDay, copyDays[j].day);
               floatDays.push({ ...copyDays[j], day: copyDays[j].day });
               days.splice(i, 1);
             }
@@ -232,7 +231,6 @@ export const drawDaysBars = (data: (RangeDays | RangeDays[])[]) => {
 
 export const normalizeFileName = (fileName: string) => {
   const splitFileName = fileName.split('$$');
-  console.log('splitFileName', splitFileName);
   if (splitFileName.length === 2) return splitFileName[1];
   if (splitFileName.length === 1) return fileName.split('$')[1];
   return fileName;

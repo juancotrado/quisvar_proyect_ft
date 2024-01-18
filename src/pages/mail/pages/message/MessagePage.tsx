@@ -161,7 +161,6 @@ export const MessagePage = () => {
   const handleOptionSelect = (option: 'continue' | 'finish') =>
     setProcedureOption(option);
   const handleResize = () => setIsResize(!isResize);
-  console.log({ message });
   return (
     <div className={`message-page-container ${isResize && 'message--resize'}`}>
       {message.status === 'PAGADO' && (

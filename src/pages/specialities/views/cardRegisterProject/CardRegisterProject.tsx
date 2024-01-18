@@ -29,7 +29,6 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
       data => {
         const { idProject, isDuplicate } = data;
         setIsOpenModal(data.isOpen);
-        console.log(data);
         if (idProject) {
           reset({
             id: idProject,

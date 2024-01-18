@@ -57,7 +57,6 @@ const GeneralData = () => {
     axiosInstance.get(`/groups/all`).then(res => setGroups(res.data));
   };
   const onSubmitStage: SubmitHandler<StageForm> = async body => {
-    console.log(body);
     axiosInstance
       .patch(`/stages/details/${stageId}`, body)
       .then(() => getStageDetails());

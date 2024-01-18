@@ -33,8 +33,7 @@ export const LicenseListItem = ({
       status: value,
       feedback,
     };
-    axiosInstance.patch(`/license/${data.id}`, newLicense).then(res => {
-      console.log(res.data);
+    axiosInstance.patch(`/license/${data.id}`, newLicense).then(() => {
       onSave?.();
     });
   };

@@ -10,12 +10,10 @@ export const transformDataPdf = ({ data }: transformDataPdfProps) => {
   const userTo = data.users?.find(
     user => user.type === 'RECEIVER' && user.role === 'MAIN'
   );
-  console.log(userTo);
   const userFrom = data.users?.find(
     user => user.type === 'SENDER' && user.role === 'MAIN'
   );
   const filterJob = (value?: string, job?: string) => {
-    console.log(value, job);
     if (value !== 'Titulado') return value;
     return JOB_DATA.filter(item => item.value === job)[0]?.abrv;
   };

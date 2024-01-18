@@ -9,6 +9,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../../../../../store';
 import './SubtaskFile.css';
 import { Button } from '../../../../../../../../../../components';
+import { normalizeFileName } from '../../../../../../../../../../utils';
 interface SubtaskFileProps {
   files: Files[];
   typeFile?: FileType;
@@ -34,10 +35,6 @@ const SubtaskFile = ({
   const { userSession } = useSelector((state: RootState) => state);
   const socket = useContext(SocketContext);
 
-  const normalizeFileName = (name: string) => {
-    const indexName = name.indexOf('$');
-    return name.slice(indexName + 1);
-  };
   const deleteFile = (id: number) => {
     axiosInstance
       .delete(`/files/remove/${id}`)

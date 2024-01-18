@@ -22,6 +22,7 @@
 }
 
 .projectLevel-sub-list-item {
+  position: relative;
   display: flex;
   color: var(--color-secondary);
   background-color: #ebf0fa99;
@@ -59,7 +60,6 @@
 }
 
 .projectLevel-section {
-  position: relative;
   display: flex;
   color: var(--color-secondary);
   font-size: var(--size-label);
@@ -133,7 +133,7 @@
 
 .projectLevel-dropdown-check {
   position: absolute;
-  min-width: calc(100% + 47rem);
+  min-width: 100%;
   opacity: 0;
   cursor: pointer;
   height: 100%;

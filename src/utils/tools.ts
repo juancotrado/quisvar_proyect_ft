@@ -237,3 +237,17 @@ export const normalizeFileName = (fileName: string) => {
   if (splitFileName.length === 1) return fileName.split('$')[1];
   return fileName;
 };
+
+export const formatMoney = (amount: number) => {
+  const amountString = String(Math.trunc(amount));
+  const tranformMoney = (lengthVal: number, symbol: string) => {
+    const amountRes = +amountString.slice(-lengthVal)[0];
+    const amountSlice = amountString.slice(0, -lengthVal);
+    return `${amountSlice}${amountRes ? '.' + amountRes : ''}${symbol}`;
+  };
+  if (amountString.length > 3 && amountString.length < 7)
+    return tranformMoney(3, 'K');
+  if (amountString.length > 6 && amountString.length < 10)
+    return tranformMoney(6, 'M');
+  return amount.toFixed(2);
+};

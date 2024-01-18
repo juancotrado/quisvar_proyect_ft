@@ -8,9 +8,11 @@ import { toggle$ } from '../../../../../../../../services/sharingSubject';
 import {
   excelSimpleReport,
   formatDateLongSpanish,
+  formatMoney,
 } from '../../../../../../../../utils';
 import { MoreInfoUsers } from '..';
 import { useArchiver } from '../../../../../../../../hooks';
+import { FloatingText } from '../../../../../../../../components';
 interface MoreInfoProps {
   data: Level;
 }
@@ -91,25 +93,43 @@ export const MoreInfo = ({ data }: MoreInfoProps) => {
           )}
         </div>
         <div className="moreInfo-currency">
-          <span className="moreInfo-currency-money">
-            S/.{data.balance.toFixed(2)}
-          </span>
+          <FloatingText
+            text={'-/S. ' + data.balance.toFixed(2)}
+            xPos={3}
+            yPos={15}
+          >
+            <span className="moreInfo-currency-money">
+              S/.{formatMoney(data.balance)}
+            </span>
+          </FloatingText>
           {data.projectName && (
             <span className="moreInfo-currency-info">Saldo</span>
           )}
         </div>
         <div className="moreInfo-currency">
-          <span className="moreInfo-currency-money money--red">
-            -/S.{data.spending.toFixed(2)}
-          </span>
+          <FloatingText
+            text={'-/S. ' + data.spending.toFixed(2)}
+            xPos={3}
+            yPos={15}
+          >
+            <span className="moreInfo-currency-money money--red">
+              -/S.{formatMoney(data.spending)}
+            </span>
+          </FloatingText>
           {data.projectName && (
             <span className="moreInfo-currency-info">Gasto</span>
           )}
         </div>
         <div className="moreInfo-currency">
-          <span className="moreInfo-currency-money">
-            S/.{data.price.toFixed(2)}
-          </span>
+          <FloatingText
+            text={'-/S. ' + data.price.toFixed(2)}
+            xPos={3}
+            yPos={15}
+          >
+            <span className="moreInfo-currency-money">
+              S/.{formatMoney(data.price)}
+            </span>
+          </FloatingText>
           {data.projectName && (
             <span className="moreInfo-currency-info">Total</span>
           )}

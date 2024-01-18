@@ -25,6 +25,8 @@
 }
 
 .moreInfo-currency-money {
+  position: relative;
+  z-index: 2;
   color: #464f60;
   font-variant-numeric: lining-nums tabular-nums;
   font-size: 0.875rem;
@@ -38,6 +40,8 @@
 }
 
 .moreInfo-details-contain {
+  position: relative;
+  z-index: 2;
   cursor: pointer;
   display: flex;
   gap: 1rem;

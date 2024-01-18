@@ -48,13 +48,6 @@ select:focus {
   background-color: white;
 }
 
-.col-input {
-  display: flex;
-  justify-content: space-between;
-  gap: 2rem;
-  align-items: flex-end;
-}
-
 .btn-build {
   display: flex;
   justify-content: center;

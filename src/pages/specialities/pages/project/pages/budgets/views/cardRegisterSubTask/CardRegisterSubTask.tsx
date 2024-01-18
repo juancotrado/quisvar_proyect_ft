@@ -1,6 +1,7 @@
 import { useContext, useEffect, useRef, useState } from 'react';
 import {
   Button,
+  CloseIcon,
   Input,
   Modal,
   TextArea,
@@ -15,25 +16,20 @@ import { useParams } from 'react-router-dom';
 import {
   validateCorrectTyping,
   validateWhiteSpace,
+  validateOnlyDecimals,
 } from '../../../../../../../../utils';
-
-type SubTaskForm = {
-  id: number | null;
-  name: string;
-  description?: string;
-  days: number;
-  price: number | string;
-};
+import { SubTaskForm } from '../../models';
 
 const CardRegisterSubTask = () => {
   const {
     handleSubmit,
     register,
     setValue,
-    watch,
     reset,
+    watch,
     formState: { errors },
   } = useForm<SubTaskForm>();
+
   const socket = useContext(SocketContext);
   const { stageId } = useParams();
   const [isOpenModal, setIsOpenModal] = useState(false);
@@ -50,7 +46,6 @@ const CardRegisterSubTask = () => {
           description: task.description,
           days: task.days,
           name: task.name,
-          price: task.price,
         });
       } else {
         setLevelId(data.levelId);
@@ -77,15 +72,6 @@ const CardRegisterSubTask = () => {
     closeFunctions();
   };
 
-  const handleSetPrice = (hours: number) => {
-    if (!hours) return 0;
-    const pricePerDay = 86.67;
-    const price = hours * pricePerDay;
-    const roundPrice = price.toFixed(2);
-    setValue('price', roundPrice);
-    return roundPrice;
-  };
-
   const closeFunctions = () => {
     setIsOpenModal(false);
     reset({});
@@ -99,52 +85,37 @@ const CardRegisterSubTask = () => {
         autoComplete="off"
       >
         <div className="subtask-head-title">
-          <h2>{levelId ? 'ACTUALIZAR TAREA' : 'REGISTRAR TAREA'}</h2>
-          <Button
-            type="button"
-            icon="close"
-            className="close-add-card-subtask"
-            onClick={closeFunctions}
+          <h2>{watch('id') ? 'ACTUALIZAR TAREA' : 'REGISTRAR TAREA'}</h2>
+          <CloseIcon onClick={closeFunctions} />
+        </div>
+        <div className="col-input">
+          <Input
+            label="Nombre"
+            {...register('name', {
+              validate: { validateCorrectTyping, validateWhiteSpace },
+            })}
+            name="name"
+            type="text"
+            errors={errors}
+          />
+          <Input
+            label="Dias"
+            type="number"
+            {...register('days', { validate: { validateOnlyDecimals } })}
+            name="days"
+            step={0.01}
+            errors={errors}
           />
         </div>
-        <Input
-          label="Nombre"
-          {...register('name', {
-            validate: { validateCorrectTyping, validateWhiteSpace },
-          })}
-          name="name"
-          type="text"
-          errors={errors}
-        />
-        <TextArea
-          label="Descripción"
-          {...register('description')}
-          name="description"
-        />
-
         <div className="col-input">
-          <div className="col-hours-subtask">
-            <Input
-              label="Dias"
-              col={true}
-              {...register('days')}
-              type="number"
-              name="days"
-              step={0.01}
-            />
-            <Input
-              label="Precio S/."
-              col={true}
-              {...register('price', { valueAsNumber: true })}
-              step={0.01}
-              name="price"
-              disabled={true}
-              value={handleSetPrice(watch('days'))}
-              readOnly={true}
-            />
-          </div>
+          <TextArea
+            label="Descripción"
+            {...register('description')}
+            name="description"
+          />
         </div>
-        <Button text="Guardar" className="btn-area" type="submit" />
+
+        <Button text="Guardar" className="btn-area send-button" type="submit" />
       </form>
     </Modal>
   );

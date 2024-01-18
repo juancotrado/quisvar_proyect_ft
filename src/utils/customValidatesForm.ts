@@ -7,11 +7,22 @@ export const validateWhiteSpace = (value: string | undefined | number) => {
     ? 'No deje espacios al inicio'
     : true;
 };
-export const validateOnlyNumbers = (value: string | undefined | number) => {
-  value = String(value);
-  if (value === 'NaN') return 'Ingrese solo caracteres numericos';
+export const validateOnlyNumbers = <T>(value: T) => {
+  const valTransform = String(value);
+  if (valTransform === 'NaN') return 'Ingrese solo caracteres numericos';
   const regex = /^[0-9]+$/;
-  return !regex.test(value) ? 'Ingrese solo caracteres numericos ' : true;
+  return !regex.test(valTransform)
+    ? 'Ingrese solo caracteres numericos '
+    : true;
+};
+export const validateOnlyDecimals = <T>(value: T) => {
+  const valTransform = String(value);
+  console.log('valTransform', valTransform);
+  if (valTransform === 'NaN') return 'Ingrese solo caracteres numericos';
+  const regex = /^[0-9]+(\.[0-9]+)?$/;
+  return !regex.test(valTransform)
+    ? 'Ingrese solo caracteres numericos '
+    : true;
 };
 
 export const validateCorrectTyping = <T>(value: T) => {

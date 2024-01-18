@@ -1,5 +1,11 @@
 import { StatusType } from '../../../../../../../types';
 
+export type SubTaskForm = {
+  id: number | null;
+  name: string;
+  description?: string;
+  days: number;
+};
 export const COST_DATA = [
   {
     key: 'bachelor',

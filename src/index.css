@@ -199,3 +199,25 @@ td {
 .bg-color-review {
   background-color: var(--color-review);
 }
+.col-input {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  align-items: flex-end;
+}
+
+.col-input-top {
+  display: flex;
+  justify-content: flex-start;
+  gap: 2rem;
+}
+
+.send-button {
+  width: 8rem;
+  border-radius: 0.5rem;
+  background-color: var(--color-primary);
+  color: white;
+  justify-content: center;
+  margin: auto;
+  transition: color ease 0.5s, background-color ease 0.5s;
+}

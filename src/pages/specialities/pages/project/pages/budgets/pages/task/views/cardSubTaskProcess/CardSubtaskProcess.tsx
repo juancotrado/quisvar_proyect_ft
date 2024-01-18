@@ -93,6 +93,9 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
 
   const { usersData } = useUserPorcetage(subTask.users);
   const getDataFeedback = (data: DataFeedback) => setDataFeedback(data);
+
+  const lastFeedbackReview =
+    subTask?.feedBacks?.[subTask?.feedBacks?.length - 1];
   return (
     <div className="cardSubtaskProcess">
       <section className="cardSubtaskProcess-left-details">
@@ -175,7 +178,7 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
         )}
         {isAuthorizedMod && status === 'INREVIEW' && (
           <SubtaskInfoHistory
-            feedBack={subTask?.feedBacks?.[subTask?.feedBacks?.length - 1]}
+            feedBack={lastFeedbackReview}
             active
             authorize={{ isAuthorizedMod, isAuthorizedUser }}
             getDataFeedback={getDataFeedback}
@@ -246,13 +249,14 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
                   porcentagesForUser={Object.values(porcetageForUser)}
                 />
                 <SubtaskChangeStatusBtn
-                  className={`cardSubtask-add-btn `}
+                  className={`cardSubtask-add-btn`}
                   option="ASIG"
                   type="approved"
                   subtaskId={subTask.id}
                   dataFeedback={dataFeedback}
                   subtaskStatus={status}
                   porcentagesForUser={Object.values(porcetageForUser)}
+                  files={lastFeedbackReview.files}
                   text="Aprobar"
                 />
               </>

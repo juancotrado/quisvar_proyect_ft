@@ -34,6 +34,11 @@ interface SubtaskChangeStatusBtn {
   userId?: number;
 }
 
+interface BodyTask {
+  status: string;
+  filesId?: number[];
+}
+
 const SubtaskChangeStatusBtn = ({
   subtaskStatus,
   subtaskId,
@@ -61,11 +66,15 @@ const SubtaskChangeStatusBtn = ({
 
   const handleEditStatus = async () => {
     const role = isAuthorizedUser ? 'EMPLOYEE' : 'SUPERADMIN';
-    const body = getStatus(option, role, subtaskStatus);
+    let body: BodyTask | undefined = getStatus(option, role, subtaskStatus);
+    const idFiles = files?.map(file => file.id);
+    if (subtaskStatus === 'INREVIEW' && body) {
+      body = { ...body, filesId: idFiles };
+    }
     if (isAssignedAdminTask) {
       const resStatus = await axiosInstance.patch(
         `/subtasks/status/${subtaskId}/${stageId}`,
-        { status: 'DONE' }
+        { status: 'DONE', filesId: idFiles }
       );
       socket.emit('client:update-subTask', resStatus.data);
     } else {

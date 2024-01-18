@@ -16,7 +16,6 @@ export const CustomizableInvoice = () => {
 
     reader.onload = e => {
       const xmlText = e?.target?.result;
-      console.log(xmlText);
       if (xmlText) parseXML(xmlText);
     };
     if (!file) return;

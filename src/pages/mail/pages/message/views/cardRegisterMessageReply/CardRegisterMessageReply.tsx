@@ -41,10 +41,6 @@ interface MessageSendType {
   idMessageResend?: number;
   type: MessageTypeImbox;
 }
-interface JobData {
-  value: string;
-  abrv?: string;
-}
 type receiverType = { id: number; value: string };
 
 const YEAR = new Date().getFullYear();

@@ -38,7 +38,6 @@ export const AttendanceList = ({
     getLicense();
   }, [getLicense]);
   const handleRadioChange = (value: string, id: number) => {
-    console.log(value, id);
     const selectedValue = value !== undefined ? value : 'PUNTUAL';
     setSelectedValue(selectedValue);
     setUserId(id);

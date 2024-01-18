@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 const InputFileReborn = () => {
-  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [, setSelectedFiles] = useState<File[]>([]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    console.log(files);
     if (files) {
       const fileList = Array.from(files);
       setSelectedFiles(fileList);
@@ -13,7 +12,6 @@ const InputFileReborn = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Archivos seleccionados:', selectedFiles);
   };
 
   return (

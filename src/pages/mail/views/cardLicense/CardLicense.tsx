@@ -64,8 +64,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
   const onSubmit: SubmitHandler<DataLicense> = values => {
     if (!data) {
       if (type === 'free') {
-        axiosInstance.post(`license/free`, values).then(res => {
-          console.log(res.data);
+        axiosInstance.post(`license/free`, values).then(() => {
           setIsOpen(false);
           reset({});
           onSave?.();
@@ -73,8 +72,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
       } else {
         axiosInstance
           .post(`license`, { usersId: userSession.id, ...values })
-          .then(res => {
-            console.log(res.data);
+          .then(() => {
             setIsOpen(false);
             reset({});
             onSave?.();
@@ -89,8 +87,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
         feedback: data.feedback,
         status: 'PROCESS',
       };
-      axiosInstance.patch(`/license/${data.id}`, updateLicense).then(res => {
-        console.log(res.data);
+      axiosInstance.patch(`/license/${data.id}`, updateLicense).then(() => {
         setIsOpen(false);
         reset({});
         onSave?.();

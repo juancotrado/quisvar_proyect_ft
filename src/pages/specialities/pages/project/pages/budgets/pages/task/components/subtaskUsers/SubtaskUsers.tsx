@@ -31,7 +31,6 @@ const SubtaskUsers = ({
       user.id === +userId ? { ...user, percentage: +value } : user
     );
     setUsersPercentage(newUserPorcentage);
-    console.log(value, name);
   };
   return (
     <div className="subtaskUsers-users-contain">

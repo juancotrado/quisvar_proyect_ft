@@ -40,7 +40,6 @@ const CardRecoveryPassword = ({ onClose }: CardRecoveryPasswordProps) => {
     const error = {
       verifyPassword: { message: 'Las contraseñas no coinciden' },
     };
-    console.log(target.value);
     watch('newpassword') !== target.value
       ? setErrorPassword(error)
       : setErrorPassword({});

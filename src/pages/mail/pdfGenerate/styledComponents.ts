@@ -6,8 +6,8 @@ Font.register({ family: 'Arial Narrow', src: ArialNarrow });
 export const styles = StyleSheet.create({
   page: {
     flexDirection: 'column',
-    paddingHorizontal: 93,
-    paddingVertical: 64,
+    paddingHorizontal: 64,
+    paddingVertical: 44,
     flex: 1,
     position: 'relative',
   },

@@ -139,7 +139,7 @@ const CardRegisterMessageReply = ({
     const to = receiver?.value ?? '';
     const toUser = users.find(user => user.id === receiver?.id);
     const filterJob = (value?: string, job?: string) => {
-      if (value !== 'Titulado') value;
+      if (value !== 'Titulado') return value;
       return JOB_DATA.filter(item => item.value === job)[0].abrv;
     };
 

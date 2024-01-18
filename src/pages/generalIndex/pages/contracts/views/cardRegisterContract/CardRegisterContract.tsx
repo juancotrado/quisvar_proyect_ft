@@ -47,7 +47,6 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
         setIsOpenModal(data.isOpen);
         if (contract) {
           setJurisdictionSelectData(contract.department, contract.province);
-          console.log(contract);
           const {
             id,
             createdAt,
@@ -205,7 +204,6 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
                 valueAsDate: true,
               })}
               name="createdAt"
-              onChange={e => console.log(e.target.value)}
               type="date"
               placeholder="Fecha de Inicio "
               errors={errors}

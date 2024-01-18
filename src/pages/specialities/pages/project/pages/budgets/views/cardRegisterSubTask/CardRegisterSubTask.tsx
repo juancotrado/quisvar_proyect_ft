@@ -101,7 +101,10 @@ const CardRegisterSubTask = () => {
           <Input
             label="Dias"
             type="number"
-            {...register('days', { validate: { validateOnlyDecimals } })}
+            {...register('days', {
+              validate: { validateOnlyDecimals },
+              value: 0,
+            })}
             name="days"
             step={0.01}
             errors={errors}
@@ -112,6 +115,7 @@ const CardRegisterSubTask = () => {
             label="Descripción"
             {...register('description')}
             name="description"
+            placeholder="Opcional"
           />
         </div>
 

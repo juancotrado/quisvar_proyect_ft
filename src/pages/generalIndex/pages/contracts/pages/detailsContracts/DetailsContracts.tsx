@@ -130,7 +130,7 @@ export const DetailsContracts = () => {
       <div>
         <h5 className="detailsContracts-title">Datos del Procedimiento</h5>
         {Object.entries(dataProcedures).map(([title, value]) => (
-          <ContractRow title={title} value={value} />
+          <ContractRow key={title} title={title} value={value} />
         ))}
         <div className="detailsContracts-row-container" />
       </div>

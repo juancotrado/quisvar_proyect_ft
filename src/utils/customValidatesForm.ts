@@ -17,7 +17,6 @@ export const validateOnlyNumbers = <T>(value: T) => {
 };
 export const validateOnlyDecimals = <T>(value: T) => {
   const valTransform = String(value);
-  console.log('valTransform', valTransform);
   if (valTransform === 'NaN') return 'Ingrese solo caracteres numericos';
   const regex = /^[0-9]+(\.[0-9]+)?$/;
   return !regex.test(valTransform)

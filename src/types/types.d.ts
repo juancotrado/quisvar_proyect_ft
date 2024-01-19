@@ -472,9 +472,6 @@ export interface UserForm {
   userPc: string;
   addressRef: string;
   declaration: FileList | null;
-  declarations?: string[];
-  typeDeclaration?: 'technical' | 'administrative';
-  declarationDate: string;
 }
 
 export interface Level {

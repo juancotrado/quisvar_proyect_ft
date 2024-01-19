@@ -230,9 +230,10 @@ export const drawDaysBars = (data: (RangeDays | RangeDays[])[]) => {
 };
 
 export const normalizeFileName = (fileName: string) => {
-  const splitFileName = fileName.split('$$');
-  if (splitFileName.length === 2) return splitFileName[1];
-  if (splitFileName.length === 1) return fileName.split('$')[1];
+  const splitFileName$$ = fileName.split('$$');
+  const splitFileName$ = fileName.split('$');
+  if (splitFileName$$.length === 2) return splitFileName$$[1];
+  if (splitFileName$.length === 2) return splitFileName$[1];
   return fileName;
 };
 

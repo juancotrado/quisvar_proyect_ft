@@ -8,16 +8,16 @@ export const validateWhiteSpace = (value: string | undefined | number) => {
     : true;
 };
 export const validateOnlyNumbers = <T>(value: T) => {
+  if (!value) return true;
   const valTransform = String(value);
-  if (valTransform === 'NaN') return 'Ingrese solo caracteres numericos';
   const regex = /^[0-9]+$/;
   return !regex.test(valTransform)
     ? 'Ingrese solo caracteres numericos '
     : true;
 };
+
 export const validateOnlyDecimals = <T>(value: T) => {
   const valTransform = String(value);
-  if (valTransform === 'NaN') return 'Ingrese solo caracteres numericos';
   const regex = /^[0-9]+(\.[0-9]+)?$/;
   return !regex.test(valTransform)
     ? 'Ingrese solo caracteres numericos '
@@ -38,9 +38,14 @@ export const validateEmail = (value: string) => {
 };
 
 export const validateDNI = (value: string) => {
+  const message = validateOnlyNumbers(value);
+  if (typeof message === 'string') return message;
   return value.length !== 8 ? 'Ingresar un dni' : true;
 };
 export const validateRuc = (value: string) => {
+  if (!value) return true;
+  const message = validateOnlyNumbers(value);
+  if (typeof message === 'string') return message;
   return value.length !== 11 ? 'Ingresar un ruc valido' : true;
 };
 export const validateJPGExtension = (value: any) => {

@@ -2,9 +2,10 @@ import { Document, Image, Page, Text, View } from '@react-pdf/renderer';
 import { styles } from './swornDeclarationStyle';
 import { UserForm } from '../../../../types/types';
 import { deleteExtension, getRole } from '../../../../utils/tools';
+import { SwornDeclaration } from '../../models/types';
 
 interface SwornDeclarationPdfProps {
-  data: UserForm;
+  data: UserForm & SwornDeclaration;
 }
 const SwornDeclarationPdf = ({ data }: SwornDeclarationPdfProps) => {
   return (

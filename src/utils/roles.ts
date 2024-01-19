@@ -18,6 +18,7 @@ export const roleList_ASSISTANT = [
   { id: 'ASSISTANT', value: 'ASISTENTE DE GERENCIA' },
   { id: 'ASSISTANT_ADMINISTRATIVE', value: 'ASISTENTE DE ADMINISTRACION' },
   { id: 'SUPER_MOD', value: 'COORD GENERAL' },
+  { id: 'AREA_MOD', value: 'COORD DE AREA' },
   { id: 'MOD', value: 'COORDINADOR' },
   { id: 'EMPLOYEE', value: 'TECNICO' },
 ];

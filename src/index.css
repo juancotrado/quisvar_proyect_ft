@@ -219,7 +219,7 @@ td {
 }
 
 .send-button {
-  width: 8rem;
+  min-width: 8rem;
   border-radius: 0.5rem;
   background-color: var(--color-primary);
   color: white;

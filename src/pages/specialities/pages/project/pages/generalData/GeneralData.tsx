@@ -139,7 +139,7 @@ const GeneralData = () => {
           <Input
             label="Costo Bachiller:"
             {...register('bachelorCost', {
-              validate: { validateOnlyNumbers },
+              validate: { validateWhiteSpace, validateOnlyNumbers },
               valueAsNumber: true,
             })}
             name="bachelorCost"
@@ -151,7 +151,7 @@ const GeneralData = () => {
           <Input
             label="Costo Titulado:"
             {...register('professionalCost', {
-              validate: { validateOnlyNumbers },
+              validate: { validateWhiteSpace, validateOnlyNumbers },
               valueAsNumber: true,
             })}
             type="number"

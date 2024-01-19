@@ -13,21 +13,15 @@ import {
 } from '../../../../utils';
 import { getListUsers } from '../../../../store/slices/listUsers.slice';
 import { Button, Select } from '../../../../components';
+import { isOpenCardRegisterUser$ } from '../../../../services/sharingSubject';
 
 interface UserInfoProps {
   user: User;
   index: number;
-  onUpdate?: () => void;
   onPrint?: () => void;
   onViewDocs?: () => void;
 }
-const UserInfo = ({
-  user,
-  index,
-  onUpdate,
-  onPrint,
-  onViewDocs,
-}: UserInfoProps) => {
+const UserInfo = ({ user, index, onPrint, onViewDocs }: UserInfoProps) => {
   const [isOn, setIsOn] = useState(user.status);
   const [openRole, setOpenRole] = useState(false);
   const { userSession } = useSelector((state: RootState) => state);
@@ -61,6 +55,9 @@ const UserInfo = ({
     await axiosInstance.patch(`users/${user.id}`, _dataRole).then(getUsers);
   };
   const roleLimit = verifyByRole(user.role, userSession.role);
+  const editUser = () => {
+    isOpenCardRegisterUser$.setSubject = { isOpen: true, user };
+  };
 
   return (
     <div className="user-container header-grid-row">
@@ -121,7 +118,7 @@ const UserInfo = ({
       <div className="col-span actions-container">
         {roleLimit && (
           <>
-            <Button icon="pencil" className="role-btn-big" onClick={onUpdate} />
+            <Button icon="pencil" className="role-btn-big" onClick={editUser} />
             {/* <ButtonDelete
               icon="trash"
               disabled={user.id === userSession.id}

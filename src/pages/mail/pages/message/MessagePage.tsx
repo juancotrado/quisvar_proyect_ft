@@ -17,6 +17,7 @@ import {
   dataInitialPdf,
   filterFilesByAttempt,
   formatDate,
+  normalizeFileName,
   transformDataPdf,
 } from '../../../../utils';
 import { Button, LoaderForComponent } from '../../../../components';
@@ -36,8 +37,6 @@ import {
 } from './views';
 import { PDFGenerator, generateReportPDF } from '../../pdfGenerate';
 import { JOB_DATA } from '../../../UserList/models';
-
-const parseName = (title: string) => title.split('$').at(-1) || '';
 
 const parseDate = (date: Date) =>
   formatDate(new Date(date), {
@@ -342,7 +341,7 @@ export const MessagePage = () => {
                   <ChipFileMessage
                     className="pointer message-files-list"
                     key={id}
-                    text={parseName(name)}
+                    text={normalizeFileName(name)}
                     link={path + '/' + name}
                   />
                 ))}
@@ -379,7 +378,7 @@ export const MessagePage = () => {
                       <ChipFileMessage
                         className="pointer message-files-list"
                         key={id}
-                        text={parseName(name)}
+                        text={normalizeFileName(name)}
                         link={path + '/' + name}
                       />
                     ))}
@@ -425,7 +424,7 @@ export const MessagePage = () => {
                         <ChipFileMessage
                           className="pointer message-files-list"
                           key={id}
-                          text={parseName(name)}
+                          text={normalizeFileName(name)}
                           link={path + '/' + name}
                         />
                       ))}

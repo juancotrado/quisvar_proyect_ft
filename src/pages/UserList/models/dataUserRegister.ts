@@ -1,3 +1,5 @@
+import { UserForm } from '../../../types';
+
 export const JOB_DATA = [
   { value: 'Ingeniería Agronómica', abrv: 'ING' },
   { value: 'Ingeniería Agroindustrial', abrv: 'ING' },
@@ -37,3 +39,37 @@ export const JOB_DATA = [
   { value: 'Turismo', abrv: 'LIC' },
   { value: 'Trabajo Social', abrv: 'LIC' },
 ];
+
+export const DEGREE_DATA = [
+  { id: 1, value: 'Egresado' },
+  { id: 2, value: 'Bachiller' },
+  { id: 3, value: 'Titulado' },
+  { id: 4, value: 'Magister' },
+  { id: 5, value: 'Doctorado' },
+];
+
+export const INITIAL_VALUES_USER: UserForm = {
+  id: 0,
+  email: '',
+  password: '',
+  firstName: '',
+  lastName: '',
+  dni: '',
+  phone: '',
+  degree: '',
+  address: '',
+  ruc: '',
+  job: '',
+  cv: null,
+  declaration: null,
+  department: '',
+  province: '',
+  district: '',
+  firstNameRef: '',
+  lastNameRef: '',
+  phoneRef: '',
+  addressRef: '',
+  role: '',
+  room: '',
+  userPc: '',
+};

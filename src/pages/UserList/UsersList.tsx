@@ -31,7 +31,6 @@ import {
 export const UsersList = () => {
   const dispatch: AppDispatch = useDispatch();
   const { listUsers: users } = useSelector((state: RootState) => state);
-  const [userData, setUserData] = useState<User | null>(null);
   const [isArchived, setIsArchived] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [printReportId, setPrintReportId] = useState<number>();
@@ -69,13 +68,9 @@ export const UsersList = () => {
   };
 
   const addUser = () => {
-    setUserData(null);
-    isOpenCardRegisterUser$.setSubject = true;
+    isOpenCardRegisterUser$.setSubject = { isOpen: true };
   };
-  const editUser = (value: User) => {
-    isOpenCardRegisterUser$.setSubject = true;
-    setUserData(value);
-  };
+
   const printReport = (value: number) => {
     setPrintReportId(value);
     isOpenCardGenerateReport$.setSubject = true;
@@ -172,7 +167,6 @@ export const UsersList = () => {
               key={user.id}
               user={user}
               index={index}
-              onUpdate={() => editUser(user)}
               onPrint={() => printReport(user.id)}
               onViewDocs={() => handleViewDocs(user)}
             />
@@ -201,8 +195,8 @@ export const UsersList = () => {
             />
           ))}
       </div>
-      <CardAddEquipment onSave={() => getWorkStations()} />
-      <CardAssign onSave={() => getWorkStations()} />
+      <CardAddEquipment onSave={getWorkStations} />
+      <CardAssign onSave={getWorkStations} />
       <CardGenerateReport employeeId={printReportId} />
       {generalFiles && (
         <CardOpenFile
@@ -211,18 +205,7 @@ export const UsersList = () => {
         />
       )}
       <CardViewDocs />
-      <CardRegisterUser
-        user={userData}
-        onClose={() => {
-          setUserData(null);
-        }}
-        onSave={() => {
-          getUsers();
-          setUserData(null);
-        }}
-        generalFiles={generalFiles}
-        workStations={workStations}
-      />
+      <CardRegisterUser onSave={getUsers} generalFiles={generalFiles} />
     </div>
   );
 };

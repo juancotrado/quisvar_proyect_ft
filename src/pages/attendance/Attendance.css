@@ -85,27 +85,27 @@
 }
 
 .head-p {
-  border-bottom: 2px solid #57d9a3;
+  border-bottom: 2px solid var(--color-list-p);
 }
 
 .head-t {
-  border-bottom: 2px solid #ffd140;
+  border-bottom: 2px solid var(--color-list-t);
 }
 
 .head-f {
-  border-bottom: 2px solid rgba(224, 0, 0, 0.302);
+  border-bottom: 2px solid var(--color-list-f);
 }
 
 .head-g {
-  border-bottom: 2px solid #df0000;
+  border-bottom: 2px solid var(--color-list-g);
 }
 
 .head-m {
-  border-bottom: 2px solid #c00000;
+  border-bottom: 2px solid var(--color-list-m);
 }
 
 .head-l {
-  border-bottom: 2px solid #2264e5;
+  border-bottom: 2px solid var(--color-list-l);
 }
 
 .attendance-icon {

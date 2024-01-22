@@ -100,7 +100,7 @@ const Navigation = () => {
                 </Route>
               </Route>
             </Route>
-            <Route element={<ProtectedRole rols={rolThirdLevel} />}>
+            <Route>
               <Route
                 path="/lista-de-notificaciones"
                 element={<NotificationsList />}

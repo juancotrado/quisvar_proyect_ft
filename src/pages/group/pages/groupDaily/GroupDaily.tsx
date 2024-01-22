@@ -5,42 +5,75 @@ import './groupDaily.css';
 import { _date } from '../../../../utils';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { useParams } from 'react-router-dom';
-import { GroupRes, GroupUsersRes } from '../../types';
+import { GroupAttendanceRes, GroupRes } from '../../types';
 const today = new Date();
+interface toSend {
+  id: number;
+  status: string;
+  description?: string;
+}
 export const GroupDaily = () => {
   const [addBtn, setAddBtn] = useState<boolean>(true);
+  const [hasItems, setHasItems] = useState<boolean>(false);
+  const [isToday, setIsToday] = useState<boolean>(true);
   const [calls, setCalls] = useState<GroupRes[]>([]);
-  const [groupUsers, setGroupUsers] = useState<GroupUsersRes[]>([]);
+  const [idList, setIdList] = useState<number>();
+  const [groupUsers, setGroupUsers] = useState<GroupAttendanceRes[]>([]);
+  const [sendItems, setSendItems] = useState<toSend[]>([]);
   const { groupId } = useParams();
 
   const getMembers = () => {
     axiosInstance
-      .get<GroupUsersRes[]>(`/attendanceGroup/users/${groupId}`)
+      .get<GroupAttendanceRes[]>(`/attendanceGroup/users/${groupId}`)
       .then(res => {
         setGroupUsers(res.data);
+        setHasItems(false);
+        const resultado = res.data.map(({ id, status }) => ({
+          id,
+          status,
+          description: '',
+        }));
+        setSendItems(resultado);
       });
   };
 
   useEffect(() => {
     getTodayCalls();
-    getMembers();
+    // getMembers();
   }, []);
   const getTodayCalls = () => {
     axiosInstance
       .get<GroupRes[]>(`/attendanceGroup/list/${groupId}?date=${_date(today)}`)
       .then(res => {
-        // console.log(res.data);
+        // console.log(res.data[res.data.length - 1].attendance.length > 0);
+        // if (res.data[res.data.length - 1].attendance.length > 0) {
+        //   const transformedData = res.data.flatMap(({ attendance }) =>
+        //     attendance.map(({ id, description, status, user }) => ({
+        //       id,
+        //       firstName: user.profile.firstName,
+        //       lastName: user.profile.lastName,
+        //       status,
+        //       description,
+        //     }))
+        //   );
+        //   setHasItems(true)
+        //   setGroupUsers(transformedData);
+        // }else {
+        //   getMembers()
+        // }
         setCalls(res.data);
+        setAddBtn(res.data[res.data.length - 1].attendance.length !== 0);
       });
   };
-
   const getDate = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    console.log(value);
+    setGroupUsers([]);
+    // console.log(value);
     axiosInstance
       .get<GroupRes[]>(`/attendanceGroup/list/${groupId}?date=${value}`)
       .then(res => {
-        // console.log(res.data);
+        setCalls(res.data);
+        setIsToday(_date(today) === value);
       });
   };
   const addList = (order: number) => {
@@ -49,13 +82,60 @@ export const GroupDaily = () => {
       nombre: order.toString(),
       groupId: +(groupId as string),
     };
-    axiosInstance.post(`/attendanceGroup/list`, values).then(res => {
-      console.log(res.data);
+    axiosInstance.post(`/attendanceGroup/list`, values).then(() => {
+      // console.log(res.data);
       getTodayCalls();
     });
   };
-  const addCall = () => {
-    setAddBtn(true);
+  const handleRadioChange = (
+    status: string,
+    id: number,
+    description?: string
+  ) => {
+    const updatedSendItems = sendItems.map(item => {
+      if (item.id === id) {
+        return {
+          ...item,
+          status,
+          description: description || item.description,
+        };
+      }
+      return item;
+    });
+    // console.log(updatedSendItems)
+    setSendItems(updatedSendItems);
+  };
+  const viewList = (item: GroupRes) => {
+    // console.log(sendItems);
+    setIdList(item.id);
+    if (item.attendance.length > 0) {
+      setGroupUsers(item.attendance), setHasItems(true);
+    } else {
+      getMembers();
+    }
+    // setAddBtn(true);
+  };
+  const handleDeleteList = (id: number) => {
+    axiosInstance.delete(`/attendanceGroup/list/${id}`).then(() => {
+      setAddBtn(true);
+      // setCalls([])
+      setGroupUsers([]);
+      getTodayCalls();
+    });
+  };
+  const handleRegisterCall = () => {
+    console.log(idList);
+    const data = sendItems.map(({ id, ...rest }) => ({
+      ...rest,
+      userId: id,
+      groupListId: idList,
+    }));
+    // setAddBtn(!addBtn)
+    axiosInstance.post(`/attendanceGroup/relation`, data).then(() => {
+      setAddBtn(true);
+      setGroupUsers([]);
+      getTodayCalls();
+    });
   };
   return (
     <div className="gd-content">
@@ -71,16 +151,25 @@ export const GroupDaily = () => {
           />
           {calls &&
             calls.map(call => (
-              <div key={call.id}>
+              <div key={call.id} style={{ position: 'relative' }}>
+                {!call?.attendance.length && (
+                  <span
+                    onClick={() => handleDeleteList(call.id)}
+                    className="gd-close-span"
+                  >
+                    x
+                  </span>
+                )}
                 <Button
-                  // onClick={addList}
+                  onClick={() => viewList(call)}
                   className="attendance-add-btn"
+                  style={{ width: '2rem', justifyContent: 'center' }}
                   // icon="plus"
                   text={`${call.nombre}`}
                 />
               </div>
             ))}
-          {addBtn && (
+          {isToday && addBtn && (
             <Button
               onClick={() => addList(calls.length + 1)}
               className="attendance-add-btn"
@@ -89,9 +178,9 @@ export const GroupDaily = () => {
             />
           )}
         </span>
-        {!addBtn && (
+        {isToday && !addBtn && (
           <Button
-            onClick={addCall}
+            onClick={handleRegisterCall}
             className="attendance-add-btn"
             // icon="plus"
             text="Guardar"
@@ -99,7 +188,16 @@ export const GroupDaily = () => {
         )}
       </div>
       <div className="gd-body">
-        <GroupAttendance groupUsers={groupUsers} />
+        {groupUsers.length > 0 && (
+          <GroupAttendance
+            hasItems={hasItems}
+            groupUsers={groupUsers}
+            onRadioChange={(e, v, d) => {
+              // console.log(e, v);
+              handleRadioChange(e, v, d);
+            }}
+          />
+        )}
       </div>
     </div>
   );

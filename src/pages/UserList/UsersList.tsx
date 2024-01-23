@@ -9,12 +9,7 @@ import {
   isOpenCardRegisterUser$,
   isOpenViewDocs$,
 } from '../../services/sharingSubject';
-import {
-  Equipment as Equip,
-  GeneralFile,
-  User,
-  WorkStation,
-} from '../../types';
+import { Equipment as Equip, User, WorkStation } from '../../types';
 import { AppDispatch, RootState } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
 import { getListUsers } from '../../store/slices/listUsers.slice';
@@ -27,6 +22,7 @@ import {
   CardRegisterUser,
   CardViewDocs,
 } from './views';
+import { useDirectives } from '../../hooks';
 
 export const UsersList = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -35,12 +31,8 @@ export const UsersList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [printReportId, setPrintReportId] = useState<number>();
   const [workStations, setWorkStations] = useState<WorkStation[]>();
-  const [generalFiles, setGeneralFiles] = useState<GeneralFile[] | null>(null);
-  const getGeneralFiles = async () => {
-    await axiosInstance.get('/files/generalFiles').then(res => {
-      setGeneralFiles(res.data);
-    });
-  };
+  const { generalFiles, getGeneralFiles } = useDirectives();
+
   const getUsers = async () => {
     dispatch(getListUsers());
   };

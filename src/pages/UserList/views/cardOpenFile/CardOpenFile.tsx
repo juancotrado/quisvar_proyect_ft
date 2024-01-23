@@ -10,7 +10,7 @@ import { ButtonDelete, Modal, UploadFile } from '../../../../components';
 
 interface CardOpenFileProps {
   generalFiles: GeneralFile[];
-  getGeneralFiles: () => void;
+  getGeneralFiles?: () => void;
 }
 
 const CardOpenFile = ({ generalFiles, getGeneralFiles }: CardOpenFileProps) => {
@@ -42,18 +42,20 @@ const CardOpenFile = ({ generalFiles, getGeneralFiles }: CardOpenFileProps) => {
         <span className="close-icon" onClick={closeFunctions}>
           <img src="/svg/close.svg" alt="pencil" />
         </span>
-        <h1>Archivos</h1>
-        <div className="col-input card-open-file-main">
-          <div className="card-open-file-contain">
-            <UploadFile
-              text="Subir Archivo"
-              onSave={getGeneralFiles}
-              uploadName="generalFile"
-              URL={`/files/uploadGeneralFiles`}
-              className="userList-upload"
-            />
+        <h1>Directivas</h1>
+        {getGeneralFiles && (
+          <div className="col-input card-open-file-main">
+            <div className="card-open-file-contain">
+              <UploadFile
+                text="Subir Archivo"
+                onSave={getGeneralFiles}
+                uploadName="generalFile"
+                URL={`/files/uploadGeneralFiles`}
+                className="userList-upload"
+              />
+            </div>
           </div>
-        </div>
+        )}
 
         <div className="card-open-files-contain">
           {generalFiles &&
@@ -78,12 +80,14 @@ const CardOpenFile = ({ generalFiles, getGeneralFiles }: CardOpenFileProps) => {
                   </div>
                 </a>
 
-                <ButtonDelete
-                  icon="trash-red"
-                  onSave={getGeneralFiles}
-                  url={`/files/generalFiles/${file.id}`}
-                  className="subtaskFile-btn-delete"
-                />
+                {getGeneralFiles && (
+                  <ButtonDelete
+                    icon="trash-red"
+                    onSave={getGeneralFiles}
+                    url={`/files/generalFiles/${file.id}`}
+                    className="subtaskFile-btn-delete"
+                  />
+                )}
               </div>
             ))}
         </div>

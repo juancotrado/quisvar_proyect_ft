@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import './userList.css';
 import { Button, CardGenerateReport, Input } from '../../components';
 import {
@@ -9,7 +9,13 @@ import {
   isOpenCardRegisterUser$,
   isOpenViewDocs$,
 } from '../../services/sharingSubject';
-import { Equipment as Equip, User, WorkStation } from '../../types';
+import {
+  Equipment as Equip,
+  GeneralFile,
+  RoleForm,
+  User,
+  WorkStation,
+} from '../../types';
 import { AppDispatch, RootState } from '../../store';
 import { useDispatch, useSelector } from 'react-redux';
 import { getListUsers } from '../../store/slices/listUsers.slice';
@@ -22,7 +28,6 @@ import {
   CardRegisterUser,
   CardViewDocs,
 } from './views';
-import { useDirectives } from '../../hooks';
 
 export const UsersList = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -31,18 +36,32 @@ export const UsersList = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [printReportId, setPrintReportId] = useState<number>();
   const [workStations, setWorkStations] = useState<WorkStation[]>();
-  const { generalFiles, getGeneralFiles } = useDirectives();
+  const [roles, setRoles] = useState<RoleForm[] | null>(null);
+  const [generalFiles, setGeneralFiles] = useState<GeneralFile[] | null>(null);
 
+  useEffect(() => {
+    (async () => {
+      await getWorkStations();
+      await getGeneralFiles();
+      await getRoles();
+    })();
+  }, []);
+
+  const getGeneralFiles = async () => {
+    const response = await axiosInstance.get('/files/generalFiles');
+    setGeneralFiles(response.data);
+  };
+  const getRoles = async () => {
+    const response = await axiosInstance.get<RoleForm[]>('/role/form');
+    setRoles(response.data);
+  };
   const getUsers = async () => {
     dispatch(getListUsers());
   };
-  const getWorkStations = useCallback(() => {
-    axiosInstance.get('/workStation').then(res => setWorkStations(res.data));
-  }, []);
-  useEffect(() => {
-    getWorkStations();
-    getGeneralFiles();
-  }, [getWorkStations]);
+  const getWorkStations = async () => {
+    const response = await axiosInstance.get('/workStation');
+    setWorkStations(response.data);
+  };
 
   const filterList = useMemo(() => {
     if (!users) return [];
@@ -60,7 +79,8 @@ export const UsersList = () => {
   };
 
   const addUser = () => {
-    isOpenCardRegisterUser$.setSubject = { isOpen: true };
+    if (!roles) return;
+    isOpenCardRegisterUser$.setSubject = { isOpen: true, roles };
   };
 
   const printReport = (value: number) => {
@@ -158,6 +178,7 @@ export const UsersList = () => {
             <UserInfo
               key={user.id}
               user={user}
+              roles={roles}
               index={index}
               onPrint={() => printReport(user.id)}
               onViewDocs={() => handleViewDocs(user)}

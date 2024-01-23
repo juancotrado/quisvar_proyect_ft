@@ -1,4 +1,4 @@
-import { User } from '../../../../types';
+import { RoleForm, User } from '../../../../types';
 import './userinfo.css';
 import { useState } from 'react';
 import { axiosInstance } from '../../../../services/axiosInstance';
@@ -19,9 +19,16 @@ interface UserInfoProps {
   user: User;
   index: number;
   onPrint?: () => void;
+  roles: RoleForm[];
   onViewDocs?: () => void;
 }
-const UserInfo = ({ user, index, onPrint, onViewDocs }: UserInfoProps) => {
+const UserInfo = ({
+  user,
+  index,
+  onPrint,
+  onViewDocs,
+  roles,
+}: UserInfoProps) => {
   const [isOn, setIsOn] = useState(user.status);
   const [openRole, setOpenRole] = useState(false);
   const { userSession } = useSelector((state: RootState) => state);
@@ -56,7 +63,7 @@ const UserInfo = ({ user, index, onPrint, onViewDocs }: UserInfoProps) => {
   };
   const roleLimit = verifyByRole(user.role, userSession.role);
   const editUser = () => {
-    isOpenCardRegisterUser$.setSubject = { isOpen: true, user };
+    isOpenCardRegisterUser$.setSubject = { isOpen: true, user, roles };
   };
 
   return (

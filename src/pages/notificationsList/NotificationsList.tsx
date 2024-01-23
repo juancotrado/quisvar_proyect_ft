@@ -2,21 +2,8 @@ import { ChangeEvent, FocusEvent, useState } from 'react';
 import './notificationsList.css';
 import { Button, Input } from '../../components';
 import { axiosInstance } from '../../services/axiosInstance';
+import { Menu, MenuPoint, MenuRole } from '../../types';
 
-type MenuRole = 'MOD' | 'MEMBER' | 'VIEWER';
-
-interface Menu {
-  id: number;
-  title: string;
-  route: string;
-  access: MenuRole[];
-  menu?: Menu[];
-}
-interface Option {
-  menuId: number;
-  typeRol: MenuRole;
-  menu?: Option[];
-}
 export const INDICE_GENERAL_OPTIONS: Menu[] = [
   { id: 14, title: 'CAEC', route: 'contratos', access: ['MOD'] },
   { id: 13, title: 'DEE', route: 'contratos1', access: ['MOD'] },
@@ -78,7 +65,7 @@ const MENU_POINTS: Menu[] = [
 ];
 
 export const NotificationsList = () => {
-  const [menuPoints, setMenuPoints] = useState<Option[]>([]);
+  const [menuPoints, setMenuPoints] = useState<MenuPoint[]>([]);
   const [role, setRole] = useState('');
 
   // const { userSession } = useSelector((state: RootState) => state);
@@ -107,19 +94,23 @@ export const NotificationsList = () => {
     );
 
     const newMenuPoints = menuPoints.map(menu =>
-      menu.menuId === +menuId ? { ...menu, menu: newMenuOption } : menu
+      menu.menuId === +menuId ? { ...menu, subMenuPoints: newMenuOption } : menu
     );
 
     setMenuPoints(newMenuPoints);
   };
 
-  const handleMenu = (typeRol: MenuRole | '', id: number, menus: Option[]) => {
+  const handleMenu = (
+    typeRol: MenuRole | '',
+    id: number,
+    menus: MenuPoint[]
+  ) => {
     if (!typeRol) {
       const newMenuPoints = menus.filter(menuPoint => menuPoint.menuId !== +id);
       return newMenuPoints;
     }
 
-    const menu: Option = {
+    const menu: MenuPoint = {
       menuId: +id,
       typeRol,
     };

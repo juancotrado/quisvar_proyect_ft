@@ -4,24 +4,20 @@ import { useEffect, useRef, useState } from 'react';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { isOpenCardRegisterUser$ } from '../../../../services/sharingSubject';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { UserForm, GeneralFile } from '../../../../types';
+import { UserForm, GeneralFile, RoleForm } from '../../../../types';
 import {
   validateEmail,
   validateWhiteSpace,
   capitalizeText,
   SnackbarUtilities,
-  getListByRole,
   validateDNI,
   validateOnlyNumbers,
   validateRuc,
 } from '../../../../utils';
 import { Button, Input, Modal, Select } from '../../../../components';
 import { Subscription } from 'rxjs';
-import { useJurisdiction } from '../../../../hooks';
+import { useJurisdiction, useValidatePassword } from '../../../../hooks';
 import { DEGREE_DATA, INITIAL_VALUES_USER, JOB_DATA } from '../../models';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../store';
-import useValidatePassword from '../../../../hooks/useValidatePassword';
 import { CarRegisterSwornDeclaration } from '..';
 
 interface CardRegisterUserProps {
@@ -31,8 +27,8 @@ interface CardRegisterUserProps {
 
 const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [roles, setRoles] = useState<RoleForm[] | null>(null);
   const handleIsOpen = useRef<Subscription>(new Subscription());
-  const { userSession } = useSelector((state: RootState) => state);
 
   const {
     register,
@@ -58,11 +54,13 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
   useEffect(() => {
     handleIsOpen.current = isOpenCardRegisterUser$.getSubject.subscribe(
       data => {
-        const { isOpen, user } = data;
+        const { isOpen, user, roles } = data;
+        setRoles(roles);
         setIsOpen(isOpen);
         if (user?.id) {
           console.log(user);
-          const { profile, id, email, address, ruc, role } = user;
+          const { profile, id, email, address, ruc, roleId } = user;
+          console.log(user);
           const { department, province, district } = profile;
           setJurisdictionSelectData(department, province);
           reset({
@@ -84,7 +82,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
             lastNameRef: profile.lastNameRef,
             room: profile.room,
             userPc: profile.userPc,
-            role,
+            roleId,
             phoneRef: profile.phoneRef,
           });
         } else {
@@ -99,6 +97,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
 
   const onSubmit: SubmitHandler<UserForm> = async data => {
     const { cv, declaration, id, ...newData } = data;
+    console.log(newData);
     if (id) {
       axiosInstance.put(`/profile/${id}`, data).then(successfulShipment);
     } else {
@@ -301,15 +300,16 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
                 textField="value"
                 errors={errors}
               />
-              {!userId && (
+              {roles && (
                 <Select
                   label="Rol:"
-                  {...register('role', {
+                  {...register('roleId', {
                     validate: { validateWhiteSpace },
+                    valueAsNumber: true,
                   })}
                   itemKey="id"
-                  textField="value"
-                  data={getListByRole(userSession.role)}
+                  textField="name"
+                  data={roles}
                   errors={errors}
                 />
               )}

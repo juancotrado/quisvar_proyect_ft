@@ -69,7 +69,7 @@ export const INITIAL_VALUES_USER: UserForm = {
   lastNameRef: '',
   phoneRef: '',
   addressRef: '',
-  role: '',
+  roleId: null,
   room: '',
   userPc: '',
 };

@@ -1,6 +1,5 @@
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 
-import { attendance_perms, rolsFirstLevel } from '../utils/roles';
 import {
   Attendance,
   BasicsPage,
@@ -53,7 +52,7 @@ const Navigation = () => {
               <Route path=":paymessageId" element={<MessagePage />} />
               <Route path="licencia/:id" element={<LicensePage />} />
             </Route>
-            <Route element={<ProtectedRole rols={attendance_perms} />}>
+            <Route element={<ProtectedRole menuAccess="asistencia" />}>
               <Route path="/asistencia" element={<Attendance />} />
             </Route>
             <Route path="/especialidades" element={<Specialities />}>
@@ -87,7 +86,7 @@ const Navigation = () => {
                 element={<SpecialistInformation />}
               />
             </Route>
-            <Route element={<ProtectedRole rols={rolsFirstLevel} />}>
+            <Route element={<ProtectedRole menuAccess="lista-de-usuarios" />}>
               <Route path="/lista-de-usuarios" element={<UsersList />} />
               <Route path="/indice-general" element={<GeneralIndex />}>
                 <Route path="contratos" element={<Contracts />}>

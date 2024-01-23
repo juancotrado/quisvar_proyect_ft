@@ -1,6 +1,9 @@
-export const validateWhiteSpace = (value: string | undefined | number) => {
+export const validateWhiteSpace = (
+  value: string | undefined | number | null
+) => {
+  if (!value) return 'Este campo no puede estar vacío';
   value = String(value);
-  if (!value || value === 'NaN') return 'Este campo no puede estar vacío';
+  if (value === 'NaN') return 'Este campo no puede estar vacío';
   return !value.trim()
     ? 'Este campo no puede estar vacío'
     : value[0].startsWith(' ')

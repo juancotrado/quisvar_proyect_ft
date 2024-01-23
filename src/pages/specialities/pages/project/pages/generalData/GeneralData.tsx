@@ -6,13 +6,12 @@ import { CostTable, Input, Select, Button } from '../../../../../../components';
 import {
   validateOnlyNumbers,
   validateWhiteSpace,
-  capitalizeText,
-  getRole,
 } from '../../../../../../utils';
 import { useEffect, useState } from 'react';
 import './GeneralData.css';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { useParams } from 'react-router-dom';
+import GeneralDataGroupRow from './components/GeneralDataGroupRow';
 
 const GeneralData = () => {
   const { stageId } = useParams();
@@ -33,8 +32,8 @@ const GeneralData = () => {
   }, []);
 
   const getStageDetails = () => {
-    axiosInstance.get(`/stages/details/${stageId}`).then(res => {
-      const { professionalCost, bachelorCost, groupId } = res.data as StageInfo;
+    axiosInstance.get<StageInfo>(`/stages/details/${stageId}`).then(res => {
+      const { professionalCost, bachelorCost, groupId } = res.data;
       reset({ bachelorCost, groupId: groupId ?? '', professionalCost });
       setStageInfo(res.data);
     });
@@ -87,26 +86,14 @@ const GeneralData = () => {
                 <span className="generalData-infor-group-text">PROFESIÓN</span>
                 <span className="generalData-infor-group-text">GRADO</span>
               </div>
+              {stageInfo?.group?.moderator && (
+                <GeneralDataGroupRow
+                  user={stageInfo?.group?.moderator}
+                  index={1}
+                />
+              )}
               {groupsStage.map(({ users }, i) => (
-                <div key={users.id} className="generalData-infor-group-contain">
-                  <span className="generalData-infor-group-text generalData-table-text-alter">
-                    {i + 1}
-                  </span>
-                  <span className="generalData-infor-group-text generalData-table-text-alter">
-                    {users.profile.firstName} {users.profile.lastName}
-                  </span>
-                  <span className="generalData-infor-group-text generalData-table-text-alter">
-                    {capitalizeText(
-                      `${getRole(users.role)} ${users.profile.description}`
-                    )}
-                  </span>
-                  <span className="generalData-infor-group-text generalData-table-text-alter">
-                    {users.profile.job}
-                  </span>
-                  <span className="generalData-infor-group-text generalData-table-text-alter">
-                    {users.profile.degree}
-                  </span>
-                </div>
+                <GeneralDataGroupRow user={users} index={i + 2} />
               ))}
             </div>
           </div>

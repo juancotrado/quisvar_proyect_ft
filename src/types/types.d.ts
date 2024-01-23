@@ -605,6 +605,7 @@ interface Groups {
   id: number;
   name: string;
   groups: { users: User }[];
+  moderator: User;
 }
 export interface Ubigeo {
   id_ubigeo: string;

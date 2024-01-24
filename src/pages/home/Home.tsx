@@ -6,17 +6,24 @@ import { useCallback, useEffect, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
 import { licenseList } from '../../types';
 import { formatDate } from '../../utils';
+import { Button } from '../../components';
+import { useDirectives } from '../../hooks';
+import { CardOpenFile } from '..';
+import { isOpenCardFiles$ } from '../../services/sharingSubject';
 const GMT = 5 * 60 * 60 * 1000;
 
 export const Home = () => {
   const { userSession } = useSelector((state: RootState) => state);
   const [licenseData, setLicenseData] = useState<licenseList>();
   const [viewCard, setViewCard] = useState<boolean>(false);
+  const { generalFiles, getGeneralFiles } = useDirectives();
+
   const navigate = useNavigate();
   const handleNavigateToAreas = () => navigate('/especialidades');
   const handleNavigateMyWorks = () => navigate('/mis-tareas');
   const handleNavigateReports = () => navigate('/lista-de-notificaciones');
   const handleNavigateMyAdmin = () => {
+    return;
     if (userSession.role !== 'EMPLOYEE') {
       handleNavigateReports();
     } else {
@@ -36,6 +43,11 @@ export const Home = () => {
         }
       });
   }, [userSession.id]);
+
+  useEffect(() => {
+    getGeneralFiles();
+  }, []);
+
   useEffect(() => {
     if (licenseData && !licenseData.fine) {
       const now = new Date();
@@ -101,7 +113,9 @@ export const Home = () => {
         viewLicense();
       });
   };
-
+  const handleOpenCardFiles = () => {
+    isOpenCardFiles$.setSubject = true;
+  };
   return (
     <div className="home">
       <h1 className="home-title">
@@ -130,6 +144,12 @@ export const Home = () => {
           Proyectos
         </button>
       </div>
+
+      <Button
+        text="Ver Directivas"
+        className="userList-btn"
+        onClick={handleOpenCardFiles}
+      />
       {viewCard && licenseData && (
         <div className="home-license-card">
           <h2>Licencia activa</h2>
@@ -159,6 +179,7 @@ export const Home = () => {
           </button>
         </div>
       )}
+      {generalFiles && <CardOpenFile generalFiles={generalFiles} />}
     </div>
   );
 };

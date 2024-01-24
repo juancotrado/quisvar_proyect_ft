@@ -1,3 +1,4 @@
+export * from './dutyList';
 export * from './groupAttendance';
 export * from './groupBtnAdd';
 export * from './groupListBar';

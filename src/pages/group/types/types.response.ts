@@ -3,6 +3,7 @@ export type GroupRes = {
   nombre: string;
   groupId: number;
   attendance: GroupAttendanceRes[];
+  duty: Duty[];
 };
 export type GroupAttendanceRes = {
   id: number;
@@ -21,4 +22,13 @@ export type GroupUsersRes = {
   lastName: string;
   status: string;
   description?: string;
+};
+export type Duty = {
+  id: number;
+  listId: number;
+  fullName?: string;
+  description?: string;
+  startDate?: Date | string;
+  untilDate?: Date | string;
+  createdAt?: Date | string;
 };

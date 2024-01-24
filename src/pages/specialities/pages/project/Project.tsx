@@ -20,6 +20,7 @@ export const Project = () => {
   const { stageId } = useParams();
 
   const { id } = useSelector((state: RootState) => state.userSession);
+  const { modAuthProject } = useSelector((state: RootState) => state);
   const dispatch: AppDispatch = useDispatch();
   useEffect(() => {
     getStageDetails();
@@ -30,7 +31,7 @@ export const Project = () => {
   const getStageDetails = () => {
     axiosInstance.get<StageInfo>(`/stages/details/${stageId}`).then(res => {
       const isModsAuthProject = res.data?.group?.moderator.id === id;
-      dispatch(setModAuthProject(isModsAuthProject));
+      dispatch(setModAuthProject(modAuthProject || isModsAuthProject));
     });
   };
   return (

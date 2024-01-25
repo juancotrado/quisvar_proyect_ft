@@ -16,6 +16,7 @@ export const Home = () => {
   const { userSession } = useSelector((state: RootState) => state);
   const [licenseData, setLicenseData] = useState<licenseList>();
   const [viewCard, setViewCard] = useState<boolean>(false);
+  const [disabledBtn, setDisabledBtn] = useState<boolean>(true);
   const { generalFiles, getGeneralFiles } = useDirectives();
 
   const navigate = useNavigate();
@@ -36,10 +37,12 @@ export const Home = () => {
       .then(res => {
         if (res.data[0]?.status === 'ACTIVO') {
           setLicenseData(res.data[0]);
+          setViewCard(true);
         }
         if (res.data[0]?.status === 'INACTIVO' && !res.data[0].fine) {
           setLicenseData(res.data[0]);
           setViewCard(true);
+          setDisabledBtn(false);
         }
       });
   }, [userSession.id]);
@@ -51,8 +54,9 @@ export const Home = () => {
   useEffect(() => {
     if (licenseData && !licenseData.fine) {
       const now = new Date();
+      const early = 2 * 60 * 60 * 1000;
       const untilDate = new Date(licenseData.untilDate);
-      const timeDifference = untilDate.getTime() + GMT - now.getTime();
+      const timeDifference = untilDate.getTime() + GMT - early - now.getTime();
       if (timeDifference >= 0) {
         setTimeout(() => {
           viewLicense();
@@ -110,6 +114,7 @@ export const Home = () => {
       })
       .then(() => {
         setViewCard(false);
+        setDisabledBtn(true);
         viewLicense();
       });
   };
@@ -171,9 +176,9 @@ export const Home = () => {
             </div>
           </div>
           <button
-            className="hl-btn btn-color-2"
+            className={`hl-btn ${!disabledBtn && 'btn-color-2'}`}
             onClick={handleCheckout}
-            // disabled={enableBtn}
+            disabled={disabledBtn}
           >
             Marcar llegada
           </button>

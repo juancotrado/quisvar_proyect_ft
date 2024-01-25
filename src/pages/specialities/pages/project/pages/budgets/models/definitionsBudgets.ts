@@ -8,12 +8,12 @@ export type SubTaskForm = {
 };
 export const COST_DATA = [
   {
-    key: 'graduate',
-    value: 'Egresado',
-  },
-  {
     key: 'intern',
     value: 'Practicante',
+  },
+  {
+    key: 'graduate',
+    value: 'Egresado',
   },
   {
     key: 'bachelor',

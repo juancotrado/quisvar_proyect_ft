@@ -53,7 +53,7 @@ export interface ReportForm {
   initialDate: string;
   untilDate: string;
   concept: string;
-  remote: string;
+  porcentageValue: number;
   title: string;
 }
 

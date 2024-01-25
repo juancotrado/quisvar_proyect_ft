@@ -7,6 +7,11 @@ export const validateWhiteSpace = (value: string | undefined | number) => {
     ? 'No deje espacios al inicio'
     : true;
 };
+
+export const validatePorcentage = (value: number) => {
+  return value > 100 || value < 0 ? 'Ingresar un rango de 0 a 100' : true;
+};
+
 export const validateOnlyNumbers = <T>(value: T) => {
   if (!value) return true;
   const valTransform = String(value);

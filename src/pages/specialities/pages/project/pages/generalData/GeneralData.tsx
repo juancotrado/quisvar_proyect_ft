@@ -33,8 +33,20 @@ const GeneralData = () => {
 
   const getStageDetails = () => {
     axiosInstance.get<StageInfo>(`/stages/details/${stageId}`).then(res => {
-      const { professionalCost, bachelorCost, groupId } = res.data;
-      reset({ bachelorCost, groupId: groupId ?? '', professionalCost });
+      const {
+        professionalCost,
+        bachelorCost,
+        groupId,
+        graduateCost,
+        internCost,
+      } = res.data;
+      reset({
+        bachelorCost,
+        groupId: groupId ?? '',
+        professionalCost,
+        graduateCost,
+        internCost,
+      });
       setStageInfo(res.data);
     });
   };
@@ -121,6 +133,36 @@ const GeneralData = () => {
               className="generalData-edit-info-input"
             />
           )}
+        </div>
+        <div className="col-input">
+          <Input
+            label="Costo Practicante:"
+            {...register('internCost', {
+              validate: { validateWhiteSpace, validateOnlyNumbers },
+              valueAsNumber: true,
+            })}
+            name="internCost"
+            type="number"
+            placeholder="Costo - Practicante"
+            errors={errors}
+            className="generalData-edit-info-input"
+          />
+          <Input
+            label="Costo Egresado:"
+            {...register('graduateCost', {
+              validate: { validateWhiteSpace, validateOnlyNumbers },
+              valueAsNumber: true,
+            })}
+            name="graduateCost"
+            type="number"
+            placeholder="Costo - Egresado"
+            errors={errors}
+            className="generalData-edit-info-input"
+          />
+        </div>
+        <div className="col-input">
+          <CostTable mount={+watch('internCost')} text="Practicante" />
+          <CostTable mount={+watch('graduateCost')} text="Egresado" />
         </div>
         <div className="col-input">
           <Input

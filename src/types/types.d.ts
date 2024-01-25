@@ -291,6 +291,8 @@ export interface ContractForm {
 interface StageForm {
   bachelorCost: number;
   professionalCost: number;
+  graduateCost: number;
+  internCost: number;
   groupId: number;
 }
 
@@ -583,17 +585,14 @@ export interface Stage {
 interface StageSubtask extends Stage {
   group: Groups;
 }
-export interface StageInfo extends Stage {
+export interface StageInfo extends StageForm, Stage {
   startDate: string;
   untilDate: string;
   status: boolean;
   isProject: boolean;
   moderatorId: null | number;
   rootTypeItem: string;
-  bachelorCost: number;
   group: Groups;
-  professionalCost: number;
-  groupId: number;
   createdAt: string;
   updatedAt: string;
   projectId: number;

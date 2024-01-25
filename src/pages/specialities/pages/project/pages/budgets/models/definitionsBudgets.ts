@@ -1,10 +1,11 @@
-import { StatusType } from '../../../../../../../types';
+import { AddTask, StatusType } from '../../../../../../../types';
 
 export type SubTaskForm = {
   id: number | null;
   name: string;
   description?: string;
   days: number;
+  type?: AddTask;
 };
 export const COST_DATA = [
   {

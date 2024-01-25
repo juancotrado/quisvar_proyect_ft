@@ -39,7 +39,7 @@ const CardRegisterSubTask = () => {
   useEffect(() => {
     handleIsOpen.current = isOpenCardRegisteTask$.getSubject.subscribe(data => {
       setIsOpenModal(data.isOpen);
-      const { task } = data;
+      const { task, type } = data;
       if (task) {
         reset({
           id: task.id,
@@ -47,6 +47,7 @@ const CardRegisterSubTask = () => {
           days: task.days,
           name: task.name,
         });
+        if (type) reset({ ...watch(), type });
       } else {
         setLevelId(data.levelId);
       }
@@ -57,11 +58,21 @@ const CardRegisterSubTask = () => {
   }, [reset, setValue]);
 
   const onSubmit: SubmitHandler<SubTaskForm> = data => {
-    const body = { ...data, days: +data.days, stageId };
-    if (data.id) {
-      axiosInstance.patch(`/subtasks/${data.id}`, body).then(res => {
-        socket.emit('client:update-project', res.data);
-      });
+    const { type, id, ...resData } = data;
+    const body = { ...resData, stageId };
+    console.log(data);
+    if (id) {
+      if (type) {
+        axiosInstance
+          .post(`subtasks/${id}/${stageId}?type=${type}`, resData)
+          .then(res => {
+            socket.emit('client:update-project', res.data);
+          });
+      } else {
+        axiosInstance.patch(`/subtasks/${id}`, body).then(res => {
+          socket.emit('client:update-project', res.data);
+        });
+      }
     } else {
       axiosInstance
         .post('/subtasks', { ...body, levels_Id: levelId })
@@ -104,6 +115,7 @@ const CardRegisterSubTask = () => {
             {...register('days', {
               validate: { validateWhiteSpace, validateOnlyDecimals },
               value: 0,
+              valueAsNumber: true,
             })}
             name="days"
             step={0.01}

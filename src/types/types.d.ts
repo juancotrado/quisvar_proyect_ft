@@ -416,6 +416,8 @@ type StatusType =
   | 'DONE'
   | 'LIQUIDATION';
 
+type AddTask = 'upper' | 'lower';
+
 export type TypeTask = 'task' | 'indextask' | 'task2' | 'task3';
 export interface SubtaskIncludes extends SubTask {
   Levels: {

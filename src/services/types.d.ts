@@ -1,4 +1,5 @@
 import {
+  AddTask,
   AreaSpecialty,
   AttendanceRange,
   Contract,
@@ -29,6 +30,7 @@ export interface CardRegisteContract extends OpenModal {
 export interface CardRegisteTask extends OpenModal {
   levelId: number | null;
   task?: SubTask;
+  type?: AddTask;
 }
 export interface CardViewProps extends OpenModal {
   data: AttendanceRange[];

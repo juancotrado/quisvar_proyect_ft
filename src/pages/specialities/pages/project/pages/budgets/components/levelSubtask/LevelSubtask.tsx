@@ -35,6 +35,17 @@ export const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
   const handleAddTask = () => {
     isOpenCardRegisteTask$.setSubject = { isOpen: true, levelId: id };
   };
+  const handleAddTaskToUpperOrDown = (
+    subtask: SubTask,
+    type: 'upper' | 'lower'
+  ) => {
+    isOpenCardRegisteTask$.setSubject = {
+      isOpen: true,
+      levelId: id,
+      task: subtask,
+      type,
+    };
+  };
   const handleDeleteTask = (id: number) => {
     axiosInstance.delete(`subtasks/${id}/${stageId}`).then(res => {
       socket.emit('client:update-project', res.data);
@@ -159,6 +170,20 @@ export const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
                   icon: 'document-duplicate',
 
                   function: () => handleDuplicateTask(subtask),
+                },
+                {
+                  name: 'Agregar arriba',
+                  type: 'button',
+                  icon: 'document-duplicate',
+
+                  function: () => handleAddTaskToUpperOrDown(subtask, 'upper'),
+                },
+                {
+                  name: 'Agrega abajo',
+                  type: 'button',
+                  icon: 'document-duplicate',
+
+                  function: () => handleAddTaskToUpperOrDown(subtask, 'lower'),
                 },
               ]}
               idContext={`levelSubtask-${subtask.id}`}

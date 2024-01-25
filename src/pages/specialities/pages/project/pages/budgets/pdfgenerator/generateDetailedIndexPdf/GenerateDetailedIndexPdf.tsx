@@ -29,7 +29,10 @@ const textRenderLevel = (level: Level) => {
       </Text>
       <View style={styles.infoContainer}>
         <View style={styles.infoTextContainer}>
-          <Text style={styles.infoText}>S/.{level.balance?.toFixed(2)}</Text>
+          <Text style={styles.infoText}>{level.days}</Text>
+        </View>
+        <View style={styles.infoTextContainer}>
+          <Text style={styles.infoText}>{level.percentage?.toFixed(2)}%</Text>
         </View>
         <View style={styles.infoTextContainer}>
           <Text style={styles.infoText}>S/.{level.balance?.toFixed(2)}</Text>
@@ -40,15 +43,11 @@ const textRenderLevel = (level: Level) => {
         <View style={styles.infoTextContainer}>
           <Text style={styles.infoText}>S/.{level.price?.toFixed(2)}</Text>
         </View>
-        <View style={styles.infoTextContainer}>
-          <Text style={styles.infoText}>{level.percentage?.toFixed(2)}%</Text>
-        </View>
+
         <View style={styles.infoTextContainer}>
           <Text style={styles.infoText}>{level.total}</Text>
         </View>
-        <View style={styles.infoTextContainer}>
-          <Text style={styles.infoText}>{level.days}</Text>
-        </View>
+
         <View
           style={{
             width: 140,
@@ -132,10 +131,13 @@ export const GenerateDetailedIndexPdf = ({
             }}
           >
             <View style={styles.infoTextContainer}>
-              <Text style={styles.infoDetailText}>Saldo</Text>
+              <Text style={styles.infoDetailText}>Dias</Text>
             </View>
             <View style={styles.infoTextContainer}>
-              <Text style={styles.infoDetailText}>Gasto</Text>
+              <Text style={styles.infoDetailText}>Porcentaje</Text>
+            </View>
+            <View style={styles.infoTextContainer}>
+              <Text style={styles.infoDetailText}>Saldo</Text>
             </View>
             <View style={styles.infoTextContainer}>
               <Text style={styles.infoDetailText}>Gasto</Text>
@@ -144,13 +146,7 @@ export const GenerateDetailedIndexPdf = ({
               <Text style={styles.infoDetailText}>Total</Text>
             </View>
             <View style={styles.infoTextContainer}>
-              <Text style={styles.infoDetailText}>Porcentaje</Text>
-            </View>
-            <View style={styles.infoTextContainer}>
               <Text style={styles.infoDetailText}>Tareas</Text>
-            </View>
-            <View style={styles.infoTextContainer}>
-              <Text style={styles.infoDetailText}>Dias</Text>
             </View>
             <View
               style={{

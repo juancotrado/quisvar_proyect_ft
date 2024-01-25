@@ -54,11 +54,11 @@ const recursionProject = (
       null,
       dataRow.level ? '  '.repeat(dataRow.level) + dataRow.item : null,
       dataRow.name,
+      dataRow.days,
+      dataRow.percentage / 100,
       dataRow.balance,
       dataRow.spending,
       dataRow.price,
-      dataRow.percentage / 100,
-      dataRow.days,
       dataRow.total,
       indexLevel,
     ]);
@@ -71,8 +71,8 @@ const recursionProject = (
       : 'f3f6fc';
     borderProjectStyle(row);
     fillRows(row, 2, 10, color);
-    formatExcelStyle({ row, positions: 'DEF', format: moneyFormat });
-    formatExcelStyle({ row, positions: 'G', format: '0%' });
+    formatExcelStyle({ row, positions: 'FGH', format: moneyFormat });
+    formatExcelStyle({ row, positions: 'E', format: '0%' });
     fontExcelStyle({
       row,
       positions: 'BCDEFGHIJ',

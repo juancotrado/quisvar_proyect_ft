@@ -1,21 +1,20 @@
-import Modal from '../portal/Modal';
 import './CardGenerateReport.css';
 import { isOpenCardGenerateReport$ } from '../../services/sharingSubject';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Input, TextArea } from '..';
-import Button from '../button/Button';
-import {
-  validateCorrectTyping,
-  validateWhiteSpace,
-} from '../../utils/customValidatesForm';
+import { Button, Input, TextArea, Modal } from '..';
 import { axiosInstance } from '../../services/axiosInstance';
-import { ReportForm } from '../../types/types';
-import { excelReport } from '../../utils/generateExcel';
+import { ReportForm } from '../../types';
 import { RootState } from '../../store';
 import { useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
-import { formatDate, getTimeOut } from '../../utils';
+import {
+  getTimeOut,
+  validatePorcentage,
+  validateWhiteSpace,
+  excelReport,
+  formatDateLongSpanish,
+} from '../../utils';
 
 interface CardGenerateReportProps {
   employeeId?: number;
@@ -46,49 +45,27 @@ const CardGenerateReport = ({ employeeId }: CardGenerateReportProps) => {
     setIsOpen(false);
   };
   const onSubmit: SubmitHandler<ReportForm> = async data => {
-    const initialDate = formatDate(new Date(data.initialDate), {
-      day: 'numeric',
-      weekday: 'long',
-      month: 'long',
-      year: 'numeric',
-    });
-    const untilDate = formatDate(new Date(data.untilDate), {
-      day: 'numeric',
-      weekday: 'long',
-      month: 'long',
-      year: 'numeric',
-    });
+    const initialDate = formatDateLongSpanish(data.initialDate);
+    const untilDate = formatDateLongSpanish(data.untilDate);
     const totalDays = getTimeOut(data.initialDate, data.untilDate) / 24;
     const idGenerate = employeeId ?? userSession.id;
-
-    const licencesFee = await axiosInstance.get(
-      `/license/fee/${idGenerate}?startDate=${data.initialDate}&endDate=${data.untilDate}`
-    );
-    axiosInstance
-      .get(
-        `/reports/user/${idGenerate}?initial=${data.initialDate}&until=${data.untilDate}&status=DONE`
-      )
-      .then(res => {
-        const { firstName, lastName, dni, phone, degree } =
-          res.data.user.profile;
-        const infoData = {
-          ...data,
-          initialDate,
-          untilDate,
-          totalDays,
-          firstName,
-          lastName,
-          dni,
-          phone,
-          degree,
-        };
-        excelReport(
-          res.data.projects,
-          infoData,
-          res.data.attendance,
-          licencesFee.data
-        );
-      });
+    const URL = `/reports/user/${idGenerate}?initial=${data.initialDate}&until=${data.untilDate}&status=DONE`;
+    axiosInstance.get(URL).then(res => {
+      const { projects, attendance, licencesFee } = res.data;
+      const { firstName, lastName, dni, phone, degree } = res.data.user.profile;
+      const infoData = {
+        ...data,
+        initialDate,
+        untilDate,
+        totalDays,
+        firstName,
+        lastName,
+        dni,
+        phone,
+        degree,
+      };
+      excelReport(projects, infoData, attendance, licencesFee);
+    });
   };
 
   return (
@@ -118,14 +95,15 @@ const CardGenerateReport = ({ employeeId }: CardGenerateReportProps) => {
             type="date"
           />
           <Input
-            label="Remoto de Trabajo:"
-            {...register('remote', {
+            label="Porcentaje de Adelanto:"
+            {...register('porcentageValue', {
               required: 'Este campo es obligatorio',
-              validate: { validateWhiteSpace, validateCorrectTyping },
+              validate: { validateWhiteSpace, validatePorcentage },
+              valueAsNumber: true,
             })}
-            name="remote"
-            type="text"
-            placeholder="Remoto de Trabajo"
+            name="porcentageValue"
+            type="number"
+            placeholder="Porcentaje de Adelanto"
             errors={errors}
           />
         </div>
@@ -134,7 +112,7 @@ const CardGenerateReport = ({ employeeId }: CardGenerateReportProps) => {
           label="Concepto:"
           {...register('concept', {
             required: 'Este campo es obligatorio',
-            validate: { validateWhiteSpace, validateCorrectTyping },
+            validate: { validateWhiteSpace },
           })}
           name="concept"
           type="text"

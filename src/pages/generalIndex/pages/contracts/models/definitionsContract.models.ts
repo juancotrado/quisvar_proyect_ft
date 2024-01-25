@@ -187,20 +187,15 @@ export const CONTRACT_INDEX_DATA: ContractIndexData[] = [
             nivel: 3,
             hasFile: 'no',
           },
+
           {
             id: '3.4.12',
-            name: 'Promesa de consorcio con firmas legalizadas',
-            nivel: 3,
-            hasFile: 'no',
-          },
-          {
-            id: '3.4.13',
             name: 'Copia de los diplomas que acrediten la formación académica requerida del personal clave',
             nivel: 3,
             hasFile: 'no',
           },
           {
-            id: '3.4.14',
+            id: '3.4.13',
             name: 'a) Copia de (i) contratos y su respectiva conformidad o (ii) constancias o (iii) certificados o (iv) cualquier otra documentación que, de manera fehaciente demuestre la experiencia del personal clave.',
             nivel: 3,
             hasFile: 'no',

@@ -28,7 +28,7 @@ export const Stage = () => {
     }
   }, [projectId, id]);
 
-  const getStages = () => {
+  const getStages = async () => {
     axiosInstance.get(`/projects/${projectId}`).then(res => {
       const isModsAuthProject =
         rolSecondLevel.includes(role) || res.data?.moderator?.id === id;

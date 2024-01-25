@@ -230,7 +230,7 @@ export interface ProjectType {
   id: number;
   name: string;
   stage?: Stage;
-  stages: Stages[];
+  stages: StageSubtask[];
   specialityId: number;
   userId: number;
 }

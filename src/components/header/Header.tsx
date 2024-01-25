@@ -42,6 +42,7 @@ const Header = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
+    localStorage.removeItem('arrChecked');
     socket.disconnect();
     navigate('login');
   };

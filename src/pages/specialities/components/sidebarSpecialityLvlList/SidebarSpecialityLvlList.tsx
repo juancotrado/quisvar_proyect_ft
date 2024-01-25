@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import {
   DataSidebarSpeciality,
   Option,
@@ -87,6 +87,21 @@ const SidebarSpecialityLvlList = ({
     borderLeft: `thick solid ${colors[type]}`,
   };
 
+  const value = `${type}-${data.id}`;
+  const handleCheck = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    const arrChecked: string[] = JSON.parse(
+      localStorage.getItem('arrChecked') ?? '[]'
+    );
+    const { checked } = target;
+    if (checked) {
+      arrChecked.push(value);
+      localStorage.setItem('arrChecked', JSON.stringify(arrChecked));
+    } else {
+      const newArrChecked = arrChecked.filter(el => el !== value);
+      localStorage.setItem('arrChecked', JSON.stringify(newArrChecked));
+    }
+  };
+
   const dataDots: Option[] = [
     {
       name: openEditData ? 'Cancelar' : 'Editar',
@@ -109,7 +124,9 @@ const SidebarSpecialityLvlList = ({
       function: handleDuplicate,
     },
   ];
-
+  const arrChecked: string[] = JSON.parse(
+    localStorage.getItem('arrChecked') ?? '[]'
+  );
   return (
     <div className={`SidebarSpecialityLvlList-sub-list-item `} style={style}>
       <ContextMenuTrigger
@@ -157,7 +174,8 @@ const SidebarSpecialityLvlList = ({
                 <input
                   type="checkbox"
                   className="SidebarSpecialityLvlList-dropdown-check"
-                  defaultChecked={false}
+                  onChange={handleCheck}
+                  defaultChecked={arrChecked.includes(value)}
                 />
               </>
             )}

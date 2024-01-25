@@ -149,13 +149,14 @@ export const MoreInfo = ({ data }: MoreInfoProps) => {
           onClick={handleViewUsers}
         >
           {showUsers && <MoreInfoUsers users={data.listUsers} />}
-
-          <figure className="moreInfo-detail-icon">
-            <img src="/svg/person-blue.svg" alt="W3Schools" />
-          </figure>
-          {data.projectName && (
-            <span className="moreInfo-detail-info">Ver Usuarios</span>
-          )}
+          <div className="moreInfo-detail-container">
+            <figure className="moreInfo-detail-icon">
+              <img src="/svg/person-blue.svg" alt="W3Schools" />
+            </figure>
+            {data.projectName && (
+              <span className="moreInfo-detail-info">Ver Usuarios</span>
+            )}
+          </div>
         </div>
 
         <div
@@ -197,26 +198,30 @@ export const MoreInfo = ({ data }: MoreInfoProps) => {
               </div>
             </div>
           )}
-          <figure className="moreInfo-detail-icon">
-            <img src="/svg/compres-icon.svg" alt="W3Schools" />
-          </figure>
-          {data.projectName && (
-            <span className="moreInfo-detail-info">Comprimir</span>
-          )}
+          <div className="moreInfo-detail-container">
+            <figure className="moreInfo-detail-icon">
+              <img src="/svg/compres-icon.svg" alt="W3Schools" />
+            </figure>
+            {data.projectName && (
+              <span className="moreInfo-detail-info">Comprimir</span>
+            )}
+          </div>
         </div>
         <div
           className="moreInfo-detail"
           title={'Comprimir Editables'}
           onClick={handleReports}
         >
-          <figure className="moreInfo-detail-icon">
-            <img src="/svg/reportExcel-icon.svg" alt="W3Schools" />
-          </figure>
-          {data.projectName && (
-            <span className="moreInfo-detail-info">
-              Generar <br /> reporte
-            </span>
-          )}
+          <div className="moreInfo-detail-container">
+            <figure className="moreInfo-detail-icon">
+              <img src="/svg/reportExcel-icon.svg" alt="W3Schools" />
+            </figure>
+            {data.projectName && (
+              <span className="moreInfo-detail-info">
+                Generar <br /> reporte
+              </span>
+            )}
+          </div>
         </div>
       </div>
     </>

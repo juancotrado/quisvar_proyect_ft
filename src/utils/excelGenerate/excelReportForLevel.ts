@@ -82,6 +82,27 @@ const recursionProject = (
       name: 'Century Gothic',
     });
     rowNumber++;
+    if (dataRow.subTasks) {
+      dataRow.subTasks.map(sustaskRow => {
+        const row = wk.insertRow(rowNumber, [
+          null,
+          '  '.repeat(dataRow.level + 1) + sustaskRow.item,
+          sustaskRow.name,
+          sustaskRow.days,
+          sustaskRow.percentage / 100,
+          null,
+          null,
+          sustaskRow.price,
+          null,
+          indexLevel + 1,
+        ]);
+        fillRows(row, 2, 10, 'fffffff');
+        borderProjectStyle(row);
+        formatExcelStyle({ row, positions: 'FGH', format: moneyFormat });
+        formatExcelStyle({ row, positions: 'E', format: '0%' });
+        rowNumber++;
+      });
+    }
     if (dataRow.nextLevel) {
       rowNumber = recursionProject(wk, dataRow.nextLevel, rowNumber);
     }

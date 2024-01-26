@@ -174,14 +174,14 @@ export const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
                 {
                   name: 'Agregar arriba',
                   type: 'button',
-                  icon: 'document-duplicate',
+                  icon: 'upper',
 
                   function: () => handleAddTaskToUpperOrDown(subtask, 'upper'),
                 },
                 {
                   name: 'Agrega abajo',
                   type: 'button',
-                  icon: 'document-duplicate',
+                  icon: 'lower',
 
                   function: () => handleAddTaskToUpperOrDown(subtask, 'lower'),
                 },

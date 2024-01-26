@@ -25,7 +25,11 @@
   color: white;
   font-weight: bolder;
 }
-
+.gd-attach {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
 .gd-options {
   display: flex;
   gap: 1rem;

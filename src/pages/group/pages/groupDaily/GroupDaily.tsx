@@ -182,17 +182,19 @@ export const GroupDaily = () => {
         )}
       </div>
       {calls.length > 0 && groupUsers.length > 0 && (
-        <div className="gd-options">
-          <Button
-            text="Asistencias"
-            className="gd-options-btn"
-            onClick={() => setOption(true)}
-          />
-          <Button
-            text="Compromisos"
-            className="gd-options-btn"
-            onClick={() => setOption(false)}
-          />
+        <div className="gd-attach">
+          <div className="gd-options">
+            <Button
+              text="Asistencias"
+              className="gd-options-btn"
+              onClick={() => setOption(true)}
+            />
+            <Button
+              text="Compromisos"
+              className="gd-options-btn"
+              onClick={() => setOption(false)}
+            />
+          </div>
         </div>
       )}
       <div className="gd-body">

@@ -3,7 +3,7 @@
   height: 2rem;
 
   width: 100%;
-  background-color: #f4f7fc;
+  background-color: var(--color-gray);
   /* font-size: 0.6875rem; */
   /* border-radius: 0.3rem; */
   padding: 0 0.3rem;

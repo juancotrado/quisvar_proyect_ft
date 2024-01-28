@@ -6,7 +6,7 @@
 .dl-header {
   display: grid;
   grid-template-columns: 0.5fr 2.5fr 4fr 2fr;
-  background-color: #f4f7fc;
+  background-color: var(--color-gray);
   padding: 0.5rem 0.4rem;
 }
 

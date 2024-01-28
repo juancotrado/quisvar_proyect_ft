@@ -9,7 +9,7 @@
   height: 100%;
   flex-direction: column;
   gap: 1rem;
-  background-color: #f4f7fc;
+  background-color: var(--color-gray);
   padding: 1.5rem 0;
 }
 .contracts-sidebar-tilte {

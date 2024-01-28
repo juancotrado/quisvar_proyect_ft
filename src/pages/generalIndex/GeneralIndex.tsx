@@ -81,13 +81,11 @@ export const GeneralIndex = () => {
             <NavLink key={index.id} to={{ pathname: index.route }}>
               {({ isActive }) => (
                 <span
-                  className={
-                    isActive
-                      ? ' generalIndex-header-indexData-span generalIndex--active '
-                      : 'generalIndex-header-indexData-span'
-                  }
+                  className={`header-link-span ${
+                    isActive && 'header-link--active'
+                  }`}
                 >
-                  {index.id} {index.name}
+                  {index.name}
                 </span>
               )}
             </NavLink>

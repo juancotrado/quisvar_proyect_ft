@@ -116,7 +116,7 @@
   height: 2rem;
   padding: 0 0.3rem;
   align-items: center;
-  background-color: #f4f7fc;
+  background-color: var(--color-gray);
   grid-template-columns: repeat(8, minmax(0, 1fr));
 }
 .status-mail-header-true {

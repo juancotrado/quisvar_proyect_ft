@@ -35,6 +35,8 @@ import {
   Task,
   UsersList,
   GeneralData,
+  UserCenter,
+  RolesAndPermissions,
 } from '../pages';
 import { ProtectedRole, ProtectedRoute } from '../guards';
 
@@ -86,8 +88,18 @@ const Navigation = () => {
                 element={<SpecialistInformation />}
               />
             </Route>
-            <Route element={<ProtectedRole menuAccess="lista-de-usuarios" />}>
-              <Route path="/lista-de-usuarios" element={<UsersList />} />
+            <Route element={<ProtectedRole menuAccess="centro-de-usuarios" />}>
+              <Route path="/centro-de-usuarios" element={<UserCenter />}>
+                <Route
+                  index
+                  element={<Navigate to="lista-de-usuarios" replace />}
+                />
+                <Route path="lista-de-usuarios" element={<UsersList />} />
+                <Route
+                  path="roles-y-permisos"
+                  element={<RolesAndPermissions />}
+                />
+              </Route>
               <Route path="/indice-general" element={<GeneralIndex />}>
                 <Route path="contratos" element={<Contracts />}>
                   <Route

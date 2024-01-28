@@ -12,6 +12,8 @@
   --color-asigned: #aa5b00;
   --color-correction: #2264e5;
   --color-review: #5a6376;
+  --color-gray: #f4f7fc;
+  --color-gray-text: #464f60;
   --color-bg-unresolved: #faf0f3;
   --color-bg-done: #e1fcef;
   --color-bg-liquidation: #f0f1fa;
@@ -227,4 +229,22 @@ td {
   justify-content: center;
   margin: auto;
   transition: color ease 0.5s, background-color ease 0.5s;
+}
+.margin-none {
+  margin: 0;
+}
+.header-link-span {
+  color: #6a6f79;
+  font-size: 0.675rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.0125rem;
+}
+.header-link--active {
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.625rem;
+  background: #f3f5f7;
+  color: var(--color-secondary);
+  font-weight: 600;
+  letter-spacing: 0.02025rem;
 }

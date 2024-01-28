@@ -14,6 +14,4 @@ export * from './mail';
 export * from './notificationsList';
 export * from './specialist';
 export * from './specialities';
-export * from './specialities/pages/stage';
-export * from './specialities/pages/project/pages/budgets/pages/task';
-export * from './UserList';
+export * from './userCenter';

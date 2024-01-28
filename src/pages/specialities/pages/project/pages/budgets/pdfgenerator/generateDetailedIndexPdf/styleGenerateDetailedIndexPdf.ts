@@ -1,6 +1,6 @@
 import { StyleSheet, Font } from '@react-pdf/renderer';
-import ArialNarrowBold from '../../../../../../../../utils/pdfFonts/Arial-Narrow-Bold.ttf';
-import ArialNarrow from '../../../../../../../../utils/pdfFonts/Arial-Narrow.ttf';
+import ArialNarrowBold from '/fonts/Arial-Narrow-Bold.ttf';
+import ArialNarrow from '/fonts/Arial-Narrow.ttf';
 Font.register({ family: 'Arial Narrow Bold', src: ArialNarrowBold });
 Font.register({ family: 'Arial Narrow', src: ArialNarrow });
 export const styles = StyleSheet.create({

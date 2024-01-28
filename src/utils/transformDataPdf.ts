@@ -1,5 +1,5 @@
 import { formatDate } from '.';
-import { JOB_DATA } from '../pages/UserList/models';
+import { JOB_DATA } from '../pages/userCenter/pages/users/models';
 import { PdfDataProps, PdfGeneratorPick } from '../types';
 import { convertToDynamicObject } from './pdfReportFunctions';
 

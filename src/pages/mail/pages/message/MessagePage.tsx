@@ -36,7 +36,7 @@ import {
   GenerateOrderService,
 } from './views';
 import { PDFGenerator, generateReportPDF } from '../../pdfGenerate';
-import { JOB_DATA } from '../../../UserList/models';
+import { JOB_DATA } from '../../../userCenter/pages/users/models';
 
 const parseDate = (date: Date) =>
   formatDate(new Date(date), {

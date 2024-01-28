@@ -30,7 +30,7 @@ import {
 import { ROLE_PERM } from '../../../../models';
 import { PDFGenerator } from '../../../../pdfGenerate';
 import { ChipFileMessage } from '../../../../components';
-import { JOB_DATA } from '../../../../../UserList/models';
+import { JOB_DATA } from '../../../../../userCenter/pages/users/models';
 
 interface MessageSendType {
   title: string;

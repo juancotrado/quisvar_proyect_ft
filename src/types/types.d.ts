@@ -179,12 +179,12 @@ export interface GruopProject {
   projects: ProjectType[];
 }
 
-type MenuItem = {
+export interface MenuItem {
   id: number;
   route: MenuAccess;
   title: string;
   typeRol: string;
-};
+}
 
 interface RoleForm {
   id: number;
@@ -199,7 +199,7 @@ export type MenuAccess =
   | 'tramites'
   | 'especialidades'
   | 'asistencia'
-  | 'lista-de-usuarios'
+  | 'centro-de-usuarios'
   | 'empresas'
   | 'especialistas'
   | 'indice-general'
@@ -1179,4 +1179,18 @@ export interface MenuPoint {
   menuId: number;
   typeRol: MenuRole;
   menu?: MenuPoint[];
+}
+interface RelationMenuPoint {
+  [key: number]: MenuPoint[];
+}
+
+export interface MenuRoleForm extends Menu {
+  idRelation?: number;
+  typeRol: MenuRole;
+}
+export interface Roles {
+  id: number;
+  name: string;
+  menuPoints: MenuRoleForm[];
+  menuPointsDb: MenuPoint[];
 }

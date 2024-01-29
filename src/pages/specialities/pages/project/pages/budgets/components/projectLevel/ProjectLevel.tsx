@@ -67,10 +67,19 @@ export const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
   };
   const handleDuplicate = () => {
     const body = {
-      name: data.name + ' copia',
+      name: `${data.name}(${Date.now()})`,
     };
     axiosInstance
       .post(`/duplicates/level/${data.id}`, body)
+      .then(() => onSave?.());
+  };
+
+  const handleAddLevelToUpperOrDown = (type: 'upper' | 'lower') => {
+    const body = {
+      name: `${data.name}(${Date.now()})`,
+    };
+    axiosInstance
+      .post(`/levels/${data.id}?type=${type}`, body)
       .then(() => onSave?.());
   };
   const options: Option[] = [
@@ -94,6 +103,20 @@ export const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
       icon: 'document-duplicate',
 
       function: handleDuplicate,
+    },
+    {
+      name: 'Agregar arriba',
+      type: 'button',
+      icon: 'upper',
+
+      function: () => handleAddLevelToUpperOrDown('upper'),
+    },
+    {
+      name: 'Agrega abajo',
+      type: 'button',
+      icon: 'lower',
+
+      function: () => handleAddLevelToUpperOrDown('lower'),
     },
   ];
   const style = {

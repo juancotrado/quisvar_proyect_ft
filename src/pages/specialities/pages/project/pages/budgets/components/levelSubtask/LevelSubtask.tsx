@@ -61,7 +61,7 @@ export const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
 
   const handleDuplicateTask = (subtask: SubTask) => {
     const body = {
-      name: subtask.name + ' copia',
+      name: `${subtask.name}(${Date.now()})`,
     };
     axiosInstance
       .post(`/duplicates/subtask/${subtask.id}`, body)

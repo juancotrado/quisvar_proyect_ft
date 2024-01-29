@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { Level, Option } from '../../../../../../../../types';
 import './projectLevel.css';
 import {
@@ -82,6 +82,20 @@ export const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
       .post(`/levels/${data.id}?type=${type}`, body)
       .then(() => onSave?.());
   };
+
+  const handleCheck = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    const arrChecked: string[] = JSON.parse(
+      localStorage.getItem('arrCheckedLevel') ?? '[]'
+    );
+    const { checked } = target;
+    if (checked) {
+      arrChecked.push(String(data.id));
+      localStorage.setItem('arrCheckedLevel', JSON.stringify(arrChecked));
+    } else {
+      const newArrChecked = arrChecked.filter(el => el !== String(data.id));
+      localStorage.setItem('arrCheckedLevel', JSON.stringify(newArrChecked));
+    }
+  };
   const options: Option[] = [
     {
       name: openEdit ? 'Cancelar' : 'Editar',
@@ -122,6 +136,10 @@ export const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
   const style = {
     borderLeft: `thick solid ${colors[data.level]}`,
   };
+
+  const arrCheckedLevel: string[] = JSON.parse(
+    localStorage.getItem('arrCheckedLevel') ?? '[]'
+  );
   return (
     <div
       className={`projectLevel-sub-list-item  ${
@@ -143,7 +161,8 @@ export const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
               className={`projectLevel-dropdown-check ${
                 !modAuthProject && 'projectLevel-width-normal'
               }`}
-              defaultChecked={false}
+              onChange={handleCheck}
+              defaultChecked={arrCheckedLevel.includes(String(data.id))}
             />
             {/* <div className="projectLevel-contain"> */}
             <div className="projectLevel-name-contain">

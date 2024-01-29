@@ -1,10 +1,6 @@
 import { HashRouter, Navigate, Route, Routes } from 'react-router-dom';
 
-import {
-  attendance_perms,
-  rolThirdLevel,
-  rolsFirstLevel,
-} from '../utils/roles';
+import { attendance_perms, rolsFirstLevel } from '../utils/roles';
 import {
   Attendance,
   BasicsPage,

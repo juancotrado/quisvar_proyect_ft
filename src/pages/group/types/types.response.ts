@@ -2,6 +2,7 @@ export type GroupRes = {
   id: number;
   nombre: string;
   groupId: number;
+  title?: string;
   attendance: GroupAttendanceRes[];
   duty: Duty[];
 };

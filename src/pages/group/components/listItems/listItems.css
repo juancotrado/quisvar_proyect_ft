@@ -1,8 +1,11 @@
 .li-list {
   display: grid;
-  grid-template-columns: 0.5fr 2.5fr 2fr 5fr;
+  grid-template-columns: 0.5fr 5fr 1fr;
   padding: 0rem 0.625rem;
   align-items: center;
+}
+.li-list:hover {
+  background-color: rgba(142, 238, 255, 0.415);
 }
 
 .li-member {

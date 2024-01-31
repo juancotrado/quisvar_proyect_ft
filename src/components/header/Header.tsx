@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import './header.css';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useContext, useEffect, useRef, useState, MouseEvent } from 'react';
 import { Subscription } from 'rxjs';
 import { toggle$ } from '../../services/sharingSubject';
@@ -17,6 +17,7 @@ import {
 } from '../../utils';
 
 const Header = () => {
+  const { stageId, taskId } = useParams();
   const navigate = useNavigate();
   const [headerShow, setHeaderShow] = useState(false);
   const socket = useContext(SocketContext);
@@ -33,6 +34,17 @@ const Header = () => {
     return () => {
       handleToggleRef.current.unsubscribe();
     };
+  }, []);
+
+  useEffect(() => {
+    socket.io.on('reconnect', () => {
+      if (stageId) {
+        socket.emit('join', `project-${stageId}`);
+      }
+      if (taskId) {
+        socket.emit('join', `task-${taskId}`);
+      }
+    });
   }, []);
   const [openModalInfo, setOpenModalInfo] = useState(false);
 

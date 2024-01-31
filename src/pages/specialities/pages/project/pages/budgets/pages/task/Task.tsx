@@ -29,7 +29,7 @@ export const Task = () => {
   const getTask = () => {
     axiosInstance.get(`/subtasks/${taskId}`).then(res => {
       setTask(res.data);
-      socket.emit('join', `task-${res.data.id}`);
+      socket.emit('join', `task-${taskId}`);
     });
   };
 
@@ -55,7 +55,6 @@ export const Task = () => {
         <h4 className="task-header-title">
           Título de la tarea:
           <span className="task-header-title-span">
-            {' '}
             {task.item} {task.name}
           </span>
         </h4>

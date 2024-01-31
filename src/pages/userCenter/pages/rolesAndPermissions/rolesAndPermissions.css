@@ -50,6 +50,7 @@
   display: grid;
   background-color: white;
   grid-template-columns: 2fr;
+  min-height: 4.75rem;
 }
 
 .rolesAndPermissions-table-subHeader-text {

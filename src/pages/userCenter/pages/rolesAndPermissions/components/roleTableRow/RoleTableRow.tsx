@@ -1,6 +1,12 @@
-import { ChangeEvent, FocusEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FocusEvent, useEffect, useRef, useState } from 'react';
 import { RolesAndPermissionsRadio } from '..';
-import { MenuPoint, MenuRole, Option, Roles } from '../../../../../../types';
+import {
+  MenuPoint,
+  MenuRole,
+  MenuRoleForm,
+  Option,
+  Roles,
+} from '../../../../../../types';
 import './roleTableRow.css';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import { DotsRight } from '../../../../../../components';
@@ -16,7 +22,8 @@ interface RoleTableRowProps {
 const RoleTableRow = ({ rol, onSave }: RoleTableRowProps) => {
   const [openEditData, setOpenEditData] = useState<boolean>(false);
   const [role, setRole] = useState<string>(rol.name);
-  const [lastMenuPoints] = useState(rol.menuPointsDb);
+  const [menuPoints, setMenuPoints] = useState<MenuRoleForm[]>(rol.menuPoints);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [editMenuPoints, setEditMenuPoints] = useState<MenuPoint[]>(
     rol.menuPointsDb
   );
@@ -26,7 +33,13 @@ const RoleTableRow = ({ rol, onSave }: RoleTableRowProps) => {
 
   useEffect(() => {
     setEditMenuPoints(rol.menuPointsDb);
-  }, [rol.menuPointsDb]);
+    setMenuPoints(menuPoints);
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
+  }, [rol]);
 
   const handleEditMenuPoint = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const { value, id } = target;
@@ -63,7 +76,19 @@ const RoleTableRow = ({ rol, onSave }: RoleTableRowProps) => {
     });
   };
 
-  const handlOpenEditData = () => setOpenEditData(!openEditData);
+  const handlOpenEditData = () => {
+    if (openEditData) {
+      setRole(rol.name);
+      setMenuPoints([]);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+      timeoutRef.current = setTimeout(() => {
+        setMenuPoints(rol.menuPoints);
+      }, 1);
+    }
+    setOpenEditData(!openEditData);
+  };
   const dataDots: Option[] = [
     {
       name: openEditData ? 'Cancelar' : 'Editar',
@@ -103,7 +128,7 @@ const RoleTableRow = ({ rol, onSave }: RoleTableRowProps) => {
             {rol.name}
           </div>
         )}
-        {rol.menuPoints.map(menuPoint => (
+        {menuPoints.map(menuPoint => (
           <div
             key={menuPoint.id}
             className="rolesAndPermissions-table-body-options"

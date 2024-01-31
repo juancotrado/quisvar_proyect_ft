@@ -26,9 +26,6 @@ export const Stage = () => {
     if (id) {
       getStages();
     }
-    return () => {
-      localStorage.removeItem('arrCheckedLevel');
-    };
   }, [projectId, id]);
 
   const getStages = async () => {

@@ -2,7 +2,7 @@ import './specialities.css';
 import { Outlet } from 'react-router-dom';
 import { useMotionValue, motion, PanInfo } from 'framer-motion';
 import { useSector } from '../../hooks';
-import { FocusEvent, useCallback, useState } from 'react';
+import { FocusEvent, useCallback, useEffect, useState } from 'react';
 import { SectorType } from '../../types';
 import { axiosInstance } from '../../services/axiosInstance';
 import { LoaderForComponent, Select } from '../../components';
@@ -31,6 +31,12 @@ export const Specialities = () => {
       .filter(sector => sector.specialities.length);
     settingSectors(filterForYear);
   };
+
+  useEffect(() => {
+    return () => {
+      localStorage.removeItem('arrCheckedLevel');
+    };
+  }, []);
 
   const handleDrag = useCallback(
     (_event: MouseEvent, info: PanInfo) => {

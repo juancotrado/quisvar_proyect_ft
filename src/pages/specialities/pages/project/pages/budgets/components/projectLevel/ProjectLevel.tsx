@@ -49,22 +49,29 @@ export const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
   const [idCoordinator, setIdCoordinator] = useState<number | null>(null);
 
   const onSubmitData: SubmitHandler<DataForm> = async body => {
-    if (openOptionLevel === 'duplicate') return handleDuplicate(body.name);
+    if (openOptionLevel === 'duplicate') {
+      handleDuplicate(body.name);
+    }
 
-    if (openOptionLevel === 'lowerAdd')
-      return handleAddLevelToUpperOrDown('lower', body.name);
+    if (openOptionLevel === 'lowerAdd') {
+      handleAddLevelToUpperOrDown('lower', body.name);
+    }
 
-    if (openOptionLevel === 'upperAdd')
-      return handleAddLevelToUpperOrDown('upper', body.name);
-
+    if (openOptionLevel === 'upperAdd') {
+      handleAddLevelToUpperOrDown('upper', body.name);
+    }
     if (openOptionLevel === 'edit') {
       if (data.userId) body = { ...body, userId: idCoordinator ?? data.userId };
       await axiosInstance.put(`levels/${data.id}`, body);
+      onSave?.();
     }
     resetValues();
   };
   const handleDeleteLevel = () => {
-    axiosInstance.delete(`levels/${data.id}`).then(resetValues);
+    axiosInstance.delete(`levels/${data.id}`).then(() => {
+      onSave?.();
+      resetValues();
+    });
   };
 
   const handleOpenButtonDelete = () => {
@@ -75,7 +82,6 @@ export const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
   };
   const deleteUser = () => setIdCoordinator(null);
   const resetValues = () => {
-    onSave?.();
     reset({});
     handleOpenEdit(null);
   };

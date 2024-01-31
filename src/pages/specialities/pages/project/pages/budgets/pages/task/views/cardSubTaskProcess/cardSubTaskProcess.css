@@ -97,6 +97,7 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 1rem;
+  overflow-x: hidden;
 }
 
 .cardSubtaskProcess-info {

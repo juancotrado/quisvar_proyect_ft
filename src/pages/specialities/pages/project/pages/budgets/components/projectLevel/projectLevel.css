@@ -27,7 +27,7 @@
   color: var(--color-secondary);
   background-color: #ebf0fa99;
   width: 100%;
-  padding: 7px 13px;
+  padding: 0.6rem 0.81rem 0.438rem 0.81rem;
   text-transform: capitalize;
   font-size: 0.85rem;
   font-weight: 600;
@@ -141,4 +141,12 @@
 
 .projectLevel-width-normal {
   min-width: 100%;
+}
+
+.projectLevel-option-info {
+  color: var(--color-secondary);
+  font-size: 0.6rem;
+  position: absolute;
+  top: 0;
+  left: 2.9rem;
 }

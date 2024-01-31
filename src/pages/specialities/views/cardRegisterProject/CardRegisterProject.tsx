@@ -6,7 +6,11 @@ import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Contract, ProjectForm } from '../../../../types';
 import { Subscription } from 'rxjs';
-import { validateWhiteSpace, SnackbarUtilities } from '../../../../utils';
+import {
+  validateWhiteSpace,
+  SnackbarUtilities,
+  validateCorrectTyping,
+} from '../../../../utils';
 
 interface CardRegisterProjectProps {
   onSave?: () => void;
@@ -123,7 +127,7 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
               isRelative
               label="Nombre Corto:"
               {...register('name', {
-                validate: { validateWhiteSpace },
+                validate: { validateWhiteSpace, validateCorrectTyping },
               })}
               name="name"
               type="text"

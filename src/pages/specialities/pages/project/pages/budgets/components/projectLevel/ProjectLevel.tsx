@@ -19,6 +19,8 @@ import { ContextMenuTrigger } from 'rctx-contextmenu';
 import { useListUsers } from '../../../../../../../../hooks';
 import { isOpenButtonDelete$ } from '../../../../../../../../services/sharingSubject';
 import { MoreInfo } from '..';
+import { OptionLevel } from '../../models/types';
+import { OPTION_LEVEL_TEXT } from '../../models';
 
 interface ProjectLevelProps {
   data: Level;
@@ -36,21 +38,33 @@ export const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
     formState: { errors },
   } = useForm<DataForm>();
   const { modAuthProject } = useSelector((state: RootState) => state);
-  const [openEdit, setOpenEdit] = useState(false);
-  const handleCloseEdit = () => setOpenEdit(false);
-  const handleOpenEdit = () => {
+  const [openOptionLevel, setOpenOptionLevel] = useState<OptionLevel>(null);
+  const handleCloseEdit = () => setOpenOptionLevel(null);
+  const handleOpenEdit = (option: OptionLevel) => {
+    if (openOptionLevel) return setOpenOptionLevel(null);
     reset({ name: data.name });
-    setOpenEdit(!openEdit);
+    setOpenOptionLevel(option);
   };
   const { users: modedators } = useListUsers(['MOD']);
   const [idCoordinator, setIdCoordinator] = useState<number | null>(null);
 
   const onSubmitData: SubmitHandler<DataForm> = async body => {
-    if (data.userId) body = { ...body, userId: idCoordinator ?? data.userId };
-    axiosInstance.put(`levels/${data.id}`, body).then(() => resetValues());
+    if (openOptionLevel === 'duplicate') return handleDuplicate(body.name);
+
+    if (openOptionLevel === 'lowerAdd')
+      return handleAddLevelToUpperOrDown('lower', body.name);
+
+    if (openOptionLevel === 'upperAdd')
+      return handleAddLevelToUpperOrDown('upper', body.name);
+
+    if (openOptionLevel === 'edit') {
+      if (data.userId) body = { ...body, userId: idCoordinator ?? data.userId };
+      await axiosInstance.put(`levels/${data.id}`, body);
+    }
+    resetValues();
   };
   const handleDeleteLevel = () => {
-    axiosInstance.delete(`levels/${data.id}`).then(() => resetValues());
+    axiosInstance.delete(`levels/${data.id}`).then(resetValues);
   };
 
   const handleOpenButtonDelete = () => {
@@ -63,20 +77,23 @@ export const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
   const resetValues = () => {
     onSave?.();
     reset({});
-    handleOpenEdit();
+    handleOpenEdit(null);
   };
-  const handleDuplicate = () => {
+  const handleDuplicate = (name: string) => {
     const body = {
-      name: `${data.name}(${Date.now()})`,
+      name,
     };
     axiosInstance
       .post(`/duplicates/level/${data.id}`, body)
       .then(() => onSave?.());
   };
 
-  const handleAddLevelToUpperOrDown = (type: 'upper' | 'lower') => {
+  const handleAddLevelToUpperOrDown = (
+    type: 'upper' | 'lower',
+    name: string
+  ) => {
     const body = {
-      name: `${data.name}(${Date.now()})`,
+      name,
     };
     axiosInstance
       .post(`/levels/${data.id}?type=${type}`, body)
@@ -98,39 +115,41 @@ export const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
   };
   const options: Option[] = [
     {
-      name: openEdit ? 'Cancelar' : 'Editar',
-      type: openEdit ? 'submit' : 'button',
-      icon: openEdit ? 'close' : 'pencil',
-      function: handleOpenEdit,
+      name: openOptionLevel ? 'Cancelar' : 'Editar',
+      type: openOptionLevel ? 'submit' : 'button',
+      icon: openOptionLevel ? 'close' : 'pencil',
+      function: () => handleOpenEdit('edit'),
     },
 
     {
-      name: openEdit ? 'Guardar' : 'Eliminar',
-      type: openEdit ? 'submit' : 'button',
-      icon: openEdit ? 'save' : 'trash-red',
+      name: openOptionLevel ? 'Guardar' : 'Eliminar',
+      type: openOptionLevel ? 'submit' : 'button',
+      icon: openOptionLevel ? 'save' : 'trash-red',
 
-      function: openEdit ? handleSubmit(onSubmitData) : handleOpenButtonDelete,
+      function: openOptionLevel
+        ? handleSubmit(onSubmitData)
+        : handleOpenButtonDelete,
     },
     {
       name: 'Duplicar',
       type: 'button',
       icon: 'document-duplicate',
 
-      function: handleDuplicate,
+      function: () => handleOpenEdit('duplicate'),
     },
     {
       name: 'Agregar arriba',
       type: 'button',
       icon: 'upper',
 
-      function: () => handleAddLevelToUpperOrDown('upper'),
+      function: () => handleOpenEdit('upperAdd'),
     },
     {
       name: 'Agrega abajo',
       type: 'button',
       icon: 'lower',
 
-      function: () => handleAddLevelToUpperOrDown('lower'),
+      function: () => handleOpenEdit('lowerAdd'),
     },
   ];
   const style = {
@@ -151,7 +170,10 @@ export const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
     >
       <div className="projectLevel-contain">
         {modAuthProject && (
-          <DotsRight data={options} idContext={`projectLevel-${data.id}`} />
+          <DotsRight
+            data={options.slice(0, openOptionLevel ? 2 : Infinity)}
+            idContext={`projectLevel-${data.id}`}
+          />
         )}
         <ContextMenuTrigger id={`projectLevel-${data.id}`}>
           <div className={`projectLevel-section `}>
@@ -166,7 +188,7 @@ export const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
             />
             {/* <div className="projectLevel-contain"> */}
             <div className="projectLevel-name-contain">
-              {openEdit ? (
+              {openOptionLevel ? (
                 <form
                   onSubmit={handleSubmit(onSubmitData)}
                   className="projectLevel-form"
@@ -231,6 +253,11 @@ export const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
         <div className="projectLevel-contain-right">
           <MoreInfo data={data} />
         </div>
+      )}
+      {openOptionLevel && (
+        <p className="projectLevel-option-info">
+          {OPTION_LEVEL_TEXT[openOptionLevel]}:
+        </p>
       )}
     </div>
   );

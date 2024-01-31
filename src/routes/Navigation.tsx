@@ -59,6 +59,10 @@ const Navigation = () => {
             <Route path="/especialidades" element={<Specialities />}>
               <Route path="proyecto/:projectId" element={<Stage />}>
                 <Route path="etapa/:stageId" element={<Project />}>
+                  <Route
+                    index
+                    element={<Navigate to="presupuestos" replace />}
+                  />
                   <Route path="detalles" element={<GeneralData />} />
                   <Route path="basicos" element={<BasicsPage />} />
                   <Route path="presupuestos" element={<BudgetsPage />}>

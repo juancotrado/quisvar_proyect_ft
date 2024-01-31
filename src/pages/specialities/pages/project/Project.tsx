@@ -1,16 +1,8 @@
-import { NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
 import './project.css';
-import { useEffect } from 'react';
 import { PROJECT_OPTIONS } from './models';
 
 export const Project = () => {
-  const navigation = useNavigate();
-  const location = useLocation();
-  useEffect(() => {
-    const pathnameSplit = location.pathname.split('/');
-    if (pathnameSplit.length === 6) navigation('presupuestos');
-  }, [location.pathname, navigation]);
-
   return (
     <div className="project">
       <div className="project-options">

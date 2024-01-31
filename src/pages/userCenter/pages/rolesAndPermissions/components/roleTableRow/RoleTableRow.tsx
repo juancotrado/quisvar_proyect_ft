@@ -71,7 +71,7 @@ const RoleTableRow = ({ rol, onSave }: RoleTableRowProps) => {
       return SnackbarUtilities.warning('Seleccion permisos para el rol.');
     axiosInstance.put(`/role/${rol.id}`, body).then(() => {
       SnackbarUtilities.success(`Rol: "${role}" editado correctamente`);
-      handlOpenEditData();
+      setOpenEditData(false);
       onSave();
     });
   };

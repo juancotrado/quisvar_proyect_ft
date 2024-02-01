@@ -49,45 +49,8 @@ const Navigation = () => {
           <Route path="/login" element={<Login />} />
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<Home />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-            <Route path="/tramites" element={<MailPage />}>
-              <Route path=":paymessageId" element={<MessagePage />} />
-              <Route path="licencia/:id" element={<LicensePage />} />
-            </Route>
-            <Route element={<ProtectedRole menuAccess="asistencia" />}>
-              <Route path="/asistencia" element={<Attendance />} />
-            </Route>
-            <Route path="/especialidades" element={<Specialities />}>
-              <Route path="proyecto/:projectId" element={<Stage />}>
-                <Route path="etapa/:stageId" element={<Project />}>
-                  <Route
-                    index
-                    element={<Navigate to="presupuestos" replace />}
-                  />
-                  <Route path="detalles" element={<GeneralData />} />
-                  <Route path="basicos" element={<BasicsPage />} />
-                  <Route path="presupuestos" element={<BudgetsPage />}>
-                    <Route path="tarea/:taskId" element={<Task />} />
-                  </Route>
-                </Route>
-              </Route>
-            </Route>
-            <Route path="/mis-tareas" element={<ListPersonalTask />} />
-            <Route path="/reportes" element={<CommingSoon />} />
-            <Route path="/factura" element={<CustomizableInvoice />} />
-            <Route path="/empresas" element={<Company />}>
-              <Route
-                path="informacion/:infoId"
-                element={<CompanyInformation />}
-              />
-              <Route path="consorcio/:id" element={<Consortium />} />
-            </Route>
-            <Route path="/especialistas" element={<Specialist />}>
-              <Route
-                path="informacion/:infoId"
-                element={<SpecialistInformation />}
-              />
-            </Route>
+            {/* <Route path="/dashboard" element={<Dashboard />} /> */}
+
             <Route element={<ProtectedRole menuAccess="centro-de-usuarios" />}>
               <Route path="/centro-de-usuarios" element={<UserCenter />}>
                 <Route
@@ -100,6 +63,73 @@ const Navigation = () => {
                   element={<RolesAndPermissions />}
                 />
               </Route>
+            </Route>
+
+            <Route element={<ProtectedRole menuAccess="tramites" />}>
+              <Route path="/tramites" element={<MailPage />}>
+                <Route path=":paymessageId" element={<MessagePage />} />
+                <Route path="licencia/:id" element={<LicensePage />} />
+              </Route>
+            </Route>
+
+            <Route element={<ProtectedRole menuAccess="especialidades" />}>
+              <Route path="/especialidades" element={<Specialities />}>
+                <Route path="proyecto/:projectId" element={<Stage />}>
+                  <Route path="etapa/:stageId" element={<Project />}>
+                    <Route
+                      index
+                      element={<Navigate to="presupuestos" replace />}
+                    />
+                    <Route path="detalles" element={<GeneralData />} />
+                    <Route path="basicos" element={<BasicsPage />} />
+                    <Route path="presupuestos" element={<BudgetsPage />}>
+                      <Route path="tarea/:taskId" element={<Task />} />
+                    </Route>
+                  </Route>
+                </Route>
+              </Route>
+            </Route>
+
+            <Route element={<ProtectedRole menuAccess="asistencia" />}>
+              <Route path="/asistencia" element={<Attendance />} />
+            </Route>
+
+            <Route element={<ProtectedRole menuAccess="empresas" />}>
+              <Route path="/empresas" element={<Company />}>
+                <Route
+                  path="informacion/:infoId"
+                  element={<CompanyInformation />}
+                />
+                <Route path="consorcio/:id" element={<Consortium />} />
+              </Route>
+            </Route>
+
+            <Route element={<ProtectedRole menuAccess="especialistas" />}>
+              <Route path="/especialistas" element={<Specialist />}>
+                <Route
+                  path="informacion/:infoId"
+                  element={<SpecialistInformation />}
+                />
+              </Route>
+            </Route>
+
+            <Route element={<ProtectedRole menuAccess="grupos" />}>
+              <Route path="/grupos" element={<Group />}>
+                <Route
+                  path="contenido/:groupId/:name"
+                  element={<GroupContent />}
+                >
+                  <Route
+                    path="proyectos/:groupId"
+                    element={<GroupProjects />}
+                  />
+                  <Route path="reuniones/:groupId" element={<GroupDaily />} />
+                  <Route path="semanal/:groupId" element={<GroupWeekend />} />
+                </Route>
+              </Route>
+            </Route>
+
+            <Route element={<ProtectedRole menuAccess="indice-general" />}>
               <Route path="/indice-general" element={<GeneralIndex />}>
                 <Route path="contratos" element={<Contracts />}>
                   <Route
@@ -111,20 +141,17 @@ const Navigation = () => {
                 </Route>
               </Route>
             </Route>
+
             <Route>
               <Route
                 path="/lista-de-notificaciones"
                 element={<NotificationsList />}
               />
             </Route>
-            <Route path="/grupos" element={<Group />}>
-              <Route path="contenido/:groupId/:name" element={<GroupContent />}>
-                <Route path="proyectos/:groupId" element={<GroupProjects />} />
-                <Route path="reuniones/:groupId" element={<GroupDaily />} />
-                <Route path="semanal/:groupId" element={<GroupWeekend />} />
-              </Route>
-            </Route>
           </Route>
+          <Route path="/mis-tareas" element={<ListPersonalTask />} />
+          <Route path="/reportes" element={<CommingSoon />} />
+          <Route path="/factura" element={<CustomizableInvoice />} />
           <Route path="/*" element={<NotFound />} />
         </Routes>
       </HashRouter>

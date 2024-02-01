@@ -7,11 +7,11 @@ import {
   SpecialityType,
   TypeSpecialities,
 } from '../../../../types';
-import { rolSecondLevel } from '../../../../utils';
 import './dropDownSidebarSpeciality.css';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { SidebarSpecialityAddLvl, SidebarSpecialityLvlList } from '..';
+import { useRole } from '../../../../hooks';
 
 interface DropDownSidebarSpecialityProps {
   data: DataSidebarSpeciality;
@@ -43,7 +43,8 @@ const DropDownSidebarSpeciality = ({
     : 'noId';
   if (!levelData) return <></>;
 
-  const authUsers = rolSecondLevel.includes(role);
+  const { hasAccess: authUsers } = useRole('especialistas', 'MOD');
+
   const handleTaks = (name: string, especialties?: number) => {
     if (especialties === undefined) return;
     setIndexSelected(name + '-' + especialties);

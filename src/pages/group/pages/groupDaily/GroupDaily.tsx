@@ -116,8 +116,6 @@ export const GroupDaily = () => {
   };
   const viewList = (item: GroupRes, idx: number) => {
     setIdList(item.id);
-    // console.log(item?.title !== null ? item.title : 'xd');
-
     setTitle(item?.title ?? '');
     setGroupUsers([]);
     setHasDuty([]);
@@ -128,7 +126,6 @@ export const GroupDaily = () => {
     } else {
       getMembers();
     }
-    // setAddBtn(true);
     setSelectedBtn(idx);
   };
   const handleDeleteList = (id: number) => {
@@ -161,9 +158,10 @@ export const GroupDaily = () => {
     axiosInstance
       .patch(`/attendanceGroup/list/title/${idList}`, { title: value })
       .then(() => {
-        getTodayCalls();
+        setTitle(value);
       });
   };
+  console.log(groupUsers);
   return (
     <div className="gd-content">
       <div className="gd-header">
@@ -195,6 +193,7 @@ export const GroupDaily = () => {
                   style={{ width: '2rem', justifyContent: 'center' }}
                   // icon="plus"
                   text={`${call.nombre}`}
+                  type="button"
                 />
               </div>
             ))}
@@ -207,58 +206,63 @@ export const GroupDaily = () => {
             />
           )}
         </span>
-        {isToday && !addBtn && (
-          <Button
-            onClick={handleRegisterCall}
-            className="attendance-add-btn"
-            // icon="plus"
-            text="Guardar"
-          />
-        )}
       </div>
       {calls.length > 0 && groupUsers.length > 0 && (
         <div className="gd-attach">
-          <div className="gd-titles">
-            <h4 className="gd-header-title">Asunto de la reunión:</h4>
-            {title ? (
-              <h1 className="gdh-input">{title ?? ''}</h1>
-            ) : (
-              <input
-                placeholder="--> Inserte un titulo aquí <--"
-                className="gdh-input"
-                defaultValue={title}
-                onBlur={handleChangeTitle}
-                disabled={title ? true : false}
-              />
-            )}
-            <h4 className="gd-header-title">Acta de reunión:</h4>
-            <Button icon="download" />
-          </div>
           <div className="gd-options">
             <Button
               text="Asistencias"
               className="gd-options-btn"
               onClick={() => setOption(true)}
             />
-            <Button
-              text="Compromisos"
-              className="gd-options-btn"
-              onClick={() => setOption(false)}
-            />
+            {groupUsers.length > 0 && (
+              <Button
+                text="Compromisos"
+                className="gd-options-btn"
+                onClick={() => setOption(false)}
+              />
+            )}
           </div>
+          {!option && (
+            <div className="gd-titles">
+              <h4 className="gd-header-title">Asunto de la reunión:</h4>
+              {title ? (
+                <h1 className="gdh-input">{title ?? ''}</h1>
+              ) : (
+                <input
+                  placeholder="--> Inserte un titulo aquí <--"
+                  className="gdh-input"
+                  defaultValue={title}
+                  onBlur={handleChangeTitle}
+                  disabled={title ? true : false}
+                />
+              )}
+              <h4 className="gd-header-title">Acta de reunión:</h4>
+              <Button icon="download" />
+            </div>
+          )}
         </div>
       )}
-      <div className="gd-body">
+      <div>
         {option
           ? groupUsers.length > 0 && (
-              <GroupAttendance
-                hasItems={hasItems}
-                groupUsers={groupUsers}
-                onRadioChange={(e, v, d) => {
-                  // console.log(e, v);
-                  handleRadioChange(e, v, d);
-                }}
-              />
+              <div className="gda-content">
+                <GroupAttendance
+                  hasItems={hasItems}
+                  groupUsers={groupUsers}
+                  onRadioChange={(e, v, d) => {
+                    handleRadioChange(e, v, d);
+                  }}
+                />
+                {isToday && !addBtn && !hasItems && (
+                  <Button
+                    onClick={handleRegisterCall}
+                    className="gda-save"
+                    // icon="plus"
+                    text="Guardar"
+                  />
+                )}
+              </div>
             )
           : (hasDuty.length > 0 || isToday) &&
             groupUsers.length > 0 && (

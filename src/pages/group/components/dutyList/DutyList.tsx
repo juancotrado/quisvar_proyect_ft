@@ -160,7 +160,7 @@ const DutyList = ({
             )}
           </div>
         ))}
-      {(!hasDuty || isToday) && (
+      {isToday && hasDuty?.length === 0 && (
         <div className="dl-btns">
           <Button
             text="GUARDAR"

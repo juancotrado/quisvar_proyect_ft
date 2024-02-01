@@ -88,14 +88,25 @@ export const GroupDaily = () => {
     setGroupUsers([]);
     setCalls([]);
     setHasDuty([]);
+    const today = new Date();
     const values = {
       nombre: order.toString(),
       groupId: +(groupId as string),
     };
-    axiosInstance.post(`/attendanceGroup/list`, values).then(() => {
-      getTodayCalls();
-      socket.emit('client:action-button');
-    });
+    axiosInstance
+      .post<GroupRes[]>(
+        `/attendanceGroup/list?id=${groupId}&date=${_date(today)}`,
+        values
+      )
+      .then(res => {
+        // getTodayCalls();
+        console.log(res.data);
+        setSelectedBtn(res.data.length);
+        // setAddBtn(res.data[res.data.length - 1]?.attendance.length !== 0);
+        // socket.emit('client:action-button');
+        viewList(res.data[res.data.length - 1], res.data.length);
+        setCalls(res.data);
+      });
   };
   const handleRadioChange = (
     status: string,
@@ -161,7 +172,6 @@ export const GroupDaily = () => {
         setTitle(value);
       });
   };
-  console.log(groupUsers);
   return (
     <div className="gd-content">
       <div className="gd-header">
@@ -175,28 +185,31 @@ export const GroupDaily = () => {
             defaultValue={_date(now)}
           />
           {calls &&
-            calls.map((call, idx) => (
-              <div key={call.id} style={{ position: 'relative' }}>
-                {!call?.attendance.length && (
-                  <span
-                    onClick={() => handleDeleteList(call.id)}
-                    className="gd-close-span"
-                  >
-                    x
-                  </span>
-                )}
-                <Button
-                  onClick={() => viewList(call, idx)}
-                  className={`attendance-add-btn ${
-                    selectedBtn === idx ? 'selected' : 'gd-gray'
-                  }`}
-                  style={{ width: '2rem', justifyContent: 'center' }}
-                  // icon="plus"
-                  text={`${call.nombre}`}
-                  type="button"
-                />
-              </div>
-            ))}
+            calls.map((call, idx) => {
+              // console.log(selectedBtn, idx ,selectedBtn === idx)
+              return (
+                <div key={call.id} style={{ position: 'relative' }}>
+                  {!call?.attendance.length && (
+                    <span
+                      onClick={() => handleDeleteList(call.id)}
+                      className="gd-close-span"
+                    >
+                      x
+                    </span>
+                  )}
+                  <Button
+                    onClick={() => viewList(call, idx + 1)}
+                    className={`attendance-add-btn ${
+                      selectedBtn === idx + 1 ? 'selected' : 'gd-gray'
+                    }`}
+                    style={{ width: '2rem', justifyContent: 'center' }}
+                    // icon="plus"
+                    text={`${call.nombre}`}
+                    type="button"
+                  />
+                </div>
+              );
+            })}
           {isToday && addBtn && (
             <Button
               onClick={() => addList(calls.length + 1)}

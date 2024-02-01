@@ -53,7 +53,7 @@ export const generateReportPDF = (
           value.data.cc?.map((item, idx) => (
             <View style={styles.headerRow} key={idx}>
               <View style={styles.leftInfo}>
-                <Text style={styles.headerBold}>CC</Text>
+                <Text style={styles.headerBold}>{idx === 0 && 'CC'}</Text>
                 <Text style={styles.headerBold}>: </Text>
               </View>
               <View>

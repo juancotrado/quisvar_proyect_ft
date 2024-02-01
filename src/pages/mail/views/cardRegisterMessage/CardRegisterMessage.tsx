@@ -70,6 +70,11 @@ const CardRegisterMessage = ({
   const initialValueEditor = InitialValueEditor();
 
   const [pdfData, setpdfData] = useState<PdfDataProps>(dataInitialPdf);
+
+  const filterJob = (value?: string, job?: string) => {
+    if (value !== 'Titulado') return value;
+    return JOB_DATA.filter(item => item.value === job)[0].abrv;
+  };
   //funcion futura para que el reporte se agrega auntomaticamente
   // const handleIsOpen = useRef<Subscription>(new Subscription());
 
@@ -157,10 +162,7 @@ const CardRegisterMessage = ({
     const description = watch('description');
     const to = receiver?.value ?? '';
     const toUser = listUser.find(user => user.id === receiver?.id);
-    const filterJob = (value?: string, job?: string) => {
-      if (value !== 'Titulado') return value;
-      return JOB_DATA.filter(item => item.value === job)[0].abrv;
-    };
+
     setpdfData({
       from: userSession.profile.firstName + ' ' + userSession.profile.lastName,
       header,

@@ -54,18 +54,6 @@ const RoleTableRow = ({ rol, onSave }: RoleTableRowProps) => {
       +menuId,
       editMenuPoints
     );
-    // if (value) {
-    //   const findMenuPointsDb = rol.menuPointsDb.find(
-    //     menu => menu.menuId === +menuId
-    //   );
-    //   if (findMenuPointsDb?.subMenuPoints) {
-    //     const menuOptionWithSubmenu = newMenuOption.map(menu =>
-    //       menu.menuId === findMenuPointsDb.menuId ? findMenuPointsDb : menu
-    //     );
-    //     setEditMenuPoints(menuOptionWithSubmenu);
-    //     return;
-    //   }
-    // }
     setEditMenuPoints(newMenuOption);
   };
   const handleEditSubMenuPoint = ({
@@ -172,7 +160,6 @@ const RoleTableRow = ({ rol, onSave }: RoleTableRowProps) => {
   return (
     <ContextMenuTrigger id={`RoleTableRow-${rol.id}`}>
       <div
-        key={rol.id}
         className="rolesAndPermissions-table-body"
         style={{
           gridTemplateColumns: `2fr repeat(${rol.menuPoints?.length}, 1fr)`,
@@ -194,45 +181,43 @@ const RoleTableRow = ({ rol, onSave }: RoleTableRowProps) => {
           </div>
         )}
         {menuPoints.map(menuPoint => (
-          <>
-            <div
-              key={menuPoint.id}
-              className="rolesAndPermissions-table-body-options"
-            >
-              {menuPoint.menu ? (
-                <>
-                  <IconAction
-                    icon="pencil-line"
-                    onClick={() => openSubMenuOptions(menuPoint)}
-                  />
-                  <span>
-                    {countSubMenuAccess(menuPoint.menu)} Acceso
-                    {countSubMenuAccess(menuPoint.menu) > 1 && 's'}
-                  </span>
-                </>
-              ) : (
-                <>
-                  {menuPoint.access.map(acc => (
-                    <RolesAndPermissionsRadio
-                      key={acc}
-                      value={acc}
-                      text={acc}
-                      menuPointId={`${rol.id}-${menuPoint.id}`}
-                      checked={acc === menuPoint.typeRol}
-                      onChange={handleEditMenuPoint}
-                    />
-                  ))}
+          <div
+            key={menuPoint.id}
+            className="rolesAndPermissions-table-body-options"
+          >
+            {menuPoint.menu ? (
+              <>
+                <IconAction
+                  icon="pencil-line"
+                  onClick={() => openSubMenuOptions(menuPoint)}
+                />
+                <span>
+                  {countSubMenuAccess(menuPoint.menu)} Acceso
+                  {countSubMenuAccess(menuPoint.menu) > 1 && 's'}
+                </span>
+              </>
+            ) : (
+              <>
+                {menuPoint.access.map(acc => (
                   <RolesAndPermissionsRadio
-                    value={''}
-                    text={'NO'}
-                    checked={!menuPoint.typeRol}
+                    key={`${rol.id}-${menuPoint.id}-${acc}`}
+                    value={acc}
+                    text={acc}
                     menuPointId={`${rol.id}-${menuPoint.id}`}
+                    checked={acc === menuPoint.typeRol}
                     onChange={handleEditMenuPoint}
                   />
-                </>
-              )}
-            </div>
-          </>
+                ))}
+                <RolesAndPermissionsRadio
+                  value={''}
+                  text={'NO'}
+                  checked={!menuPoint.typeRol}
+                  menuPointId={`${rol.id}-${menuPoint.id}`}
+                  onChange={handleEditMenuPoint}
+                />
+              </>
+            )}
+          </div>
         ))}
       </div>
       {subMenuOptions && (
@@ -254,7 +239,6 @@ const RoleTableRow = ({ rol, onSave }: RoleTableRowProps) => {
             ))}
           </div>
           <div
-            key={rol.id}
             className="rolesAndPermissions-table-body"
             style={{
               gridTemplateColumns: `2fr repeat(${subMenuOptions.menu.length}, 1fr)`,

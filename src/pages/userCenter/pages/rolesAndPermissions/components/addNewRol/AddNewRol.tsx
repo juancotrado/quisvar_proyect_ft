@@ -35,22 +35,7 @@ const AddNewRol = ({
     const newMenuOption = handleMenu(value as MenuRole, +id, saveMenuPoints);
     setsaveMenuPoints(newMenuOption);
   };
-  const addSubMenuPoint = ({ target }: ChangeEvent<HTMLInputElement>) => {
-    const { value, name } = target;
-    const [menuId, subMenuId] = name.split('-');
-    const findMenuPoint = saveMenuPoints.find(menu => menu.menuId === +menuId);
-    const newMenuOption = handleMenu(
-      value as MenuRole,
-      +subMenuId,
-      findMenuPoint?.menu ?? []
-    );
 
-    const newMenuPoints = saveMenuPoints.map(menu =>
-      menu.menuId === +menuId ? { ...menu, subMenuPoints: newMenuOption } : menu
-    );
-
-    setsaveMenuPoints(newMenuPoints);
-  };
   const createRol = () => {
     const body = {
       name: role,
@@ -84,21 +69,25 @@ const AddNewRol = ({
         </div>
         {menuPoints.map(menuPoint => (
           <div className="rolesAndPermissions-table-body-options">
-            {menuPoint.access.map(acc => (
-              <RolesAndPermissionsRadio
-                value={acc}
-                text={acc}
-                menuPointId={String(menuPoint.id)}
-                onChange={addMenuPoint}
-              />
-            ))}
-            <RolesAndPermissionsRadio
-              value={''}
-              text={'no'}
-              checked
-              menuPointId={String(menuPoint.id)}
-              onChange={addMenuPoint}
-            />
+            {!menuPoint.menu && (
+              <>
+                {menuPoint.access.map(acc => (
+                  <RolesAndPermissionsRadio
+                    value={acc}
+                    text={acc}
+                    menuPointId={String(menuPoint.id)}
+                    onChange={addMenuPoint}
+                  />
+                ))}
+                <RolesAndPermissionsRadio
+                  value={''}
+                  text={'no'}
+                  checked
+                  menuPointId={String(menuPoint.id)}
+                  onChange={addMenuPoint}
+                />
+              </>
+            )}
           </div>
         ))}
       </div>

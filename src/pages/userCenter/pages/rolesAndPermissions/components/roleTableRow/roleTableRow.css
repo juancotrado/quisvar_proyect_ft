@@ -4,4 +4,5 @@
   height: 96%;
   background-color: #00000012;
   cursor: not-allowed;
+  z-index: 1;
 }

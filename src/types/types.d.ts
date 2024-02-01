@@ -1176,9 +1176,10 @@ export interface Menu {
   menu?: Menu[];
 }
 export interface MenuPoint {
+  id?: number;
   menuId: number;
   typeRol: MenuRole;
-  menu?: MenuPoint[];
+  subMenuPoints?: MenuPoint[];
 }
 interface RelationMenuPoint {
   [key: number]: MenuPoint[];
@@ -1187,6 +1188,7 @@ interface RelationMenuPoint {
 export interface MenuRoleForm extends Menu {
   idRelation?: number;
   typeRol: MenuRole;
+  menu?: MenuRoleForm[];
 }
 export interface Roles {
   id: number;

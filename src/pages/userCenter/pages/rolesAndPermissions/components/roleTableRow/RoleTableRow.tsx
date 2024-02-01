@@ -9,10 +9,11 @@ import {
 } from '../../../../../../types';
 import './roleTableRow.css';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
-import { DotsRight } from '../../../../../../components';
+import { DotsRight, IconAction } from '../../../../../../components';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { handleMenu } from '../../utils';
 import { SnackbarUtilities } from '../../../../../../utils';
+import { SubMenuOptions } from '../../models';
 
 interface RoleTableRowProps {
   rol: Roles;
@@ -21,6 +22,9 @@ interface RoleTableRowProps {
 
 const RoleTableRow = ({ rol, onSave }: RoleTableRowProps) => {
   const [openEditData, setOpenEditData] = useState<boolean>(false);
+  const [subMenuOptions, setSubMenuOptions] = useState<SubMenuOptions | null>(
+    null
+  );
   const [role, setRole] = useState<string>(rol.name);
   const [menuPoints, setMenuPoints] = useState<MenuRoleForm[]>(rol.menuPoints);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -33,7 +37,7 @@ const RoleTableRow = ({ rol, onSave }: RoleTableRowProps) => {
 
   useEffect(() => {
     setEditMenuPoints(rol.menuPointsDb);
-    setMenuPoints(menuPoints);
+    setMenuPoints(rol.menuPoints);
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
@@ -50,7 +54,61 @@ const RoleTableRow = ({ rol, onSave }: RoleTableRowProps) => {
       +menuId,
       editMenuPoints
     );
+    // if (value) {
+    //   const findMenuPointsDb = rol.menuPointsDb.find(
+    //     menu => menu.menuId === +menuId
+    //   );
+    //   if (findMenuPointsDb?.subMenuPoints) {
+    //     const menuOptionWithSubmenu = newMenuOption.map(menu =>
+    //       menu.menuId === findMenuPointsDb.menuId ? findMenuPointsDb : menu
+    //     );
+    //     setEditMenuPoints(menuOptionWithSubmenu);
+    //     return;
+    //   }
+    // }
     setEditMenuPoints(newMenuOption);
+  };
+  const handleEditSubMenuPoint = ({
+    target,
+  }: ChangeEvent<HTMLInputElement>) => {
+    const { value, id } = target;
+    const [_roleId, menuId, subMenuId] = id.split('-');
+    const menuOption = handleMenu('MOD' as MenuRole, +menuId, editMenuPoints);
+    const findMenuPoint = menuOption.find(menu => menu.menuId === +menuId);
+    const newMenuOption = handleMenu(
+      value as MenuRole,
+      +subMenuId,
+      findMenuPoint?.subMenuPoints ?? []
+    );
+    if (newMenuOption.length === 0) {
+      const menuOption = handleMenu('' as MenuRole, +menuId, editMenuPoints);
+      setEditMenuPoints(menuOption);
+      return;
+    }
+    const findMenuPointsDb = rol.menuPointsDb.find(
+      menu => menu.menuId === +menuId
+    );
+    const newMenuPoints = menuOption.map(menu => {
+      if (menu.menuId === +menuId) {
+        if (findMenuPointsDb) {
+          menu.id = findMenuPointsDb.id;
+        }
+        return { ...menu, subMenuPoints: newMenuOption };
+      }
+      return menu;
+    });
+
+    setEditMenuPoints(newMenuPoints);
+  };
+
+  const openSubMenuOptions = (menu: MenuRoleForm | undefined) => {
+    if (!menu) return;
+    const data: SubMenuOptions = {
+      name: menu?.title,
+      menuId: menu?.id,
+      menu: menu?.menu ?? [],
+    };
+    setSubMenuOptions(data);
   };
 
   const handleDeleteRole = () => {
@@ -65,13 +123,15 @@ const RoleTableRow = ({ rol, onSave }: RoleTableRowProps) => {
       name: role,
       menuPoints: editMenuPoints,
     };
+
     if (!role)
       return SnackbarUtilities.warning('No deje el campo de rol vacio.');
     if (editMenuPoints.length === 0)
       return SnackbarUtilities.warning('Seleccion permisos para el rol.');
     axiosInstance.put(`/role/${rol.id}`, body).then(() => {
-      SnackbarUtilities.success(`Rol: "${role}" editado correctamente`);
+      SnackbarUtilities.success(`Rol: "${role}" editado correctamente.`);
       setOpenEditData(false);
+      setSubMenuOptions(null);
       onSave();
     });
   };
@@ -80,6 +140,8 @@ const RoleTableRow = ({ rol, onSave }: RoleTableRowProps) => {
     if (openEditData) {
       setRole(rol.name);
       setMenuPoints([]);
+      setSubMenuOptions(null);
+      setEditMenuPoints(rol.menuPointsDb);
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
@@ -103,6 +165,9 @@ const RoleTableRow = ({ rol, onSave }: RoleTableRowProps) => {
       function: openEditData ? handleEditMenu : handleDeleteRole,
     },
   ];
+
+  const countSubMenuAccess = (menu: MenuRoleForm[]) =>
+    menu?.filter(men => men.typeRol).length;
 
   return (
     <ContextMenuTrigger id={`RoleTableRow-${rol.id}`}>
@@ -129,31 +194,102 @@ const RoleTableRow = ({ rol, onSave }: RoleTableRowProps) => {
           </div>
         )}
         {menuPoints.map(menuPoint => (
-          <div
-            key={menuPoint.id}
-            className="rolesAndPermissions-table-body-options"
-          >
-            {menuPoint.access.map(acc => (
-              <RolesAndPermissionsRadio
-                key={acc}
-                value={acc}
-                text={acc}
-                menuPointId={`${rol.id}-${menuPoint.id}`}
-                checked={acc === menuPoint.typeRol}
-                onChange={handleEditMenuPoint}
-              />
-            ))}
-            <RolesAndPermissionsRadio
-              value={''}
-              text={'NO'}
-              checked={!menuPoint.typeRol}
-              menuPointId={`${rol.id}-${menuPoint.id}`}
-              onChange={handleEditMenuPoint}
-            />
-          </div>
+          <>
+            <div
+              key={menuPoint.id}
+              className="rolesAndPermissions-table-body-options"
+            >
+              {menuPoint.menu ? (
+                <>
+                  <IconAction
+                    icon="pencil-line"
+                    onClick={() => openSubMenuOptions(menuPoint)}
+                  />
+                  <span>
+                    {countSubMenuAccess(menuPoint.menu)} Acceso
+                    {countSubMenuAccess(menuPoint.menu) > 1 && 's'}
+                  </span>
+                </>
+              ) : (
+                <>
+                  {menuPoint.access.map(acc => (
+                    <RolesAndPermissionsRadio
+                      key={acc}
+                      value={acc}
+                      text={acc}
+                      menuPointId={`${rol.id}-${menuPoint.id}`}
+                      checked={acc === menuPoint.typeRol}
+                      onChange={handleEditMenuPoint}
+                    />
+                  ))}
+                  <RolesAndPermissionsRadio
+                    value={''}
+                    text={'NO'}
+                    checked={!menuPoint.typeRol}
+                    menuPointId={`${rol.id}-${menuPoint.id}`}
+                    onChange={handleEditMenuPoint}
+                  />
+                </>
+              )}
+            </div>
+          </>
         ))}
       </div>
-
+      {subMenuOptions && (
+        <>
+          <div
+            className="rolesAndPermissions-table-subHeader"
+            style={{
+              gridTemplateColumns: `2fr repeat(${subMenuOptions.menu.length}, 1fr)`,
+            }}
+          >
+            <div className="rolesAndPermissions-table-header-text">-</div>
+            {subMenuOptions.menu.map(menuPoint => (
+              <div
+                key={menuPoint.id}
+                className="rolesAndPermissions-table-subHeader-text rolesAndPermissions-separator"
+              >
+                {menuPoint.title}
+              </div>
+            ))}
+          </div>
+          <div
+            key={rol.id}
+            className="rolesAndPermissions-table-body"
+            style={{
+              gridTemplateColumns: `2fr repeat(${subMenuOptions.menu.length}, 1fr)`,
+            }}
+          >
+            <div className="rolesAndPermissions-table-subHeader-text">
+              {subMenuOptions.name}
+            </div>
+            {subMenuOptions.menu.map(menuPoint => (
+              <div
+                key={`${rol.id}-${subMenuOptions.menuId}-${menuPoint.id}`}
+                className="rolesAndPermissions-table-body-options"
+              >
+                {menuPoint.access.map(acc => (
+                  <RolesAndPermissionsRadio
+                    key={acc}
+                    value={acc}
+                    text={acc}
+                    menuPointId={`${rol.id}-${subMenuOptions.menuId}-${menuPoint.id}`}
+                    checked={acc === menuPoint.typeRol}
+                    onChange={handleEditSubMenuPoint}
+                  />
+                ))}
+                <RolesAndPermissionsRadio
+                  value={''}
+                  text={'NO'}
+                  checked={!menuPoint.typeRol}
+                  menuPointId={`${rol.id}-${subMenuOptions.menuId}-${menuPoint.id}`}
+                  onChange={handleEditSubMenuPoint}
+                />
+              </div>
+            ))}
+          </div>
+        </>
+      )}
       <DotsRight data={dataDots} idContext={`RoleTableRow-${rol.id}`} />
     </ContextMenuTrigger>
   );

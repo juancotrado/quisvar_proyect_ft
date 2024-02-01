@@ -65,6 +65,7 @@
   letter-spacing: 0.0275rem;
 }
 .rolesAndPermissions-table-body-options {
+  position: relative;
   display: flex;
   flex-direction: column;
   padding: 0.4rem;

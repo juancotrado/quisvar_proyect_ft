@@ -583,6 +583,8 @@ export interface Option {
 export interface Stage {
   id: number;
   name: string;
+  startDate: string;
+  untilDate: string;
 }
 interface StageSubtask extends Stage {
   group: Groups;

@@ -57,7 +57,6 @@ export const Specialities = () => {
   };
   return (
     <div className="speciality-main">
-      {/* <SidebarSpeciality /> */}
       <motion.aside className={`sidebarSpeciality `} style={style}>
         {sectors ? (
           <>

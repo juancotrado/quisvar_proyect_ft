@@ -178,12 +178,41 @@ export interface GruopProject {
   id: number;
   projects: ProjectType[];
 }
+
+export interface MenuItem {
+  id: number;
+  route: MenuAccess;
+  title: string;
+  typeRol: string;
+  menu?: MenuItem[];
+}
+
+interface RoleForm {
+  id: number;
+  name: string;
+}
+interface Role extends RoleForm {
+  menuPoints: MenuItem[];
+}
+
+export type MenuAccess =
+  | 'home'
+  | 'tramites'
+  | 'especialidades'
+  | 'asistencia'
+  | 'centro-de-usuarios'
+  | 'empresas'
+  | 'especialistas'
+  | 'indice-general'
+  | 'grupos';
+
 export type User = {
   id: number;
   email: string;
   password: string;
   profile: Profile;
-  role: UserRoleType;
+  role: Role | null;
+  roleId: number;
   status?: boolean;
   contract: string | null;
   cv: string | null;
@@ -466,7 +495,7 @@ export interface UserForm {
   userPc: string;
   province: string;
   district: string;
-  role: string;
+  roleId: number | null;
   ruc: string;
   job: string;
   cv: FileList | null;
@@ -1136,4 +1165,35 @@ export interface Group {
 
 interface Groups extends Group {
   groups: { users: User }[];
+}
+
+export type MenuRole = 'MOD' | 'MEMBER' | 'VIEWER';
+
+export interface Menu {
+  id: number;
+  title: string;
+  route: string;
+  access: MenuRole[];
+  menu?: Menu[];
+}
+export interface MenuPoint {
+  id?: number;
+  menuId: number;
+  typeRol: MenuRole;
+  subMenuPoints?: MenuPoint[];
+}
+interface RelationMenuPoint {
+  [key: number]: MenuPoint[];
+}
+
+export interface MenuRoleForm extends Menu {
+  idRelation?: number;
+  typeRol: MenuRole;
+  menu?: MenuRoleForm[];
+}
+export interface Roles {
+  id: number;
+  name: string;
+  menuPoints: MenuRoleForm[];
+  menuPointsDb: MenuPoint[];
 }

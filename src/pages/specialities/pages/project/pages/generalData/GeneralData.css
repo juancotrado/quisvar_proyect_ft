@@ -68,12 +68,12 @@
 .generalData-infor-group-header {
   display: grid;
   grid-template-columns: 0.5fr 5fr 3fr 3fr 2fr;
-  background-color: #f4f7fc;
+  background-color: var(--color-gray);
   padding: 0.75rem 0.5rem;
 }
 .generalData-infor-group-text {
   overflow: hidden;
-  color: #464f60;
+  color: var(--color-grey-text);
   text-overflow: ellipsis;
   font-size: 0.7rem;
   font-style: normal;

@@ -8,8 +8,8 @@ import { licenseList } from '../../types';
 import { formatDate } from '../../utils';
 import { Button } from '../../components';
 import { useDirectives } from '../../hooks';
-import { CardOpenFile } from '..';
 import { isOpenCardFiles$ } from '../../services/sharingSubject';
+import { CardOpenFile } from '../userCenter/pages/users/views';
 const GMT = 5 * 60 * 60 * 1000;
 
 export const Home = () => {

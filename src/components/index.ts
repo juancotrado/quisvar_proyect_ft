@@ -29,3 +29,5 @@ export * from './textArea';
 export * from './uploadFile';
 export * from './uploadFileInput';
 export * from './userDetail';
+export * from './generalTitle';
+export * from './iconAction';

@@ -1,0 +1,129 @@
+.content-list {
+  width: 100%;
+  display: flex;
+  padding: 1rem;
+  height: 100%;
+}
+
+.userList-general-files {
+  position: relative;
+}
+
+.userList-general-files-contain {
+  position: absolute;
+  margin-top: 0.5rem;
+  width: 0;
+  overflow-y: auto;
+  height: 7rem;
+  z-index: 6;
+}
+
+.isShowGeneralFiles {
+  width: 20rem;
+  padding: 1rem;
+  background-color: white;
+  box-shadow: 0px 1.5px 4px rgba(0, 0, 0, 0.6);
+}
+
+.user-list {
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.userList-options {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.btn-filter-available {
+  background-color: var(--color-pass);
+  color: #14804a;
+  border: 1px solid #14804a;
+}
+
+.filter-user-input {
+  width: 15rem;
+}
+
+.btn-filter-unavailable {
+  background-color: var(--color-disabled);
+  color: #5a6376;
+  border: 1px solid #5a6376;
+}
+
+.btn-filter {
+  box-shadow: 0px 1.5px 4px rgba(0, 0, 0, 0.2);
+  font-size: 0.7rem;
+  border-radius: 5px;
+  height: 100%;
+}
+
+.userList-btn {
+  box-shadow: 0px 1.5px 4px rgba(0, 0, 0, 0.2);
+  font-size: 0.7rem;
+  border-radius: 5px;
+  color: var(--color-primary);
+  height: 100%;
+}
+
+.user-count {
+  padding: 0.2rem;
+}
+
+.userList-options-right {
+  display: flex;
+  height: 100%;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.user-list th {
+  text-align: left;
+  padding: 0.5rem;
+}
+
+.header-container-list {
+  width: 100%;
+  border-bottom: 0.15rem solid var(--color-quaternay);
+  border-radius: 0.3rem;
+  font-size: 0.7rem;
+  color: var(--color-quaternay);
+  font-weight: 600;
+}
+.header-grid-row {
+  display: grid;
+  grid-template-columns: 3fr 1fr 2fr 1fr 0.5fr 0.5fr 0.5fr 0.5fr;
+}
+.header-list-text {
+  text-align: center;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.user-grid {
+  grid-column: 1/4;
+}
+
+.userList-upload {
+  height: 100%;
+}
+
+.user-list-equipment {
+  width: 470px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  overflow-y: auto;
+}

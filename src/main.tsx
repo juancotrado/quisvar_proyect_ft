@@ -11,7 +11,7 @@ axiosInterceptor();
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   // <React.StrictMode>
   <Provider store={store}>
-    <SnackbarProvider autoHideDuration={2000}>
+    <SnackbarProvider autoHideDuration={4000}>
       <App />
     </SnackbarProvider>
   </Provider>

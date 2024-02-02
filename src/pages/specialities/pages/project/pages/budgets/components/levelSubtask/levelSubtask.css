@@ -49,7 +49,7 @@
 
 .levelSubtask-header {
   align-items: center;
-  background-color: #f4f7fc;
+  background-color: var(--color-gray);
 }
 
 .levelSubtask-header-title {

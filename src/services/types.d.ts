@@ -44,6 +44,7 @@ export interface CardLicenseProps extends OpenModal {
 }
 export interface ViewRegisterUser extends OpenModal {
   user?: User;
+  roles: RoleForm[];
 }
 export interface CardSpecialistProps extends OpenModal {
   data?: Specialists;

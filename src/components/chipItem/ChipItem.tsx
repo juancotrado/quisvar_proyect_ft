@@ -1,13 +1,8 @@
 import { useState } from 'react';
 import { NavLink } from 'react-router-dom';
-
+import { MenuItem } from '../../types';
 interface ChipItemProps {
-  item: {
-    id: number;
-    title: string;
-    icon: string;
-    link: string;
-  };
+  item: MenuItem;
 }
 
 const ChipItem = ({ item }: ChipItemProps) => {
@@ -18,7 +13,7 @@ const ChipItem = ({ item }: ChipItemProps) => {
   return (
     <li>
       <NavLink
-        to={item.link}
+        to={item.route}
         className={({ isActive }) =>
           isActive ? 'item-nav nav-active' : 'item-nav nav-inactive'
         }
@@ -26,7 +21,7 @@ const ChipItem = ({ item }: ChipItemProps) => {
         onMouseLeave={hiddenMessage}
       >
         <span className="items-list-icon">
-          <img src={`/svg/${item.icon}.svg`} />
+          <img src={`/svg/menu/${item.route}.svg`} />
         </span>
         {message && (
           <span className="item-list-icon-message">{item.title}</span>

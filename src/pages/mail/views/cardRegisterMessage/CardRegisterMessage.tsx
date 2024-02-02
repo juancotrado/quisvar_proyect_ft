@@ -37,7 +37,7 @@ import { isOpenCardGenerateReport$ } from '../../../../services/sharingSubject';
 import { ChipFileMessage } from '../../components';
 import { PDFGenerator } from '../../pdfGenerate';
 import { ROLE_PERM } from '../../models';
-import { JOB_DATA } from '../../../UserList/models';
+import { JOB_DATA } from '../../../userCenter/pages/users/models';
 
 const YEAR = new Date().getFullYear();
 

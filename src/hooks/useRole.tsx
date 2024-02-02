@@ -1,19 +1,17 @@
-import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store';
+import { MenuAccess, MenuRole } from '../types';
+import { useLocation } from 'react-router-dom';
 
-const useRole = () => {
-  const [role, setRole] = useState<string | null>(null);
-  const [id, setId] = useState<number>(0);
-  const [name, setName] = useState<string>('');
+const useRole = (typeRol: MenuRole) => {
+  const location = useLocation();
+  const currentUrl = location.pathname.split('/')[1] as MenuAccess;
 
-  useEffect(() => {
-    const userInfo = localStorage.getItem('personalData');
-    if (typeof userInfo !== 'string') return;
-    const _user = JSON.parse(userInfo);
-    setRole(_user.role);
-    setId(_user.id);
-    setName(_user.name);
-  }, []);
-  return { role, id, name };
+  const { role } = useSelector((state: RootState) => state.userSession);
+  const hasAccess = role?.menuPoints.some(
+    menuPoint => menuPoint.route === currentUrl && menuPoint.typeRol === typeRol
+  );
+  return { hasAccess };
 };
 
 export default useRole;

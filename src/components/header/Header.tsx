@@ -1,4 +1,3 @@
-import { motion } from 'framer-motion';
 import './header.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useContext, useEffect, useRef, useState, MouseEvent } from 'react';
@@ -8,13 +7,8 @@ import { SocketContext } from '../../context';
 import { CardEditInformation, ChipItem, Menu } from '..';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
-import { attendance_perms, rolsFirstLevel } from '../../utils';
-import {
-  itemsAdmin,
-  itemsAsistantAdministrative,
-  itemsEmployee,
-  getIconDefault,
-} from '../../utils';
+import { motion } from 'framer-motion';
+import { getIconDefault } from '../../utils';
 
 const Header = () => {
   const { stageId, taskId } = useParams();
@@ -23,7 +17,9 @@ const Header = () => {
   const socket = useContext(SocketContext);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenMoreInfo, setIsOpenMoreInfo] = useState(false);
-  const { userSession } = useSelector((state: RootState) => state);
+  const { role, profile } = useSelector(
+    (state: RootState) => state.userSession
+  );
   const handleToggleRef = useRef<Subscription>(new Subscription());
 
   useEffect(() => {
@@ -66,25 +62,19 @@ const Header = () => {
     setHeaderShow(!headerShow);
   };
 
-  const selectPdfForUserRol = () => {
-    if (userSession.role === 'EMPLOYEE')
-      return window.open('/public/tutorials/MANUAL_DE_USUARIO.pdf', '_blank');
-    return window.open(
-      '/public/tutorials/MANUAL_DE_ADMINISTRADOR.pdf',
-      '_blank'
-    );
-  };
-  const selectVideoForUserRol = () => {
-    if (userSession.role === 'EMPLOYEE')
-      return window.open('/public/tutorials/USER_GUIDE.mkv', '_blank');
-    return window.open('/public/tutorials/ADMIN_GUIDE.mkv', '_blank');
-  };
-
-  const itemType = rolsFirstLevel.includes(userSession.role)
-    ? itemsAdmin
-    : attendance_perms.includes(userSession.role)
-    ? itemsAsistantAdministrative
-    : itemsEmployee;
+  // const selectPdfForUserRol = () => {
+  //   if (userSession.role === 'EMPLOYEE')
+  //     return window.open('/public/tutorials/MANUAL_DE_USUARIO.pdf', '_blank');
+  //   return window.open(
+  //     '/public/tutorials/MANUAL_DE_ADMINISTRADOR.pdf',
+  //     '_blank'
+  //   );
+  // };
+  // const selectVideoForUserRol = () => {
+  //   if (userSession.role === 'EMPLOYEE')
+  //     return window.open('/public/tutorials/USER_GUIDE.mkv', '_blank');
+  //   return window.open('/public/tutorials/ADMIN_GUIDE.mkv', '_blank');
+  // };
 
   const openModal = () => setOpenModalInfo(true);
   const closeModal = () => setOpenModalInfo(false);
@@ -96,6 +86,7 @@ const Header = () => {
     window.addEventListener('click', handleClick);
     return () => window.removeEventListener('click', handleClick);
   }, []);
+
   const icons = [
     {
       id: 1,
@@ -111,7 +102,7 @@ const Header = () => {
     },
     {
       id: 3,
-      name: getIconDefault(userSession.profile.dni),
+      name: getIconDefault(profile.dni),
       link: '/dashboard',
       action: toggleMenu,
     },
@@ -121,13 +112,13 @@ const Header = () => {
       id: 1,
       name: 'Ver Video tutorial',
       icon: '/svg/file-video-solid.svg',
-      action: selectVideoForUserRol,
+      // action: selectVideoForUserRol,
     },
     {
       id: 3,
       name: 'Ver PDF',
       icon: '/svg/file-pdf-solid.svg',
-      action: selectPdfForUserRol,
+      // action: selectPdfForUserRol,
     },
   ];
   const menu = [
@@ -164,7 +155,7 @@ const Header = () => {
               />
             </figure>
             <ul className="items-list">
-              {itemType.map(item => (
+              {role?.menuPoints?.map(item => (
                 <ChipItem key={item.id} item={item} />
               ))}
             </ul>
@@ -172,7 +163,7 @@ const Header = () => {
           <ul className="icons-list">
             {icons.map(icon => (
               <li key={icon.id} className="icon-list">
-                {(userSession.role !== 'EMPLOYEE' || icon.id !== 1) && (
+                {icon.id !== 1 && (
                   <figure
                     className={`${
                       icon.id === 3 ? 'user-profile-figure' : 'icon-list-item'

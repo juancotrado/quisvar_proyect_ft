@@ -1,15 +1,24 @@
-import { NavLink, Outlet, useSearchParams } from 'react-router-dom';
+import {
+  NavLink,
+  Outlet,
+  useLocation,
+  useSearchParams,
+} from 'react-router-dom';
 import './generalIndex.css';
 import { axiosInstance } from '../../services/axiosInstance';
 import { useEffect, useState } from 'react';
 import { CoorpEntity } from '../../types';
 import { INDEX_OPTIONS, DEFAULT_COMPANY } from './models';
 import { DropDownSimple } from '../../components';
+import { useSubMenus } from '../../hooks';
 
 export const GeneralIndex = () => {
   const [coorpEntity, setCoorpEntity] = useState<CoorpEntity[] | null>(null);
   const [urlImgCompany, setUrlImgCompany] = useState('');
   const [params, setParams] = useSearchParams();
+  const { subMenu } = useSubMenus();
+  // Accedemos a la propiedad pathname del objeto de ubicación para obtener la URL actual
+
   useEffect(() => {
     getCompanyData();
   }, []);
@@ -77,17 +86,15 @@ export const GeneralIndex = () => {
           />
         </div>
         <div className="generalIndex-header-indexData">
-          {INDEX_OPTIONS.map(index => (
+          {subMenu.map(index => (
             <NavLink key={index.id} to={{ pathname: index.route }}>
               {({ isActive }) => (
                 <span
-                  className={
-                    isActive
-                      ? ' generalIndex-header-indexData-span generalIndex--active '
-                      : 'generalIndex-header-indexData-span'
-                  }
+                  className={`header-link-span ${
+                    isActive && 'header-link--active'
+                  }`}
                 >
-                  {index.id} {index.name}
+                  {index.title}
                 </span>
               )}
             </NavLink>

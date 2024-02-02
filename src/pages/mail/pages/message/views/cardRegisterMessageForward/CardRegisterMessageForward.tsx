@@ -36,7 +36,7 @@ import { motion } from 'framer-motion';
 import { dropIn } from '../../../../../../animations';
 import { ChipFileMessage } from '../../../../components';
 import { PDFGenerator } from '../../../../pdfGenerate';
-import { JOB_DATA } from '../../../../../UserList/models';
+import { JOB_DATA } from '../../../../../userCenter/pages/users/models';
 
 interface MessageSendType {
   title: string;

@@ -4,15 +4,9 @@ import { useState } from 'react';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../../../store';
-import {
-  getIconDefault,
-  getRole,
-  getListByRole,
-  verifyByRole,
-  SnackbarUtilities,
-} from '../../../../../../utils';
+import { getIconDefault, SnackbarUtilities } from '../../../../../../utils';
 import { getListUsers } from '../../../../../../store/slices/listUsers.slice';
-import { Button, Select } from '../../../../../../components';
+import { Button } from '../../../../../../components';
 import { isOpenCardRegisterUser$ } from '../../../../../../services/sharingSubject';
 
 interface UserInfoProps {
@@ -30,14 +24,14 @@ const UserInfo = ({
   roles,
 }: UserInfoProps) => {
   const [isOn, setIsOn] = useState(user.status);
-  const [openRole, setOpenRole] = useState(false);
+  // const [openRole, setOpenRole] = useState(false);
   const { userSession } = useSelector((state: RootState) => state);
   const { profile } = user;
   const dispatch: AppDispatch = useDispatch();
 
-  const getUsers = () => {
-    dispatch(getListUsers());
-  };
+  // const getUsers = () => {
+  //   dispatch(getListUsers());
+  // };
 
   const sendInfo = () => {
     const { firstName, lastName } = user.profile;
@@ -53,15 +47,16 @@ const UserInfo = ({
     });
   };
 
-  const handleChangeRole = async ({
-    target,
-  }: React.ChangeEvent<HTMLSelectElement>) => {
-    const role = target.value;
-    const _dataRole = { role, id: user.id };
-    setOpenRole(false);
-    await axiosInstance.patch(`users/${user.id}`, _dataRole).then(getUsers);
-  };
-  const roleLimit = verifyByRole(user.role, userSession.role);
+  // const handleChangeRole = async ({
+  //   target,
+  // }: React.ChangeEvent<HTMLSelectElement>) => {
+  //   const idRole = +target.value;
+  //   const _dataRole = { role, id: user.id };
+  //   setOpenRole(false);
+  //   await axiosInstance.patch(`users/${user.id}`, _dataRole).then(getUsers);
+  // };
+  // const roleLimit = verifyByRole(user.role, userSession.role);
+
   const editUser = () => {
     isOpenCardRegisterUser$.setSubject = { isOpen: true, user, roles };
   };
@@ -82,29 +77,29 @@ const UserInfo = ({
         </div>
       </div>
       <div className="col-span role-container">
-        {openRole ? (
+        {/* {roles && openRole ? (
           <Select
-            defaultValue={user.role}
+            defaultValue={user.role?.id}
             className="role-options"
             onChange={handleChangeRole}
             name="role"
             itemKey="id"
-            textField="value"
-            data={getListByRole(userSession.role)}
+            textField="name"
+            data={roles}
           />
-        ) : (
-          <span className="role-title">{getRole(user.role)}</span>
-        )}
-        {roleLimit && (
-          <Button
-            icon={openRole ? 'close' : 'pencil'}
-            className="role-btn"
-            type="button"
-            onClick={() => {
-              setOpenRole(!openRole);
-            }}
-          />
-        )}
+        ) : ( */}
+        <span className="role-title">{user.role?.name}</span>
+        {/* )} */}
+        {/* {roleLimit && ( */}
+        {/* <Button
+          icon={openRole ? 'close' : 'pencil'}
+          className="role-btn"
+          type="button"
+          onClick={() => {
+            setOpenRole(!openRole);
+          }}
+        /> */}
+        {/* )} */}
       </div>
       <div className="col-span job-container">{profile.job}</div>
       <div className="col-span phone-container">{profile.phone}</div>
@@ -123,10 +118,10 @@ const UserInfo = ({
         <Button className="role-btn" icon="folder-icon" onClick={onViewDocs} />
       </div>
       <div className="col-span actions-container">
-        {roleLimit && (
-          <>
-            <Button icon="pencil" className="role-btn-big" onClick={editUser} />
-            {/* <ButtonDelete
+        {/* {roleLimit && ( */}
+        <>
+          <Button icon="pencil" className="role-btn-big" onClick={editUser} />
+          {/* <ButtonDelete
               icon="trash"
               disabled={user.id === userSession.id}
               url={`/users/${user.id}`}
@@ -134,8 +129,8 @@ const UserInfo = ({
               onSave={getUsers}
               passwordRequired
             /> */}
-          </>
-        )}
+        </>
+        {/* )} */}
       </div>
       <div className="col-span">
         <Button

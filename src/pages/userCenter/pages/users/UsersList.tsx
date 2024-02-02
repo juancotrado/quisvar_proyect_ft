@@ -169,16 +169,17 @@ const UsersList = () => {
           <div className="header-list-text">REPORTES</div>
         </div>
         <div style={{ width: '100%', overflowY: 'auto' }}>
-          {filterList.map((user, index) => (
-            <UserInfo
-              key={user.id}
-              user={user}
-              roles={roles}
-              index={index}
-              onPrint={() => printReport(user.id)}
-              onViewDocs={() => handleViewDocs(user)}
-            />
-          ))}
+          {roles &&
+            filterList.map((user, index) => (
+              <UserInfo
+                key={user.id}
+                user={user}
+                roles={roles}
+                index={index}
+                onPrint={() => printReport(user.id)}
+                onViewDocs={() => handleViewDocs(user)}
+              />
+            ))}
         </div>
       </div>
       <div className="user-list-equipment">

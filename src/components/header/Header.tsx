@@ -8,7 +8,6 @@ import { CardEditInformation, ChipItem, Menu } from '..';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import { motion } from 'framer-motion';
-// import { attendance_perms, rolsFirstLevel } from '../../utils';
 import { getIconDefault } from '../../utils';
 
 const Header = () => {

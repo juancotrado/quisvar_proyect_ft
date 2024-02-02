@@ -184,6 +184,7 @@ export interface MenuItem {
   route: MenuAccess;
   title: string;
   typeRol: string;
+  menu?: MenuItem[];
 }
 
 interface RoleForm {

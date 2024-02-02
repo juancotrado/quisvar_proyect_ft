@@ -1,11 +1,6 @@
 import { ChangeEvent, FocusEvent, useState } from 'react';
 import { RolesAndPermissionsRadio } from '..';
-import {
-  Menu,
-  MenuPoint,
-  MenuRole,
-  MenuRoleForm,
-} from '../../../../../../types';
+import { Menu, MenuPoint, MenuRole } from '../../../../../../types';
 import './addNewRol.css';
 import { handleMenu } from '../../utils';
 import { SnackbarUtilities } from '../../../../../../utils';

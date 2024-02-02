@@ -1,17 +1,18 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
-import { MenuAccess, MenuRole } from '../types';
+import { MenuAccess } from '../types';
 import { useLocation } from 'react-router-dom';
 
-const useRole = (typeRol: MenuRole) => {
+const useSubMenus = () => {
   const location = useLocation();
   const currentUrl = location.pathname.split('/')[1] as MenuAccess;
 
   const { role } = useSelector((state: RootState) => state.userSession);
-  const hasAccess = role?.menuPoints.some(
-    menuPoint => menuPoint.route === currentUrl && menuPoint.typeRol === typeRol
+
+  const findMenuPoint = role?.menuPoints.find(
+    menuPoint => menuPoint.route === currentUrl
   );
-  return { hasAccess };
+  return { subMenu: findMenuPoint?.menu ?? [] };
 };
 
-export default useRole;
+export default useSubMenus;

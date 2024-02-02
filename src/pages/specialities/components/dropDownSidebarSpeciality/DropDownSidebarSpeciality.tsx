@@ -1,5 +1,3 @@
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../store';
 import {
   DataSidebarSpeciality,
   ProjectType,
@@ -21,7 +19,6 @@ const DropDownSidebarSpeciality = ({
   data,
   onSave,
 }: DropDownSidebarSpecialityProps) => {
-  const { role } = useSelector((state: RootState) => state.userSession);
   const [indexSelected, setIndexSelected] = useState('');
   const navigate = useNavigate();
 
@@ -43,7 +40,7 @@ const DropDownSidebarSpeciality = ({
     : 'noId';
   if (!levelData) return <></>;
 
-  const { hasAccess: authUsers } = useRole('especialistas', 'MOD');
+  const { hasAccess: authUsers } = useRole('MOD');
 
   const handleTaks = (name: string, especialties?: number) => {
     if (especialties === undefined) return;

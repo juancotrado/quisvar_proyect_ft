@@ -3,9 +3,6 @@ import { isOpenCardRegisteContract$ } from '../../../../services/sharingSubject'
 import './contracts.css';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { Contract } from '../../../../types';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../store';
-import { rolSecondLevel } from '../../../../utils';
 import { Outlet, useSearchParams } from 'react-router-dom';
 import { SidebarContractCard } from './components';
 import { CardRegisterContract } from './views';
@@ -13,7 +10,6 @@ import { CardRegisterContract } from './views';
 export const Contracts = () => {
   const [contracts, setContracts] = useState<Contract[] | null>(null);
   const [params] = useSearchParams();
-  const { role } = useSelector((state: RootState) => state.userSession);
 
   const addContract = () => {
     isOpenCardRegisteContract$.setSubject = { isOpen: true };
@@ -33,8 +29,6 @@ export const Contracts = () => {
       });
   };
 
-  const authUsers = rolSecondLevel.includes(role);
-
   return (
     <div className="contracts">
       <div className="contracts-sidebar">
@@ -45,7 +39,6 @@ export const Contracts = () => {
               key={agreement.id}
               contract={agreement}
               onSave={getContracts}
-              authUsers={authUsers}
             />
           ))}
         </div>

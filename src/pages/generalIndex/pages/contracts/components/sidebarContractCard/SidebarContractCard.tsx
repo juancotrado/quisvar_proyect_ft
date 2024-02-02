@@ -8,16 +8,15 @@ import { NavLink, useLocation } from 'react-router-dom';
 import { DotsRight } from '../../../../../../components';
 import { PhaseData } from '../../pages/detailsContracts/models';
 import { useCallback } from 'react';
+import { useRole } from '../../../../../../hooks';
 
 interface SidebarContractCardProps {
   contract: Contract;
   onSave: () => void;
-  authUsers: boolean;
 }
 export const SidebarContractCard = ({
   contract,
   onSave,
-  authUsers,
 }: SidebarContractCardProps) => {
   const handleEditContract = () =>
     (isOpenCardRegisteContract$.setSubject = { isOpen: true, contract });
@@ -42,6 +41,8 @@ export const SidebarContractCard = ({
       function: handleDeleteContract,
     },
   ];
+
+  const { hasAccess: authUsers } = useRole('MOD');
 
   const getColorStatus = useCallback(() => {
     const { createdAt, phases } = contract;

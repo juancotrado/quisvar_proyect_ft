@@ -11,7 +11,6 @@ import {
   Contracts,
   ContractsLevels,
   CustomizableInvoice,
-  Dashboard,
   DetailsContracts,
   GeneralIndex,
   Group,

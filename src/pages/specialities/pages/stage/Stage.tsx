@@ -4,18 +4,19 @@ import { axiosInstance } from '../../../../services/axiosInstance';
 import './stage.css';
 import { ProjectType } from '../../../../types';
 import { Button, LoaderForComponent } from '../../../../components';
-import { rolSecondLevel } from '../../../../utils';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../../../store';
 import { setModAuthProject } from '../../../../store/slices/modAuthProject.slice';
 import { StageAddButton, StageItem } from './components';
+import { useRole } from '../../../../hooks';
 
 export const Stage = () => {
   const { projectId } = useParams();
   const dispatch: AppDispatch = useDispatch();
   const { modAuthProject } = useSelector((state: RootState) => state);
+  const { hasAccess } = useRole('MOD');
 
-  const { role, id } = useSelector((state: RootState) => state.userSession);
+  const { id } = useSelector((state: RootState) => state.userSession);
 
   const handleBtnActive = () => {
     setBtnActive(!btnActive);
@@ -30,8 +31,7 @@ export const Stage = () => {
 
   const getStages = async () => {
     axiosInstance.get(`/projects/${projectId}`).then(res => {
-      const isModsAuthProject =
-        rolSecondLevel.includes(role) || res.data?.moderator?.id === id;
+      const isModsAuthProject = hasAccess || res.data?.moderator?.id === id;
       dispatch(setModAuthProject(isModsAuthProject));
       setProject(res.data);
     });

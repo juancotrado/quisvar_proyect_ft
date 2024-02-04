@@ -5,8 +5,9 @@ import './groupDaily.css';
 import { _date } from '../../../../utils';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { useParams } from 'react-router-dom';
-import { Duty, GroupAttendanceRes, GroupRes } from '../../types';
+import { Duty, GroupAttendanceRes, GroupRes, PdfInfoProps } from '../../types';
 import { SocketContext } from '../../../../context';
+import { DutyPdf } from '../groupContent/views';
 const now = new Date();
 interface toSend {
   id: number;
@@ -18,8 +19,10 @@ export const GroupDaily = () => {
   const [addBtn, setAddBtn] = useState<boolean>(true);
   const [selectedBtn, setSelectedBtn] = useState<number | null>(null);
   const [option, setOption] = useState<boolean>(true);
+  const [pdfInfo, setPdfInfo] = useState<PdfInfoProps>();
   const [hasItems, setHasItems] = useState<boolean>(false);
   const [isToday, setIsToday] = useState<boolean>(true);
+  const [showSecond, setShowSecond] = useState<boolean>(false);
   const [calls, setCalls] = useState<GroupRes[]>([]);
   const [idList, setIdList] = useState<number>();
   const [title, setTitle] = useState<string | undefined>('');
@@ -67,6 +70,7 @@ export const GroupDaily = () => {
       .then(res => {
         setCalls(res.data);
         setAddBtn(res.data[res.data.length - 1]?.attendance.length !== 0);
+        viewList(res.data[res.data.length - 1], res.data.length);
       });
   };
   const getDate = (e: ChangeEvent<HTMLInputElement>) => {
@@ -75,6 +79,7 @@ export const GroupDaily = () => {
     setGroupUsers([]);
     setCalls([]);
     setHasDuty([]);
+    setOption(true);
     axiosInstance
       .get<GroupRes[]>(`/attendanceGroup/list/${groupId}?date=${value}`)
       .then(res => {
@@ -88,6 +93,7 @@ export const GroupDaily = () => {
     setGroupUsers([]);
     setCalls([]);
     setHasDuty([]);
+    setOption(true);
     const today = new Date();
     const values = {
       nombre: order.toString(),
@@ -100,7 +106,6 @@ export const GroupDaily = () => {
       )
       .then(res => {
         // getTodayCalls();
-        console.log(res.data);
         setSelectedBtn(res.data.length);
         // setAddBtn(res.data[res.data.length - 1]?.attendance.length !== 0);
         // socket.emit('client:action-button');
@@ -126,12 +131,24 @@ export const GroupDaily = () => {
     setSendItems(updatedSendItems);
   };
   const viewList = (item: GroupRes, idx: number) => {
+    setPdfInfo({
+      title: item.title,
+      group: `Grupo : ${item.groups.name}`,
+      mod: `${
+        item.groups.moderator.profile.firstName +
+        ' ' +
+        item.groups.moderator.profile.lastName
+      }`,
+      createdAt: item.createdAt,
+    });
     setIdList(item.id);
     setTitle(item?.title ?? '');
     setGroupUsers([]);
     setHasDuty([]);
+    setShowSecond(false);
     if (item.attendance.length > 0) {
       setGroupUsers(item.attendance);
+      setShowSecond(true);
       setHasItems(true);
       setHasDuty(item.duty);
     } else {
@@ -172,6 +189,7 @@ export const GroupDaily = () => {
         setTitle(value);
       });
   };
+
   return (
     <div className="gd-content">
       <div className="gd-header">
@@ -186,7 +204,6 @@ export const GroupDaily = () => {
           />
           {calls &&
             calls.map((call, idx) => {
-              // console.log(selectedBtn, idx ,selectedBtn === idx)
               return (
                 <div key={call.id} style={{ position: 'relative' }}>
                   {!call?.attendance.length && (
@@ -227,12 +244,14 @@ export const GroupDaily = () => {
               text="Asistencias"
               className="gd-options-btn"
               onClick={() => setOption(true)}
+              type="button"
             />
-            {groupUsers.length > 0 && (
+            {showSecond && (
               <Button
                 text="Compromisos"
                 className="gd-options-btn"
                 onClick={() => setOption(false)}
+                type="button"
               />
             )}
           </div>
@@ -251,7 +270,7 @@ export const GroupDaily = () => {
                 />
               )}
               <h4 className="gd-header-title">Acta de reunión:</h4>
-              <Button icon="download" />
+              <DutyPdf info={pdfInfo} attendance={groupUsers} duty={hasDuty} />
             </div>
           )}
         </div>

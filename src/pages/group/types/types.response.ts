@@ -3,6 +3,16 @@ export type GroupRes = {
   nombre: string;
   groupId: number;
   title?: string;
+  createdAt: string;
+  groups: {
+    name: string;
+    moderator: {
+      profile: {
+        firstName: string;
+        lastName: string;
+      };
+    };
+  };
   attendance: GroupAttendanceRes[];
   duty: Duty[];
 };

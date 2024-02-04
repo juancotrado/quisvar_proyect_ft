@@ -16,7 +16,6 @@ interface DutyPdfProps {
 }
 
 const DutyPdf: React.FC<DutyPdfProps> = ({ info, attendance, duty }) => {
-  console.log(info, attendance, duty);
   const renderInfo = () => {
     return (
       <View style={styles.table}>

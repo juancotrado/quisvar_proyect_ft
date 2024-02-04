@@ -73,10 +73,6 @@ const CardRegisterMessage = ({
 
   const filterJob = (value?: string, job?: string) => {
     if (value !== 'Titulado') return value;
-    console.log(
-      JOB_DATA.filter(item => item.value === job),
-      job
-    );
     return JOB_DATA.filter(item => item.value === job)[0].abrv;
   };
   //funcion futura para que el reporte se agrega auntomaticamente

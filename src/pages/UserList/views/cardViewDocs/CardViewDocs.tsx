@@ -9,6 +9,7 @@ import { getListUsers } from '../../../../store/slices/listUsers.slice';
 import { AppDispatch } from '../../../../store';
 import { Modal } from '../../../../components';
 import { UploadUserFile } from '../../components';
+import CardGenerateContract from '../cardGenerateContract/CardGenerateContract';
 
 interface UserDocument {
   [key: string]: {
@@ -25,7 +26,7 @@ const CardViewDocs = () => {
   const updateUser = () => {
     axiosInstance.get(`/users/${user?.id}`).then(res => {
       setUser(res.data);
-      dispatch(getListUsers());
+      dispatch(getListUsers);
     });
   };
 
@@ -64,6 +65,9 @@ const CardViewDocs = () => {
           <img src="/svg/close.svg" alt="pencil" />
         </span>
         <h1>Documentos</h1>
+        <h6>
+          {user?.profile.firstName} {user?.profile.lastName}
+        </h6>
         <div className="vd-docs-area">
           {Object.entries(dataDocuments).map(
             ([key, { fileName, typeFile }]) => (
@@ -80,6 +84,7 @@ const CardViewDocs = () => {
           )}
         </div>
       </div>
+      {user && <CardGenerateContract user={user} />}
     </Modal>
   );
 };

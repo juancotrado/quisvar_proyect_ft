@@ -27,7 +27,7 @@ const useRole = (
     );
   }
 
-  return { hasAccess };
+  return { hasAccess: !!hasAccess };
 };
 
 export default useRole;

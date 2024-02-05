@@ -17,7 +17,8 @@ const SwornDeclarationPdf = ({ data }: SwornDeclarationPdfProps) => {
           }}
         >
           <Text style={styles.title}>
-            DECLARACIÓN JURADA DE CUMPLIMIENTO DE DIRECTIVAS DE GRUPO COMPANY
+            DECLARACIÓN JURADA DE CUMPLIMIENTO DE DIRECTIVAS DE LA CORPORACIÓN
+            DHYRIUM
           </Text>
         </View>
         <Text style={styles.text}>
@@ -134,7 +135,7 @@ const SwornDeclarationPdf = ({ data }: SwornDeclarationPdfProps) => {
                   ■ Me comprometo a solicitar mi primer pago que consiste, una
                   vez culminado cada periodo debo presentar mi informe de
                   valorización {'(tareas)'} , en el cual debo solicitar el
-                  adelanto del 30% al 40% de mi valoración.
+                  adelanto del 30% al 60% de mi valoración.
                 </Text>
                 <Text style={styles.text}>
                   ■ Me comprometo a solicitar mi segundo pago, una vez aprobado

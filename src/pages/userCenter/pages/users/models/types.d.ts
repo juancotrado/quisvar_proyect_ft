@@ -3,3 +3,7 @@ export interface SwornDeclaration {
   typeDeclaration?: 'technical' | 'administrative';
   declarationDate: string;
 }
+export interface ContractUser {
+  professionalLevel: 1 | 2 | 3;
+  date: Date;
+}

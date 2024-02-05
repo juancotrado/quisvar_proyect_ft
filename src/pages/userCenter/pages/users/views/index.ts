@@ -4,3 +4,4 @@ export * from './carRegisterSwornDeclaration';
 export * from './cardOpenFile';
 export * from './cardRegisterUser';
 export * from './cardViewDocs';
+export * from './cardGenerateContract';

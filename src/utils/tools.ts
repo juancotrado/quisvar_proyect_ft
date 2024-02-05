@@ -250,3 +250,35 @@ export const formatMoney = (amount: number) => {
     return tranformMoney(6, 'M');
   return amount.toFixed(2);
 };
+
+export const formatAmountMoney = (amount: number) => {
+  const amountString = String(amount);
+  const amountSplit = amountString.split('.');
+  const AmountTransform = amountSplit[0].split('').reverse();
+  const decimalAMount = amountSplit[1]
+    ? '.' +
+      Number('0.' + amountSplit[1])
+        .toFixed(2)
+        .split('.')[1]
+    : '.00';
+
+  let thousanAmount = '';
+  for (const i in AmountTransform) {
+    if (+i % 3 === 0 && +i !== 0) {
+      thousanAmount += ',';
+    }
+    thousanAmount += AmountTransform[i];
+  }
+  const thousanAmountJoin = thousanAmount.split('').reverse().join('');
+  return thousanAmountJoin + decimalAMount;
+};
+
+export const downloadBlob = (blobFile: Blob, name: string) => {
+  const editedUrl = URL.createObjectURL(blobFile);
+  const link = document.createElement('a');
+  link.href = editedUrl;
+  link.download = name;
+  link.click();
+  URL.revokeObjectURL(editedUrl);
+  link.remove();
+};

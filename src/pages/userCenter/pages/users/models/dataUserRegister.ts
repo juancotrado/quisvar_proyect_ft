@@ -39,13 +39,52 @@ export const JOB_DATA = [
   { value: 'Turismo', abrv: 'LIC' },
   { value: 'Trabajo Social', abrv: 'LIC' },
 ];
+const professionalCost = {
+  1: 2500,
+  2: 3250,
+  3: 4000,
+};
 
 export const DEGREE_DATA = [
-  { id: 1, value: 'Egresado' },
-  { id: 2, value: 'Bachiller' },
-  { id: 3, value: 'Titulado' },
-  { id: 4, value: 'Magister' },
-  { id: 5, value: 'Doctorado' },
+  {
+    id: 0,
+    value: 'Practicante',
+    title: 'Practicante',
+    cost: {
+      1: 900,
+      2: 1350,
+      3: 2100,
+    },
+  },
+  {
+    id: 1,
+    value: 'Egresado',
+    title: 'Asistente',
+    cost: {
+      1: 1200,
+      2: 1950,
+      3: 2700,
+    },
+  },
+  {
+    id: 2,
+    value: 'Bachiller',
+    title: 'Asistente',
+    cost: {
+      1: 1800,
+      2: 2550,
+      3: 3300,
+    },
+  },
+  { id: 3, value: 'Titulado', title: 'Profesional', cost: professionalCost },
+  { id: 4, value: 'Magister', title: 'Profesional', cost: professionalCost },
+  { id: 5, value: 'Doctorado', title: 'Profesional', cost: professionalCost },
+];
+
+export const PROFESSIONAL_SERVICE_LEVEL_DATA = [
+  { id: 1, value: 'Nivel 1' },
+  { id: 2, value: 'Nivel 2' },
+  { id: 3, value: 'Nivel 3' },
 ];
 
 export const INITIAL_VALUES_USER: UserForm = {

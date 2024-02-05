@@ -35,6 +35,7 @@ export const INITIAL_STATE: User = {
   declaration: null,
   withdrawalDeclaration: null,
   role: null,
+  roleId: 0,
 };
 
 const userSessionSlice = createSlice({

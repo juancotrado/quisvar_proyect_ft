@@ -48,10 +48,6 @@ export const Home = () => {
   }, [userSession.id]);
 
   useEffect(() => {
-    getGeneralFiles();
-  }, []);
-
-  useEffect(() => {
     if (licenseData && !licenseData.fine) {
       const now = new Date();
       const early = 2 * 60 * 60 * 1000;
@@ -68,6 +64,7 @@ export const Home = () => {
   useEffect(() => {
     if (userSession.id !== 0) {
       viewLicense();
+      getGeneralFiles();
     }
   }, [userSession.id, viewLicense]);
   const getDate = (value: string) => {

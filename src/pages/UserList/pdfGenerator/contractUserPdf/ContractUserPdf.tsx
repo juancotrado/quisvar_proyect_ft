@@ -45,16 +45,16 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             <Text style={styles.title}>{documentTitle}</Text>
           </View>
           <Text style={styles.text}>
-            El presente documento, consisten en la contratación del servicio
+            El presente documento, consiste en la contratación del servicio
             profesional como
             <Text style={styles.textRedBold}>
               {' '}
               {professionalService.toUpperCase()}{' '}
             </Text>
-            para la elaboración de 04 proyectos que celebran de una parte
-            <Text style={styles.textBold}> CORPORACION DHYRIUM S.A.A. </Text>
+            para la elaboración de 04 proyectos que celebran de una parte la
+            <Text style={styles.textBold}> CORPORACIÓN DHYRIUM S.A.A. </Text>
             con domicilio en el Jr. Cajamarca N° 154 de la ciudad Puno del
-            Distrito de Puno-Provincia de Puno-Departamento de Puno,
+            Distrito de Puno - Provincia de Puno - Departamento de Puno,
             representado por el gerente general Ing. Juan Gonzalo Quispe
             Condori, con DNI Nº 45574308, a quien en adelante se le denominará
             como <Text style={styles.textBold}> EL CONTRATANTE</Text> y por otra
@@ -62,9 +62,9 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             <Text style={styles.textRed}>
               {' '}
               {profile.degree} en {profile.job} {profile.firstName}{' '}
-              {profile.lastName},
+              {profile.lastName}
             </Text>
-            con <Text style={styles.textRed}> DNI Nº {profile.dni} </Text>, en
+            , con <Text style={styles.textRed}> DNI Nº {profile.dni}</Text>, en
             su calidad de persona natural con{' '}
             <Text style={styles.textRed}>RUC N° {data?.ruc}</Text>, a quien en
             adelante se le denominará{' '}
@@ -136,7 +136,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
                 </Text>{' '}
                 y la etapa de{' '}
                 <Text style={styles.textBold}>costos y presupuestos</Text> en
-                las diferentes plataformas en las que se evalúa el proyecto
+                las diferentes plataformas en las que se evalúa el proyecto.
               </Text>
             </View>
             <View style={{ flexDirection: 'row', gap: 10 }}>
@@ -148,7 +148,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
                 observaciones conforme la prioridad del equipo de trabajo con la
                 finalidad de obtener el{' '}
                 <Text style={styles.textBold}>APTO Y/O LA APROBACIÓN</Text> de
-                cada proyecto
+                cada proyecto.
               </Text>
             </View>
             <View style={{ flexDirection: 'row', gap: 10 }}>
@@ -185,7 +185,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
                 un <Text style={styles.textBold}>{'(MEMORÁNDUM)'}</Text> donde
                 se indica el desagregado por ítems del presupuesto destinado a
                 cada proyecto el cual será informado al{' '}
-                <Text style={styles.textBold}>equipo de trabajo </Text>.
+                <Text style={styles.textBold}>equipo de trabajo</Text>.
               </Text>
             </View>
             <View style={{ flexDirection: 'row', gap: 10 }}>
@@ -213,7 +213,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
               <Text style={styles.textSmall}>
                 Revisar y evaluar los entregables de acuerdo a los términos de
                 referencia de cada contrato, estos serán verificados y/o
-                modificados conforme
+                modificados conforme.
               </Text>
             </View>
             <View style={{ flexDirection: 'row', gap: 10 }}>
@@ -256,7 +256,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
               <Text style={styles.textSmall}>
                 Los plazos serán conforme los establecidos en el TDR, bases
                 estándar y el contrato previa coordinación con el Coordinador
-                del proyecto
+                del proyecto.
               </Text>
             </View>
             <View style={{ flexDirection: 'row', gap: 10 }}>
@@ -271,7 +271,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
                   aprobación, informes evaluación
                 </Text>
                 , cualquier otro documento que demuestre fehacientemente la
-                culminación y aprobación de la evaluación del proyecto{' '}
+                culminación y aprobación de la evaluación del proyecto.{' '}
               </Text>
             </View>
           </View>
@@ -289,7 +289,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             el caso, los costos laborales conforme a la legislación vigente, así
             como cualquier otro concepto que pueda tener incidencia sobre la
             ejecución del servicio de consultoría de obra materia del presente
-            contrato
+            contrato.
           </Text>
           <Text style={styles.text}>
             El monto contractual es referencial, este monto contractual será
@@ -355,14 +355,15 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
               aprobación, informes evaluación
             </Text>
             , cualquier otro documento que demuestre fehacientemente la
-            culminación y aprobación de la evaluación del proyecto
+            culminación y aprobación de la evaluación del proyecto.
           </Text>
           <Text style={styles.subtitle}>
             CLAUSULA OCTAVA: CONFORMIDAD DE SERVICIO
           </Text>
           <Text style={styles.text}>
             La conformidad será otorgada por el jefe superior, el gerente de
-            estudios y el gerente técnico.
+            estudios y el gerente técnico. Este documento no tiene validez en
+            caso de no tener conformidad de experiencia.
           </Text>
           <Text style={styles.subtitle}>
             CLAUSULA NOVENA: RESPONSABILIDAD POR VICIOS OCULTOS
@@ -516,7 +517,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             <Text style={styles.text}>
               El consumo de bebidas alcohólicas en las instalaciones de la
               empresa será sancionado con el siete por ciento 7.0% del monto del
-              contrato
+              contrato.
             </Text>
             <Text style={styles.text}>
               Cuando se llegue a cubrir el monto máximo de la penalidad por mora
@@ -528,7 +529,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
               <Text style={styles.textBold}> segunda armada</Text>, en caso que
               no se hiciera efectivo está, EL CONTRATANTE le paga una penalidad
               por mora por cada día de atraso, de acuerdo a la anterior fórmula,
-              después de haber transcurrido los 45 días hábiles{' '}
+              después de haber transcurrido los 45 días hábiles.{' '}
             </Text>
             <Text style={styles.subtitle}>
               CLAUSULA DECIMOTERCERA: GARANTÍAS
@@ -539,7 +540,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             </Text>
             <Text style={styles.text}>
               Los pagos mensuales de la primera armada no deberán superar el 30%
-              del monto contractual
+              del monto contractual.
             </Text>
           </View>
         </View>
@@ -568,7 +569,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
               obtención APTO Y/O LA APROBACIÓN y/o la Notificación de
               Culminación de Asistencia Técnica, acta de aprobación, informes
               evaluación, cualquier otro documento que demuestre fehacientemente
-              la culminación y aprobación de la evaluación del proyecto
+              la culminación y aprobación de la evaluación del proyecto.
             </Text>
             <Text style={styles.text}>
               EL CONTRATISTA se compromete con responsabilidad a trabajar en
@@ -576,7 +577,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
               APTO Y/O LA APROBACIÓN y/o la Notificación de Culminación de
               Asistencia Técnica, acta de aprobación, informes evaluación,
               cualquier otro documento que demuestre fehacientemente la
-              culminación y aprobación de la evaluación del proyecto
+              culminación y aprobación de la evaluación del proyecto.
             </Text>
             <Text style={styles.text}>
               EL CONTRATISTA se compromete no deberá denigrar la integridad de
@@ -588,20 +589,20 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             </Text>
             <Text style={styles.text}>
               EL CONTRATISTA se compromete no podrá divulgar ni copiar los
-              archivos generados y existente en la empresa
+              archivos generados y existente en la empresa.
             </Text>
             <Text style={styles.text}>
               Si se incumple lo mencionado anteriormente EL CONTRATANTE
-              procederá a sancionar según la gravedad correspondiente
+              procederá a sancionar según la gravedad correspondiente.
             </Text>
             <Text style={styles.text}>
               <Text style={styles.textBold}></Text>Primero. – Procederá a
-              ejecutar la garantía y requerir la devolución de los adelantos
+              ejecutar la garantía y requerir la devolución de los adelantos.
             </Text>
             <Text style={styles.text}>
               <Text style={styles.textBold}></Text>Segundo. - Proceder
               legalmente según el código civil y/o penal y demás del sistema
-              jurídico que resulten aplicables
+              jurídico que resulten aplicables.
             </Text>
           </View>
           <Text style={styles.subtitle}>
@@ -619,7 +620,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             <Text style={styles.text}>
               Lo señalado precedentemente no exime a ninguna de las partes del
               cumplimiento de las demás obligaciones previstas en el presente
-              contrato
+              contrato.
             </Text>
           </View>
           <Text style={styles.subtitle}>

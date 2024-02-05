@@ -2,7 +2,7 @@ import { Document, Image, Page, Text, View } from '@react-pdf/renderer';
 import page1Image from '/img/Plantilla Docs_page-0001.jpg';
 import { styles } from './contractUserStyle';
 import { User } from '../../../../types';
-import { ContractUser } from '../..';
+import { ContractUser, DEGREE_DATA } from '../..';
 import {
   NumerosALetras,
   formatAmountMoney,
@@ -22,15 +22,16 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
     dailyDate.setDate(dailyDate.getDate() + 1);
   }
   const formatDate = formatDateLongSpanish(dailyDate);
-  const documentTitle = `CONTRATO SERVICIOS PROFESIONALES N° ${data.numberContract} - 2024/G.G-DHYRIUM S.A.A`;
+  const documentTitle = `CONTRATO SERVICIOS PROFESIONALES N° ${String(
+    data.profile.id
+  ).padStart(3, '0')} - 2024/G.G-DHYRIUM S.A.A`;
+  const degreeSelect = DEGREE_DATA.find(el => el.value === profile.degree);
+  const contractualAmount = degreeSelect?.cost[data.professionalLevel] ?? 0;
+  const professionalService = `${degreeSelect?.title} de nivel ${
+    data.professionalLevel
+  }${profile.degree !== 'Practicante' ? ' - ' + profile.degree : ''}`;
   return (
     <Document>
-      {/* <Page size="A4" style={styles.page}>
-        <View>
-          <Image src={page1Image} style={styles.image} />
-        </View>
-        <Text style={styles.text}>Nueva prueba</Text>
-      </Page> */}
       <Page size="A4" style={styles.page}>
         <View style={styles.pageBackgroundContainer} fixed={true}>
           <Image src={page1Image} style={styles.imageBackground} />
@@ -46,15 +47,18 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
           <Text style={styles.text}>
             El presente documento, consisten en la contratación del servicio
             profesional como
-            <Text style={styles.textRedBold}> {data.professionalService} </Text>
-            para la elaboración de 04 proyecto que celebran de una parte
-            <Text style={styles.textBold}> COORPORACION DHYRIUM S.A.A. </Text>
+            <Text style={styles.textRedBold}>
+              {' '}
+              {professionalService.toUpperCase()}{' '}
+            </Text>
+            para la elaboración de 04 proyectos que celebran de una parte
+            <Text style={styles.textBold}> CORPORACION DHYRIUM S.A.A. </Text>
             con domicilio en el Jr. Cajamarca N° 154 de la ciudad Puno del
             Distrito de Puno-Provincia de Puno-Departamento de Puno,
             representado por el gerente general Ing. Juan Gonzalo Quispe
             Condori, con DNI Nº 45574308, a quien en adelante se le denominará
-            como EL <Text style={styles.textBold}> CONTRATANTE</Text> y de otra
-            parte, la
+            como <Text style={styles.textBold}> EL CONTRATANTE</Text> y por otra
+            parte, al
             <Text style={styles.textRed}>
               {' '}
               {profile.degree} en {profile.job} {profile.firstName}{' '}
@@ -64,8 +68,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             su calidad de persona natural con{' '}
             <Text style={styles.textRed}>RUC N° {data?.ruc}</Text>, a quien en
             adelante se le denominará{' '}
-            <Text style={styles.textRedBold}>EL CONTRATISTA</Text> con domicilio
-            en{' '}
+            <Text style={styles.textBold}>EL CONTRATISTA</Text> con domicilio en{' '}
             <Text style={styles.textRed}>
               {data.address}, del Distrito de {profile.district} de provincia de{' '}
               {profile.province}, Departamento de {profile.department}
@@ -80,7 +83,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             LABORATORIOS E.I.R.L., SSCHILI C Y C S.C.R.L. Y COMO PERSONA NATURAL
             ING. JUAN GONZALO QUISPE CONDORI, y ENTRE OTRAS EMPRESAS el conjunto
             empresarial tiene como administrador a la{' '}
-            <Text style={styles.textBold}>COORPORACION DHYRIUM S.A.A.,</Text>{' '}
+            <Text style={styles.textBold}>CORPORACION DHYRIUM S.A.A.,</Text>{' '}
             cuyo objeto social principal es dedicarse a la Elaboración de
             Expedientes Técnicos, Estudios Básicos, Estudios de Impacto
             Ambiental, entre otras como lo indica los respectivos estatus de
@@ -96,7 +99,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             </Text>{' '}
             para la elaboración y aprobación conforme la{' '}
             <Text style={styles.textRedBold}>
-              DIRECTIVA N° 003-2024-COORPORACION DHYRIUM S.A.A.,
+              DIRECTIVA N° 003-2024-CORPORACION DHYRIUM S.A.A.,
             </Text>{' '}
             según los términos de referencia y las normativas vigentes para la
             elaboración de 04 proyectos.
@@ -111,7 +114,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             contratado, bajo las directivas de sus jefes inmediatos y la
             normativa vigente conforme comprenda su especialidad y así mismo
             también deberá responder por el personal responsable a cargo
-            contratado para su especialidad. Con el siguiente detalle
+            contratado para su especialidad. Con el siguiente detalle:
           </Text>
           <View style={styles.paddingLeft}>
             <View style={{ flexDirection: 'row', gap: 10 }}>
@@ -151,7 +154,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             <View style={{ flexDirection: 'row', gap: 10 }}>
               <Text style={styles.textSmall}>d{')'}</Text>
               <Text style={styles.textSmall}>
-                El <Text style={styles.textBold}> equipo de trabajos </Text>
+                El <Text style={styles.textBold}> equipo de trabajo </Text>
                 deberá presentar el programa de trabajo hasta obtener el{' '}
                 <Text style={styles.textBold}>APTO Y/O LA APROBACIÓN</Text> y el
                 CONTRATISTA deberá presentar un meta de trabajo diario al
@@ -169,7 +172,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
                 el estado actual de archivos y programación del trabajo del día)
                 y otro por la tarde (adjunta el archivo trabajado durante el día
                 y su evaluación de la prorrogación del día) al programa de
-                trabajo indicado, Toda información que envíen deberá ser de
+                trabajo indicado, toda información que envíen, deberá ser de
                 forma editable e indicando el porcentaje para la verificación
                 del avance del proyecto.
               </Text>
@@ -193,7 +196,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
                 ser responsable hasta obtener la culminación y probación de los
                 proyectos en las entidades correspondientes conforme la{' '}
                 <Text style={styles.textRedBold}>
-                  DIRECTIVA N° 003-2024-COORPORACION DHYRIUM S.A.A.{' '}
+                  DIRECTIVA N° 003-2024-CORPORACION DHYRIUM S.A.A.{' '}
                 </Text>
               </Text>
             </View>
@@ -227,7 +230,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
                 Presentar el trabajo final en el Gobierno Regional, Ministerios,
                 etc. y lo estipulado en la{' '}
                 <Text style={styles.textRedBold}>
-                  DIRECTIVA N° 003-2024- COORPORACION DHYRIUM S.A.A.
+                  DIRECTIVA N° 003-2024- CORPORACION DHYRIUM S.A.A.
                 </Text>
               </Text>
             </View>
@@ -273,26 +276,28 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             </View>
           </View>
 
-          <Text style={styles.subtitle}>CLAUSULA QUINTA: MONTO CONTRACTUA</Text>
+          <Text style={styles.subtitle}>
+            CLAUSULA QUINTA: MONTO CONTRACTUAL
+          </Text>
           <Text style={styles.text}>
             El monto total del presente contrato asciende a S/.{' '}
-            {formatAmountMoney(data.contractualAmount)} {'('}
-            {NumerosALetras(data.contractualAmount)}
-            {')'} estoque incluye todos los impuestos de Ley. Este monto
-            comprende el costo del servicio profesional, todos los tributos,
-            seguros, transporte, inspecciones, pruebas y, de ser el caso, los
-            costos laborales conforme a la legislación vigente, así como
-            cualquier otro concepto que pueda tener incidencia sobre la
+            {formatAmountMoney(contractualAmount)} {'('}
+            {NumerosALetras(contractualAmount)}
+            {')'} como {professionalService} e incluye todos los impuestos de
+            Ley. Este monto comprende el costo del servicio profesional, todos
+            los tributos, seguros, transporte, inspecciones, pruebas y, de ser
+            el caso, los costos laborales conforme a la legislación vigente, así
+            como cualquier otro concepto que pueda tener incidencia sobre la
             ejecución del servicio de consultoría de obra materia del presente
             contrato
           </Text>
           <Text style={styles.text}>
             El monto contractual es referencial, este monto contractual será
             reajustado conforme al desagregado por ítems del presupuesto
-            destinado cada proyecto. Según la DIRECTIVA N° 003-2023- GRUPO. Los
+            destinado cada proyecto. Según la DIRECTIVA N° 003-2024- GRUPO. Los
             retrasos en la{' '}
-            <Text style={styles.text}>Programación Presentada </Text>por el
-            <Text style={styles.text}> equipo de trabajos,</Text> no será
+            <Text style={styles.textBold}>Programación Presentada </Text>por el
+            <Text style={styles.textBold}> equipo de trabajos,</Text> no será
             remunerada por el CONTRATANTE. Estas deben cumplirse conforme los
             programado para ellos el equipo y el contratista es responsable.
           </Text>

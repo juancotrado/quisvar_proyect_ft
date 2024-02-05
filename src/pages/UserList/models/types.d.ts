@@ -4,8 +4,6 @@ export interface SwornDeclaration {
   declarationDate: string;
 }
 export interface ContractUser {
-  numberContract: number;
-  professionalService: string;
-  contractualAmount: number;
+  professionalLevel: 1 | 2 | 3;
   date: Date;
 }

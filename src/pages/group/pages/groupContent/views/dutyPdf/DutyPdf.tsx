@@ -84,7 +84,7 @@ const DutyPdf: React.FC<DutyPdfProps> = ({ info, attendance, duty }) => {
               <View style={{ ...styles.tableCol, width: '70%' }}>
                 <Text style={{ ...styles.headers, marginLeft: 5 }}>
                   {item.user.profile.firstName +
-                    '' +
+                    ' ' +
                     item.user.profile.lastName}
                 </Text>
               </View>

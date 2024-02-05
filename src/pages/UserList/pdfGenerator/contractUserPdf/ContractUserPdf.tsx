@@ -72,7 +72,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             </Text>
             , de acuerdo a los términos y condiciones siguientes.
           </Text>
-          <Text style={styles.subtitle}>CLAUSULA PRIMERO: ANTECEDENTES</Text>
+          <Text style={styles.subtitle}>CLAUSULA PRIMERA: ANTECEDENTES</Text>
           <Text style={styles.text}>
             <Text style={styles.textBold}>EL CONTRATANTE</Text> es una persona
             jurídica de derecho privado constituida para la ADMINISTRACIÓN de
@@ -87,7 +87,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             cada empresa.
           </Text>
           <Text style={styles.subtitle}>
-            CLAUSULA SEGUNDO: OBJETO DE CONTRATO
+            CLAUSULA SEGUNDA: OBJETO DE CONTRATO
           </Text>
           <Text style={styles.text}>
             Por el presente documento el objeto es contratar al{' '}
@@ -102,7 +102,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             elaboración de 04 proyectos.
           </Text>
           <Text style={styles.subtitle}>
-            CLAUSULA TERCERO: CARÁCTER Y FORMA DE PRESTAR EL SERVICIO
+            CLAUSULA TERCERA: CARÁCTER Y FORMA DE PRESTAR EL SERVICIO
           </Text>
           <Text style={styles.text}>Responsable de elaborar 04 proyectos</Text>
           <Text style={styles.text}>
@@ -199,7 +199,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             </View>
           </View>
           <Text style={styles.subtitle}>
-            CLAUSULA CUARTO: FUNCIONES A PRESTAR EL SERVICIO
+            CLAUSULA CUARTA: FUNCIONES A PRESTAR EL SERVICIO
           </Text>
           <Text style={styles.text}>
             El CONTRATISTA deberá cumplir las siguientes funciones:
@@ -273,7 +273,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             </View>
           </View>
 
-          <Text style={styles.subtitle}>CLAUSULA QUINTO: MONTO CONTRACTUA</Text>
+          <Text style={styles.subtitle}>CLAUSULA QUINTA: MONTO CONTRACTUA</Text>
           <Text style={styles.text}>
             El monto total del presente contrato asciende a S/.{' '}
             {formatAmountMoney(data.contractualAmount)} {'('}
@@ -300,7 +300,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             El monto contractual no descuenta la estadía que consiste en la
             alimentación, el alojamiento y entre otros servicios esenciales.{' '}
           </Text>
-          <Text style={styles.subtitle}>CLAUSULA SEXTO: FORMA DE PAGO</Text>
+          <Text style={styles.subtitle}>CLAUSULA SEXTA: FORMA DE PAGO</Text>
           <Text style={styles.text}>El pago se realizará en dos armadas:</Text>
           <Text style={styles.text}>
             <Text style={styles.textBold}>Primera armada. -</Text> El
@@ -336,7 +336,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             realizará en dos armadas:
           </Text>
           <Text style={styles.subtitle}>
-            CLAUSULA SÉPTIMO: VIGENCIA DEL CONTRATO
+            CLAUSULA SÉPTIMA: VIGENCIA DEL CONTRATO
           </Text>
           <Text style={styles.text}>
             El CONTRATISTA tiene un plazo de ejecución del contrato en un plazo
@@ -353,14 +353,14 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             culminación y aprobación de la evaluación del proyecto
           </Text>
           <Text style={styles.subtitle}>
-            CLAUSULA OCTAVO: CONFORMIDAD DE SERVICIO
+            CLAUSULA OCTAVA: CONFORMIDAD DE SERVICIO
           </Text>
           <Text style={styles.text}>
             La conformidad será otorgada por el jefe superior, el gerente de
             estudios y el gerente técnico.
           </Text>
           <Text style={styles.subtitle}>
-            CLAUSULA NOVENO: RESPONSABILIDAD POR VICIOS OCULTOS
+            CLAUSULA NOVENA: RESPONSABILIDAD POR VICIOS OCULTOS
           </Text>
           <Text style={styles.text}>
             La conformidad del servicio por parte del CONTRATANTE no enerva su
@@ -369,7 +369,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             por EL CONTRATANTE.{' '}
           </Text>
           <Text style={styles.subtitle}>
-            CLAUSULA DÉCIMO: LUGAR DE LA PRESTACION DE SERVICIOS{' '}
+            CLAUSULA DÉCIMA: LUGAR DE LA PRESTACION DE SERVICIOS{' '}
           </Text>
           <Text style={styles.text}>
             EL CONTRATISTA, prestara los servicios contratados, en la Sede
@@ -396,7 +396,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
           </View>
 
           <Text style={styles.subtitle}>
-            CLAUSULA UNDÉCIMO: RESOLUCIÓN DE CONTRATO
+            CLAUSULA UNDÉCIMA: RESOLUCIÓN DE CONTRATO
           </Text>
           <Text style={styles.text}>
             Son causales de resolución del presente contrato:
@@ -455,7 +455,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
               </Text>
             </View>
           </View>
-          <Text style={styles.subtitle}>CLAUSULA DUODÉCIMO: PENALIDADES</Text>
+          <Text style={styles.subtitle}>CLAUSULA DUODÉCIMA: PENALIDADES</Text>
           <Text style={styles.text}>
             Si EL CONTRATISTA incurre en retraso injustificado en la ejecución
             de las prestaciones objeto del contrato, EL CONTRATISTA le aplica
@@ -526,7 +526,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
               después de haber transcurrido los 45 días hábiles{' '}
             </Text>
             <Text style={styles.subtitle}>
-              CLAUSULA DECIMOTERCERO: GARANTÍAS
+              CLAUSULA DECIMOTERCERA: GARANTÍAS
             </Text>
             <Text style={styles.text}>
               EL CONTRATISTA dejara en garantía el pago de la{' '}
@@ -554,7 +554,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
           </View>
 
           <Text style={styles.subtitle}>
-            CLAUSULA DECIMOCUARTO: DECLARACIÓN JURADA DEL CONTRATISTA
+            CLAUSULA DECIMOCUARTA: DECLARACIÓN JURADA DEL CONTRATISTA
           </Text>
           <View style={{ gap: 4 }}>
             <Text style={styles.text}>
@@ -600,7 +600,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             </Text>
           </View>
           <Text style={styles.subtitle}>
-            CLAUSULA DECIMOQUINTO: RESPONSABILIDAD DE LAS PARTES{' '}
+            CLAUSULA DECIMOQUINTA: RESPONSABILIDAD DE LAS PARTES{' '}
           </Text>
           <View style={{ gap: 4 }}>
             <Text style={styles.text}>
@@ -618,7 +618,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             </Text>
           </View>
           <Text style={styles.subtitle}>
-            CLAUSULA DECIMOSEXTO: APLICACIÓN SUPLETORIA DE LA LEY{' '}
+            CLAUSULA DECIMOSEXTA: APLICACIÓN SUPLETORIA DE LA LEY{' '}
           </Text>
           <View style={{ gap: 4 }}>
             <Text style={styles.text}>

@@ -1,19 +1,18 @@
 import { Document, Image, Page, Text, View } from '@react-pdf/renderer';
 import page1Image from '/img/Plantilla Docs_page-0001.jpg';
 import { styles } from './contractUserStyle';
-import { User } from '../../../../types';
-import { ContractUser, DEGREE_DATA } from '../..';
+import { User } from '../../../../../../types';
+import { ContractUser, DEGREE_DATA } from '../../models';
 import {
   NumerosALetras,
   formatAmountMoney,
   formatDateLongSpanish,
-} from '../../../../utils';
+} from '../../../../../../utils';
 interface ContractUserPdfProps {
   data: User & ContractUser;
 }
 const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
   const { profile } = data;
-  console.log('asdasd', String(data.date) == 'Invalid Date');
   let dailyDate = null;
   if (!data.date || String(data.date) == 'Invalid Date') {
     dailyDate = new Date();

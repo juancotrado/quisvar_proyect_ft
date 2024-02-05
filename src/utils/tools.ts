@@ -272,3 +272,13 @@ export const formatAmountMoney = (amount: number) => {
   const thousanAmountJoin = thousanAmount.split('').reverse().join('');
   return thousanAmountJoin + decimalAMount;
 };
+
+export const downloadBlob = (blobFile: Blob, name: string) => {
+  const editedUrl = URL.createObjectURL(blobFile);
+  const link = document.createElement('a');
+  link.href = editedUrl;
+  link.download = name;
+  link.click();
+  URL.revokeObjectURL(editedUrl);
+  link.remove();
+};

@@ -7,27 +7,27 @@ import { AppDispatch, RootState } from '../../../../../../store';
 import { getIconDefault, SnackbarUtilities } from '../../../../../../utils';
 import { getListUsers } from '../../../../../../store/slices/listUsers.slice';
 import { Button } from '../../../../../../components';
-import { isOpenCardRegisterUser$ } from '../../../../../../services/sharingSubject';
+import {
+  isOpenCardRegisterUser$,
+  isOpenViewDocs$,
+} from '../../../../../../services/sharingSubject';
 
 interface UserInfoProps {
   user: User;
   index: number;
   onPrint?: () => void;
   roles: RoleForm[];
-  onViewDocs?: () => void;
 }
-const UserInfo = ({
-  user,
-  index,
-  onPrint,
-  onViewDocs,
-  roles,
-}: UserInfoProps) => {
+const UserInfo = ({ user, index, onPrint, roles }: UserInfoProps) => {
   const [isOn, setIsOn] = useState(user.status);
   // const [openRole, setOpenRole] = useState(false);
   const { userSession } = useSelector((state: RootState) => state);
   const { profile } = user;
   const dispatch: AppDispatch = useDispatch();
+
+  const handleViewDocs = () => {
+    isOpenViewDocs$.setSubject = { isOpen: true, user };
+  };
 
   // const getUsers = () => {
   //   dispatch(getListUsers());
@@ -115,7 +115,11 @@ const UserInfo = ({
         )}
       </div>
       <div className="col-span">
-        <Button className="role-btn" icon="folder-icon" onClick={onViewDocs} />
+        <Button
+          className="role-btn"
+          icon="folder-icon"
+          onClick={handleViewDocs}
+        />
       </div>
       <div className="col-span actions-container">
         {/* {roleLimit && ( */}

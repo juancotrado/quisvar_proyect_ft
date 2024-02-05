@@ -7,13 +7,11 @@ import {
   isOpenCardFiles$,
   isOpenCardGenerateReport$,
   isOpenCardRegisterUser$,
-  isOpenViewDocs$,
 } from '../../../../services/sharingSubject';
 import {
   Equipment as Equip,
   GeneralFile,
   RoleForm,
-  User,
   WorkStation,
 } from '../../../../types';
 import { AppDispatch, RootState } from '../../../../store';
@@ -89,9 +87,6 @@ const UsersList = () => {
   };
   const handleOpenCardFiles = () => {
     isOpenCardFiles$.setSubject = true;
-  };
-  const handleViewDocs = (user: User) => {
-    isOpenViewDocs$.setSubject = { isOpen: true, user };
   };
   const handleOpenAddEquipment = (isOpen: boolean, data?: WorkStation) => {
     isOpenCardAddEquipment$.setSubject = {
@@ -177,7 +172,6 @@ const UsersList = () => {
                 roles={roles}
                 index={index}
                 onPrint={() => printReport(user.id)}
-                onViewDocs={() => handleViewDocs(user)}
               />
             ))}
         </div>

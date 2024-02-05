@@ -1,41 +1,10 @@
 import { Font, StyleSheet } from '@react-pdf/renderer';
-import ArialNarrowBold from '../../../../utils/pdfFonts/Arial-Narrow-Bold.ttf';
-import ArialNarrow from '../../../../utils/pdfFonts/Arial-Narrow.ttf';
+import ArialNarrowBold from '/fonts/Arial-Narrow-Bold.ttf';
+import ArialNarrow from '/fonts/Arial-Narrow.ttf';
 Font.register({ family: 'Arial Narrow Bold', src: ArialNarrowBold });
 Font.register({ family: 'Arial Narrow', src: ArialNarrow });
 
 export const styles = StyleSheet.create({
-  // page: {
-  //   // position: 'absolute',
-  //   width: '100%',
-  //   height: '100%',
-  //   // backgroundImage: `url(${page1Image})`,
-  //   // backgroundSize: 'cover',
-  // },
-  // image: {
-  //   width: '100%',
-  //   height: '100%',
-  //   // position: 'absolute',
-  //   objectFit: 'cover',
-  // },
-  // content: {
-  //   position: 'absolute',
-  //   top: 50,
-  //   left: 50,
-  // },
-  // // text: {
-  // //   position:'absolute',
-  // //   fontSize: 12,
-  // // },
-  // text: {
-  //   position: 'absolute',
-  //   left: '0px',
-  //   right: '0px',
-  //   marginHorizontal: 'auto',
-  //   textAlign: 'center',
-  //   justifyContent: 'center',
-  // },
-
   /////
   page: {
     top: '0px',

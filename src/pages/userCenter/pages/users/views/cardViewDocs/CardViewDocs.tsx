@@ -9,7 +9,7 @@ import { getListUsers } from '../../../../../../store/slices/listUsers.slice';
 import { AppDispatch } from '../../../../../../store';
 import { Modal } from '../../../../../../components';
 import { UploadUserFile } from '../../components';
-import CardGenerateContract from '../cardGenerateContract/CardGenerateContract';
+import { CardGenerateContract } from '..';
 
 interface UserDocument {
   [key: string]: {

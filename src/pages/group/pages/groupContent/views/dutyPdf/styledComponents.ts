@@ -16,11 +16,12 @@ export const styles = StyleSheet.create({
     // justifyContent: 'space-between'
   },
   headers: {
-    fontSize: 6,
+    fontSize: 8,
     margin: 'auto',
     marginTop: 5,
     marginBottom: 5,
     textTransform: 'uppercase',
+    fontFamily: 'Arial Narrow',
   },
   headerBold: {
     margin: 'auto',
@@ -28,6 +29,9 @@ export const styles = StyleSheet.create({
     marginBottom: 5,
     textTransform: 'uppercase',
     fontSize: 11,
+    fontFamily: 'Arial Narrow Bold',
+  },
+  bold: {
     fontFamily: 'Arial Narrow Bold',
   },
   table: {

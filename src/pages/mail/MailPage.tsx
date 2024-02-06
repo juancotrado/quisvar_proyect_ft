@@ -16,6 +16,7 @@ import { Button, CardGenerateReport, Select } from '../../components';
 import { isOpenCardLicense$ } from '../../services/sharingSubject';
 import { CardMessage, LicenseListHeader, LicenseListItem } from './components';
 import { CardLicense, CardRegisterMessage } from './views';
+import { useRole } from '../../hooks';
 
 const InitTMail: MailType['type'] = 'RECEIVER';
 export const MailPage = () => {
@@ -36,19 +37,12 @@ export const MailPage = () => {
   const size = !!searchParams.get('size');
   const refresh = !!searchParams.get('refresh') || false;
   const [isNewMessage, setIsNewMessage] = useState(false);
-  const permissions = [
-    'SUPER_MOD',
-    'MOD',
-    'EMPLOYEE',
-    'ASSISTANT',
-    'ASSISTANT_ADMINISTRATIVE',
-  ].includes(user.role);
-  //-----------------------------------------------------------------------
+  const { hasAccess } = useRole('MOD', 'tramites', 'salidas');
 
   //-----------------------------------------------------------------------
 
   useEffect(() => {
-    if (!permissions) verifyLicenses();
+    if (hasAccess) verifyLicenses();
   }, []);
 
   useEffect(() => getMessages(), [typeMail, typeMsg, statusMsg]);
@@ -82,12 +76,12 @@ export const MailPage = () => {
         setTotalMail(res.data.total);
       });
     } else {
-      if (user.role && permissions) {
+      if (user.role && !hasAccess) {
         axiosInstance.get(`license/employee/${user.id}`).then(res => {
           setListLicense(res.data);
         });
       }
-      if (!permissions) {
+      if (hasAccess) {
         axiosInstance.get('license/status').then(res => {
           setListLicense(res.data);
         });
@@ -236,7 +230,7 @@ export const MailPage = () => {
                   textField="id"
                 />
               </div>
-              {permissions ? (
+              {!hasAccess ? (
                 <span className="mail-license" onClick={showCardReport}>
                   <img
                     className="mail-mail-options-title-filter-img"
@@ -295,7 +289,7 @@ export const MailPage = () => {
                 )}
               </div>
             ) : (
-              <LicenseListHeader isEmployee={permissions} />
+              <LicenseListHeader isEmployee={!hasAccess} />
             )}
           </div>
           <div className="mail-grid-container">
@@ -318,7 +312,7 @@ export const MailPage = () => {
                   key={license.id}
                   data={license}
                   index={index}
-                  isEmployee={permissions}
+                  isEmployee={!hasAccess as boolean}
                   editData={() => showCardReportData(license)}
                   onSave={getMessages}
                 />

@@ -8,7 +8,7 @@ import {
 } from '@react-pdf/renderer';
 import { styles } from './styledComponents';
 import { Duty, GroupAttendanceRes, PdfInfoProps } from '../../../../types';
-import { formatDate } from '../../../../../../utils';
+import { actualDate } from '../../../../../../utils';
 interface DutyPdfProps {
   attendance: GroupAttendanceRes[];
   duty: Duty[];
@@ -31,19 +31,17 @@ const DutyPdf: React.FC<DutyPdfProps> = ({ info, attendance, duty }) => {
         </View>
         <View style={{ ...styles.tableRow }}>
           <View style={{ ...styles.tableCol, width: '50%' }}>
-            <Text style={{ ...styles.headers, fontWeight: 'bold' }}>
-              Fecha:{' '}
-            </Text>
+            <Text style={{ ...styles.headers, ...styles.bold }}>Fecha: </Text>
           </View>
           <View style={{ ...styles.tableCol, width: '50%' }}>
             <Text style={styles.headers}>
-              {formatDate(new Date(info?.createdAt as string))}
+              {actualDate(new Date(info?.createdAt as string))}
             </Text>
           </View>
         </View>
         <View style={{ ...styles.tableRow }}>
           <View style={{ ...styles.tableCol, width: '50%' }}>
-            <Text style={{ ...styles.headers, fontWeight: 'bold' }}>
+            <Text style={{ ...styles.headers, ...styles.bold }}>
               Coordinador:
             </Text>
           </View>
@@ -60,17 +58,15 @@ const DutyPdf: React.FC<DutyPdfProps> = ({ info, attendance, duty }) => {
       <View style={styles.table}>
         <View style={{ ...styles.tableRow }}>
           <View style={{ ...styles.tableCol, width: '10%' }}>
-            <Text style={{ ...styles.headers, fontWeight: 'bold' }}>#</Text>
+            <Text style={{ ...styles.headers, ...styles.bold }}>Nº</Text>
           </View>
           <View style={{ ...styles.tableCol, width: '70%' }}>
-            <Text
-              style={{ ...styles.headers, marginLeft: 5, fontWeight: 'bold' }}
-            >
+            <Text style={{ ...styles.headers, marginLeft: 5, ...styles.bold }}>
               Nombres y Apellidos
             </Text>
           </View>
           <View style={{ ...styles.tableCol, width: '20%' }}>
-            <Text style={{ ...styles.headers, fontWeight: 'bold' }}>
+            <Text style={{ ...styles.headers, ...styles.bold }}>
               Asistencia
             </Text>
           </View>
@@ -102,22 +98,20 @@ const DutyPdf: React.FC<DutyPdfProps> = ({ info, attendance, duty }) => {
       <View style={styles.table}>
         <View style={{ ...styles.tableRow }}>
           <View style={{ ...styles.tableCol, width: '5%' }}>
-            <Text style={{ ...styles.headers, fontWeight: 'bold' }}>#</Text>
+            <Text style={{ ...styles.headers, ...styles.bold }}>Nº</Text>
           </View>
           <View style={{ ...styles.tableCol, width: '25%' }}>
-            <Text
-              style={{ ...styles.headers, marginLeft: 5, fontWeight: 'bold' }}
-            >
+            <Text style={{ ...styles.headers, marginLeft: 5, ...styles.bold }}>
               Nombres y Apellidos
             </Text>
           </View>
           <View style={{ ...styles.tableCol, width: '60%' }}>
-            <Text style={{ ...styles.headers, fontWeight: 'bold' }}>
+            <Text style={{ ...styles.headers, ...styles.bold }}>
               Compromisos
             </Text>
           </View>
           <View style={{ ...styles.tableCol, width: '10%' }}>
-            <Text style={{ ...styles.headers, fontWeight: 'bold' }}>
+            <Text style={{ ...styles.headers, ...styles.bold }}>
               Fecha Limite
             </Text>
           </View>
@@ -140,7 +134,7 @@ const DutyPdf: React.FC<DutyPdfProps> = ({ info, attendance, duty }) => {
               </View>
               <View style={{ ...styles.tableCol, width: '10%' }}>
                 <Text style={styles.headers}>
-                  {formatDate(new Date(item.untilDate as string))}
+                  {actualDate(new Date(item.untilDate as string))}
                 </Text>
               </View>
             </View>
@@ -151,7 +145,7 @@ const DutyPdf: React.FC<DutyPdfProps> = ({ info, attendance, duty }) => {
   const MyDocument = (
     <Document>
       <Page size="A4" style={styles.page}>
-        <Text style={{ ...styles.headerBold }}>ACTA DE REUNION</Text>
+        <Text style={{ ...styles.headerBold }}>ACTA DE REUNIÓN</Text>
         <View style={{ marginBottom: 20 }}>{renderInfo()}</View>
         <Text style={{ ...styles.headerBold, marginLeft: 5 }}>
           ASISTENCIAS:

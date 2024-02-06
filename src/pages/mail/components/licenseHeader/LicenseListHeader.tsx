@@ -1,6 +1,6 @@
 import './LicenseListHeader.css';
 type license = {
-  isEmployee: boolean;
+  isEmployee?: boolean;
 };
 export const LicenseListHeader = ({ isEmployee }: license) => {
   return (

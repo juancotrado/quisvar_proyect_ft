@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Duty, GroupAttendanceRes } from '../../types';
 import './dutyList.css';
 import { Button, Input } from '../../../../components';
@@ -32,7 +32,14 @@ const DutyList = ({
       listId: idList,
     };
   });
-  const [items, setItems] = useState<sendData[]>(data);
+  useEffect(() => {
+    // console.log(hasDuty)
+    if (hasDuty?.length === 0) {
+      // console.log(data)
+      setItems(data);
+    }
+  }, [idList]);
+  const [items, setItems] = useState<sendData[]>([]);
 
   const handleInputChange = (index: number, field: string, value: string) => {
     const updatedItems = [...items];
@@ -54,6 +61,7 @@ const DutyList = ({
     setItems(updatedItems);
   };
   const handleSubmit = () => {
+    // console.log(items)
     axiosInstance.post(`/duty`, items).then(() => {
       onSave();
     });
@@ -73,47 +81,53 @@ const DutyList = ({
         hasDuty &&
         hasDuty?.length === 0 &&
         items &&
-        items.map((item, idx) => (
-          <div className="dl-body" key={idx}>
-            <h1 className="dl-list dl-center">{idx + 1}</h1>
-            {groupUsers.length > idx ? (
-              <h1 className="dl-list">{item.fullName}</h1>
-            ) : (
+        items.map((item, idx) => {
+          // console.log(item)
+          return (
+            <div className="dl-body" key={idx}>
+              <h1 className="dl-list dl-center">{idx + 1}</h1>
+              {groupUsers.length > idx ? (
+                <h1 className="dl-list">{item.fullName}</h1>
+              ) : (
+                <input
+                  type="text"
+                  className="dl-list"
+                  value={item.fullName}
+                  onChange={e =>
+                    handleInputChange(idx, 'fullName', e.target.value)
+                  }
+                />
+              )}
               <input
                 type="text"
                 className="dl-list"
-                defaultValue={item.description}
-                onBlur={e => handleInputChange(idx, 'fullName', e.target.value)}
+                value={item.description}
+                onChange={e =>
+                  handleInputChange(idx, 'description', e.target.value)
+                }
               />
-            )}
-            <input
-              type="text"
-              className="dl-list"
-              defaultValue={item.description}
-              onBlur={e =>
-                handleInputChange(idx, 'description', e.target.value)
-              }
-            />
-            <Input
-              type="date"
-              classNameMain="dl-list"
-              className=""
-              defaultValue={item.untilDate}
-              onChange={e =>
-                handleInputChange(idx, 'untilDate', e.target.value)
-              }
-            />
-            {groupUsers.length <= idx && (
-              <span
-                className="dl-delete-btn"
-                onClick={() => handleDeleteRow(idx)}
-              >
-                x
-              </span>
-            )}
-          </div>
-        ))}
+              <Input
+                type="date"
+                classNameMain="dl-list"
+                className=""
+                value={item.untilDate}
+                onChange={e =>
+                  handleInputChange(idx, 'untilDate', e.target.value)
+                }
+              />
+              {groupUsers.length <= idx && (
+                <span
+                  className="dl-delete-btn"
+                  onClick={() => handleDeleteRow(idx)}
+                >
+                  x
+                </span>
+              )}
+            </div>
+          );
+        })}
       {hasDuty &&
+        hasDuty?.length > 0 &&
         hasDuty.map((item, idx) => (
           <div className="dl-body" key={item.id}>
             <h1 className="dl-list dl-center">{idx + 1}</h1>

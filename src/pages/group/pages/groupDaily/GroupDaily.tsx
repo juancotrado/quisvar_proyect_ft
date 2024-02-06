@@ -60,7 +60,7 @@ export const GroupDaily = () => {
     getTodayCalls();
     // getMembers();
   }, []);
-  const getTodayCalls = () => {
+  const getTodayCalls = (position?: number) => {
     setGroupUsers([]);
     setCalls([]);
     setHasDuty([]);
@@ -70,7 +70,12 @@ export const GroupDaily = () => {
       .then(res => {
         setCalls(res.data);
         setAddBtn(res.data[res.data.length - 1]?.attendance.length !== 0);
-        viewList(res.data[res.data.length - 1], res.data.length);
+        if (position) {
+          const pos = res.data.findIndex(item => item.id === position);
+          viewList(res.data[pos], pos + 1);
+        } else {
+          viewList(res.data[res.data.length - 1], res.data.length);
+        }
       });
   };
   const getDate = (e: ChangeEvent<HTMLInputElement>) => {
@@ -186,10 +191,9 @@ export const GroupDaily = () => {
     axiosInstance
       .patch(`/attendanceGroup/list/title/${idList}`, { title: value })
       .then(() => {
-        setTitle(value);
+        getTodayCalls(idList);
       });
   };
-
   return (
     <div className="gd-content">
       <div className="gd-header">
@@ -255,7 +259,7 @@ export const GroupDaily = () => {
               />
             )}
           </div>
-          {!option && (
+          {!option && showSecond && (
             <div className="gd-titles">
               <h4 className="gd-header-title">Asunto de la reunión:</h4>
               {title ? (
@@ -297,7 +301,8 @@ export const GroupDaily = () => {
               </div>
             )
           : (hasDuty.length > 0 || isToday) &&
-            groupUsers.length > 0 && (
+            groupUsers.length > 0 &&
+            showSecond && (
               <DutyList
                 groupUsers={groupUsers}
                 isToday={isToday}

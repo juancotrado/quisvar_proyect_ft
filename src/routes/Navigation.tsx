@@ -67,9 +67,9 @@ const Navigation = () => {
 
             <Route element={<ProtectedRole menuAccess="tramites" />}>
               <Route path="/tramites" element={<Procedure />}>
+                <Route path="salidas" element={<LicensePage />} />
                 <Route path="tramite-de-pago" element={<MailPage />}>
                   <Route path=":paymessageId" element={<MessagePage />} />
-                  <Route path="licencia/:id" element={<LicensePage />} />
                 </Route>
               </Route>
             </Route>

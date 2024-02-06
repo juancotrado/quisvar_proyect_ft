@@ -57,7 +57,12 @@ export const LicenseListItem = ({
         isEmployee ? 'license-employee' : 'license-admin'
       }`}
     >
-      <div className="license-header-items">{index + 1}</div>
+      <div
+        className="license-header-items"
+        style={{ justifyContent: 'center' }}
+      >
+        {index + 1}
+      </div>
       {!isEmployee && (
         <div className="license-header-items">{userName?.name}</div>
       )}

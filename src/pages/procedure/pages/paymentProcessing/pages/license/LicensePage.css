@@ -1,0 +1,28 @@
+.lp-content {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+}
+.lp-free-day-img {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+.lp-license {
+  color: var(--color-primary);
+  cursor: pointer;
+  height: auto;
+  font-size: 0.75rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+.lp-license:hover {
+  text-decoration: underline;
+}
+.lp-grid-container {
+  overflow-y: auto;
+  height: 90%;
+  background-color: white;
+  /* padding: 0 0.5rem; */
+}

@@ -4,7 +4,7 @@ import { Button, Input } from '../../components';
 import { axiosInstance } from '../../services/axiosInstance';
 import { Menu, MenuPoint, MenuRole } from '../../types';
 
-export const INDICE_GENERAL_OPTIONS: Menu[] = [
+const INDICE_GENERAL_OPTIONS: Menu[] = [
   { id: 14, title: 'CAEC', route: 'contratos', access: ['MOD'] },
   { id: 13, title: 'DEE', route: 'contratos1', access: ['MOD'] },
   { id: 12, title: 'DEP', route: 'contratos2', access: ['MOD'] },

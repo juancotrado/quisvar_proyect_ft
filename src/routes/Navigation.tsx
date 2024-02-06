@@ -35,6 +35,7 @@ import {
   UsersList,
   GeneralData,
   UserCenter,
+  Procedure,
   RolesAndPermissions,
 } from '../pages';
 import { ProtectedRole, ProtectedRoute } from '../guards';
@@ -65,9 +66,11 @@ const Navigation = () => {
             </Route>
 
             <Route element={<ProtectedRole menuAccess="tramites" />}>
-              <Route path="/tramites" element={<MailPage />}>
-                <Route path=":paymessageId" element={<MessagePage />} />
-                <Route path="licencia/:id" element={<LicensePage />} />
+              <Route path="/tramites" element={<Procedure />}>
+                <Route path="tramite-de-pago" element={<MailPage />}>
+                  <Route path=":paymessageId" element={<MessagePage />} />
+                  <Route path="licencia/:id" element={<LicensePage />} />
+                </Route>
               </Route>
             </Route>
 

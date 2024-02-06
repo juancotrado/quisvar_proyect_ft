@@ -1,0 +1,24 @@
+.procedure {
+  width: 100%;
+  height: 100%;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.procedure-header {
+  position: relative;
+  display: flex;
+  background: white;
+  align-items: center;
+  padding: 1rem;
+}
+
+.procedure-header-menus {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 0);
+  display: flex;
+  gap: 1rem;
+}

@@ -1,15 +1,16 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import './userCenter.css';
+import './procedure.css';
 import { GeneralTitle } from '../../components';
-import { HEADER_USER_MODEL } from './models/userModelDef';
+import { useSubMenus } from '../../hooks';
+const Procedure = () => {
+  const { subMenu } = useSubMenus();
 
-const UserCenter = () => {
   return (
-    <div className="userCenter">
-      <div className="userCenter-header">
-        <GeneralTitle firstTitle="CENTRO DE" secondTitle="USUARIOS" />
-        <div className="user-header-menus">
-          {HEADER_USER_MODEL.map(header => (
+    <div className="procedure">
+      <div className="procedure-header">
+        <GeneralTitle firstTitle="TRAMITES DE " secondTitle="USUARIO" />
+        <div className="procedure-header-menus">
+          {subMenu.map(header => (
             <NavLink key={header.id} to={header.route}>
               {({ isActive }) => (
                 <span
@@ -23,11 +24,10 @@ const UserCenter = () => {
             </NavLink>
           ))}
         </div>
-        <div />
       </div>
       <Outlet />
     </div>
   );
 };
 
-export default UserCenter;
+export default Procedure;

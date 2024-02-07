@@ -8,7 +8,7 @@ import {
 } from '@react-pdf/renderer';
 import { styles } from './styledComponents';
 import { Duty, GroupAttendanceRes, PdfInfoProps } from '../../../../types';
-import { actualDate } from '../../../../../../utils';
+import { _date, actualDate } from '../../../../../../utils';
 interface DutyPdfProps {
   attendance: GroupAttendanceRes[];
   duty: Duty[];
@@ -35,7 +35,7 @@ const DutyPdf: React.FC<DutyPdfProps> = ({ info, attendance, duty }) => {
           </View>
           <View style={{ ...styles.tableCol, width: '50%' }}>
             <Text style={styles.headers}>
-              {actualDate(new Date(info?.createdAt as string))}
+              {_date(new Date(info?.createdAt as string))}
             </Text>
           </View>
         </View>
@@ -161,7 +161,12 @@ const DutyPdf: React.FC<DutyPdfProps> = ({ info, attendance, duty }) => {
 
   return (
     <>
-      <PDFDownloadLink document={MyDocument} fileName="duty_pdf.pdf">
+      <PDFDownloadLink
+        document={MyDocument}
+        fileName={`Acta de reunión ${info?.group} ${_date(
+          new Date(info?.createdAt as string)
+        )}.pdf`}
+      >
         <img src={`/svg/download.svg`} />
       </PDFDownloadLink>
     </>

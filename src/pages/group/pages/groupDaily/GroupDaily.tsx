@@ -25,6 +25,7 @@ export const GroupDaily = () => {
   const [showSecond, setShowSecond] = useState<boolean>(false);
   const [calls, setCalls] = useState<GroupRes[]>([]);
   const [idList, setIdList] = useState<number>();
+  const [dateValue, setDateValue] = useState<string>(_date(now));
   const [title, setTitle] = useState<string | undefined>('');
   const [hasDuty, setHasDuty] = useState<Duty[]>([]);
   const [groupUsers, setGroupUsers] = useState<GroupAttendanceRes[]>([]);
@@ -60,13 +61,15 @@ export const GroupDaily = () => {
     getTodayCalls();
     // getMembers();
   }, []);
-  const getTodayCalls = (position?: number) => {
+  const getTodayCalls = (position?: number, dateValue?: string) => {
     setGroupUsers([]);
     setCalls([]);
     setHasDuty([]);
     const today = new Date();
     axiosInstance
-      .get<GroupRes[]>(`/attendanceGroup/list/${groupId}?date=${_date(today)}`)
+      .get<GroupRes[]>(
+        `/attendanceGroup/list/${groupId}?date=${dateValue ?? _date(today)}`
+      )
       .then(res => {
         setCalls(res.data);
         setAddBtn(res.data[res.data.length - 1]?.attendance.length !== 0);
@@ -77,10 +80,13 @@ export const GroupDaily = () => {
           viewList(res.data[res.data.length - 1], res.data.length);
         }
       });
+    position = undefined;
+    dateValue = undefined;
   };
   const getDate = (e: ChangeEvent<HTMLInputElement>) => {
     const today = new Date();
     const { value } = e.target;
+    setDateValue(value);
     setGroupUsers([]);
     setCalls([]);
     setHasDuty([]);
@@ -137,25 +143,25 @@ export const GroupDaily = () => {
   };
   const viewList = (item: GroupRes, idx: number) => {
     setPdfInfo({
-      title: item.title,
-      group: `Grupo : ${item.groups.name}`,
+      title: item?.title ?? '',
+      group: `Grupo : ${item?.groups.name}`,
       mod: `${
-        item.groups.moderator.profile.firstName +
+        item?.groups.moderator.profile.firstName +
         ' ' +
-        item.groups.moderator.profile.lastName
+        item?.groups.moderator.profile.lastName
       }`,
-      createdAt: item.createdAt,
+      createdAt: item?.createdAt,
     });
-    setIdList(item.id);
+    setIdList(item?.id);
     setTitle(item?.title ?? '');
     setGroupUsers([]);
     setHasDuty([]);
     setShowSecond(false);
-    if (item.attendance.length > 0) {
-      setGroupUsers(item.attendance);
+    if (item?.attendance.length > 0) {
+      setGroupUsers(item?.attendance);
       setShowSecond(true);
       setHasItems(true);
-      setHasDuty(item.duty);
+      setHasDuty(item?.duty);
     } else {
       getMembers();
     }
@@ -184,14 +190,12 @@ export const GroupDaily = () => {
       getTodayCalls();
     });
   };
-  // console.log(isToday)
   const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
-    // console.log(value);
     axiosInstance
       .patch(`/attendanceGroup/list/title/${idList}`, { title: value })
       .then(() => {
-        getTodayCalls(idList);
+        getTodayCalls(idList, undefined);
       });
   };
   return (
@@ -270,7 +274,7 @@ export const GroupDaily = () => {
                   className="gdh-input"
                   defaultValue={title}
                   onBlur={handleChangeTitle}
-                  disabled={title ? true : false}
+                  // disabled={title ? true : false}
                 />
               )}
               <h4 className="gd-header-title">Acta de reunión:</h4>
@@ -281,7 +285,8 @@ export const GroupDaily = () => {
       )}
       <div>
         {option
-          ? groupUsers.length > 0 && (
+          ? groupUsers.length > 0 &&
+            calls.length > 0 && (
               <div className="gda-content">
                 <GroupAttendance
                   hasItems={hasItems}
@@ -308,7 +313,7 @@ export const GroupDaily = () => {
                 isToday={isToday}
                 hasDuty={hasDuty}
                 idList={idList}
-                onSave={getTodayCalls}
+                onSave={() => getTodayCalls(idList, dateValue)}
               />
             )}
       </div>

@@ -10,6 +10,7 @@ interface IconActionProps {
   bottom?: number;
   top?: number;
   icon: string;
+  position?: 'none' | 'auto';
 }
 const IconAction = ({
   onClick,
@@ -20,6 +21,7 @@ const IconAction = ({
   right,
   top,
   icon,
+  position,
 }: IconActionProps) => {
   const style: CSSProperties = {
     width: `${size}rem`,
@@ -31,7 +33,7 @@ const IconAction = ({
   };
   return (
     <figure
-      className={`iconAction ${className}`}
+      className={`${position !== 'none' && 'iconAction'} ${className}`}
       style={style}
       onClick={e => {
         e.stopPropagation();

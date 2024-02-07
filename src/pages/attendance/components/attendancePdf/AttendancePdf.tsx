@@ -19,10 +19,9 @@ export type TablesProps = {
 interface PDFGeneratorProps {
   data: AttendanceRange[];
   daily?: string;
+  size?: 'A4' | 'A5';
 }
-interface ConfigProps {
-  size: 'A4' | 'A5';
-}
+
 const orderCalls = [
   'primer llamado',
   'segundo llamado',
@@ -47,14 +46,15 @@ const orderCalls = [
   'vigesimoprimero llamado',
   'vigesimosegundo llamado',
 ];
-export const generateAttendanceDailyPDF = (
-  value: PDFGeneratorProps,
-  config?: ConfigProps
-) => {
-  const totalAttendance = value.data.map(user => user.list.length);
+const GenerateAttendanceDailyPDF = ({
+  data,
+  daily,
+  size,
+}: PDFGeneratorProps) => {
+  const totalAttendance = data.map(user => user.list.length);
   const maxAttendance = Math.max(...totalAttendance);
   const initialCalls =
-    value.data[0].list.length <= 6
+    data[0].list.length <= 6
       ? orderCalls.slice(0, 6)
       : orderCalls.slice(0, maxAttendance);
   // console.log(initialCalls)
@@ -97,13 +97,13 @@ export const generateAttendanceDailyPDF = (
   //   return orderedTimers;
   // };
 
-  // console.log(value.data[0].list.length);
+  // console.log(data[0].list.length);
 
   return (
     <Document>
       <Page
-        size={config?.size ?? 'A4'}
-        style={config?.size === 'A4' ? styles.page : styles.pageA5}
+        size={size ?? 'A4'}
+        style={size === 'A4' ? styles.page : styles.pageA5}
       >
         {/* <View style={styles.table}>
         <View style={{ ...styles.title, width: '100%' }}>
@@ -123,7 +123,7 @@ export const generateAttendanceDailyPDF = (
             textTransform: 'uppercase',
           }}
         >
-          <Text>LISTA DE ASISTENCIA DEL {actualDate(value?.daily)}</Text>
+          <Text>LISTA DE ASISTENCIA DEL {actualDate(daily)}</Text>
         </View>
         <View style={styles.table}>
           <View style={styles.tableRow}>
@@ -160,7 +160,7 @@ export const generateAttendanceDailyPDF = (
             </View>
             {/* <View style={{ ...styles.attendance, width: '28%' }}>
               {orderCalls.map((_, index) => {
-                const timer = getTimers(value.data[0]);
+                const timer = getTimers(data[0]);
                 return (
                   <View style={{ ...styles.attendanceItem }} key={index}>
                     <Text style={styles.headers}>{timer[index]}</Text>
@@ -178,8 +178,8 @@ export const generateAttendanceDailyPDF = (
               })}
             </View>
           </View>
-          {value.data &&
-            value.data.map((value, index) => {
+          {data &&
+            data.map((value, index) => {
               const attendances = getStatus(value);
               const getColor = (status: string) => {
                 if (status === 'P') return '#87E4BD';
@@ -216,17 +216,7 @@ export const generateAttendanceDailyPDF = (
                   <View style={{ ...styles.tableCol, width: '10%' }}>
                     <Text style={styles.headers}>{value.profile.phone}</Text>
                   </View>
-                  {/* <View style={{ ...styles.tableCol, width: '8%' }}>
-                    <Text style={styles.headers}>
-                      {value?.equipment?.workStation?.name ?? '---'}
-                    </Text>
-                  </View> */}
 
-                  {/* <View style={{ ...styles.tableCol, width: '10%' }}>
-                    <Text style={styles.headers}>
-                      {value.profile.userPc ?? '---'}
-                    </Text>
-                  </View> */}
                   <View style={{ ...styles.attendance, width: '46%' }}>
                     {attendances &&
                       attendances.map((attendance, index) => {
@@ -301,26 +291,28 @@ export const generateAttendanceDailyPDF = (
 };
 
 export const AttendancePdf = ({ data, daily }: PDFGeneratorProps) => {
-  //   const [showPreview, setShowPreview] = useState(false);
-  // console.log(data);
-
   const filterdUsers: AttendanceRange[] = data.filter(
     user => user?.list.length !== 0
   );
   return (
     <>
       <PDFViewer width="100%" height="100%" className="attendancePdf-viewer">
-        {generateAttendanceDailyPDF(
-          { data: filterdUsers, daily },
-          { size: 'A4' }
-        )}
+        {/* {GenerateAttendanceDailyPDF({ data: filterdUsers, daily, size: 'A4' })} */}
+        <GenerateAttendanceDailyPDF
+          data={filterdUsers}
+          daily={daily}
+          size="A4"
+        />
       </PDFViewer>
 
       <PDFDownloadLink
-        document={generateAttendanceDailyPDF(
-          { data: filterdUsers, daily },
-          { size: 'A4' }
-        )}
+        document={
+          <GenerateAttendanceDailyPDF
+            data={filterdUsers}
+            daily={daily}
+            size="A4"
+          />
+        }
         fileName={`${daily}.pdf`}
         className="budgetsPage-filter-icon attendancePdf-download"
       >

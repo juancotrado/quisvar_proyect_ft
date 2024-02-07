@@ -1,15 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
-import Modal from '../../../../components/portal/Modal';
 import { Subscription } from 'rxjs';
 import { isOpenCardViewPdf$ } from '../../../../services/sharingSubject';
 import './CardViewPdf.css';
 import { AttendanceRange } from '../../../../types';
 import { AttendancePdf, AttendanceRangePdf } from '..';
+import { Modal } from '../../../../components';
 
 export const CardViewPdf = () => {
   //   const filterdUsers = exportPDF.filter(user => user.list.length !== 0);
   const [isOpen, setIsOpen] = useState(false);
-  const [data, setData] = useState<AttendanceRange[]>();
+  const [data, setData] = useState<AttendanceRange[] | null>(null);
   const [daily, setDaily] = useState<string>();
   const [typeReport, setTypeReport] = useState<'range' | 'daily' | null>(null);
   const [rangeDate, setRangeDate] = useState({

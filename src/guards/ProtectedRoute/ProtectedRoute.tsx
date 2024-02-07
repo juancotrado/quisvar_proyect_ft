@@ -1,5 +1,5 @@
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
-import { Header } from '../../components';
+import { Header, ViewPdf } from '../../components';
 import { errorToken$, toggle$ } from '../../services/sharingSubject';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
@@ -45,6 +45,7 @@ export const ProtectedRoute = () => {
         </div>
         <AlertNotification />
         <ButtonDelete notIsVisible />
+        <ViewPdf />
       </div>
     </SocketProvider>
   );

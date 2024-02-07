@@ -34,12 +34,16 @@ const DutyList = ({
   });
   useEffect(() => {
     // console.log(hasDuty)
+    setEdit(false);
     if (hasDuty?.length === 0) {
-      // console.log(data)
       setItems(data);
+    } else {
+      setItemsEdit(hasDuty as Duty[]);
     }
   }, [idList]);
   const [items, setItems] = useState<sendData[]>([]);
+  const [itemsEdit, setItemsEdit] = useState<Duty[]>([]);
+  const [edit, setEdit] = useState<boolean>(false);
 
   const handleInputChange = (index: number, field: string, value: string) => {
     const updatedItems = [...items];
@@ -48,6 +52,14 @@ const DutyList = ({
       [field]: value,
     };
     setItems(updatedItems);
+  };
+  const handleInputEdit = (index: number, field: string, value: string) => {
+    const editItems = [...itemsEdit];
+    editItems[index] = {
+      ...editItems[index],
+      [field]: value,
+    };
+    setItemsEdit(editItems);
   };
   const handleAddRow = () => {
     setItems([
@@ -68,6 +80,11 @@ const DutyList = ({
   };
   const formattedDate = (value: string) => {
     return value.split('T')[0];
+  };
+  const handleUpdate = () => {
+    axiosInstance.patch(`/duty/items`, itemsEdit).then(() => {
+      onSave();
+    });
   };
   return (
     <div className="dl-content">
@@ -111,6 +128,7 @@ const DutyList = ({
                 classNameMain="dl-list"
                 className=""
                 value={item.untilDate}
+                required
                 onChange={e =>
                   handleInputChange(idx, 'untilDate', e.target.value)
                 }
@@ -128,10 +146,10 @@ const DutyList = ({
         })}
       {hasDuty &&
         hasDuty?.length > 0 &&
-        hasDuty.map((item, idx) => (
+        itemsEdit.map((item, idx) => (
           <div className="dl-body" key={item.id}>
             <h1 className="dl-list dl-center">{idx + 1}</h1>
-            <h1 className="dl-list">{item.fullName}</h1>
+            {/* <h1 className="dl-list">{item.fullName}</h1> */}
             {/* {item.fullName ? (
               <h1 className="dl-list">{item.fullName}</h1>
             ) : (
@@ -147,22 +165,28 @@ const DutyList = ({
             <input
               type="text"
               className="dl-list"
+              value={item.fullName}
+              disabled={!edit}
+              onChange={e => handleInputEdit(idx, 'fullName', e.target.value)}
+            />
+            <input
+              type="text"
+              className="dl-list"
               defaultValue={item.description}
-              disabled
-              // onChange={e =>
-              //   handleInputChange(idx, 'description', e.target.value)
-              // }
-              onBlur={e => console.log(e.target.value)}
+              disabled={!edit}
+              onChange={e =>
+                handleInputEdit(idx, 'description', e.target.value)
+              }
+              // onBlur={e => console.log(e.target.value)}
             />
             <Input
               type="date"
               classNameMain="dl-list"
               className=""
               value={formattedDate(item.untilDate as string)}
-              // onChange={e =>
-              //   handleInputChange(idx, 'untilDate', e.target.value)
-              // }
-              disabled
+              onChange={e => handleInputEdit(idx, 'untilDate', e.target.value)}
+              disabled={!edit}
+              required
             />
             {groupUsers.length <= idx && !hasDuty && (
               <span
@@ -180,12 +204,39 @@ const DutyList = ({
             text="GUARDAR"
             className="attendance-add-btn"
             onClick={handleSubmit}
+            type="submit"
           />
           <Button
             text="AÑADIR"
             className="attendance-add-btn"
             onClick={handleAddRow}
           />
+        </div>
+      )}
+      {hasDuty && hasDuty?.length > 0 && (
+        <div className="dl-btns">
+          {edit ? (
+            <>
+              <Button
+                text="Cancelar"
+                className="attendance-add-btn"
+                onClick={() => setEdit(false)}
+                style={{ backgroundColor: 'red' }}
+              />
+              <Button
+                text="Actualizar"
+                className="attendance-add-btn"
+                style={{ backgroundColor: 'green' }}
+                onClick={handleUpdate}
+              />
+            </>
+          ) : (
+            <Button
+              text="Editar"
+              className="attendance-add-btn"
+              onClick={() => setEdit(true)}
+            />
+          )}
         </div>
       )}
     </div>

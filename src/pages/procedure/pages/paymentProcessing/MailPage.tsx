@@ -1,31 +1,24 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
 import './mailPage.css';
-import {
-  MailType,
-  MessageStatus,
-  MessageTypeImbox,
-  licenseList,
-} from '../../../../types';
+import { MailType, MessageStatus, MessageTypeImbox } from '../../../../types';
 import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
 import { listStatusMsg, listTypeMsg } from '../../../../utils';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
 import { Button, CardGenerateReport, Select } from '../../../../components';
-import { isOpenCardLicense$ } from '../../../../services/sharingSubject';
-import { CardMessage, LicenseListHeader, LicenseListItem } from './components';
-import { CardLicense, CardRegisterMessage } from './views';
-import { useRole } from '../../../../hooks';
+import { CardMessage } from './components';
+import { CardRegisterMessage } from './views';
 import { axiosInstance } from '../../../../services/axiosInstance';
+import { useRole } from '../../../../hooks';
 
 const InitTMail: MailType['type'] = 'RECEIVER';
+
 export const MailPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const { userSession: user } = useSelector((state: RootState) => state);
   const [listMessage, setListMessage] = useState<MailType[] | null>(null);
-  const [listLicense, setListLicense] = useState<licenseList[]>([]);
-  const [viewLicense, setViewLicense] = useState(false);
   // const [isResizing, setIsResizing] = useState(false);
   const [totalMail, setTotalMail] = useState(0);
   const [skip, setSkip] = useState(0);
@@ -37,13 +30,8 @@ export const MailPage = () => {
   const size = !!searchParams.get('size');
   const refresh = !!searchParams.get('refresh') || false;
   const [isNewMessage, setIsNewMessage] = useState(false);
-  const { hasAccess } = useRole('MOD', 'tramites', 'salidas');
-
+  const { hasAccess: isMod } = useRole('MOD', null, 'tramite-de-pago');
   //-----------------------------------------------------------------------
-
-  useEffect(() => {
-    if (hasAccess) verifyLicenses();
-  }, []);
 
   useEffect(() => getMessages(), [typeMail, typeMsg, statusMsg]);
 
@@ -52,11 +40,9 @@ export const MailPage = () => {
   }, [refresh]);
 
   const handleNewMessage = () => {
-    // navigate('/tramites?size=true');
     setIsNewMessage(true);
   };
   const handleCloseMessage = () => {
-    // navigate('/tramites');
     setIsNewMessage(false);
     setContentVisible(true);
   };
@@ -75,43 +61,24 @@ export const MailPage = () => {
         setListMessage(res.data.mail);
         setTotalMail(res.data.total);
       });
-    } else {
-      if (user.role && !hasAccess) {
-        axiosInstance.get(`license/employee/${user.id}`).then(res => {
-          setListLicense(res.data);
-        });
-      }
-      if (hasAccess) {
-        axiosInstance.get('license/status').then(res => {
-          setListLicense(res.data);
-        });
-      }
     }
   };
   const handleSelectReceiver = () => {
-    setViewLicense(false);
     setTypeMail('RECEIVER');
     setStatusMsg(null);
     setTypeMsg(null);
   };
   const handleSelectSender = () => {
-    setViewLicense(false);
     setTypeMail('SENDER');
     setStatusMsg(null);
     setTypeMsg(null);
   };
   const handleArchived = () => {
-    setViewLicense(false);
     setTypeMail(null);
     setStatusMsg('ARCHIVADO');
     setTypeMsg(null);
   };
-  const handlelicense = () => {
-    setViewLicense(true);
-    setTypeMail('LICENSE');
-    setStatusMsg(null);
-    setTypeMsg(null);
-  };
+
   const handleViewMessage = (id: number, type: MailType['type']) => {
     setIsNewMessage(false);
     navigate(`${id}?type=${type}`);
@@ -124,28 +91,6 @@ export const MailPage = () => {
   const handlePreviusPage = () => {
     const limit = Math.floor(skip / 20);
     if (0 < limit) setSkip(skip === 21 ? skip - 21 : skip - 20);
-  };
-  const showCardReport = () => {
-    isOpenCardLicense$.setSubject = {
-      isOpen: true,
-    };
-  };
-  const showCardReportFreeDay = () => {
-    isOpenCardLicense$.setSubject = {
-      isOpen: true,
-      type: 'free',
-    };
-  };
-  const showCardReportData = (data: licenseList) => {
-    isOpenCardLicense$.setSubject = {
-      isOpen: true,
-      data,
-    };
-  };
-  const verifyLicenses = () => {
-    axiosInstance
-      .post('/license/expired')
-      .then(() => console.log('Datos limpiados'));
   };
 
   //--------------------------------------------------------------------------
@@ -185,13 +130,6 @@ export const MailPage = () => {
                   ${!typeMail && 'options-main-selected'}`}
                   onClick={handleArchived}
                 />
-                <Button
-                  icon="archiver-box"
-                  text={(contentVisible && 'Salidas') || undefined}
-                  className={`mail-main-options-btn
-                  ${typeMail === 'LICENSE' && 'options-main-selected'}`}
-                  onClick={handlelicense}
-                />
               </div>
               <div className="mail-main-options-container">
                 <span className="mail-main-options-title-filter">
@@ -226,23 +164,6 @@ export const MailPage = () => {
                   textField="id"
                 />
               </div>
-              {!hasAccess ? (
-                <span className="mail-license" onClick={showCardReport}>
-                  <img
-                    className="mail-mail-options-title-filter-img"
-                    src="/svg/license-icon.svg"
-                  />
-                  Solicitar Hoja de ruta
-                </span>
-              ) : (
-                <span className="mail-license" onClick={showCardReportFreeDay}>
-                  <img
-                    className="mail-mail-options-title-filter-img"
-                    src="/svg/license-icon.svg"
-                  />
-                  Día libre
-                </span>
-              )}
               <Button
                 onClick={handleNewMessage}
                 icon="plus-dark"
@@ -250,47 +171,42 @@ export const MailPage = () => {
                 className="mail-new-message-btn"
               />
             </div>
-            {!viewLicense ? (
-              <div
-                className={`message-container-header-titles status-mail-header-${size} `}
-              >
-                <div className="message-header-item">
-                  <span>#DOCUMENTO</span>
-                </div>
-                <div className="message-header-item">
-                  <span>{`${
-                    typeMail === 'RECEIVER' ? 'REMITENTE' : 'DESTINATARIO'
-                  }`}</span>
-                </div>
-                <div className="message-header-item mail-grid-col-2">
-                  <span>ASUNTO</span>
-                </div>
-                {contentVisible && (
-                  <>
-                    <div className="message-header-item">
-                      <span>ESTADO</span>
-                    </div>
-                    <div className="message-header-item">
-                      <span>DEPENDENCIA</span>
-                    </div>
-                    <div className="message-header-item">
-                      <span>FECHA DE ENVÍO</span>
-                    </div>
-                    {user.role === 'SUPER_ADMIN' && (
-                      <div className="message-header-item message-cursor-none">
-                        <span>ARCHIVAR</span>
-                      </div>
-                    )}
-                  </>
-                )}
+            <div
+              className={`message-container-header-titles status-mail-header-${size} `}
+            >
+              <div className="message-header-item">
+                <span>#DOCUMENTO</span>
               </div>
-            ) : (
-              <LicenseListHeader isEmployee={!hasAccess} />
-            )}
+              <div className="message-header-item">
+                <span>{`${
+                  typeMail === 'RECEIVER' ? 'REMITENTE' : 'DESTINATARIO'
+                }`}</span>
+              </div>
+              <div className="message-header-item mail-grid-col-2">
+                <span>ASUNTO</span>
+              </div>
+              {contentVisible && (
+                <>
+                  <div className="message-header-item">
+                    <span>ESTADO</span>
+                  </div>
+                  <div className="message-header-item">
+                    <span>DEPENDENCIA</span>
+                  </div>
+                  <div className="message-header-item">
+                    <span>FECHA DE ENVÍO</span>
+                  </div>
+                  {isMod && (
+                    <div className="message-header-item message-cursor-none">
+                      <span>ARCHIVAR</span>
+                    </div>
+                  )}
+                </>
+              )}
+            </div>
           </div>
           <div className="mail-grid-container">
-            {!viewLicense ? (
-              listMessage &&
+            {listMessage &&
               listMessage.map(({ paymessage, paymessageId, type }) => (
                 <CardMessage
                   user={user}
@@ -301,21 +217,7 @@ export const MailPage = () => {
                   onClick={() => handleViewMessage(paymessageId, type)}
                   message={paymessage}
                 />
-              ))
-            ) : listLicense.length > 0 ? (
-              listLicense.map((license, index) => (
-                <LicenseListItem
-                  key={license.id}
-                  data={license}
-                  index={index}
-                  isEmployee={!hasAccess as boolean}
-                  editData={() => showCardReportData(license)}
-                  onSave={getMessages}
-                />
-              ))
-            ) : (
-              <div>Aun no hay solicitudes</div>
-            )}
+              ))}
           </div>
           <div className="mail-footer-section">
             <Button
@@ -335,9 +237,7 @@ export const MailPage = () => {
           </div>
         </div>
       </div>
-      {/* <div className={`mail-m-size-${size}`}> */}
       <Outlet />
-      {/* </div> */}
       <CardGenerateReport />
       {isNewMessage && (
         <CardRegisterMessage
@@ -345,8 +245,6 @@ export const MailPage = () => {
           onSave={handleSaveMessage}
         />
       )}
-      {/* {user.role === 'EMPLOYEE'} */}
-      <CardLicense onSave={getMessages} />
     </div>
   );
 };

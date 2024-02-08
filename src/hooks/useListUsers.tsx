@@ -1,18 +1,32 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
-import { User, UserRoleType } from '../types/types';
+import { MenuAccess, MenuRole, User } from '../types/types';
+import { useRole } from '.';
 
 const useListUsers = (
-  roleType: UserRoleType[] | null = null,
+  roleType: MenuRole | null = null,
+  menu?: MenuAccess | null,
+  subMenu?: string,
   onlyActive: boolean = true,
   usersData: User[] | null = null
 ) => {
   const { listUsers } = useSelector((state: RootState) => state);
+  if (roleType) {
+  }
+
+  const filterRole = (user: User) => {
+    if (roleType) {
+      const { hasAccess } = useRole(roleType, menu, subMenu, user.role);
+      return hasAccess;
+    } else {
+      return user;
+    }
+  };
   const usersList = usersData ?? listUsers;
   const users =
     (usersList &&
       usersList
-        .filter(user => (roleType ? roleType.includes(user.role) : user))
+        .filter(filterRole)
         .filter(user => (onlyActive ? user.status : user))
         .map(({ profile, ...props }) => ({
           name: `${profile.firstName} ${profile.lastName}`,

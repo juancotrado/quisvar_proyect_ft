@@ -1,6 +1,6 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import './procedure.css';
-import { GeneralTitle } from '../../components';
+import { GeneralTitle, ButtonHeader } from '../../components';
 import { useSubMenus } from '../../hooks';
 const Procedure = () => {
   const { subMenu } = useSubMenus();
@@ -13,13 +13,7 @@ const Procedure = () => {
           {subMenu.map(header => (
             <NavLink key={header.id} to={header.route}>
               {({ isActive }) => (
-                <span
-                  className={`header-link-span ${
-                    isActive && 'header-link--active'
-                  }`}
-                >
-                  {header.title}
-                </span>
+                <ButtonHeader isActive={isActive} text={header.title} />
               )}
             </NavLink>
           ))}

@@ -32,3 +32,4 @@ export * from './userDetail';
 export * from './generalTitle';
 export * from './iconAction';
 export * from './viewPdf';
+export * from './buttonHeader';

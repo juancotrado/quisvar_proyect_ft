@@ -41,7 +41,7 @@ const CardRegisterVoucher = ({ message, onSave }: CardRegisterVoucherProps) => {
       </h3>
       <PDFDownloadLink
         document={<ServiceOrderPdf data={dataServiceOrder} />}
-        fileName={`asdasdS.pdf`}
+        fileName={`Orden de Servicio.pdf`}
         className="cardRegisteVoucher-service-orden"
       >
         <div className="cardRegisterVoucher-options">
@@ -56,7 +56,7 @@ const CardRegisterVoucher = ({ message, onSave }: CardRegisterVoucherProps) => {
       </PDFDownloadLink>
       <PDFDownloadLink
         document={<ReceiptOfPaymentPdf data={dataServiceOrder} />}
-        fileName={`asdasdS.pdf`}
+        fileName={`Recibo de Pago.pdf`}
         className="cardRegisteVoucher-service-orden"
       >
         <div className="cardRegisterVoucher-options">

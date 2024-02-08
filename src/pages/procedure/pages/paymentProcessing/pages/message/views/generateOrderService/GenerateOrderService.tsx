@@ -7,53 +7,28 @@ import {
 } from '../../../../../../../../components';
 import './generateOrderService.css';
 import { validateWhiteSpace } from '../../../../../../../../utils';
-import { PDFDownloadLink } from '@react-pdf/renderer';
 import {
   Companies,
   MessageType,
-  ServiceOrderData,
   ServiceOrderForm,
 } from '../../../../../../../../types';
 import { useEffect, useState } from 'react';
 import { axiosInstance } from '../../../../../../../../services/axiosInstance';
 import { ReceiptOfPaymentPdf, ServiceOrderPdf } from '../../pdfGenerate';
-
-const payTypeOptions = [
-  { id: 'EFECTIVO', value: 'EFECTIVO' },
-  { id: 'CUENTA', value: 'CUENTA' },
-  { id: 'CHEQUE', value: 'CHEQUE' },
-];
+import { PAY_TYPE_OPTIONS } from '../../models';
+import { isOpenViewPdf$ } from '../../../../../../../../services/sharingSubject';
 
 interface GenerateOrderServiceProps {
   message: MessageType;
   onSave?: () => void;
 }
-const serviceOrderInitValues: ServiceOrderData = {
-  firstName: '',
-  lastName: '',
-  dni: '',
-  phone: '',
-  degree: '',
-  description: '',
-  concept: '',
-  amount: '',
-  payType: '',
-  acountNumber: '',
-  acountCheck: '',
-  ruc: '',
-  address: '',
-  companyName: '',
-  companyRuc: '',
-  title: '',
-};
+
 const GenerateOrderService = ({
   message,
   onSave,
 }: GenerateOrderServiceProps) => {
   const [companies, setCompanies] = useState<null | Companies[]>(null);
-  const [dataServiceOrder, setDataServiceOrder] = useState<ServiceOrderData>(
-    serviceOrderInitValues
-  );
+
   const {
     handleSubmit,
     register,
@@ -68,14 +43,15 @@ const GenerateOrderService = ({
   }, []);
 
   const onSubmit: SubmitHandler<ServiceOrderForm> = async () => {
-    const data = handleFocus();
+    const data = getData();
     axiosInstance
       .patch(`/paymail/done/${message.id}`, {
         paymentPdfData: JSON.stringify(data),
       })
       .then(onSave);
   };
-  const handleFocus = () => {
+
+  const getData = () => {
     const { profile, ruc, address } = message.userInit.user;
     const { companyId, ...formData } = watch();
     const companySelect = companies?.find(company => company.id === +companyId);
@@ -88,8 +64,21 @@ const GenerateOrderService = ({
       companyName: companySelect?.name ?? '',
       companyRuc: companySelect?.ruc ?? '',
     };
-    setDataServiceOrder(dataServiceOrder);
     return dataServiceOrder;
+  };
+  const handleClickPdf = (type: 'orderServices' | 'paymentReceipt') => {
+    const dataService = getData();
+    const isOrderService = type === 'orderServices';
+    const { firstName, lastName } = dataService;
+    isOpenViewPdf$.setSubject = {
+      fileNamePdf: `${
+        isOrderService ? 'Orden de servicio' : 'Recibo de Pago'
+      } - ${firstName} ${lastName}`,
+      pdfComponentFunction: isOrderService
+        ? ServiceOrderPdf({ data: dataService })
+        : ReceiptOfPaymentPdf({ data: dataService }),
+      isOpen: true,
+    };
   };
   return (
     <div className="generateOrderService">
@@ -125,7 +114,6 @@ const GenerateOrderService = ({
           placeholder="Concepto"
           errors={errors}
           className="messagePage-input"
-          defaultValue={message.header}
         />
         <div className="messagePage-input-contain">
           <Input
@@ -143,7 +131,7 @@ const GenerateOrderService = ({
               validate: { validateWhiteSpace },
             })}
             name="payType"
-            data={payTypeOptions}
+            data={PAY_TYPE_OPTIONS}
             itemKey="id"
             textField="value"
             errors={errors}
@@ -174,33 +162,22 @@ const GenerateOrderService = ({
           />
         )}
         <Button className={`messagePage-btn-submit`} text="Enviar Formulario" />
-
-        <div
-          className="generateOrderService-previews-btns"
-          onMouseOver={handleFocus}
-        >
-          <PDFDownloadLink
-            document={<ServiceOrderPdf data={dataServiceOrder} />}
-            fileName={`asdasdS.pdf`}
-            className="generateOrderService-preview-pdf"
-          >
-            <figure className="cardRegisteVoucher-figure">
-              <img src={`/svg/preview-pdf.svg`} />
-            </figure>
-            Orden de Servicio
-          </PDFDownloadLink>
-          <PDFDownloadLink
-            document={<ReceiptOfPaymentPdf data={dataServiceOrder} />}
-            fileName={`asdasdS.pdf`}
-            className="generateOrderService-preview-pdf"
-          >
-            <figure className="cardRegisteVoucher-figure">
-              <img src={`/svg/preview-pdf.svg`} />
-            </figure>
-            Recibo de Pago
-          </PDFDownloadLink>
-        </div>
       </form>
+      <div className="generateOrderService-previews-btns">
+        <Button
+          icon="preview-pdf"
+          text="Orden de Servicio"
+          styleButton={2}
+          onClick={() => handleClickPdf('orderServices')}
+        />
+
+        <Button
+          icon="preview-pdf"
+          text="Recibo de Pago"
+          styleButton={2}
+          onClick={() => handleClickPdf('paymentReceipt')}
+        />
+      </div>
     </div>
   );
 };

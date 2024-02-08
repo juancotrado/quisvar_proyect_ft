@@ -22,9 +22,7 @@ const CardRegisterVoucherDenyOrAccept = ({
 
   return (
     <div className="CardRegisterVoucherDenyOrAccept">
-      <h3 className="cardRegisterVoucher-subTitle">
-        FIRMA Y SUBA SUS DOCUMENTOS:
-      </h3>
+      <h3 className="cardRegisterVoucher-subTitle">DOCUMENTOS FINALES</h3>
       <h3 className="cardRegisterVoucher-subTitle">
         Recibo por honorarios y Orden de servicio firmados
       </h3>
@@ -38,20 +36,24 @@ const CardRegisterVoucherDenyOrAccept = ({
           link={file.path + '/' + file.name}
         />
       ))}
-      <h4>Historial</h4>
-      {historyFiles.map(history => (
-        <div key={history.files[0].id}>
-          {history.files.map(file => (
-            <ChipFileMessage
-              key={file.id}
-              className="message-files-list"
-              text={file.name}
-              link={file.path + '/' + file.name}
-            />
+      {historyFiles.length !== 0 && (
+        <>
+          <h4>Historial</h4>
+          {historyFiles.map(history => (
+            <div key={history.files[0].id}>
+              {history.files.map(file => (
+                <ChipFileMessage
+                  key={file.id}
+                  className="message-files-list"
+                  text={file.name}
+                  link={file.path + '/' + file.name}
+                />
+              ))}
+              <hr />
+            </div>
           ))}
-          <hr />
-        </div>
-      ))}
+        </>
+      )}
       <div className="CardRegisterVoucherDenyOrAccept-btns">
         <Button
           text="Aceptar"

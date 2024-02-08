@@ -266,17 +266,13 @@ export const GroupDaily = () => {
           {!option && showSecond && (
             <div className="gd-titles">
               <h4 className="gd-header-title">Asunto de la reunión:</h4>
-              {title ? (
-                <h1 className="gdh-input">{title ?? ''}</h1>
-              ) : (
-                <input
-                  placeholder="--> Inserte un titulo aquí <--"
-                  className="gdh-input"
-                  defaultValue={title}
-                  onBlur={handleChangeTitle}
-                  // disabled={title ? true : false}
-                />
-              )}
+              <input
+                placeholder="--> Inserte un titulo aquí <--"
+                className="gdh-input"
+                defaultValue={title}
+                onBlur={handleChangeTitle}
+                // disabled={title ? true : false}
+              />
               <h4 className="gd-header-title">Acta de reunión:</h4>
               <DutyPdf info={pdfInfo} attendance={groupUsers} duty={hasDuty} />
             </div>

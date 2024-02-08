@@ -165,14 +165,14 @@ export type typeSidebarSpecility =
   | 'typespecialities'
   | 'projects';
 
-export type UserRoleType =
-  | 'SUPER_ADMIN'
-  | 'ADMIN'
-  | 'ASSISTANT'
-  | 'ASSISTANT_ADMINISTRATIVE'
-  | 'SUPER_MOD'
-  | 'MOD'
-  | 'EMPLOYEE';
+// export type UserRoleType =
+//   | 'SUPER_ADMIN'
+//   | 'ADMIN'
+//   | 'ASSISTANT'
+//   | 'ASSISTANT_ADMINISTRATIVE'
+//   | 'SUPER_MOD'
+//   | 'MOD'
+//   | 'EMPLOYEE';
 
 export interface GruopProject {
   id: number;

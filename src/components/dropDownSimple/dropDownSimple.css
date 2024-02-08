@@ -39,6 +39,10 @@
   border-radius: var(--radius-input);
   flex-grow: 1;
 }
+.dropdown-field:focus {
+  box-shadow: none;
+  border-bottom: 0;
+}
 .dropdown-list-option {
   position: absolute;
   background-color: var(--color-menu);

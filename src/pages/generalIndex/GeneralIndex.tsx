@@ -1,15 +1,10 @@
-import {
-  NavLink,
-  Outlet,
-  useLocation,
-  useSearchParams,
-} from 'react-router-dom';
+import { NavLink, Outlet, useSearchParams } from 'react-router-dom';
 import './generalIndex.css';
 import { axiosInstance } from '../../services/axiosInstance';
 import { useEffect, useState } from 'react';
 import { CoorpEntity } from '../../types';
-import { INDEX_OPTIONS, DEFAULT_COMPANY } from './models';
-import { DropDownSimple } from '../../components';
+import { DEFAULT_COMPANY } from './models';
+import { ButtonHeader, DropDownSimple } from '../../components';
 import { useSubMenus } from '../../hooks';
 
 export const GeneralIndex = () => {
@@ -89,13 +84,7 @@ export const GeneralIndex = () => {
           {subMenu.map(index => (
             <NavLink key={index.id} to={{ pathname: index.route }}>
               {({ isActive }) => (
-                <span
-                  className={`header-link-span ${
-                    isActive && 'header-link--active'
-                  }`}
-                >
-                  {index.title}
-                </span>
+                <ButtonHeader isActive={isActive} text={index.title} />
               )}
             </NavLink>
           ))}

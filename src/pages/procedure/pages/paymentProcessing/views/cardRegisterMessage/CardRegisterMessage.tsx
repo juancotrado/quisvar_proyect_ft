@@ -36,7 +36,6 @@ import { useNavigate } from 'react-router-dom';
 import { isOpenCardGenerateReport$ } from '../../../../../../services/sharingSubject';
 import { ChipFileMessage } from '../../components';
 import { PDFGenerator } from '../../pdfGenerate';
-import { ROLE_PERM } from '../../models';
 import { JOB_DATA } from '../../../../../userCenter/pages/users/models';
 
 const YEAR = new Date().getFullYear();
@@ -50,7 +49,11 @@ const CardRegisterMessage = ({
   onClosing,
   onSave,
 }: CardRegisterMessageProps) => {
-  const { users: listUser } = useListUsers(ROLE_PERM);
+  const { users: listUser } = useListUsers(
+    'MOD',
+    'tramites',
+    'tramite-de-pago'
+  );
   const navigate = useNavigate();
   const [isAddReceiver, setIsAddReceiver] = useState(false);
   const { userSession } = useSelector((state: RootState) => state);
@@ -207,7 +210,7 @@ const CardRegisterMessage = ({
 
   const handleSave = () => {
     onSave?.();
-    navigate('/tramites?loader=true');
+    navigate('?loader=true');
   };
   const handleClose = () => {
     onClosing?.();

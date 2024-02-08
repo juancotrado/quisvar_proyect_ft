@@ -20,13 +20,15 @@ import {
   normalizeFileName,
   transformDataPdf,
 } from '../../../../../../utils';
-import { Button, LoaderForComponent } from '../../../../../../components';
+import {
+  Button,
+  ButtonHeader,
+  LoaderForComponent,
+} from '../../../../../../components';
 import { useListUsers } from '../../../../../../hooks';
-import { isResizing$ } from '../../../../../../services/sharingSubject';
 import { PDFViewer } from '@react-pdf/renderer';
-import { ROLE_PERM, TYPE_STATUS } from '../../models';
+import { TYPE_STATUS } from '../../models';
 import { ChipFileMessage } from '../../components';
-import { SPRING } from './models/definitionsMessage';
 import {
   CardRegisterMessageForward,
   CardRegisterMessageReply,
@@ -37,6 +39,7 @@ import {
 } from './views';
 import { PDFGenerator, generateReportPDF } from '../../pdfGenerate';
 import { JOB_DATA } from '../../../../../userCenter/pages/users/models';
+import { HEADER_OPTION, SPRING } from './models';
 
 const parseDate = (date: Date) =>
   formatDate(new Date(date), {
@@ -52,7 +55,11 @@ export const MessagePage = () => {
   const navigate = useNavigate();
   const { paymessageId } = useParams();
   const [isResize, setIsResize] = useState(false);
-  const { users: listUsers } = useListUsers(ROLE_PERM);
+  const { users: listUsers } = useListUsers(
+    'MOD',
+    'tramites',
+    'tramite-de-pago'
+  );
   const { userSession } = useSelector((state: RootState) => state);
   const [isReply, setIsReply] = useState(true);
   const [data, setData] = useState<PdfDataProps>(dataInitialPdf);
@@ -89,9 +96,9 @@ export const MessagePage = () => {
       .then(res => setCountMessage(res.data));
 
   const handleClose = () => {
-    navigate('/tramites');
-    isResizing$.setSubject = false;
+    navigate('/tramites/tramite-de-pago');
   };
+  console.log('message', message);
   const toggleSwitch = () => setIsReply(!isReply);
   const handleViewMoreFiles = () => setViewMoreFiles(!viewMoreFiles);
   const handleViewHistory = () => setViewHistory(!viewHistory);
@@ -153,8 +160,7 @@ export const MessagePage = () => {
     };
   };
   const handleSaveRegister = () => {
-    isResizing$.setSubject = false;
-    navigate('/tramites?refresh=true');
+    navigate('/tramites/tramite-de-pago?refresh=true');
   };
   const isUserInitMessage = userSession.profile.id === message.userInit.userId;
   const handleOptionSelect = (option: 'continue' | 'finish') =>
@@ -179,26 +185,19 @@ export const MessagePage = () => {
       )}
       {(mainReceiver || mainReceiverFinish) && message.status !== 'PAGADO' && (
         <div className="message-page-contain message-page-contain--right">
-          {message.status !== 'FINALIZADO' && (
-            <div className="message-header-content-options  message-header--flexStart">
-              <p
-                className={`messge-header-text-option ${
-                  procedureOption === 'continue' && 'message-option-selected'
-                }`}
-                onClick={() => handleOptionSelect('continue')}
-              >
-                Continuar trámite
-              </p>
-              <p
-                className={`messge-header-text-option ${
-                  procedureOption === 'finish' && 'message-option-selected'
-                }`}
-                onClick={() => handleOptionSelect('finish')}
-              >
-                Finalizar tramite
-              </p>
-            </div>
-          )}
+          {message.status !== 'FINALIZADO' &&
+            message.status !== 'POR_PAGAR' && (
+              <div className="message-header-content-options  message-header--flexStart">
+                {HEADER_OPTION.map(({ procedureOpt, text }) => (
+                  <ButtonHeader
+                    key={procedureOpt}
+                    isActive={procedureOption === procedureOpt}
+                    text={text}
+                    onClick={() => handleOptionSelect(procedureOpt)}
+                  />
+                ))}
+              </div>
+            )}
           {procedureOption === 'continue' ? (
             <>
               {mainReceiver &&

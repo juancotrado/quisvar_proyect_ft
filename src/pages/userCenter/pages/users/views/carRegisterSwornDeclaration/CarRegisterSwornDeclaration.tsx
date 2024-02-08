@@ -5,6 +5,7 @@ import { SwornDeclarationPdf } from '../../pdfGenerator';
 import { deleteExtension } from '../../../../../../utils';
 import { useForm } from 'react-hook-form';
 import { SwornDeclaration } from '../../models';
+import { Button } from '../../../../../../components';
 
 interface CarRegisterSwornDeclarationProps {
   generalFiles: GeneralFile[] | null;
@@ -101,12 +102,8 @@ const CarRegisterSwornDeclaration = ({
       <PDFDownloadLink
         document={<SwornDeclarationPdf data={swornDeclarationData} />}
         fileName={`Declaracion-Jurada.pdf`}
-        className="generateOrderService-preview-pdf"
       >
-        <figure className="cardRegisteVoucher-figure">
-          <img src={`/svg/preview-pdf.svg`} />
-        </figure>
-        Declaracion Jurada
+        <Button icon="preview-pdf" text="Declaración jurada" styleButton={2} />
       </PDFDownloadLink>
     </div>
   );

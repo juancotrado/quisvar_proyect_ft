@@ -1,5 +1,5 @@
 import { pdf } from '@react-pdf/renderer';
-import { Input, Select } from '../../../../../../components';
+import { Button, Input, Select } from '../../../../../../components';
 import './cardGenerateContract.css';
 import ContractUserPdf from '../../pdfGenerator/contractUserPdf/ContractUserPdf';
 import { useForm } from 'react-hook-form';
@@ -49,12 +49,8 @@ const CardGenerateContract = ({ user }: CardGenerateContractProps) => {
         placeholder="Fecha"
         className="generalData-edit-info-input"
       />
-      <button className="generateOrderService-preview-pdf">
-        <figure className="cardRegisteVoucher-figure">
-          <img src={`/svg/preview-pdf.svg`} />
-        </figure>
-        Generar Contrato
-      </button>
+
+      <Button icon="preview-pdf" text="Generar Contrato" styleButton={2} />
     </form>
   );
 };

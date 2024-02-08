@@ -1,6 +1,6 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import './userCenter.css';
-import { GeneralTitle } from '../../components';
+import { ButtonHeader, GeneralTitle } from '../../components';
 import { HEADER_USER_MODEL } from './models/userModelDef';
 
 const UserCenter = () => {
@@ -12,13 +12,7 @@ const UserCenter = () => {
           {HEADER_USER_MODEL.map(header => (
             <NavLink key={header.id} to={header.route}>
               {({ isActive }) => (
-                <span
-                  className={`header-link-span ${
-                    isActive && 'header-link--active'
-                  }`}
-                >
-                  {header.title}
-                </span>
+                <ButtonHeader isActive={isActive} text={header.title} />
               )}
             </NavLink>
           ))}

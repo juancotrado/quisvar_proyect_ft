@@ -104,3 +104,20 @@
   justify-content: center;
   align-items: center;
 }
+
+.btn-main-style-2 {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap: 0.625rem;
+  border-radius: 0.3125rem;
+  border: 1px solid #d4d4d4;
+  background: #f7f7f7;
+  padding: 0.5rem 0.625rem;
+  color: #5c5c5c;
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  cursor: pointer;
+}

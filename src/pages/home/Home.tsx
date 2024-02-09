@@ -32,12 +32,23 @@ export const Home = () => {
     }
   };
   const viewLicense = useCallback(() => {
+    const now = new Date();
+    const early = 2 * 60 * 60 * 1000;
     axiosInstance
       .get<licenseList[]>(`/license/employee/${userSession.id}`)
       .then(res => {
-        if (res.data[0]?.status === 'ACTIVO') {
+        const untilDate = new Date(
+          new Date(res.data[0].untilDate).getTime() + GMT
+        );
+        const timer = now.getTime() > untilDate.getTime() - early;
+        if (res.data[0]?.status === 'ACTIVO' && !res.data[0].fine) {
           setLicenseData(res.data[0]);
           setViewCard(true);
+        }
+        if (res.data[0]?.status === 'ACTIVO' && timer && !res.data[0].fine) {
+          setLicenseData(res.data[0]);
+          setViewCard(true);
+          setDisabledBtn(false);
         }
         if (res.data[0]?.status === 'INACTIVO' && !res.data[0].fine) {
           setLicenseData(res.data[0]);
@@ -46,17 +57,18 @@ export const Home = () => {
         }
       });
   }, [userSession.id]);
-
   useEffect(() => {
     if (licenseData && !licenseData.fine) {
       const now = new Date();
       const early = 2 * 60 * 60 * 1000;
-      const untilDate = new Date(licenseData.untilDate);
-      const timeDifference = untilDate.getTime() + GMT - early - now.getTime();
-      if (timeDifference >= 0) {
+      const untilDate = new Date(
+        new Date(licenseData.untilDate).getTime() + GMT
+      );
+      const timeDifference = now.getTime() - (untilDate.getTime() - early);
+      if (timeDifference < 0) {
         setTimeout(() => {
           viewLicense();
-        }, timeDifference);
+        }, Math.abs(timeDifference));
       }
     }
   }, [licenseData, viewLicense]);
@@ -108,6 +120,7 @@ export const Home = () => {
       .patch(`/license/${licenseData?.id}`, {
         checkout: now,
         fine: calculateFineState(),
+        status: 'INACTIVO',
       })
       .then(() => {
         setViewCard(false);

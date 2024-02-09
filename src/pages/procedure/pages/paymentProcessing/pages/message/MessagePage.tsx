@@ -40,6 +40,7 @@ import {
 import { PDFGenerator, generateReportPDF } from '../../pdfGenerate';
 import { JOB_DATA } from '../../../../../userCenter/pages/users/models';
 import { HEADER_OPTION, SPRING } from './models';
+import { Resizable } from 're-resizable';
 
 const parseDate = (date: Date) =>
   formatDate(new Date(date), {
@@ -54,7 +55,6 @@ const parseDate = (date: Date) =>
 export const MessagePage = () => {
   const navigate = useNavigate();
   const { paymessageId } = useParams();
-  const [isResize, setIsResize] = useState(false);
   const { users: listUsers } = useListUsers(
     'MOD',
     'tramites',
@@ -98,7 +98,6 @@ export const MessagePage = () => {
   const handleClose = () => {
     navigate('/tramites/tramite-de-pago');
   };
-  console.log('message', message);
   const toggleSwitch = () => setIsReply(!isReply);
   const handleViewMoreFiles = () => setViewMoreFiles(!viewMoreFiles);
   const handleViewHistory = () => setViewHistory(!viewHistory);
@@ -165,9 +164,18 @@ export const MessagePage = () => {
   const isUserInitMessage = userSession.profile.id === message.userInit.userId;
   const handleOptionSelect = (option: 'continue' | 'finish') =>
     setProcedureOption(option);
-  const handleResize = () => setIsResize(!isResize);
   return (
-    <div className={`message-page-container ${isResize && 'message--resize'}`}>
+    <Resizable
+      enable={{
+        top: false,
+        right: true,
+        bottom: false,
+        left: true,
+      }}
+      maxWidth={'76%'}
+      minWidth={'30%'}
+      className={`message-page-container `}
+    >
       {message.status === 'PAGADO' && (
         <div className="message-page-contain message-page-contain--right">
           <div
@@ -281,11 +289,6 @@ export const MessagePage = () => {
               icon="close"
               onClick={handleClose}
               className="message-icon-close"
-            />
-            <Button
-              className="imbox-resize-icon"
-              icon={`${!isResize ? 'resize-down' : 'resize-up'}`}
-              onClick={handleResize}
             />
           </div>
           <div className="message-sender-info-details">
@@ -433,6 +436,6 @@ export const MessagePage = () => {
           </div>
         </div>
       </div>
-    </div>
+    </Resizable>
   );
 };

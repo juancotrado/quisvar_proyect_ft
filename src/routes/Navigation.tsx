@@ -39,6 +39,7 @@ import {
   RolesAndPermissions,
 } from '../pages';
 import { ProtectedRole, ProtectedRoute } from '../guards';
+import { NavigationSubMenu } from '.';
 
 const Navigation = () => {
   return (
@@ -67,6 +68,7 @@ const Navigation = () => {
 
             <Route element={<ProtectedRole menuAccess="tramites" />}>
               <Route path="/tramites" element={<Procedure />}>
+                <Route index element={<NavigationSubMenu />} />
                 <Route path="salidas" element={<LicensePage />} />
                 <Route path="tramite-de-pago" element={<MailPage />}>
                   <Route path=":paymessageId" element={<MessagePage />} />
@@ -133,6 +135,7 @@ const Navigation = () => {
 
             <Route element={<ProtectedRole menuAccess="indice-general" />}>
               <Route path="/indice-general" element={<GeneralIndex />}>
+                <Route index element={<NavigationSubMenu />} />
                 <Route path="contratos" element={<Contracts />}>
                   <Route
                     path="contrato/:contractId"

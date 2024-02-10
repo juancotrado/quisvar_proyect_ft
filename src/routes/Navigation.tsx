@@ -37,6 +37,8 @@ import {
   UserCenter,
   Procedure,
   RolesAndPermissions,
+  GroupAttendanceFilter,
+  GroupMeetingFilter,
 } from '../pages';
 import { ProtectedRole, ProtectedRoute } from '../guards';
 
@@ -117,6 +119,14 @@ const Navigation = () => {
 
             <Route element={<ProtectedRole menuAccess="grupos" />}>
               <Route path="/grupos" element={<Group />}>
+                <Route
+                  path="resumen/reuniones"
+                  element={<GroupMeetingFilter />}
+                ></Route>
+                <Route
+                  path="resumen/asistencias"
+                  element={<GroupAttendanceFilter />}
+                ></Route>
                 <Route
                   path="contenido/:groupId/:name"
                   element={<GroupContent />}

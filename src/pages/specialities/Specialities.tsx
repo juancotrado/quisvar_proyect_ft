@@ -1,19 +1,17 @@
 import './specialities.css';
 import { Outlet } from 'react-router-dom';
-import { useMotionValue, motion, PanInfo } from 'framer-motion';
 import { useSector } from '../../hooks';
-import { FocusEvent, useCallback, useEffect, useState } from 'react';
+import { FocusEvent, useEffect } from 'react';
 import { SectorType } from '../../types';
 import { axiosInstance } from '../../services/axiosInstance';
 import { LoaderForComponent, Select } from '../../components';
 import { DropDownSidebarSpeciality } from './components';
 import { YEAR_DATA } from './models';
 import { CardRegisterProject } from './views';
+import { Resizable } from 're-resizable';
 
 export const Specialities = () => {
   const { getSpecialities, sectors, settingSectors } = useSector();
-  const mWidth = useMotionValue(300);
-  const [contentVisible, setContentVisible] = useState(true);
   const handleFilterForYear = async (e: FocusEvent<HTMLSelectElement>) => {
     const { data } = await axiosInstance.get<SectorType[]>('/sector');
     const { value } = e.target;
@@ -38,39 +36,32 @@ export const Specialities = () => {
     };
   }, []);
 
-  const handleDrag = useCallback(
-    (_event: MouseEvent, info: PanInfo) => {
-      const newWidth = mWidth.get() + info.delta.x;
-      if (newWidth < 100) {
-        setContentVisible(false);
-      } else {
-        setContentVisible(true);
-      }
-      if (newWidth > 21 && newWidth < 600) {
-        mWidth.set(mWidth.get() + info.delta.x);
-      }
-    },
-    [mWidth]
-  );
-  const style = {
-    width: mWidth,
-  };
   return (
     <div className="speciality-main">
-      <motion.aside className={`sidebarSpeciality `} style={style}>
+      <Resizable
+        defaultSize={{
+          width: 300,
+          height: '100%',
+        }}
+        className={`sidebarSpeciality `}
+        enable={{
+          top: false,
+          right: true,
+          bottom: false,
+          left: true,
+        }}
+      >
         {sectors ? (
           <>
-            {contentVisible && (
-              <Select
-                label="Año de Especialidad:"
-                required={true}
-                name="typeSpeciality"
-                data={YEAR_DATA}
-                itemKey="year"
-                onChange={handleFilterForYear}
-                textField="year"
-              />
-            )}
+            <Select
+              label="Año de Especialidad:"
+              required={true}
+              name="typeSpeciality"
+              data={YEAR_DATA}
+              itemKey="year"
+              onChange={handleFilterForYear}
+              textField="year"
+            />
             <DropDownSidebarSpeciality
               data={{
                 id: 0,
@@ -79,20 +70,12 @@ export const Specialities = () => {
               }}
               onSave={getSpecialities}
             />
-            <motion.div
-              drag="x"
-              onDrag={handleDrag}
-              dragConstraints={{ top: 0, left: 0, right: 0, bottom: 0 }}
-              dragElastic={0}
-              dragMomentum={false}
-              className="sidebarSpeciality-resize-content"
-            />
           </>
         ) : (
           <LoaderForComponent />
         )}
         <CardRegisterProject onSave={getSpecialities} />
-      </motion.aside>
+      </Resizable>
       <Outlet />
     </div>
   );

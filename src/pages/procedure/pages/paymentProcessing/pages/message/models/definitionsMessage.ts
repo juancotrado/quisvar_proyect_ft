@@ -16,3 +16,5 @@ export const PAY_TYPE_OPTIONS = [
   { id: 'CUENTA', value: 'CUENTA' },
   { id: 'CHEQUE', value: 'CHEQUE' },
 ];
+
+export const YEAR = new Date().getFullYear();

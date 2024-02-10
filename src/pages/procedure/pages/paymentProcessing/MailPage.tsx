@@ -99,7 +99,6 @@ export const MailPage = () => {
   return (
     <div className="mail-main ">
       <div className="mail-main-master-container">
-        <div className="sidebarSpeciality-resize-content" />
         <div className="mail-messages-container">
           <div className={`message-container-header`}>
             <Button

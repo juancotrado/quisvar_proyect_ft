@@ -27,7 +27,6 @@ import {
   dataInitialPdf,
   validateWhiteSpace,
 } from '../../../../../../../../utils';
-import { ROLE_PERM } from '../../../../models';
 import { PDFGenerator } from '../../../../pdfGenerate';
 import { ChipFileMessage } from '../../../../components';
 import { JOB_DATA } from '../../../../../../../userCenter/pages/users/models';
@@ -68,7 +67,8 @@ const CardRegisterMessageReply = ({
     formState: { errors },
   } = useForm<MessageSendType>();
   const [fileUploadFiles, setFileUploadFiles] = useState<File[]>([]);
-  const { users } = useListUsers(ROLE_PERM);
+  const { users } = useListUsers('MOD', 'tramites', 'tramite-de-pago');
+
   const HashUser = HashFile(`${firstName} ${lastName}`);
   const [receiver, setReceiver] = useState<receiverType | null>(null);
   const [pdfData, setpdfData] = useState<PdfDataProps>(dataInitialPdf);

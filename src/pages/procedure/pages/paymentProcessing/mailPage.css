@@ -24,6 +24,11 @@
   align-items: end;
   width: fit-content;
 }
+@media (max-width: 768px) {
+  .mail-main-options-container {
+    flex-wrap: wrap;
+  }
+}
 .message-container-header-options {
   display: flex;
   align-items: center;
@@ -40,7 +45,6 @@
   text-transform: uppercase;
   border-top-left-radius: 0.5rem;
   border-top-right-radius: 0.5rem;
-  min-width: 3rem;
   max-width: 9rem;
 }
 

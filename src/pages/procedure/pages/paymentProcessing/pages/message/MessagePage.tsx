@@ -161,7 +161,7 @@ export const MessagePage = () => {
   const handleSaveRegister = () => {
     navigate('/tramites/tramite-de-pago?refresh=true');
   };
-  const isUserInitMessage = userSession.profile.id === message.userInit.userId;
+  const isUserInitMessage = userSession.id === message.userInit.userId;
   const handleOptionSelect = (option: 'continue' | 'finish') =>
     setProcedureOption(option);
   return (

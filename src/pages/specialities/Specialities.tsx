@@ -70,14 +70,6 @@ export const Specialities = () => {
               }}
               onSave={getSpecialities}
             />
-            {/* <motion.div
-              drag="x"
-              onDrag={handleDrag}
-              dragConstraints={{ top: 0, left: 0, right: 0, bottom: 0 }}
-              dragElastic={0}
-              dragMomentum={false}
-              className="sidebarSpeciality-resize-content"
-            /> */}
           </>
         ) : (
           <LoaderForComponent />

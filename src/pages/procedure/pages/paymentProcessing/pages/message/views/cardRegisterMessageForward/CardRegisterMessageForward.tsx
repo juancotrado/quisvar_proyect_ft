@@ -11,7 +11,6 @@ import {
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   MessageType,
-  MessageTypeImbox,
   PdfDataProps,
   quantityType,
   receiverType,
@@ -31,23 +30,13 @@ import {
   formatDate,
 } from '../../../../../../../../utils';
 import './cardRegisterMessageForward.css';
-import { useListUsers } from '../../../../../../../../hooks';
+import { useListUsers, useRole } from '../../../../../../../../hooks';
 import { motion } from 'framer-motion';
 import { dropIn } from '../../../../../../../../animations';
 import { ChipFileMessage } from '../../../../components';
 import { PDFGenerator } from '../../../../pdfGenerate';
 import { JOB_DATA } from '../../../../../../../userCenter/pages/users/models';
-
-interface MessageSendType {
-  title: string;
-  header: string;
-  description?: string;
-  receiverId: number;
-  idMessageReply?: number;
-  idMessageResend?: number;
-  type: MessageTypeImbox;
-}
-const YEAR = new Date().getFullYear();
+import { MessageSendType, YEAR } from '../../models';
 
 interface CardRegisterMessageForwardProps {
   message: MessageType;
@@ -60,7 +49,8 @@ const CardRegisterMessageForward = ({
   onSave,
 }: CardRegisterMessageForwardProps) => {
   const { userSession } = useSelector((state: RootState) => state);
-  const { users } = useListUsers();
+  const { users } = useListUsers('MOD', 'tramites', 'tramite-de-pago');
+  const { hasAccess } = useRole('MOD', 'tramites', 'tramite-de-pago');
   const [isAlertOpen, setIsAlertOpen] = useState(false);
   const { lastName, firstName } = userSession.profile;
   const {
@@ -246,7 +236,7 @@ const CardRegisterMessageForward = ({
       </div>
       <div className="inbox-forward-btn-submit-container">
         <Button className={`inbox-forward-btn-submit`} text="No Procede" />
-        {['SUPER_ADMIN'].includes(userSession.role) && (
+        {hasAccess && (
           <Button
             onClick={() => setIsAlertOpen(true)}
             className={`inbox-forward-btn-archiver`}

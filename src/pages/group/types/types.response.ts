@@ -3,7 +3,7 @@ export type GroupRes = {
   nombre: string;
   groupId: number;
   title?: string;
-  createdAt: string;
+  createdAt: string | Date;
   groups: {
     name: string;
     moderator: {

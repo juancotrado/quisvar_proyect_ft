@@ -3,7 +3,7 @@ import './group.css';
 import { axiosInstance } from '../../services/axiosInstance';
 import { Group as GroupData } from '../../types';
 import { Outlet } from 'react-router-dom';
-import { GroupBtnAdd, GroupListBar } from './components';
+import { GroupBtnAdd, GroupListBar, GroupMeetingBar } from './components';
 import { Button } from '../../components';
 
 export const Group = () => {
@@ -20,6 +20,8 @@ export const Group = () => {
   return (
     <div className="gr-container">
       <section className="gr-list">
+        <h1 className="gr-title">REUNIONES</h1>
+        <GroupMeetingBar />
         <h1 className="gr-title">GRUPOS</h1>
         {groups &&
           groups.map((group, index) => (

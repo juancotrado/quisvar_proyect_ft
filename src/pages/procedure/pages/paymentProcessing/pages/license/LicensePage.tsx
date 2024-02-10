@@ -58,7 +58,7 @@ export const LicensePage = () => {
           Solicitar Hoja de ruta
         </span>
       ) : (
-        <span className="mail-license" onClick={showCardReportFreeDay}>
+        <span className="lp-license" onClick={showCardReportFreeDay}>
           <img className="lp-free-day-img" src="/svg/license-icon.svg" />
           Día libre
         </span>

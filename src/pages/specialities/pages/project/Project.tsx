@@ -7,25 +7,21 @@ export const Project = () => {
     <div className="project">
       <div className="project-options">
         {PROJECT_OPTIONS.map(option => (
-          <div key={option.id}>
-            <NavLink to={option.navigation}>
-              {({ isActive }) => (
-                <span
-                  className={
-                    isActive
-                      ? 'project-header-btn  project-header-btn-selected'
-                      : 'project-header-btn'
-                  }
-                >
-                  <img
-                    src={`svg/${isActive ? option.iconOn : option.iconOff}.svg`}
-                    className="project-img-icon"
-                  />
-                  <span className="project-span-text">{option.text}</span>
-                </span>
-              )}
-            </NavLink>
-          </div>
+          <NavLink to={option.navigation} key={option.id}>
+            {({ isActive }) => (
+              <span
+                className={`project-header-btn ${
+                  isActive && 'project-header-btn-selected'
+                } `}
+              >
+                <img
+                  src={`svg/${isActive ? option.iconOn : option.iconOff}.svg`}
+                  className="project-img-icon"
+                />
+                <span className="project-span-text">{option.text}</span>
+              </span>
+            )}
+          </NavLink>
         ))}
       </div>
       <div className="project-content">

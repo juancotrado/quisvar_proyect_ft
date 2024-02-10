@@ -64,13 +64,13 @@ const GeneralData = () => {
       ['Distrito:']: district,
     };
   };
-  const getGroups = async () => {
+  const getGroups = () => {
     axiosInstance.get(`/groups/all`).then(res => setGroups(res.data));
   };
   const onSubmitStage: SubmitHandler<StageForm> = async body => {
     axiosInstance
       .patch(`/stages/details/${stageId}`, body)
-      .then(() => getStageDetails());
+      .then(getStageDetails);
   };
 
   const groupsStage = stageInfo?.group?.groups ?? [];

@@ -30,7 +30,7 @@ const CardAssign = ({ onSave }: CardAssingProps) => {
   const handleIsOpen = useRef<Subscription>(new Subscription());
   const [searchTerm, setSearchTerm] = useState('');
   // const { users } = useListUsers();
-  const { listUsers: users } = useSelector((state: RootState) => state);
+  const users = useSelector((state: RootState) => state.listUsers);
   const {
     register,
     handleSubmit,

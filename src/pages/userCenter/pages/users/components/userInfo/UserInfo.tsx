@@ -21,7 +21,9 @@ interface UserInfoProps {
 const UserInfo = ({ user, index, onPrint, roles }: UserInfoProps) => {
   const [isOn, setIsOn] = useState(user.status);
   // const [openRole, setOpenRole] = useState(false);
-  const { userSession } = useSelector((state: RootState) => state);
+  const { id: userSessionId } = useSelector(
+    (state: RootState) => state.userSession
+  );
   const { profile } = user;
   const dispatch: AppDispatch = useDispatch();
 
@@ -104,7 +106,7 @@ const UserInfo = ({ user, index, onPrint, roles }: UserInfoProps) => {
       <div className="col-span job-container">{profile.job}</div>
       <div className="col-span phone-container">{profile.phone}</div>
       <div className="col-span">
-        {user.id !== userSession.id && (
+        {user.id !== userSessionId && (
           <div
             className="switch-status"
             data-ison={isOn}

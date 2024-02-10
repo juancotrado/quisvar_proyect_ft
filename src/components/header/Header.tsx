@@ -112,7 +112,6 @@ const Header = () => {
       id: 1,
       name: 'Ver Video tutorial',
       icon: '/svg/file-video-solid.svg',
-      // action: selectVideoForUserRol,
     },
     {
       id: 3,

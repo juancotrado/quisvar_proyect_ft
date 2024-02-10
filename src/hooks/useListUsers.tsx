@@ -10,7 +10,7 @@ const useListUsers = (
   onlyActive: boolean = true,
   usersData: User[] | null = null
 ) => {
-  const { listUsers } = useSelector((state: RootState) => state);
+  const listUsers = useSelector((state: RootState) => state.listUsers);
   if (roleType) {
   }
 

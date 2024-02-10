@@ -29,7 +29,7 @@ import {
 
 const UsersList = () => {
   const dispatch: AppDispatch = useDispatch();
-  const { listUsers: users } = useSelector((state: RootState) => state);
+  const users = useSelector((state: RootState) => state.listUsers);
   const [isArchived, setIsArchived] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [printReportId, setPrintReportId] = useState<number>();

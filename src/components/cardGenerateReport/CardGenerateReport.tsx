@@ -32,7 +32,7 @@ const CardGenerateReport = ({ employeeId }: CardGenerateReportProps) => {
     };
   }, []);
 
-  const { userSession } = useSelector((state: RootState) => state);
+  const userId = useSelector((state: RootState) => state.userSession.id);
   const {
     handleSubmit,
     register,
@@ -48,7 +48,7 @@ const CardGenerateReport = ({ employeeId }: CardGenerateReportProps) => {
     const initialDate = formatDateLongSpanish(data.initialDate);
     const untilDate = formatDateLongSpanish(data.untilDate);
     const totalDays = getTimeOut(data.initialDate, data.untilDate) / 24;
-    const idGenerate = employeeId ?? userSession.id;
+    const idGenerate = employeeId ?? userId;
     const URL = `/reports/user/${idGenerate}?initial=${data.initialDate}&until=${data.untilDate}&status=DONE`;
     axiosInstance.get(URL).then(res => {
       const { projects, attendance, licencesFee } = res.data;

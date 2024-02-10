@@ -1,16 +1,10 @@
 import { motion } from 'framer-motion';
 import './Menu.css';
-import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 
 const Menu = ({ data }: any) => {
-  const [personalData, setPersonalData] = useState('');
-  const { userSession } = useSelector((state: RootState) => state);
-
-  useEffect(() => {
-    setPersonalData(userSession?.profile.firstName);
-  }, []);
+  const { profile } = useSelector((state: RootState) => state.userSession);
 
   return (
     <motion.ul
@@ -20,11 +14,11 @@ const Menu = ({ data }: any) => {
       transition={{ duration: 0.4 }}
       className="header-toggle"
     >
-      <p className="fullname-menu">{personalData} </p>
+      <p className="fullname-menu">{profile.firstName} </p>
       <div className="line"></div>
       {data.map(
         (value: any) =>
-          (userSession.role !== 'EMPLOYEE' || value.id !== 2) && (
+          value.id !== 2 && (
             <motion.li
               key={value.id}
               whileTap={{ scale: 0.9 }}

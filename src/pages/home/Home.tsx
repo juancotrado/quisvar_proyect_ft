@@ -13,7 +13,9 @@ import { CardOpenFile } from '../userCenter/pages/users/views';
 const GMT = 5 * 60 * 60 * 1000;
 
 export const Home = () => {
-  const { userSession } = useSelector((state: RootState) => state);
+  const { role, id, profile } = useSelector(
+    (state: RootState) => state.userSession
+  );
   const [licenseData, setLicenseData] = useState<licenseList>();
   const [viewCard, setViewCard] = useState<boolean>(false);
   const [disabledBtn, setDisabledBtn] = useState<boolean>(true);
@@ -21,42 +23,40 @@ export const Home = () => {
 
   const navigate = useNavigate();
   const handleNavigateToAreas = () => navigate('/especialidades');
-  const handleNavigateMyWorks = () => navigate('/mis-tareas');
-  const handleNavigateReports = () => navigate('/lista-de-notificaciones');
+  // const handleNavigateMyWorks = () => navigate('/mis-tareas');
+  // const handleNavigateReports = () => navigate('/lista-de-notificaciones');
   const handleNavigateMyAdmin = () => {
     return;
-    if (userSession.role !== 'EMPLOYEE') {
-      handleNavigateReports();
-    } else {
-      handleNavigateMyWorks();
-    }
+    // if (role !== 'EMPLOYEE') {
+    //   handleNavigateReports();
+    // } else {
+    //   handleNavigateMyWorks();
+    // }
   };
   const viewLicense = useCallback(() => {
     const now = new Date();
     const early = 2 * 60 * 60 * 1000;
-    axiosInstance
-      .get<licenseList[]>(`/license/employee/${userSession.id}`)
-      .then(res => {
-        const untilDate = new Date(
-          new Date(res.data[0].untilDate).getTime() + GMT
-        );
-        const timer = now.getTime() > untilDate.getTime() - early;
-        if (res.data[0]?.status === 'ACTIVO' && !res.data[0].fine) {
-          setLicenseData(res.data[0]);
-          setViewCard(true);
-        }
-        if (res.data[0]?.status === 'ACTIVO' && timer && !res.data[0].fine) {
-          setLicenseData(res.data[0]);
-          setViewCard(true);
-          setDisabledBtn(false);
-        }
-        if (res.data[0]?.status === 'INACTIVO' && !res.data[0].fine) {
-          setLicenseData(res.data[0]);
-          setViewCard(true);
-          setDisabledBtn(false);
-        }
-      });
-  }, [userSession.id]);
+    axiosInstance.get<licenseList[]>(`/license/employee/${id}`).then(res => {
+      const untilDate = new Date(
+        new Date(res.data[0].untilDate).getTime() + GMT
+      );
+      const timer = now.getTime() > untilDate.getTime() - early;
+      if (res.data[0]?.status === 'ACTIVO' && !res.data[0].fine) {
+        setLicenseData(res.data[0]);
+        setViewCard(true);
+      }
+      if (res.data[0]?.status === 'ACTIVO' && timer && !res.data[0].fine) {
+        setLicenseData(res.data[0]);
+        setViewCard(true);
+        setDisabledBtn(false);
+      }
+      if (res.data[0]?.status === 'INACTIVO' && !res.data[0].fine) {
+        setLicenseData(res.data[0]);
+        setViewCard(true);
+        setDisabledBtn(false);
+      }
+    });
+  }, [id]);
   useEffect(() => {
     if (licenseData && !licenseData.fine) {
       const now = new Date();
@@ -74,11 +74,11 @@ export const Home = () => {
   }, [licenseData, viewLicense]);
 
   useEffect(() => {
-    if (userSession.id !== 0) {
+    if (id !== 0) {
       viewLicense();
       getGeneralFiles();
     }
-  }, [userSession.id, viewLicense]);
+  }, [id, viewLicense]);
   const getDate = (value: string) => {
     const time = new Date(value);
     const gmtMinus5Time = new Date(time.getTime() + GMT);
@@ -135,9 +135,7 @@ export const Home = () => {
     <div className="home">
       <h1 className="home-title">
         BIENVENID@{' '}
-        <span className="title-content-span">
-          {userSession?.profile.firstName}
-        </span>
+        <span className="title-content-span">{profile.firstName}</span>
       </h1>
       <p className="paragraph">
         ¡Bienvenido a nuestro sistema de asignación de tareas! Aquí podrás

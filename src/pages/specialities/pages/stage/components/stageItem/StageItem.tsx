@@ -14,6 +14,7 @@ import { AppDispatch, RootState } from '../../../../../../store';
 import { useDispatch, useSelector } from 'react-redux';
 import { isOpenButtonDelete$ } from '../../../../../../services/sharingSubject';
 import { setModAuthProject } from '../../../../../../store/slices/modAuthProject.slice';
+import { useRole } from '../../../../../../hooks';
 interface StageItemProps {
   stage: StageSubtask;
   i: number;
@@ -24,9 +25,9 @@ interface StageName {
 }
 const StageItem = ({ stage, i, getStages }: StageItemProps) => {
   const [openEdit, setOpenEdit] = useState(false);
-  const { modAuthProject, userSession } = useSelector(
-    (state: RootState) => state
-  );
+  const { hasAccess } = useRole('MOD');
+
+  const userSessionId = useSelector((state: RootState) => state.userSession.id);
 
   const navigate = useNavigate();
   const {
@@ -93,8 +94,8 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
   ];
   const handleClick = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    const isModsAuthProject = stage.group?.moderator.id === userSession.id;
-    dispatch(setModAuthProject(modAuthProject || isModsAuthProject));
+    const isModsAuthProject = stage.group?.moderator.id === userSessionId;
+    dispatch(setModAuthProject(isModsAuthProject));
   };
   const currentRoute = window.location.href;
   return (
@@ -163,7 +164,7 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
         )}
       </NavLink>
 
-      {modAuthProject && (
+      {hasAccess && (
         <DotsRight data={options} idContext={`stage-${stage.id}`} />
       )}
     </div>

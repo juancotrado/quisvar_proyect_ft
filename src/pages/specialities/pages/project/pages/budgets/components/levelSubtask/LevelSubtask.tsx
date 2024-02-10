@@ -23,13 +23,16 @@ interface LevelSutaskProps {
   onSave?: () => void;
 }
 export const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
-  const { modAuthProject, userSession } = useSelector(
-    (state: RootState) => state
+  const { id: userSessionid } = useSelector(
+    (state: RootState) => state.userSession
+  );
+  const modAuthProject = useSelector(
+    (state: RootState) => state.modAuthProject
   );
   const socket = useContext(SocketContext);
 
   const { stageId } = useParams();
-  const modAuthArea = modAuthProject || userSession.id === level.userId;
+  const modAuthArea = modAuthProject || userSessionid === level.userId;
   const { subTasks, id } = level;
 
   const handleAddTask = () => {

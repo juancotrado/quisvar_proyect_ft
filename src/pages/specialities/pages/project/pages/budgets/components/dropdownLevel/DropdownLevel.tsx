@@ -10,10 +10,12 @@ interface DropdownLevel {
 }
 
 export const DropdownLevel = ({ level, onSave }: DropdownLevel) => {
-  const { modAuthProject, userSession } = useSelector(
-    (state: RootState) => state
+  const modAuthProject = useSelector(
+    (state: RootState) => state.modAuthProject
   );
-  const modAuthArea = modAuthProject || userSession.id === level.userId;
+  const userSessionId = useSelector((state: RootState) => state.userSession.id);
+
+  const modAuthArea = modAuthProject || userSessionId === level.userId;
   const firstLevel = !level.level;
   const existSubtask = level?.subTasks?.length;
   if (level.level === 10) return <div></div>;

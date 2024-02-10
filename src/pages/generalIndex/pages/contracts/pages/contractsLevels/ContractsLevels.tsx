@@ -11,7 +11,7 @@ import { DropdownLevelContract } from './components';
 export const ContractsLevels = () => {
   const dispatch: AppDispatch = useDispatch();
 
-  const { contract } = useSelector((state: RootState) => state);
+  const contract = useSelector((state: RootState) => state.contract);
   const { contractId } = useParams();
   useEffect(() => {
     getContract();

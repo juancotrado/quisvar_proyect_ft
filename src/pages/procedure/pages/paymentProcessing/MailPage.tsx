@@ -17,7 +17,7 @@ const InitTMail: MailType['type'] = 'RECEIVER';
 export const MailPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const { userSession: user } = useSelector((state: RootState) => state);
+  const user = useSelector((state: RootState) => state.userSession);
   const [listMessage, setListMessage] = useState<MailType[] | null>(null);
   // const [isResizing, setIsResizing] = useState(false);
   const [totalMail, setTotalMail] = useState(0);

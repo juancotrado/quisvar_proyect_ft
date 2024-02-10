@@ -32,7 +32,9 @@ const SubtaskFile = ({
   className,
   showDeleteBtnByUserAuth,
 }: SubtaskFileProps) => {
-  const { userSession } = useSelector((state: RootState) => state);
+  const { id: userSessionId } = useSelector(
+    (state: RootState) => state.userSession
+  );
   const socket = useContext(SocketContext);
 
   const deleteFile = (id: number) => {
@@ -82,7 +84,7 @@ const SubtaskFile = ({
               </span>
             </a>
             {(showDeleteBtnByUserAuth
-              ? userSession.profile.id === file.userId
+              ? userSessionId === file.userId
               : showDeleteBtn) && (
               <Button
                 icon="trash-red"

@@ -62,10 +62,10 @@ const ButtonDelete = ({
       setIsAlertOpen(false);
     });
   };
-  const { userSession } = useSelector((state: RootState) => state);
+  const { dni } = useSelector((state: RootState) => state.userSession.profile);
   const handleVerifyPassword = () => {
     const data = {
-      dni: userSession.profile.dni,
+      dni,
       password: password,
     };
     axiosInstance

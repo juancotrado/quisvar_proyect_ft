@@ -19,7 +19,7 @@ export const ProtectedRoute = () => {
 
   useEffect(() => {
     dispatch(getAllServices());
-  }, [dispatch]);
+  }, []);
 
   const handleErrorToken = useRef<Subscription>(new Subscription());
 

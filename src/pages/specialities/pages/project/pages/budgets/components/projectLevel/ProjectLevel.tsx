@@ -37,7 +37,9 @@ export const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
     reset,
     formState: { errors },
   } = useForm<DataForm>();
-  const { modAuthProject } = useSelector((state: RootState) => state);
+  const modAuthProject = useSelector(
+    (state: RootState) => state.modAuthProject
+  );
   const [openOptionLevel, setOpenOptionLevel] = useState<OptionLevel>(null);
   const handleCloseEdit = () => setOpenOptionLevel(null);
   const handleOpenEdit = (option: OptionLevel) => {
@@ -45,7 +47,7 @@ export const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
     reset({ name: data.name });
     setOpenOptionLevel(option);
   };
-  const { users: modedators } = useListUsers(['MOD']);
+  const { users: modedators } = useListUsers('MOD');
   const [idCoordinator, setIdCoordinator] = useState<number | null>(null);
 
   const onSubmitData: SubmitHandler<DataForm> = async body => {

@@ -21,7 +21,9 @@ import { CardRegisterSubTask } from './views';
 
 export const BudgetsPage = () => {
   const { stageId } = useParams();
-  const { modAuthProject } = useSelector((state: RootState) => state);
+  const modAuthProject = useSelector(
+    (state: RootState) => state.modAuthProject
+  );
   const [status, setStatus] = useState<StatusType | ''>('');
   const [degree, setDegree] = useState<DegreType | ''>('');
   const [levels, setlevels] = useState<Level | null>(null);

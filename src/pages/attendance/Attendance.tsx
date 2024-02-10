@@ -6,10 +6,9 @@ import {
   useState,
   useRef,
 } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Input, Button, CloseIcon } from '../../components';
 import './Attendance.css';
-import { AppDispatch, RootState } from '../../store';
 import { axiosInstance } from '../../services/axiosInstance';
 import { _date, SnackbarUtilities } from '../../utils';
 import {
@@ -20,10 +19,10 @@ import {
 } from '../../types';
 import { SocketContext } from '../../context';
 import { isOpenCardViewPdf$ } from '../../services/sharingSubject';
-import { getListUsers } from '../../store/slices/listUsers.slice';
 import { generateReportDaily, generateReportRange } from './excelGenerator';
 import { AttendanceList, CardViewPdf, Legend } from './components';
 import { CALLS } from './models';
+import { RootState } from '../../store';
 interface sendItemsProps {
   usersId: number;
   status: string;
@@ -35,7 +34,6 @@ interface RangeDate {
 }
 const today = new Date();
 export const Attendance = () => {
-  const dispatch: AppDispatch = useDispatch();
   const [sendItems, setSendItems] = useState<sendItemsProps[]>([]);
   const [callLists, setCallLists] = useState<ListAttendance[] | null>(null);
   const [callList, setCallList] = useState<ListAttendance | null>(null);
@@ -46,7 +44,7 @@ export const Attendance = () => {
     endDate: '',
   });
 
-  const { listUsers: users } = useSelector((state: RootState) => state);
+  const users = useSelector((state: RootState) => state.listUsers);
   const socket = useContext(SocketContext);
 
   const componentRef = useRef(null);
@@ -67,7 +65,6 @@ export const Attendance = () => {
     verifyLicenses();
     getTodayData();
     getLicenses();
-    dispatch(getListUsers());
   }, []);
   const handleRadioChange = (status: string, usersId: number) => {
     const findId = sendItems.find(item => item.usersId === usersId);

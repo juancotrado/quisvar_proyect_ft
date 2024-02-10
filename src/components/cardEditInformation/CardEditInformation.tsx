@@ -1,13 +1,14 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import './cardEditInformation.css';
 import { motion, AnimatePresence } from 'framer-motion';
-import { RootState } from '../../store';
+import { AppDispatch, RootState } from '../../store';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { User } from '../../types';
 import { axiosInstance } from '../../services/axiosInstance';
 import { Button, Input } from '..';
 import { CardRecoveryPassword } from '.';
+import { getUserSession } from '../../store/slices/userSession.slice';
 
 interface CardEditInformationProps {
   isOpen?: boolean;
@@ -15,8 +16,9 @@ interface CardEditInformationProps {
 }
 
 const CardEditInformation = ({ isOpen, onClose }: CardEditInformationProps) => {
+  const dispatch: AppDispatch = useDispatch();
   const [isOpenRecovery, setIsOpenRecovery] = useState(false);
-  const { userSession } = useSelector((state: RootState) => state);
+  const userSession = useSelector((state: RootState) => state.userSession);
   const { register, handleSubmit, reset } = useForm<User>();
 
   useEffect(() => {
@@ -27,20 +29,17 @@ const CardEditInformation = ({ isOpen, onClose }: CardEditInformationProps) => {
 
   const onSubmit = async (values: User) => {
     if (userSession?.id !== undefined) {
+      const { firstName, lastName, phone, dni } = values.profile;
       const saveData = {
-        firstName: values.profile.firstName,
-        lastName: values.profile.lastName,
-        phone: values.profile.phone,
-        dni: values.profile.dni,
+        firstName,
+        lastName,
+        phone,
+        dni,
       };
       axiosInstance
         .put(`/profile/${userSession?.id}`, saveData)
-        .then(successfulShipment);
+        .then(() => dispatch(getUserSession()));
     }
-  };
-
-  const successfulShipment = () => {
-    window.location.reload();
   };
 
   const handleOpenRecovery = () => setIsOpenRecovery(true);

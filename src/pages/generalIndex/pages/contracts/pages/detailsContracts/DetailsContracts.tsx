@@ -24,7 +24,7 @@ import { useSearchParams } from 'react-router-dom';
 
 export const DetailsContracts = () => {
   const [textareaValue, setTextareaValue] = useState<string | null>(null);
-  const { contract } = useSelector((state: RootState) => state);
+  const contract = useSelector((state: RootState) => state.contract);
   const [dataPhases, setDataPhases] = useState<PhaseData[]>([]);
   const [viewTableEjecution, setViewTableEjecution] = useState(true);
   const [params, setParams] = useSearchParams();

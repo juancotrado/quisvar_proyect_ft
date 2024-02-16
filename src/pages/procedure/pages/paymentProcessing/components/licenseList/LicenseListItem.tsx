@@ -49,7 +49,7 @@ export const LicenseListItem = ({
       hour: 'numeric',
       minute: 'numeric',
     });
-    return res;
+    return value ? res : '---';
   };
   return (
     <div
@@ -78,6 +78,9 @@ export const LicenseListItem = ({
       </div>
       <div className="license-header-items">{getDate(data.startDate)}</div>
       <div className="license-header-items">{getDate(data.untilDate)}</div>
+      <div className="license-header-items">
+        {getDate(data.checkout as string)}
+      </div>
       {!isEmployee && data.status === 'PROCESO' ? (
         <div className="license-item-input">
           <input onBlur={handleFeedback} className="license-item-text" />

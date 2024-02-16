@@ -21,6 +21,7 @@ export const LicenseListHeader = ({ isEmployee }: license) => {
       <div className="license-header-items">estado</div>
       <div className="license-header-items">salida</div>
       <div className="license-header-items">retorno</div>
+      <div className="license-header-items">llegada</div>
       <div className="license-header-items">observación</div>
       <div className="license-header-items">acción</div>
     </div>

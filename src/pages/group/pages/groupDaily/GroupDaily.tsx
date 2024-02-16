@@ -150,7 +150,7 @@ export const GroupDaily = () => {
         ' ' +
         item?.groups.moderator.profile.lastName
       }`,
-      createdAt: item?.createdAt,
+      createdAt: item?.createdAt as string,
     });
     setIdList(item?.id);
     setTitle(item?.title ?? '');

@@ -94,9 +94,9 @@ const GroupMeetingFilter = () => {
                 title: item.title ?? '',
                 group: item.groups.name ?? '',
                 mod:
-                  item.groups.moderator.profile.firstName +
-                    ' ' +
-                    item.groups.moderator.profile.lastName ?? '',
+                  (item.groups?.moderator?.profile?.firstName ?? '---') +
+                  ' ' +
+                  (item.groups?.moderator?.profile?.lastName ?? '---'),
                 createdAt: item.createdAt as string,
               };
               return (

@@ -94,7 +94,9 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
   ];
   const handleClick = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    const isModsAuthProject = stage.group?.moderator.id === userSessionId;
+    const isModsAuthProject =
+      stage.group?.moderator.id === userSessionId || hasAccess;
+    console.log('isModsAuthProject', isModsAuthProject);
     dispatch(setModAuthProject(isModsAuthProject));
   };
   const currentRoute = window.location.href;

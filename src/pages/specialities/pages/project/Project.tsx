@@ -1,25 +1,21 @@
 import { NavLink, Outlet } from 'react-router-dom';
 import './project.css';
 import { PROJECT_OPTIONS } from './models';
+import { HeaderOptionBtn } from '../../../../components';
 
 export const Project = () => {
   return (
     <div className="project">
       <div className="project-options">
-        {PROJECT_OPTIONS.map(option => (
-          <NavLink to={option.navigation} key={option.id}>
+        {PROJECT_OPTIONS.map(({ iconOff, iconOn, text, id, navigation }) => (
+          <NavLink to={navigation} key={id}>
             {({ isActive }) => (
-              <span
-                className={`project-header-btn ${
-                  isActive && 'project-header-btn-selected'
-                } `}
-              >
-                <img
-                  src={`svg/${isActive ? option.iconOn : option.iconOff}.svg`}
-                  className="project-img-icon"
-                />
-                <span className="project-span-text">{option.text}</span>
-              </span>
+              <HeaderOptionBtn
+                iconOff={iconOff}
+                iconOn={iconOn}
+                text={text}
+                isActive={isActive}
+              />
             )}
           </NavLink>
         ))}

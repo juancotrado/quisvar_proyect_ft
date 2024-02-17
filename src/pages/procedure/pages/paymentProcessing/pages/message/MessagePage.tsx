@@ -60,7 +60,9 @@ export const MessagePage = () => {
     'tramites',
     'tramite-de-pago'
   );
-  const { userSession } = useSelector((state: RootState) => state);
+  const { id: userSessionId } = useSelector(
+    (state: RootState) => state.userSession
+  );
   const [isReply, setIsReply] = useState(true);
   const [data, setData] = useState<PdfDataProps>(dataInitialPdf);
   const [message, setMessage] = useState<MessageType | null>();
@@ -82,13 +84,13 @@ export const MessagePage = () => {
         setMessage(res.data);
       });
     },
-    [userSession]
+    [userSessionId]
   );
   useEffect(() => {
-    if (paymessageId && userSession.id) getMessage(paymessageId);
+    if (paymessageId && userSessionId) getMessage(paymessageId);
     getQuantityServices();
     return () => setMessage(null);
-  }, [getMessage, paymessageId, userSession.id]);
+  }, [getMessage, paymessageId, userSessionId]);
 
   const getQuantityServices = () =>
     axiosInstance
@@ -110,21 +112,21 @@ export const MessagePage = () => {
     );
 
   const { users } = message;
-  const sender = users.find(({ user }) => user.id !== userSession.id);
+  const sender = users.find(({ user }) => user.id !== userSessionId);
   const mainSender = users.find(
     ({ user, type, role }) =>
-      user.id === userSession.id && role === 'MAIN' && type == 'RECEIVER'
+      user.id === userSessionId && role === 'MAIN' && type == 'RECEIVER'
   );
   const mainReceiver = users.find(
     ({ user, status, role, type }) =>
-      user.id === userSession.id &&
+      user.id === userSessionId &&
       status &&
       role === 'MAIN' &&
       type == 'RECEIVER'
   );
   const mainReceiverFinish = users.some(
     ({ user, role, type }) =>
-      user.id === userSession.id && role === 'MAIN' && type == 'RECEIVER'
+      user.id === userSessionId && role === 'MAIN' && type == 'RECEIVER'
   );
   // console.log({ mainReceiverFinish });
   const trandformData = (data: MessageReply) => {
@@ -161,7 +163,7 @@ export const MessagePage = () => {
   const handleSaveRegister = () => {
     navigate('/tramites/tramite-de-pago?refresh=true');
   };
-  const isUserInitMessage = userSession.id === message.userInit.userId;
+  const isUserInitMessage = userSessionId === message.userInit.userId;
   const handleOptionSelect = (option: 'continue' | 'finish') =>
     setProcedureOption(option);
   return (

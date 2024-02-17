@@ -1,15 +1,18 @@
 import { useSelector } from 'react-redux';
-import { useRole } from '../../../../../../hooks';
+import { useRole } from '../../../../hooks';
 import './licensePage.css';
-import { RootState } from '../../../../../../store';
+import { RootState } from '../../../../store';
 import { useEffect, useState } from 'react';
-import { axiosInstance } from '../../../../../../services/axiosInstance';
-import { licenseList } from '../../../../../../types';
-import { CardLicense } from '../../views';
-import { LicenseListHeader, LicenseListItem } from '../../components';
-import { isOpenCardLicense$ } from '../../../../../../services/sharingSubject';
+import { axiosInstance } from '../../../../services/axiosInstance';
+import { licenseList } from '../../../../types';
+import {
+  LicenseListHeader,
+  LicenseListItem,
+} from '../paymentProcessing/components';
+import { isOpenCardLicense$ } from '../../../../services/sharingSubject';
+import { CardLicense } from './views';
 export const LicensePage = () => {
-  const { userSession } = useSelector((state: RootState) => state);
+  const { role, id } = useSelector((state: RootState) => state.userSession);
   const { hasAccess } = useRole('MOD', 'tramites', 'salidas');
   const [listLicense, setListLicense] = useState<licenseList[]>([]);
   useEffect(() => {
@@ -22,8 +25,8 @@ export const LicensePage = () => {
       .then(() => console.log('Datos limpiados'));
   };
   const getHistory = () => {
-    if (userSession.role && !hasAccess) {
-      axiosInstance.get(`license/employee/${userSession.id}`).then(res => {
+    if (role && !hasAccess) {
+      axiosInstance.get(`license/employee/${id}`).then(res => {
         setListLicense(res.data);
       });
     }

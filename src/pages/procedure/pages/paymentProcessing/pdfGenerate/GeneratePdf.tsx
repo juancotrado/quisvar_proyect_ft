@@ -22,7 +22,14 @@ interface PDFGeneratorProps {
 interface ConfigProps {
   size: 'A4' | 'A5';
 }
-
+const data = [
+  { textOne: 'Para', textTwo: 'BAC. BRAYAN (CONTRA ES DNI) ANCHAPURI' },
+  { textOne: 'De', textTwo: 'BAC. BRAYAN (CONTRA ES DNI) ANCHAPURI' },
+  { textOne: 'Asunto', textTwo: 'BAC. BRAYAN (CONTRA ES DNI) ANCHAPURI' },
+  { textOne: 'Fecha', textTwo: 'BAC. BRAYAN (CONTRA ES DNI) ANCHAPURI' },
+];
+const htmlString =
+  '<html><body><h1>Hello, World!</h1><p>This is a PDF generated from HTML.</p></body></html>';
 export const generateReportPDF = (
   value: PDFGeneratorProps,
   config?: ConfigProps
@@ -32,6 +39,13 @@ export const generateReportPDF = (
       size={config?.size ?? 'A4'}
       style={config?.size === 'A4' ? styles.page : styles.pageA5}
     >
+      <View style={{ margin: 10, padding: 10, flexGrow: 1 }}>
+        <div dangerouslySetInnerHTML={{ __html: htmlString }} />
+      </View>
+      <div>
+        {' '}
+        <Text style={styles.headerBold}>Para</Text>
+      </div>
       <Text style={{ ...styles.title }}>{value.data?.title}</Text>
       <View style={styles.headerContent}>
         {/* header */}

@@ -22,3 +22,32 @@
   display: flex;
   gap: 1rem;
 }
+
+.procedure-main {
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  gap: 0.3rem;
+  height: 100%;
+  overflow: hidden;
+}
+
+.procedure-flow-main {
+  width: 100%;
+  position: relative;
+  background-color: #fff;
+  padding: 0.5rem;
+  transition: 0.3s left ease;
+  filter: drop-shadow(0px 4px 3px rgb(0 0 0 / 0.3));
+  height: 100%;
+}
+
+.procedure-flow-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.procedure-flow-option {
+  display: flex;
+}

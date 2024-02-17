@@ -183,7 +183,7 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
         <Button
           type="submit"
           text={`${watch('id') ? 'Duplicar' : 'Registrar'}`}
-          className="send-button"
+          styleButton={4}
         />
       </form>
     </Modal>

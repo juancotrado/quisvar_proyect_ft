@@ -26,11 +26,12 @@ import {
   addFilesList,
   deleteFileOnList,
   radioOptions,
-  InitialValueEditor,
+  // InitialValueEditor,
   validateWhiteSpace,
   formatDate,
   convertToDynamicObject,
   dataInitialPdf,
+  INITIAL_VALUE_EDITOR,
 } from '../../../../../../utils';
 import { useNavigate } from 'react-router-dom';
 import { isOpenCardGenerateReport$ } from '../../../../../../services/sharingSubject';
@@ -70,7 +71,7 @@ const CardRegisterMessage = ({
   const [countMessage, setCountMessage] = useState<quantityType[] | null>([]);
   const { lastName, firstName } = userSession.profile;
   const HashUser = HashFile(`${firstName} ${lastName}`);
-  const initialValueEditor = InitialValueEditor();
+  // const initialValueEditor = InitialValueEditor();
 
   const [pdfData, setpdfData] = useState<PdfDataProps>(dataInitialPdf);
 
@@ -308,7 +309,7 @@ const CardRegisterMessage = ({
           type="text"
         />
         <Editor
-          initialValue={initialValueEditor}
+          initialValue={INITIAL_VALUE_EDITOR}
           init={{
             min_height: 500,
             paste_data_images: false,
@@ -354,9 +355,7 @@ const CardRegisterMessage = ({
           )}
         </div>
 
-        <div className="imbox-btn-submit-container">
-          <Button className="imbox-btn-submit" type="submit" text="Enviar" />
-        </div>
+        <Button type="submit" text="Enviar" styleButton={4} />
       </form>
     </motion.div>
   );

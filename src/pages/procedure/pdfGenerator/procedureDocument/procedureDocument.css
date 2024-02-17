@@ -1,0 +1,21 @@
+.procedureDocument-sign {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 3rem;
+}
+.procedureDocument-sign-line {
+  border-top: 2px solid black;
+  width: 30%;
+  margin-bottom: 0.5rem;
+}
+.procedureDocument-main {
+  color: black;
+  font-size: 15px;
+  font-family: 'Arial Narrow', sans-serif;
+}
+.procedureDocument-title {
+  text-align: center;
+  font-weight: bold;
+  text-decoration: underline;
+}

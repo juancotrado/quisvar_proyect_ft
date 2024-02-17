@@ -131,7 +131,7 @@ const CardRegisterSubTask = () => {
           />
         </div>
 
-        <Button text="Guardar" className="btn-area send-button" type="submit" />
+        <Button text="Guardar" type="submit" styleButton={4} />
       </form>
     </Modal>
   );

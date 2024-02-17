@@ -32,12 +32,6 @@
   letter-spacing: 0.01125rem;
 }
 
-.project-header-btn {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
 .project-title-contain {
   width: 100%;
   display: flex;
@@ -85,23 +79,6 @@
   align-items: flex-start;
 }
 
-.project-header-btn {
-  display: flex;
-  width: 18rem;
-  height: 2.75rem;
-  padding: 0.625rem;
-  align-items: center;
-  gap: 1.5rem;
-  border-radius: 1px;
-  border: none;
-  border-bottom: 0.5px solid #8b8b8b;
-}
-.project-header-btn:hover {
-  background-color: #f5f5f5;
-}
-.project-header-btn-selected {
-  border-bottom: 2px solid #001b69;
-}
 .project-img-size {
   width: 1.5rem;
 }

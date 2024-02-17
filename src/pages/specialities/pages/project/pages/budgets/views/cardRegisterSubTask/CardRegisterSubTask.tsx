@@ -113,7 +113,7 @@ const CardRegisterSubTask = () => {
             label="Dias"
             type="number"
             {...register('days', {
-              validate: { validateWhiteSpace, validateOnlyDecimals },
+              validate: { validateOnlyDecimals },
               value: 0,
               valueAsNumber: true,
             })}

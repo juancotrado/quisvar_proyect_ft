@@ -107,7 +107,11 @@ const GeneralData = () => {
                 />
               )}
               {groupsStage.map(({ users }, i) => (
-                <GeneralDataGroupRow user={users} index={i + 2} />
+                <GeneralDataGroupRow
+                  key={users.id}
+                  user={users}
+                  index={i + 2}
+                />
               ))}
             </div>
           </div>

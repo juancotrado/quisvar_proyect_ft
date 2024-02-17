@@ -262,6 +262,8 @@ export interface ProjectType {
   stages: StageSubtask[];
   specialityId: number;
   userId: number;
+  hasAccessInStage: boolean;
+  useSessionId: number;
 }
 
 export interface InfoDataReport {

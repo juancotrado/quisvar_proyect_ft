@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from 'react';
+import { useState } from 'react';
 import { Option, StageSubtask } from '../../../../../../types';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { DotsRight, Input } from '../../../../../../components';
@@ -10,10 +10,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import './StageItem.css';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
-import { AppDispatch, RootState } from '../../../../../../store';
-import { useDispatch, useSelector } from 'react-redux';
 import { isOpenButtonDelete$ } from '../../../../../../services/sharingSubject';
-import { setModAuthProject } from '../../../../../../store/slices/modAuthProject.slice';
 import { useRole } from '../../../../../../hooks';
 interface StageItemProps {
   stage: StageSubtask;
@@ -27,8 +24,6 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
   const [openEdit, setOpenEdit] = useState(false);
   const { hasAccess } = useRole('MOD');
 
-  const userSessionId = useSelector((state: RootState) => state.userSession.id);
-
   const navigate = useNavigate();
   const {
     handleSubmit,
@@ -36,7 +31,6 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
     reset,
     formState: { errors },
   } = useForm<StageName>();
-  const dispatch: AppDispatch = useDispatch();
 
   const handleOpenEdit = () => {
     setOpenEdit(!openEdit);
@@ -92,13 +86,7 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
       function: handleDuplicate,
     },
   ];
-  const handleClick = (e: MouseEvent<HTMLDivElement>) => {
-    e.stopPropagation();
-    const isModsAuthProject =
-      stage.group?.moderator.id === userSessionId || hasAccess;
-    console.log('isModsAuthProject', isModsAuthProject);
-    dispatch(setModAuthProject(isModsAuthProject));
-  };
+
   const currentRoute = window.location.href;
   return (
     <div className="stage-header">
@@ -107,11 +95,7 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
       <NavLink to={openEdit ? currentRoute : `etapa/${stage.id}`}>
         {({ isActive }) => (
           <ContextMenuTrigger id={`stage-${stage.id}`}>
-            <div
-              className="stage-header-div"
-              key={stage.id + 1}
-              onClick={handleClick}
-            >
+            <div className="stage-header-div" key={stage.id + 1}>
               {!openEdit ? (
                 <span
                   className={

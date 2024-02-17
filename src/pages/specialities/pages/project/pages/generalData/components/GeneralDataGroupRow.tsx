@@ -6,9 +6,8 @@ interface GeneralDataGroupRowProps {
   index: number;
 }
 const GeneralDataGroupRow = ({ user, index }: GeneralDataGroupRowProps) => {
-  console.log('users', user);
   return (
-    <div key={user.id} className="generalData-infor-group-contain">
+    <div className="generalData-infor-group-contain">
       <span className="generalData-infor-group-text generalData-table-text-alter">
         {index}
       </span>

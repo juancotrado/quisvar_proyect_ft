@@ -19,7 +19,9 @@ const Procedure = () => {
           ))}
         </div>
       </div>
-      <Outlet />
+      <div className="procedure-main">
+        <Outlet />
+      </div>
     </div>
   );
 };

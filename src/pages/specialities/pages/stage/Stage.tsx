@@ -4,10 +4,11 @@ import { axiosInstance } from '../../../../services/axiosInstance';
 import './stage.css';
 import { ProjectType } from '../../../../types';
 import { Button, LoaderForComponent } from '../../../../components';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../../../store';
 import { StageAddButton, StageItem } from './components';
 import { useRole } from '../../../../hooks';
+import { setModAuthProject } from '../../../../store/slices/modAuthProject.slice';
 
 export const Stage = () => {
   const [project, setProject] = useState<ProjectType | null>(null);
@@ -15,6 +16,7 @@ export const Stage = () => {
   const { projectId } = useParams();
   const { hasAccess } = useRole('MOD');
   const { id } = useSelector((state: RootState) => state.userSession);
+  const dispatch: AppDispatch = useDispatch();
 
   const handleBtnActive = () => {
     setBtnActive(!btnActive);
@@ -26,7 +28,9 @@ export const Stage = () => {
   }, [projectId, id]);
 
   const getStages = () => {
-    axiosInstance.get(`/projects/${projectId}`).then(res => {
+    axiosInstance.get<ProjectType>(`/projects/${projectId}`).then(res => {
+      const isModsAuthProject = res.data.hasAccessInStage || hasAccess;
+      dispatch(setModAuthProject(isModsAuthProject));
       setProject(res.data);
     });
   };
@@ -44,7 +48,7 @@ export const Stage = () => {
                 getStages={getStages}
               />
             ))}
-            {hasAccess && (
+            {(hasAccess || project.hasAccessInStage) && (
               <>
                 {!btnActive ? (
                   <Button

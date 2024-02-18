@@ -20,7 +20,9 @@ interface CardLicenseProps {
 }
 
 const CardLicense = ({ onSave }: CardLicenseProps) => {
-  const { userSession } = useSelector((state: RootState) => state);
+  const { id: userSessionId } = useSelector(
+    (state: RootState) => state.userSession
+  );
   const [isOpen, setIsOpen] = useState(false);
   const handleIsOpen = useRef<Subscription>(new Subscription());
   const [data, setData] = useState<licenseList>();
@@ -71,7 +73,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
         });
       } else {
         axiosInstance
-          .post(`license`, { usersId: userSession.id, ...values })
+          .post(`license`, { usersId: userSessionId, ...values })
           .then(() => {
             setIsOpen(false);
             reset({});
@@ -83,7 +85,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
         reason: values.reason,
         startDate: new Date(values.startDate),
         untilDate: new Date(values.untilDate),
-        usersId: userSession.id,
+        usersId: userSessionId,
         feedback: data.feedback,
         status: 'PROCESS',
       };
@@ -136,7 +138,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
           />
         </div>
         <TextArea label="Motivo" {...register('reason')} name="reason" />
-        <Button type="submit" text="Enviar" className="send-button" />
+        <Button type="submit" text="Enviar" styleButton={4} />
       </form>
     </Modal>
   );

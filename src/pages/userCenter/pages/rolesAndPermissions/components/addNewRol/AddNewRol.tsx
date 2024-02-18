@@ -86,11 +86,7 @@ const AddNewRol = ({
           </div>
         ))}
       </div>
-      <Button
-        text="Guardar Rol"
-        className=" send-button  "
-        onClick={createRol}
-      />
+      <Button text="Guardar Rol" styleButton={4} onClick={createRol} />
     </div>
   );
 };

@@ -33,3 +33,4 @@ export * from './generalTitle';
 export * from './iconAction';
 export * from './viewPdf';
 export * from './buttonHeader';
+export * from './headerOption';

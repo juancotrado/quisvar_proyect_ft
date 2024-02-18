@@ -113,7 +113,7 @@ const CardRegisterSubTask = () => {
             label="Dias"
             type="number"
             {...register('days', {
-              validate: { validateWhiteSpace, validateOnlyDecimals },
+              validate: { validateOnlyDecimals },
               value: 0,
               valueAsNumber: true,
             })}
@@ -131,7 +131,7 @@ const CardRegisterSubTask = () => {
           />
         </div>
 
-        <Button text="Guardar" className="btn-area send-button" type="submit" />
+        <Button text="Guardar" type="submit" styleButton={4} />
       </form>
     </Modal>
   );

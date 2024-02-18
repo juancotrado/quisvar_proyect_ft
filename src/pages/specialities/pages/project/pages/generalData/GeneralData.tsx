@@ -12,12 +12,14 @@ import './GeneralData.css';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { useParams } from 'react-router-dom';
 import GeneralDataGroupRow from './components/GeneralDataGroupRow';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../../../store';
 
 const GeneralData = () => {
   const { stageId } = useParams();
   const [stageInfo, setStageInfo] = useState<StageInfo | null>(null);
   const [groups, setGroups] = useState<Group[] | null>(null);
-
+  const modAuth = useSelector((state: RootState) => state.modAuthProject);
   const {
     handleSubmit,
     register,
@@ -105,7 +107,11 @@ const GeneralData = () => {
                 />
               )}
               {groupsStage.map(({ users }, i) => (
-                <GeneralDataGroupRow user={users} index={i + 2} />
+                <GeneralDataGroupRow
+                  key={users.id}
+                  user={users}
+                  index={i + 2}
+                />
               ))}
             </div>
           </div>
@@ -131,6 +137,7 @@ const GeneralData = () => {
               textField="name"
               errors={errors}
               className="generalData-edit-info-input"
+              disabled={!modAuth}
             />
           )}
         </div>
@@ -146,6 +153,7 @@ const GeneralData = () => {
             placeholder="Costo - Practicante"
             errors={errors}
             className="generalData-edit-info-input"
+            disabled={!modAuth}
           />
           <Input
             label="Costo Egresado:"
@@ -158,6 +166,7 @@ const GeneralData = () => {
             placeholder="Costo - Egresado"
             errors={errors}
             className="generalData-edit-info-input"
+            disabled={!modAuth}
           />
         </div>
         <div className="col-input">
@@ -176,6 +185,7 @@ const GeneralData = () => {
             placeholder="Costo - Bachiller "
             errors={errors}
             className="generalData-edit-info-input"
+            disabled={!modAuth}
           />
           <Input
             label="Costo Titulado:"
@@ -188,13 +198,14 @@ const GeneralData = () => {
             placeholder="Costo - Titulado"
             errors={errors}
             className="generalData-edit-info-input"
+            disabled={!modAuth}
           />
         </div>
         <div className="col-input">
           <CostTable mount={+watch('bachelorCost')} text="Bachiller" />
           <CostTable mount={+watch('professionalCost')} text="Titulado" />
         </div>
-        <Button type="submit" text={`Guardar`} className="send-button" />
+        {modAuth && <Button type="submit" text={`Guardar`} styleButton={4} />}
       </form>
     </div>
   );

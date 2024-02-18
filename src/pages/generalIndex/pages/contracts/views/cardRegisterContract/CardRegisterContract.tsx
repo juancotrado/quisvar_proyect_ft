@@ -274,7 +274,7 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
         <Button
           type="submit"
           text={`${watch('id') ? 'Actualizar' : 'Registrar'}`}
-          className="send-button"
+          styleButton={4}
         />
       </form>
     </Modal>

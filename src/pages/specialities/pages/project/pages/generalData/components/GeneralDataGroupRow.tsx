@@ -1,21 +1,25 @@
 import { User } from '../../../../../../../types';
-import { capitalizeText, getRole } from '../../../../../../../utils';
-
+import { capitalizeText } from '../../../../../../../utils';
+import './generalDataGroupRow.css';
 interface GeneralDataGroupRowProps {
   user: User;
   index: number;
 }
 const GeneralDataGroupRow = ({ user, index }: GeneralDataGroupRowProps) => {
   return (
-    <div key={user.id} className="generalData-infor-group-contain">
+    <div className="generalData-infor-group-contain">
       <span className="generalData-infor-group-text generalData-table-text-alter">
         {index}
       </span>
-      <span className="generalData-infor-group-text generalData-table-text-alter">
+      <span
+        className={`generalData-infor-group-text generalData-table-text-alter ${
+          index === 1 && 'generalDataGroupRowProps-color-admin'
+        }`}
+      >
         {user.profile.firstName} {user.profile.lastName}
       </span>
       <span className="generalData-infor-group-text generalData-table-text-alter">
-        {capitalizeText(`${getRole(user.role)} ${user.profile.description}`)}
+        {capitalizeText(`${user?.role?.name}`)}
       </span>
       <span className="generalData-infor-group-text generalData-table-text-alter">
         {user.profile.job}

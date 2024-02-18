@@ -39,6 +39,8 @@ import {
   RolesAndPermissions,
   GroupAttendanceFilter,
   GroupMeetingFilter,
+  RegularProcedure,
+  Communications,
 } from '../pages';
 import { ProtectedRole, ProtectedRoute } from '../guards';
 import { NavigationSubMenu } from '.';
@@ -72,6 +74,8 @@ const Navigation = () => {
               <Route path="/tramites" element={<Procedure />}>
                 <Route index element={<NavigationSubMenu />} />
                 <Route path="salidas" element={<LicensePage />} />
+                <Route path="tramite-regular" element={<RegularProcedure />} />
+                <Route path="comunicado" element={<Communications />} />
                 <Route path="tramite-de-pago" element={<MailPage />}>
                   <Route path=":paymessageId" element={<MessagePage />} />
                 </Route>

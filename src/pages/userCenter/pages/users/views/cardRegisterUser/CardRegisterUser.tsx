@@ -390,8 +390,8 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
           <div className="btn-build">
             <Button
               text={userId ? 'GUARDAR' : 'CREAR'}
-              className="send-button"
               whileTap={{ scale: 0.9 }}
+              styleButton={4}
               type="submit"
             />
           </div>

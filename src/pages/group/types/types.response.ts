@@ -6,6 +6,7 @@ export type GroupRes = {
   createdAt: string | Date;
   groups: {
     name: string;
+    gNumber: number;
     moderator: {
       profile: {
         firstName: string;

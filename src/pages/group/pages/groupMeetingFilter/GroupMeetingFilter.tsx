@@ -7,12 +7,14 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { GroupRes } from '../../types';
 import { _date, formatDate } from '../../../../utils';
 import { DutyPdf } from '../groupContent/views';
-
+import { GroupMeetingDetails } from './views/groupMeetingDetails';
+const today = new Date();
 const GroupMeetingFilter = () => {
-  const [startDate, setStartDate] = useState('');
-  const [endDate, setEndDate] = useState('');
+  const [startDate, setStartDate] = useState<string>('');
+  const [endDate, setEndDate] = useState<string>('');
   const [groups, setGroups] = useState<Group[]>();
   const [items, setItems] = useState<GroupRes[]>();
+  const [details, setDetails] = useState<GroupRes>();
   const getgroups = useCallback(async () => {
     await axiosInstance.get('/groups/all').then(res => setGroups(res.data));
   }, []);
@@ -31,7 +33,7 @@ const GroupMeetingFilter = () => {
   const onSubmit: SubmitHandler<any> = values => {
     axiosInstance
       .get(
-        `/attendanceGroup/filter/${values.groupId}?startDate=${values.startDate}&endDate=${values.endDate}`
+        `/attendanceGroup/filter/?id=${values.groupId}&startDate=${values.startDate}&endDate=${values.endDate}`
       )
       .then(res => {
         setItems(res.data);
@@ -51,6 +53,7 @@ const GroupMeetingFilter = () => {
             defaultValue={startDate}
             classNameMain="gmf-input"
             onChange={e => setStartDate(e.target.value)}
+            max={_date(today)}
           />
           <Input
             type="date"
@@ -60,13 +63,15 @@ const GroupMeetingFilter = () => {
             defaultValue={endDate}
             classNameMain="gmf-input"
             onChange={e => setEndDate(e.target.value)}
+            max={_date(today)}
           />
           <div>
             <Select
-              {...register('groupId', { required: true })}
+              {...register('groupId')}
               itemKey="id"
               data={groups}
               textField="name"
+              placeholder="Todos"
               name="groupId"
               label="Grupos"
               className="gmf-input"
@@ -79,47 +84,63 @@ const GroupMeetingFilter = () => {
             icon="filter"
           />
         </form>
-        <div className="gmf-table">
-          <div className="gmf-header">
-            <h1 className="gmf-title">N</h1>
-            <h1 className="gmf-title">Fecha</h1>
-            <h1 className="gmf-title">Titulo</h1>
-            <h1 className="gmf-title">Documento</h1>
+        <div className="gmf-data">
+          <div className="gmf-items">
+            <div className="gmf-table">
+              <div className="gmf-header">
+                <h1 className="gmf-title">N</h1>
+                <h1 className="gmf-title">Grupo</h1>
+                <h1 className="gmf-title">Fecha</h1>
+                <h1 className="gmf-title">Titulo</h1>
+                <h1 className="gmf-title">Documento</h1>
+              </div>
+            </div>
+            <div className="gmf-res-content">
+              {items &&
+                items.map((item, idx) => {
+                  const info = {
+                    title: item.title ?? '',
+                    group: item.groups.name ?? '',
+                    mod:
+                      (item.groups?.moderator?.profile?.firstName ?? '---') +
+                      ' ' +
+                      (item.groups?.moderator?.profile?.lastName ?? '---'),
+                    createdAt: item.createdAt as string,
+                  };
+                  return (
+                    <div
+                      className="gmf-body"
+                      key={item.id}
+                      onClick={() => setDetails(item)}
+                    >
+                      <h1 className="gmf-item">{idx + 1}</h1>
+                      <h1 className="gmf-item">Grupo {item.groups.gNumber}</h1>
+                      <h1 className="gmf-item">
+                        {formatDate(new Date(item.createdAt), {
+                          day: '2-digit',
+                          month: 'long',
+                          year: 'numeric',
+                        })}
+                      </h1>
+                      <h1 className="gmf-item">{item.title}</h1>
+                      <h1 className="gmf-doc">
+                        <DutyPdf
+                          info={info}
+                          attendance={item.attendance}
+                          duty={item.duty}
+                        />
+                      </h1>
+                    </div>
+                  );
+                })}
+            </div>
           </div>
-        </div>
-        <div className="gmf-res-content">
-          {items &&
-            items.map((item, idx) => {
-              const info = {
-                title: item.title ?? '',
-                group: item.groups.name ?? '',
-                mod:
-                  (item.groups?.moderator?.profile?.firstName ?? '---') +
-                  ' ' +
-                  (item.groups?.moderator?.profile?.lastName ?? '---'),
-                createdAt: item.createdAt as string,
-              };
-              return (
-                <div className="gmf-body" key={item.id}>
-                  <h1 className="gmf-item">{idx + 1}</h1>
-                  <h1 className="gmf-item">
-                    {formatDate(new Date(item.createdAt), {
-                      day: '2-digit',
-                      month: 'long',
-                      year: 'numeric',
-                    })}
-                  </h1>
-                  <h1 className="gmf-item">{item.title}</h1>
-                  <h1 className="gmf-doc">
-                    <DutyPdf
-                      info={info}
-                      attendance={item.attendance}
-                      duty={item.duty}
-                    />
-                  </h1>
-                </div>
-              );
-            })}
+          {/* {details && (
+            <GroupMeetingDetails
+              item={details as GroupRes}
+              onClose={() => setDetails(undefined)}
+            />
+          )} */}
         </div>
       </section>
     </div>

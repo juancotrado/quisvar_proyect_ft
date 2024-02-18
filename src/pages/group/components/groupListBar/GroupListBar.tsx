@@ -8,10 +8,9 @@ import { GroupBtnAdd } from '..';
 
 interface GroupListBarProps {
   group: Group;
-  index: number;
   onSave: () => void;
 }
-const GroupListBar = ({ group, onSave, index }: GroupListBarProps) => {
+const GroupListBar = ({ group, onSave }: GroupListBarProps) => {
   const [edit, setEdit] = useState<boolean>(false);
   // const handleEditContract = () =>
   //   (isOpenCardRegisteContract$.setSubject = { isOpen: true, contract });
@@ -41,7 +40,7 @@ const GroupListBar = ({ group, onSave, index }: GroupListBarProps) => {
     <ContextMenuTrigger id={`gr-sidebar-${group.id}`} key={group.id}>
       {!edit ? (
         <NavLink
-          to={`contenido/${group.id}/GRUPO ${index}`}
+          to={`contenido/${group.id}/GRUPO-${group.gNumber}`}
           className={({ isActive }) =>
             `gr-sidebar-data  ${isActive && 'contract-selected'} `
           }
@@ -54,7 +53,7 @@ const GroupListBar = ({ group, onSave, index }: GroupListBarProps) => {
             />
           </figure>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <h4 className="gr-sidebar-name">GRUPO {index}</h4>
+            <h4 className="gr-sidebar-name">GRUPO {group.gNumber}</h4>
             <h5 className="gr-sidebar-cui">{group.name}</h5>
           </div>
 

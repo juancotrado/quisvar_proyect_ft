@@ -471,6 +471,7 @@ interface ContractIndexData {
   name: string;
   nivel: number;
   hasFile?: 'yes' | 'no';
+  deliverLettersId?: id;
   nextLevel?: ContractIndexData[];
 }
 

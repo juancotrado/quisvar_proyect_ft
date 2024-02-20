@@ -1,5 +1,5 @@
 import './detailsContracts.css';
-import { Schedule } from '../../../../../../types';
+import { ContractIndexData, Schedule } from '../../../../../../types';
 import { _date, actualDate, SnackbarUtilities } from '../../../../../../utils';
 import { FocusEvent, useEffect, useState } from 'react';
 import { Button } from '../../../../../../components';
@@ -31,8 +31,10 @@ export const DetailsContracts = () => {
   const dispatch: AppDispatch = useDispatch();
   const [contractPhase, setContractPhase] =
     useState<ContractPhases>('convocationPhase');
-
   if (!contract) return <div></div>;
+  const contractIndex: ContractIndexData[] = JSON.parse(
+    contract?.indexContract
+  );
   const { details } = contract;
   const dataProcedures = {
     ['Nombre de Contrato']: contract.contractNumber,
@@ -107,6 +109,12 @@ export const DetailsContracts = () => {
     setViewTableEjecution(!viewTableEjecution);
   };
   const deletePhase = (id: string) => {
+    const phaseLevel = contractIndex.at(1)?.nextLevel?.[1].nextLevel;
+    const findPhaseLevel = phaseLevel?.find(
+      phase => phase.deliverLettersId === id
+    );
+    if (findPhaseLevel?.hasFile === 'yes')
+      return SnackbarUtilities.error('Asegurese de borrar el archivo antes.');
     const newPhases = dataPhases.filter(phases => phases.id !== id);
     setDataPhases(newPhases);
   };
@@ -114,16 +122,38 @@ export const DetailsContracts = () => {
     const newPhase = [...dataPhases, { ...INIT_VALUES_PHASE, id: uuidv4() }];
     setDataPhases(newPhase);
   };
-  const savePhases = () => {
+  const savePhases = async () => {
     const phases = JSON.stringify(dataPhases);
-    axiosInstance
-      .put(`/contract/${contract.id}/phases`, { phases })
-      .then(() => {
-        params.set('savePhase', String(new Date().getTime()));
-        setParams(params);
-        dispatch(getContractThunks(String(contract.id)));
-        handleViewEjecution();
+    await axiosInstance.put(`/contract/${contract.id}/phases`, { phases });
+    await updateContractIndex();
+    params.set('savePhase', String(new Date().getTime()));
+    setParams(params);
+    dispatch(getContractThunks(String(contract.id)));
+    handleViewEjecution();
+  };
+
+  const updateContractIndex = async () => {
+    const covertPhases: PhaseData[] = dataPhases;
+    const levelId2 = contractIndex.at(1)?.nextLevel;
+    if (levelId2) {
+      const phaseTransform = covertPhases.map((pha, i) => {
+        const findPhase = levelId2[1].nextLevel?.find(
+          phaNext => phaNext.deliverLettersId === pha.id
+        );
+        return {
+          id: `2.2.${i + 1}`,
+          name: pha.name,
+          nivel: 3,
+          hasFile: findPhase ? findPhase.hasFile : 'no',
+          deliverLettersId: pha.id,
+        };
       });
+      levelId2[1].nextLevel = phaseTransform;
+      const indexContract = JSON.stringify(contractIndex);
+      await axiosInstance.put(`/contract/${contract.id}/index`, {
+        indexContract,
+      });
+    }
   };
   return (
     <div className="detailsContracts">
@@ -220,8 +250,9 @@ export const DetailsContracts = () => {
                 secondValue={'Activo'}
                 isHeader
               />
-              {dataPhases.map(({ days, name, isActive }) => (
+              {dataPhases.map(({ days, name, isActive, id }) => (
                 <ContractRowSchedule
+                  key={id}
                   title={name}
                   firstValue={`${days} dias `}
                   secondValue={isActive ? '✅' : ''}

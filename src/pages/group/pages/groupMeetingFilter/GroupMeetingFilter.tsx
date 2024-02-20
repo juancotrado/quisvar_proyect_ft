@@ -109,7 +109,9 @@ const GroupMeetingFilter = () => {
                   };
                   return (
                     <div
-                      className="gmf-body"
+                      className={`gmf-body ${
+                        details?.id === item.id && 'gmf-color'
+                      }`}
                       key={item.id}
                       onClick={() => setDetails(item)}
                     >
@@ -135,12 +137,12 @@ const GroupMeetingFilter = () => {
                 })}
             </div>
           </div>
-          {/* {details && (
+          {details && (
             <GroupMeetingDetails
               item={details as GroupRes}
               onClose={() => setDetails(undefined)}
             />
-          )} */}
+          )}
         </div>
       </section>
     </div>

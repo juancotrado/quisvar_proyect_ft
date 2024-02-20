@@ -1163,6 +1163,7 @@ export interface UserGroup {
 export interface Group {
   id: number;
   name: string;
+  gNumber: number;
   modId?: number;
   moderator: {
     profile: {

@@ -48,9 +48,9 @@ export const Task = () => {
   const { status } = task;
   return (
     <div className="task">
-      <span className="close-add-card" onClick={goBack}>
+      <figure className="close-add-card" onClick={goBack}>
         <img src="/svg/close.svg" alt="pencil" />
-      </span>
+      </figure>
       <div className="task-header">
         <h4 className="task-header-title">
           Título de la tarea:

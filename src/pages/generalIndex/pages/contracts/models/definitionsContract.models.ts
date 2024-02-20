@@ -56,33 +56,7 @@ export const CONTRACT_INDEX_DATA: ContractIndexData[] = [
         id: '2.2',
         name: 'CARTAS ENTREGABLES',
         nivel: 2,
-        nextLevel: [
-          {
-            id: '2.2.1',
-            name: 'CARTA ENTREGABLE 1',
-            nivel: 3,
-            hasFile: 'no',
-          },
-          { id: '2.2.2', name: 'CARTA ENTREGABLE 2', nivel: 3, hasFile: 'no' },
-          {
-            id: '2.2.3',
-            name: 'CARTA ENTREGABLE 3',
-            nivel: 3,
-            hasFile: 'no',
-          },
-          {
-            id: '2.2.4',
-            name: 'CARTA ENTREGABLE 4',
-            nivel: 3,
-            hasFile: 'no',
-          },
-          {
-            id: '2.2.5',
-            name: 'CARTA ENTREGABLE 5',
-            nivel: 3,
-            hasFile: 'no',
-          },
-        ],
+        nextLevel: [],
       },
       {
         id: '2.3',

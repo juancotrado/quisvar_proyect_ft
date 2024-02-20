@@ -230,9 +230,16 @@ export type User = {
     workStation: WorkStation;
   };
 };
+
+export type Degree =
+  | 'Practicante'
+  | 'Egresado'
+  | 'Bachiller'
+  | 'Titulado'
+  | 'Magister';
 type Profile = {
   id: number;
-  degree: string;
+  degree: Degree;
   description: string;
   job: string;
   firstName: string;

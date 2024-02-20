@@ -25,3 +25,5 @@ export const RADIO_OPTIONS = [
   { id: 'OFICIO', value: 'OFICIO' },
   { id: 'COORDINACION', value: 'COORDINACION' },
 ];
+
+export const YEAR = new Date().getFullYear();

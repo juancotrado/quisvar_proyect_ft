@@ -17,14 +17,11 @@ import {
   Button,
   DropDownSimple,
   Input,
-  InputFile,
   Select,
 } from '../../../../../../components';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   HashFile,
-  addFilesList,
-  deleteFileOnList,
   radioOptions,
   // InitialValueEditor,
   validateWhiteSpace,
@@ -35,9 +32,9 @@ import {
 } from '../../../../../../utils';
 import { useNavigate } from 'react-router-dom';
 import { isOpenCardGenerateReport$ } from '../../../../../../services/sharingSubject';
-import { ChipFileMessage } from '../../components';
 import { PDFGenerator } from '../../pdfGenerate';
 import { JOB_DATA } from '../../../../../userCenter/pages/users/models';
+import DocumentProcedure from '../../../../components/documentProcedure/DocumentProcedure';
 
 const YEAR = new Date().getFullYear();
 
@@ -57,7 +54,7 @@ const CardRegisterMessage = ({
   );
   const navigate = useNavigate();
   const [isAddReceiver, setIsAddReceiver] = useState(false);
-  const { userSession } = useSelector((state: RootState) => state);
+  const userSession = useSelector((state: RootState) => state.userSession);
   const [receiver, setReceiver] = useState<receiverType | null>(null);
   const [listCopy, setListCopy] = useState<receiverType[]>([]);
   const {
@@ -69,6 +66,7 @@ const CardRegisterMessage = ({
   } = useForm<MessageSendType>();
   const [fileUploadFiles, setFileUploadFiles] = useState<File[]>([]);
   const [countMessage, setCountMessage] = useState<quantityType[] | null>([]);
+  console.log('countMessage', countMessage);
   const { lastName, firstName } = userSession.profile;
   const HashUser = HashFile(`${firstName} ${lastName}`);
   // const initialValueEditor = InitialValueEditor();
@@ -136,15 +134,6 @@ const CardRegisterMessage = ({
     setIsAddReceiver(true);
   };
 
-  const addFiles = (newFiles: File[]) => {
-    const _files = addFilesList(fileUploadFiles, newFiles);
-    setFileUploadFiles(_files);
-  };
-
-  const deleteFiles = (delFiles: File) => {
-    const _files = deleteFileOnList(fileUploadFiles, delFiles);
-    if (_files) setFileUploadFiles(_files);
-  };
   const handleTitle = (value: string) => {
     const countFile = countMessage?.find(file => file.type === value);
     const newIndex = (countFile ? countFile._count.type : 0) + 1;
@@ -335,25 +324,7 @@ const CardRegisterMessage = ({
           </div>
           <PDFGenerator data={pdfData} handleFocus={handleReportPDF} />
         </div>
-        <div className="message-file-add">
-          <h4 className="message-add-document">Agregar Documentos:</h4>
-          <InputFile
-            className="message-file-area"
-            getFilesList={files => addFiles(files)}
-          />
-          {fileUploadFiles && (
-            <div className="inbox-container-file-grid">
-              {fileUploadFiles.map((file, i) => (
-                <ChipFileMessage
-                  className="message-files-list"
-                  text={file.name}
-                  key={i}
-                  onClose={() => deleteFiles(file)}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+        <DocumentProcedure getFilesList={files => setFileUploadFiles(files)} />
 
         <Button type="submit" text="Enviar" styleButton={4} />
       </form>

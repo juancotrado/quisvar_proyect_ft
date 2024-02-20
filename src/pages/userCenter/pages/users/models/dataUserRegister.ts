@@ -49,6 +49,7 @@ export const DEGREE_DATA = [
   {
     id: 0,
     value: 'Practicante',
+    abrv: 'Prac',
     title: 'Practicante',
     cost: {
       1: 900,
@@ -59,6 +60,7 @@ export const DEGREE_DATA = [
   {
     id: 1,
     value: 'Egresado',
+    abrv: 'Egre',
     title: 'Asistente',
     cost: {
       1: 1200,
@@ -69,6 +71,7 @@ export const DEGREE_DATA = [
   {
     id: 2,
     value: 'Bachiller',
+    abrv: 'Bac',
     title: 'Asistente',
     cost: {
       1: 1800,
@@ -76,9 +79,27 @@ export const DEGREE_DATA = [
       3: 3300,
     },
   },
-  { id: 3, value: 'Titulado', title: 'Profesional', cost: professionalCost },
-  { id: 4, value: 'Magister', title: 'Profesional', cost: professionalCost },
-  { id: 5, value: 'Doctorado', title: 'Profesional', cost: professionalCost },
+  {
+    id: 3,
+    value: 'Titulado',
+    abrv: 'Tit',
+    title: 'Profesional',
+    cost: professionalCost,
+  },
+  {
+    id: 4,
+    value: 'Magister',
+    abrv: 'Prac',
+    title: 'Profesional',
+    cost: professionalCost,
+  },
+  {
+    id: 5,
+    value: 'Doctorado',
+    abrv: 'Prac',
+    title: 'Profesional',
+    cost: professionalCost,
+  },
 ];
 
 export const PROFESSIONAL_SERVICE_LEVEL_DATA = [

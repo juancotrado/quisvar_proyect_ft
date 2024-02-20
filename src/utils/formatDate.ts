@@ -81,7 +81,7 @@ export const formatDateLongSpanish = (date?: string | Date) => {
 };
 
 export const formatDateShortSpanish = (date?: string | Date) => {
-  const format = formatDate(new Date(date ?? ''), {
+  const format = formatDate(new Date(date ?? new Date()), {
     day: 'numeric',
     month: 'long',
     year: 'numeric',

@@ -837,11 +837,17 @@ export interface AttendanceRange {
   list: userAttendance[];
 }
 
-export interface MailType {
-  paymessageId: number;
-  status: boolean;
+interface MailOrigin {
   type: MessageSender;
+  status: boolean;
+}
+export interface MailType extends MailOrigin {
+  paymessageId: number;
   paymessage: MessageType;
+}
+export interface MailTypeComunication extends MailOrigin {
+  messageId: number;
+  message: MessageType;
 }
 export type MessageSender = 'SENDER' | 'RECEIVER' | 'LICENSE';
 export type MessageStatus =
@@ -866,6 +872,7 @@ export interface MessageType {
   description: string;
   createdAt: Date;
   header: string;
+  initialSender: userMessage;
   filesPay: {
     files: fileMesage[];
   }[];

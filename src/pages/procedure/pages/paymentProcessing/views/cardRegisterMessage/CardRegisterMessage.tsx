@@ -66,7 +66,6 @@ const CardRegisterMessage = ({
   } = useForm<MessageSendType>();
   const [fileUploadFiles, setFileUploadFiles] = useState<File[]>([]);
   const [countMessage, setCountMessage] = useState<quantityType[] | null>([]);
-  console.log('countMessage', countMessage);
   const { lastName, firstName } = userSession.profile;
   const HashUser = HashFile(`${firstName} ${lastName}`);
   // const initialValueEditor = InitialValueEditor();

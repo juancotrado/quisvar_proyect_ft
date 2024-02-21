@@ -11,6 +11,7 @@ interface ProcedureDocumentProps {
   fromProfile: Profile;
   toProfile: ToData;
   size: 'a4' | 'a5';
+  type: 'comunication' | 'regularProcedure';
 }
 
 const procedureDocument = ({
@@ -21,6 +22,7 @@ const procedureDocument = ({
   toProfile,
   size,
   ccProfiles,
+  type,
 }: ProcedureDocumentProps) => {
   const from = `${degreeAbrv(fromProfile.degree)}. ${
     fromProfile.firstName + ' ' + fromProfile.lastName
@@ -44,35 +46,64 @@ const procedureDocument = ({
             <span class="procedureDocument-header-text-title">
               ${textOne}
             </span>
-            <span class="procedureDocument-font-normal">
-              <strong>:</strong> 
-              ${textTwo}
-            </span>
+            <div class="procedureDocument-flex-column">
+              <span class="procedureDocument-font-normal">
+                <strong>:</strong> 
+                ${textTwo}
+              </span>
+              ${
+                textOne === 'Para' &&
+                type === 'comunication' &&
+                ccProfiles.length > 0
+                  ? `
+                <div class="procedureDocument-flex-column">
+                  ${ccProfiles
+                    .map(
+                      ({ degree, name, position }) =>
+                        `
+                    <span class="procedureDocument-right-text">
+                      <strong>:</strong> 
+                      <div class="procedureDocument-flex-column">
+                        <span>${`${degreeAbrv(degree)}. ${name}`}</span>
+                        <span>${position ?? ''}</span>
+                      </div>
+                      
+                    </span>
+                    `
+                    )
+                    .join('')}
+                </div>            
+                    `
+                  : ''
+              }
+            </div>
           </div>
           ${
-            textOne === 'De' && ccProfiles.length > 0
+            textOne === 'De' &&
+            type === 'regularProcedure' &&
+            ccProfiles.length > 0
               ? `
             <div class="procedureDocument-title-header-content"> 
               <span class="procedureDocument-header-text-title">
               CC
               </span>
-              <div class="procedureDocument-cc-container">
+              <div class="procedureDocument-flex-column">
                 ${ccProfiles
                   .map(
                     ({ degree, name, position }) =>
                       `
-                  <span class="procedureDocument-cc-text">
+                  <span class="procedureDocument-right-text">
                     <strong>:</strong> 
-                    <div class="procedureDocument-cc-container">
+                    <div class="procedureDocument-flex-column">
                       <span>${`${degreeAbrv(degree)}. ${name}`}</span>
-                      <span>${position}</span>
+                      <span>${position ?? ''}</span>
                     </div>
                     
                   </span>
                   `
                   )
                   .join('')}
-                </div>
+              </div>
             </div> `
               : ''
           }

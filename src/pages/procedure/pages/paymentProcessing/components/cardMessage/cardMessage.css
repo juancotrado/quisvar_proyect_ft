@@ -37,10 +37,7 @@
   width: 2rem;
   height: 2rem;
 }
-.message-cursor-none {
-  cursor: default;
-  justify-content: center;
-}
+
 .card-status-span {
   letter-spacing: 0.0175rem;
   overflow: hidden;

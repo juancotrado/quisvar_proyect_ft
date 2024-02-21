@@ -11,13 +11,20 @@ import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
 import { procedureDocument } from '../../pdfGenerator';
 import html2pdf from 'html2pdf.js';
-import { ChipFileDownLoadProcedure } from '../../components';
+import { ChipFileDownLoadProcedure, DocumentProcedure } from '../../components';
 import { useTitleProcedure } from '../../hooks';
 import { axiosInstance } from '../../../../services/axiosInstance';
-import DocumentProcedure from '../../components/documentProcedure/DocumentProcedure';
 import { isOpenViewHtmlToPdf$ } from '../../../../services/sharingSubject';
 
-const CardRegisterProcedureGeneral = () => {
+interface CardRegisterProcedureGeneralProps {
+  onSave?: () => void;
+  onClosing: () => void;
+}
+
+const CardRegisterProcedureGeneral = ({
+  onClosing,
+  onSave,
+}: CardRegisterProcedureGeneralProps) => {
   const [receiver, setReceiver] = useState<receiverType | null>(null);
   const [isAddReceiver, setIsAddReceiver] = useState(false);
   const [listCopy, setListCopy] = useState<receiverType[]>([]);
@@ -61,7 +68,7 @@ const CardRegisterProcedureGeneral = () => {
     return filterUser;
   };
 
-  const downLoadPdf = (size: 'a4' | 'a5') => {
+  const getHtmlString = (size: 'a4' | 'a5') => {
     if (!receiver) return;
     const idUserReceiver = listCopy.map(user => user.id);
     const { description, header, type } = watch();
@@ -75,24 +82,31 @@ const CardRegisterProcedureGeneral = () => {
       ccProfiles,
       fromProfile: profile,
       size,
+      type: 'comunication',
     });
+    return htmlString;
+  };
+  const downLoadPdf = (size: 'a4' | 'a5') => {
+    const htmlString = getHtmlString(size);
+    if (!htmlString) return;
+    const { header } = watch();
 
     isOpenViewHtmlToPdf$.setSubject = {
       isOpen: true,
-      fileNamePdf: 'asdsa',
+      fileNamePdf: header,
       htmlString,
+      size,
     };
-    return;
-    const options = {
-      margin: [14, 22, 14, 22],
-      filename: 'time_sheet_report.pdf',
-      image: { type: 'jpeg', quality: 1 },
-      html2canvas: { scale: 2, useCORS: true },
-      useCORS: true,
-      jsPDF: { format: size, orientation: 'p' },
-    };
+    // const options = {
+    //   margin: [14, 22, 14, 22],
+    //   filename: 'time_sheet_report.pdf',
+    //   image: { type: 'jpeg', quality: 1 },
+    //   html2canvas: { scale: 2, useCORS: true },
+    //   useCORS: true,
+    //   jsPDF: { format: size, orientation: 'p' },
+    // };
 
-    html2pdf().set(options).from(htmlString).save();
+    // html2pdf().set(options).from(htmlString).save();
   };
 
   const handleAddUser = (user: receiverType) => {
@@ -110,17 +124,20 @@ const CardRegisterProcedureGeneral = () => {
   const onSubmit: SubmitHandler<MessageSendType> = async data => {
     const formData = new FormData();
     const secondaryReceiver = listCopy.map(list => ({ userId: list.id }));
+    const htmlString = getHtmlString('a4');
+    if (!htmlString) return;
     const values = {
       ...data,
       secondaryReceiver,
       senderId: userSessionId,
       receiverId: receiver?.id,
       title: handleTitle(watch('type')),
+      description: htmlString,
     };
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
     formData.append('data', JSON.stringify(values));
-    formData.append('senderId', `${userSessionId}`);
-    axiosInstance.post(`/paymail`, formData).then(res => res.data);
+    formData.append('category', `GLOBAL`);
+    axiosInstance.post(`/mail`, formData).then(onSave);
   };
 
   const downloadOptions = [
@@ -149,7 +166,7 @@ const CardRegisterProcedureGeneral = () => {
           <Button
             className="imbox-resize-icon"
             icon="close"
-            // onClick={handleClose}
+            onClick={onClosing}
           />
         </div>
       </div>

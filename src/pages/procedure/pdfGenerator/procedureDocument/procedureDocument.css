@@ -56,14 +56,15 @@ img:has(> .procedureDocument-main) {
 .procedureDocument-font-normal {
   font-weight: 400;
 }
-.procedureDocument-cc-container {
+.procedureDocument-flex-column {
   display: flex;
   flex-direction: column;
 }
-.procedureDocument-cc-text {
+.procedureDocument-right-text {
   display: flex;
   font-weight: 400;
   gap: 0.2rem;
+  align-items: flex-start;
 }
 /* ul {
   padding: 40px;

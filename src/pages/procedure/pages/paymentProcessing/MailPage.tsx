@@ -1,11 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useState } from 'react';
 import './mailPage.css';
-import { MailType, MessageStatus, MessageTypeImbox } from '../../../../types';
+import {
+  MailType,
+  MessageSender,
+  MessageStatus,
+  MessageTypeImbox,
+} from '../../../../types';
 import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
 import { listStatusMsg, listTypeMsg } from '../../../../utils';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../store';
 import {
   Button,
   CardGenerateReport,
@@ -16,27 +19,24 @@ import {
 import { CardMessage } from './components';
 import { CardRegisterMessage } from './views';
 import { axiosInstance } from '../../../../services/axiosInstance';
-import { useRole } from '../../../../hooks';
+import { CardMessageHeader } from '../../components';
 
 const InitTMail: MailType['type'] = 'RECEIVER';
 
 export const MailPage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const user = useSelector((state: RootState) => state.userSession);
   const [listMessage, setListMessage] = useState<MailType[] | null>(null);
   // const [isResizing, setIsResizing] = useState(false);
   const [totalMail, setTotalMail] = useState(0);
   const [skip, setSkip] = useState(0);
   //-----------------------------QUERIES-----------------------------------
   const [typeMsg, setTypeMsg] = useState<MessageTypeImbox | null>(null);
-  const [typeMail, setTypeMail] = useState<MailType['type'] | null>(InitTMail);
+  const [typeMail, setTypeMail] = useState<MessageSender | null>(InitTMail);
   const [statusMsg, setStatusMsg] = useState<MessageStatus | null>(null);
   //-----------------------------------------------------------------------
-  const size = !!searchParams.get('size');
   const refresh = !!searchParams.get('refresh') || false;
   const [isNewMessage, setIsNewMessage] = useState(false);
-  const { hasAccess: isMod } = useRole('MOD', null, 'tramite-de-pago');
   //-----------------------------------------------------------------------
 
   useEffect(() => getMessages(), [typeMail, typeMsg, statusMsg]);
@@ -183,47 +183,19 @@ export const MailPage = () => {
               styleButton={3}
             />
           </div>
-          <div
-            className={`message-container-header-titles status-mail-header-${size} `}
-          >
-            <div className="message-header-item">
-              <span>#DOCUMENTO</span>
-            </div>
-            <div className="message-header-item">
-              <span>{`${
-                typeMail === 'RECEIVER' ? 'REMITENTE' : 'DESTINATARIO'
-              }`}</span>
-            </div>
-            <div className="message-header-item mail-grid-col-2">
-              <span>ASUNTO</span>
-            </div>
-            <div className="message-header-item">
-              <span>ESTADO</span>
-            </div>
-            <div className="message-header-item">
-              <span>DEPENDENCIA</span>
-            </div>
-            <div className="message-header-item">
-              <span>FECHA DE ENVÍO</span>
-            </div>
-            {isMod && (
-              <div className="message-header-item message-cursor-none">
-                <span>ARCHIVAR</span>
-              </div>
-            )}
-          </div>
         </div>
         <div className="mail-grid-container">
+          <CardMessageHeader typeMail={typeMail} />
           {listMessage &&
             listMessage.map(({ paymessage, paymessageId, type }) => (
               <CardMessage
-                user={user}
                 isActive={false}
                 key={paymessageId}
                 type={type}
                 onArchiver={handleSaveMessage}
                 onClick={() => handleViewMessage(paymessageId, type)}
                 message={paymessage}
+                option="tramite-de-pago"
               />
             ))}
         </div>

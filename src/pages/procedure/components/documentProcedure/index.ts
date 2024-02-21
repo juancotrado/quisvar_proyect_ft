@@ -1,1 +1,1 @@
-export * from './DocumentProcedure';
+export { default as DocumentProcedure } from './DocumentProcedure';

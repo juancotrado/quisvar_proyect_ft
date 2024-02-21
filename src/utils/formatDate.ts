@@ -79,6 +79,17 @@ export const formatDateLongSpanish = (date?: string | Date) => {
   });
   return format; // martes, 2 de enero de 2024;
 };
+export const formatDateHourLongSpanish = (date?: string | Date) => {
+  const format = formatDate(new Date(date ?? new Date()), {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour12: true,
+    hour: '2-digit',
+    minute: '2-digit',
+  });
+  return format; // martes, 2 de enero de 2024;
+};
 
 export const formatDateShortSpanish = (date?: string | Date) => {
   const format = formatDate(new Date(date ?? new Date()), {

@@ -25,6 +25,7 @@ export interface ViewPdf extends OpenModal {
 export interface ViewHtmlToPdf extends OpenModal {
   htmlString: string;
   fileNamePdf: string;
+  size: 'a4' | 'a5';
 }
 export interface CardRegisteProject {
   isOpen: boolean;

@@ -47,7 +47,7 @@ const GroupMeetingDetails = ({ item, onClose }: GroupDetailsProps) => {
         </div>
       </section>
       <div className="divider" style={{ backgroundColor: '#0000004D' }}></div>
-      <h1>Asistencia</h1>
+      <h1 style={{ marginBottom: 8 }}>Asistencia</h1>
       <section className="gmd-attendance">
         <div className="gmd-table">
           <h3 className="gmd-headers">#</h3>
@@ -65,7 +65,7 @@ const GroupMeetingDetails = ({ item, onClose }: GroupDetailsProps) => {
         ))}
       </section>
       <div className="divider" style={{ backgroundColor: '#0000004D' }}></div>
-      <h1>Compromisos</h1>
+      <h1 style={{ marginBottom: 8 }}>Compromisos</h1>
       <section className="gmd-duty">
         {item.duty.map(value => (
           <div className="gmd-duty-card" key={value.id}>

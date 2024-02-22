@@ -19,7 +19,7 @@
 .gmd-info {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 1rem;
 }
 .gmd-text {
   font-size: 12px;

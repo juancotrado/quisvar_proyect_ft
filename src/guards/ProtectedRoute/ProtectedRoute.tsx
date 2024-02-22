@@ -1,5 +1,11 @@
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
-import { Header, ViewPdf } from '../../components';
+import {
+  Header,
+  ViewHtmlToPdf,
+  ViewPdf,
+  ButtonDelete,
+  AlertNotification,
+} from '../../components';
 import { errorToken$, toggle$ } from '../../services/sharingSubject';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../store';
@@ -8,8 +14,6 @@ import { SocketProvider } from '../../context/SocketContex';
 import { Subscription } from 'rxjs';
 import './protecdRoute.css';
 import { getAllServices } from '../../store/thunks/getAllInitServices..thunks';
-import AlertNotification from '../../components/alertNotification/AlertNotification';
-import ButtonDelete from '../../components/button/ButtonDelete';
 
 export const ProtectedRoute = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -46,6 +50,7 @@ export const ProtectedRoute = () => {
         <AlertNotification />
         <ButtonDelete notIsVisible />
         <ViewPdf />
+        <ViewHtmlToPdf />
       </div>
     </SocketProvider>
   );

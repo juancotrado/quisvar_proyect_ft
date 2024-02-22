@@ -3,7 +3,6 @@ import { axiosInstance } from '../../../../../../../../services/axiosInstance';
 import {
   Input,
   Select,
-  InputFile,
   Button,
   DropDownSimple,
 } from '../../../../../../../../components';
@@ -28,8 +27,8 @@ import {
   validateWhiteSpace,
 } from '../../../../../../../../utils';
 import { PDFGenerator } from '../../../../pdfGenerate';
-import { ChipFileMessage } from '../../../../components';
 import { JOB_DATA } from '../../../../../../../userCenter/pages/users/models';
+import DocumentProcedure from '../../../../../../components/documentProcedure/DocumentProcedure';
 
 interface MessageSendType {
   title: string;
@@ -84,24 +83,6 @@ const CardRegisterMessageReply = ({
     setValue('description', event);
   };
 
-  const addFiles = (newFiles: File[]) => {
-    if (!fileUploadFiles) return setFileUploadFiles(newFiles);
-    const concatFiles = [...fileUploadFiles, ...newFiles];
-    const uniqueFiles = Array.from(
-      new Set(concatFiles.map(file => file.name))
-    ).map(name => concatFiles.find(file => file.name === name)) as File[];
-    setFileUploadFiles(uniqueFiles);
-  };
-
-  const deleteFiles = (delFiles: File) => {
-    if (fileUploadFiles) {
-      const newFiles = Array.from(fileUploadFiles).filter(
-        file => file !== delFiles
-      );
-      if (!newFiles) return;
-      setFileUploadFiles(newFiles);
-    }
-  };
   const handleTitle = (value: string) => {
     const countFile = quantityFiles?.find(file => file.type === value);
     const newIndex = (countFile ? countFile._count.type : 0) + 1;
@@ -230,25 +211,8 @@ const CardRegisterMessageReply = ({
         />
       </div>
       <PDFGenerator data={pdfData} handleFocus={handleReportPDF} />
-      <div className="message-file-add">
-        <h4 className="message-add-document">Agregar Documentos:</h4>
-        <InputFile
-          className="message-file-area"
-          getFilesList={files => addFiles(files)}
-        />
-        {fileUploadFiles && (
-          <div className="inbox-container-file-grid">
-            {fileUploadFiles.map((file, i) => (
-              <ChipFileMessage
-                className="message-files-list"
-                text={file.name}
-                key={i}
-                onClose={() => deleteFiles(file)}
-              />
-            ))}
-          </div>
-        )}
-      </div>
+      <DocumentProcedure getFilesList={files => setFileUploadFiles(files)} />
+
       <div className="inbox-reply-btn-submit-container">
         <Button className={`inbox-reply-btn-submit`} text="Procede" />
       </div>

@@ -41,6 +41,7 @@ import {
   GroupMeetingFilter,
   RegularProcedure,
   Communications,
+  CommunicationInfo,
 } from '../pages';
 import { ProtectedRole, ProtectedRoute } from '../guards';
 import { NavigationSubMenu } from '.';
@@ -75,7 +76,9 @@ const Navigation = () => {
                 <Route index element={<NavigationSubMenu />} />
                 <Route path="salidas" element={<LicensePage />} />
                 <Route path="tramite-regular" element={<RegularProcedure />} />
-                <Route path="comunicado" element={<Communications />} />
+                <Route path="comunicado" element={<Communications />}>
+                  <Route path=":messageId" element={<CommunicationInfo />} />
+                </Route>
                 <Route path="tramite-de-pago" element={<MailPage />}>
                   <Route path=":paymessageId" element={<MessagePage />} />
                 </Route>

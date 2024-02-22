@@ -130,7 +130,9 @@ export const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
                 <div className="levelSubtask-text">{subtask.percentage}%</div>
               </div>
               <div className="levelSubtask-item">
-                <div className="levelSubtask-text">S/.{subtask.price}</div>
+                <div className="levelSubtask-text">
+                  {modAuthArea ? `S/.${subtask.price}` : '-'}
+                </div>
               </div>
               <div className="levelSubtask-item">
                 <StatusText status={subtask.status} />

@@ -230,9 +230,16 @@ export type User = {
     workStation: WorkStation;
   };
 };
+
+export type Degree =
+  | 'Practicante'
+  | 'Egresado'
+  | 'Bachiller'
+  | 'Titulado'
+  | 'Magister';
 type Profile = {
   id: number;
-  degree: string;
+  degree: Degree;
   description: string;
   job: string;
   firstName: string;
@@ -464,6 +471,7 @@ interface ContractIndexData {
   name: string;
   nivel: number;
   hasFile?: 'yes' | 'no';
+  deliverLettersId?: id;
   nextLevel?: ContractIndexData[];
 }
 
@@ -829,11 +837,17 @@ export interface AttendanceRange {
   list: userAttendance[];
 }
 
-export interface MailType {
-  paymessageId: number;
-  status: boolean;
+interface MailOrigin {
   type: MessageSender;
+  status: boolean;
+}
+export interface MailType extends MailOrigin {
+  paymessageId: number;
   paymessage: MessageType;
+}
+export interface MailTypeComunication extends MailOrigin {
+  messageId: number;
+  message: MessageType;
 }
 export type MessageSender = 'SENDER' | 'RECEIVER' | 'LICENSE';
 export type MessageStatus =
@@ -858,6 +872,7 @@ export interface MessageType {
   description: string;
   createdAt: Date;
   header: string;
+  initialSender: userMessage;
   filesPay: {
     files: fileMesage[];
   }[];

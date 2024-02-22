@@ -33,8 +33,11 @@ interface CardSubtaskProcess {
 
 const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
   const adminId = 0;
-  const { userSession, modAuthProject } = useSelector(
-    (state: RootState) => state
+  const modAuthProject = useSelector(
+    (state: RootState) => state.modAuthProject
+  );
+  const { id: userSessionId } = useSelector(
+    (state: RootState) => state.userSession
   );
   const socket = useContext(SocketContext);
   const { stageId } = useParams();
@@ -67,10 +70,10 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
     [allFileIds, subTask.files]
   );
   const isAuthorizedMod =
-    modAuthProject || userSession.id === subTask.Levels.userId;
+    modAuthProject || userSessionId === subTask.Levels.userId;
 
   const isAuthorizedUser = subTask?.users?.some(
-    ({ user, status }) => user.id === userSession?.id && !status
+    ({ user, status }) => user.id === userSessionId && !status
   );
   const areAuthorizedUsers = isAuthorizedMod || isAuthorizedUser;
   const { users } = useListUsers();
@@ -245,7 +248,7 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
                   dataFeedback={dataFeedback}
                   type="deprecated"
                   text="Rechazar"
-                  userId={userSession?.id}
+                  userId={userSessionId}
                   porcentagesForUser={Object.values(porcetageForUser)}
                 />
                 <SubtaskChangeStatusBtn
@@ -258,6 +261,18 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
                   porcentagesForUser={Object.values(porcetageForUser)}
                   files={lastFeedbackReview.files}
                   text="Aprobar"
+                />
+              </>
+            )}
+            {status !== 'INREVIEW' && !needToAssignUser && isAuthorizedMod && (
+              <>
+                <SubtaskChangeStatusBtn
+                  className={`cardSubtask-add-btn cardSubtask-decline-btn`}
+                  option="DENY"
+                  type="reset"
+                  subtaskId={subTask.id}
+                  subtaskStatus={status}
+                  text="Reiniciar"
                 />
               </>
             )}

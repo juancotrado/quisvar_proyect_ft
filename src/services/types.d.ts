@@ -22,6 +22,11 @@ export interface ViewPdf extends OpenModal {
   pdfComponentFunction: JSX.Element;
   fileNamePdf: string;
 }
+export interface ViewHtmlToPdf extends OpenModal {
+  htmlString: string;
+  fileNamePdf: string;
+  size: 'a4' | 'a5';
+}
 export interface CardRegisteProject {
   isOpen: boolean;
   typeSpecialityId: number | null;

@@ -5,7 +5,6 @@ import {
   Select,
   Portal,
   DropDownSimple,
-  InputFile,
   Button,
 } from '../../../../../../../../components';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -20,8 +19,6 @@ import { useSelector } from 'react-redux';
 import { Editor } from '@tinymce/tinymce-react';
 import {
   HashFile,
-  addFilesList,
-  deleteFileOnList,
   radioOptions,
   convertToDynamicObject,
   dataInitialPdf,
@@ -33,10 +30,10 @@ import './cardRegisterMessageForward.css';
 import { useListUsers, useRole } from '../../../../../../../../hooks';
 import { motion } from 'framer-motion';
 import { dropIn } from '../../../../../../../../animations';
-import { ChipFileMessage } from '../../../../components';
 import { PDFGenerator } from '../../../../pdfGenerate';
 import { JOB_DATA } from '../../../../../../../userCenter/pages/users/models';
 import { MessageSendType, YEAR } from '../../models';
+import DocumentProcedure from '../../../../../../components/documentProcedure/DocumentProcedure';
 
 interface CardRegisterMessageForwardProps {
   message: MessageType;
@@ -75,16 +72,6 @@ const CardRegisterMessageForward = ({
       ),
     [userSession, users]
   );
-
-  const addFiles = (newFiles: File[]) => {
-    const _files = addFilesList(fileUploadFiles, newFiles);
-    setFileUploadFiles(_files);
-  };
-
-  const deleteFiles = (delFiles: File) => {
-    const _files = deleteFileOnList(fileUploadFiles, delFiles);
-    if (_files) setFileUploadFiles(_files);
-  };
 
   const handleTitle = (value: string) => {
     const countFile = quantityFiles?.find(file => file.type === value);
@@ -215,25 +202,8 @@ const CardRegisterMessageForward = ({
       </div>
 
       <PDFGenerator data={pdfData} handleFocus={handleReportPDF} />
-      <div className="message-file-add">
-        <h4 className="message-add-document">Agregar Documentos:</h4>
-        <InputFile
-          className="message-file-area"
-          getFilesList={files => addFiles(files)}
-        />
-        {fileUploadFiles && (
-          <div className="inbox-container-file-grid">
-            {fileUploadFiles.map((file, i) => (
-              <ChipFileMessage
-                className="message-files-list"
-                text={file.name}
-                key={i}
-                onClose={() => deleteFiles(file)}
-              />
-            ))}
-          </div>
-        )}
-      </div>
+      <DocumentProcedure getFilesList={files => setFileUploadFiles(files)} />
+
       <div className="inbox-forward-btn-submit-container">
         <Button className={`inbox-forward-btn-submit`} text="No Procede" />
         {hasAccess && (

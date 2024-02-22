@@ -1,7 +1,8 @@
 import { Button } from '../../../../../../components';
+import { useRole } from '../../../../../../hooks';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
-import { MessageSender, MessageType, User } from '../../../../../../types';
-import { formatDate } from '../../../../../../utils';
+import { MessageSender, MessageType } from '../../../../../../types';
+import { formatDate, formatDateHourLongSpanish } from '../../../../../../utils';
 import { TYPE_STATUS } from '../../models';
 import './cardMessage.css';
 
@@ -9,29 +10,21 @@ interface CardMessageProps {
   message: MessageType;
   type: MessageSender;
   isActive?: boolean;
-  user: User;
   onClick: () => void;
   onArchiver?: () => void;
+  option: 'comunicado' | 'tramite-de-pago' | 'tramite-regular';
 }
 
 const CardMessage = ({
   message,
   type,
-  user,
   onClick,
   onArchiver,
   isActive,
+  option,
 }: CardMessageProps) => {
   const contactUser = message.users.find(user => user.type !== type);
-  const parseDate = (date: Date) =>
-    formatDate(new Date(date), {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour12: true,
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+  const { hasAccess } = useRole('MOD', null, option);
 
   const handleArchiverAction = () => {
     axiosInstance.patch(`/paymail/archived/${message.id}`).then(onArchiver);
@@ -65,7 +58,9 @@ const CardMessage = ({
         <>
           <div className="card-message-section-item">
             <span className={`card-status-message status-${message.status}`}>
-              {TYPE_STATUS[message.status]?.toLowerCase()}
+              {option === 'comunicado'
+                ? 'Comunicado'
+                : TYPE_STATUS[message.status]?.toLowerCase()}
             </span>
           </div>
           <div className="card-message-section-item">
@@ -75,10 +70,10 @@ const CardMessage = ({
           </div>
           <div className="card-message-section-item">
             <span className="card-status-span ">
-              {parseDate(message.updatedAt)}
+              {formatDateHourLongSpanish(message.updatedAt)}
             </span>
           </div>
-          {['SUPER_ADMIN', 'ASSISTANT'].includes(user.role) ? (
+          {hasAccess ? (
             <div
               className="card-message-section-item message-cursor-none"
               onClick={e => e.stopPropagation()}

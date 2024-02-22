@@ -13,6 +13,7 @@ import {
   OpenEspecialistTrainingDescription,
   OpenViewDocs,
   OpenWithId,
+  ViewHtmlToPdf,
   ViewPdf,
   ViewRegisterUser,
 } from './types';
@@ -46,6 +47,7 @@ export const isOpenCardRegisteContract$ =
   new SubjectManager<CardRegisteContract>();
 export const isOpenCardRegisteTask$ = new SubjectManager<CardRegisteTask>();
 export const isOpenViewPdf$ = new SubjectManager<ViewPdf>();
+export const isOpenViewHtmlToPdf$ = new SubjectManager<ViewHtmlToPdf>();
 export const isTaskInformation$ = new SubjectManager<boolean>();
 export const errorToken$ = new SubjectManager();
 export const isResizing$ = new SubjectManager<boolean>();

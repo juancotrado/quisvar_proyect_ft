@@ -60,7 +60,7 @@ html {
   padding: 0;
 }
 
-img {
+figure img {
   width: 100%;
   height: 100%;
   display: block;
@@ -229,4 +229,10 @@ td {
 
 .margin-none {
   margin: 0;
+}
+
+.line {
+  width: 100%;
+  background-color: black;
+  height: 1px;
 }

@@ -117,96 +117,100 @@ const GeneralData = () => {
           </div>
         )}
       </div>
-      <form
-        className="generalData-edit-info"
-        onSubmit={handleSubmit(onSubmitStage)}
-      >
-        <h2 className="generalData-edit-info-title">PRE-AJUSTES DE LA ETAPA</h2>
-        <div className="col-input">
-          {groups && (
-            <Select
-              label="Grupo:"
-              {...register('groupId', {
-                validate: { validateWhiteSpace },
+      {modAuth && (
+        <form
+          className="generalData-edit-info"
+          onSubmit={handleSubmit(onSubmitStage)}
+        >
+          <h2 className="generalData-edit-info-title">
+            PRE-AJUSTES DE LA ETAPA
+          </h2>
+          <div className="col-input">
+            {groups && (
+              <Select
+                label="Grupo:"
+                {...register('groupId', {
+                  validate: { validateWhiteSpace },
+                  valueAsNumber: true,
+                })}
+                placeholder="Asignar Grupo"
+                name="groupId"
+                data={groups}
+                itemKey="id"
+                textField="name"
+                errors={errors}
+                className="generalData-edit-info-input"
+                disabled={!modAuth}
+              />
+            )}
+          </div>
+          <div className="col-input">
+            <Input
+              label="Costo Practicante:"
+              {...register('internCost', {
+                validate: { validateWhiteSpace, validateOnlyNumbers },
                 valueAsNumber: true,
               })}
-              placeholder="Asignar Grupo"
-              name="groupId"
-              data={groups}
-              itemKey="id"
-              textField="name"
+              name="internCost"
+              type="number"
+              placeholder="Costo - Practicante"
               errors={errors}
               className="generalData-edit-info-input"
               disabled={!modAuth}
             />
-          )}
-        </div>
-        <div className="col-input">
-          <Input
-            label="Costo Practicante:"
-            {...register('internCost', {
-              validate: { validateWhiteSpace, validateOnlyNumbers },
-              valueAsNumber: true,
-            })}
-            name="internCost"
-            type="number"
-            placeholder="Costo - Practicante"
-            errors={errors}
-            className="generalData-edit-info-input"
-            disabled={!modAuth}
-          />
-          <Input
-            label="Costo Egresado:"
-            {...register('graduateCost', {
-              validate: { validateWhiteSpace, validateOnlyNumbers },
-              valueAsNumber: true,
-            })}
-            name="graduateCost"
-            type="number"
-            placeholder="Costo - Egresado"
-            errors={errors}
-            className="generalData-edit-info-input"
-            disabled={!modAuth}
-          />
-        </div>
-        <div className="col-input">
-          <CostTable mount={+watch('internCost')} text="Practicante" />
-          <CostTable mount={+watch('graduateCost')} text="Egresado" />
-        </div>
-        <div className="col-input">
-          <Input
-            label="Costo Bachiller:"
-            {...register('bachelorCost', {
-              validate: { validateWhiteSpace, validateOnlyNumbers },
-              valueAsNumber: true,
-            })}
-            name="bachelorCost"
-            type="number"
-            placeholder="Costo - Bachiller "
-            errors={errors}
-            className="generalData-edit-info-input"
-            disabled={!modAuth}
-          />
-          <Input
-            label="Costo Titulado:"
-            {...register('professionalCost', {
-              validate: { validateWhiteSpace, validateOnlyNumbers },
-              valueAsNumber: true,
-            })}
-            type="number"
-            name="professionalCost"
-            placeholder="Costo - Titulado"
-            errors={errors}
-            className="generalData-edit-info-input"
-            disabled={!modAuth}
-          />
-        </div>
-        <div className="col-input">
-          <CostTable mount={+watch('bachelorCost')} text="Bachiller" />
-          <CostTable mount={+watch('professionalCost')} text="Titulado" />
-        </div>
-        {modAuth && <Button type="submit" text={`Guardar`} styleButton={4} />}
-      </form>
+            <Input
+              label="Costo Egresado:"
+              {...register('graduateCost', {
+                validate: { validateWhiteSpace, validateOnlyNumbers },
+                valueAsNumber: true,
+              })}
+              name="graduateCost"
+              type="number"
+              placeholder="Costo - Egresado"
+              errors={errors}
+              className="generalData-edit-info-input"
+              disabled={!modAuth}
+            />
+          </div>
+          <div className="col-input">
+            <CostTable mount={+watch('internCost')} text="Practicante" />
+            <CostTable mount={+watch('graduateCost')} text="Egresado" />
+          </div>
+          <div className="col-input">
+            <Input
+              label="Costo Bachiller:"
+              {...register('bachelorCost', {
+                validate: { validateWhiteSpace, validateOnlyNumbers },
+                valueAsNumber: true,
+              })}
+              name="bachelorCost"
+              type="number"
+              placeholder="Costo - Bachiller "
+              errors={errors}
+              className="generalData-edit-info-input"
+              disabled={!modAuth}
+            />
+            <Input
+              label="Costo Titulado:"
+              {...register('professionalCost', {
+                validate: { validateWhiteSpace, validateOnlyNumbers },
+                valueAsNumber: true,
+              })}
+              type="number"
+              name="professionalCost"
+              placeholder="Costo - Titulado"
+              errors={errors}
+              className="generalData-edit-info-input"
+              disabled={!modAuth}
+            />
+          </div>
+          <div className="col-input">
+            <CostTable mount={+watch('bachelorCost')} text="Bachiller" />
+            <CostTable mount={+watch('professionalCost')} text="Titulado" />
+          </div>
+          {modAuth && <Button type="submit" text={`Guardar`} styleButton={4} />}
+        </form>
+      )}
     </div>
   );
 };

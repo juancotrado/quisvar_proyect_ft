@@ -17,6 +17,7 @@ import {
   dataInitialPdf,
   filterFilesByAttempt,
   formatDate,
+  formatDateHourLongSpanish,
   normalizeFileName,
   transformDataPdf,
 } from '../../../../../../utils';
@@ -41,16 +42,6 @@ import { PDFGenerator, generateReportPDF } from '../../pdfGenerate';
 import { JOB_DATA } from '../../../../../userCenter/pages/users/models';
 import { HEADER_OPTION, SPRING } from './models';
 import { Resizable } from 're-resizable';
-
-const parseDate = (date: Date) =>
-  formatDate(new Date(date), {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour12: true,
-    hour: '2-digit',
-    minute: '2-digit',
-  });
 
 export const MessagePage = () => {
   const navigate = useNavigate();
@@ -312,7 +303,7 @@ export const MessagePage = () => {
                 <span className="message-sender-name">Enviado Por ti</span>
               )}
               <span className="message-date-send">
-                {parseDate(message.createdAt)}
+                {formatDateHourLongSpanish(message.createdAt)}
               </span>
             </div>
             <span
@@ -359,7 +350,7 @@ export const MessagePage = () => {
                   </b>
                 </span>
                 <span className="message-date-send">
-                  {parseDate(new Date(+files[0].id))}
+                  {formatDateHourLongSpanish(new Date(+files[0].id))}
                 </span>
               </div>
             </div>
@@ -376,7 +367,7 @@ export const MessagePage = () => {
             {viewMoreFiles &&
               files.slice(1, files.length).map(({ id, files }) => (
                 <div className="message-container-file-information" key={id}>
-                  <span>{parseDate(new Date(+id))}</span>
+                  <span>{formatDateHourLongSpanish(new Date(+id))}</span>
                   <div className="message-container-files-grid">
                     {files.map(({ id, name, path }) => (
                       <ChipFileMessage
@@ -421,7 +412,9 @@ export const MessagePage = () => {
                       { size: 'A4' }
                     )}
                   </PDFViewer>
-                  <span>{parseDate(new Date(history.createdAt))}</span>
+                  <span>
+                    {formatDateHourLongSpanish(new Date(history.createdAt))}
+                  </span>
                   <div className="message-container-files-grid">
                     {history.files &&
                       history.files.map(({ id, name, path }) => (

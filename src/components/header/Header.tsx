@@ -153,11 +153,11 @@ const Header = () => {
                 alt="logo QuisVar"
               />
             </figure>
-            <ul className="items-list">
+            <span className="items-list">
               {role?.menuPoints?.map(item => (
                 <ChipItem key={item.id} item={item} />
               ))}
-            </ul>
+            </span>
           </div>
           <ul className="icons-list">
             {icons.map(icon => (

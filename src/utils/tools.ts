@@ -1,4 +1,5 @@
-import { Feedback, Level, RangeDays } from '../types/types';
+import { DEGREE_DATA } from '../pages/userCenter/pages/users/models';
+import { Degree, Feedback, Level, RangeDays } from '../types/types';
 import { getListByRole } from './roles';
 
 export const findProject = (data: Level[]): boolean => {
@@ -281,4 +282,9 @@ export const downloadBlob = (blobFile: Blob, name: string) => {
   link.click();
   URL.revokeObjectURL(editedUrl);
   link.remove();
+};
+
+export const degreeAbrv = (degree: Degree) => {
+  const findDegree = DEGREE_DATA.find(({ value }) => value === degree);
+  return findDegree?.abrv;
 };

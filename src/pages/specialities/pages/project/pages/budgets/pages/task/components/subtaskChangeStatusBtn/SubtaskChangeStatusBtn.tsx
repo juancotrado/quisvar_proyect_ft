@@ -188,6 +188,14 @@ const SubtaskChangeStatusBtn = ({
       );
     handleEditStatus();
   };
+
+  const handleResetStatus = async () => {
+    const resStatus = await axiosInstance.patch(
+      `/subtasks/resetStatus/${subtaskId}/${stageId}`
+    );
+    socket.emit('client:update-projectAndTask', resStatus.data);
+    SnackbarUtilities.success('Se realizo la operación con exito');
+  };
   const selectFuctionType = () => {
     if (isDisabled) return;
     switch (type) {
@@ -207,7 +215,7 @@ const SubtaskChangeStatusBtn = ({
         handleEditStatus();
         break;
       case 'reset':
-        handleEditStatus();
+        handleResetStatus();
         break;
       default:
         break;

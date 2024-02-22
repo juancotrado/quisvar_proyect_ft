@@ -4,7 +4,6 @@ import { axiosInstance } from '../../../../../../../../services/axiosInstance';
 import {
   Input,
   Select,
-  InputFile,
   Button,
   DropDownSimple,
 } from '../../../../../../../../components';
@@ -20,8 +19,6 @@ import { useSelector } from 'react-redux';
 import { Editor } from '@tinymce/tinymce-react';
 import {
   HashFile,
-  addFilesList,
-  deleteFileOnList,
   radioOptions,
   validateWhiteSpace,
   formatDate,
@@ -31,8 +28,8 @@ import {
 import './cardRegisterMessageUpdate.css';
 import { useListUsers } from '../../../../../../../../hooks';
 import { PDFGenerator } from '../../../../pdfGenerate';
-import { ChipFileMessage } from '../../../../components';
 import { JOB_DATA } from '../../../../../../../userCenter/pages/users/models';
+import DocumentProcedure from '../../../../../../components/documentProcedure/DocumentProcedure';
 
 interface MessageSendType {
   title: string;
@@ -84,16 +81,6 @@ const CardRegisterMessageUpdate = ({
     setValue('description', message.description);
     setValue('type', message.type);
   }, [message]);
-
-  const addFiles = (newFiles: File[]) => {
-    const _files = addFilesList(fileUploadFiles, newFiles);
-    setFileUploadFiles(_files);
-  };
-
-  const deleteFiles = (delFiles: File) => {
-    const _files = deleteFileOnList(fileUploadFiles, delFiles);
-    if (_files) setFileUploadFiles(_files);
-  };
 
   const handleTitle = (value: string) => {
     const countFile = quantityFiles?.find(file => file.type === value);
@@ -222,25 +209,8 @@ const CardRegisterMessageUpdate = ({
         />
       </div>
       <PDFGenerator data={pdfData} handleFocus={handleReportPDF} />
-      <div className="message-file-add">
-        <h4 className="message-add-document">Agregar Documentos:</h4>
-        <InputFile
-          className="message-file-area"
-          getFilesList={files => addFiles(files)}
-        />
-        {fileUploadFiles && (
-          <div className="inbox-container-file-grid">
-            {fileUploadFiles.map((file, i) => (
-              <ChipFileMessage
-                className="message-files-list"
-                text={file.name}
-                key={i}
-                onClose={() => deleteFiles(file)}
-              />
-            ))}
-          </div>
-        )}
-      </div>
+      <DocumentProcedure getFilesList={files => setFileUploadFiles(files)} />
+
       <div className="inbox-forward-btn-submit-container">
         <Button
           className={`inbox-forward-btn-submit`}

@@ -1,15 +1,9 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import {
-  Button,
-  DropDownSimple,
-  Input,
-  InputFile,
-  Select,
-} from '../../../../components';
+import { Button, DropDownSimple, Input, Select } from '../../../../components';
 import './cardRegisterProcedureGeneral.css';
 import { MessageSendType, receiverType } from '../../../../types';
 import { INITIAL_VALUE_EDITOR, validateWhiteSpace } from '../../../../utils';
-import { RADIO_OPTIONS } from '../../models';
+import { RADIO_OPTIONS, ToData } from '../../models';
 import { Editor } from '@tinymce/tinymce-react';
 import { useMemo, useState } from 'react';
 import { useListUsers } from '../../../../hooks';
@@ -17,13 +11,32 @@ import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
 import { procedureDocument } from '../../pdfGenerator';
 import html2pdf from 'html2pdf.js';
+import { ChipFileDownLoadProcedure, DocumentProcedure } from '../../components';
+import { useTitleProcedure } from '../../hooks';
+import { axiosInstance } from '../../../../services/axiosInstance';
+import { isOpenViewHtmlToPdf$ } from '../../../../services/sharingSubject';
 
-const CardRegisterProcedureGeneral = () => {
+interface CardRegisterProcedureGeneralProps {
+  onSave?: () => void;
+  onClosing: () => void;
+}
+
+const CardRegisterProcedureGeneral = ({
+  onClosing,
+  onSave,
+}: CardRegisterProcedureGeneralProps) => {
   const [receiver, setReceiver] = useState<receiverType | null>(null);
-  const { id: userSessionId } = useSelector(
+  const [isAddReceiver, setIsAddReceiver] = useState(false);
+  const [listCopy, setListCopy] = useState<receiverType[]>([]);
+  const { handleTitle } = useTitleProcedure('/paymail/imbox/quantity');
+  const [fileUploadFiles, setFileUploadFiles] = useState<File[]>([]);
+
+  const { profile, id: userSessionId } = useSelector(
     (state: RootState) => state.userSession
   );
-
+  const handleAddCopy = () => {
+    setIsAddReceiver(true);
+  };
   const {
     handleSubmit,
     register,
@@ -44,36 +57,106 @@ const CardRegisterProcedureGeneral = () => {
     [userSessionId, listUser, receiver]
   );
 
-  const downLoadPdf = () => {};
+  const handleReceiverUser = (usersId: number[]) => {
+    const findUsers = usersId.map(userId => {
+      const receiverUser = listUser.find(({ id }) => id === userId);
+      if (!receiverUser) return;
+      const { name, degree, position } = receiverUser;
+      return { name, degree, position };
+    });
+    const filterUser = findUsers.filter(user => !!user) as ToData[];
+    return filterUser;
+  };
 
-  // const handleTitle = (value: string) => {
-  //   const countFile = countMessage?.find(file => file.type === value);
-  //   const newIndex = (countFile ? countFile._count.type : 0) + 1;
-  //   return `${value} N°${newIndex} DHYRIUM-${HashUser}-${YEAR}`;
-  // };
+  const getHtmlString = (size: 'a4' | 'a5') => {
+    if (!receiver) return;
+    const idUserReceiver = listCopy.map(user => user.id);
+    const { description, header, type } = watch();
+    const usersReceiver = handleReceiverUser([+receiver.id, ...idUserReceiver]);
+    const [toProfile, ...ccProfiles] = usersReceiver;
+    const htmlString = procedureDocument({
+      title: handleTitle(type),
+      subject: header,
+      body: description ?? '',
+      toProfile,
+      ccProfiles,
+      fromProfile: profile,
+      size,
+      type: 'comunication',
+    });
+    return htmlString;
+  };
+  const downLoadPdf = (size: 'a4' | 'a5') => {
+    const htmlString = getHtmlString(size);
+    if (!htmlString) return;
+    const { header } = watch();
+
+    isOpenViewHtmlToPdf$.setSubject = {
+      isOpen: true,
+      fileNamePdf: header,
+      htmlString,
+      size,
+    };
+    // const options = {
+    //   margin: [14, 22, 14, 22],
+    //   filename: 'time_sheet_report.pdf',
+    //   image: { type: 'jpeg', quality: 1 },
+    //   html2canvas: { scale: 2, useCORS: true },
+    //   useCORS: true,
+    //   jsPDF: { format: size, orientation: 'p' },
+    // };
+
+    // html2pdf().set(options).from(htmlString).save();
+  };
+
+  const handleAddUser = (user: receiverType) => {
+    const getId = listCopy.find(list => list.id == user.id);
+    if (!getId) setListCopy([...listCopy, user]);
+  };
+
+  const handleRemoveUser = (user: receiverType) => {
+    const filterValue = listCopy.filter(list => list.id !== user.id);
+    if (!filterValue.length) setIsAddReceiver(false);
+    setListCopy(filterValue);
+  };
   const handleInputChange = (event: string) => setValue('description', event);
 
   const onSubmit: SubmitHandler<MessageSendType> = async data => {
-    console.log(data);
-    const htmlString = procedureDocument({
-      title: 'asd',
-      from: 'asd',
-      to: 'asdsa',
-      subject: 'string',
-      date: 'string',
-      body: 'string',
-    });
-    const options = {
-      margin: [11, 22, 11, 22],
-      filename: 'time_sheet_report.pdf',
-      image: { type: 'jpeg', quality: 1 },
-      html2canvas: { scale: 2, useCORS: true },
-      useCORS: true,
-      jsPDF: { format: 'a4', orientation: 'p' },
+    const formData = new FormData();
+    const secondaryReceiver = listCopy.map(list => ({ userId: list.id }));
+    const htmlString = getHtmlString('a4');
+    if (!htmlString) return;
+    const values = {
+      ...data,
+      secondaryReceiver,
+      senderId: userSessionId,
+      receiverId: receiver?.id,
+      title: handleTitle(watch('type')),
+      description: htmlString,
     };
-
-    html2pdf().set(options).from(htmlString).save();
+    fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
+    formData.append('data', JSON.stringify(values));
+    formData.append('category', `GLOBAL`);
+    axiosInstance.post(`/mail`, formData).then(onSave);
   };
+
+  const downloadOptions = [
+    {
+      id: 1,
+      handleClick: () => downLoadPdf('a5'),
+      iconOne: 'file-download',
+      iconTwo: 'file-download-white',
+      text: 'A5',
+    },
+    {
+      id: 2,
+      handleClick: () => downLoadPdf('a4'),
+      iconOne: 'file-download',
+      iconTwo: 'file-download-white',
+      text: 'A4',
+    },
+  ];
+
   return (
     <div className="inbox-send-container-main">
       <div className="imnbox-title">
@@ -83,15 +166,14 @@ const CardRegisterProcedureGeneral = () => {
           <Button
             className="imbox-resize-icon"
             icon="close"
-            // onClick={handleClose}
+            onClick={onClosing}
           />
         </div>
       </div>
       <form className="imbox-data-content" onSubmit={handleSubmit(onSubmit)}>
         {watch('type') && (
           <h3 className="messagePage-type-document">
-            {/* {handleTitle(watch('type'))} */}
-            TITULO DEL TRAMITE
+            {handleTitle(watch('type'))}
           </h3>
         )}
         <div className="messagePage-input-contain">
@@ -126,12 +208,12 @@ const CardRegisterProcedureGeneral = () => {
               type="button"
               text=" + Cc"
               className="inbox-copy-button"
-              // onClick={handleAddCopy}
+              onClick={handleAddCopy}
             />
           )}
         </div>
 
-        {/* {isAddReceiver && (
+        {isAddReceiver && (
           <div className="imbox-receiver-container-copy">
             <span className="imbox-receiver-label">Cc: </span>
             {listCopy.map(list => (
@@ -155,7 +237,7 @@ const CardRegisterProcedureGeneral = () => {
               valueInput={(value, id) => handleAddUser({ id: +id, value })}
             />
           </div>
-        )} */}
+        )}
         <Input
           {...register('header', { validate: { validateWhiteSpace } })}
           errors={errors}
@@ -180,55 +262,22 @@ const CardRegisterProcedureGeneral = () => {
           bullist numlist outdent indent | removeformat | code',
           }}
           onEditorChange={handleInputChange}
-
-          // {...register('description')}
         />
 
         <div className="pdf-btn-area-view">
-          <div className="pdf-btn-view-white">
-            <img
-              className="chip-file-icon-doc normal"
-              src={`/svg/file-download.svg`}
-            />
-            <img
-              className="chip-file-icon-doc hover"
-              src={`/svg/file-download-white.svg`}
-            />
-
-            <span className="download-text">{'A5'}</span>
-          </div>
-          <div className="pdf-btn-view-white" onClick={downLoadPdf}>
-            <img
-              className="chip-file-icon-doc normal"
-              src={`/svg/file-download.svg`}
-            />
-            <img
-              className="chip-file-icon-doc hover"
-              src={`/svg/file-download-white.svg`}
-            />
-            <span className="download-text">{'A4'}</span>
-          </div>
+          {downloadOptions.map(
+            ({ iconOne, iconTwo, id, handleClick, text }) => (
+              <ChipFileDownLoadProcedure
+                key={id}
+                text={text}
+                iconOne={iconOne}
+                iconTwo={iconTwo}
+                onClick={handleClick}
+              />
+            )
+          )}
         </div>
-        <div className="message-file-add">
-          <h4 className="message-add-document">Agregar Documentos:</h4>
-          <InputFile
-            className="message-file-area"
-            // getFilesList={files => addFiles(files)}
-          />
-          {/* {fileUploadFiles && (
-            <div className="inbox-container-file-grid">
-              {fileUploadFiles.map((file, i) => (
-                <ChipFileMessage
-                  className="message-files-list"
-                  text={file.name}
-                  key={i}
-                  onClose={() => deleteFiles(file)}
-                />
-              ))}
-            </div>
-          )} */}
-        </div>
-
+        <DocumentProcedure getFilesList={files => setFileUploadFiles(files)} />
         <Button type="submit" text="Enviar" styleButton={4} />
       </form>
     </div>

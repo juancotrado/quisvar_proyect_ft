@@ -148,7 +148,7 @@ const GeneralData = () => {
             <Input
               label="Costo Practicante:"
               {...register('internCost', {
-                validate: { validateWhiteSpace, validateOnlyNumbers },
+                validate: { validateOnlyNumbers },
                 valueAsNumber: true,
               })}
               name="internCost"
@@ -161,7 +161,7 @@ const GeneralData = () => {
             <Input
               label="Costo Egresado:"
               {...register('graduateCost', {
-                validate: { validateWhiteSpace, validateOnlyNumbers },
+                validate: { validateOnlyNumbers },
                 valueAsNumber: true,
               })}
               name="graduateCost"
@@ -180,7 +180,7 @@ const GeneralData = () => {
             <Input
               label="Costo Bachiller:"
               {...register('bachelorCost', {
-                validate: { validateWhiteSpace, validateOnlyNumbers },
+                validate: { validateOnlyNumbers },
                 valueAsNumber: true,
               })}
               name="bachelorCost"
@@ -193,7 +193,7 @@ const GeneralData = () => {
             <Input
               label="Costo Titulado:"
               {...register('professionalCost', {
-                validate: { validateWhiteSpace, validateOnlyNumbers },
+                validate: { validateOnlyNumbers },
                 valueAsNumber: true,
               })}
               type="number"

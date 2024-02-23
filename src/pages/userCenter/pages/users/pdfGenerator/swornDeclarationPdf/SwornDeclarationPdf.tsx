@@ -17,7 +17,7 @@ const SwornDeclarationPdf = ({ data }: SwornDeclarationPdfProps) => {
           }}
         >
           <Text style={styles.title}>
-            DECLARACIÓN JURADA DE CUMPLIMIENTO DE DIRECTIVAS DE LA CORPORACIÓN
+            DECLARACIÓN JURADA DE CUMPLIMIENTO DE DIRECTIVAS DE LA COORPORACIÓN
             DHYRIUM
           </Text>
         </View>

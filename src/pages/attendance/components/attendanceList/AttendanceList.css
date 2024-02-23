@@ -97,9 +97,15 @@
     text-transform: uppercase;
     font-weight: 600;
   }
+  .attendanceList-container {
+    grid-template-columns: 2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr;
+  }
   .attendanceList-config {
     min-width: 0;
     padding-bottom: 0.2rem;
     justify-content: center;
+  }
+  .hide-field {
+    display: none;
   }
 }

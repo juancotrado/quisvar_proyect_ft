@@ -27,6 +27,7 @@ const excelSimpleReport = async (
   const workbook = new ExcelJS.Workbook();
   await workbook.xlsx.load(buffer);
   const wk = workbook.getWorksheet('REPORTE');
+  if (!wk) return;
   wk.getCell(
     'C1'
   ).value = `INFORME PARCIAL DEL PROYECTO: ${infoData.projectName}-${infoData.cui} `;

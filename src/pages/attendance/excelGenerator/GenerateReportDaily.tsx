@@ -43,6 +43,7 @@ export async function generateReportDaily({
     });
   };
   const distance = 'NOP';
+  if (!wk) return;
   wk.getCell('B3').value = `LISTA DE ASISTENCIA DEL ${parseDate(startDate)}`;
   initialCalls.length > 7
     ? wk.mergeCells(`B3:${distance.charAt(initialCalls.length - 8)}3`)

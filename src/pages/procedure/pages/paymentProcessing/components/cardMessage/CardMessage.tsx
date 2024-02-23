@@ -2,7 +2,7 @@ import { Button } from '../../../../../../components';
 import { useRole } from '../../../../../../hooks';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { MessageSender, MessageType } from '../../../../../../types';
-import { formatDate, formatDateHourLongSpanish } from '../../../../../../utils';
+import { formatDateHourLongSpanish } from '../../../../../../utils';
 import { TYPE_STATUS } from '../../models';
 import './cardMessage.css';
 

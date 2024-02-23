@@ -13,9 +13,7 @@ import { CardOpenFile } from '../userCenter/pages/users/views';
 const GMT = 5 * 60 * 60 * 1000;
 
 export const Home = () => {
-  const { role, id, profile } = useSelector(
-    (state: RootState) => state.userSession
-  );
+  const { id, profile } = useSelector((state: RootState) => state.userSession);
   const [licenseData, setLicenseData] = useState<licenseList>();
   const [viewCard, setViewCard] = useState<boolean>(false);
   const [disabledBtn, setDisabledBtn] = useState<boolean>(true);

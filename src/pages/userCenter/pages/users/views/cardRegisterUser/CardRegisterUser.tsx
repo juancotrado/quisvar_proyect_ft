@@ -165,7 +165,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
               <Input
                 {...register('dni', {
                   required: true,
-                  validate: validateDNI,
+                  // validate: validateDNI,
                 })}
                 placeholder="N°"
                 label="DNI"
@@ -214,7 +214,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
               <Input
                 {...register('email', {
                   required: true,
-                  validate: validateEmail,
+                  // validate: validateEmail,
                 })}
                 errors={errors}
                 placeholder="Correo"

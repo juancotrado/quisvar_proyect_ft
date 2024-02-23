@@ -1,5 +1,4 @@
-import { UserRoleType } from '../types/types';
-
+type UserRoleType = any;
 export const rolsFirstLevel: UserRoleType[] = [
   'SUPER_ADMIN',
   'ADMIN',

@@ -15,7 +15,7 @@ export const INITIAL_STATE: User = {
     dni: '',
     phone: '',
     userId: 0,
-    degree: '',
+    degree: 'Practicante',
     description: '',
     job: '',
     department: '',

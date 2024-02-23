@@ -20,7 +20,7 @@ export async function generateReportRange({
   const wk = workbook.getWorksheet('Hoja1');
 
   let rowNumber = 6;
-
+  if (!wk) return;
   wk.getCell('B3').value = `LISTA DE ASISTENCIA DEL ${startDate} AL ${endDate}`;
   const filterdUsers: AttendanceRange[] = printData.filter(
     user => user?.list.length !== 0

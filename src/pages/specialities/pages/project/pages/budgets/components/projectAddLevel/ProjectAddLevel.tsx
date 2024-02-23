@@ -38,7 +38,7 @@ interface ProjectAddLevelProps {
 }
 type AddLevel = 'folder' | 'area';
 export const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
-  const { users: modedators } = useListUsers(['MOD']);
+  const { users: modedators } = useListUsers('MOD');
   const [idCoordinator, setIdCoordinator] = useState<number | null>(null);
   const [addLevel, setAddLevel] = useState<AddLevel | null>(null);
   const firstLevel = !data.level;

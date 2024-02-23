@@ -24,7 +24,7 @@ const UserDetail = ({ user, index, onClick }: UserDetailProps) => {
           <span>{user.email}</span>
         </div>
       </td>
-      <td>{user.role}</td>
+      <td>{user.role?.name}</td>
       <td
         className={`list-status ${
           user.status ? 'user-active' : 'user-inactive'

@@ -10,7 +10,6 @@ import { useListUsers } from '../../../../hooks';
 import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
 import { procedureDocument } from '../../pdfGenerator';
-import html2pdf from 'html2pdf.js';
 import { ChipFileDownLoadProcedure, DocumentProcedure } from '../../components';
 import { useTitleProcedure } from '../../hooks';
 import { axiosInstance } from '../../../../services/axiosInstance';

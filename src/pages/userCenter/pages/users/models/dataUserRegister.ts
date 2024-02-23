@@ -132,4 +132,5 @@ export const INITIAL_VALUES_USER: UserForm = {
   roleId: null,
   room: '',
   userPc: '',
+  role: null,
 };

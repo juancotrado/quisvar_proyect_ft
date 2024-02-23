@@ -51,7 +51,7 @@ const excelReport = async (
 
   // Configurar un salto de página después de la fila 10 (A10)
   wk1.getRow(10).addPageBreak(1, 4);
-
+  if (!wk) return;
   wk.getCell('C1').value = infoData.title;
   wk.getCell('D4').value = 'ARQ. CATERINY YESENIA HUMPIRI MAMANI';
   wk.getCell('D9').value = infoData.concept.toUpperCase();

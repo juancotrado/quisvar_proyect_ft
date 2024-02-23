@@ -1,4 +1,4 @@
-import { Button, DefaultUserImage } from '../../../../../../components';
+import { Button } from '../../../../../../components';
 import { _date } from '../../../../../../utils';
 import { GroupRes } from '../../../../types';
 import { DutyPdf } from '../../../groupContent/views';

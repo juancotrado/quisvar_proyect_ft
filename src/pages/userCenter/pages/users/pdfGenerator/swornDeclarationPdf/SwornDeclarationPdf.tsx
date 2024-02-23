@@ -1,7 +1,7 @@
 import { Document, Image, Page, Text, View } from '@react-pdf/renderer';
 import { styles } from './swornDeclarationStyle';
 import { UserForm } from '../../../../../../types/types';
-import { deleteExtension, getRole } from '../../../../../../utils/tools';
+import { deleteExtension } from '../../../../../../utils/tools';
 import { SwornDeclaration } from '../../models';
 
 interface SwornDeclarationPdfProps {
@@ -42,7 +42,7 @@ const SwornDeclarationPdf = ({ data }: SwornDeclarationPdfProps) => {
         </View>
         <Text style={styles.subtitle}>PRIMERO: CARGO</Text>
         <Text style={styles.text}>
-          Me comprometo a desempeñarme en el cargo de {getRole(data.role)}, esta
+          Me comprometo a desempeñarme en el cargo de {data.role?.name}, esta
           regirá desde el día de inicio de labores en las instalaciones del
           grupo hasta el último día de labores, deberá entregar con un acta de
           entrega acompañado con un informe situacional detallando las labores

@@ -1,13 +1,12 @@
 import { useState } from 'react';
 import './regularProcedure.css';
 import { Button, HeaderOptionBtn } from '../../../../components';
-import { CardRegisterMessage } from '../paymentProcessing/views';
 import { useSelectReceiver } from '../../hooks';
 import { CardRegisterProcedureGeneral } from '../../views';
 
 const RegularProcedure = () => {
   const [isNewMessage, setIsNewMessage] = useState(false);
-  const { optionsMailHeader, typeMail } = useSelectReceiver();
+  const { optionsMailHeader } = useSelectReceiver();
   const handleNewMessage = () => setIsNewMessage(!isNewMessage);
 
   return (
@@ -39,8 +38,8 @@ const RegularProcedure = () => {
       </div>
       {isNewMessage && (
         <CardRegisterProcedureGeneral
-        // onClosing={handleNewMessage}
-        // onSave={handleSaveMessage}
+          onClosing={handleNewMessage}
+          // onSave={handleSaveMessage}
         />
       )}
     </>

@@ -11,7 +11,6 @@ import {
 } from '../../../../types';
 import { useCallback, useEffect, useState } from 'react';
 import { URL, axiosInstance } from '../../../../services/axiosInstance';
-import { AnimatePresence, motion } from 'framer-motion';
 import {
   isOpenAddExperience$,
   isOpenAddTraining$,

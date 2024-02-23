@@ -24,7 +24,7 @@ export const Group = () => {
         <GroupMeetingBar />
         <h1 className="gr-title">GRUPOS</h1>
         {groups &&
-          groups.map((group, index) => (
+          groups.map((group, _index) => (
             <GroupListBar group={group} key={group.id} onSave={getgroups} />
           ))}
         {!add ? (

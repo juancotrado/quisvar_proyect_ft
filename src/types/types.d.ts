@@ -515,6 +515,7 @@ export interface UserForm {
   userPc: string;
   addressRef: string;
   declaration: FileList | null;
+  role: Role | null;
 }
 
 export interface Level {

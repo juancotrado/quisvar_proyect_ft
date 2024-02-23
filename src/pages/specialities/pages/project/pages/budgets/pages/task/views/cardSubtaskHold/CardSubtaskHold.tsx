@@ -41,7 +41,7 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
   const userList = subTask.Levels.stages.group?.groups?.map(
     ({ users }) => users
   );
-  const { users } = useListUsers(null, false, userList);
+  const { users } = useListUsers('MOD', 'empresas', undefined, true, userList);
   const { status } = subTask;
   const handleAddUser = (user: DataUser) => {
     setAddBtn(true);

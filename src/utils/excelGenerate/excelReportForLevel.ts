@@ -1,6 +1,6 @@
 import * as ExcelJS from 'exceljs';
 
-import { Level } from '../../types/types';
+import { InfoDataReport, Level } from '../../types/types';
 import {
   borderProjectStyle,
   exportExcel,
@@ -10,16 +10,6 @@ import {
   moneyFormat,
 } from './utils/excelTools';
 
-interface InfoDataReport {
-  department: string;
-  district: string;
-  province: string;
-  initialDate: string;
-  finishDate: string;
-  fullName: string;
-  description: string;
-  CUI: string;
-}
 const reportCoordinator = {
   areas: 'CC  COORDINADOR DEL PROYECTO : ',
   indexTasks: 'CC  COORDINADOR DEL AREA : ',
@@ -39,9 +29,9 @@ const excelSimpleReport = async (
   const wk = workbook.getWorksheet('REPORTE');
   wk.getCell(
     'C1'
-  ).value = `INFORME PARCIAL DEL PROYECTO: ${infoData.description}-${infoData.CUI} `;
+  ).value = `INFORME PARCIAL DEL PROYECTO: ${infoData.projectName}-${infoData.cui} `;
   wk.getCell('C5').value = reportCoordinator[option];
-  wk.getCell('D5').value = infoData.fullName;
+  wk.getCell('D5').value = infoData.moderatorName;
   wk.getCell('D7').value = infoData.department;
   wk.getCell('D8').value = infoData.province;
   wk.getCell('D9').value = infoData.district;
@@ -64,11 +54,11 @@ const recursionProject = (
       null,
       dataRow.level ? '  '.repeat(dataRow.level) + dataRow.item : null,
       dataRow.name,
+      dataRow.days,
+      dataRow.percentage / 100,
       dataRow.balance,
       dataRow.spending,
       dataRow.price,
-      dataRow.percentage / 100,
-      dataRow.days,
       dataRow.total,
       indexLevel,
     ]);
@@ -81,8 +71,8 @@ const recursionProject = (
       : 'f3f6fc';
     borderProjectStyle(row);
     fillRows(row, 2, 10, color);
-    formatExcelStyle({ row, positions: 'DEF', format: moneyFormat });
-    formatExcelStyle({ row, positions: 'G', format: '0%' });
+    formatExcelStyle({ row, positions: 'FGH', format: moneyFormat });
+    formatExcelStyle({ row, positions: 'E', format: '0%' });
     fontExcelStyle({
       row,
       positions: 'BCDEFGHIJ',
@@ -92,6 +82,27 @@ const recursionProject = (
       name: 'Century Gothic',
     });
     rowNumber++;
+    if (dataRow.subTasks) {
+      dataRow.subTasks.map(sustaskRow => {
+        const row = wk.insertRow(rowNumber, [
+          null,
+          '  '.repeat(dataRow.level + 1) + sustaskRow.item,
+          sustaskRow.name,
+          sustaskRow.days,
+          sustaskRow.percentage / 100,
+          null,
+          null,
+          sustaskRow.price,
+          null,
+          indexLevel + 1,
+        ]);
+        fillRows(row, 2, 10, 'fffffff');
+        borderProjectStyle(row);
+        formatExcelStyle({ row, positions: 'FGH', format: moneyFormat });
+        formatExcelStyle({ row, positions: 'E', format: '0%' });
+        rowNumber++;
+      });
+    }
     if (dataRow.nextLevel) {
       rowNumber = recursionProject(wk, dataRow.nextLevel, rowNumber);
     }

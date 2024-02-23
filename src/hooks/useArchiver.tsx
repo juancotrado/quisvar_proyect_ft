@@ -2,6 +2,13 @@ import { useEffect, useRef } from 'react';
 import { URL, axiosInstance } from '../services/axiosInstance';
 type TypeArchiver = 'projects' | 'levels' | 'stages';
 type TypeZip = 'projects' | 'editables' | 'pdfs';
+
+interface Archiver {
+  result: string;
+  urlFile: string;
+  urlFileDelete: string;
+}
+
 const useArchiver = (
   id: number,
   type: TypeArchiver,
@@ -22,17 +29,13 @@ const useArchiver = (
       clearTimeout(timeoutRef.current);
     }
     axiosInstance
-      .get(`/archiver/${id}?type=${type}&nameZip=${nameZip}&typeZip=${typeZip}`)
-      .then(res => {
-        const deleteUpload = res.data.url.replace('./uploads/', '');
-        const posSlash = deleteUpload.indexOf('/');
-        const normalizePath = deleteUpload.slice(
-          -(deleteUpload.length - posSlash)
-        );
-
-        window.location.href = `${URL}/projects${normalizePath}`;
+      .get<Archiver>(
+        `/archiver/${id}?type=${type}&nameZip=${nameZip}&typeZip=${typeZip}`
+      )
+      .then(({ data }) => {
+        window.location.href = `${URL}/${data.urlFile}`;
         timeoutRef.current = setTimeout(() => {
-          axiosInstance.delete(`/archiver/?path=${res.data.url}`);
+          axiosInstance.delete(`/archiver/?path=${data.urlFileDelete}`);
         }, 3000);
       });
   };

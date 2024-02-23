@@ -2,10 +2,10 @@ import './listpersonalTask.css';
 import { useEffect, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
 import { motion } from 'framer-motion';
-import MyTaskCard from '../../components/shared/card/myTaskCard/MyTaskCard';
-import { SubtaskIncludes } from '../../types/types';
+import { SubtaskIncludes } from '../../types';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
+import { MyTaskCard } from './components';
 
 const spring = {
   type: 'spring',
@@ -13,7 +13,7 @@ const spring = {
   damping: 30,
 };
 
-const ListPersonalTask = () => {
+export const ListPersonalTask = () => {
   const [isOn, setIsOn] = useState(false);
   const { userSession } = useSelector((state: RootState) => state);
   const { id } = userSession;
@@ -67,5 +67,3 @@ const ListPersonalTask = () => {
     </div>
   );
 };
-
-export default ListPersonalTask;

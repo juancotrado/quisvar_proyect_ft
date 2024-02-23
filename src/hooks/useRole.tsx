@@ -1,19 +1,36 @@
-import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store';
+import { MenuAccess, MenuRole, Role } from '../types';
+import { useLocation } from 'react-router-dom';
 
-const useRole = () => {
-  const [role, setRole] = useState<string | null>(null);
-  const [id, setId] = useState<number>(0);
-  const [name, setName] = useState<string>('');
+const useRole = (
+  typeRol: MenuRole,
+  menu?: MenuAccess | null,
+  subMenu?: string,
+  roleData: Role | null = null
+) => {
+  const location = useLocation();
+  const currentUrl = menu ?? (location.pathname.split('/')[1] as MenuAccess);
 
-  useEffect(() => {
-    const userInfo = localStorage.getItem('personalData');
-    if (typeof userInfo !== 'string') return;
-    const _user = JSON.parse(userInfo);
-    setRole(_user.role);
-    setId(_user.id);
-    setName(_user.name);
-  }, []);
-  return { role, id, name };
+  const { role } = useSelector((state: RootState) => state.userSession);
+
+  const roleAux = roleData ?? role;
+  let hasAccess: boolean | undefined = false;
+  if (subMenu) {
+    const findMenu = roleAux?.menuPoints.find(
+      menuPoint => menuPoint.route === currentUrl
+    );
+    hasAccess = findMenu?.menu?.some(
+      menuPoint => menuPoint.route === subMenu && menuPoint.typeRol === typeRol
+    );
+  } else {
+    hasAccess = roleAux?.menuPoints.some(
+      menuPoint =>
+        menuPoint.route === currentUrl && menuPoint.typeRol === typeRol
+    );
+  }
+
+  return { hasAccess: !!hasAccess };
 };
 
 export default useRole;

@@ -1,13 +1,12 @@
 import { ChangeEvent, useState } from 'react';
 import xml2js from 'xml2js';
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import { CustomizableInvoicePdf } from '../../components/shared/CustomizableInvoicePdf/CustomizableInvoicePdf';
-import { InvoiceXML } from '../../types/typeFactura';
+import { InvoiceXML } from '../../types';
 import './customizableInvoice.css';
-import UploadFileInput from '../../components/shared/uploadFileInput/UploadFileInput';
-import FileNameContainer from '../../components/shared/fileNameContainer/FileNameContainer';
+import { CustomizableInvoicePdf } from './pdfGenerator';
+import { FileNameContainer, UploadFileInput } from '../../components';
 
-const CustomizableInvoice = () => {
+export const CustomizableInvoice = () => {
   const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
   const [fileName, setFileName] = useState({ xmlName: '', jpgName: '' });
   const [invoiceXml, setInvoiceXml] = useState<InvoiceXML | null>(null);
@@ -17,7 +16,6 @@ const CustomizableInvoice = () => {
 
     reader.onload = e => {
       const xmlText = e?.target?.result;
-      console.log(xmlText);
       if (xmlText) parseXML(xmlText);
     };
     if (!file) return;
@@ -119,5 +117,3 @@ const CustomizableInvoice = () => {
     </div>
   );
 };
-
-export default CustomizableInvoice;

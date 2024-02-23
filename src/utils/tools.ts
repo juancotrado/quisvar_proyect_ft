@@ -1,4 +1,5 @@
-import { Feedback, Level, RangeDays } from '../types/types';
+import { DEGREE_DATA } from '../pages/userCenter/pages/users/models';
+import { Degree, Feedback, Level, RangeDays } from '../types/types';
 import { getListByRole } from './roles';
 
 export const findProject = (data: Level[]): boolean => {
@@ -148,7 +149,6 @@ export const transformDaysObject = (days: RangeDays[]) => {
               0
             );
             if (sumFloatDay + copyDays[j].day < 1) {
-              console.log(sumFloatDay, copyDays[j].day);
               floatDays.push({ ...copyDays[j], day: copyDays[j].day });
               days.splice(i, 1);
             }
@@ -228,4 +228,67 @@ export const drawDaysBars = (data: (RangeDays | RangeDays[])[]) => {
   const myBase64Image = canvas.toDataURL('image/png'); // 'image/png' es el formato de la imagen
 
   return myBase64Image;
+};
+
+export const normalizeFileName = (fileName: string) => {
+  const splitFileName$$ = fileName.split('$$');
+  const splitFileName$ = fileName.split('$');
+  if (splitFileName$$.length === 2) return splitFileName$$[1];
+  if (splitFileName$.length === 2) return splitFileName$[1];
+  return fileName;
+};
+
+export const formatMoney = (amount: number) => {
+  const amountString = String(Math.trunc(amount));
+  const tranformMoney = (lengthVal: number, symbol: string) => {
+    const amountRes = +amountString.slice(-lengthVal)[0];
+    const amountSlice = amountString.slice(0, -lengthVal);
+    return `${amountSlice}${amountRes ? '.' + amountRes : ''}${symbol}`;
+  };
+  if (amountString.length > 3 && amountString.length < 7)
+    return tranformMoney(3, 'K');
+  if (amountString.length > 6 && amountString.length < 10)
+    return tranformMoney(6, 'M');
+  return amount.toFixed(2);
+};
+
+export const formatAmountMoney = (amount: number) => {
+  const amountString = String(amount);
+  const amountSplit = amountString.split('.');
+  const AmountTransform = amountSplit[0].split('').reverse();
+  const decimalAMount = amountSplit[1]
+    ? '.' +
+      Number('0.' + amountSplit[1])
+        .toFixed(2)
+        .split('.')[1]
+    : '.00';
+
+  let thousanAmount = '';
+  for (const i in AmountTransform) {
+    if (+i % 3 === 0 && +i !== 0) {
+      thousanAmount += ',';
+    }
+    thousanAmount += AmountTransform[i];
+  }
+  const thousanAmountJoin = thousanAmount.split('').reverse().join('');
+  return thousanAmountJoin + decimalAMount;
+};
+
+export const downloadBlob = (blobFile: Blob, name: string) => {
+  const editedUrl = URL.createObjectURL(blobFile);
+  downloadHref(editedUrl, name);
+};
+
+export const downloadHref = (url: string, name: string) => {
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = name;
+  link.click();
+  URL.revokeObjectURL(url);
+  link.remove();
+};
+
+export const degreeAbrv = (degree: Degree) => {
+  const findDegree = DEGREE_DATA.find(({ value }) => value === degree);
+  return findDegree?.abrv;
 };

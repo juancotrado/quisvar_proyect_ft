@@ -2,15 +2,15 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './login.css';
 import { axiosInstance } from '../../services/axiosInstance';
-import InputText from '../../components/shared/Input/Input';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { validateDNI } from '../../utils/customValidatesForm';
+import { validateDNI } from '../../utils';
+import { Input } from '../../components';
 
 interface UserForm {
   dni: string;
   password: string;
 }
-const Login = () => {
+export const Login = () => {
   const navigate = useNavigate();
 
   const {
@@ -48,7 +48,7 @@ const Login = () => {
         <form onSubmit={handleSubmit(sendForm)} className="form">
           <img src="/img/dhyrium_logo.png" alt="" />
           <div className="form-group">
-            <InputText
+            <Input
               label="Ingrese DNI"
               placeholder="DNI"
               {...register('dni', {
@@ -60,7 +60,7 @@ const Login = () => {
             />
           </div>
           <div className="form-group">
-            <InputText
+            <Input
               label="Contraseña"
               placeholder="Contraseña"
               {...register('password', { required: true })}
@@ -86,5 +86,3 @@ const Login = () => {
     </div>
   );
 };
-
-export default Login;

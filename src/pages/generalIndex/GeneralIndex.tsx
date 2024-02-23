@@ -2,37 +2,18 @@ import { NavLink, Outlet, useSearchParams } from 'react-router-dom';
 import './generalIndex.css';
 import { axiosInstance } from '../../services/axiosInstance';
 import { useEffect, useState } from 'react';
-import { CoorpEntity } from '../../types/types';
-import DropDownSimple from '../../components/shared/select/DropDownSimple';
+import { CoorpEntity } from '../../types';
+import { DEFAULT_COMPANY } from './models';
+import { ButtonHeader, DropDownSimple } from '../../components';
+import { useSubMenus } from '../../hooks';
 
-const indexData = [
-  { id: 14, name: 'CAEC', route: 'contratos' },
-  { id: 13, name: 'DEE', route: 'contratos1' },
-  { id: 12, name: 'DEP', route: 'contratos2' },
-  { id: 11, name: 'CF', route: 'contratos3' },
-  { id: 10, name: 'DCA,CC', route: 'contratos4' },
-  { id: 9, name: 'SUNAT', route: 'contratos5' },
-  { id: 8, name: 'OSCE', route: 'contratos6' },
-  { id: 7, name: 'Imagen Inst', route: 'contratos7' },
-  { id: 6, name: 'CPE', route: 'contratos8' },
-  { id: 5, name: 'DIEB', route: 'contratos8' },
-  { id: 4, name: 'DRP', route: 'contratos8' },
-  { id: 3, name: 'DPP', route: 'contratos8' },
-  { id: 2, name: 'AC', route: 'contratos8' },
-  { id: 1, name: 'DTI', route: 'contratos8' },
-];
-
-const DEFAULT_COMPANY: CoorpEntity = {
-  id: 0,
-  name: 'Dhyrium SAA',
-  type: '',
-  newId: '',
-  urlImg: '/img/quisvar_logo.png',
-};
-const GeneralIndex = () => {
+export const GeneralIndex = () => {
   const [coorpEntity, setCoorpEntity] = useState<CoorpEntity[] | null>(null);
   const [urlImgCompany, setUrlImgCompany] = useState('');
   const [params, setParams] = useSearchParams();
+  const { subMenu } = useSubMenus();
+  // Accedemos a la propiedad pathname del objeto de ubicación para obtener la URL actual
+
   useEffect(() => {
     getCompanyData();
   }, []);
@@ -100,18 +81,10 @@ const GeneralIndex = () => {
           />
         </div>
         <div className="generalIndex-header-indexData">
-          {indexData.map(index => (
+          {subMenu.map(index => (
             <NavLink key={index.id} to={{ pathname: index.route }}>
               {({ isActive }) => (
-                <span
-                  className={
-                    isActive
-                      ? ' generalIndex-header-indexData-span generalIndex--active '
-                      : 'generalIndex-header-indexData-span'
-                  }
-                >
-                  {index.id} {index.name}
-                </span>
+                <ButtonHeader isActive={isActive} text={index.title} />
               )}
             </NavLink>
           ))}
@@ -121,5 +94,3 @@ const GeneralIndex = () => {
     </div>
   );
 };
-
-export default GeneralIndex;

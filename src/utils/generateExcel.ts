@@ -33,7 +33,8 @@ import { drawDaysBars, getDaysHistory, transformDaysObject } from './tools';
 const excelReport = async (
   data: ProjectReport[],
   infoData: ExcelData,
-  attendance: UserAttendance
+  attendance: UserAttendance,
+  fees: UserAttendance
 ) => {
   // Cargar la plantilla desde un archivo
   const response = await fetch('/templates/report_templateV5.xlsx');
@@ -55,7 +56,7 @@ const excelReport = async (
   wk.getCell('D4').value = 'ARQ. CATERINY YESENIA HUMPIRI MAMANI';
   wk.getCell('D9').value = infoData.concept.toUpperCase();
   wk.getCell('D13').value = infoData.degree;
-  wk.getCell('H12').value = infoData.remote;
+  wk.getCell('H12').value = '-';
   wk.getCell('D7').value =
     `${infoData.firstName} ${infoData.lastName}`.toUpperCase();
   wk.getCell('D11').value = infoData.dni;
@@ -75,7 +76,8 @@ const excelReport = async (
       project.name.toUpperCase(),
     ]);
     wk.mergeCells(`D${rowNumber}:I${rowNumber}`);
-    const { firstName, lastName } = project.moderator.profile;
+    // const { firstName, lastName } = project.moderator.profile;
+    const { firstName, lastName } = { firstName: '-', lastName: '-' };
     projectRow.getCell('D').value = (
       'COORDINADOR: ' +
       firstName +
@@ -110,7 +112,7 @@ const excelReport = async (
         parseUTC(subTask.assignedAt || ''),
         parseUTC(subTask.untilDate || ''),
         subTask.percentage / 100,
-        project.percentage / 100,
+        subTask.days,
         null,
         getDays + 'Dias',
       ]);
@@ -141,23 +143,23 @@ const excelReport = async (
       });
       formatExcelStyle({
         row: subtaskRow,
-        positions: 'GH',
+        positions: 'G',
         format: '0%',
       });
       rowNumber++;
     });
   });
   const endLine = rowNumber;
-  const resultPorcentage = data.reduce(
-    (acc, project) => {
-      acc.sumTotalTask += project.subtasks.length;
-      acc.porcentageValue += project.subtasks.length * project.percentage;
-      return acc;
-    },
-    { sumTotalTask: 0, porcentageValue: 0 }
-  );
-  const porcentageValue =
-    resultPorcentage.porcentageValue / resultPorcentage.sumTotalTask;
+  // const resultPorcentage = data.reduce(
+  //   (acc, project) => {
+  //     acc.sumTotalTask += project.subtasks.length;
+  //     acc.porcentageValue += project.subtasks.length * 30;
+  //     return acc;
+  //   },
+  //   { sumTotalTask: 0, porcentageValue: 0 }
+  // );
+  const { porcentageValue } = infoData;
+  // resultPorcentage.porcentageValue / resultPorcentage.sumTotalTask;
 
   const sumTotalCell = 'I' + (endLine + 2);
   wk.getCell(sumTotalCell).value = {
@@ -170,6 +172,7 @@ const excelReport = async (
     date1904: false,
   };
   wk.getCell('I' + (endLine + 4)).value = getPrice(attendance);
+  wk.getCell('I' + (endLine + 5)).value = getPrice(fees);
   wk.getCell('I' + (endLine + 6)).value = {
     formula: `${salaryAdvanceCell}-I${endLine + 4}-I${endLine + 5}`,
     date1904: false,

@@ -1,10 +1,10 @@
 import { motion } from 'framer-motion';
-import Portal from './Portal';
 import './modal.css';
 import { isOpenModal$ } from '../../services/sharingSubject';
 import { useEffect, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
 import { dropIn } from '../../animations/animations';
+import { Portal } from '.';
 
 interface ModalProps {
   children: React.ReactNode;

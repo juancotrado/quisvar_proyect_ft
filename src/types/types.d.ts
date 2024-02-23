@@ -53,7 +53,7 @@ export interface ReportForm {
   initialDate: string;
   untilDate: string;
   concept: string;
-  remote: string;
+  porcentageValue: number;
   title: string;
 }
 
@@ -165,25 +165,54 @@ export type typeSidebarSpecility =
   | 'typespecialities'
   | 'projects';
 
-export type UserRoleType =
-  | 'SUPER_ADMIN'
-  | 'ADMIN'
-  | 'ASSISTANT'
-  | 'ASSISTANT_ADMINISTRATIVE'
-  | 'SUPER_MOD'
-  | 'MOD'
-  | 'EMPLOYEE';
+// export type UserRoleType =
+//   | 'SUPER_ADMIN'
+//   | 'ADMIN'
+//   | 'ASSISTANT'
+//   | 'ASSISTANT_ADMINISTRATIVE'
+//   | 'SUPER_MOD'
+//   | 'MOD'
+//   | 'EMPLOYEE';
 
 export interface GruopProject {
   id: number;
   projects: ProjectType[];
 }
+
+export interface MenuItem {
+  id: number;
+  route: MenuAccess;
+  title: string;
+  typeRol: string;
+  menu?: MenuItem[];
+}
+
+interface RoleForm {
+  id: number;
+  name: string;
+}
+interface Role extends RoleForm {
+  menuPoints: MenuItem[];
+}
+
+export type MenuAccess =
+  | 'home'
+  | 'tramites'
+  | 'especialidades'
+  | 'asistencia'
+  | 'centro-de-usuarios'
+  | 'empresas'
+  | 'especialistas'
+  | 'indice-general'
+  | 'grupos';
+
 export type User = {
   id: number;
   email: string;
   password: string;
   profile: Profile;
-  role: UserRoleType;
+  role: Role | null;
+  roleId: number;
   status?: boolean;
   contract: string | null;
   cv: string | null;
@@ -201,9 +230,16 @@ export type User = {
     workStation: WorkStation;
   };
 };
+
+export type Degree =
+  | 'Practicante'
+  | 'Egresado'
+  | 'Bachiller'
+  | 'Titulado'
+  | 'Magister';
 type Profile = {
   id: number;
-  degree: string;
+  degree: Degree;
   description: string;
   job: string;
   firstName: string;
@@ -230,9 +266,22 @@ export interface ProjectType {
   id: number;
   name: string;
   stage?: Stage;
-  stages: Stages[];
+  stages: StageSubtask[];
   specialityId: number;
   userId: number;
+  hasAccessInStage: boolean;
+  useSessionId: number;
+}
+
+export interface InfoDataReport {
+  department: string;
+  district: string;
+  province: string;
+  initialDate: string;
+  finishDate: string;
+  moderatorName: string;
+  projectName: string;
+  cui: string;
 }
 
 interface Stages {
@@ -280,6 +329,8 @@ export interface ContractForm {
 interface StageForm {
   bachelorCost: number;
   professionalCost: number;
+  graduateCost: number;
+  internCost: number;
   groupId: number;
 }
 
@@ -291,6 +342,7 @@ interface Contract extends ContractForm {
   companyId: number | null;
   consortiumId: number | null;
   details: string | null;
+  phases: string;
 }
 
 export interface WorkArea {
@@ -402,6 +454,8 @@ type StatusType =
   | 'DONE'
   | 'LIQUIDATION';
 
+type AddTask = 'upper' | 'lower';
+
 export type TypeTask = 'task' | 'indextask' | 'task2' | 'task3';
 export interface SubtaskIncludes extends SubTask {
   Levels: {
@@ -417,6 +471,7 @@ interface ContractIndexData {
   name: string;
   nivel: number;
   hasFile?: 'yes' | 'no';
+  deliverLettersId?: id;
   nextLevel?: ContractIndexData[];
 }
 
@@ -450,7 +505,7 @@ export interface UserForm {
   userPc: string;
   province: string;
   district: string;
-  role: string;
+  roleId: number | null;
   ruc: string;
   job: string;
   cv: FileList | null;
@@ -460,9 +515,6 @@ export interface UserForm {
   userPc: string;
   addressRef: string;
   declaration: FileList | null;
-  declarations?: string[];
-  typeDeclaration?: 'technical' | 'administrative';
-  declarationDate: string;
 }
 
 export interface Level {
@@ -570,21 +622,20 @@ export interface Option {
 export interface Stage {
   id: number;
   name: string;
+  startDate: string;
+  untilDate: string;
 }
 interface StageSubtask extends Stage {
   group: Groups;
 }
-export interface StageInfo extends Stage {
+export interface StageInfo extends StageForm, Stage {
   startDate: string;
   untilDate: string;
   status: boolean;
   isProject: boolean;
   moderatorId: null | number;
   rootTypeItem: string;
-  bachelorCost: number;
   group: Groups;
-  professionalCost: number;
-  groupId: number;
   createdAt: string;
   updatedAt: string;
   projectId: number;
@@ -596,6 +647,7 @@ interface Groups {
   id: number;
   name: string;
   groups: { users: User }[];
+  moderator: User;
 }
 export interface Ubigeo {
   id_ubigeo: string;
@@ -785,10 +837,16 @@ export interface AttendanceRange {
   list: userAttendance[];
 }
 
-export interface MailType {
-  messageId: number;
-  status: boolean;
+interface MailOrigin {
   type: MessageSender;
+  status: boolean;
+}
+export interface MailType extends MailOrigin {
+  paymessageId: number;
+  paymessage: MessageType;
+}
+export interface MailTypeComunication extends MailOrigin {
+  messageId: number;
   message: MessageType;
 }
 export type MessageSender = 'SENDER' | 'RECEIVER' | 'LICENSE';
@@ -814,6 +872,7 @@ export interface MessageType {
   description: string;
   createdAt: Date;
   header: string;
+  initialSender: userMessage;
   filesPay: {
     files: fileMesage[];
   }[];
@@ -853,7 +912,7 @@ export interface PdfGeneratorPick {
   users?: userMessage[];
   user?: {
     id: number;
-    profile: Pick<Profile, 'firstName' | 'lastName' | 'dni' | 'phone'>;
+    profile: Pick<Profile, 'firstName' | 'lastName' | 'dni' | 'phone' | 'job'>;
   };
   history?: MessageReply[];
 }
@@ -867,7 +926,13 @@ export interface userMessage {
     address: string;
     profile: Pick<
       Profile,
-      'firstName' | 'lastName' | 'dni' | 'phone' | 'degree' | 'description'
+      | 'firstName'
+      | 'lastName'
+      | 'dni'
+      | 'phone'
+      | 'degree'
+      | 'description'
+      | 'job'
     >;
   };
   userId: number;
@@ -963,6 +1028,13 @@ export type licenseList = {
   untilDate: string;
   createdAt: string;
 };
+export interface Option {
+  name?: string;
+  icon?: string;
+  url?: string;
+  function?: () => void;
+  type?: 'button' | 'reset' | 'submit';
+}
 export type getLicenses = {
   id: number;
   // status: licenseStatus;
@@ -1099,9 +1171,49 @@ export interface UserGroup {
 export interface Group {
   id: number;
   name: string;
+  gNumber: number;
+  modId?: number;
+  moderator: {
+    profile: {
+      firstName: string;
+      lastName: string;
+      userPc: string;
+    };
+  };
   groups?: UserGroup[];
 }
 
 interface Groups extends Group {
   groups: { users: User }[];
+}
+
+export type MenuRole = 'MOD' | 'MEMBER' | 'VIEWER';
+
+export interface Menu {
+  id: number;
+  title: string;
+  route: string;
+  access: MenuRole[];
+  menu?: Menu[];
+}
+export interface MenuPoint {
+  id?: number;
+  menuId: number;
+  typeRol: MenuRole;
+  subMenuPoints?: MenuPoint[];
+}
+interface RelationMenuPoint {
+  [key: number]: MenuPoint[];
+}
+
+export interface MenuRoleForm extends Menu {
+  idRelation?: number;
+  typeRol: MenuRole;
+  menu?: MenuRoleForm[];
+}
+export interface Roles {
+  id: number;
+  name: string;
+  menuPoints: MenuRoleForm[];
+  menuPointsDb: MenuPoint[];
 }

@@ -1,104 +1,36 @@
-import SubjectManager from '../models/subjectManager';
+import { SubjectManager } from '../models';
 import {
-  AreaSpecialty,
-  AttendanceRange,
-  Contract,
-  Equipment,
-  Specialists,
-  SubTask,
-  TrainingSpecialty,
-  User,
-  WorkStation,
-  licenseList,
-} from '../types/types';
+  CardLicenseProps,
+  CardRegisteContract,
+  CardRegisteProject,
+  CardRegisteTask,
+  CardSpecialistProps,
+  CardViewProps,
+  CardWorkStationProps,
+  OpenAssignCard,
+  OpenButtonDelete,
+  OpenEspecialistExperienceDescription,
+  OpenEspecialistTrainingDescription,
+  OpenViewDocs,
+  OpenWithId,
+  ViewHtmlToPdf,
+  ViewPdf,
+  ViewRegisterUser,
+} from './types';
 
-interface CardRegisteProject {
-  isOpen: boolean;
-  typeSpecialityId: number | null;
-  isDuplicate: boolean;
-  idProject?: number;
-}
-interface CardRegisteContract {
-  isOpen: boolean;
-  contract?: Contract;
-}
-interface CardRegisteTask {
-  isOpen: boolean;
-  levelId: number | null;
-  task?: SubTask;
-}
-interface CardViewProps {
-  isOpen: boolean;
-  data: AttendanceRange[];
-  daily?: string;
-  rangeDate?: { startDate: string; endDate: string };
-  typeReport: 'range' | 'daily';
-}
-interface CardLicenseProps {
-  isOpen: boolean;
-  type?: string;
-  data?: licenseList;
-}
-interface CardSpecialistProps {
-  isOpen: boolean;
-  data?: Specialists;
-}
-interface OpenButtonDelete {
-  isOpen: boolean;
-  function: () => void;
-}
-interface OpenEspecialistExperienceDescription {
-  isOpen: boolean;
-  id: number;
-  data?: AreaSpecialty;
-}
-interface OpenEspecialistTrainingDescription {
-  isOpen: boolean;
-  id: number;
-  data?: TrainingSpecialty;
-}
-interface OpenAssignCard {
-  isOpen: boolean;
-  id: number;
-  data?: Equipment;
-}
-interface CardWorkStationProps {
-  isOpen: boolean;
-  data?: WorkStation;
-}
-interface OpenAddGroup {
-  isOpen: boolean;
-  id: number;
-}
-interface OpenAddCompany {
-  isOpen: boolean;
-  id: number;
-}
-interface OpenCardCompanies {
-  isOpen: boolean;
-  id?: number;
-}
-interface OpenCardConsortium {
-  isOpen: boolean;
-  id?: number;
-}
-interface OpenViewDocs {
-  isOpen: boolean;
-  user: User;
-}
 export const loader$ = new SubjectManager<boolean>();
 export const toggle$ = new SubjectManager<boolean>();
 export const isOpenModal$ = new SubjectManager<boolean>();
 export const isGenerateExcelReport$ = new SubjectManager<string>();
-export const isOpenCardRegisterUser$ = new SubjectManager<boolean>();
+export const isOpenCardRegisterUser$ = new SubjectManager<ViewRegisterUser>();
 export const isOpenCardAddEquipment$ =
   new SubjectManager<CardWorkStationProps>();
 export const isOpenCardAssing$ = new SubjectManager<OpenAssignCard>();
-export const isOpenCardAddGroup$ = new SubjectManager<OpenAddGroup>();
-export const isOpenCardAddCompany$ = new SubjectManager<OpenAddCompany>();
+export const isOpenCardAddGroup$ = new SubjectManager<OpenWithId>();
+export const isOpenCardAddCompany$ = new SubjectManager<OpenWithId>();
 export const isOpenCardGenerateReport$ = new SubjectManager<boolean>();
-export const isOpenCardCompany$ = new SubjectManager<OpenCardCompanies>();
-export const isOpenCardConsortium$ = new SubjectManager<OpenCardConsortium>();
+export const isOpenCardCompany$ = new SubjectManager<OpenWithId>();
+export const isOpenCardConsortium$ = new SubjectManager<OpenWithId>();
 export const isOpenCardSpecialist$ = new SubjectManager<CardSpecialistProps>();
 export const isOpenCardViewPdf$ = new SubjectManager<CardViewProps>();
 export const isOpenCardFiles$ = new SubjectManager<boolean>();
@@ -114,6 +46,8 @@ export const isOpenCardRegisteProject$ =
 export const isOpenCardRegisteContract$ =
   new SubjectManager<CardRegisteContract>();
 export const isOpenCardRegisteTask$ = new SubjectManager<CardRegisteTask>();
+export const isOpenViewPdf$ = new SubjectManager<ViewPdf>();
+export const isOpenViewHtmlToPdf$ = new SubjectManager<ViewHtmlToPdf>();
 export const isTaskInformation$ = new SubjectManager<boolean>();
 export const errorToken$ = new SubjectManager();
 export const isResizing$ = new SubjectManager<boolean>();

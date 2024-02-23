@@ -39,6 +39,7 @@ export const axiosInterceptor = () => {
       }
       if (response.data.error.name === 'JsonWebTokenError') {
         localStorage.removeItem('token');
+        localStorage.removeItem('arrChecked');
         errorToken$.setSubject = true;
         return;
       }

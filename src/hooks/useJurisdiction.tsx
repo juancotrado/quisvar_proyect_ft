@@ -29,7 +29,6 @@ const useJurisdiction = () => {
     setDistricts(districsData);
   };
   const setJurisdictionSelectData = (departament: string, province: string) => {
-    console.log(departament, province);
     const findDepartament = departamentsJson.find(
       ubigeo => ubigeo.nombre_ubigeo === departament
     );

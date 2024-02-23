@@ -6,64 +6,34 @@ import {
   useState,
   useRef,
 } from 'react';
-import { AttendanceList, CardViewPdf, Input, Legend } from '../../components';
+import { useSelector } from 'react-redux';
+import { Input, Button, CloseIcon } from '../../components';
 import './Attendance.css';
-import { AppDispatch, RootState } from '../../store';
-import { useDispatch, useSelector } from 'react-redux';
-import Button from '../../components/shared/button/Button';
 import { axiosInstance } from '../../services/axiosInstance';
-import { _date } from '../../utils/formatDate';
+import { _date, SnackbarUtilities } from '../../utils';
 import {
   AttendanceRange,
   ListAttendance,
   User,
   getLicenses,
-} from '../../types/types';
-import { SocketContext } from '../../context/SocketContex';
-import { generateReportRange } from './GenerateReportRange';
-// import { generateReportDaily } from './GenerateReportDaily';
-// import html2canvas from 'html2canvas';
+} from '../../types';
+import { SocketContext } from '../../context';
 import { isOpenCardViewPdf$ } from '../../services/sharingSubject';
-import { generateReportDaily } from './GenerateReportDaily';
-import { SnackbarUtilities } from '../../utils/SnackbarManager';
-import CloseIcon from '../../components/shared/closeIcon/CloseIcon';
-import { getListUsers } from '../../store/slices/listUsers.slice';
+import { generateReportDaily, generateReportRange } from './excelGenerator';
+import { AttendanceList, CardViewPdf, Legend } from './components';
+import { CALLS } from './models';
+import { RootState } from '../../store';
 interface sendItemsProps {
   usersId: number;
   status: string;
 }
 
-const llamados = [
-  { title: 'primer llamado' },
-  { title: 'segundo llamado' },
-  { title: 'tercer llamado' },
-  { title: 'cuarto llamado' },
-  { title: 'quinto llamado' },
-  { title: 'sexto llamado' },
-  { title: 'sétimo llamado' },
-  { title: 'octavo llamado' },
-  { title: 'noveno llamado' },
-  { title: 'decimo llamado' },
-  { title: 'undecimo llamado' },
-  { title: 'duodecimo llamado' },
-  { title: 'decimotercero llamado' },
-  { title: 'decimocuarto llamado' },
-  { title: 'decimoquinto llamado' },
-  { title: 'decimosexto llamado' },
-  { title: 'decimosetimo llamado' },
-  { title: 'decimooctavo llamado' },
-  { title: 'decimonoveno llamado' },
-  { title: 'vigesimo llamado' },
-  { title: 'vigesimoprimero llamado' },
-  { title: 'vigesimosegundo llamado' },
-];
 interface RangeDate {
   startDate: string;
   endDate: string;
 }
 const today = new Date();
-const Attendance = () => {
-  const dispatch: AppDispatch = useDispatch();
+export const Attendance = () => {
   const [sendItems, setSendItems] = useState<sendItemsProps[]>([]);
   const [callLists, setCallLists] = useState<ListAttendance[] | null>(null);
   const [callList, setCallList] = useState<ListAttendance | null>(null);
@@ -74,7 +44,7 @@ const Attendance = () => {
     endDate: '',
   });
 
-  const { listUsers: users } = useSelector((state: RootState) => state);
+  const users = useSelector((state: RootState) => state.listUsers);
   const socket = useContext(SocketContext);
 
   const componentRef = useRef(null);
@@ -95,7 +65,6 @@ const Attendance = () => {
     verifyLicenses();
     getTodayData();
     getLicenses();
-    dispatch(getListUsers());
   }, []);
   const handleRadioChange = (status: string, usersId: number) => {
     const findId = sendItems.find(item => item.usersId === usersId);
@@ -167,8 +136,8 @@ const Attendance = () => {
     const res = await axiosInstance.get(
       `/list/attendance/?startDate=${_date(todayNow)}`
     );
-    if (!(llamados.length > res.data.length)) return;
-    const title = llamados[res.data.length];
+    if (!(CALLS.length > res.data.length)) return;
+    const title = CALLS[res.data.length];
     axiosInstance.post(`/list`, { ...title, timer: hour }).then(async () => {
       const data = await getTodayData();
       setCallList(data[data.length - 1]);
@@ -260,7 +229,7 @@ const Attendance = () => {
     await getTodayData();
     setCallList(null);
   };
-  // console.log(users)
+  // console.log(callLists)
   return (
     <div className="attendance">
       <div className="attendance-head">
@@ -393,6 +362,7 @@ const Attendance = () => {
                     onClick={() => genarteReportDaily('pdf')}
                     className="attendance-btn-link"
                     imageStyle="attendance-btn-link-image"
+                    disabled={callLists?.[0].users.length === 0}
                   />
 
                   <Button
@@ -459,5 +429,3 @@ const Attendance = () => {
     </div>
   );
 };
-
-export default Attendance;

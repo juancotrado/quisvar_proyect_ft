@@ -1,4 +1,4 @@
-import formatDate from './formatDate';
+import { formatDate } from '.';
 
 type ParagraphElement = {
   type: 'paragraph';
@@ -90,7 +90,6 @@ export const convertToDynamicObject = (
   };
 
   traverseAndParse(tempElement);
-  console.log(elements);
   return elements;
 };
 export const dataInitialPdf = {

@@ -8,7 +8,6 @@ export const INITIAL_STATE: User = {
   id: 0,
   email: '',
   password: '',
-  role: 'EMPLOYEE',
   profile: {
     id: 0,
     firstName: '',
@@ -34,6 +33,9 @@ export const INITIAL_STATE: User = {
   ruc: '',
   address: '',
   declaration: null,
+  withdrawalDeclaration: null,
+  role: null,
+  roleId: 0,
 };
 
 const userSessionSlice = createSlice({

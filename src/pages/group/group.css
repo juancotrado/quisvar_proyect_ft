@@ -16,8 +16,9 @@
 }
 
 .gr-title {
-  color: var(--color-primary);
-  font-weight: 700;
+  color: var(--color-secondary);
+  font-weight: 600;
+  font-size: 18px;
 }
 
 .gr-content {

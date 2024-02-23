@@ -52,7 +52,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
               {professionalService.toUpperCase()}{' '}
             </Text>
             para la elaboración de 04 proyectos que celebran de una parte la
-            <Text style={styles.textBold}> CORPORACIÓN DHYRIUM S.A.A. </Text>
+            <Text style={styles.textBold}> COORPORACIÓN DHYRIUM S.A.A. </Text>
             con domicilio en el Jr. Cajamarca N° 154 de la ciudad Puno del
             Distrito de Puno - Provincia de Puno - Departamento de Puno,
             representado por el gerente general Ing. Juan Gonzalo Quispe
@@ -83,7 +83,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             LABORATORIOS E.I.R.L., SSCHILI C Y C S.C.R.L. Y COMO PERSONA NATURAL
             ING. JUAN GONZALO QUISPE CONDORI, y ENTRE OTRAS EMPRESAS el conjunto
             empresarial tiene como administrador a la{' '}
-            <Text style={styles.textBold}>CORPORACION DHYRIUM S.A.A.,</Text>{' '}
+            <Text style={styles.textBold}>COORPORACION DHYRIUM S.A.A.,</Text>{' '}
             cuyo objeto social principal es dedicarse a la Elaboración de
             Expedientes Técnicos, Estudios Básicos, Estudios de Impacto
             Ambiental, entre otras como lo indica los respectivos estatus de
@@ -99,10 +99,11 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             </Text>{' '}
             para la elaboración y aprobación conforme la{' '}
             <Text style={styles.textRedBold}>
-              DIRECTIVA N° 003-2024-CORPORACION DHYRIUM S.A.A.,
+              DIRECTIVA N° 003-2024-COORPORACION DHYRIUM S.A.A.,
             </Text>{' '}
             según los términos de referencia y las normativas vigentes para la
-            elaboración de 04 proyectos.
+            elaboración de 04 proyectos correspondiendo a una etapa por
+            expediente.
           </Text>
           <Text style={styles.subtitle}>
             CLAUSULA TERCERA: CARÁCTER Y FORMA DE PRESTAR EL SERVICIO
@@ -196,7 +197,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
                 ser responsable hasta obtener la culminación y probación de los
                 proyectos en las entidades correspondientes conforme la{' '}
                 <Text style={styles.textRedBold}>
-                  DIRECTIVA N° 003-2024-CORPORACION DHYRIUM S.A.A.{' '}
+                  DIRECTIVA N° 003-2024-COORPORACION DHYRIUM S.A.A.{' '}
                 </Text>
               </Text>
             </View>
@@ -230,7 +231,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
                 Presentar el trabajo final en el Gobierno Regional, Ministerios,
                 etc. y lo estipulado en la{' '}
                 <Text style={styles.textRedBold}>
-                  DIRECTIVA N° 003-2024- CORPORACION DHYRIUM S.A.A.
+                  DIRECTIVA N° 003-2024- COORPORACION DHYRIUM S.A.A.
                 </Text>
               </Text>
             </View>
@@ -305,10 +306,28 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             El monto contractual no descuenta la estadía que consiste en la
             alimentación, el alojamiento y entre otros servicios esenciales.{' '}
           </Text>
-          <Text style={styles.subtitle}>CLAUSULA SEXTA: FORMA DE PAGO</Text>
-          <Text style={styles.text}>El pago se realizará en dos armadas:</Text>
+          <Text style={styles.subtitle}>
+            CLAUSULA SEXTA: BONO DE BIENVENIDA
+          </Text>
           <Text style={styles.text}>
-            <Text style={styles.textBold}>Primera armada. -</Text> El
+            Se dará un bono de bienvenida el cual consiste en lo siguiente: el
+            primer mes laborado se escogerá 03 tareas de más alta valorización,
+            a estas tareas seleccionadas se les duplicará el valor, esto solo
+            aplica al primer mes laborado
+          </Text>
+          <Text style={styles.subtitle}>
+            CLAUSULA SÉPTIMA: DIVERSIDAD Y DINAMISMOS DE TRABAJO
+          </Text>
+          <Text style={styles.text}>
+            Si bien se ha contratado un profesional en un determinado nivel,
+            este profesional puede desenvolverse normalmente en los otros
+            niveles, siempre y cuando este haya concluido sus trabajos en nivel
+            y grupo de trabajo que este laborando.
+          </Text>
+          <Text style={styles.subtitle}>CLAUSULA OCTAVA: FORMA DE PAGO</Text>
+          <Text style={styles.text}>El pago se realizará en dos informes:</Text>
+          <Text style={styles.text}>
+            <Text style={styles.textBold}>Primer informe. -</Text> El
             contratista tiene la opción de solicitar el 30% al 60% de su
             valorización, previa presentación del informe mensual del avance del
             proyecto y levantamiento de observaciones, el cual será verificado y
@@ -316,8 +335,25 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             este monto adelantado mensualmente se reajustará al final del
             contrato restando del monto original del contrato.
           </Text>
+          <View style={styles.paddingLeft}>
+            <View style={{ flexDirection: 'row', gap: 10 }}>
+              <Text style={styles.textSmall}>-</Text>
+              <Text style={styles.textSmall}>
+                Solicitar el 30% con un informe del avance del proyecto y
+                levantamiento de observaciones.
+              </Text>
+            </View>
+            <View style={{ flexDirection: 'row', gap: 10 }}>
+              <Text style={styles.textSmall}>-</Text>
+              <Text style={styles.textSmall}>
+                Solicitar el 60% cuando el avance del proyecto este casi
+                culminado, es decir, en un estado situacional apto del 85% al
+                90%.
+              </Text>
+            </View>
+          </View>
           <Text style={styles.text}>
-            <Text style={styles.textBold}>Segunda armada. -</Text>
+            <Text style={styles.textBold}>Segundo informe. -</Text>
             El contratista presentará un informe solicitando la cancelación de
             su contrato siendo esta parcial o total según los proyectos
             aprobados para el cual presentará todos los archivos aprobados de
@@ -327,9 +363,9 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
           </Text>
           <Text style={styles.text}>
             La Gerencia de Administración verificara y solicitara los documentos
-            necesarios que corresponda en cada armada para realizar los pagos
-            respetivos. Dentro del ellos solicitara los cargos de los informes
-            mensuales correspondiente a la primera armada y el documento del
+            necesarios que corresponda en cada informe para realizar los pagos
+            respetivos. Dentro del ellos solicitará los cargos de los informes
+            mensuales correspondiente al primer informe y el documento del
             <Text style={styles.textBold}> APTO Y/O LA APROBACIÓN </Text>y/o la
             <Text style={styles.textBold}>
               {' '}
@@ -337,54 +373,32 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
               aprobación, informes evaluación
             </Text>
             , cualquier otro documento que demuestre fehacientemente la
-            culminación y aprobación de la evaluación del proyectoEl pago se
-            realizará en dos armadas:
+            culminación y aprobación de la evaluación del proyecto (no es válida
+            la aprobación mediante acto resolutivo por parte de la entidad).
           </Text>
           <Text style={styles.subtitle}>
-            CLAUSULA SÉPTIMA: VIGENCIA DEL CONTRATO
+            CLAUSULA NOVENA: VIGENCIA DEL CONTRATO
           </Text>
           <Text style={styles.text}>
             El CONTRATISTA tiene un plazo de ejecución del contrato en un plazo
-            de 120 días calendarios para la entrega del servicio profesional
-            contratado este plazo puede ser ajustados al programa de trabajos
+            de 4 MESES para la entrega del servicio profesional contratado este
+            plazo puede ser ajustados al
+            <Text style={styles.textBold}> programa de trabajos </Text>
             para la aprobación y la obtención{' '}
             <Text style={styles.textBold}> APTO Y/O LA APROBACIÓN </Text>y/o la
             <Text style={styles.textBold}>
               {' '}
-              Notificación de Culminación de Asistencia Técnica, acta de
-              aprobación, informes evaluación
+              Notificación de Culminación de Asistencia Técnica, Acta de
+              Aprobación, Informes Evaluación
             </Text>
             , cualquier otro documento que demuestre fehacientemente la
             culminación y aprobación de la evaluación del proyecto.
           </Text>
-          <Text style={styles.subtitle}>
-            CLAUSULA OCTAVA: CONFORMIDAD DE SERVICIO
-          </Text>
           <Text style={styles.text}>
-            La conformidad será otorgada por el jefe superior, el gerente de
-            estudios y el gerente técnico. Este documento no tiene validez en
-            caso de no tener conformidad de experiencia.
-          </Text>
-          <Text style={styles.subtitle}>
-            CLAUSULA NOVENA: RESPONSABILIDAD POR VICIOS OCULTOS
-          </Text>
-          <Text style={styles.text}>
-            La conformidad del servicio por parte del CONTRATANTE no enerva su
-            derecho a reclamar posteriormente por defectos o vicios ocultos
-            durante el plazo 03 años contado a partir de la conformidad otorgada
-            por EL CONTRATANTE.{' '}
-          </Text>
-          <Text style={styles.subtitle}>
-            CLAUSULA DÉCIMA: LUGAR DE LA PRESTACION DE SERVICIOS{' '}
-          </Text>
-          <Text style={styles.text}>
-            EL CONTRATISTA, prestara los servicios contratados, en la Sede
-            Central de la Empresa en la Ciudad de Puno – Departamento de Puno.
-          </Text>
-          <Text style={styles.text}>
-            AL CONTRATISTA, se le notificara documentos mediante, programa de la
-            cooperación, correo electrónico y redes sociales {'('}WhatsApp, Etc.
-            {')'}
+            EL CONTRATISTA deberá cumplir el horario de trabajo del personal que
+            labora en la
+            <Text style={styles.textBold}> COORPORACION DHYRIUM S.A.A. </Text>
+            según la DIRECTIVA N° 004-2024-COORPORACIÓN DHYRIUM S.A.A.
           </Text>
         </View>
       </Page>
@@ -400,9 +414,41 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
           >
             <Text style={styles.title}>{documentTitle}</Text>
           </View>
+          <Text style={styles.subtitle}>
+            CLAUSULA DÉCIMA: CONFORMIDAD DE SERVICIO
+          </Text>
+          <Text style={styles.text}>
+            La conformidad será otorgada por el Jefe Superior, el Gerente de
+            Estudios y el Gerente Técnico. Este documento no tendrá validez en
+            caso de no tener suscripción de conformidad por parte de los arriba
+            mencionados, por ende, no contará como experiencia laboral para el
+            CONTRATISTA.
+          </Text>
+          <Text style={styles.subtitle}>
+            CLAUSULA UNDÉCIMA: RESPONSABILIDAD POR VICIOS OCULTOS
+          </Text>
+          <Text style={styles.text}>
+            La conformidad del servicio por parte del CONTRATANTE no enerva su
+            derecho a reclamar posteriormente por defectos o vicios ocultos
+            durante el plazo 03 años contado a partir de la conformidad otorgada
+            por EL CONTRATANTE, conforme se establece el Artículo 40° de la Ley
+            de Contrataciones del Estado LEY N° 30225.{' '}
+          </Text>
+          <Text style={styles.subtitle}>
+            CLAUSULA DUODÉCIMA: LUGAR DE LA PRESTACION DE SERVICIOS{' '}
+          </Text>
+          <Text style={styles.text}>
+            EL CONTRATISTA, prestara los servicios contratados, en la Sede
+            Central de la Empresa en la Ciudad de Puno – Departamento de Puno.
+          </Text>
+          <Text style={styles.text}>
+            AL CONTRATISTA, se le notificara documentos mediante, programa de la
+            cooperación, correo electrónico y redes sociales {'('}WhatsApp, Etc.
+            {')'}
+          </Text>
 
           <Text style={styles.subtitle}>
-            CLAUSULA UNDÉCIMA: RESOLUCIÓN DE CONTRATO
+            CLAUSULA DECIMOTERCERA: RESOLUCIÓN DE CONTRATO
           </Text>
           <Text style={styles.text}>
             Son causales de resolución del presente contrato:
@@ -461,7 +507,9 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
               </Text>
             </View>
           </View>
-          <Text style={styles.subtitle}>CLAUSULA DUODÉCIMA: PENALIDADES</Text>
+          <Text style={styles.subtitle}>
+            CLAUSULA DECIMOCUARTA: PENALIDADES
+          </Text>
           <Text style={styles.text}>
             Si EL CONTRATISTA incurre en retraso injustificado en la ejecución
             de las prestaciones objeto del contrato, EL CONTRATISTA le aplica
@@ -508,39 +556,17 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             <Text style={styles.text}>
               Estas penalidades se deducen de los pagos a cuenta o del pago
               final, según corresponda; o si fuera necesario, se cobra del monto
-              resultante de la ejecución de la garantía de fiel cumplimiento.
+              resultante de la ejecución de la garantía de fiel cumplimiento.{' '}
             </Text>
             <Text style={styles.text}>
               Esta penalidad puede alcanzar un monto máximo equivalente al diez
               por ciento {'('}10%{')'} del monto del contrato,{' '}
             </Text>
             <Text style={styles.text}>
-              El consumo de bebidas alcohólicas en las instalaciones de la
-              empresa será sancionado con el siete por ciento 7.0% del monto del
-              contrato.
-            </Text>
-            <Text style={styles.text}>
-              Cuando se llegue a cubrir el monto máximo de la penalidad por mora
-              o el monto máximo para otras penalidades, de ser el caso, EL
-              CONTRATANTE puede resolver el contrato por incumplimiento.{' '}
-            </Text>
-            <Text style={styles.text}>
-              EL CONTRATANTE tiene 45 días hábiles para la cancelación de la
-              <Text style={styles.textBold}> segunda armada</Text>, en caso que
-              no se hiciera efectivo está, EL CONTRATANTE le paga una penalidad
-              por mora por cada día de atraso, de acuerdo a la anterior fórmula,
-              después de haber transcurrido los 45 días hábiles.{' '}
-            </Text>
-            <Text style={styles.subtitle}>
-              CLAUSULA DECIMOTERCERA: GARANTÍAS
-            </Text>
-            <Text style={styles.text}>
-              EL CONTRATISTA dejara en garantía el pago de la{' '}
-              <Text style={styles.textBold}>segunda armada.</Text>
-            </Text>
-            <Text style={styles.text}>
-              Los pagos mensuales de la primera armada no deberán superar el 30%
-              del monto contractual.
+              Aplicación de la directiva en el caso de convivencia y el consumo
+              de bebidas alcohólicas en las instalaciones de la empresa será
+              sancionado mediante la DIRECTIVA N° 001-2024 – COORPORACIÓN
+              DHYRIUM S.A.A.{' '}
             </Text>
           </View>
         </View>
@@ -558,9 +584,43 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
           >
             <Text style={styles.title}>{documentTitle}</Text>
           </View>
+          <Text style={styles.text}>
+            Según la
+            <Text style={styles.textBold}>
+              {' '}
+              DIRECTIVA N° 003-2024-COORPORACION DHYRIUM S.A.A.{' '}
+            </Text>
+            llegar al incumplimiento; por retiro anticipado al tiempo de
+            contrato o abandono de cargo por más de 4 días, sin reportase, la
+            multa será del 50% del monto contractual por el tiempo estipulado en
+            el contrato siendo este agregado al cuarto párrafo mencionado en el
+            ítem de responsabilidades, siendo está pudiendo ser procesada en el
+            código civil, código penal y otros que aplique la de acuerdo Ley.{' '}
+          </Text>
+          <Text style={styles.text}>
+            Cuando se llegue a cubrir el monto máximo de la penalidad por mora o
+            el monto máximo para otras penalidades, de ser el caso, EL
+            CONTRATANTE puede resolver el contrato por incumplimiento.{' '}
+          </Text>
+          <Text style={styles.text}>
+            EL CONTRATANTE tiene 45 días hábiles para la cancelación de la
+            <Text style={styles.textBold}> segunda armada</Text>, en caso que no
+            se hiciera efectivo está, EL CONTRATANTE le paga una penalidad por
+            mora por cada día de atraso, de acuerdo a la anterior fórmula,
+            después de haber transcurrido los 45 días hábiles.{' '}
+          </Text>
+          <Text style={styles.subtitle}>CLAUSULA DECIMOQUINTA: GARANTÍAS</Text>
+          <Text style={styles.text}>
+            EL CONTRATISTA dejara en garantía el pago del{' '}
+            <Text style={styles.textBold}> segundo informe.</Text>
+          </Text>
+          <Text style={styles.text}>
+            Los pagos mensuales de la primera armada no deberán superar el 30%
+            al 60% del monto contractual.
+          </Text>
 
           <Text style={styles.subtitle}>
-            CLAUSULA DECIMOCUARTA: DECLARACIÓN JURADA DEL CONTRATISTA
+            CLAUSULA DECIMOSEXTA: DECLARACIÓN JURADA DEL CONTRATISTA
           </Text>
           <View style={{ gap: 4 }}>
             <Text style={styles.text}>
@@ -592,21 +652,22 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
               archivos generados y existente en la empresa.
             </Text>
             <Text style={styles.text}>
-              Si se incumple lo mencionado anteriormente EL CONTRATANTE
+              Si se incumple lo mencionado anteriormente
+              <Text style={styles.textBold}> EL CONTRATANTE </Text>
               procederá a sancionar según la gravedad correspondiente.
             </Text>
             <Text style={styles.text}>
-              <Text style={styles.textBold}></Text>Primero. – Procederá a
+              <Text style={styles.textBold}>Primero. –</Text> Procederá a
               ejecutar la garantía y requerir la devolución de los adelantos.
             </Text>
             <Text style={styles.text}>
-              <Text style={styles.textBold}></Text>Segundo. - Proceder
+              <Text style={styles.textBold}>Segundo. -</Text> Proceder
               legalmente según el código civil y/o penal y demás del sistema
               jurídico que resulten aplicables.
             </Text>
           </View>
           <Text style={styles.subtitle}>
-            CLAUSULA DECIMOQUINTA: RESPONSABILIDAD DE LAS PARTES{' '}
+            CLAUSULA DECIMOSÉPTIMA: RESPONSABILIDAD DE LAS PARTES{' '}
           </Text>
           <View style={{ gap: 4 }}>
             <Text style={styles.text}>
@@ -624,7 +685,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             </Text>
           </View>
           <Text style={styles.subtitle}>
-            CLAUSULA DECIMOSEXTA: APLICACIÓN SUPLETORIA DE LA LEY{' '}
+            CLAUSULA DECIMOCTAVA: APLICACIÓN SUPLETORIA DE LA LEY{' '}
           </Text>
           <View style={{ gap: 4 }}>
             <Text style={styles.text}>
@@ -643,7 +704,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
               width: '100%',
               flexDirection: 'row',
               justifyContent: 'space-between',
-              marginTop: 130,
+              marginTop: 100,
             }}
           >
             <Text style={styles.signText}>CONTRATANTE</Text>

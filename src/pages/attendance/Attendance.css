@@ -295,15 +295,7 @@
     overflow: auto;
   }
 
-  .hide-field {
-    display: none;
-  }
-
   .attendance-header {
-    grid-template-columns: 2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr;
-  }
-
-  .attendanceList-container {
     grid-template-columns: 2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr;
   }
 

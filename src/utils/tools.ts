@@ -276,11 +276,15 @@ export const formatAmountMoney = (amount: number) => {
 
 export const downloadBlob = (blobFile: Blob, name: string) => {
   const editedUrl = URL.createObjectURL(blobFile);
+  downloadHref(editedUrl, name);
+};
+
+export const downloadHref = (url: string, name: string) => {
   const link = document.createElement('a');
-  link.href = editedUrl;
+  link.href = url;
   link.download = name;
   link.click();
-  URL.revokeObjectURL(editedUrl);
+  URL.revokeObjectURL(url);
   link.remove();
 };
 

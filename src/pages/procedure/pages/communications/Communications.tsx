@@ -20,7 +20,7 @@ const Communications = () => {
     getMessages();
   }, []);
 
-  const { optionsMailHeader, typeMail } = useSelectReceiver();
+  const { optionsMailHeader, typeMail } = useSelectReceiver(['RECIBIDOS']);
   const handleNewMessage = () => setIsNewMessage(!isNewMessage);
   const handleSaveMessage = () => {
     getMessages();
@@ -57,7 +57,7 @@ const Communications = () => {
           <Button
             onClick={handleNewMessage}
             icon="plus-dark"
-            text="Nuevo Trámite"
+            text="Nuevo comunicado"
             styleButton={3}
           />
         </div>

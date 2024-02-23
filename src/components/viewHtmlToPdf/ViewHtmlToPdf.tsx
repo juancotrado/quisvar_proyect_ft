@@ -4,6 +4,7 @@ import './viewHtmlToPdf.css';
 import { Subscription } from 'rxjs';
 import { isOpenViewHtmlToPdf$ } from '../../services/sharingSubject';
 import { useHtmlToPdf } from '../../hooks';
+import { downloadHref } from '../../utils';
 
 let fileName = 'documento';
 
@@ -26,11 +27,10 @@ const ViewHtmlToPdf = () => {
 
   const handleClose = () => setIsOpen(false);
 
-  // const handleDownloadPdf = async () => {
-  //   // if (!pdfComponent) return;
-  //   // const pdfDownload = await pdf(pdfComponent).toBlob();
-  //   // downloadBlob(pdfDownload, `${fileName}.pdf`);
-  // };
+  const handleDownloadPdf = async () => {
+    if (!pdfUrl) return;
+    downloadHref(pdfUrl, fileName);
+  };
   return (
     <Modal isOpenProp={isOpen} size={60}>
       <div className="viewPdf">
@@ -42,14 +42,14 @@ const ViewHtmlToPdf = () => {
           size={0.8}
         />
 
-        {/* <div className="viewPdf-download">
+        <div className="viewPdf-download">
           <IconAction
             icon="download-white"
             onClick={handleDownloadPdf}
             size={1.5}
             position="none"
           />
-        </div> */}
+        </div>
         {pdfUrl && (
           <embed
             src={pdfUrl}

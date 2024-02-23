@@ -1,10 +1,20 @@
 import { useState } from 'react';
-import { MailTypeProcedure } from '../models';
+import {
+  MailTypeProcedure,
+  MailTypeProcedureSpanish,
+  OptionsMailHeader,
+} from '../models';
 
-const useSelectReceiver = () => {
+const useSelectReceiver = (
+  typesProcedure: MailTypeProcedureSpanish[] = [
+    'ARCHIVADOS',
+    'ENVIADOS',
+    'RECIBIDOS',
+  ]
+) => {
   const [typeMail, setTypeMail] = useState<MailTypeProcedure>('RECEIVER');
   const handleSelectReceiver = (type: MailTypeProcedure) => setTypeMail(type);
-  const optionsMailHeader = [
+  const optionsMailHeader: OptionsMailHeader[] = [
     {
       id: 1,
       iconOn: 'inbox',
@@ -31,7 +41,10 @@ const useSelectReceiver = () => {
     },
   ];
 
-  return { typeMail, optionsMailHeader };
+  const optionMailFilter = optionsMailHeader.filter(optMail =>
+    typesProcedure.includes(optMail.text)
+  );
+  return { typeMail, optionsMailHeader: optionMailFilter };
 };
 
 export default useSelectReceiver;

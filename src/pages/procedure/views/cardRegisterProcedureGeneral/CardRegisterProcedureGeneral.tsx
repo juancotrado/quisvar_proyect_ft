@@ -89,24 +89,12 @@ const CardRegisterProcedureGeneral = ({
   const downLoadPdf = (size: 'a4' | 'a5') => {
     const htmlString = getHtmlString(size);
     if (!htmlString) return;
-    const { header } = watch();
-
     isOpenViewHtmlToPdf$.setSubject = {
       isOpen: true,
-      fileNamePdf: header,
+      fileNamePdf: handleTitle(watch('type')),
       htmlString,
       size,
     };
-    // const options = {
-    //   margin: [14, 22, 14, 22],
-    //   filename: 'time_sheet_report.pdf',
-    //   image: { type: 'jpeg', quality: 1 },
-    //   html2canvas: { scale: 2, useCORS: true },
-    //   useCORS: true,
-    //   jsPDF: { format: size, orientation: 'p' },
-    // };
-
-    // html2pdf().set(options).from(htmlString).save();
   };
 
   const handleAddUser = (user: receiverType) => {

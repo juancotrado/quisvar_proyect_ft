@@ -40,7 +40,7 @@ const GroupListBar = ({ group, onSave }: GroupListBarProps) => {
     <ContextMenuTrigger id={`gr-sidebar-${group.id}`} key={group.id}>
       {!edit ? (
         <NavLink
-          to={`contenido/${group.id}/GRUPO-${group.gNumber}/reuniones/${group.id}`}
+          to={`contenido/${group.id}/GRUPO-${group.gNumber}`}
           className={({ isActive }) =>
             `gr-sidebar-data  ${isActive && 'contract-selected'} `
           }

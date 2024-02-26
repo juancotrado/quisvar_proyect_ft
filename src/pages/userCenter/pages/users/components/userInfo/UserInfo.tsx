@@ -110,7 +110,7 @@ const UserInfo = ({ user, index, onPrint, roles }: UserInfoProps) => {
           <div
             className="switch-status"
             data-ison={isOn}
-            onClick={handleChangeStatus}
+            // onClick={handleChangeStatus}
           >
             <div className={`handle-statuts ${isOn && 'handle-on'}`}></div>
           </div>

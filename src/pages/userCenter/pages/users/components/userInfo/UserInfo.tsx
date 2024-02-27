@@ -48,7 +48,7 @@ const UserInfo = ({ user, index, onPrint, roles }: UserInfoProps) => {
       dispatch(getListUsers()).then(sendInfo);
     });
   };
-
+  console.log(handleChangeStatus);
   // const handleChangeRole = async ({
   //   target,
   // }: React.ChangeEvent<HTMLSelectElement>) => {

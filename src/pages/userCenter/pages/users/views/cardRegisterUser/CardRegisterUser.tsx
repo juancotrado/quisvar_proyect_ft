@@ -17,7 +17,12 @@ import {
 import { Button, Input, Modal, Select } from '../../../../../../components';
 import { Subscription } from 'rxjs';
 import { useJurisdiction, useValidatePassword } from '../../../../../../hooks';
-import { DEGREE_DATA, INITIAL_VALUES_USER, JOB_DATA } from '../../models';
+import {
+  DEGREE_DATA,
+  INITIAL_VALUES_USER,
+  JOB_DATA,
+  GENDER,
+} from '../../models';
 import { CarRegisterSwornDeclaration } from '..';
 
 interface CardRegisterUserProps {
@@ -84,6 +89,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
             userPc: profile.userPc,
             roleId,
             phoneRef: profile.phoneRef,
+            gender: profile.gender,
           });
         } else {
           reset(INITIAL_VALUES_USER);
@@ -97,7 +103,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
 
   const onSubmit: SubmitHandler<UserForm> = async data => {
     const { cv, declaration, id, ...newData } = data;
-    console.log(newData);
+    // console.log(newData);
     if (id) {
       axiosInstance.put(`/profile/${id}`, data).then(successfulShipment);
     } else {
@@ -185,6 +191,17 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
                 errors={errors}
                 label="Apellidos:"
                 autoComplete="on"
+              />
+              <Select
+                label="Género:"
+                {...register('gender', {
+                  validate: { validateWhiteSpace },
+                })}
+                name="gender"
+                data={GENDER}
+                itemKey="abrv"
+                textField="value"
+                errors={errors}
               />
             </div>
             {!userId && (

@@ -44,7 +44,18 @@ const professionalCost = {
   2: 3250,
   3: 4000,
 };
-
+export const GENDER = [
+  {
+    id: 0,
+    value: 'Masculino',
+    abrv: 'M',
+  },
+  {
+    id: 1,
+    value: 'Femenino',
+    abrv: 'F',
+  },
+];
 export const DEGREE_DATA = [
   {
     id: 0,
@@ -133,4 +144,5 @@ export const INITIAL_VALUES_USER: UserForm = {
   room: '',
   userPc: '',
   role: null,
+  gender: '',
 };

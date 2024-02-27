@@ -46,15 +46,12 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
           <Text style={styles.text}>
             El presente documento, consiste en la contratación del servicio
             profesional como
-            <Text style={styles.textRedBold}>
-              {' '}
-              {professionalService.toUpperCase()}{' '}
-            </Text>
+            <Text style={styles.textRedBold}> {professionalService} </Text>
             para la elaboración de 04 proyectos que celebran de una parte la
             <Text style={styles.textBold}> COORPORACIÓN DHYRIUM S.A.A. </Text>
             con domicilio en el Jr. Cajamarca N° 154 de la ciudad Puno del
             Distrito de Puno - Provincia de Puno - Departamento de Puno,
-            representado por el gerente general Ing. Juan Gonzalo Quispe
+            representado por el Gerente General Ing. Juan Gonzalo Quispe
             Condori, con DNI Nº 45574308, a quien en adelante se le denominará
             como <Text style={styles.textBold}> EL CONTRATANTE</Text> y por otra
             parte, al
@@ -69,18 +66,21 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             adelante se le denominará{' '}
             <Text style={styles.textBold}>EL CONTRATISTA</Text> con domicilio en{' '}
             <Text style={styles.textRed}>
-              {data.address}, del Distrito de {profile.district} de provincia de{' '}
+              {data.address}, del Distrito de {profile.district} de Provincia de{' '}
               {profile.province}, Departamento de {profile.department}
             </Text>
-            , de acuerdo a los términos y condiciones siguientes.
+            , de acuerdo a los términos y condiciones siguientes:
           </Text>
+          <Text>&nbsp;</Text>
           <Text style={styles.subtitle}>CLAUSULA PRIMERA: ANTECEDENTES</Text>
           <Text style={styles.text}>
             <Text style={styles.textBold}>EL CONTRATANTE</Text> es una persona
             jurídica de derecho privado constituida para la ADMINISTRACIÓN de
-            las empresas QUISVAR C Y C S.R.L., ART C Y C S.R.L., GONSAD
-            LABORATORIOS E.I.R.L., SSCHILI C Y C S.C.R.L. Y COMO PERSONA NATURAL
-            ING. JUAN GONZALO QUISPE CONDORI, y ENTRE OTRAS EMPRESAS el conjunto
+            las empresas QUISVAR C Y C S.R.L. con RUC N° 20601924758, ART C Y C
+            S.R.L. con RUC N° 20542725614, GONSAD LABORATORIOS E.I.R.L. con RUC
+            N° 20602937250, SSCHILI C Y C S.C.R.L. con RUC N° 20603947445,
+            IXSTAR S.R.L. con RUC N° 20608295381 Y COMO PERSONA NATURAL ING.
+            JUAN GONZALO QUISPE CONDORI, y ENTRE OTRAS EMPRESAS el conjunto
             empresarial tiene como administrador a la{' '}
             <Text style={styles.textBold}>COORPORACION DHYRIUM S.A.A.,</Text>{' '}
             cuyo objeto social principal es dedicarse a la Elaboración de
@@ -114,7 +114,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             contratado, bajo las directivas de sus jefes inmediatos y la
             normativa vigente conforme comprenda su especialidad y así mismo
             también deberá responder por el personal responsable a cargo
-            contratado para su especialidad. Con el siguiente detalle:
+            contratado para su especialidad, con el siguiente detalle:
           </Text>
           <View style={styles.paddingLeft}>
             <View style={{ flexDirection: 'row', gap: 10 }}>
@@ -143,7 +143,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
               <Text style={styles.textSmall}>c{')'}</Text>
               <Text style={styles.textSmall}>
                 Deberá levantar todas las observaciones en la plataforma
-                denominado ante los evaluadores de los diferentes ministerios
+                denominado ante los evaluadores de los diferentes Ministerios
                 y/o el CONTRATISTA pude trabajar cualquier ítem de las
                 observaciones conforme la prioridad del equipo de trabajo con la
                 finalidad de obtener el{' '}
@@ -181,10 +181,11 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
               <Text style={styles.textSmall}>f{')'}</Text>
               <Text style={styles.textSmall}>
                 El presupuesto destinado para la elaboración de los proyectos
-                educativos se dará conocimiento al coordinador del proyecto con
-                un <Text style={styles.textBold}>{'(MEMORÁNDUM)'}</Text> donde
-                se indica el desagregado por ítems del presupuesto destinado a
-                cada proyecto el cual será informado al{' '}
+                educativos se dará conocimiento al{' '}
+                <Text style={styles.textBold}>coordinador</Text> del proyecto
+                con un <Text style={styles.textBold}>{'(MEMORÁNDUM)'}</Text>{' '}
+                donde se indica el desagregado por ítems del presupuesto
+                destinado a cada proyecto el cual será informado al{' '}
                 <Text style={styles.textBold}>equipo de trabajo</Text>.
               </Text>
             </View>
@@ -219,8 +220,8 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             <View style={{ flexDirection: 'row', gap: 10 }}>
               <Text style={styles.textSmall}>2.</Text>
               <Text style={styles.textSmall}>
-                Efectuar el control de calidad de la elaboración del expediente
-                técnico y deberá realizarse de acuerdo con las Disposiciones
+                Efectuar el control de calidad de la elaboración del Expediente
+                Técnico y deberá realizarse de acuerdo con las Disposiciones
                 Legales y Normas Técnicas vigentes.
               </Text>
             </View>
@@ -283,21 +284,24 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             El monto total del presente contrato asciende a S/.{' '}
             {formatAmountMoney(contractualAmount)} {'('}
             {NumerosALetras(contractualAmount)}
-            {')'} como {professionalService} e incluye todos los impuestos de
-            Ley. Este monto comprende el costo del servicio profesional, todos
-            los tributos, seguros, transporte, inspecciones, pruebas y, de ser
-            el caso, los costos laborales conforme a la legislación vigente, así
-            como cualquier otro concepto que pueda tener incidencia sobre la
+            {')'} por mes, esto incluye todos los impuestos de Ley. Este monto
+            comprende el costo del servicio profesional, todos los tributos,
+            seguros, transporte, inspecciones, pruebas y, de ser el caso, los
+            costos laborales conforme a la legislación vigente, así como
+            cualquier otro concepto que pueda tener incidencia sobre la
             ejecución del servicio de consultoría de obra materia del presente
             contrato.
           </Text>
           <Text style={styles.text}>
             El monto contractual es referencial, este monto contractual será
             reajustado conforme al desagregado por ítems del presupuesto
-            destinado cada proyecto. Según la DIRECTIVA N° 003-2024- GRUPO. Los
-            retrasos en la{' '}
+            destinado cada proyecto. Según la
+            <Text style={styles.textRedBold}>
+              DIRECTIVA N° 003-2024-COORPORACION DHYRIUM S.A.A.{' '}
+            </Text>
+            Los retrasos en la{' '}
             <Text style={styles.textBold}>Programación Presentada </Text>por el
-            <Text style={styles.textBold}> equipo de trabajos,</Text> no será
+            <Text style={styles.textBold}> equipo de trabajo,</Text> no será
             remunerada por el CONTRATANTE. Estas deben cumplirse conforme los
             programado para ellos el equipo y el contratista es responsable.
           </Text>
@@ -368,12 +372,16 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             <Text style={styles.textBold}> APTO Y/O LA APROBACIÓN </Text>y/o la
             <Text style={styles.textBold}>
               {' '}
-              Notificación de Culminación de Asistencia Técnica, acta de
-              aprobación, informes evaluación
+              Notificación de Culminación de Asistencia Técnica, Acta de
+              Aprobación, Informes Evaluación
             </Text>
             , cualquier otro documento que demuestre fehacientemente la
-            culminación y aprobación de la evaluación del proyecto (no es válida
-            la aprobación mediante acto resolutivo por parte de la entidad).
+            culminación y aprobación de la evaluación del proyecto
+            <Text style={styles.textBlue}>
+              {' '}
+              (no es válida la aprobación mediante acto resolutivo por parte de
+              la entidad).{' '}
+            </Text>
           </Text>
           <Text style={styles.subtitle}>
             CLAUSULA NOVENA: VIGENCIA DEL CONTRATO
@@ -540,9 +548,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             <Text style={styles.text}>
               F = 0.25 para plazos mayores a sesenta (60) días o;
             </Text>
-            <Text style={styles.text}>
-              F = 0.40 para plazos menores o iguales a sesenta (60) días.
-            </Text>
+
             <Text style={styles.text}>
               El retraso se justifica a través de la solicitud de ampliación de
               plazo debidamente aprobado. Adicionalmente, se considera
@@ -603,9 +609,9 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
           </Text>
           <Text style={styles.text}>
             EL CONTRATANTE tiene 45 días hábiles para la cancelación de la
-            <Text style={styles.textBold}> segunda armada</Text>, en caso que no
-            se hiciera efectivo está, EL CONTRATANTE le paga una penalidad por
-            mora por cada día de atraso, de acuerdo a la anterior fórmula,
+            <Text style={styles.textBold}> segundo informe</Text>, en caso que
+            no se hiciera efectivo está, EL CONTRATANTE le paga una penalidad
+            por mora por cada día de atraso, de acuerdo a la anterior fórmula,
             después de haber transcurrido los 45 días hábiles.{' '}
           </Text>
           <Text style={styles.subtitle}>CLAUSULA DECIMOQUINTA: GARANTÍAS</Text>

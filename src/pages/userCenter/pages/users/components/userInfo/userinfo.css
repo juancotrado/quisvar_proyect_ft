@@ -113,6 +113,7 @@
   margin: 0;
   background-color: var(--color-unresolved);
   border-radius: 50%;
+  justify-content: center;
 }
 
 .role-title {

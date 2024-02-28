@@ -88,13 +88,14 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             Ambiental, entre otras como lo indica los respectivos estatus de
             cada empresa.
           </Text>
+          <Text>&nbsp;</Text>
           <Text style={styles.subtitle}>
             CLAUSULA SEGUNDA: OBJETO DE CONTRATO
           </Text>
           <Text style={styles.text}>
             Por el presente documento el objeto es contratar al{' '}
             <Text style={styles.textRedBold}>
-              profesional con grado de {profile.degree}
+              profesional con Grado de {profile.degree.toUpperCase()}
             </Text>{' '}
             para la elaboración y aprobación conforme la{' '}
             <Text style={styles.textRedBold}>
@@ -102,8 +103,9 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             </Text>{' '}
             según los términos de referencia y las normativas vigentes para la
             elaboración de 04 proyectos correspondiendo a una etapa por
-            expediente.
           </Text>
+          <Text style={[styles.text]}>expediente.</Text>
+          <Text>&nbsp;</Text>
           <Text style={styles.subtitle}>
             CLAUSULA TERCERA: CARÁCTER Y FORMA DE PRESTAR EL SERVICIO
           </Text>
@@ -157,7 +159,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
                 El <Text style={styles.textBold}> equipo de trabajo </Text>
                 deberá presentar el programa de trabajo hasta obtener el{' '}
                 <Text style={styles.textBold}>APTO Y/O LA APROBACIÓN</Text> y el
-                CONTRATISTA deberá presentar un meta de trabajo diario al
+                CONTRATISTA deberá presentar una meta de trabajo diario al
                 coordinador y/o jefe inmediato, si el programa de trabajo tiene
                 retrasos cualquier integrante del equipo de trabajo tiene la
                 obligación de informar al jefe inmediato y programar una reunión
@@ -177,7 +179,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
                 del avance del proyecto.
               </Text>
             </View>
-            <View style={{ flexDirection: 'row', gap: 10 }}>
+            <View style={{ flexDirection: 'row', gap: 12 }}>
               <Text style={styles.textSmall}>f{')'}</Text>
               <Text style={styles.textSmall}>
                 El presupuesto destinado para la elaboración de los proyectos
@@ -201,6 +203,20 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
                 </Text>
               </Text>
             </View>
+          </View>
+        </View>
+      </Page>
+      <Page>
+        <View style={styles.pageBackgroundContainer} fixed={true}>
+          <Image src={page1Image} style={styles.imageBackground} />
+        </View>
+        <View style={styles.container}>
+          <View
+            style={{
+              alignItems: 'center',
+            }}
+          >
+            <Text style={styles.title}>{documentTitle}</Text>
           </View>
           <Text style={styles.subtitle}>
             CLAUSULA CUARTA: FUNCIONES A PRESTAR EL SERVICIO
@@ -236,21 +252,6 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
               </Text>
             </View>
           </View>
-        </View>
-      </Page>
-      <Page>
-        <View style={styles.pageBackgroundContainer} fixed={true}>
-          <Image src={page1Image} style={styles.imageBackground} />
-        </View>
-        <View style={styles.container}>
-          <View
-            style={{
-              alignItems: 'center',
-            }}
-          >
-            <Text style={styles.title}>{documentTitle}</Text>
-          </View>
-
           <View style={styles.paddingLeft}>
             <View style={{ flexDirection: 'row', gap: 10 }}>
               <Text style={styles.textSmall}>4.</Text>
@@ -268,15 +269,15 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
                 y/o la{' '}
                 <Text style={styles.textBold}>
                   {' '}
-                  Notificación de Culminación de Asistencia Técnica, acta de
-                  aprobación, informes evaluación
+                  Notificación de Culminación de Asistencia Técnica, Acta de
+                  Aprobación, Informes Evaluación
                 </Text>
                 , cualquier otro documento que demuestre fehacientemente la
                 culminación y aprobación de la evaluación del proyecto.{' '}
               </Text>
             </View>
           </View>
-
+          <Text>&nbsp;</Text>
           <Text style={styles.subtitle}>
             CLAUSULA QUINTA: MONTO CONTRACTUAL
           </Text>
@@ -297,6 +298,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             reajustado conforme al desagregado por ítems del presupuesto
             destinado cada proyecto. Según la
             <Text style={styles.textRedBold}>
+              {' '}
               DIRECTIVA N° 003-2024-COORPORACION DHYRIUM S.A.A.{' '}
             </Text>
             Los retrasos en la{' '}
@@ -309,6 +311,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             El monto contractual no descuenta la estadía que consiste en la
             alimentación, el alojamiento y entre otros servicios esenciales.{' '}
           </Text>
+          <Text>&nbsp;</Text>
           <Text style={styles.subtitle}>
             CLAUSULA SEXTA: BONO DE BIENVENIDA
           </Text>
@@ -318,6 +321,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             a estas tareas seleccionadas se les duplicará el valor, esto solo
             aplica al primer mes laborado
           </Text>
+          <Text>&nbsp;</Text>
           <Text style={styles.subtitle}>
             CLAUSULA SÉPTIMA: DIVERSIDAD Y DINAMISMOS DE TRABAJO
           </Text>
@@ -327,6 +331,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             niveles, siempre y cuando este haya concluido sus trabajos en nivel
             y grupo de trabajo que este laborando.
           </Text>
+          <Text>&nbsp;</Text>
           <Text style={styles.subtitle}>CLAUSULA OCTAVA: FORMA DE PAGO</Text>
           <Text style={styles.text}>El pago se realizará en dos informes:</Text>
           <Text style={styles.text}>
@@ -356,7 +361,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             </View>
           </View>
           <Text style={styles.text}>
-            <Text style={styles.textBold}>Segundo informe. -</Text>
+            <Text style={styles.textBold}>Segundo informe. - </Text>
             El contratista presentará un informe solicitando la cancelación de
             su contrato siendo esta parcial o total según los proyectos
             aprobados para el cual presentará todos los archivos aprobados de
@@ -364,6 +369,20 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             por sus jefes inmediatos, con un informe de conformidad que acredita
             la culminación del contrato procederá su pago.
           </Text>
+        </View>
+      </Page>
+      <Page>
+        <View style={styles.pageBackgroundContainer} fixed={true}>
+          <Image src={page1Image} style={styles.imageBackground} />
+        </View>
+        <View style={styles.container}>
+          <View
+            style={{
+              alignItems: 'center',
+            }}
+          >
+            <Text style={styles.title}>{documentTitle}</Text>
+          </View>
           <Text style={styles.text}>
             La Gerencia de Administración verificara y solicitara los documentos
             necesarios que corresponda en cada informe para realizar los pagos
@@ -383,6 +402,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
               la entidad).{' '}
             </Text>
           </Text>
+          <Text>&nbsp;</Text>
           <Text style={styles.subtitle}>
             CLAUSULA NOVENA: VIGENCIA DEL CONTRATO
           </Text>
@@ -407,20 +427,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             <Text style={styles.textBold}> COORPORACION DHYRIUM S.A.A. </Text>
             según la DIRECTIVA N° 004-2024-COORPORACIÓN DHYRIUM S.A.A.
           </Text>
-        </View>
-      </Page>
-      <Page>
-        <View style={styles.pageBackgroundContainer} fixed={true}>
-          <Image src={page1Image} style={styles.imageBackground} />
-        </View>
-        <View style={styles.container}>
-          <View
-            style={{
-              alignItems: 'center',
-            }}
-          >
-            <Text style={styles.title}>{documentTitle}</Text>
-          </View>
+          <Text>&nbsp;</Text>
           <Text style={styles.subtitle}>
             CLAUSULA DÉCIMA: CONFORMIDAD DE SERVICIO
           </Text>
@@ -431,6 +438,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             mencionados, por ende, no contará como experiencia laboral para el
             CONTRATISTA.
           </Text>
+          <Text>&nbsp;</Text>
           <Text style={styles.subtitle}>
             CLAUSULA UNDÉCIMA: RESPONSABILIDAD POR VICIOS OCULTOS
           </Text>
@@ -441,6 +449,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             por EL CONTRATANTE, conforme se establece el Artículo 40° de la Ley
             de Contrataciones del Estado LEY N° 30225.{' '}
           </Text>
+          <Text>&nbsp;</Text>
           <Text style={styles.subtitle}>
             CLAUSULA DUODÉCIMA: LUGAR DE LA PRESTACION DE SERVICIOS{' '}
           </Text>
@@ -453,7 +462,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             cooperación, correo electrónico y redes sociales {'('}WhatsApp, Etc.
             {')'}
           </Text>
-
+          <Text>&nbsp;</Text>
           <Text style={styles.subtitle}>
             CLAUSULA DECIMOTERCERA: RESOLUCIÓN DE CONTRATO
           </Text>
@@ -514,6 +523,21 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
               </Text>
             </View>
           </View>
+        </View>
+      </Page>
+
+      <Page>
+        <View style={styles.pageBackgroundContainer} fixed={true}>
+          <Image src={page1Image} style={styles.imageBackground} />
+        </View>
+        <View style={styles.container}>
+          <View
+            style={{
+              alignItems: 'center',
+            }}
+          >
+            <Text style={styles.title}>{documentTitle}</Text>
+          </View>
           <Text style={styles.subtitle}>
             CLAUSULA DECIMOCUARTA: PENALIDADES
           </Text>
@@ -540,13 +564,13 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
               <Text style={{ ...styles.text, borderTopWidth: 1 }}>
                 F x plazo vigente en dias
               </Text>
-              <Text style={styles.text}>dias</Text>
+              <Text>&nbsp;</Text>
             </View>
           </View>
           <View style={{ gap: 4 }}>
             <Text style={styles.text}>Donde:</Text>
             <Text style={styles.text}>
-              F = 0.25 para plazos mayores a sesenta (60) días o;
+              F = 0.25 para plazos mayores a sesenta (60) días.
             </Text>
 
             <Text style={styles.text}>
@@ -565,7 +589,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             </Text>
             <Text style={styles.text}>
               Esta penalidad puede alcanzar un monto máximo equivalente al diez
-              por ciento {'('}10%{')'} del monto del contrato,{' '}
+              por ciento {'('}10%{')'} del monto del contrato.{' '}
             </Text>
             <Text style={styles.text}>
               Aplicación de la directiva en el caso de convivencia y el consumo
@@ -574,33 +598,21 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
               DHYRIUM S.A.A.{' '}
             </Text>
           </View>
-        </View>
-      </Page>
-
-      <Page>
-        <View style={styles.pageBackgroundContainer} fixed={true}>
-          <Image src={page1Image} style={styles.imageBackground} />
-        </View>
-        <View style={styles.container}>
-          <View
-            style={{
-              alignItems: 'center',
-            }}
-          >
-            <Text style={styles.title}>{documentTitle}</Text>
-          </View>
           <Text style={styles.text}>
             Según la
             <Text style={styles.textBold}>
               {' '}
               DIRECTIVA N° 003-2024-COORPORACION DHYRIUM S.A.A.{' '}
             </Text>
-            llegar al incumplimiento; por retiro anticipado al tiempo de
-            contrato o abandono de cargo por más de 4 días, sin reportase, la
-            multa será del 50% del monto contractual por el tiempo estipulado en
-            el contrato siendo este agregado al cuarto párrafo mencionado en el
-            ítem de responsabilidades, siendo está pudiendo ser procesada en el
-            código civil, código penal y otros que aplique la de acuerdo Ley.{' '}
+            llegar al incumplimiento; por retiro
+          </Text>
+          <Text style={styles.text}>
+            anticipado al tiempo de contrato o abandono de cargo por más de 4
+            días, sin reportase, la multa será del 50% del monto contractual por
+            el tiempo estipulado en el contrato siendo este agregado al cuarto
+            párrafo mencionado en el ítem de responsabilidades, siendo está
+            pudiendo ser procesada en el código civil, código penal y otros que
+            aplique la de acuerdo Ley.{' '}
           </Text>
           <Text style={styles.text}>
             Cuando se llegue a cubrir el monto máximo de la penalidad por mora o
@@ -614,6 +626,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             por mora por cada día de atraso, de acuerdo a la anterior fórmula,
             después de haber transcurrido los 45 días hábiles.{' '}
           </Text>
+          <Text>&nbsp;</Text>
           <Text style={styles.subtitle}>CLAUSULA DECIMOQUINTA: GARANTÍAS</Text>
           <Text style={styles.text}>
             EL CONTRATISTA dejara en garantía el pago del{' '}
@@ -623,7 +636,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             Los pagos mensuales de la primera armada no deberán superar el 30%
             al 60% del monto contractual.
           </Text>
-
+          <Text>&nbsp;</Text>
           <Text style={styles.subtitle}>
             CLAUSULA DECIMOSEXTA: DECLARACIÓN JURADA DEL CONTRATISTA
           </Text>
@@ -656,6 +669,23 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
               EL CONTRATISTA se compromete no podrá divulgar ni copiar los
               archivos generados y existente en la empresa.
             </Text>
+          </View>
+        </View>
+      </Page>
+
+      <Page>
+        <View style={styles.pageBackgroundContainer} fixed={true}>
+          <Image src={page1Image} style={styles.imageBackground} />
+        </View>
+        <View style={styles.container}>
+          <View
+            style={{
+              alignItems: 'center',
+            }}
+          >
+            <Text style={styles.title}>{documentTitle}</Text>
+          </View>
+          <View style={{ gap: 4 }}>
             <Text style={styles.text}>
               Si se incumple lo mencionado anteriormente
               <Text style={styles.textBold}> EL CONTRATANTE </Text>
@@ -671,6 +701,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
               jurídico que resulten aplicables.
             </Text>
           </View>
+          <Text>&nbsp;</Text>
           <Text style={styles.subtitle}>
             CLAUSULA DECIMOSÉPTIMA: RESPONSABILIDAD DE LAS PARTES{' '}
           </Text>
@@ -689,6 +720,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
               contrato.
             </Text>
           </View>
+          <Text>&nbsp;</Text>
           <Text style={styles.subtitle}>
             CLAUSULA DECIMOCTAVA: APLICACIÓN SUPLETORIA DE LA LEY{' '}
           </Text>

@@ -70,6 +70,9 @@ export const styles = StyleSheet.create({
     fontFamily: 'Arial Narrow Bold',
     color: 'blue',
   },
+  noWrap: {
+    overflow: 'hidden',
+  },
   signText: {
     fontSize: 11,
     fontFamily: 'Arial Narrow Bold',

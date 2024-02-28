@@ -172,8 +172,8 @@ export const NumerosALetras = (num: number) => {
     enteros: Math.floor(num),
     centavos: Math.round(num * 100) - Math.floor(num) * 100,
     letrasCentavos: '',
-    letrasMonedaPlural: 'soles con',
-    letrasMonedaSingular: 'sol con',
+    letrasMonedaPlural: 'soles',
+    letrasMonedaSingular: 'sol',
     letrasMonedaCentavoPlural: '/100',
     letrasMonedaCentavoSingular: '/100',
   };
@@ -181,11 +181,11 @@ export const NumerosALetras = (num: number) => {
   if (data.centavos >= 0) {
     data.letrasCentavos = (function () {
       if (data.centavos >= 1 && data.centavos <= 9) {
-        return '0' + data.centavos + data.letrasMonedaCentavoSingular;
+        return 'con 0' + data.centavos + data.letrasMonedaCentavoSingular;
       }
 
       if (data.centavos === 0) {
-        return '00' + data.letrasMonedaCentavoSingular;
+        return 'con 00' + data.letrasMonedaCentavoSingular;
       }
 
       return data.centavos + data.letrasMonedaCentavoPlural;
@@ -195,9 +195,9 @@ export const NumerosALetras = (num: number) => {
   if (data.enteros === 0) {
     return (
       'Cero ' +
-      data.letrasMonedaPlural +
+      data.letrasCentavos +
       ' ' +
-      data.letrasCentavos
+      data.letrasMonedaPlural
     ).trim();
   }
 
@@ -205,17 +205,17 @@ export const NumerosALetras = (num: number) => {
     return (
       millones(data.enteros) +
       ' ' +
-      data.letrasMonedaSingular +
+      data.letrasCentavos +
       ' ' +
-      data.letrasCentavos
+      data.letrasMonedaSingular
     ).trim();
   }
 
   return (
     millones(data.enteros) +
     ' ' +
-    data.letrasMonedaPlural +
+    data.letrasCentavos +
     ' ' +
-    data.letrasCentavos
+    data.letrasMonedaPlural
   ).trim();
 };

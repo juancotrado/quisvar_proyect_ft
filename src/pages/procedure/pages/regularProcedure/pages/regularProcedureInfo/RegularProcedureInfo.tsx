@@ -1,36 +1,28 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import './regularProcedureInfo.css';
-import { useHtmlToPdf } from '../../../../../../hooks';
 import { MessageType, ProcedureSubmit } from '../../../../../../types';
 import { useEffect, useState } from 'react';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
-import { Button, LoaderForComponent } from '../../../../../../components';
 import {
-  filterFilesByAttempt,
-  formatDateHourLongSpanish,
-  htmlToPdf,
-  normalizeFileName,
-} from '../../../../../../utils';
-import { isOpenViewHtmlToPdf$ } from '../../../../../../services/sharingSubject';
+  Button,
+  IconAction,
+  LoaderForComponent,
+} from '../../../../../../components';
+import { formatDateHourLongSpanish } from '../../../../../../utils';
 import { Resizable } from 're-resizable';
 import { TYPE_STATUS } from '../../../paymentProcessing/models';
 import {
-  ChipFileDownLoadProcedure,
   FormRegisterProcedure,
   ProcedureHistory,
 } from '../../../../components';
-import { ChipFileMessage } from '../../../paymentProcessing/components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../store';
 const RegularProcedureInfo = () => {
   const navigate = useNavigate();
   const { messageId } = useParams();
-  const { getPdfToEmbed, pdfUrl } = useHtmlToPdf();
   const [message, setMessage] = useState<MessageType | null>();
-  const [viewMoreFiles, setViewMoreFiles] = useState(false);
   const [viewHistory, setViewHistory] = useState(false);
 
-  const handleViewMoreFiles = () => setViewMoreFiles(!viewMoreFiles);
   const handleViewHistory = () => setViewHistory(!viewHistory);
   const { id: userSessionId } = useSelector(
     (state: RootState) => state.userSession
@@ -46,7 +38,6 @@ const RegularProcedureInfo = () => {
   const getMessage = () => {
     axiosInstance.get<MessageType>(`/mail/${messageId}`).then(({ data }) => {
       setMessage(data);
-      getPdfToEmbed(data.description, 'a4');
     });
   };
   if (!message)
@@ -65,35 +56,6 @@ const RegularProcedureInfo = () => {
       type == 'RECEIVER'
   );
 
-  const files = filterFilesByAttempt(message.files ?? []);
-
-  const { initialSender } = message;
-  const downLoadPdf = (size: 'a4' | 'a5') => {
-    const { description, header } = message;
-    isOpenViewHtmlToPdf$.setSubject = {
-      isOpen: true,
-      fileNamePdf: header,
-      htmlString: description,
-      size,
-    };
-  };
-
-  const downloadOptions = [
-    {
-      id: 1,
-      handleClick: () => downLoadPdf('a5'),
-      iconOne: 'file-download',
-      iconTwo: 'file-download-white',
-      text: 'A5',
-    },
-    {
-      id: 2,
-      handleClick: () => downLoadPdf('a4'),
-      iconOne: 'file-download',
-      iconTwo: 'file-download-white',
-      text: 'A4',
-    },
-  ];
   const handleSaveRegister = () => {
     navigate('/tramites/tramite-regular');
   };
@@ -111,6 +73,10 @@ const RegularProcedureInfo = () => {
       .then(handleSaveRegister);
   };
 
+  const handleDoneProcedure = () => {
+    axiosInstance.patch(`/mail/${messageId}/done`).then(handleSaveRegister);
+  };
+
   return (
     <Resizable
       enable={{
@@ -125,49 +91,26 @@ const RegularProcedureInfo = () => {
     >
       {mainReceiver && (
         <div className="regularProcedureInfo message-page-contain--right">
-          <>
-            {/* {mainReceiver &&
-            (message.status === 'PROCESO' ||
-              message.status === 'RECHAZADO') && ( */}
-
-            {mainReceiver && (
-              <FormRegisterProcedure
-                type={'regularProcedure'}
-                submit={data => onSubmit(data)}
-              />
-            )}
-
-            {/* )} */}
-          </>
+          {mainReceiver && (
+            <FormRegisterProcedure
+              type={'regularProcedure'}
+              submit={data => onSubmit(data)}
+            />
+          )}
+          <Button
+            text="Finalizar tramite"
+            onClick={handleDoneProcedure}
+            styleButton={3}
+          />
         </div>
       )}
       <div className="regularProcedureInfo  message-page-contain--left">
-        <div className="message-header-content ">
-          <div className="message-header-content-options ">
-            <Button
-              icon="close"
-              onClick={handleClose}
-              className="message-icon-close"
-            />
-          </div>
-          <div className="message-sender-info-details">
+        <div className="regularProcedureInfo-header-content ">
+          <IconAction icon="close" onClick={handleClose} />
+          <div className="regularProcedureInfo-sender-info-details">
             <div className="message-sender-info">
-              {initialSender?.type === 'SENDER' && (
-                <span className="message-sender-name">Enviado por:</span>
-              )}
-              <span className="message-sender-icon">
-                <img src="/svg/user-sender.svg" alt="icon-profile" />
-              </span>
-              {initialSender && initialSender.type === 'SENDER' ? (
-                <span className="message-sender-name">
-                  <b>
-                    {initialSender.user.profile.lastName}{' '}
-                    {initialSender.user.profile.firstName}
-                  </b>
-                </span>
-              ) : (
-                <span className="message-sender-name">Enviado Por ti</span>
-              )}
+              <IconAction icon="user-sender" position="none" />
+              <span className="message-sender-name">Iniciado el: </span>
               <span className="message-date-send">
                 {formatDateHourLongSpanish(message.createdAt)}
               </span>
@@ -179,27 +122,31 @@ const RegularProcedureInfo = () => {
             </span>
           </div>
         </div>
-        <ProcedureHistory
-          messageHistory={message}
-          userMessage={message.initialSender.user.profile}
-        />
-        {message?.history.length > 0 && (
-          <Button
-            className={`message-view-more-files-${viewHistory}`}
-            text={`${viewHistory ? 'Ocultar' : 'Ver'} documentos recibidos`}
-            icon="down"
-            onClick={handleViewHistory}
+        <div className="regularProcedureInfo-main">
+          <ProcedureHistory
+            messageHistory={message}
+            userMessage={message.initialSender.user.profile}
           />
-        )}
-        <div className="message-container-files-grid">
-          {viewHistory &&
-            message?.history.map(history => (
-              <ProcedureHistory
-                messageHistory={history}
-                key={history.id}
-                userMessage={history.user.profile}
+          {message?.history.length > 0 && (
+            <div className="regularProcedureInfo-btn-expand">
+              <Button
+                className={`message-view-more-files-${viewHistory}`}
+                text={`${viewHistory ? 'Ocultar' : 'Ver'} documentos recibidos`}
+                icon="down"
+                onClick={handleViewHistory}
               />
-            ))}
+            </div>
+          )}
+          <div className="message-container-files-grid">
+            {viewHistory &&
+              message?.history.map(history => (
+                <ProcedureHistory
+                  messageHistory={history}
+                  key={history.id}
+                  userMessage={history.user.profile}
+                />
+              ))}
+          </div>
         </div>
       </div>
     </Resizable>

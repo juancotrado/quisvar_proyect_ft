@@ -3,7 +3,7 @@ import { useRole } from '../../../../../../hooks';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { MessageSender, MessageType } from '../../../../../../types';
 import { formatDateHourLongSpanish } from '../../../../../../utils';
-import { TYPE_STATUS } from '../../models';
+import { TYPE_STATUS, TYPE_STATUS_REGULAR_PROCEDURA } from '../../models';
 import './cardMessage.css';
 
 interface CardMessageProps {
@@ -58,9 +58,11 @@ const CardMessage = ({
         <>
           <div className="card-message-section-item">
             <span className={`card-status-message status-${message.status}`}>
-              {option === 'comunicado'
-                ? 'Comunicado'
-                : TYPE_STATUS[message.status]?.toLowerCase()}
+              {option === 'comunicado' && 'Comunicado'}
+              {option === 'tramite-de-pago' &&
+                TYPE_STATUS[message.status]?.toLowerCase()}
+              {option === 'tramite-regular' &&
+                TYPE_STATUS_REGULAR_PROCEDURA[message.status]?.toLowerCase()}
             </span>
           </div>
           <div className="card-message-section-item">

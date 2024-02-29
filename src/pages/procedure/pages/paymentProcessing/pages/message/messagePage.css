@@ -231,6 +231,10 @@
   background-color: var(--color-bg-asigned);
   color: var(--color-asigned);
 }
+.message-status-PENDIENTE {
+  background-color: var(--color-bg-asigned);
+  color: var(--color-asigned);
+}
 
 .message-status-RECHAZADO {
   background-color: var(--color-bg-unresolved);

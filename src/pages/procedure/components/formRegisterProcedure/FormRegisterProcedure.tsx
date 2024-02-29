@@ -72,10 +72,12 @@ const FormRegisterProcedure = ({
   };
 
   const getHtmlString = (size: 'a4' | 'a5') => {
-    if (!receiver) return;
     const idUserReceiver = listCopy.map(user => user.id);
     const { description, header, type } = watch();
-    const usersReceiver = handleReceiverUser([+receiver.id, ...idUserReceiver]);
+    const usersReceiver = handleReceiverUser([
+      +(receiver?.id || 0),
+      ...idUserReceiver,
+    ]);
     const [toProfile, ...ccProfiles] = usersReceiver;
     const htmlString = procedureDocument({
       title: handleTitle(type),
@@ -163,21 +165,23 @@ const FormRegisterProcedure = ({
           placeholder="Tipo de Documento"
           className="messagePage-input"
         />
-        <div className="imbox-receiver-choice-dropdown">
-          <DropDownSimple
-            classNameInput="messagePage-input"
-            type="search"
-            data={contacts}
-            textField="name"
-            itemKey="id"
-            placeholder="Dirigido a"
-            selector
-            droper
-            valueInput={(value, id) => setReceiver({ id: +id, value })}
-            required
-          />
-        </div>
-        {receiver && (
+        {type !== 'comunication' && (
+          <div className="imbox-receiver-choice-dropdown">
+            <DropDownSimple
+              classNameInput="messagePage-input"
+              type="search"
+              data={contacts}
+              textField="name"
+              itemKey="id"
+              placeholder="Dirigido a"
+              selector
+              droper
+              valueInput={(value, id) => setReceiver({ id: +id, value })}
+              required
+            />
+          </div>
+        )}
+        {(receiver || type === 'comunication') && (
           <Button
             type="button"
             text={typeProcedure.addUsersText}

@@ -10,7 +10,7 @@ const Communications = () => {
   const navigate = useNavigate();
   const { handleNewMessage, handleSaveMessage, isNewMessage, listMessage } =
     useMessage('/mail?category=GLOBAL');
-  const { optionsMailHeader, typeMail } = useSelectReceiver(['RECIBIDOS']);
+  const { optionsMailHeader } = useSelectReceiver(['RECIBIDOS']);
 
   const handleViewMessage = (id: number) => {
     navigate(`${id}`);
@@ -42,13 +42,13 @@ const Communications = () => {
           />
         </div>
         <div className="mail-grid-container">
-          <CardMessageHeader typeMail={typeMail} />
+          <CardMessageHeader typeMail={'RECEIVER'} />
 
-          {listMessage?.map(({ message, messageId, type }) => (
+          {listMessage?.map(({ message, messageId }) => (
             <CardMessage
               isActive={false}
               key={messageId}
-              type={type}
+              type={'RECEIVER'}
               onArchiver={handleSaveMessage}
               onClick={() => handleViewMessage(messageId)}
               message={message}

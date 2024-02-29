@@ -19,7 +19,6 @@ import { useSelector } from 'react-redux';
 import './cardRegisterMessageReply.css';
 import { Editor } from '@tinymce/tinymce-react';
 import {
-  HashFile,
   radioOptions,
   formatDate,
   convertToDynamicObject,
@@ -29,6 +28,7 @@ import {
 import { PDFGenerator } from '../../../../pdfGenerate';
 import { JOB_DATA } from '../../../../../../../userCenter/pages/users/models';
 import DocumentProcedure from '../../../../../../components/documentProcedure/DocumentProcedure';
+import { useTitleProcedure } from '../../../../../../hooks';
 
 interface MessageSendType {
   title: string;
@@ -41,8 +41,6 @@ interface MessageSendType {
 }
 type receiverType = { id: number; value: string };
 
-const YEAR = new Date().getFullYear();
-
 interface CardRegisterMessageReplyProps {
   message: MessageType;
   senderId?: number;
@@ -53,11 +51,11 @@ interface CardRegisterMessageReplyProps {
 const CardRegisterMessageReply = ({
   message,
   senderId,
-  quantityFiles,
   onSave,
 }: CardRegisterMessageReplyProps) => {
   const { userSession } = useSelector((state: RootState) => state);
-  const { lastName, firstName } = userSession.profile;
+  const { handleTitle } = useTitleProcedure('/paymail/imbox/quantity');
+
   const {
     handleSubmit,
     register,
@@ -68,7 +66,6 @@ const CardRegisterMessageReply = ({
   const [fileUploadFiles, setFileUploadFiles] = useState<File[]>([]);
   const { users } = useListUsers('MOD', 'tramites', 'tramite-de-pago');
 
-  const HashUser = HashFile(`${firstName} ${lastName}`);
   const [receiver, setReceiver] = useState<receiverType | null>(null);
   const [pdfData, setpdfData] = useState<PdfDataProps>(dataInitialPdf);
 
@@ -83,11 +80,6 @@ const CardRegisterMessageReply = ({
     setValue('description', event);
   };
 
-  const handleTitle = (value: string) => {
-    const countFile = quantityFiles?.find(file => file.type === value);
-    const newIndex = (countFile ? countFile._count.type : 0) + 1;
-    return `${value} N°${newIndex} DHYRIUM-${HashUser}-${YEAR}`;
-  };
   const onSubmit: SubmitHandler<MessageSendType> = async data => {
     const values = {
       ...data,

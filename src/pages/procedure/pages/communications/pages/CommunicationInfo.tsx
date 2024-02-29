@@ -26,7 +26,6 @@ const CommunicationInfo = () => {
   };
 
   useEffect(() => {
-    console.log('first');
     getMessage();
   }, [messageId]);
 
@@ -148,7 +147,6 @@ const CommunicationInfo = () => {
             type="application/pdf"
             width="100%"
             height="100%"
-            // download="nombre_que_quieras.pdf"
           />
         )}
 

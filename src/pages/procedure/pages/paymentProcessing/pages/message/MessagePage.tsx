@@ -82,7 +82,7 @@ export const MessagePage = () => {
     getQuantityServices();
     return () => setMessage(null);
   }, [getMessage, paymessageId, userSessionId]);
-
+  console.log(message);
   const getQuantityServices = () =>
     axiosInstance
       .get('/paymail/imbox/quantity')

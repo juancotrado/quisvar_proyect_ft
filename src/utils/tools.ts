@@ -1,6 +1,7 @@
 import { DEGREE_DATA } from '../pages/userCenter/pages/users/models';
 import { Degree, Feedback, Level, RangeDays } from '../types/types';
 import { getListByRole } from './roles';
+import html2pdf from 'html2pdf.js';
 
 export const findProject = (data: Level[]): boolean => {
   let existProyect = false;
@@ -291,4 +292,31 @@ export const downloadHref = (url: string, name: string) => {
 export const degreeAbrv = (degree: Degree) => {
   const findDegree = DEGREE_DATA.find(({ value }) => value === degree);
   return findDegree?.abrv;
+};
+
+export const htmlToPdf = (
+  htmlString: string,
+  size: 'a4' | 'a5',
+  name: string = 'document'
+) => {
+  const options = {
+    margin: [14, 22, 14, 22],
+    filename: name,
+    image: { type: 'jpeg', quality: 1 },
+    html2canvas: { scale: 2, useCORS: true },
+    useCORS: true,
+    jsPDF: { format: size, orientation: 'p' },
+  };
+
+  let result;
+  html2pdf()
+    .set(options)
+    .from(htmlString)
+    .toPdf()
+    .get('pdf')
+    .then((pdf: any) => {
+      result = pdf.output('datauristring');
+    });
+  return result;
+  // return pdf.output('datauristring');
 };

@@ -42,6 +42,7 @@ import {
   RegularProcedure,
   Communications,
   CommunicationInfo,
+  RegularProcedureInfo,
 } from '../pages';
 import { ProtectedRole, ProtectedRoute } from '../guards';
 import { NavigationSubMenu } from '.';
@@ -75,7 +76,9 @@ const Navigation = () => {
               <Route path="/tramites" element={<Procedure />}>
                 <Route index element={<NavigationSubMenu />} />
                 <Route path="salidas" element={<LicensePage />} />
-                <Route path="tramite-regular" element={<RegularProcedure />} />
+                <Route path="tramite-regular" element={<RegularProcedure />}>
+                  <Route path=":messageId" element={<RegularProcedureInfo />} />
+                </Route>
                 <Route path="comunicado" element={<Communications />}>
                   <Route path=":messageId" element={<CommunicationInfo />} />
                 </Route>

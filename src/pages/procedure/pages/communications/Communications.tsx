@@ -1,39 +1,19 @@
-import { useEffect, useState } from 'react';
 import { Button, HeaderOptionBtn } from '../../../../components';
 import './communications.css';
-import { useSelectReceiver } from '../../hooks';
+import { useMessage, useSelectReceiver } from '../../hooks';
 import { CardRegisterProcedureGeneral } from '../../views';
-import { axiosInstance } from '../../../../services/axiosInstance';
-import { MailTypeComunication } from '../../../../types';
 import { CardMessage } from '../paymentProcessing/components';
 import { CardMessageHeader } from '../../components';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 const Communications = () => {
-  const [isNewMessage, setIsNewMessage] = useState(false);
   const navigate = useNavigate();
-  const [listMessage, setListMessage] = useState<MailTypeComunication[] | null>(
-    null
-  );
-
-  useEffect(() => {
-    getMessages();
-  }, []);
-
+  const { handleNewMessage, handleSaveMessage, isNewMessage, listMessage } =
+    useMessage('/mail?category=GLOBAL');
   const { optionsMailHeader, typeMail } = useSelectReceiver(['RECIBIDOS']);
-  const handleNewMessage = () => setIsNewMessage(!isNewMessage);
-  const handleSaveMessage = () => {
-    getMessages();
-    setIsNewMessage(false);
-  };
+
   const handleViewMessage = (id: number) => {
     navigate(`${id}`);
-  };
-  const getMessages = () => {
-    axiosInstance.get('/mail').then(res => {
-      setListMessage(res.data.mail);
-      // setTotalMail(res.data.total);
-    });
   };
   return (
     <>
@@ -82,6 +62,7 @@ const Communications = () => {
         <CardRegisterProcedureGeneral
           onClosing={handleNewMessage}
           onSave={handleSaveMessage}
+          type={'comunication'}
         />
       )}
     </>

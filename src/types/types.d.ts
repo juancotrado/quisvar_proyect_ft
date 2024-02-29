@@ -887,6 +887,11 @@ export interface MessageType {
   paymentPdfData: string;
   userInit: userMessage;
 }
+
+export type ProfileShort = Pick<
+  Profile,
+  'firstName' | 'lastName' | 'dni' | 'phone' | 'job'
+>;
 export interface MessageReply {
   id: number;
   title: string;
@@ -898,7 +903,7 @@ export interface MessageReply {
   files?: fileMesage[];
   user: {
     id: number;
-    profile: Pick<Profile, 'firstName' | 'lastName' | 'dni' | 'phone'>;
+    profile: ProfileShort;
   };
 }
 export interface PdfGeneratorPick {
@@ -913,7 +918,7 @@ export interface PdfGeneratorPick {
   users?: userMessage[];
   user?: {
     id: number;
-    profile: Pick<Profile, 'firstName' | 'lastName' | 'dni' | 'phone' | 'job'>;
+    profile: ProfileShort;
   };
   history?: MessageReply[];
 }
@@ -957,6 +962,16 @@ interface MessageSendType {
   description?: string;
   receiverId: number;
   type: MessageType['type'];
+}
+export interface Procedure extends MessageSendType {
+  secondaryReceiver: {
+    userId: number;
+  }[];
+}
+
+export interface ProcedureSubmit {
+  values: Procedure;
+  fileUploadFiles: File[];
 }
 type ListItemElement = {
   type: 'listItem';

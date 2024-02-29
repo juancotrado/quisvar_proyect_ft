@@ -1,0 +1,18 @@
+.procedureHistory {
+  display: flex;
+  gap: 0.3rem;
+  padding: 0.3rem;
+  flex-direction: column;
+  width: 100%;
+  height: 75rem;
+}
+.procedureHistory-info {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.procedureHistory-download-options {
+  display: flex;
+  gap: 1rem;
+}

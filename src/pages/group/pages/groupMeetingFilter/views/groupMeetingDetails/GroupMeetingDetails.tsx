@@ -30,8 +30,7 @@ const GroupMeetingDetails = ({ item, onClose }: GroupDetailsProps) => {
       </span>
       <section className="gmd-info">
         <div className="gmd-row">
-          <h5>Asunto de la reunion:</h5>
-          <h5 className="gmd-text">{item.title}</h5>
+          <h5 className="gmd-text-title">{item.title}</h5>
         </div>
         <div className="gmd-row">
           <h5>Fecha:</h5>

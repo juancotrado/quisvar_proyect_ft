@@ -47,6 +47,9 @@ const UserInfo = ({ user, index, onPrint, roles }: UserInfoProps) => {
       setIsOn(!isOn);
       dispatch(getListUsers()).then(sendInfo);
     });
+    axiosInstance.patch(`/attendanceGroup/disabled/${user.id}`, {
+      status: !isOn,
+    });
   };
   console.log(handleChangeStatus);
   // const handleChangeRole = async ({

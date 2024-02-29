@@ -13,7 +13,7 @@
   padding: 0.5rem 0.4rem;
   display: flex;
   width: 100%;
-  justify-content: center;
+  justify-content: end;
 }
 
 .gmd-info {
@@ -29,6 +29,16 @@
   font-size: 12px;
   font-weight: 400;
   font-style: italic;
+  text-transform: uppercase;
+}
+.gmd-text-title {
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: 0.015em;
+  text-align: center;
+  width: 100%;
+  color: var(--color-secondary);
   text-transform: uppercase;
 }
 .gmd-text-des {

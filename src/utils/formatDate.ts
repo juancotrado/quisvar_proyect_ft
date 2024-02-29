@@ -77,7 +77,14 @@ export const formatDateLongSpanish = (date?: string | Date) => {
     month: 'long',
     year: 'numeric',
   });
-  return format; // martes, 2 de enero de 2024;
+  const dayName = format.split(',')[0];
+
+  const capitalizedDayName = dayName.charAt(0).toUpperCase() + dayName.slice(1);
+
+  const formattedDate = format.replace(dayName, capitalizedDayName);
+
+  return formattedDate;
+  //return format; // martes, 2 de enero de 2024;
 };
 export const formatDateHourLongSpanish = (date?: string | Date) => {
   const format = formatDate(new Date(date ?? new Date()), {
@@ -88,6 +95,7 @@ export const formatDateHourLongSpanish = (date?: string | Date) => {
     hour: '2-digit',
     minute: '2-digit',
   });
+
   return format; // martes, 2 de enero de 2024;
 };
 

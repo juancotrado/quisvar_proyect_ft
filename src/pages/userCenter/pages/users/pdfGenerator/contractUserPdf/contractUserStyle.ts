@@ -66,6 +66,13 @@ export const styles = StyleSheet.create({
     fontFamily: 'Arial Narrow Bold',
     color: 'red',
   },
+  textBlue: {
+    fontFamily: 'Arial Narrow Bold',
+    color: 'blue',
+  },
+  noWrap: {
+    overflow: 'hidden',
+  },
   signText: {
     fontSize: 11,
     fontFamily: 'Arial Narrow Bold',
@@ -75,7 +82,7 @@ export const styles = StyleSheet.create({
     textAlign: 'center',
   },
   paddingLeft: {
-    paddingLeft: 35,
+    paddingLeft: 12,
     paddingRight: 15,
   },
 });

@@ -27,6 +27,7 @@ export const INITIAL_STATE: User = {
     phoneRef: '',
     room: '',
     userPc: '',
+    gender: '',
   },
   contract: null,
   cv: null,

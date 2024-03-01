@@ -27,6 +27,7 @@ export const GroupDaily = () => {
   const [idList, setIdList] = useState<number>();
   const [dateValue, setDateValue] = useState<string>(_date(now));
   const [title, setTitle] = useState<string | undefined>('');
+  const [file, setFile] = useState<string | undefined>('');
   const [hasDuty, setHasDuty] = useState<Duty[]>([]);
   const [groupUsers, setGroupUsers] = useState<GroupAttendanceRes[]>([]);
   const [sendItems, setSendItems] = useState<toSend[]>([]);
@@ -101,6 +102,7 @@ export const GroupDaily = () => {
   const addList = (order: number) => {
     setAddBtn(false);
     setTitle('');
+    setFile('');
     setGroupUsers([]);
     setCalls([]);
     setHasDuty([]);
@@ -154,6 +156,7 @@ export const GroupDaily = () => {
     });
     setIdList(item?.id);
     setTitle(item?.title ?? '');
+    setFile(item?.file ?? '');
     setGroupUsers([]);
     setHasDuty([]);
     setShowSecond(false);
@@ -308,6 +311,7 @@ export const GroupDaily = () => {
                 groupUsers={groupUsers}
                 isToday={isToday}
                 hasDuty={hasDuty}
+                file={file}
                 idList={idList}
                 onSave={() => getTodayCalls(idList, dateValue)}
               />

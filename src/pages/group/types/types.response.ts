@@ -3,6 +3,7 @@ export type GroupRes = {
   nombre: string;
   groupId: number;
   title?: string;
+  file?: string;
   createdAt: string | Date;
   groups: {
     name: string;

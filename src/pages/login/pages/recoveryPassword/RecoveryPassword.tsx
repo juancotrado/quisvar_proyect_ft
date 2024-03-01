@@ -2,10 +2,12 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { Input } from '../../../../components';
-import { SnackbarUtilities, validateDNI } from '../../../../utils';
+import { SnackbarUtilities } from '../../../../utils';
 import { useValidatePassword } from '../../../../hooks';
+import './recoveryPassword.css';
 interface resetPassworForm {
   newPassword: string;
+  verifyPassword: string;
 }
 
 const RecoveryPassword = () => {
@@ -21,22 +23,23 @@ const RecoveryPassword = () => {
     watch('newPassword')
   );
   const sendForm: SubmitHandler<resetPassworForm> = data => {
-    if (errorPassword?.verifyPassword) return;
-    console.log(data, errorPassword);
+    const { newPassword, verifyPassword } = data;
+    if (errorPassword?.verifyPassword || newPassword !== verifyPassword) return;
     axiosInstance
       .post('/auth/new-password', data, {
         headers: {
-          resetToken: token,
+          reset: token,
         },
       })
-      .then(() => {
-        navigate('/login');
-        SnackbarUtilities.success('contraseña cambiada exitosamente');
-      })
-      .catch(err => console.log(err));
+      .then(res => {
+        localStorage.removeItem('token');
+        navigateToLogin();
+        SnackbarUtilities.success(res.data.msg);
+      }).catch;
   };
-  validateDNI;
-
+  const navigateToLogin = () => {
+    navigate('/login');
+  };
   return (
     <div className="login">
       <figure className="login-figure">
@@ -54,7 +57,10 @@ const RecoveryPassword = () => {
               <h2>Nueva Contraseña</h2>
               <p>Establece tu nueva contraseña.</p>
             </div>
-            <form onSubmit={handleSubmit(sendForm)} className="formLogin">
+            <form
+              onSubmit={handleSubmit(sendForm)}
+              className="recoveryPassword-form"
+            >
               <div className="form-group">
                 <Input
                   label="Ingrese la nueva contraseña:"
@@ -67,11 +73,12 @@ const RecoveryPassword = () => {
               </div>
               <div className="form-group">
                 <Input
-                  errors={errorPassword}
+                  {...register('verifyPassword', { required: true })}
                   name="verifyPassword"
                   onBlur={verifyPasswords}
                   placeholder="Confirmar contraseña"
                   type="password"
+                  errors={errorPassword}
                   label="Confirmar contraseña:"
                   styleInput={2}
                 />
@@ -82,6 +89,12 @@ const RecoveryPassword = () => {
               </button>
             </form>
           </div>
+          <span
+            className={`login-forgot-email login-text-normal`}
+            onClick={navigateToLogin}
+          >
+            ⬅ Regresar
+          </span>
         </div>
       </div>
     </div>

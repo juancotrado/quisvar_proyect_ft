@@ -43,8 +43,17 @@
 }
 
 .login-forgot-email {
+  cursor: pointer;
+  width: 100%;
+  text-align: center;
   font-size: 0.7rem;
   font-weight: bold;
+}
+.login-text-red {
+  color: red;
+}
+.login-text-normal {
+  color: var(--color-secondary);
 }
 
 .login-input {
@@ -71,7 +80,7 @@
   background-color: var(--color-secondary);
 }
 
-.form {
+.card-form {
   display: grid;
   gap: 45px;
   width: 100%;

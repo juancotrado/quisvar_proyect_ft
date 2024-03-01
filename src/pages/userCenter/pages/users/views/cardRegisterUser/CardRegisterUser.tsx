@@ -108,6 +108,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
   }, []);
 
   const onSubmit: SubmitHandler<UserForm> = async data => {
+    if (errorPassword?.verifyPassword) return;
     const { cv, declaration, id, ...newData } = data;
     // console.log(newData);
     if (id) {

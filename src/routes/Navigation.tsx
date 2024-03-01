@@ -43,6 +43,7 @@ import {
   Communications,
   CommunicationInfo,
   RegularProcedureInfo,
+  RecoveryPassword,
 } from '../pages';
 import { ProtectedRole, ProtectedRoute } from '../guards';
 import { NavigationSubMenu } from '.';
@@ -53,7 +54,13 @@ const Navigation = () => {
       <HashRouter>
         <Routes>
           <Route path="/" element={<Navigate to="/home" />} />
-          <Route path="/login" element={<Login />} />
+          <Route path="/login">
+            <Route index element={<Login />} />
+            <Route
+              path="recuperar-contraseña/:token"
+              element={<RecoveryPassword />}
+            />
+          </Route>
           <Route element={<ProtectedRoute />}>
             <Route path="/home" element={<Home />} />
             {/* <Route path="/dashboard" element={<Dashboard />} /> */}

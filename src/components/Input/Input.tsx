@@ -7,6 +7,7 @@ import {
   forwardRef,
   CSSProperties,
 } from 'react';
+import { STYLE_INPUT } from './inputDefinitions';
 
 interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   name?: string;
@@ -20,6 +21,7 @@ interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   errorPosY?: number;
   isRelative?: boolean;
   handleSearch?: () => void;
+  styleInput?: number;
 }
 
 const InputText = forwardRef<HTMLInputElement, InputTextProps>(
@@ -36,6 +38,7 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
       isRelative = false,
       classNameMain,
       handleSearch,
+      styleInput = 1,
       ...props
     },
     ref
@@ -65,7 +68,7 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
           <input
             name={name}
             id={name}
-            className={`input-area ${
+            className={`${STYLE_INPUT[styleInput]} ${
               errors && name && errors[name] && 'input-area-error'
             } ${disabled && 'input-disabled'} ${
               (type == 'password' || handleSearch) && 'input-pading-right'

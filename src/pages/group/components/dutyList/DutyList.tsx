@@ -1,14 +1,22 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { Duty, GroupAttendanceRes } from '../../types';
+import { URL } from '../../../../services/axiosInstance';
 import './dutyList.css';
-import { Button, Input } from '../../../../components';
+import {
+  Button,
+  ButtonDelete,
+  Input,
+  UploadFileInput,
+} from '../../../../components';
 import { axiosInstance } from '../../../../services/axiosInstance';
+import { normalizeFileName } from '../../../../utils';
 interface DutyListProps {
   groupUsers: GroupAttendanceRes[];
   idList?: number;
   onSave: () => void;
   hasDuty?: Duty[];
   isToday?: boolean;
+  file?: string;
 }
 type sendData = {
   fullName: string;
@@ -22,6 +30,7 @@ const DutyList = ({
   onSave,
   hasDuty,
   isToday,
+  file,
 }: DutyListProps) => {
   // console.log(groupUsers)
   const data = groupUsers.map(({ user, description }) => {
@@ -85,6 +94,20 @@ const DutyList = ({
     axiosInstance.patch(`/duty/items`, itemsEdit).then(() => {
       onSave();
     });
+  };
+  const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
+    const pdf = e.target.files?.[0];
+    console.log(pdf);
+    const formData = new FormData();
+    formData.append('file', pdf ?? '');
+    const headers = {
+      'Content-type': 'multipart/form-data',
+    };
+    axiosInstance
+      .patch(`/attendanceGroup/file/${idList}`, formData, { headers })
+      .then(() => {
+        onSave?.();
+      });
   };
   return (
     <div className="dl-content">
@@ -237,6 +260,35 @@ const DutyList = ({
               onClick={() => setEdit(true)}
             />
           )}
+        </div>
+      )}
+      <div className="divider"></div>
+
+      {!file ? (
+        <UploadFileInput
+          name="Cargar Acta Firmada"
+          subName="O arrastre y suelte el archivo aquí"
+          accept="application/pdf"
+          onChange={handleFileUpload}
+        />
+      ) : (
+        <div className="cc-img-area">
+          <a
+            className="cc-img-title"
+            target="_blank"
+            href={`${URL}/file-user/groups/daily/${file}`}
+          >
+            {normalizeFileName(file)}
+          </a>
+          <ButtonDelete
+            icon="trash"
+            className="role-delete-icon"
+            url={`/attendanceGroup/file/${idList}`}
+            type="button"
+            onSave={() => {
+              onSave?.();
+            }}
+          />
         </div>
       )}
     </div>

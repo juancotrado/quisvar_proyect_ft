@@ -4,6 +4,7 @@ import {
   TextArea,
   Button,
   Modal,
+  CloseIcon,
 } from '../../../../../../components';
 import { isOpenCardRegisteContract$ } from '../../../../../../services/sharingSubject';
 import { actualDate, validateWhiteSpace } from '../../../../../../utils';
@@ -133,9 +134,7 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
 
   return (
     <Modal size={50} isOpenProp={isOpenModal}>
-      <span className="close-add-card" onClick={closeFunctions}>
-        <img src="/svg/close.svg" alt="close" />
-      </span>
+      <CloseIcon onClick={closeFunctions} />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="card-register-contract"

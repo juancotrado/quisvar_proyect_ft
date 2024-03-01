@@ -4,7 +4,7 @@ import { isOpenCardViewPdf$ } from '../../../../services/sharingSubject';
 import './CardViewPdf.css';
 import { AttendanceRange } from '../../../../types';
 import { AttendancePdf, AttendanceRangePdf } from '..';
-import { Modal } from '../../../../components';
+import { CloseIcon, Modal } from '../../../../components';
 
 export const CardViewPdf = () => {
   //   const filterdUsers = exportPDF.filter(user => user.list.length !== 0);
@@ -38,9 +38,7 @@ export const CardViewPdf = () => {
   return (
     <Modal size={60} isOpenProp={isOpen}>
       <div className="card-view-main">
-        <span className="close-icon" onClick={closeFunctions}>
-          <img src="/svg/close.svg" alt="pencil" />
-        </span>
+        <CloseIcon onClick={closeFunctions} />
         {data && typeReport === 'daily' && (
           <AttendancePdf data={data} daily={daily} />
         )}

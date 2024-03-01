@@ -4,7 +4,7 @@ import { Subscription } from 'rxjs';
 import { isOpenCardAddCompany$ } from '../../../../../../services/sharingSubject';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { Companies } from '../../../../../../types';
-import { Button, Input, Modal } from '../../../../../../components';
+import { Button, CloseIcon, Input, Modal } from '../../../../../../components';
 
 interface UserId {
   id: number;
@@ -71,9 +71,7 @@ const CardAddCompany = ({ onSave }: CardAddGroupProps) => {
   return (
     <Modal size={50} isOpenProp={isOpen}>
       <form onSubmit={handleSubmit(onSubmit)} className="card-register-users">
-        <span className="close-icon" onClick={closeFunctions}>
-          <img src="/svg/close.svg" alt="pencil" />
-        </span>
+        <CloseIcon onClick={closeFunctions} />
         <h1>Agregar Empresa</h1>
         <div className="col-input">
           <Input

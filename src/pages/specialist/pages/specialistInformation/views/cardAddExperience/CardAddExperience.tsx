@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import './cardAddExperience.css';
-import { Input, Button, Modal } from '../../../../../../components';
+import { Input, Button, Modal, CloseIcon } from '../../../../../../components';
 import { AreaSpecialty } from '../../../../../../types';
 import { Subscription } from 'rxjs';
 import { isOpenAddExperience$ } from '../../../../../../services/sharingSubject';
@@ -72,9 +72,7 @@ const CardAddExperience = ({ onSave }: CardExperienceProps) => {
   return (
     <Modal size={50} isOpenProp={isOpen}>
       <form onSubmit={handleSubmit(onSubmit)} className="card-specialist">
-        <span className="close-icon" onClick={closeFunctions}>
-          <img src="/svg/close.svg" alt="pencil" />
-        </span>
+        <CloseIcon onClick={closeFunctions} />
         <h1>{data ? 'Editar' : 'Registrar'} Experiencia</h1>
 
         <div className="specialist-col">

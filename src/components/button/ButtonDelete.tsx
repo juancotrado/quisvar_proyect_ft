@@ -11,6 +11,7 @@ import { RootState } from '../../store';
 import InputText from '../Input/Input';
 import { Subscription } from 'rxjs';
 import { isOpenButtonDelete$ } from '../../services/sharingSubject';
+import { CloseIcon } from '..';
 interface ButtonProps extends HTMLMotionProps<'button'> {
   text?: string;
   type?: 'button' | 'submit' | 'reset';
@@ -126,9 +127,7 @@ const ButtonDelete = ({
               animate="visible"
               exit="leave"
             >
-              <span className="close-icon" onClick={handleCloseButton}>
-                <img src="/svg/close.svg" alt="pencil" />
-              </span>
+              <CloseIcon onClick={handleCloseButton} />
               {!askPassword ? (
                 <>
                   <img src="/svg/trashdark.svg" className="alert-modal-trash" />

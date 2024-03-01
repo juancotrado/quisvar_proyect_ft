@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import './cardAddTraining.css';
-import { Input, Button, Modal } from '../../../../../../components';
+import { Input, Button, Modal, CloseIcon } from '../../../../../../components';
 import { TrainingSpecialty } from '../../../../../../types';
 import { Subscription } from 'rxjs';
 import { isOpenAddTraining$ } from '../../../../../../services/sharingSubject';
@@ -75,9 +75,7 @@ const CardAddTraining = ({ onSave }: CardAddTrainingProps) => {
   return (
     <Modal size={50} isOpenProp={isOpen}>
       <form onSubmit={handleSubmit(onSubmit)} className="card-specialist">
-        <span className="close-icon" onClick={closeFunctions}>
-          <img src="/svg/close.svg" alt="pencil" />
-        </span>
+        <CloseIcon onClick={closeFunctions} />
         <h1>{data ? 'Editar' : 'Registrar'} Capacitacion</h1>
 
         <div className="specialist-col">

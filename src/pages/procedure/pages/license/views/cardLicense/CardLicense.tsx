@@ -3,7 +3,13 @@ import './CardLicense.css';
 import { Subscription } from 'rxjs';
 import { isOpenCardLicense$ } from '../../../../../../services/sharingSubject';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Input, TextArea, Modal, Button } from '../../../../../../components';
+import {
+  Input,
+  TextArea,
+  Modal,
+  Button,
+  CloseIcon,
+} from '../../../../../../components';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../store';
@@ -116,9 +122,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
         <div className="report-title">
           <h2>Nueva solicitud de licencia</h2>
         </div>
-        <span className="close-add-card" onClick={showModal}>
-          <img src="/svg/close.svg" alt="pencil" />
-        </span>
+        <CloseIcon onClick={showModal} />
         <div className="col-input">
           <Input
             label="Fecha y hora de salida:"

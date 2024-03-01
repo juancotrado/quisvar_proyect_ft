@@ -6,7 +6,12 @@ import { Subscription } from 'rxjs';
 import { URL } from '../../../../../../services/axiosInstance';
 import { GeneralFile } from '../../../../../../types';
 import { formatDate } from '../../../../../../utils';
-import { ButtonDelete, Modal, UploadFile } from '../../../../../../components';
+import {
+  ButtonDelete,
+  CloseIcon,
+  Modal,
+  UploadFile,
+} from '../../../../../../components';
 
 interface CardOpenFileProps {
   generalFiles: GeneralFile[];
@@ -39,9 +44,7 @@ const CardOpenFile = ({ generalFiles, getGeneralFiles }: CardOpenFileProps) => {
   return (
     <Modal size={50} isOpenProp={isOpen}>
       <div className="card-register-users">
-        <span className="close-icon" onClick={closeFunctions}>
-          <img src="/svg/close.svg" alt="pencil" />
-        </span>
+        <CloseIcon onClick={closeFunctions} />
         <h1>Directivas</h1>
         {getGeneralFiles && (
           <div className="col-input card-open-file-main">

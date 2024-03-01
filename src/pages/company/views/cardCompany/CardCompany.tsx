@@ -2,7 +2,13 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
 import './CardCompany.css';
 import { isOpenCardCompany$ } from '../../../../services/sharingSubject';
-import { Input, Modal, Button, ButtonDelete } from '../../../../components';
+import {
+  Input,
+  Modal,
+  Button,
+  ButtonDelete,
+  CloseIcon,
+} from '../../../../components';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Companies } from '../../../../types';
 import { axiosInstance } from '../../../../services/axiosInstance';
@@ -144,9 +150,7 @@ const CardCompany = ({ onSave }: CardCompanyProps) => {
   return (
     <Modal size={50} isOpenProp={isOpen}>
       <form onSubmit={handleSubmit(onSubmit)} className="card-company">
-        <span className="close-icon" onClick={closeFunctions}>
-          <img src="/svg/close.svg" alt="pencil" />
-        </span>
+        <CloseIcon onClick={closeFunctions} />
         <h1>Registrar empresa</h1>
         <div className="company-col">
           <Input

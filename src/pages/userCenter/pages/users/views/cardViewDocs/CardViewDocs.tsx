@@ -7,7 +7,7 @@ import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { useDispatch } from 'react-redux';
 import { getListUsers } from '../../../../../../store/slices/listUsers.slice';
 import { AppDispatch } from '../../../../../../store';
-import { Modal } from '../../../../../../components';
+import { CloseIcon, Modal } from '../../../../../../components';
 import { UploadUserFile } from '../../components';
 import { CardGenerateContract } from '..';
 
@@ -61,9 +61,7 @@ const CardViewDocs = () => {
   return (
     <Modal size={50} isOpenProp={isOpen}>
       <div className="card-register-users">
-        <span className="close-icon" onClick={closeFunctions}>
-          <img src="/svg/close.svg" alt="pencil" />
-        </span>
+        <CloseIcon onClick={closeFunctions} />
         <h1>Documentos</h1>
         <h6>
           {user?.profile.firstName} {user?.profile.lastName}

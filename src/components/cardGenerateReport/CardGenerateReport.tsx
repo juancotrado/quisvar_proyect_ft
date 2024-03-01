@@ -1,7 +1,7 @@
 import './CardGenerateReport.css';
 import { isOpenCardGenerateReport$ } from '../../services/sharingSubject';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Button, Input, TextArea, Modal } from '..';
+import { Button, Input, TextArea, Modal, CloseIcon } from '..';
 import { axiosInstance } from '../../services/axiosInstance';
 import { ReportForm } from '../../types';
 import { RootState } from '../../store';
@@ -78,9 +78,7 @@ const CardGenerateReport = ({ employeeId }: CardGenerateReportProps) => {
         <div className="report-title">
           <h2>Generar Reporte</h2>
         </div>
-        <span className="close-add-card" onClick={showModal}>
-          <img src="/svg/close.svg" alt="pencil" />
-        </span>
+        <CloseIcon onClick={showModal} />
         <div className="col-input">
           <Input
             label="Fecha Inicio:"

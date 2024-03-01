@@ -5,13 +5,15 @@ import { Subscription } from 'rxjs';
 import { toggle$ } from '../../services/sharingSubject';
 import { SocketContext } from '../../context';
 import { CardEditInformation, ChipItem, Menu } from '..';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../../store';
 import { motion } from 'framer-motion';
 import { getIconDefault } from '../../utils';
+import { getUserSession } from '../../store/slices/userSession.slice';
 
 const Header = () => {
   const { stageId, taskId } = useParams();
+  const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
   const [headerShow, setHeaderShow] = useState(false);
   const socket = useContext(SocketContext);
@@ -40,8 +42,27 @@ const Header = () => {
       if (taskId) {
         socket.emit('join', `task-${taskId}`);
       }
+      if (role) {
+        socket.emit('join', `role-${role.id}`);
+      }
     });
   }, []);
+
+  useEffect(() => {
+    if (role) {
+      socket.emit('join', `role-${role.id}`);
+    }
+  }, [role]);
+
+  useEffect(() => {
+    socket.on('server:refresh-user', () => {
+      dispatch(getUserSession());
+    });
+    return () => {
+      socket.off('server:refresh-user');
+    };
+  }, [socket]);
+
   const [openModalInfo, setOpenModalInfo] = useState(false);
 
   const handleNotification = () => {

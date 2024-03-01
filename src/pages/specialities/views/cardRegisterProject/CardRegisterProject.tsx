@@ -1,4 +1,10 @@
-import { Button, Input, Modal, TextArea } from '../../../../components';
+import {
+  Button,
+  CloseIcon,
+  Input,
+  Modal,
+  TextArea,
+} from '../../../../components';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { isOpenCardRegisteProject$ } from '../../../../services/sharingSubject';
 import './CardRegisterProject.css';
@@ -96,9 +102,7 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
   };
   return (
     <Modal size={50} isOpenProp={isOpenModal}>
-      <span className="close-add-card" onClick={closeFunctions}>
-        <img src="/svg/close.svg" alt="close" />
-      </span>
+      <CloseIcon onClick={closeFunctions} />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="card-register-project"

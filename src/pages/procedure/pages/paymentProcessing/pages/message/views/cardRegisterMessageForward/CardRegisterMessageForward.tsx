@@ -6,6 +6,7 @@ import {
   Portal,
   DropDownSimple,
   Button,
+  CloseIcon,
 } from '../../../../../../../../components';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
@@ -230,12 +231,7 @@ const CardRegisterMessageForward = ({
               animate="visible"
               exit="leave"
             >
-              <span
-                className="close-icon"
-                onClick={() => setIsAlertOpen(false)}
-              >
-                <img src="/svg/close.svg" alt="pencil" />
-              </span>
+              <CloseIcon onClick={() => setIsAlertOpen(false)} />
               <>
                 <img src="/svg/folder-icon.svg" className="alert-modal-trash" />
                 <h3>¿Estas seguro que desea archivar este trámite?</h3>

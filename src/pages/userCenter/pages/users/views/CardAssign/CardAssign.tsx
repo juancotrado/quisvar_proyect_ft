@@ -6,7 +6,7 @@ import './cardAssing.css';
 import { Equipment } from '../../../../../../types';
 import { isOpenCardAssing$ } from '../../../../../../services/sharingSubject';
 import { validateWhiteSpace } from '../../../../../../utils';
-import { Button, Input, Modal } from '../../../../../../components';
+import { Button, CloseIcon, Input, Modal } from '../../../../../../components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../store';
 
@@ -122,9 +122,7 @@ const CardAssign = ({ onSave }: CardAssingProps) => {
   return (
     <Modal size={50} isOpenProp={isOpen}>
       <form onSubmit={handleSubmit(onSubmit)} className="card-register-users">
-        <span className="close-icon" onClick={closeFunctions}>
-          <img src="/svg/close.svg" alt="pencil" />
-        </span>
+        <CloseIcon onClick={closeFunctions} />
         <h1>Asignar Ordenador</h1>
         <div className="col-input">
           {data ? (

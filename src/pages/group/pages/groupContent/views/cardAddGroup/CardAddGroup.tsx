@@ -5,7 +5,7 @@ import { Subscription } from 'rxjs';
 import Modal from '../../../../../../components/portal/Modal';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import Button from '../../../../../../components/button/Button';
-import { Input } from '../../../../../../components';
+import { CloseIcon, Input } from '../../../../../../components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../store';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
@@ -85,9 +85,7 @@ const CardAddGroup = ({ onSave, modId }: CardAddGroupProps) => {
   return (
     <Modal size={50} isOpenProp={isOpen}>
       <form onSubmit={handleSubmit(onSubmit)} className="card-register-users">
-        <span className="close-icon" onClick={closeFunctions}>
-          <img src="/svg/close.svg" alt="pencil" />
-        </span>
+        <CloseIcon onClick={closeFunctions} />
         <h1>Asignar {modId ? 'Integrante' : 'Coordinador'}</h1>
         <div className="col-input">
           <Input

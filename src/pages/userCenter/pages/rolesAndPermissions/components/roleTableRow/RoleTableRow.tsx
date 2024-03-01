@@ -1,4 +1,11 @@
-import { ChangeEvent, FocusEvent, useEffect, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  FocusEvent,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { RolesAndPermissionsRadio } from '..';
 import {
   MenuPoint,
@@ -14,6 +21,7 @@ import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { handleMenu } from '../../utils';
 import { SnackbarUtilities } from '../../../../../../utils';
 import { SubMenuOptions } from '../../models';
+import { SocketContext } from '../../../../../../context';
 
 interface RoleTableRowProps {
   rol: Roles;
@@ -25,6 +33,7 @@ const RoleTableRow = ({ rol, onSave }: RoleTableRowProps) => {
   const [subMenuOptions, setSubMenuOptions] = useState<SubMenuOptions | null>(
     null
   );
+  const socket = useContext(SocketContext);
   const [role, setRole] = useState<string>(rol.name);
   const [menuPoints, setMenuPoints] = useState<MenuRoleForm[]>(rol.menuPoints);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -117,6 +126,8 @@ const RoleTableRow = ({ rol, onSave }: RoleTableRowProps) => {
     if (editMenuPoints.length === 0)
       return SnackbarUtilities.warning('Seleccion permisos para el rol.');
     axiosInstance.put(`/role/${rol.id}`, body).then(() => {
+      socket.emit('client:refresh-user', rol.id);
+
       SnackbarUtilities.success(`Rol: "${role}" editado correctamente.`);
       setOpenEditData(false);
       setSubMenuOptions(null);

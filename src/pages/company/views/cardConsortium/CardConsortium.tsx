@@ -2,7 +2,13 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
 import './cardConsortium.css';
 import { isOpenCardConsortium$ } from '../../../../services/sharingSubject';
-import { Button, ButtonDelete, Input, Modal } from '../../../../components';
+import {
+  Button,
+  ButtonDelete,
+  CloseIcon,
+  Input,
+  Modal,
+} from '../../../../components';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { ConsortiumType } from '../../../../types';
 import { axiosInstance } from '../../../../services/axiosInstance';
@@ -91,9 +97,8 @@ const CardConsortium = ({ onSave }: CardConsortiumProps) => {
   return (
     <Modal size={50} isOpenProp={isOpen}>
       <form onSubmit={handleSubmit(onSubmit)} className="card-company">
-        <span className="close-icon" onClick={closeFunctions}>
-          <img src="/svg/close.svg" alt="pencil" />
-        </span>
+        <CloseIcon onClick={closeFunctions} />
+
         <h1>{hasId ? 'Actualizar ' : 'Registrar '}Consorcio</h1>
         <div className="company-col">
           <Input

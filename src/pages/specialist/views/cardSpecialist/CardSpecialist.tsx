@@ -4,7 +4,7 @@ import './cardSpecialist.css';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Specialists } from '../../../../types';
 import { isOpenCardSpecialist$ } from '../../../../services/sharingSubject';
-import { Input, Button, Modal } from '../../../../components';
+import { Input, Button, Modal, CloseIcon } from '../../../../components';
 import { axiosInstance } from '../../../../services/axiosInstance';
 type CardSpecialistProps = {
   onSave?: () => void;
@@ -70,9 +70,7 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
   return (
     <Modal size={50} isOpenProp={isOpen}>
       <form onSubmit={handleSubmit(onSubmit)} className="card-specialist">
-        <span className="close-icon" onClick={closeFunctions}>
-          <img src="/svg/close.svg" alt="pencil" />
-        </span>
+        <CloseIcon onClick={closeFunctions} />
         <h1>Registrar nuevo especialista</h1>
 
         <div className="specialist-col">

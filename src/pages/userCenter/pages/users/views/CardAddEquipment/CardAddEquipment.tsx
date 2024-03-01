@@ -6,7 +6,13 @@ import { isOpenCardAddEquipment$ } from '../../../../../../services/sharingSubje
 import { WorkStation } from '../../../../../../types';
 import { validateWhiteSpace } from '../../../../../../utils';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
-import { Button, Input, Modal, TextArea } from '../../../../../../components';
+import {
+  Button,
+  CloseIcon,
+  Input,
+  Modal,
+  TextArea,
+} from '../../../../../../components';
 
 interface CardAddEquipmentProps {
   onSave: () => void;
@@ -85,9 +91,7 @@ const CardAddEquipment = ({ onSave }: CardAddEquipmentProps) => {
   return (
     <Modal size={50} isOpenProp={isOpen}>
       <form onSubmit={handleSubmit(onSubmit)} className="card-register-users">
-        <span className="close-icon" onClick={closeFunctions}>
-          <img src="/svg/close.svg" alt="pencil" />
-        </span>
+        <CloseIcon onClick={closeFunctions} />
         <h1>Agregar Equipo</h1>
         <div className="col-input">
           <Input

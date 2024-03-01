@@ -14,7 +14,13 @@ import {
   validateOnlyNumbers,
   validateRuc,
 } from '../../../../../../utils';
-import { Button, Input, Modal, Select } from '../../../../../../components';
+import {
+  Button,
+  CloseIcon,
+  Input,
+  Modal,
+  Select,
+} from '../../../../../../components';
 import { Subscription } from 'rxjs';
 import { useJurisdiction, useValidatePassword } from '../../../../../../hooks';
 import {
@@ -158,9 +164,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
     <Modal size={50} isOpenProp={isOpen}>
       <div className="card-register">
         <form onSubmit={handleSubmit(onSubmit)} className="card-register-users">
-          <span className="close-icon" onClick={closeFunctions}>
-            <img src="/svg/close.svg" alt="pencil" />
-          </span>
+          <CloseIcon onClick={closeFunctions} />
           <h1>
             {userId ? 'EDITAR DATOS DE USUARIO' : 'REGISTRO DE NUEVO USUARIO'}
           </h1>

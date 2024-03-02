@@ -45,6 +45,7 @@ export const Attendance = () => {
   });
 
   const users = useSelector((state: RootState) => state.listUsers);
+  console.log(users);
   const socket = useContext(SocketContext);
 
   const componentRef = useRef(null);

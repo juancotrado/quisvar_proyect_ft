@@ -58,9 +58,10 @@ export interface ViewRegisterUser extends OpenModal {
 export interface CardSpecialistProps extends OpenModal {
   data?: Specialists;
 }
-export interface OpenButtonDelete extends OpenModal {
+export interface OpenConfirmAction extends OpenModal {
   function: () => void;
 }
+
 export interface OpenEspecialistExperienceDescription extends OpenModal {
   id: number;
   data?: AreaSpecialty;

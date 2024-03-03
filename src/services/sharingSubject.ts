@@ -8,7 +8,7 @@ import {
   CardViewProps,
   CardWorkStationProps,
   OpenAssignCard,
-  OpenButtonDelete,
+  OpenConfirmAction,
   OpenEspecialistExperienceDescription,
   OpenEspecialistTrainingDescription,
   OpenViewDocs,
@@ -38,7 +38,8 @@ export const isOpenAddExperience$ =
   new SubjectManager<OpenEspecialistExperienceDescription>();
 export const isOpenAddTraining$ =
   new SubjectManager<OpenEspecialistTrainingDescription>();
-export const isOpenButtonDelete$ = new SubjectManager<OpenButtonDelete>();
+export const isOpenButtonDelete$ = new SubjectManager<OpenConfirmAction>();
+export const isOpenConfirmAction$ = new SubjectManager<OpenConfirmAction>();
 export const isOpenCardLicense$ = new SubjectManager<CardLicenseProps>();
 export const isOpenViewDocs$ = new SubjectManager<OpenViewDocs>();
 export const isOpenCardRegisteProject$ =

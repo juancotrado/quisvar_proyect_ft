@@ -5,6 +5,7 @@ import {
   ViewPdf,
   ButtonDelete,
   AlertNotification,
+  ConfirmAction,
 } from '../../components';
 import { errorToken$, toggle$ } from '../../services/sharingSubject';
 import { useDispatch } from 'react-redux';
@@ -51,6 +52,7 @@ export const ProtectedRoute = () => {
         <ButtonDelete notIsVisible />
         <ViewPdf />
         <ViewHtmlToPdf />
+        <ConfirmAction />
       </div>
     </SocketProvider>
   );

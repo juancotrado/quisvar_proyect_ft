@@ -9,24 +9,37 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useListUsers } from '../../../../hooks';
-import { RADIO_OPTIONS, ToData } from '../../models';
+import { RADIO_OPTIONS, ToData, TypeProcedure } from '../../models';
 import { procedureDocument } from '../../pdfGenerator';
-import { isOpenViewHtmlToPdf$ } from '../../../../services/sharingSubject';
+import {
+  isOpenCardGenerateReport$,
+  isOpenViewHtmlToPdf$,
+} from '../../../../services/sharingSubject';
 import { TYPE_PROCEDURE } from '../../pages/paymentProcessing/models';
-import { Button, DropDownSimple, Input, Select } from '../../../../components';
+import {
+  Button,
+  DropDownSimple,
+  IconAction,
+  Input,
+  Select,
+} from '../../../../components';
 import { validateWhiteSpace } from '../../../../utils';
 import { Editor } from '@tinymce/tinymce-react';
 import { ChipFileDownLoadProcedure, DocumentProcedure } from '..';
 
 interface FormRegisterProcedureProps {
-  type: 'comunication' | 'regularProcedure';
+  type: TypeProcedure;
   submit: (data: ProcedureSubmit) => void;
   initValueEditor?: string;
+  showReportBtn?: boolean;
+  showAddUser?: boolean;
 }
 const FormRegisterProcedure = ({
   type,
   submit,
   initValueEditor = '',
+  showReportBtn = false,
+  showAddUser = true,
 }: FormRegisterProcedureProps) => {
   const [receiver, setReceiver] = useState<receiverType | null>(null);
   const [isAddReceiver, setIsAddReceiver] = useState(false);
@@ -59,7 +72,26 @@ const FormRegisterProcedure = ({
       ),
     [userSessionId, listUser, receiver]
   );
+  //funcion futura para que el reporte se agrega auntomaticamente
+  // const handleIsOpen = useRef<Subscription>(new Subscription());
 
+  // useEffect(() => {
+  //   handleIsOpen.current = isGenerateExcelReport$.getSubject.subscribe(
+  //     blobExcel => {
+  //       if (!blobExcel) return;
+  //       fetch(blobExcel)
+  //         .then(response => response.blob())
+  //         .then(blob => {
+  //           const file = new File([blob], 'nombre_del_archivo.xlsx');
+  //           addFiles?.([file]);
+  //         })
+  //         .catch(error => console.error('Error al cargar el blob:', error));
+  //     }
+  //   );
+  //   return () => {
+  //     handleIsOpen.current.unsubscribe();
+  //   };
+  // }, []);
   const handleReceiverUser = (usersId: number[]) => {
     const findUsers = usersId.map(userId => {
       const receiverUser = listUser.find(({ id }) => id === userId);
@@ -127,7 +159,9 @@ const FormRegisterProcedure = ({
     };
     submit({ values, fileUploadFiles });
   };
-
+  const showCardReport = () => {
+    isOpenCardGenerateReport$.setSubject = true;
+  };
   const downloadOptions = [
     {
       id: 1,
@@ -181,7 +215,7 @@ const FormRegisterProcedure = ({
             />
           </div>
         )}
-        {(receiver || type === 'comunication') && (
+        {(receiver || type === 'comunication') && showAddUser && (
           <Button
             type="button"
             text={typeProcedure.addUsersText}
@@ -243,18 +277,28 @@ const FormRegisterProcedure = ({
         }}
         onEditorChange={handleInputChange}
       />
-
-      <div className="pdf-btn-area-view">
-        {downloadOptions.map(({ iconOne, iconTwo, id, handleClick, text }) => (
-          <ChipFileDownLoadProcedure
-            key={id}
-            text={text}
-            iconOne={iconOne}
-            iconTwo={iconTwo}
-            onClick={handleClick}
-          />
-        ))}
+      <div className="messageRegister-options">
+        {showReportBtn && (
+          <div className="messageRegister-report" onClick={showCardReport}>
+            <IconAction icon="clip-icon" position="none" />
+            <span>Adjuntar reporte</span>
+          </div>
+        )}
+        <div className="pdf-btn-area-view">
+          {downloadOptions.map(
+            ({ iconOne, iconTwo, id, handleClick, text }) => (
+              <ChipFileDownLoadProcedure
+                key={id}
+                text={text}
+                iconOne={iconOne}
+                iconTwo={iconTwo}
+                onClick={handleClick}
+              />
+            )
+          )}
+        </div>
       </div>
+
       <DocumentProcedure getFilesList={files => setFileUploadFiles(files)} />
       <Button type="submit" text="Enviar" styleButton={4} />
     </form>

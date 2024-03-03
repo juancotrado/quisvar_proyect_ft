@@ -6,6 +6,7 @@ import {
   MessageReply,
   MessageType,
   PdfDataProps,
+  ProcedureSubmit,
   quantityType,
 } from '../../../../../../types';
 import './messagePage.css';
@@ -26,7 +27,7 @@ import {
   ButtonHeader,
   LoaderForComponent,
 } from '../../../../../../components';
-import { useListUsers } from '../../../../../../hooks';
+import { useListUsers, useRole } from '../../../../../../hooks';
 import { PDFViewer } from '@react-pdf/renderer';
 import { TYPE_STATUS } from '../../models';
 import { ChipFileMessage } from '../../components';
@@ -42,10 +43,14 @@ import { PDFGenerator, generateReportPDF } from '../../pdfGenerate';
 import { JOB_DATA } from '../../../../../userCenter/pages/users/models';
 import { HEADER_OPTION, SPRING } from './models';
 import { Resizable } from 're-resizable';
+import { FormRegisterProcedure } from '../../../../components';
+import { isOpenConfirmAction$ } from '../../../../../../services/sharingSubject';
 
 export const MessagePage = () => {
   const navigate = useNavigate();
   const { paymessageId } = useParams();
+  const { hasAccess } = useRole('MOD', 'tramites', 'tramite-de-pago');
+
   const { users: listUsers } = useListUsers(
     'MOD',
     'tramites',
@@ -157,6 +162,33 @@ export const MessagePage = () => {
   const isUserInitMessage = userSessionId === message.userInit.userId;
   const handleOptionSelect = (option: 'continue' | 'finish') =>
     setProcedureOption(option);
+  const onSubmit = async (data: ProcedureSubmit) => {
+    const { fileUploadFiles, values } = data;
+    const body = { ...values, paymessageId: message.id };
+    const formData = new FormData();
+    fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
+    formData.append('data', JSON.stringify(body));
+    axiosInstance
+      .post(
+        `/paymail/reply?status=${isReply ? 'PROCESO' : 'RECHAZADO'}`,
+        formData
+      )
+      .then(handleSaveRegister);
+    // axiosInstance
+    //   .post(`/mail/${messageId}/reply?status=PENDIENTE`, formData)
+    //   .then(handleSaveRegister);
+  };
+  const handleArchiverMessage = () => {
+    axiosInstance
+      .patch(`/paymail/archived/${message.id}`)
+      .then(handleSaveRegister);
+  };
+  const handleArchiver = () => {
+    isOpenConfirmAction$.setSubject = {
+      isOpen: true,
+      function: () => handleArchiverMessage,
+    };
+  };
   return (
     <Resizable
       enable={{
@@ -230,22 +262,38 @@ export const MessagePage = () => {
                 (message.status === 'PROCESO' ||
                   message.status === 'RECHAZADO') &&
                 !isUserInitMessage && (
+                  // <>
+                  //   {isReply ? (
+                  //     // <CardRegisterMessageReply
+                  //     //   message={message}
+                  //     //   quantityFiles={countMessage}
+                  //     //   senderId={mainSender?.user.id}
+                  //     //   onSave={handleSaveRegister}
+                  //     // />
                   <>
-                    {isReply ? (
-                      <CardRegisterMessageReply
-                        message={message}
-                        quantityFiles={countMessage}
-                        senderId={mainSender?.user.id}
-                        onSave={handleSaveRegister}
-                      />
-                    ) : (
-                      <CardRegisterMessageForward
-                        message={message}
-                        quantityFiles={countMessage}
-                        onSave={handleSaveRegister}
+                    <FormRegisterProcedure
+                      type={'payProcedure'}
+                      submit={data => onSubmit(data)}
+                      showAddUser={false}
+                    />
+                    {hasAccess && !isReply && (
+                      <Button
+                        onClick={handleArchiver}
+                        // className={`inbox-forward-btn-archiver`}
+                        styleButton={2}
+                        type="button"
+                        text="Archivar Tramite"
                       />
                     )}
                   </>
+                  //   ) : (
+                  //     <CardRegisterMessageForward
+                  //       message={message}
+                  //       quantityFiles={countMessage}
+                  //       onSave={handleSaveRegister}
+                  //     />
+                  //   )}
+                  // </>
                 )}
               {message.status == 'FINALIZADO' && mainReceiverFinish && (
                 <CardRegisterVoucher

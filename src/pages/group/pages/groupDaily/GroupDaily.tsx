@@ -195,6 +195,7 @@ export const GroupDaily = () => {
   };
   const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
+    if (value === title) return;
     axiosInstance
       .patch(`/attendanceGroup/list/title/${idList}`, { title: value })
       .then(() => {

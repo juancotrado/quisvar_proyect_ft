@@ -83,7 +83,7 @@ export const GroupContent = () => {
             <div className="grc-list-members">
               <h1 className="grc-member-name">1</h1>
               <h1 className="grc-member-mod">
-                {members?.modId
+                {members?.modId && members?.modId
                   ? `${
                       members.moderator.profile.firstName +
                       ' ' +

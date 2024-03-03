@@ -51,7 +51,7 @@ const UserInfo = ({ user, index, onPrint, roles }: UserInfoProps) => {
       status: !isOn,
     });
   };
-  console.log(handleChangeStatus);
+  // console.log(handleChangeStatus);
   // const handleChangeRole = async ({
   //   target,
   // }: React.ChangeEvent<HTMLSelectElement>) => {
@@ -113,7 +113,7 @@ const UserInfo = ({ user, index, onPrint, roles }: UserInfoProps) => {
           <div
             className="switch-status"
             data-ison={isOn}
-            // onClick={handleChangeStatus}
+            onClick={handleChangeStatus}
           >
             <div className={`handle-statuts ${isOn && 'handle-on'}`}></div>
           </div>

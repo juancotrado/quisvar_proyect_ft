@@ -66,10 +66,6 @@ figure img {
   display: block;
 }
 
-ul {
-  list-style: none;
-}
-
 a {
   text-decoration: none;
 }
@@ -183,12 +179,7 @@ a.nostyle:visited {
   background-color: #fff;
   cursor: pointer;
 }
-table,
-th,
-td {
-  border: 1px solid black;
-  border-collapse: collapse;
-}
+
 .close-icon {
   cursor: pointer;
   position: absolute;

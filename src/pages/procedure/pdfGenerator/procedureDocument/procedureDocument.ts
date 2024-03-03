@@ -47,8 +47,8 @@ const procedureDocument = ({
               ${textOne}
             </span>
             <div class="procedureDocument-flex-column">
-              <span class="procedureDocument-font-normal">
-                <strong>:</strong> 
+              <span class="procedureDocument-right-text procedureDocument-font-normal">
+                <span class="procedureDocument-font-bold">:</span> 
                 ${textTwo}
               </span>
               ${
@@ -115,8 +115,7 @@ const procedureDocument = ({
     <div class="line"></div>
     <div class="procedureDocument-font-normal">${body}</div>      
     <div class="procedureDocument-sign">
-      <div class="procedureDocument-sign-line"></div>
-      <span>${from}</span>
+      <span class="procedureDocument-sign-line">${from}</span>
       <span>DNI: ${fromProfile.dni}</span>
     </div>
   </div>`;

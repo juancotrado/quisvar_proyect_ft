@@ -12,8 +12,8 @@ const UserDetail = ({ user, index, onClick }: UserDetailProps) => {
   return (
     <tr>
       <h1>asdsad</h1>
-      <td>{index + 1}</td>
-      <td className="user-info">
+      <td className="userDetail-td">{index + 1}</td>
+      <td className="userDetail-td user-info">
         <figure className="user-profile-figure">
           <img src={getIconDefault(user.profile.dni)} alt={user.email} />
         </figure>
@@ -24,17 +24,17 @@ const UserDetail = ({ user, index, onClick }: UserDetailProps) => {
           <span>{user.email}</span>
         </div>
       </td>
-      <td>{user.role?.name}</td>
+      <td className="userDetail-td">{user.role?.name}</td>
       <td
-        className={`list-status ${
+        className={`userDetail-td list-status ${
           user.status ? 'user-active' : 'user-inactive'
         }`}
       >
         {user.status ? 'Activo' : 'Inactivo'}
       </td>
-      <td>{user.profile?.dni}</td>
-      <td>{user.profile?.phone}</td>
-      <td>
+      <td className="userDetail-td">{user.profile?.dni}</td>
+      <td className="userDetail-td">{user.profile?.phone}</td>
+      <td className="userDetail-td">
         <div className="edit-btn">
           <Button
             icon="pencil"

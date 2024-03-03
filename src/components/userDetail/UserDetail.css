@@ -1,4 +1,4 @@
-td {
+.userDetail-td {
   padding: var(--radius-input);
   white-space: nowrap;
   overflow: hidden;

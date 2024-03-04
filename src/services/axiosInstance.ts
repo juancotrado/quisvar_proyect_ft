@@ -10,6 +10,21 @@ export const axiosInstance: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
 });
 
+let requestsCount = 0;
+
+const showLoader = () => {
+  if (requestsCount === 0) {
+    loader$.setSubject = true;
+  }
+  requestsCount++;
+};
+
+const hideLoader = () => {
+  requestsCount--;
+  if (requestsCount === 0) {
+    loader$.setSubject = false;
+  }
+};
 const setAuthorizationHeader = (config: AxiosRequestConfig) => {
   const token: string | null = localStorage.getItem('token');
   if (token) {
@@ -21,18 +36,18 @@ const setAuthorizationHeader = (config: AxiosRequestConfig) => {
 
 export const axiosInterceptor = () => {
   axiosInstance.interceptors.request.use(req => {
-    loader$.setSubject = true;
+    showLoader();
     setAuthorizationHeader(req);
     return req;
   });
   axiosInstance.interceptors.response.use(
     res => {
-      loader$.setSubject = false;
+      hideLoader();
       return res;
     },
     err => {
       const { response } = err;
-      loader$.setSubject = false;
+      hideLoader();
       if (!response) {
         SnackbarUtilities.error(err.message);
         return Promise.reject(err);

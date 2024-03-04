@@ -20,7 +20,7 @@ interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   errorPosX?: number;
   errorPosY?: number;
   isRelative?: boolean;
-  handleSearch?: () => void;
+  handleSearch?: (() => void) | boolean;
   styleInput?: number;
 }
 
@@ -86,7 +86,7 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
               className="input-icon"
             />
           )}
-          {handleSearch && (
+          {handleSearch && typeof handleSearch === 'function' && (
             <img
               onClick={handleSearch}
               src={'/svg/ic_baseline-search.svg'}

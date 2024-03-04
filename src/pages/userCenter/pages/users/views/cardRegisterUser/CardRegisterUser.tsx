@@ -69,9 +69,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
         setRoles(roles);
         setIsOpen(isOpen);
         if (user?.id) {
-          console.log(user);
           const { profile, id, email, address, ruc, roleId } = user;
-          console.log(user);
           const { department, province, district } = profile;
           setJurisdictionSelectData(department, province);
           reset({
@@ -182,7 +180,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
                 label="DNI"
                 errors={errors}
                 type="number"
-                handleSearch={searchUserForDNI}
+                handleSearch={!watch('id') ? searchUserForDNI : false}
               />
               <Input
                 {...register('firstName', { required: true })}

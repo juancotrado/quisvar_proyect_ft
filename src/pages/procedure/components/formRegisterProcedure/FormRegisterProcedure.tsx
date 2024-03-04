@@ -105,21 +105,21 @@ const FormRegisterProcedure = ({
 
   const getHtmlString = (size: 'a4' | 'a5') => {
     const idUserReceiver = listCopy.map(user => user.id);
-    const { description, header, type } = watch();
+    const { description, header, type: typeTitle } = watch();
     const usersReceiver = handleReceiverUser([
       +(receiver?.id || 0),
       ...idUserReceiver,
     ]);
     const [toProfile, ...ccProfiles] = usersReceiver;
     const htmlString = procedureDocument({
-      title: handleTitle(type),
+      title: handleTitle(typeTitle),
       subject: header,
       body: description ?? '',
       toProfile,
       ccProfiles,
       fromProfile: profile,
       size,
-      type: 'comunication',
+      type,
     });
     return htmlString;
   };

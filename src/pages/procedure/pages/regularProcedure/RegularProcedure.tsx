@@ -1,14 +1,18 @@
 import './regularProcedure.css';
-import { Button, HeaderOptionBtn } from '../../../../components';
+import { Button, HeaderOptionBtn, IconAction } from '../../../../components';
 import { useMessage, useSelectReceiver } from '../../hooks';
 import { CardRegisterProcedureGeneral } from '../../views';
 import { CardMessageHeader } from '../../components';
 import { CardMessage } from '../paymentProcessing/components';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
 import { useEffect } from 'react';
+import { useRole } from '../../../../hooks';
 
 const RegularProcedure = () => {
   const navigate = useNavigate();
+  const { hasAccess } = useRole('MOD', 'tramites', 'tramite-regular');
+  const [params] = useSearchParams();
+
   const { optionsMailHeader, typeMail } = useSelectReceiver();
   const {
     handleNewMessage,
@@ -20,7 +24,7 @@ const RegularProcedure = () => {
 
   useEffect(() => {
     getMessages();
-  }, [typeMail]);
+  }, [typeMail, params]);
 
   const handleViewMessage = (id: number) => {
     navigate(`${id}`);
@@ -29,6 +33,12 @@ const RegularProcedure = () => {
     <>
       <div className="procedure-flow-main">
         <div className="procedure-flow-header">
+          <IconAction
+            icon="refresh"
+            onClick={getMessages}
+            right={0.3}
+            top={3.3}
+          />
           <div className="procedure-flow-option">
             {optionsMailHeader.map(
               ({ funcion, id, iconOff, iconOn, text, isActive }) => (
@@ -44,6 +54,7 @@ const RegularProcedure = () => {
               )
             )}
           </div>
+
           <Button
             onClick={handleNewMessage}
             icon="plus-dark"
@@ -52,7 +63,7 @@ const RegularProcedure = () => {
           />
         </div>
         <div className="mail-grid-container">
-          <CardMessageHeader typeMail={typeMail} />
+          <CardMessageHeader option="regularProcedure" typeMail={typeMail} />
           {listMessage?.map(({ message, messageId, type }) => (
             <CardMessage
               isActive={false}
@@ -61,7 +72,8 @@ const RegularProcedure = () => {
               onArchiver={handleSaveMessage}
               onClick={() => handleViewMessage(messageId)}
               message={message}
-              option="tramite-regular"
+              option="regularProcedure"
+              hasAccess={hasAccess}
             />
           ))}
         </div>

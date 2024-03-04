@@ -2,48 +2,32 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
-import {
-  MessageReply,
-  MessageType,
-  PdfDataProps,
-  ProcedureSubmit,
-  quantityType,
-} from '../../../../../../types';
+import { MessageType, ProcedureSubmit } from '../../../../../../types';
 import './messagePage.css';
 import { RootState } from '../../../../../../store';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
-import {
-  convertToDynamicObject,
-  dataInitialPdf,
-  filterFilesByAttempt,
-  formatDate,
-  formatDateHourLongSpanish,
-  normalizeFileName,
-  transformDataPdf,
-} from '../../../../../../utils';
+import { formatDateHourLongSpanish } from '../../../../../../utils';
 import {
   Button,
   ButtonHeader,
+  IconAction,
   LoaderForComponent,
 } from '../../../../../../components';
-import { useListUsers, useRole } from '../../../../../../hooks';
-import { PDFViewer } from '@react-pdf/renderer';
+import { useRole } from '../../../../../../hooks';
 import { TYPE_STATUS } from '../../models';
-import { ChipFileMessage } from '../../components';
 import {
-  CardRegisterMessageForward,
-  CardRegisterMessageReply,
   CardRegisterMessageUpdate,
   CardRegisterVoucher,
   CardRegisterVoucherDenyOrAccept,
   GenerateOrderService,
 } from './views';
-import { PDFGenerator, generateReportPDF } from '../../pdfGenerate';
-import { JOB_DATA } from '../../../../../userCenter/pages/users/models';
 import { HEADER_OPTION, SPRING } from './models';
 import { Resizable } from 're-resizable';
-import { FormRegisterProcedure } from '../../../../components';
+import {
+  FormRegisterProcedure,
+  ProcedureHistory,
+} from '../../../../components';
 import { isOpenConfirmAction$ } from '../../../../../../services/sharingSubject';
 
 export const MessagePage = () => {
@@ -51,32 +35,19 @@ export const MessagePage = () => {
   const { paymessageId } = useParams();
   const { hasAccess } = useRole('MOD', 'tramites', 'tramite-de-pago');
 
-  const { users: listUsers } = useListUsers(
-    'MOD',
-    'tramites',
-    'tramite-de-pago'
-  );
   const { id: userSessionId } = useSelector(
     (state: RootState) => state.userSession
   );
   const [isReply, setIsReply] = useState(true);
-  const [data, setData] = useState<PdfDataProps>(dataInitialPdf);
   const [message, setMessage] = useState<MessageType | null>();
-  const [viewMoreFiles, setViewMoreFiles] = useState(false);
   const [viewHistory, setViewHistory] = useState(false);
   const [procedureOption, setProcedureOption] = useState<'finish' | 'continue'>(
     'continue'
   );
-  const [countMessage, setCountMessage] = useState<quantityType[] | null>([]);
   //----------------------------------------------------------------------------
-  const getFiles = (message && message.files) || [];
-  const getHistory = (message && message.history) || [];
-  const files = filterFilesByAttempt(getFiles);
   const getMessage = useCallback(
     (id: string) => {
       axiosInstance.get(`/paymail/${id}`).then(res => {
-        const data = transformDataPdf({ data: res.data });
-        setData(data);
         setMessage(res.data);
       });
     },
@@ -84,20 +55,13 @@ export const MessagePage = () => {
   );
   useEffect(() => {
     if (paymessageId && userSessionId) getMessage(paymessageId);
-    getQuantityServices();
     return () => setMessage(null);
   }, [getMessage, paymessageId, userSessionId]);
-  console.log(message);
-  const getQuantityServices = () =>
-    axiosInstance
-      .get('/paymail/imbox/quantity')
-      .then(res => setCountMessage(res.data));
 
   const handleClose = () => {
     navigate('/tramites/tramite-de-pago');
   };
   const toggleSwitch = () => setIsReply(!isReply);
-  const handleViewMoreFiles = () => setViewMoreFiles(!viewMoreFiles);
   const handleViewHistory = () => setViewHistory(!viewHistory);
 
   if (!message)
@@ -108,11 +72,7 @@ export const MessagePage = () => {
     );
 
   const { users } = message;
-  const sender = users.find(({ user }) => user.id !== userSessionId);
-  const mainSender = users.find(
-    ({ user, type, role }) =>
-      user.id === userSessionId && role === 'MAIN' && type == 'RECEIVER'
-  );
+
   const mainReceiver = users.find(
     ({ user, status, role, type }) =>
       user.id === userSessionId &&
@@ -125,37 +85,7 @@ export const MessagePage = () => {
       user.id === userSessionId && role === 'MAIN' && type == 'RECEIVER'
   );
   // console.log({ mainReceiverFinish });
-  const trandformData = (data: MessageReply) => {
-    const sender = data.user;
-    const header = data.header;
-    const description = data.description;
-    const title = data.title;
-    const to = sender.profile.firstName + ' ' + sender.profile.lastName;
-    const toUser = listUsers.find(user => user.id === sender?.id);
-    const from = message.users.find(user => user.type === 'SENDER');
-    const filterJob = (value?: string, job?: string) => {
-      if (value !== 'Titulado') return value;
-      return JOB_DATA.filter(item => item.value === job)[0].abrv;
-    };
-    return {
-      from: from?.user.profile.firstName + ' ' + from?.user.profile.lastName,
-      header,
-      body: convertToDynamicObject(description ?? ''),
-      title,
-      to,
-      date: formatDate(new Date(data.createdAt), {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour12: true,
-      }),
-      toDegree: filterJob(toUser?.degree, toUser?.job),
-      toPosition: toUser?.position,
-      dni: from?.user.profile.dni,
-      fromDegree: filterJob(from?.user.profile.degree, from?.user.profile.job),
-      fromPosition: from?.user.profile.description,
-    };
-  };
+
   const handleSaveRegister = () => {
     navigate('/tramites/tramite-de-pago?refresh=true');
   };
@@ -174,9 +104,6 @@ export const MessagePage = () => {
         formData
       )
       .then(handleSaveRegister);
-    // axiosInstance
-    //   .post(`/mail/${messageId}/reply?status=PENDIENTE`, formData)
-    //   .then(handleSaveRegister);
   };
   const handleArchiverMessage = () => {
     axiosInstance
@@ -197,7 +124,7 @@ export const MessagePage = () => {
         bottom: false,
         left: true,
       }}
-      maxWidth={'76%'}
+      maxWidth={'73%'}
       minWidth={'30%'}
       className={`message-page-container `}
     >
@@ -262,14 +189,6 @@ export const MessagePage = () => {
                 (message.status === 'PROCESO' ||
                   message.status === 'RECHAZADO') &&
                 !isUserInitMessage && (
-                  // <>
-                  //   {isReply ? (
-                  //     // <CardRegisterMessageReply
-                  //     //   message={message}
-                  //     //   quantityFiles={countMessage}
-                  //     //   senderId={mainSender?.user.id}
-                  //     //   onSave={handleSaveRegister}
-                  //     // />
                   <>
                     <FormRegisterProcedure
                       type={'payProcedure'}
@@ -279,21 +198,12 @@ export const MessagePage = () => {
                     {hasAccess && !isReply && (
                       <Button
                         onClick={handleArchiver}
-                        // className={`inbox-forward-btn-archiver`}
                         styleButton={2}
                         type="button"
                         text="Archivar Tramite"
                       />
                     )}
                   </>
-                  //   ) : (
-                  //     <CardRegisterMessageForward
-                  //       message={message}
-                  //       quantityFiles={countMessage}
-                  //       onSave={handleSaveRegister}
-                  //     />
-                  //   )}
-                  // </>
                 )}
               {message.status == 'FINALIZADO' && mainReceiverFinish && (
                 <CardRegisterVoucher
@@ -323,33 +233,20 @@ export const MessagePage = () => {
           )}
         </div>
       )}
-      <div className="message-page-contain  message-page-contain--left">
-        <div className="message-header-content">
-          <div className="message-header-content-options ">
-            <Button
-              icon="close"
-              onClick={handleClose}
-              className="message-icon-close"
-            />
-          </div>
-          <div className="message-sender-info-details">
+
+      <div className="regularProcedureInfo  message-page-contain--left">
+        <div className="regularProcedureInfo-header-content ">
+          <IconAction icon="close" onClick={handleClose} />
+          <div className="regularProcedureInfo-sender-info-details">
             <div className="message-sender-info">
-              {sender?.type === 'SENDER' && (
-                <span className="message-sender-name">Enviado por:</span>
-              )}
-              <span className="message-sender-icon">
-                <img src="/svg/user-sender.svg" alt="icon-profile" />
+              <IconAction icon="user-sender" position="none" />
+              <span className="message-sender-name">
+                Tramite de :{' '}
+                <b>
+                  {message.userInit.user.profile.firstName}{' '}
+                  {message.userInit.user.profile.lastName}
+                </b>{' '}
               </span>
-              {sender && sender.type === 'SENDER' ? (
-                <span className="message-sender-name">
-                  <b>
-                    {sender.user.profile.lastName}{' '}
-                    {sender.user.profile.firstName}
-                  </b>
-                </span>
-              ) : (
-                <span className="message-sender-name">Enviado Por ti</span>
-              )}
               <span className="message-date-send">
                 {formatDateHourLongSpanish(message.createdAt)}
               </span>
@@ -361,121 +258,32 @@ export const MessagePage = () => {
             </span>
           </div>
         </div>
-        <div className="message-details-info">
-          <h4 className="message-title">{message.title}</h4>
-          <span className="message-subtitle">Asunto: {message.header}</span>
-          <div className="message-pdf-area">
-            <p className="message-sender-info">
-              <span className="message-sender-icon">
-                <img src="/svg/paper-clip.svg" alt="icon-profile" />
-              </span>
-              <span className="message-files-title">Archivos adjuntos:</span>
-            </p>
-            <PDFGenerator data={data} isView />
-          </div>
-          <PDFViewer width="100%" height="400">
-            {generateReportPDF({ data }, { size: 'A4' })}
-          </PDFViewer>
-
-          {files.length > 0 && (
-            <div className="message-container-files-grid">
-              <div style={{ display: 'flex', gap: '1rem' }}>
-                {files[0].files.map(({ id, name, path }) => (
-                  <ChipFileMessage
-                    className="pointer message-files-list"
-                    key={id}
-                    text={normalizeFileName(name)}
-                    link={path + '/' + name}
-                  />
-                ))}
-              </div>
-              <div className="message-sender-info">
-                <span className="message-sender-name">
-                  Enviado por{' '}
-                  <b>
-                    {message.userInit.user.profile.lastName}{' '}
-                    {message.userInit.user.profile.firstName}
-                  </b>
-                </span>
-                <span className="message-date-send">
-                  {formatDateHourLongSpanish(new Date(+files[0].id))}
-                </span>
-              </div>
+        <div className="regularProcedureInfo-main">
+          <ProcedureHistory
+            messageHistory={message}
+            userMessage={message.userInit.user.profile}
+          />
+          {message?.history.length > 0 && (
+            <div className="regularProcedureInfo-btn-expand">
+              <Button
+                className={`message-view-more-files-${viewHistory}`}
+                text={`${viewHistory ? 'Ocultar' : 'Ver'} documentos recibidos`}
+                icon="down"
+                onClick={handleViewHistory}
+              />
             </div>
-          )}
-          {files.length > 1 && (
-            <Button
-              className={`message-view-more-files-${viewMoreFiles}`}
-              text={`${viewMoreFiles ? 'Ocultar' : 'Ver'} documentos previos`}
-              icon="down"
-              onClick={handleViewMoreFiles}
-            />
-          )}
-          <div className="message-container-files-grid">
-            {viewMoreFiles &&
-              files.slice(1, files.length).map(({ id, files }) => (
-                <div className="message-container-file-information" key={id}>
-                  <span>{formatDateHourLongSpanish(new Date(+id))}</span>
-                  <div className="message-container-files-grid">
-                    {files.map(({ id, name, path }) => (
-                      <ChipFileMessage
-                        className="pointer message-files-list"
-                        key={id}
-                        text={normalizeFileName(name)}
-                        link={path + '/' + name}
-                      />
-                    ))}
-                  </div>
-                </div>
-              ))}
-          </div>
-          {getHistory.length > 0 && (
-            <Button
-              className={`message-view-more-files-${viewHistory}`}
-              text={`${viewHistory ? 'Ocultar' : 'Ver'} documentos recibidos`}
-              icon="down"
-              onClick={handleViewHistory}
-            />
           )}
           <div className="message-container-files-grid">
             {viewHistory &&
-              getHistory.map(history => (
-                <div
-                  className="message-container-file-information"
-                  key={history.id}
-                >
-                  <div className="message-pdf-area">
-                    <span className="message-sender-name">
-                      Enviado por {` `}
-                      <b>
-                        {history.user.profile.lastName}{' '}
-                        {history.user.profile.firstName}
-                      </b>
-                    </span>
-                    <PDFGenerator data={trandformData(history)} isView />
-                  </div>
-                  <PDFViewer width="100%" height="400">
-                    {generateReportPDF(
-                      { data: trandformData(history) },
-                      { size: 'A4' }
-                    )}
-                  </PDFViewer>
-                  <span>
-                    {formatDateHourLongSpanish(new Date(history.createdAt))}
-                  </span>
-                  <div className="message-container-files-grid">
-                    {history.files &&
-                      history.files.map(({ id, name, path }) => (
-                        <ChipFileMessage
-                          className="pointer message-files-list"
-                          key={id}
-                          text={normalizeFileName(name)}
-                          link={path + '/' + name}
-                        />
-                      ))}
-                  </div>
-                </div>
-              ))}
+              [...message?.history]
+                .reverse()
+                .map(history => (
+                  <ProcedureHistory
+                    messageHistory={history}
+                    key={history.id}
+                    userMessage={history.user.profile}
+                  />
+                ))}
           </div>
         </div>
       </div>

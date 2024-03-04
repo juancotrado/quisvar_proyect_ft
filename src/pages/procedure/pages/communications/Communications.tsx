@@ -1,16 +1,23 @@
-import { Button, HeaderOptionBtn } from '../../../../components';
+import { Button, HeaderOptionBtn, IconAction } from '../../../../components';
 import './communications.css';
 import { useMessage, useSelectReceiver } from '../../hooks';
 import { CardRegisterProcedureGeneral } from '../../views';
 import { CardMessage } from '../paymentProcessing/components';
 import { CardMessageHeader } from '../../components';
 import { Outlet, useNavigate } from 'react-router-dom';
+import { useRole } from '../../../../hooks';
 
 const Communications = () => {
   const navigate = useNavigate();
-  const { handleNewMessage, handleSaveMessage, isNewMessage, listMessage } =
-    useMessage('/mail?category=GLOBAL');
+  const {
+    handleNewMessage,
+    handleSaveMessage,
+    isNewMessage,
+    listMessage,
+    getMessages,
+  } = useMessage('/mail?category=GLOBAL');
   const { optionsMailHeader } = useSelectReceiver(['RECIBIDOS']);
+  const { hasAccess } = useRole('MOD', 'tramites', 'comunicado');
 
   const handleViewMessage = (id: number) => {
     navigate(`${id}`);
@@ -19,6 +26,12 @@ const Communications = () => {
     <>
       <div className="procedure-flow-main">
         <div className="procedure-flow-header">
+          <IconAction
+            icon="refresh"
+            onClick={getMessages}
+            right={0.9}
+            top={3.2}
+          />
           <div className="procedure-flow-option">
             {optionsMailHeader.map(
               ({ funcion, id, iconOff, iconOn, text, isActive }) => (
@@ -42,7 +55,7 @@ const Communications = () => {
           />
         </div>
         <div className="mail-grid-container">
-          <CardMessageHeader typeMail={'RECEIVER'} />
+          <CardMessageHeader typeMail={'RECEIVER'} option="comunication" />
 
           {listMessage?.map(({ message, messageId }) => (
             <CardMessage
@@ -52,7 +65,8 @@ const Communications = () => {
               onArchiver={handleSaveMessage}
               onClick={() => handleViewMessage(messageId)}
               message={message}
-              option="comunicado"
+              option="comunication"
+              hasAccess={hasAccess}
             />
           ))}
         </div>

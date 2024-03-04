@@ -31,8 +31,8 @@ const CardMessage = ({
   const handleArchiverAction = () => {
     axiosInstance.patch(`/paymail/archived/${message.id}`).then(onArchiver);
   };
-  const firstNameInitial = message?.initialSender?.user?.profile?.firstName;
-  const lastNameInitial = message?.initialSender?.user?.profile?.lastName;
+  const firstNameInitial = message?.userInit?.user?.profile?.firstName;
+  const lastNameInitial = message?.userInit?.user?.profile?.lastName;
   return (
     <div
       className={`cardMessageRow-container ${

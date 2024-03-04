@@ -15,3 +15,8 @@ export interface ToData {
   degree: Degree;
   position: string;
 }
+
+export type TypeProcedure =
+  | 'comunication'
+  | 'regularProcedure'
+  | 'payProcedure';

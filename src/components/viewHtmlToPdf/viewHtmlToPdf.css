@@ -11,20 +11,23 @@
   align-items: center;
   z-index: 4;
 }
-.viewPdf-download {
+.viewPdf-download-link {
   cursor: pointer;
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-decoration: underline;
   position: absolute;
-  width: 2rem;
-  height: 2rem;
-  border-radius: 50%;
+  border-radius: 0.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  top: 0.9rem;
-  right: 5.6rem;
+  bottom: 0.9rem;
+  padding: 0.2rem 0.5rem;
   transition: background-color 100ms ease;
+  color: var(--color-secondary);
 }
 
-.viewPdf-download:hover {
-  background-color: #fffdfd21;
+.viewPdf-download-link:hover {
+  background-color: rgb(0, 0, 0);
+  color: white;
 }

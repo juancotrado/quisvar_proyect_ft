@@ -42,14 +42,8 @@ const ViewPdf = () => {
           onClick={handleClose}
           size={0.8}
         />
-
-        <div className="viewPdf-download">
-          <IconAction
-            icon="download-white"
-            onClick={handleDownloadPdf}
-            size={1.5}
-            position="none"
-          />
+        <div className="viewPdf-download-link" onClick={handleDownloadPdf}>
+          Descargar documento
         </div>
         {pdfComponent && (
           <PDFViewer width="100%" height="100%">

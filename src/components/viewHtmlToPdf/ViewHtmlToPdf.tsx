@@ -42,13 +42,8 @@ const ViewHtmlToPdf = () => {
           size={0.8}
         />
 
-        <div className="viewPdf-download">
-          <IconAction
-            icon="download-white"
-            onClick={handleDownloadPdf}
-            size={1.5}
-            position="none"
-          />
+        <div className="viewPdf-download-link" onClick={handleDownloadPdf}>
+          Descargar documento
         </div>
         {pdfUrl && (
           <embed
@@ -56,7 +51,6 @@ const ViewHtmlToPdf = () => {
             type="application/pdf"
             width="100%"
             height="100%"
-            // download="nombre_que_quieras.pdf"
           />
         )}
       </div>

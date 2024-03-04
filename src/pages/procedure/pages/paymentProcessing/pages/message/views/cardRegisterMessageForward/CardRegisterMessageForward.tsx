@@ -3,10 +3,8 @@ import { axiosInstance } from '../../../../../../../../services/axiosInstance';
 import {
   Input,
   Select,
-  Portal,
   DropDownSimple,
   Button,
-  CloseIcon,
 } from '../../../../../../../../components';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
@@ -29,12 +27,11 @@ import {
 } from '../../../../../../../../utils';
 import './cardRegisterMessageForward.css';
 import { useListUsers, useRole } from '../../../../../../../../hooks';
-import { motion } from 'framer-motion';
-import { dropIn } from '../../../../../../../../animations';
 import { PDFGenerator } from '../../../../pdfGenerate';
 import { JOB_DATA } from '../../../../../../../userCenter/pages/users/models';
 import { MessageSendType, YEAR } from '../../models';
 import DocumentProcedure from '../../../../../../components/documentProcedure/DocumentProcedure';
+import { isOpenConfirmAction$ } from '../../../../../../../../services/sharingSubject';
 
 interface CardRegisterMessageForwardProps {
   message: MessageType;
@@ -49,7 +46,6 @@ const CardRegisterMessageForward = ({
   const { userSession } = useSelector((state: RootState) => state);
   const { users } = useListUsers('MOD', 'tramites', 'tramite-de-pago');
   const { hasAccess } = useRole('MOD', 'tramites', 'tramite-de-pago');
-  const [isAlertOpen, setIsAlertOpen] = useState(false);
   const { lastName, firstName } = userSession.profile;
   const {
     handleSubmit,
@@ -137,6 +133,12 @@ const CardRegisterMessageForward = ({
     });
   };
 
+  const handleArchiver = () => {
+    isOpenConfirmAction$.setSubject = {
+      isOpen: true,
+      function: () => handleArchiverMessage,
+    };
+  };
   return (
     <form className="messagePage-send-mail" onSubmit={handleSubmit(onSubmit)}>
       {watch('type') && (
@@ -209,49 +211,13 @@ const CardRegisterMessageForward = ({
         <Button className={`inbox-forward-btn-submit`} text="No Procede" />
         {hasAccess && (
           <Button
-            onClick={() => setIsAlertOpen(true)}
+            onClick={handleArchiver}
             className={`inbox-forward-btn-archiver`}
             type="button"
             text="Archivar Tramite"
           />
         )}
       </div>
-      {isAlertOpen && (
-        <Portal wrapperId="modal">
-          <div
-            className="alert-modal-main"
-            role="dialog"
-            onClick={() => setIsAlertOpen(false)}
-          >
-            <motion.div
-              className="alert-modal-children"
-              variants={dropIn}
-              onClick={e => e.stopPropagation()}
-              initial="hidden"
-              animate="visible"
-              exit="leave"
-            >
-              <CloseIcon onClick={() => setIsAlertOpen(false)} />
-              <>
-                <img src="/svg/folder-icon.svg" className="alert-modal-trash" />
-                <h3>¿Estas seguro que desea archivar este trámite?</h3>
-                <div className="container-btn">
-                  <Button
-                    text="Cancelar"
-                    onClick={() => setIsAlertOpen(false)}
-                    className="modal-btn-cancel"
-                  />
-                  <Button
-                    text="Confirmar"
-                    onClick={handleArchiverMessage}
-                    className="modal-btn-confirm"
-                  />
-                </div>
-              </>
-            </motion.div>
-          </div>
-        </Portal>
-      )}
     </form>
   );
 };

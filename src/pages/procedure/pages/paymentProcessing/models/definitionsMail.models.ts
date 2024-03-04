@@ -21,6 +21,11 @@ export const TYPE_PROCEDURE = {
   },
   regularProcedure: {
     category: 'DIRECT',
+    title: 'Nuevo tramite Regular',
+    addUsersText: '+Cc',
+  },
+  payProcedure: {
+    category: 'NORMAL',
     title: 'Nuevo tramite',
     addUsersText: '+Cc',
   },

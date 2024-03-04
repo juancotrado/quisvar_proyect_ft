@@ -96,20 +96,21 @@
 .messageRegister-options {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
 }
 .messageRegister-figure {
   width: 1.5rem;
 }
 
 .messageRegister-report {
+  cursor: pointer;
   display: flex;
   gap: 0.5rem;
-  align-items: center;
   color: #000;
   font-size: 0.85rem;
   font-style: normal;
   font-weight: 400;
+  align-items: center;
   line-height: 1.5rem;
 }
 .imbox-receiver-chip {

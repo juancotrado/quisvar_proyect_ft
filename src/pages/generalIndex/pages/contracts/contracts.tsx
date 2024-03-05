@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { isOpenCardRegisteContract$ } from '../../../../services/sharingSubject';
 import './contracts.css';
 import { axiosInstance } from '../../../../services/axiosInstance';
@@ -6,9 +6,22 @@ import { Contract } from '../../../../types';
 import { Outlet, useSearchParams } from 'react-router-dom';
 import { SidebarContractCard } from './components';
 import { CardRegisterContract } from './views';
+import { Select } from '../../../../components';
+import {
+  CONTRACT_TYPE,
+  INIT_VALUES_FILTER_CONTRACT,
+  STATUS_CONTRACT,
+} from './models';
+import { FilterContract } from './models/type.contracts';
+import { YEAR_DATA } from '../../../specialities/models';
+import { getStatusContract } from './utils';
 
+let initialContract: Contract[] = [];
 export const Contracts = () => {
   const [contracts, setContracts] = useState<Contract[] | null>(null);
+  const [filterContract, setFilterContract] = useState<FilterContract>(
+    INIT_VALUES_FILTER_CONTRACT
+  );
   const [params] = useSearchParams();
 
   const addContract = () => {
@@ -17,22 +30,78 @@ export const Contracts = () => {
 
   useEffect(() => {
     getContracts();
-  }, [params]);
+  }, [params, filterContract.date, filterContract.type]);
 
   const getContracts = () => {
     const typeCompany = params.get('typeCompany');
     const id = params.get('idCompany');
+    const { date, type } = filterContract;
     axiosInstance
-      .get(`/contract/?${id ? `${typeCompany}=${id}` : ''}`)
+      .get(
+        `/contract/?${id ? `${typeCompany}=${id}` : ''}${
+          date ? `&date=${date}` : ''
+        }${type ? `&type=${type}` : ''}`
+      )
       .then(res => {
+        initialContract = res.data;
         setContracts(res.data);
       });
+  };
+
+  const handleFilterValues = ({ target }: ChangeEvent<HTMLSelectElement>) => {
+    const { name, value } = target;
+    setFilterContract({ ...filterContract, status: '', [name]: value });
+  };
+  const handleFilterStatus = ({ target }: ChangeEvent<HTMLSelectElement>) => {
+    const { value } = target;
+    if (!value) return setContracts(initialContract);
+    if (!contracts) return;
+    const filterContracts = initialContract.filter(contract => {
+      const colorStatus = getStatusContract(
+        contract.createdAt,
+        contract.phases
+      );
+      return colorStatus === value;
+    });
+    setFilterContract({ ...filterContract, status: value });
+
+    setContracts(filterContracts);
   };
 
   return (
     <div className="contracts">
       <div className="contracts-sidebar">
         <h2 className="contracts-sidebar-tilte">14.CONTRATOS EN ACTIVIDAD</h2>
+        <div className="contract-filters-contain">
+          <Select
+            value={filterContract.status}
+            name="status"
+            data={STATUS_CONTRACT}
+            itemKey="key"
+            textField="name"
+            placeholder="Estado"
+            className="contract-filter-select"
+            onChange={handleFilterStatus}
+          />
+          <Select
+            name="date"
+            data={YEAR_DATA}
+            itemKey="year"
+            textField="year"
+            placeholder="Año"
+            className="contract-filter-select"
+            onChange={handleFilterValues}
+          />
+          <Select
+            name="type"
+            data={CONTRACT_TYPE}
+            itemKey="key"
+            textField="name"
+            placeholder="Tipo"
+            className="contract-filter-select"
+            onChange={handleFilterValues}
+          />
+        </div>
         <div className="contracts-sidebar-main">
           {contracts?.map(agreement => (
             <SidebarContractCard

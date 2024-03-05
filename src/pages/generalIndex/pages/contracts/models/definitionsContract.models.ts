@@ -1,4 +1,5 @@
 import { ContractIndexData } from '../../../../../types/types';
+import { FilterContract } from './type.contracts';
 
 export const CONTRACT_INDEX_DATA: ContractIndexData[] = [
   {
@@ -234,3 +235,22 @@ export const DIFFICULTY_LEVEL = [
   { key: 2, name: 'Level 2' },
   { key: 3, name: 'Level 3' },
 ];
+export const STATUS_CONTRACT = [
+  { key: 'red', name: 'No entregado - plazo vencido' },
+  { key: 'grey', name: 'Entregado - archivado' },
+  { key: 'blue', name: 'No entregado - en curso' },
+  { key: 'yellow', name: 'No entregado - inminente' },
+  { key: 'green', name: 'Entegado anticipadamente' },
+  { key: 'black', name: 'Bloqueado' },
+];
+export const CONTRACT_TYPE = [
+  { key: 'CONTRATO', name: 'Contrato' },
+  { key: 'ORDEN_DE_SERVICIO', name: 'Orden de servicio' },
+  { key: 'CONTRATACION_DIRECTA', name: 'Contratación directa' },
+];
+
+export const INIT_VALUES_FILTER_CONTRACT: FilterContract = {
+  date: '',
+  type: '',
+  status: '',
+};

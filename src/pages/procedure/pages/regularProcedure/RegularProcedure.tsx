@@ -20,7 +20,10 @@ const RegularProcedure = () => {
     isNewMessage,
     listMessage,
     getMessages,
-  } = useMessage(`/mail?category=DIRECT${typeMail ? `&type=${typeMail}` : ''}`);
+  } = useMessage(
+    `/mail?category=DIRECT${typeMail ? `&type=${typeMail}` : ''}`,
+    false
+  );
 
   useEffect(() => {
     getMessages();

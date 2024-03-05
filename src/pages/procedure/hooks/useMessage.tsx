@@ -2,14 +2,16 @@ import { useEffect, useState } from 'react';
 import { MailTypeComunication } from '../../../types';
 import { axiosInstance } from '../../../services/axiosInstance';
 
-const useMessage = (url: string) => {
+const useMessage = (url: string, callGetMessage: boolean = true) => {
   const [isNewMessage, setIsNewMessage] = useState(false);
   const [listMessage, setListMessage] = useState<MailTypeComunication[] | null>(
     null
   );
 
   useEffect(() => {
-    getMessages();
+    if (callGetMessage) {
+      getMessages();
+    }
   }, []);
 
   const handleNewMessage = () => setIsNewMessage(!isNewMessage);

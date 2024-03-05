@@ -42,11 +42,7 @@ export const MailPage = () => {
   const [isNewMessage, setIsNewMessage] = useState(false);
   //-----------------------------------------------------------------------
 
-  useEffect(() => getMessages(), [typeMail, typeMsg, statusMsg]);
-
-  useEffect(() => {
-    getMessages();
-  }, [refresh]);
+  useEffect(() => getMessages(), [typeMail, typeMsg, statusMsg, refresh]);
 
   const handleNewMessage = () => {
     setIsNewMessage(true);

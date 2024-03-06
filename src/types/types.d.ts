@@ -330,6 +330,7 @@ export interface ContractForm {
   createdAt: string;
   indexContract: string;
   idCoorp: string;
+  amount: number;
 }
 
 interface StageForm {

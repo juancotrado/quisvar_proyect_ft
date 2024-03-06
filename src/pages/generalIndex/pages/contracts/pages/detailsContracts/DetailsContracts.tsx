@@ -8,6 +8,7 @@ import { AppDispatch, RootState } from '../../../../../../store';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { getContractThunks } from '../../../../../../store/slices/contract.slice';
 import { v4 as uuidv4 } from 'uuid';
+import moment from 'moment';
 
 import {
   ContractRowSchedule,
@@ -135,6 +136,10 @@ export const DetailsContracts = () => {
   const updateContractIndex = async () => {
     const covertPhases: PhaseData[] = dataPhases;
     const levelId2 = contractIndex.at(1)?.nextLevel;
+    const payArray = covertPhases
+      .map(phase => phase.payData)
+      .filter(phase => phase)
+      .flat();
     if (levelId2) {
       const phaseTransform = covertPhases.map((pha, i) => {
         const findPhase = levelId2[1].nextLevel?.find(
@@ -142,19 +147,34 @@ export const DetailsContracts = () => {
         );
         return {
           id: `2.2.${i + 1}`,
-          name: pha.name,
+          name: `Entregable ${i + 1}`,
           nivel: 3,
           hasFile: findPhase ? findPhase.hasFile : 'no',
           deliverLettersId: pha.id,
         };
       });
+      const payTransform = payArray.map((pay, i) => {
+        const findPay = levelId2[0].nextLevel?.find(
+          payNext => payNext.deliverLettersId === pay.id
+        );
+        return {
+          id: `2.1.${i + 1}`,
+          name: `Carta de pago ${i + 1}`,
+          nivel: 3,
+          hasFile: findPay ? findPay.hasFile : 'no',
+          deliverLettersId: pay.id,
+        };
+      });
+      // const payTransfomr=covertPhases.map(({}))
       levelId2[1].nextLevel = phaseTransform;
+      levelId2[0].nextLevel = payTransform;
       const indexContract = JSON.stringify(contractIndex);
       await axiosInstance.put(`/contract/${contract.id}/index`, {
         indexContract,
       });
     }
   };
+  console.log(dataPhases);
   return (
     <div className="detailsContracts">
       <div>
@@ -206,18 +226,22 @@ export const DetailsContracts = () => {
             {details ? (
               <div>
                 <ContractRowSchedule
-                  title={'Etapa'}
-                  firstValue={'Fecha Inicio'}
-                  secondValue={'Fecha Fin'}
+                  data={{
+                    1: { value: 'Etapa', fr: '1fr' },
+                    2: { value: 'Fecha Inicio', fr: '1fr' },
+                    3: { value: 'Fecha Fin', fr: '1fr' },
+                  }}
                   isHeader
                 />
                 {(JSON.parse(details) as Schedule[])?.map(
                   ({ title, finishDate, initDate }) => (
                     <ContractRowSchedule
                       key={title}
-                      firstValue={initDate}
-                      secondValue={finishDate}
-                      title={title}
+                      data={{
+                        1: { value: title, fr: '1fr' },
+                        2: { value: initDate, fr: '1fr' },
+                        3: { value: finishDate, fr: '1fr' },
+                      }}
                     />
                   )
                 )}
@@ -245,59 +269,65 @@ export const DetailsContracts = () => {
           (viewTableEjecution ? (
             <div>
               <ContractRowSchedule
-                title={'Etapa'}
-                firstValue={'Plazo de presentación'}
-                secondValue={'Activo'}
+                data={{
+                  1: { value: 'Entregable', fr: '1fr' },
+                  2: { value: 'Descripción', fr: '2fr' },
+                  3: { value: 'Plazo', fr: '1fr' },
+                  4: { value: 'Fecha limite', fr: '1fr' },
+                  5: { value: 'Carta de pago', fr: '1fr' },
+                }}
                 isHeader
               />
-              {dataPhases.map(({ days, name, isActive, id }) => (
+              {dataPhases.map(({ days, name, isActive, id, payData }, i) => (
                 <ContractRowSchedule
                   key={id}
-                  title={name}
-                  firstValue={`${days} dias `}
-                  secondValue={isActive ? '✅' : ''}
+                  data={{
+                    1: { value: String(i + 1), fr: '1fr' },
+                    2: { value: name, fr: '2fr' },
+                    3: { value: `${days} dias `, fr: '1fr' },
+                    4: {
+                      value: moment(contract.createdAt)
+                        .add(days, 'days')
+                        .format('DD-MM-YYYY'),
+                      fr: '1fr',
+                    },
+                    5: { value: isActive ? '✅' : '', fr: '1fr' },
+                  }}
+                  extraData={payData}
                 />
               ))}
               <div className="detailsContracts-row-container" />
             </div>
           ) : (
-            <div className="detailsContracts-phase-ejecution">
-              <div className="detailsContracts-phase-ejecution-img">
-                <figure className="detailsContracts-phase-ejecution-figure">
-                  <img
-                    src="/img/example-day-ejecution.png"
-                    alt="dias en ejecucion"
-                  />
-                </figure>
+            <div className="detailsContracts-phase-ejecution-data">
+              <div className="detailsContracts-phase-ejecution-row">
+                <span className="detailsContracts-text-title">Entregable</span>
+                <span className="detailsContracts-text-title">Descripcion</span>
+                <span className="detailsContracts-text-title">
+                  Plazo de presentación
+                </span>
+                <span className="detailsContracts-text-title">Activo</span>
               </div>
-              <div className="detailsContracts-phase-ejecution-data">
-                <div className="detailsContracts-phase-ejecution-row">
-                  <span className="detailsContracts-text-title">Etapa</span>
-                  <span className="detailsContracts-text-title">
-                    Plazo de presentación
-                  </span>
-                  <span className="detailsContracts-text-title">Activo</span>
-                </div>
-                {dataPhases.map(phaseData => (
+              <div className="detailsContracts-phases">
+                {dataPhases.map((phaseData, i) => (
                   <ContractRowPhase
                     key={phaseData.id}
                     addPhase={addPhase}
                     deletePhase={deletePhase}
                     phaseData={phaseData}
+                    index={i + 1}
+                    contractIndex={contractIndex}
                   />
                 ))}
-                <span
-                  onClick={addNewInput}
-                  className="detailsContracts-add-span"
-                >
-                  Añadir nuevo plazo
-                </span>
-                <Button
-                  className="detailsContracts-btn"
-                  text="Guardar"
-                  onClick={savePhases}
-                />
               </div>
+              <span onClick={addNewInput} className="detailsContracts-add-span">
+                Añadir nuevo plazo
+              </span>
+              <Button
+                className="detailsContracts-btn"
+                text="Guardar"
+                onClick={savePhases}
+              />
             </div>
           ))}
       </div>

@@ -68,6 +68,7 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
             companyId,
             consortiumId,
             type,
+            amount,
           } = contract;
           reset({
             id,
@@ -83,6 +84,7 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
             shortName,
             contractNumber,
             type,
+            amount,
             idCoorp: companyId
               ? 'companyId-' + companyId
               : 'consortiumId-' + consortiumId,
@@ -168,6 +170,16 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
               })}
               name="cui"
               placeholder="CUI"
+              errors={errors}
+            />
+            <Input
+              label="Monto:"
+              {...register('amount', {
+                validate: { validateWhiteSpace },
+                valueAsNumber: true,
+              })}
+              name="amount"
+              placeholder="Monto"
               errors={errors}
             />
           </div>

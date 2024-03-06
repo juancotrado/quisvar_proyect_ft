@@ -9,3 +9,12 @@
   font-weight: 700;
   font-size: 0.6rem;
 }
+.detailsContracts-row-extra {
+  width: 90%;
+  left: auto;
+}
+.contractRowSchedule {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}

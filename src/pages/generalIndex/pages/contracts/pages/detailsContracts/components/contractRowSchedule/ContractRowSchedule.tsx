@@ -13,6 +13,7 @@ interface ContractRowScheduleProps {
   extraData?: PayData[];
   hasBorder?: boolean;
   statusPhase?: () => string;
+  hasFileInPay?: (id: string) => boolean;
 }
 const ContractRowSchedule = ({
   data,
@@ -20,6 +21,7 @@ const ContractRowSchedule = ({
   extraData,
   hasBorder = true,
   statusPhase,
+  hasFileInPay,
 }: ContractRowScheduleProps) => {
   const frs = Object.values(data)
     .map(({ fr }) => fr)
@@ -44,21 +46,33 @@ const ContractRowSchedule = ({
           </span>
         ))}
       </div>
-      <div className="detailsContracts-row-extra">
-        {extraData?.map(({ amount, description, percentage, id }, i) => (
+      {extraData && extraData.length > 0 && (
+        <div className="detailsContracts-row-extra">
           <ContractRowSchedule
-            key={id}
             data={{
-              1: { value: `C.P. ${i + 1}`, fr: '1fr' },
-              2: { value: description, fr: '2fr' },
-              3: { value: `${percentage}% `, fr: '1fr' },
-              4: { value: String(amount), fr: '1fr' },
-              5: { value: true ? '✅' : '', fr: '1fr' },
+              1: { value: `Carta`, fr: '1fr' },
+              2: { value: 'Descripcion', fr: '2fr' },
+              3: { value: `Porcentaje`, fr: '1fr' },
+              4: { value: 'Precio', fr: '1fr' },
+              5: { value: 'Archivo', fr: '1fr' },
             }}
-            hasBorder={false}
+            isHeader
           />
-        ))}
-      </div>
+          {extraData?.map(({ amount, description, percentage, id }, i) => (
+            <ContractRowSchedule
+              key={id}
+              data={{
+                1: { value: `C.P. ${i + 1}`, fr: '1fr' },
+                2: { value: description, fr: '2fr' },
+                3: { value: `${percentage}% `, fr: '1fr' },
+                4: { value: String(amount), fr: '1fr' },
+                5: { value: hasFileInPay?.(id) ? '✅' : '🛑', fr: '1fr' },
+              }}
+              hasBorder={i === 0}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 };

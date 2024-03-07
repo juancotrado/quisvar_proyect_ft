@@ -120,6 +120,13 @@ export const DetailsContracts = () => {
     const newPhases = dataPhases.filter(phases => phases.id !== id);
     setDataPhases(newPhases);
   };
+  const hasFileInPay = (id: string) => {
+    const payLevel = contractIndex.at(1)?.nextLevel?.[0].nextLevel;
+
+    const findPayLevel = payLevel?.find(pay => pay.deliverLettersId === id);
+
+    return findPayLevel?.hasFile === 'yes';
+  };
   const statusPhase = (id: string) => {
     const phaseLevel = contractIndex.at(1)?.nextLevel?.[1].nextLevel;
 
@@ -209,7 +216,6 @@ export const DetailsContracts = () => {
       });
     }
   };
-  console.log(dataPhases);
   return (
     <div className="detailsContracts">
       <div>
@@ -329,6 +335,7 @@ export const DetailsContracts = () => {
                     5: { value: isActive ? '✅' : '', fr: '1fr' },
                   }}
                   statusPhase={() => statusPhase(id)}
+                  hasFileInPay={hasFileInPay}
                   extraData={payData}
                 />
               ))}

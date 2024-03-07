@@ -12,12 +12,14 @@ interface ContractRowScheduleProps {
   isHeader?: boolean;
   extraData?: PayData[];
   hasBorder?: boolean;
+  statusPhase?: () => string;
 }
 const ContractRowSchedule = ({
   data,
   isHeader = false,
   extraData,
   hasBorder = true,
+  statusPhase,
 }: ContractRowScheduleProps) => {
   const frs = Object.values(data)
     .map(({ fr }) => fr)
@@ -25,6 +27,7 @@ const ContractRowSchedule = ({
   const style: CSSProperties = {
     gridTemplateColumns: frs,
     borderTop: hasBorder ? ' 1px solid #dce4f1' : '',
+    color: statusPhase?.(),
   };
   return (
     <div className="contractRowSchedule">

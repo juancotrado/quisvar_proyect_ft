@@ -1,13 +1,31 @@
+import { ContractIndexData } from '../../../../../types';
 import { millisecondsToDays } from '../../../../../utils';
 import { PhaseData } from '../pages/detailsContracts/models';
 
-export const getStatusContract = (createdAt: string, phases: string) => {
+export const getStatusContract = (
+  createdAt: string,
+  phases: string,
+  contractIndex: ContractIndexData[]
+) => {
   const phasesParse: PhaseData[] = JSON.parse(phases);
-  const findPhase = phasesParse.find(phase => phase.isActive);
+  const phaseLevel = contractIndex.at(1)?.nextLevel?.[1].nextLevel;
+  const findActualIndexPhase = phaseLevel?.find(
+    phase => phase?.hasFile === 'no'
+  );
+  const findPhase = phasesParse.find(
+    daPhase => daPhase.id === findActualIndexPhase?.deliverLettersId
+  );
   if (!findPhase) return 'grey';
-  const dayPhase = findPhase?.days ?? 0;
+  return getStatusColor(createdAt, findPhase, new Date());
+};
+export const getStatusColor = (
+  createdAt: string,
+  phase: PhaseData,
+  uploadDate: Date
+) => {
+  const dayPhase = phase?.days ?? 0;
   const contractSigningDate = new Date(createdAt);
-  const actualDate = new Date();
+  const actualDate = new Date(uploadDate);
   contractSigningDate.setDate(
     contractSigningDate.getDate() + Number(dayPhase) + 1
   );
@@ -16,5 +34,5 @@ export const getStatusContract = (createdAt: string, phases: string) => {
   );
   if (Math.sign(daysDifference) === -1) return 'red';
   if (daysDifference - 14 < 0) return 'yellow';
-  return 'green';
+  return 'skyBlue';
 };

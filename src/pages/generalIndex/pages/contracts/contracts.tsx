@@ -59,7 +59,8 @@ export const Contracts = () => {
     const filterContracts = initialContract.filter(contract => {
       const colorStatus = getStatusContract(
         contract.createdAt,
-        contract.phases
+        contract.phases,
+        JSON.parse(contract.indexContract)
       );
       return colorStatus === value;
     });

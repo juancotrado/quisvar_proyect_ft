@@ -22,6 +22,7 @@ import {
   PhaseData,
 } from './models';
 import { useSearchParams } from 'react-router-dom';
+import { getStatusColor } from '../../utils';
 
 export const DetailsContracts = () => {
   const [textareaValue, setTextareaValue] = useState<string | null>(null);
@@ -48,8 +49,8 @@ export const DetailsContracts = () => {
   useEffect(() => {
     if (contract) {
       const { phases } = contract;
-      const covertPhases = JSON.parse(phases);
-      setDataPhases(covertPhases);
+      const convertPhases = JSON.parse(phases);
+      setDataPhases(convertPhases);
     }
   }, [contract]);
 
@@ -118,6 +119,40 @@ export const DetailsContracts = () => {
       return SnackbarUtilities.error('Asegurese de borrar el archivo antes.');
     const newPhases = dataPhases.filter(phases => phases.id !== id);
     setDataPhases(newPhases);
+  };
+  const statusPhase = (id: string) => {
+    const phaseLevel = contractIndex.at(1)?.nextLevel?.[1].nextLevel;
+
+    const dataPhasesWithStatus = phaseLevel?.map((phase, i) => {
+      const statusTime = getStatusColor(
+        contract.createdAt,
+        dataPhases[i],
+        phase.uploadDate ?? new Date()
+      );
+      let status = 'black';
+      if (phaseLevel[i - 1]?.hasFile === 'yes') {
+        status = statusTime;
+      }
+      if (phase.hasFile === 'yes') {
+        if (statusTime === 'skyBlue') {
+          status = 'green';
+        }
+        if (statusTime === 'yellow') {
+          status = 'green';
+        }
+        if (statusTime === 'red') {
+          status = 'gray';
+        }
+      }
+      return {
+        ...dataPhases[i],
+        status,
+      };
+    });
+    const findStatusPhase = dataPhasesWithStatus?.find(
+      dataPha => dataPha.id === id
+    );
+    return findStatusPhase?.status ?? 'pink';
   };
   const addNewInput = () => {
     const newPhase = [...dataPhases, { ...INIT_VALUES_PHASE, id: uuidv4() }];
@@ -293,6 +328,7 @@ export const DetailsContracts = () => {
                     },
                     5: { value: isActive ? '✅' : '', fr: '1fr' },
                   }}
+                  statusPhase={() => statusPhase(id)}
                   extraData={payData}
                 />
               ))}

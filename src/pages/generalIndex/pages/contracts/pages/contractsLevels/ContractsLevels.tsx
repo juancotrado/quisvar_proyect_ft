@@ -29,6 +29,7 @@ export const ContractsLevels = () => {
       id: '0',
       name: '',
       nivel: 0,
+      uploadDate: new Date(),
       nextLevel: contractIndex,
     };
   };
@@ -43,12 +44,14 @@ export const ContractsLevels = () => {
     if (arrayId.length === 2) {
       if (contract && nextLevel) {
         nextLevel.hasFile = value;
+        nextLevel.uploadDate = new Date();
       }
     }
     if (arrayId.length === 3) {
       const nextLevel2 = nextLevel?.nextLevel?.at(arrayId[2]);
       if (contract && nextLevel && nextLevel2) {
         nextLevel2.hasFile = value;
+        nextLevel2.uploadDate = new Date();
       }
     }
     const indexContract = JSON.stringify(contractIndex);

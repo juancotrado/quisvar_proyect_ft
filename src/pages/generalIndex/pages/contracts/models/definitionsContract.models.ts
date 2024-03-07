@@ -237,11 +237,11 @@ export const DIFFICULTY_LEVEL = [
 ];
 export const STATUS_CONTRACT = [
   { key: 'red', name: 'No entregado - plazo vencido' },
-  { key: 'grey', name: 'Entregado - archivado' },
-  { key: 'blue', name: 'No entregado - en curso' },
+  // { key: 'grey', name: 'Entregado - archivado' },
+  { key: 'skyBlue', name: 'No entregado - en curso' },
   { key: 'yellow', name: 'No entregado - inminente' },
-  { key: 'green', name: 'Entegado anticipadamente' },
-  { key: 'black', name: 'Bloqueado' },
+  // { key: 'green', name: 'Entegado anticipadamente' },
+  { key: 'grey', name: 'Bloqueado' },
 ];
 export const CONTRACT_TYPE = [
   { key: 'CONTRATO', name: 'Contrato' },

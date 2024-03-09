@@ -22,10 +22,26 @@
   align-items: center;
 }
 .contractRowPhase-text {
+  position: relative;
   color: #000;
   font-size: 0.8rem;
   font-style: normal;
   font-weight: 400;
+}
+.contractRowPhase-dropdown-check {
+  position: absolute;
+  /* opacity: 0; */
+  cursor: pointer;
+  height: 100%;
+}
+.detailsContracts-phase-ejecution-row:has(:checked)
+  + .contractRowPhase-dropdown-content {
+  grid-template-rows: 1fr;
+}
+.contractRowPhase-dropdown-content {
+  display: grid;
+  grid-template-rows: var(--rows, 0fr);
+  transition: 0.3s grid-template-rows;
 }
 .contractRowPhase-input-radio-contain {
   display: flex;

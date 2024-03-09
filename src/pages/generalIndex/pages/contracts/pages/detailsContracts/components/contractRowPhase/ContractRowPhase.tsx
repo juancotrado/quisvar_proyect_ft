@@ -67,7 +67,14 @@ const ContractRowPhase = ({
           className="contractRowPhase-close"
           onClick={handleDelete}
         />
-        <span className="contractRowPhase-text">{index}</span>
+        <span className="contractRowPhase-text">
+          <input
+            type="checkbox"
+            className="contractRowPhase-dropdown-check"
+            defaultChecked={false}
+          />
+          {index}
+        </span>
         <Input
           type="text"
           styleInput={2}
@@ -85,25 +92,18 @@ const ContractRowPhase = ({
           />
           <span className="contractRowPhase-text">dias</span>
         </div>
-        <div className="contractRowPhase-input-radio-contain">
-          <input
-            type="radio"
-            className="contractRowPhase-input-radio"
-            name="isActive"
-            defaultChecked={phaseData.isActive}
-            onBlur={handleBlur}
-          />
-        </div>
       </div>
-      {paysData.map((payData, i) => (
-        <ContractRowPay
-          key={payData.id}
-          addPay={addPay}
-          deletePay={deletePay}
-          payData={payData}
-          index={i + 1}
-        />
-      ))}
+      <div className="contractRowPhase-dropdown-content">
+        {paysData.map((payData, i) => (
+          <ContractRowPay
+            key={payData.id}
+            addPay={addPay}
+            deletePay={deletePay}
+            payData={payData}
+            index={i + 1}
+          />
+        ))}
+      </div>
       <span onClick={addNewInput} className="detailsContracts-add-span">
         Añadir nuevo pago
       </span>

@@ -349,7 +349,6 @@ export const DetailsContracts = () => {
                 <span className="detailsContracts-text-title">
                   Plazo de presentación
                 </span>
-                <span className="detailsContracts-text-title">Activo</span>
               </div>
               <div className="detailsContracts-phases">
                 {dataPhases.map((phaseData, i) => (

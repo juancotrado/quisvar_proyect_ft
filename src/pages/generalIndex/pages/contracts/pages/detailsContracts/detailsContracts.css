@@ -32,6 +32,7 @@
   color: #fff;
   padding: 0.25rem 1.2rem;
   font-weight: 500;
+  margin-right: 0.5rem;
 }
 .detailsContracts-btn-red {
   border-radius: 0.3125rem;
@@ -108,8 +109,9 @@
   width: 90%;
 }
 .detailsContracts-phase-ejecution-row {
+  width: 100%;
   display: grid;
-  grid-template-columns: 1fr 3fr 2fr 1fr;
+  grid-template-columns: 1fr 3fr 2fr;
   gap: 0.2rem;
 }
 .detailsContracts-add-span {

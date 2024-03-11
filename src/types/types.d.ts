@@ -525,6 +525,7 @@ export interface UserForm {
   addressRef: string;
   declaration: FileList | null;
   role: Role | null;
+  roleName: string;
 }
 
 export interface Level {

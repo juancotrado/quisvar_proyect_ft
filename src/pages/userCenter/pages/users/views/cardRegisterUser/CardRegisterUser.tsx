@@ -108,7 +108,6 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
   const onSubmit: SubmitHandler<UserForm> = async data => {
     if (errorPassword?.verifyPassword) return;
     const { cv, declaration, id, ...newData } = data;
-    // console.log(newData);
     if (id) {
       axiosInstance.put(`/profile/${id}`, data).then(successfulShipment);
     } else {
@@ -416,10 +415,13 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
             />
           </div>
         </form>
-        <CarRegisterSwornDeclaration
-          generalFiles={generalFiles}
-          userData={userData}
-        />
+        {roles && (
+          <CarRegisterSwornDeclaration
+            generalFiles={generalFiles}
+            userData={userData}
+            roles={roles}
+          />
+        )}
       </div>
     </Modal>
   );

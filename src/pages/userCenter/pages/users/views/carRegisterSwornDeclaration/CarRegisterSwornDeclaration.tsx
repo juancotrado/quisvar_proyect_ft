@@ -1,5 +1,5 @@
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import { GeneralFile, UserForm } from '../../../../../../types';
+import { GeneralFile, RoleForm, UserForm } from '../../../../../../types';
 import './carRegisterSwornDeclaration.css';
 import { SwornDeclarationPdf } from '../../pdfGenerator';
 import { deleteExtension } from '../../../../../../utils';
@@ -10,15 +10,24 @@ import { Button } from '../../../../../../components';
 interface CarRegisterSwornDeclarationProps {
   generalFiles: GeneralFile[] | null;
   userData: UserForm;
+  roles: RoleForm[];
 }
 const CarRegisterSwornDeclaration = ({
   generalFiles,
   userData,
+  roles,
 }: CarRegisterSwornDeclarationProps) => {
   const { register, watch } = useForm<SwornDeclaration>();
-
-  const swornDeclarationData = { ...watch(), ...userData };
-
+  const roleName = () => {
+    const selectRole = roles?.find(role => role.id === userData.roleId);
+    if (!selectRole) return '';
+    return selectRole.name;
+  };
+  const swornDeclarationData = {
+    ...watch(),
+    ...userData,
+    roleName: roleName(),
+  };
   return (
     <div className="card-register-sworn-declaration">
       <h2 className="card-register-sworn-declaration-title">
@@ -101,7 +110,7 @@ const CarRegisterSwornDeclaration = ({
       </div>
       <PDFDownloadLink
         document={<SwornDeclarationPdf data={swornDeclarationData} />}
-        fileName={`Declaracion-Jurada.pdf`}
+        fileName={`Declaracion-Jurada1.pdf`}
       >
         <Button icon="preview-pdf" text="Declaración jurada" styleButton={2} />
       </PDFDownloadLink>

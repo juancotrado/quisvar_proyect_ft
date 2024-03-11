@@ -146,4 +146,5 @@ export const INITIAL_VALUES_USER: UserForm = {
   userPc: '',
   role: null,
   gender: '',
+  roleName: '',
 };

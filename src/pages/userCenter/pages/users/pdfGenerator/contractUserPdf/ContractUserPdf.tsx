@@ -317,9 +317,8 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
           </Text>
           <Text style={styles.text}>
             Se dará un bono de bienvenida el cual consiste en lo siguiente: el
-            primer mes laborado se escogerá 03 tareas de más alta valorización,
-            a estas tareas seleccionadas se les duplicará el valor, esto solo
-            aplica al primer mes laborado
+            CONTRATISTA tendrá como bono (03) tres tareas asignadas por la
+            GERENCIA DE ESTUDIOS.
           </Text>
           <Text>&nbsp;</Text>
           <Text style={styles.subtitle}>

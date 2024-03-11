@@ -38,6 +38,7 @@ export const JOB_DATA = [
   { value: 'Sociología', abrv: 'LIC' },
   { value: 'Turismo', abrv: 'LIC' },
   { value: 'Trabajo Social', abrv: 'LIC' },
+  { value: 'Técnico en Topografía y Geodesia', abrv: 'TEC' },
 ];
 const professionalCost = {
   1: 2500,

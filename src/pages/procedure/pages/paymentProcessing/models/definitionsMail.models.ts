@@ -18,15 +18,18 @@ export const TYPE_PROCEDURE = {
     category: 'GLOBAL',
     title: 'Nuevo comunicado',
     addUsersText: '+ Destinatario',
+    accessTo: 'comunicado',
   },
   regularProcedure: {
     category: 'DIRECT',
     title: 'Nuevo tramite Regular',
+    accessTo: 'tramite-regular',
     addUsersText: '+Cc',
   },
   payProcedure: {
     category: 'NORMAL',
-    title: 'Nuevo tramite',
+    title: 'tramite-de-pago',
+    accessTo: '',
     addUsersText: '+Cc',
   },
 };

@@ -1,10 +1,12 @@
 .input-main-style-2 {
   width: 100%;
-  padding: 0.8rem 1rem;
+  padding: 0.3125rem;
   border-radius: 0.25rem;
   border: 0.5px solid rgba(0, 0, 0, 0.2);
   background: #fff;
   height: auto;
+  font-size: 0.8rem;
+  line-height: 1.5rem;
 }
 .input-main {
   position: relative;

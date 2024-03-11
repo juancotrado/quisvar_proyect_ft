@@ -1,4 +1,4 @@
-import { ContractPhasesTitle, PhaseData } from '.';
+import { ContractPhasesTitle, PayData, PhaseData } from '.';
 
 export const CONTACT_PHASES_TITLE: ContractPhasesTitle[] = [
   {
@@ -16,4 +16,11 @@ export const INIT_VALUES_PHASE: PhaseData = {
   days: 0,
   isActive: false,
   id: '0',
+  payData: [],
+};
+export const INIT_VALUES_PAY: PayData = {
+  id: '0',
+  description: '',
+  percentage: 0,
+  amount: 0,
 };

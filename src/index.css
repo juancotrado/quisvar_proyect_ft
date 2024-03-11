@@ -194,7 +194,7 @@ a.nostyle:visited {
 }
 
 .bg-color-done {
-  background-color: var(--color-done);
+  background-color: var(--color-primary);
 }
 .bg-color-unresolved {
   background-color: var(--color-unresolved);

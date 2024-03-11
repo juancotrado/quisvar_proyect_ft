@@ -1,17 +1,22 @@
 import { useRole } from '../../../../hooks';
 import { MessageSender } from '../../../../types';
-import { MailTypeProcedure } from '../../models';
+import { MailTypeProcedure, TypeProcedure } from '../../models';
 import './cardMessageHeader.css';
 
 interface CardMessageHeaderProps {
   typeMail: MailTypeProcedure | MessageSender | null;
+  option: TypeProcedure;
 }
 
-const CardMessageHeader = ({ typeMail }: CardMessageHeaderProps) => {
+const CardMessageHeader = ({ typeMail, option }: CardMessageHeaderProps) => {
   const { hasAccess } = useRole('MOD', null, 'tramite-de-pago');
 
   return (
-    <div className={`cardMessageHeader-container-header-titles  `}>
+    <div
+      className={`cardMessageRow-container ${
+        option === 'comunication' && 'cardMessageRow-grid-comunication'
+      } `}
+    >
       <div className="cardMessageHeader-header-item">
         <span>#DOCUMENTO</span>
       </div>
@@ -20,7 +25,7 @@ const CardMessageHeader = ({ typeMail }: CardMessageHeaderProps) => {
           typeMail === 'RECEIVER' ? 'REMITENTE' : 'DESTINATARIO'
         }`}</span>
       </div>
-      <div className="cardMessageHeader-header-item mail-grid-col-2">
+      <div className="cardMessageHeader-header-item ">
         <span>ASUNTO</span>
       </div>
       <div className="cardMessageHeader-header-item">
@@ -29,6 +34,11 @@ const CardMessageHeader = ({ typeMail }: CardMessageHeaderProps) => {
       <div className="cardMessageHeader-header-item">
         <span>DEPENDENCIA</span>
       </div>
+      {option !== 'comunication' && (
+        <div className="cardMessageHeader-header-item">
+          <span>TRAMITANTE</span>
+        </div>
+      )}
       <div className="cardMessageHeader-header-item">
         <span>FECHA DE ENVÍO</span>
       </div>

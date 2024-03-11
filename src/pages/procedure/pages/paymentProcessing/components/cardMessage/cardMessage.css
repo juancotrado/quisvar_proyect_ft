@@ -3,6 +3,24 @@
   height: 2rem;
   align-items: center;
 }
+.cardMessageRow-container {
+  width: 100%;
+  display: grid;
+  height: 2rem;
+  padding: 0 0.3rem;
+  align-items: center;
+  background-color: var(--color-gray);
+  grid-template-columns: repeat(2, minmax(0, 1fr)) minmax(0, 2fr) repeat(
+      5,
+      minmax(0, 1fr)
+    );
+}
+.cardMessageRow-grid-comunication {
+  grid-template-columns: repeat(2, minmax(0, 1fr)) minmax(0, 2fr) repeat(
+      4,
+      minmax(0, 1fr)
+    );
+}
 .status-card-true {
   grid-template-columns: repeat(4, minmax(0, 1fr));
 }

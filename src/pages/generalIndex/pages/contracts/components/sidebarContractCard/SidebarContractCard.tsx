@@ -2,13 +2,13 @@ import { Contract, Option } from '../../../../../../types';
 import { isOpenCardRegisteContract$ } from '../../../../../../services/sharingSubject';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
-import { SnackbarUtilities, millisecondsToDays } from '../../../../../../utils';
+import { SnackbarUtilities } from '../../../../../../utils';
 import './sidebarContractCard.css';
 import { NavLink, useLocation } from 'react-router-dom';
 import { DotsRight } from '../../../../../../components';
-import { PhaseData } from '../../pages/detailsContracts/models';
 import { useCallback } from 'react';
 import { useRole } from '../../../../../../hooks';
+import { getStatusContract } from '../../utils';
 
 interface SidebarContractCardProps {
   contract: Contract;
@@ -45,22 +45,19 @@ export const SidebarContractCard = ({
   const { hasAccess: authUsers } = useRole('MOD');
 
   const getColorStatus = useCallback(() => {
-    const { createdAt, phases } = contract;
-    const phasesParse: PhaseData[] = JSON.parse(phases);
-    const findPhase = phasesParse.find(phase => phase.isActive);
-    if (!findPhase) return 'bg-color-review';
-    const dayPhase = findPhase?.days ?? 0;
-    const contractSigningDate = new Date(createdAt);
-    const actualDate = new Date();
-    contractSigningDate.setDate(
-      contractSigningDate.getDate() + Number(dayPhase) + 1
+    const { createdAt, phases, indexContract } = contract;
+    const color = getStatusContract(
+      createdAt,
+      phases,
+      JSON.parse(indexContract)
     );
-    const daysDifference = millisecondsToDays(
-      contractSigningDate.valueOf() - actualDate.valueOf()
-    );
-    if (Math.sign(daysDifference) === -1) return 'bg-color-unresolved';
-    if (daysDifference - 14 < 0) return 'bg-color-process';
-    return 'bg-color-done';
+    const statusColor = {
+      grey: 'bg-color-review',
+      red: 'bg-color-unresolved',
+      yellow: 'bg-color-process',
+      skyBlue: 'bg-color-done',
+    };
+    return statusColor[color];
   }, [contract]);
 
   return (

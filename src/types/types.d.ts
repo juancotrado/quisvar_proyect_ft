@@ -311,6 +311,10 @@ export interface ProjectForm {
   typeSpecialityId: number | null;
   isDuplicate: boolean;
 }
+export type ContractType =
+  | 'CONTRATO'
+  | 'ORDEN_DE_SERVICIO'
+  | 'CONTRATACION_DIRECTA';
 export interface ContractForm {
   id?: number;
   cui: string;
@@ -320,11 +324,13 @@ export interface ContractForm {
   department: string;
   province: string;
   district: string;
+  type: ContractType;
   difficulty: 1 | 2 | 3;
   shortName: string;
   createdAt: string;
   indexContract: string;
   idCoorp: string;
+  amount: number;
 }
 
 interface StageForm {
@@ -472,6 +478,7 @@ interface ContractIndexData {
   name: string;
   nivel: number;
   hasFile?: 'yes' | 'no';
+  uploadDate?: Date;
   deliverLettersId?: id;
   nextLevel?: ContractIndexData[];
 }

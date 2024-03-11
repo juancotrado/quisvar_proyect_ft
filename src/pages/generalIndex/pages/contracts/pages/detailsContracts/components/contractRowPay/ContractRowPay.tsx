@@ -1,0 +1,79 @@
+import { FocusEvent } from 'react';
+import { CloseIcon, Input } from '../../../../../../../../components';
+import { PayData } from '../../models';
+import './contractRowPay.css';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../../../../../store';
+
+interface ContractRowPayProps {
+  payData: PayData;
+  addPay: (data: PayData) => void;
+  deletePay: (id: string) => void;
+  index: number;
+}
+
+const ContractRowPay = ({
+  addPay,
+  deletePay,
+  index,
+  payData,
+}: ContractRowPayProps) => {
+  const contract = useSelector((state: RootState) => state.contract);
+
+  const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    const values = {
+      ...payData,
+      [name]: value,
+    };
+    if (name === 'percentage') {
+      values.amount = (+value / 100) * (contract?.amount ?? 0);
+    }
+    addPay(values);
+  };
+  const handleDelete = () => {
+    deletePay(payData.id);
+  };
+  return (
+    <div className="contractRowPay-row">
+      <CloseIcon
+        size={0.8}
+        right={0}
+        top={0}
+        className="contractRowPhase-close"
+        onClick={handleDelete}
+        zIndex={2}
+      />
+      <span className="contractRowPhase-text">C. Pago: {index}</span>
+      <Input
+        type="text"
+        styleInput={2}
+        placeholder="Descripcion"
+        name="description"
+        defaultValue={payData.description}
+        onBlur={handleBlur}
+      />
+      <div className="contractRowPay-input-percentage">
+        <Input
+          type="text"
+          name="percentage"
+          styleInput={2}
+          defaultValue={payData.percentage}
+          onBlur={handleBlur}
+        />
+        <span className="contractRowPhase-text">%</span>
+      </div>
+      <Input
+        type="text"
+        styleInput={2}
+        name="amount"
+        placeholder="Monto"
+        value={payData.amount}
+        disabled
+        onBlur={handleBlur}
+      />
+    </div>
+  );
+};
+
+export default ContractRowPay;

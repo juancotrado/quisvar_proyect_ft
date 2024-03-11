@@ -245,10 +245,14 @@
   background-color: var(--color-bg-done);
   color: var(--color-done);
 }
+.regularProcedureInfo-btn-expand {
+  width: 100%;
+  padding: 0 2rem;
+}
 
 .message-view-more-files-false {
   flex-direction: row-reverse;
-  padding: 0.3rem 0.5rem;
+  padding: 0.3rem 1rem;
   border: 1px solid #d9d9d9;
   justify-content: space-between;
   font-weight: 500;
@@ -258,7 +262,7 @@
 .message-view-more-files-true {
   flex-direction: row-reverse;
   font-weight: 500;
-  padding: 0.3rem 0.5rem;
+  padding: 0.3rem 1rem;
   color: var(--color-secondary);
   background-color: var(--color-bg-liquidation);
   border: 0;

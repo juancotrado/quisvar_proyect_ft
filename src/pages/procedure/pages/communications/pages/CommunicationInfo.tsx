@@ -112,11 +112,6 @@ const CommunicationInfo = () => {
               {formatDateHourLongSpanish(message.createdAt)}
             </span>
           </div>
-          <span
-            className={`message-card-status-message message-status-${message.status}`}
-          >
-            {TYPE_STATUS[message.status]}
-          </span>
         </div>
       </div>
       <div className="message-details-info">

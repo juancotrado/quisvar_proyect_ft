@@ -16,6 +16,7 @@
   overflow-y: auto;
 }
 .contractsLevels-main-info {
+  display: flex;
   flex: 1.5;
 }
 .contractsLevels-select-empty {

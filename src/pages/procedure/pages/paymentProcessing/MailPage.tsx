@@ -20,11 +20,14 @@ import { CardMessage } from './components';
 import { CardRegisterMessage } from './views';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { CardMessageHeader } from '../../components';
+import { useRole } from '../../../../hooks';
 
 const InitTMail: MailType['type'] = 'RECEIVER';
 
 export const MailPage = () => {
   const navigate = useNavigate();
+  const { hasAccess } = useRole('MOD', 'tramites', 'tramite-de-pago');
+
   const [searchParams] = useSearchParams();
   const [listMessage, setListMessage] = useState<MailType[] | null>(null);
   // const [isResizing, setIsResizing] = useState(false);
@@ -39,11 +42,7 @@ export const MailPage = () => {
   const [isNewMessage, setIsNewMessage] = useState(false);
   //-----------------------------------------------------------------------
 
-  useEffect(() => getMessages(), [typeMail, typeMsg, statusMsg]);
-
-  useEffect(() => {
-    getMessages();
-  }, [refresh]);
+  useEffect(() => getMessages(), [typeMail, typeMsg, statusMsg, refresh]);
 
   const handleNewMessage = () => {
     setIsNewMessage(true);
@@ -126,7 +125,12 @@ export const MailPage = () => {
     <>
       <div className="mail-main-master-container">
         <div className={`message-container-header`}>
-          <IconAction icon="refresh" onClick={getMessages} />
+          <IconAction
+            icon="refresh"
+            onClick={getMessages}
+            right={0.9}
+            top={3.7}
+          />
           <div className="message-options-filter">
             <div className="message-header-option">
               {optionsMailHeader.map(
@@ -185,7 +189,7 @@ export const MailPage = () => {
           </div>
         </div>
         <div className="mail-grid-container">
-          <CardMessageHeader typeMail={typeMail} />
+          <CardMessageHeader option="payProcedure" typeMail={typeMail} />
           {listMessage &&
             listMessage.map(({ paymessage, paymessageId, type }) => (
               <CardMessage
@@ -195,7 +199,8 @@ export const MailPage = () => {
                 onArchiver={handleSaveMessage}
                 onClick={() => handleViewMessage(paymessageId, type)}
                 message={paymessage}
-                option="tramite-de-pago"
+                option="payProcedure"
+                hasAccess={hasAccess}
               />
             ))}
         </div>

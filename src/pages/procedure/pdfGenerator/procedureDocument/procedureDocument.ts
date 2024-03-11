@@ -1,6 +1,6 @@
 import { Profile } from '../../../../types';
 import { degreeAbrv, formatDateShortSpanish } from '../../../../utils';
-import { ToData } from '../../models';
+import { ToData, TypeProcedure } from '../../models';
 import './procedureDocument.css';
 
 interface ProcedureDocumentProps {
@@ -11,7 +11,7 @@ interface ProcedureDocumentProps {
   fromProfile: Profile;
   toProfile: ToData;
   size: 'a4' | 'a5';
-  type: 'comunication' | 'regularProcedure';
+  type: TypeProcedure;
 }
 
 const procedureDocument = ({
@@ -79,9 +79,7 @@ const procedureDocument = ({
             </div>
           </div>
           ${
-            textOne === 'De' &&
-            type === 'regularProcedure' &&
-            ccProfiles.length > 0
+            textOne === 'De' && type !== 'comunication' && ccProfiles.length > 0
               ? `
             <div class="procedureDocument-title-header-content"> 
               <span class="procedureDocument-header-text-title">

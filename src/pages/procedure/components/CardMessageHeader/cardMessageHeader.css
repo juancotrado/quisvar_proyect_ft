@@ -1,11 +1,3 @@
-.cardMessageHeader-container-header-titles {
-  display: grid;
-  height: 2rem;
-  padding: 0 0.3rem;
-  align-items: center;
-  background-color: var(--color-gray);
-  grid-template-columns: repeat(8, minmax(0, 1fr));
-}
 .cardMessageHeader-header-item {
   display: flex;
   width: 100%;
@@ -22,9 +14,6 @@
   white-space: nowrap;
 }
 
-.mail-grid-col-2 {
-  grid-column: span 2 / span 2;
-}
 .cardMessageHeader-cursor-none {
   cursor: default;
   justify-content: center;

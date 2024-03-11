@@ -1,8 +1,8 @@
 import { Button } from '../../../../../../components';
-import { useRole } from '../../../../../../hooks';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { MessageSender, MessageType } from '../../../../../../types';
 import { formatDateHourLongSpanish } from '../../../../../../utils';
+import { TypeProcedure } from '../../../../models';
 import { TYPE_STATUS, TYPE_STATUS_REGULAR_PROCEDURA } from '../../models';
 import './cardMessage.css';
 
@@ -12,7 +12,8 @@ interface CardMessageProps {
   isActive?: boolean;
   onClick: () => void;
   onArchiver?: () => void;
-  option: 'comunicado' | 'tramite-de-pago' | 'tramite-regular';
+  option: TypeProcedure;
+  hasAccess: boolean;
 }
 
 const CardMessage = ({
@@ -22,18 +23,19 @@ const CardMessage = ({
   onArchiver,
   isActive,
   option,
+  hasAccess,
 }: CardMessageProps) => {
   const contactUser = message.users.find(user => user.type !== type);
-  const { hasAccess } = useRole('MOD', null, option);
 
   const handleArchiverAction = () => {
     axiosInstance.patch(`/paymail/archived/${message.id}`).then(onArchiver);
   };
-
+  const firstNameInitial = message?.userInit?.user?.profile?.firstName;
+  const lastNameInitial = message?.userInit?.user?.profile?.lastName;
   return (
     <div
-      className={`card-message-container-section status-card-${isActive} ${
-        message.isOpen && 'message-isOpen'
+      className={`cardMessageRow-container ${
+        option === 'comunication' && 'cardMessageRow-grid-comunication'
       } pointer`}
       onClick={onClick}
     >
@@ -51,17 +53,17 @@ const CardMessage = ({
           </span>
         )}
       </div>
-      <div className="card-message-section-item mail-grid-col-2">
+      <div className="card-message-section-item ">
         <span className="card-status-span ">{message.header}</span>
       </div>
       {!isActive && (
         <>
           <div className="card-message-section-item">
             <span className={`card-status-message status-${message.status}`}>
-              {option === 'comunicado' && 'Comunicado'}
-              {option === 'tramite-de-pago' &&
+              {option === 'comunication' && 'Comunicado'}
+              {option === 'payProcedure' &&
                 TYPE_STATUS[message.status]?.toLowerCase()}
-              {option === 'tramite-regular' &&
+              {option === 'regularProcedure' &&
                 TYPE_STATUS_REGULAR_PROCEDURA[message.status]?.toLowerCase()}
             </span>
           </div>
@@ -70,6 +72,13 @@ const CardMessage = ({
               {contactUser?.user.profile.description}
             </span>
           </div>
+          {option !== 'comunication' && (
+            <div className="card-message-section-item">
+              <span className={`card-status-span`}>
+                {firstNameInitial} {lastNameInitial}
+              </span>
+            </div>
+          )}
           <div className="card-message-section-item">
             <span className="card-status-span ">
               {formatDateHourLongSpanish(message.updatedAt)}
@@ -79,6 +88,7 @@ const CardMessage = ({
             <div
               className="card-message-section-item message-cursor-none"
               onClick={e => e.stopPropagation()}
+              style={{ justifyContent: 'center' }}
             >
               <Button
                 className="card-message-archiver-action"

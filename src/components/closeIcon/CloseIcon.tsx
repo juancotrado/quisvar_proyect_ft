@@ -9,6 +9,7 @@ interface CloseIconProps {
   right?: number;
   bottom?: number;
   top?: number;
+  zIndex?: number;
 }
 const CloseIcon = ({
   onClick,
@@ -18,6 +19,7 @@ const CloseIcon = ({
   left,
   right,
   top,
+  zIndex,
 }: CloseIconProps) => {
   const style: CSSProperties = {
     width: `${size}rem`,
@@ -26,6 +28,7 @@ const CloseIcon = ({
     right: `${right}rem`,
     top: `${top}rem`,
     bottom: `${bottom}rem`,
+    zIndex,
   };
   return (
     <figure

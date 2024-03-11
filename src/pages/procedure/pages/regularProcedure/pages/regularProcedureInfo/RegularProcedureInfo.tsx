@@ -10,7 +10,7 @@ import {
 } from '../../../../../../components';
 import { formatDateHourLongSpanish } from '../../../../../../utils';
 import { Resizable } from 're-resizable';
-import { TYPE_STATUS } from '../../../paymentProcessing/models';
+import { TYPE_STATUS_REGULAR_PROCEDURA } from '../../../paymentProcessing/models';
 import {
   FormRegisterProcedure,
   ProcedureHistory,
@@ -47,7 +47,6 @@ const RegularProcedureInfo = () => {
       </div>
     );
 
-  console.log(message);
   const mainReceiver = message.users.find(
     ({ user, status, role, type }) =>
       user.id === userSessionId &&
@@ -57,7 +56,7 @@ const RegularProcedureInfo = () => {
   );
 
   const handleSaveRegister = () => {
-    navigate('/tramites/tramite-regular');
+    navigate('/tramites/tramite-regular?refresh=true');
   };
   const onSubmit = async (data: ProcedureSubmit) => {
     const { fileUploadFiles, values } = data;
@@ -77,6 +76,7 @@ const RegularProcedureInfo = () => {
     axiosInstance.patch(`/mail/${messageId}/done`).then(handleSaveRegister);
   };
 
+  const initialSender = message.initialSender.user;
   return (
     <Resizable
       enable={{
@@ -97,11 +97,13 @@ const RegularProcedureInfo = () => {
               submit={data => onSubmit(data)}
             />
           )}
-          <Button
-            text="Finalizar tramite"
-            onClick={handleDoneProcedure}
-            styleButton={3}
-          />
+          {userSessionId === initialSender.id && (
+            <Button
+              text="Finalizar tramite"
+              onClick={handleDoneProcedure}
+              styleButton={3}
+            />
+          )}
         </div>
       )}
       <div className="regularProcedureInfo  message-page-contain--left">
@@ -110,7 +112,13 @@ const RegularProcedureInfo = () => {
           <div className="regularProcedureInfo-sender-info-details">
             <div className="message-sender-info">
               <IconAction icon="user-sender" position="none" />
-              <span className="message-sender-name">Iniciado el: </span>
+              <span className="message-sender-name">
+                Tramite de :{' '}
+                <b>
+                  {initialSender.profile.firstName}{' '}
+                  {initialSender.profile.lastName}
+                </b>{' '}
+              </span>
               <span className="message-date-send">
                 {formatDateHourLongSpanish(message.createdAt)}
               </span>
@@ -118,14 +126,14 @@ const RegularProcedureInfo = () => {
             <span
               className={`message-card-status-message message-status-${message.status}`}
             >
-              {TYPE_STATUS[message.status]}
+              {TYPE_STATUS_REGULAR_PROCEDURA[message.status]}
             </span>
           </div>
         </div>
         <div className="regularProcedureInfo-main">
           <ProcedureHistory
             messageHistory={message}
-            userMessage={message.initialSender.user.profile}
+            userMessage={initialSender.profile}
           />
           {message?.history.length > 0 && (
             <div className="regularProcedureInfo-btn-expand">
@@ -139,13 +147,15 @@ const RegularProcedureInfo = () => {
           )}
           <div className="message-container-files-grid">
             {viewHistory &&
-              message?.history.map(history => (
-                <ProcedureHistory
-                  messageHistory={history}
-                  key={history.id}
-                  userMessage={history.user.profile}
-                />
-              ))}
+              [...message?.history]
+                .reverse()
+                .map(history => (
+                  <ProcedureHistory
+                    messageHistory={history}
+                    key={history.id}
+                    userMessage={history.user.profile}
+                  />
+                ))}
           </div>
         </div>
       </div>

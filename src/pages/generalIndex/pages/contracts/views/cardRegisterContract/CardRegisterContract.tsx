@@ -15,7 +15,11 @@ import { ContractForm, CoorpEntity } from '../../../../../../types';
 import { Subscription } from 'rxjs';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { useJurisdiction } from '../../../../../../hooks';
-import { CONTRACT_INDEX_DATA, DIFFICULTY_LEVEL } from '../../models';
+import {
+  CONTRACT_INDEX_DATA,
+  CONTRACT_TYPE,
+  DIFFICULTY_LEVEL,
+} from '../../models';
 
 interface CardRegisterContractProps {
   onSave: () => void;
@@ -63,6 +67,8 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
             contractNumber,
             companyId,
             consortiumId,
+            type,
+            amount,
           } = contract;
           reset({
             id,
@@ -77,6 +83,8 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
             province,
             shortName,
             contractNumber,
+            type,
+            amount,
             idCoorp: companyId
               ? 'companyId-' + companyId
               : 'consortiumId-' + consortiumId,
@@ -123,15 +131,6 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
     setIsOpenModal(false);
   };
 
-  // const handleDifficulty = (e: ChangeEvent<HTMLSelectElement>) => {
-  //   const value = +e.target.value as 1 | 2 | 3;
-  //   reset({
-  //     ...PRICE_DIFFICULTY[value],
-  //     id: watch('id'),
-  //     difficulty: value,
-  //   });
-  // };
-
   return (
     <Modal size={50} isOpenProp={isOpenModal}>
       <CloseIcon onClick={closeFunctions} />
@@ -173,6 +172,16 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
               placeholder="CUI"
               errors={errors}
             />
+            <Input
+              label="Monto:"
+              {...register('amount', {
+                validate: { validateWhiteSpace },
+                valueAsNumber: true,
+              })}
+              name="amount"
+              placeholder="Monto"
+              errors={errors}
+            />
           </div>
           <div className="col-input">
             {/* <Input
@@ -197,7 +206,7 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
               />
             )}
             <Input
-              label="Fecha de firma de contrato:"
+              label="Fecha de firma:"
               {...register('createdAt', {
                 validate: { validateWhiteSpace },
                 valueAsDate: true,
@@ -215,6 +224,17 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
               })}
               name="difficulty"
               data={DIFFICULTY_LEVEL}
+              itemKey="key"
+              textField="name"
+              errors={errors}
+            />
+            <Select
+              label="Tipo de contrato:"
+              {...register('type', {
+                validate: { validateWhiteSpace },
+              })}
+              name="type"
+              data={CONTRACT_TYPE}
               itemKey="key"
               textField="name"
               errors={errors}

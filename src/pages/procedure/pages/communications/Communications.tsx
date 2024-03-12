@@ -47,12 +47,14 @@ const Communications = () => {
               )
             )}
           </div>
-          <Button
-            onClick={handleNewMessage}
-            icon="plus-dark"
-            text="Nuevo comunicado"
-            styleButton={3}
-          />
+          {hasAccess && (
+            <Button
+              onClick={handleNewMessage}
+              icon="plus-dark"
+              text="Nuevo comunicado"
+              styleButton={3}
+            />
+          )}
         </div>
         <div className="mail-grid-container">
           <CardMessageHeader typeMail={'RECEIVER'} option="comunication" />

@@ -28,7 +28,7 @@ const useHtmlToPdf = () => {
       .then(async (pdf: any) => {
         const totalPages = pdf.internal.getNumberOfPages();
         for (let i = 1; i <= totalPages; i++) {
-          // pdf.setPage(i);
+          pdf.setPage(i);
           // pdf.setFontSize(10);
           // pdf.setTextColor(150);
           // pdf.text(

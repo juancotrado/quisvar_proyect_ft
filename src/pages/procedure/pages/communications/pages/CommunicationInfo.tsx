@@ -9,7 +9,7 @@ import {
   formatDateHourLongSpanish,
   normalizeFileName,
 } from '../../../../../utils';
-import { TYPE_STATUS } from '../../paymentProcessing/models';
+
 import { isOpenViewHtmlToPdf$ } from '../../../../../services/sharingSubject';
 import { ChipFileDownLoadProcedure } from '../../../components';
 import { useHtmlToPdf } from '../../../../../hooks';

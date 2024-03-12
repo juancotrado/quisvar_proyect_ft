@@ -521,6 +521,7 @@ export interface UserForm {
   firstNameRef: string;
   lastNameRef: string;
   phoneRef: string;
+  description?: string;
   userPc: string;
   addressRef: string;
   declaration: FileList | null;

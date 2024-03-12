@@ -80,6 +80,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
             department,
             province,
             district,
+            description: profile.description,
             dni: profile.dni,
             firstName: profile.firstName,
             lastName: profile.lastName,
@@ -343,6 +344,8 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
                 textField="value"
                 errors={errors}
               />
+            </div>
+            <div className="col-input">
               <Input
                 {...register('ruc', {
                   validate: { validateRuc },
@@ -351,6 +354,15 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
                 type="number"
                 errors={errors}
                 label="RUC:"
+              />
+              <Input
+                {...register('description', {
+                  // validate: { validateRuc },
+                })}
+                placeholder="cargo"
+                type="text"
+                errors={errors}
+                label="Cargo:"
               />
             </div>
             {!userId && (

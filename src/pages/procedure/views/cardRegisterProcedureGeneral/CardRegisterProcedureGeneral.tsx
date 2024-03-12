@@ -4,7 +4,7 @@ import { ProcedureSubmit } from '../../../../types';
 import { TYPE_PROCEDURE } from '../../pages/paymentProcessing/models';
 import { FormRegisterProcedure } from '../../components';
 import { axiosInstance } from '../../../../services/axiosInstance';
-import { INITIAL_VALUE_EDITOR } from '../../../../utils';
+import { INITIAL_VALUE_EDITOR, SnackbarUtilities } from '../../../../utils';
 
 interface CardRegisterProcedureGeneralProps {
   onSave?: () => void;
@@ -23,7 +23,9 @@ const CardRegisterProcedureGeneral = ({
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
     formData.append('data', JSON.stringify(values));
     formData.append('category', typeProcedure.category);
-    axiosInstance.post(`/mail`, formData).then(onSave);
+    await axiosInstance.post(`/mail`, formData);
+    SnackbarUtilities.success('Proceso exitoso ');
+    onSave?.();
   };
 
   const typeProcedure = TYPE_PROCEDURE[type];

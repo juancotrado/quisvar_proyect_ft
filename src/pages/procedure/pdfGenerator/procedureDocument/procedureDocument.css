@@ -58,6 +58,11 @@
   display: flex;
   flex-direction: column;
 }
+.procedureDocument-flex-column-gap {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
 
 .procedureDocument-right-text {
   display: flex;

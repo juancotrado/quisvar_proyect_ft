@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { ChangeEvent, useMemo, useState } from 'react';
 import {
   MessageSendType,
   ProcedureSubmit,
@@ -96,8 +96,8 @@ const FormRegisterProcedure = ({
     const findUsers = usersId.map(userId => {
       const receiverUser = listUser.find(({ id }) => id === userId);
       if (!receiverUser) return;
-      const { name, degree, position } = receiverUser;
-      return { name, degree, position };
+      const { name, degree, position, job } = receiverUser;
+      return { name, degree, position, job };
     });
     const filterUser = findUsers.filter(user => !!user) as ToData[];
     return filterUser;
@@ -105,14 +105,14 @@ const FormRegisterProcedure = ({
 
   const getHtmlString = (size: 'a4' | 'a5') => {
     const idUserReceiver = listCopy.map(user => user.id);
-    const { description, header, type: typeTitle } = watch();
+    const { description, header, title } = watch();
     const usersReceiver = handleReceiverUser([
       +(receiver?.id || 0),
       ...idUserReceiver,
     ]);
     const [toProfile, ...ccProfiles] = usersReceiver;
     const htmlString = procedureDocument({
-      title: handleTitle(typeTitle),
+      title,
       subject: header,
       body: description ?? '',
       toProfile,
@@ -128,7 +128,7 @@ const FormRegisterProcedure = ({
     if (!htmlString) return;
     isOpenViewHtmlToPdf$.setSubject = {
       isOpen: true,
-      fileNamePdf: handleTitle(watch('type')),
+      fileNamePdf: watch('title'),
       htmlString,
       size,
     };
@@ -154,7 +154,7 @@ const FormRegisterProcedure = ({
       ...data,
       secondaryReceiver,
       receiverId: receiver.id,
-      title: handleTitle(watch('type')),
+      title: watch('title'),
       description: htmlString,
     };
     submit({ values, fileUploadFiles });
@@ -178,19 +178,31 @@ const FormRegisterProcedure = ({
       text: 'A4',
     },
   ];
+  const handleChangeTitle = ({ target }: ChangeEvent<HTMLSelectElement>) => {
+    const { options, selectedIndex } = target;
+    const title = handleTitle(options[selectedIndex].text);
+    setValue('title', title);
+  };
   const typeProcedure = TYPE_PROCEDURE[type];
   return (
     <form className="imbox-data-content" onSubmit={handleSubmit(onSubmit)}>
-      {watch('type') && (
-        <h3 className="messagePage-type-document">
-          {handleTitle(watch('type'))}
-        </h3>
+      {watch('title') && (
+        // <h3 className="messagePage-type-document">{watch('title')}</h3>
+        <Input
+          {...register('title', { validate: { validateWhiteSpace } })}
+          errors={errors}
+          className="messagePage-input"
+          placeholder="Asunto"
+          name="title"
+          type="text"
+        />
       )}
       <div className="messagePage-input-contain">
         <Select
           {...register('type', {
             validate: { validateWhiteSpace },
           })}
+          onChange={handleChangeTitle}
           name="type"
           data={RADIO_OPTIONS}
           itemKey="id"

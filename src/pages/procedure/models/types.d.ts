@@ -14,6 +14,7 @@ export interface ToData {
   name: string;
   degree: Degree;
   position: string;
+  job: string;
 }
 
 export type TypeProcedure =

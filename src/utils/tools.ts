@@ -1,4 +1,4 @@
-import { DEGREE_DATA } from '../pages/userCenter/pages/users/models';
+import { DEGREE_DATA, JOB_DATA } from '../pages/userCenter/pages/users/models';
 import { Degree, Feedback, Level, RangeDays } from '../types/types';
 import { getListByRole } from './roles';
 import html2pdf from 'html2pdf.js';
@@ -289,7 +289,11 @@ export const downloadHref = (url: string, name: string) => {
   link.remove();
 };
 
-export const degreeAbrv = (degree: Degree) => {
+export const degreeAbrv = (degree: Degree, job: string) => {
+  if (degree === 'Titulado') {
+    const findDegree = JOB_DATA.find(({ value }) => value === job);
+    return findDegree?.abrv;
+  }
   const findDegree = DEGREE_DATA.find(({ value }) => value === degree);
   return findDegree?.abrv;
 };

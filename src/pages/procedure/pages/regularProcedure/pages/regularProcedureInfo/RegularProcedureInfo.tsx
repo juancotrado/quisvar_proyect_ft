@@ -8,7 +8,10 @@ import {
   IconAction,
   LoaderForComponent,
 } from '../../../../../../components';
-import { formatDateHourLongSpanish } from '../../../../../../utils';
+import {
+  SnackbarUtilities,
+  formatDateHourLongSpanish,
+} from '../../../../../../utils';
 import { Resizable } from 're-resizable';
 import { TYPE_STATUS_REGULAR_PROCEDURA } from '../../../paymentProcessing/models';
 import {
@@ -69,7 +72,10 @@ const RegularProcedureInfo = () => {
     );
     axiosInstance
       .post(`/mail/${messageId}/reply?status=PENDIENTE`, formData)
-      .then(handleSaveRegister);
+      .then(() => {
+        SnackbarUtilities.success('Proceso exitoso ');
+        handleSaveRegister();
+      });
   };
 
   const handleDoneProcedure = () => {

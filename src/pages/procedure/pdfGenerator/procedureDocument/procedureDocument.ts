@@ -24,13 +24,18 @@ const procedureDocument = ({
   ccProfiles,
   type,
 }: ProcedureDocumentProps) => {
-  const from = `${degreeAbrv(fromProfile.degree)}. ${
+  const from = `${degreeAbrv(fromProfile.degree, fromProfile.job)}. ${
     fromProfile.firstName + ' ' + fromProfile.lastName
   }`;
-  const to = `${degreeAbrv(toProfile.degree)}. ${toProfile.name}`;
+  const fromPosition = fromProfile.description;
+  const to = `${degreeAbrv(toProfile.degree, toProfile.job)}. ${
+    toProfile.name
+  }`;
+  const toPosition = toProfile.position;
+
   const data = [
-    { textOne: 'Para', textTwo: to },
-    { textOne: 'De', textTwo: from },
+    { textOne: 'Para', textTwo: to, textThre: fromPosition },
+    { textOne: 'De', textTwo: from, textThre: toPosition },
     { textOne: 'Asunto', textTwo: subject },
     { textOne: 'Fecha', textTwo: formatDateShortSpanish() },
   ];
@@ -41,7 +46,7 @@ const procedureDocument = ({
     <div class="procedureDocument-title-header-main">
       ${data
         .map(
-          ({ textOne, textTwo }) => `
+          ({ textOne, textTwo, textThre }) => `
           <div class="procedureDocument-title-header-content"> 
             <span class="procedureDocument-header-text-title">
               ${textOne}
@@ -49,23 +54,26 @@ const procedureDocument = ({
             <div class="procedureDocument-flex-column">
               <span class="procedureDocument-right-text procedureDocument-font-normal">
                 <span class="procedureDocument-font-bold">:</span> 
-                ${textTwo}
+                <div class="procedureDocument-flex-column">
+                <span>${textTwo}</span>
+                ${textThre ? ` <strong>${textThre ?? ''}</strong>` : ''}
+              </div>
               </span>
               ${
                 textOne === 'Para' &&
                 type === 'comunication' &&
                 ccProfiles.length > 0
                   ? `
-                <div class="procedureDocument-flex-column">
+                <div class="procedureDocument-flex-column-gap">
                   ${ccProfiles
                     .map(
-                      ({ degree, name, position }) =>
+                      ({ degree, name, position, job }) =>
                         `
                     <span class="procedureDocument-right-text">
                       <strong>:</strong> 
                       <div class="procedureDocument-flex-column">
-                        <span>${`${degreeAbrv(degree)}. ${name}`}</span>
-                        <span>${position ?? ''}</span>
+                        <span>${`${degreeAbrv(degree, job)}. ${name}`}</span>
+                        <strong>${position ?? ''}</strong>
                       </div>
                       
                     </span>
@@ -85,16 +93,16 @@ const procedureDocument = ({
               <span class="procedureDocument-header-text-title">
               CC
               </span>
-              <div class="procedureDocument-flex-column">
+              <div class="procedureDocument-flex-column-gap">
                 ${ccProfiles
                   .map(
-                    ({ degree, name, position }) =>
+                    ({ degree, name, position, job }) =>
                       `
                   <span class="procedureDocument-right-text">
                     <strong>:</strong> 
                     <div class="procedureDocument-flex-column">
-                      <span>${`${degreeAbrv(degree)}. ${name}`}</span>
-                      <span>${position ?? ''}</span>
+                      <span>${`${degreeAbrv(degree, job)}. ${name}`}</span>
+                      <strong>${position ?? ''}</strong>
                     </div>
                     
                   </span>

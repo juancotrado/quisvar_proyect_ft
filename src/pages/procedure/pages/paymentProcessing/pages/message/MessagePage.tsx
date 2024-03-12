@@ -7,7 +7,10 @@ import './messagePage.css';
 import { RootState } from '../../../../../../store';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
-import { formatDateHourLongSpanish } from '../../../../../../utils';
+import {
+  SnackbarUtilities,
+  formatDateHourLongSpanish,
+} from '../../../../../../utils';
 import {
   Button,
   ButtonHeader,
@@ -103,7 +106,10 @@ export const MessagePage = () => {
         `/paymail/reply?status=${isReply ? 'PROCESO' : 'RECHAZADO'}`,
         formData
       )
-      .then(handleSaveRegister);
+      .then(() => {
+        SnackbarUtilities.success('Proceso exitoso ');
+        handleSaveRegister();
+      });
   };
   const handleArchiverMessage = () => {
     axiosInstance

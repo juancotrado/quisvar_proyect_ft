@@ -5,7 +5,10 @@ import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { Button } from '../../../../../../components';
-import { INITIAL_VALUE_EDITOR } from '../../../../../../utils';
+import {
+  INITIAL_VALUE_EDITOR,
+  SnackbarUtilities,
+} from '../../../../../../utils';
 import { FormRegisterProcedure } from '../../../../components';
 import { useNavigate } from 'react-router-dom';
 
@@ -26,7 +29,10 @@ const CardRegisterMessage = ({
     const formData = new FormData();
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
     formData.append('data', JSON.stringify(body));
-    axiosInstance.post(`/paymail`, formData).then(handleSave);
+    axiosInstance.post(`/paymail`, formData).then(() => {
+      SnackbarUtilities.success('Proceso exitoso ');
+      handleSave();
+    });
   };
   const handleSave = () => {
     onSave?.();

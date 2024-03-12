@@ -1,5 +1,5 @@
 import { Document, Image, Page, Text, View } from '@react-pdf/renderer';
-import page1Image from '/img/Plantilla Docs_page-0001.jpg';
+import docImg from '/img/plantillaDocs.jpg';
 import { styles } from './contractUserStyle';
 import { User } from '../../../../../../types';
 import { ContractUser, DEGREE_DATA } from '../../models';
@@ -33,7 +33,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
     <Document>
       <Page size="A4" style={styles.page}>
         <View style={styles.pageBackgroundContainer} fixed={true}>
-          <Image src={page1Image} style={styles.imageBackground} />
+          <Image src={docImg} style={styles.imageBackground} />
         </View>
         <View style={styles.container}>
           <View
@@ -208,7 +208,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
       </Page>
       <Page>
         <View style={styles.pageBackgroundContainer} fixed={true}>
-          <Image src={page1Image} style={styles.imageBackground} />
+          <Image src={docImg} style={styles.imageBackground} />
         </View>
         <View style={styles.container}>
           <View
@@ -373,7 +373,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
       </Page>
       <Page>
         <View style={styles.pageBackgroundContainer} fixed={true}>
-          <Image src={page1Image} style={styles.imageBackground} />
+          <Image src={docImg} style={styles.imageBackground} />
         </View>
         <View style={styles.container}>
           <View
@@ -528,7 +528,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
 
       <Page>
         <View style={styles.pageBackgroundContainer} fixed={true}>
-          <Image src={page1Image} style={styles.imageBackground} />
+          <Image src={docImg} style={styles.imageBackground} />
         </View>
         <View style={styles.container}>
           <View
@@ -675,7 +675,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
 
       <Page>
         <View style={styles.pageBackgroundContainer} fixed={true}>
-          <Image src={page1Image} style={styles.imageBackground} />
+          <Image src={docImg} style={styles.imageBackground} />
         </View>
         <View style={styles.container}>
           <View

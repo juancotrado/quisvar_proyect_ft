@@ -46,8 +46,8 @@ const ViewHtmlToPdf = () => {
           Descargar documento
         </div>
         {pdfUrl && (
-          <embed
-            src={pdfUrl}
+          <object
+            data={pdfUrl}
             type="application/pdf"
             width="100%"
             height="100%"

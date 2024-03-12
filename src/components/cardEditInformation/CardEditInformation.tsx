@@ -29,12 +29,13 @@ const CardEditInformation = ({ isOpen, onClose }: CardEditInformationProps) => {
 
   const onSubmit = async (values: User) => {
     if (userSession?.id !== undefined) {
-      const { firstName, lastName, phone, dni } = values.profile;
+      const { firstName, lastName, phone, dni, description } = values.profile;
       const saveData = {
         firstName,
         lastName,
         phone,
         dni,
+        description,
       };
       axiosInstance
         .put(`/profile/${userSession?.id}`, saveData)
@@ -63,6 +64,7 @@ const CardEditInformation = ({ isOpen, onClose }: CardEditInformationProps) => {
               <Input {...register('profile.firstName')} label="Nombres" />
               <Input {...register('profile.lastName')} label="Apellidos" />
               <Input {...register('profile.phone')} label="Celular" />
+              <Input {...register('profile.description')} label="Cargo" />
               <Input {...register('profile.dni')} label="DNI" disabled />
               <Input {...register('email')} label="Correo" disabled />
             </section>

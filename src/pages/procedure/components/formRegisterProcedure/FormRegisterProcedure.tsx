@@ -44,7 +44,11 @@ const FormRegisterProcedure = ({
   const [receiver, setReceiver] = useState<receiverType | null>(null);
   const [isAddReceiver, setIsAddReceiver] = useState(false);
   const [listCopy, setListCopy] = useState<receiverType[]>([]);
-  const { handleTitle } = useTitleProcedure('/paymail/imbox/quantity');
+  const urlQuantity =
+    type === 'payProcedure'
+      ? '/paymail/imbox/quantity'
+      : '/mail/imbox/quantity';
+  const { handleTitle } = useTitleProcedure(urlQuantity);
   const [fileUploadFiles, setFileUploadFiles] = useState<File[]>([]);
 
   const { profile, id: userSessionId } = useSelector(

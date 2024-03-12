@@ -49,6 +49,26 @@ const CardGenerateContract = ({ user }: CardGenerateContractProps) => {
         placeholder="Fecha"
         className="generalData-edit-info-input"
       />
+      <h4 className="cardGenerateContract-subtitle">Mes:</h4>
+
+      <Input
+        {...register('month', {
+          valueAsNumber: true,
+        })}
+        type="number"
+        placeholder="Mes"
+        className="generalData-edit-info-input"
+      />
+      <h4 className="cardGenerateContract-subtitle">Numero de proyectos:</h4>
+
+      <Input
+        {...register('projectNumber', {
+          valueAsNumber: true,
+        })}
+        type="number"
+        placeholder="Numbero de proyecto"
+        className="generalData-edit-info-input"
+      />
 
       <Button icon="preview-pdf" text="Generar Contrato" styleButton={2} />
     </form>

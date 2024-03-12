@@ -6,4 +6,6 @@ export interface SwornDeclaration {
 export interface ContractUser {
   professionalLevel: 1 | 2 | 3;
   date: Date;
+  month: number;
+  projectNumber: number;
 }

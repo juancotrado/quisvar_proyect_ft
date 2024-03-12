@@ -47,7 +47,8 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             El presente documento, consiste en la contratación del servicio
             profesional como
             <Text style={styles.textRedBold}> {professionalService} </Text>
-            para la elaboración de 04 proyectos que celebran de una parte la
+            para la elaboración de {data.projectNumber} proyectos que celebran
+            de una parte la
             <Text style={styles.textBold}> COORPORACIÓN DHYRIUM S.A.A. </Text>
             con domicilio en el Jr. Cajamarca N° 154 de la ciudad Puno del
             Distrito de Puno - Provincia de Puno - Departamento de Puno,
@@ -102,14 +103,17 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
               DIRECTIVA N° 003-2024-COORPORACION DHYRIUM S.A.A.,
             </Text>{' '}
             según los términos de referencia y las normativas vigentes para la
-            elaboración de 04 proyectos correspondiendo a una etapa por
+            elaboración de {data.projectNumber} proyectos correspondiendo a una
+            etapa por
           </Text>
           <Text style={[styles.text]}>expediente.</Text>
           <Text>&nbsp;</Text>
           <Text style={styles.subtitle}>
             CLAUSULA TERCERA: CARÁCTER Y FORMA DE PRESTAR EL SERVICIO
           </Text>
-          <Text style={styles.text}>Responsable de elaborar 04 proyectos</Text>
+          <Text style={styles.text}>
+            Responsable de elaborar {data.projectNumber} proyectos
+          </Text>
           <Text style={styles.text}>
             <Text style={styles.textBold}>El CONTRATISTA,</Text> Tendrá que
             someterse al cumplimiento estricto de la labor, para la cual ha sido
@@ -407,8 +411,8 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
           </Text>
           <Text style={styles.text}>
             El CONTRATISTA tiene un plazo de ejecución del contrato en un plazo
-            de 4 MESES para la entrega del servicio profesional contratado este
-            plazo puede ser ajustados al
+            de {data.month} MESES para la entrega del servicio profesional
+            contratado este plazo puede ser ajustados al
             <Text style={styles.textBold}> programa de trabajos </Text>
             para la aprobación y la obtención{' '}
             <Text style={styles.textBold}> APTO Y/O LA APROBACIÓN </Text>y/o la

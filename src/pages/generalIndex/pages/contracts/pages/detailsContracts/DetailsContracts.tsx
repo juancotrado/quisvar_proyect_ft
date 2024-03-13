@@ -362,7 +362,10 @@ export const DetailsContracts = () => {
                   />
                 ))}
               </div>
-              <span onClick={addNewInput} className="detailsContracts-add-span">
+              <span
+                onClick={addNewInput}
+                className="detailsContracts-add-span "
+              >
                 Añadir nuevo plazo
               </span>
               <Button

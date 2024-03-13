@@ -122,6 +122,9 @@
   color: var(--color-primary);
   font-weight: 500;
 }
+.detailsContracts-add-span-color-2 {
+  color: var(--color-secondary);
+}
 .detailsContracts-text-title {
   font-size: 0.7rem;
   font-weight: 600;

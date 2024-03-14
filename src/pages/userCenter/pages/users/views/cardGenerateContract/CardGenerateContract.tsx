@@ -66,7 +66,7 @@ const CardGenerateContract = ({ user }: CardGenerateContractProps) => {
           valueAsNumber: true,
         })}
         type="number"
-        placeholder="Numbero de proyecto"
+        placeholder="Número de proyecto"
         className="generalData-edit-info-input"
       />
 

@@ -25,7 +25,6 @@ const ContractRowPhase = ({
   const [paysData, setPaysData] = useState<PayData[]>(phaseData.payData ?? []);
 
   const addPay = (pay: PayData) => {
-    console.log(pay);
     const updatePhase = paysData.map(payData => {
       if (payData.id === pay.id) return pay;
       return payData;
@@ -48,6 +47,9 @@ const ContractRowPhase = ({
   };
   const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
+    if (name === 'days') {
+      console.log(phaseData);
+    }
     const values = {
       ...phaseData,
       [name]: name === 'isActive' ? value === 'on' : value,
@@ -68,12 +70,16 @@ const ContractRowPhase = ({
           onClick={handleDelete}
         />
         <span className="contractRowPhase-text">
+          <img
+            src="/svg/down.svg"
+            className={`contractRowPhase-dropdown-arrow `}
+          />
+          {index}
           <input
             type="checkbox"
             className="contractRowPhase-dropdown-check"
             defaultChecked={false}
           />
-          {index}
         </span>
         <Input
           type="text"
@@ -94,17 +100,22 @@ const ContractRowPhase = ({
         </div>
       </div>
       <div className="contractRowPhase-dropdown-content">
-        {paysData.map((payData, i) => (
-          <ContractRowPay
-            key={payData.id}
-            addPay={addPay}
-            deletePay={deletePay}
-            payData={payData}
-            index={i + 1}
-          />
-        ))}
+        <ul className="contractRowPhase-dropdown-sub">
+          {paysData.map((payData, i) => (
+            <ContractRowPay
+              key={payData.id}
+              addPay={addPay}
+              deletePay={deletePay}
+              payData={payData}
+              index={i + 1}
+            />
+          ))}
+        </ul>
       </div>
-      <span onClick={addNewInput} className="detailsContracts-add-span">
+      <span
+        onClick={addNewInput}
+        className="detailsContracts-add-span detailsContracts-add-span-color-2"
+      >
         Añadir nuevo pago
       </span>
     </>

@@ -11,6 +11,7 @@ interface IconActionProps {
   top?: number;
   icon: string;
   position?: 'none' | 'auto';
+  zIndex?: number;
 }
 const IconAction = ({
   onClick,
@@ -22,6 +23,7 @@ const IconAction = ({
   top,
   icon,
   position,
+  zIndex,
 }: IconActionProps) => {
   const style: CSSProperties = {
     width: `${size}rem`,
@@ -30,6 +32,7 @@ const IconAction = ({
     right: `${right}rem`,
     top: `${top}rem`,
     bottom: `${bottom}rem`,
+    zIndex,
   };
   return (
     <figure

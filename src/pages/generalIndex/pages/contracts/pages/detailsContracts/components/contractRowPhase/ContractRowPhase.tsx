@@ -2,7 +2,11 @@ import { FocusEvent, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import './contractRowPhase.css';
 import { INIT_VALUES_PAY, PayData, PhaseData } from '../../models';
-import { CloseIcon, Input } from '../../../../../../../../components';
+import {
+  CloseIcon,
+  IconAction,
+  Input,
+} from '../../../../../../../../components';
 import ContractRowPay from '../contractRowPay/ContractRowPay';
 import { SnackbarUtilities } from '../../../../../../../../utils';
 import { ContractIndexData } from '../../../../../../../../types';
@@ -45,7 +49,9 @@ const ContractRowPhase = ({
     const newPay = [...paysData, { ...INIT_VALUES_PAY, id: uuidv4() }];
     setPaysData(newPay);
   };
-  const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
+  const handleBlur = (
+    e: FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     if (name === 'days') {
       console.log(phaseData);
@@ -62,10 +68,11 @@ const ContractRowPhase = ({
   return (
     <>
       <div className="detailsContracts-phase-ejecution-row contractRowPhase-row">
-        <CloseIcon
+        <IconAction
+          icon="trash-red"
           size={0.8}
           right={0}
-          top={0}
+          top={0.5}
           className="contractRowPhase-close"
           onClick={handleDelete}
         />
@@ -83,16 +90,24 @@ const ContractRowPhase = ({
         </span>
         <Input
           type="text"
-          styleInput={2}
+          styleInput={3}
           name="name"
           defaultValue={phaseData.name}
+          onBlur={handleBlur}
+        />
+        <textarea
+          name="description"
+          rows={3}
+          className="input-main-style-2_1"
+          style={{ resize: 'vertical' }}
+          defaultValue={phaseData.description}
           onBlur={handleBlur}
         />
         <div className="contractRowPhase-input-day">
           <Input
             type="text"
             name="days"
-            styleInput={2}
+            styleInput={3}
             defaultValue={phaseData.days}
             onBlur={handleBlur}
           />
@@ -110,14 +125,14 @@ const ContractRowPhase = ({
               index={i + 1}
             />
           ))}
+          <span
+            onClick={addNewInput}
+            className="detailsContracts-add-span detailsContracts-add-span-color-2"
+          >
+            Añadir nuevo pago
+          </span>
         </ul>
       </div>
-      <span
-        onClick={addNewInput}
-        className="detailsContracts-add-span detailsContracts-add-span-color-2"
-      >
-        Añadir nuevo pago
-      </span>
     </>
   );
 };

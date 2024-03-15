@@ -23,7 +23,7 @@ export const getStatusColor = (
   phase: PhaseData,
   uploadDate: Date
 ) => {
-  const dayPhase = phase?.days ?? 0;
+  const dayPhase = phase?.realDay ?? 0;
   const contractSigningDate = new Date(createdAt);
   const actualDate = new Date(uploadDate);
   contractSigningDate.setDate(

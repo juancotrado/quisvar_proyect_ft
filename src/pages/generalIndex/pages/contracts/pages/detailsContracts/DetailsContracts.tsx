@@ -27,6 +27,9 @@ import { getStatusColor } from '../../utils';
 export const DetailsContracts = () => {
   const [textareaValue, setTextareaValue] = useState<string | null>(null);
   const contract = useSelector((state: RootState) => state.contract);
+  const [isIndependent, setIsIndependent] = useState<boolean>(
+    !!contract?.isIndependent
+  );
   const [dataPhases, setDataPhases] = useState<PhaseData[]>([]);
   const [viewTableEjecution, setViewTableEjecution] = useState(true);
   const [params, setParams] = useSearchParams();
@@ -48,12 +51,19 @@ export const DetailsContracts = () => {
 
   useEffect(() => {
     if (contract) {
-      const { phases } = contract;
-      const convertPhases = JSON.parse(phases);
-      setDataPhases(convertPhases);
+      setPhases();
     }
   }, [contract]);
 
+  const handleIsIndependent = () => {
+    setIsIndependent(!isIndependent);
+  };
+
+  const setPhases = () => {
+    const { phases } = contract;
+    const convertPhases = JSON.parse(phases);
+    setDataPhases(convertPhases);
+  };
   const toglePhase = (type: ContractPhases) => {
     setContractPhase(type);
   };
@@ -108,6 +118,7 @@ export const DetailsContracts = () => {
     setTextareaValue(value);
   };
   const handleViewEjecution = () => {
+    setPhases();
     setViewTableEjecution(!viewTableEjecution);
   };
   const deletePhase = (id: string) => {
@@ -129,13 +140,19 @@ export const DetailsContracts = () => {
   };
   const statusPhase = (id: string) => {
     const phaseLevel = contractIndex.at(1)?.nextLevel?.[1].nextLevel;
-
+    const hasNotFiles = phaseLevel?.every(phase => phase.hasFile === 'no');
     const dataPhasesWithStatus = phaseLevel?.map((phase, i) => {
       const statusTime = getStatusColor(
         contract.createdAt,
         dataPhases[i],
         phase.uploadDate ?? new Date()
       );
+      if (i === 0 && hasNotFiles && contract.createdAt) {
+        return {
+          ...dataPhases[i],
+          status: statusTime,
+        };
+      }
       let status = 'black';
       if (phaseLevel[i - 1]?.hasFile === 'yes') {
         status = statusTime;
@@ -166,8 +183,25 @@ export const DetailsContracts = () => {
     setDataPhases(newPhase);
   };
   const savePhases = async () => {
-    const phases = JSON.stringify(dataPhases);
-    await axiosInstance.put(`/contract/${contract.id}/phases`, { phases });
+    // console.log(dataPhases);
+    // return;
+    const phasesWithRealDay = dataPhases.map((el, index) => {
+      let realDay = el.days;
+      if (isIndependent) {
+        realDay = dataPhases
+          .slice(0, index + 1)
+          .reduce((acc, curr) => +curr.days + acc, 0);
+      }
+      return {
+        ...el,
+        realDay,
+      };
+    });
+    const phases = JSON.stringify(phasesWithRealDay);
+    await axiosInstance.put(
+      `/contract/${contract.id}/phases/${isIndependent ? 'yes' : 'no'}`,
+      { phases }
+    );
     await updateContractIndex();
     params.set('savePhase', String(new Date().getTime()));
     setParams(params);
@@ -254,12 +288,25 @@ export const DetailsContracts = () => {
               onClick={handleDelete}
             />
           )}
+
           {contractPhase === 'ejecutionPhase' && (
-            <Button
-              className="detailsContracts-btn detailsContracts-btn-red"
-              text={viewTableEjecution ? 'Editar' : 'Ver Tabla'}
-              onClick={handleViewEjecution}
-            />
+            <>
+              {!viewTableEjecution && (
+                <p
+                  onClick={handleIsIndependent}
+                  className="detailsContracts-type-phase"
+                >
+                  {isIndependent
+                    ? 'Plazos independiente'
+                    : 'Plazos acumulativo'}
+                </p>
+              )}
+              <Button
+                className="detailsContracts-btn detailsContracts-btn-red"
+                text={viewTableEjecution ? 'Editar' : 'Ver Tabla'}
+                onClick={handleViewEjecution}
+              />
+            </>
           )}
         </div>
         {contractPhase === 'convocationPhase' && (
@@ -312,39 +359,42 @@ export const DetailsContracts = () => {
               <ContractRowSchedule
                 data={{
                   1: { value: 'Entregable', fr: '1fr' },
-                  2: { value: 'Descripción', fr: '2fr' },
-                  3: { value: 'Plazo', fr: '1fr' },
-                  4: { value: 'Fecha limite', fr: '1fr' },
-                  5: { value: 'Carta de pago', fr: '1fr' },
+                  2: { value: 'Nombre', fr: '1fr' },
+                  3: { value: 'Descripción', fr: '2fr' },
+                  4: { value: 'Plazo', fr: '1fr' },
+                  5: { value: 'Fecha limite', fr: '1fr' },
                 }}
                 isHeader
               />
-              {dataPhases.map(({ days, name, isActive, id, payData }, i) => (
-                <ContractRowSchedule
-                  key={id}
-                  data={{
-                    1: { value: String(i + 1), fr: '1fr' },
-                    2: { value: name, fr: '2fr' },
-                    3: { value: `${days} dias `, fr: '1fr' },
-                    4: {
-                      value: moment(contract.createdAt)
-                        .add(days, 'days')
-                        .format('DD-MM-YYYY'),
-                      fr: '1fr',
-                    },
-                    5: { value: isActive ? '✅' : '', fr: '1fr' },
-                  }}
-                  statusPhase={() => statusPhase(id)}
-                  hasFileInPay={hasFileInPay}
-                  extraData={payData}
-                />
-              ))}
+              {dataPhases.map(
+                ({ realDay, name, description, id, payData }, i) => (
+                  <ContractRowSchedule
+                    key={id}
+                    data={{
+                      1: { value: String(i + 1), fr: '1fr' },
+                      2: { value: name, fr: '1fr' },
+                      3: { value: description, fr: '2fr' },
+                      4: { value: `${realDay} dias `, fr: '1fr' },
+                      5: {
+                        value: moment(contract.createdAt)
+                          .add(realDay, 'days')
+                          .format('DD-MM-YYYY'),
+                        fr: '1fr',
+                      },
+                    }}
+                    statusPhase={() => statusPhase(id)}
+                    hasFileInPay={hasFileInPay}
+                    extraData={payData}
+                  />
+                )
+              )}
               <div className="detailsContracts-row-container" />
             </div>
           ) : (
             <div className="detailsContracts-phase-ejecution-data">
               <div className="detailsContracts-phase-ejecution-row">
                 <span className="detailsContracts-text-title">Entregable</span>
+                <span className="detailsContracts-text-title">Nombre</span>
                 <span className="detailsContracts-text-title">Descripcion</span>
                 <span className="detailsContracts-text-title">
                   Plazo de presentación

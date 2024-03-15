@@ -109,10 +109,18 @@
   width: 90%;
 }
 .detailsContracts-phase-ejecution-row {
+  border-top: 1px solid rgb(220, 228, 241);
   width: 100%;
   display: grid;
-  grid-template-columns: 1fr 3fr 2fr;
+  padding: 0.6rem 1rem;
+  grid-template-columns: 1fr 2fr 3fr 1fr;
   gap: 0.2rem;
+}
+.detailsContracts-type-phase {
+  cursor: pointer;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--color-primary);
 }
 .detailsContracts-add-span {
   cursor: pointer;
@@ -126,8 +134,8 @@
   color: var(--color-secondary);
 }
 .detailsContracts-text-title {
-  font-size: 0.7rem;
-  font-weight: 600;
+  font-size: 0.6rem;
+  font-weight: 700;
 }
 .detailsContracts-phases {
   display: flex;

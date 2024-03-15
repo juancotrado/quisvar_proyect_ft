@@ -13,6 +13,7 @@ export const CONTACT_PHASES_TITLE: ContractPhasesTitle[] = [
 
 export const INIT_VALUES_PHASE: PhaseData = {
   name: '',
+  description: '',
   days: 0,
   isActive: false,
   id: '0',
@@ -20,6 +21,7 @@ export const INIT_VALUES_PHASE: PhaseData = {
 };
 export const INIT_VALUES_PAY: PayData = {
   id: '0',
+  name: '',
   description: '',
   percentage: 0,
   amount: 0,

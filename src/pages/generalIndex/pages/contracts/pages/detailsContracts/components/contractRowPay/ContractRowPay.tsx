@@ -1,5 +1,9 @@
 import { FocusEvent } from 'react';
-import { CloseIcon, Input } from '../../../../../../../../components';
+import {
+  CloseIcon,
+  IconAction,
+  Input,
+} from '../../../../../../../../components';
 import { PayData } from '../../models';
 import './contractRowPay.css';
 import { useSelector } from 'react-redux';
@@ -20,7 +24,9 @@ const ContractRowPay = ({
 }: ContractRowPayProps) => {
   const contract = useSelector((state: RootState) => state.contract);
 
-  const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
+  const handleBlur = (
+    e: FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     const values = {
       ...payData,
@@ -36,10 +42,11 @@ const ContractRowPay = ({
   };
   return (
     <div className="contractRowPay-row">
-      <CloseIcon
+      <IconAction
+        icon="trash-red"
         size={0.8}
         right={0}
-        top={0}
+        top={0.1}
         className="contractRowPhase-close"
         onClick={handleDelete}
         zIndex={2}
@@ -47,17 +54,27 @@ const ContractRowPay = ({
       <span className="contractRowPhase-text">C. Pago: {index}</span>
       <Input
         type="text"
-        styleInput={2}
-        placeholder="Descripcion"
+        styleInput={3}
+        placeholder="nombre"
+        name="name"
+        defaultValue={payData.name}
+        onBlur={handleBlur}
+      />
+      <textarea
         name="description"
+        placeholder="descripcion"
+        rows={3}
+        className="input-main-style-2_1"
+        style={{ resize: 'vertical' }}
         defaultValue={payData.description}
         onBlur={handleBlur}
       />
       <div className="contractRowPay-input-percentage">
         <Input
           type="text"
+          placeholder="0%"
           name="percentage"
-          styleInput={2}
+          styleInput={3}
           defaultValue={payData.percentage}
           onBlur={handleBlur}
         />
@@ -65,7 +82,7 @@ const ContractRowPay = ({
       </div>
       <Input
         type="text"
-        styleInput={2}
+        styleInput={3}
         name="amount"
         placeholder="Monto"
         value={payData.amount}

@@ -49,17 +49,17 @@ const CardGenerateContract = ({ user }: CardGenerateContractProps) => {
         placeholder="Fecha"
         className="generalData-edit-info-input"
       />
-      <h4 className="cardGenerateContract-subtitle">Mes:</h4>
+      <h4 className="cardGenerateContract-subtitle">Número de meses:</h4>
 
       <Input
         {...register('month', {
           valueAsNumber: true,
         })}
         type="number"
-        placeholder="Mes"
+        placeholder="Meses"
         className="generalData-edit-info-input"
       />
-      <h4 className="cardGenerateContract-subtitle">Numero de proyectos:</h4>
+      <h4 className="cardGenerateContract-subtitle">Número de proyectos:</h4>
 
       <Input
         {...register('projectNumber', {

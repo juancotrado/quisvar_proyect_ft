@@ -66,11 +66,24 @@ const CarRegisterSwornDeclaration = ({
         </div>
       </div>
       <h4 className="card-register-sworn-declaration-subtitle">Fecha</h4>
+
       <input
-        type="text"
-        {...register('declarationDate')}
-        name="declarationDate"
-        placeholder="03 de Enero del 2023"
+        {...register('declarationDate', {
+          valueAsDate: true,
+        })}
+        type="date"
+        placeholder="Fecha"
+        className="generalData-edit-info-input"
+      />
+      <h4 className="card-register-sworn-declaration-subtitle">
+        Número de meses
+      </h4>
+      <input
+        type="number"
+        {...register('declarationMonths')}
+        name="declarationMonths"
+        placeholder="4"
+        className="generalData-edit-info-input"
       />
       <h4 className="card-register-sworn-declaration-subtitle">
         Seleccionar directivas

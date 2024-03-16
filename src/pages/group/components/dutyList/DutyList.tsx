@@ -1,6 +1,6 @@
-import { ChangeEvent, useEffect, useState } from 'react';
-import { Duty, GroupAttendanceRes } from '../../types';
-import { URL } from '../../../../services/axiosInstance';
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { Duty, DutyMember, GroupAttendanceRes, ProjectList } from '../../types';
+// import { URL } from '../../../../services/axiosInstance';
 import './dutyList.css';
 import {
   Button,
@@ -9,7 +9,15 @@ import {
   UploadFileInput,
 } from '../../../../components';
 import { axiosInstance } from '../../../../services/axiosInstance';
-import { normalizeFileName } from '../../../../utils';
+import { _date } from '../../../../utils';
+import { Members } from './members';
+import { SubmitHandler, useForm } from 'react-hook-form';
+// import { axiosInstance } from '../../../../services/axiosInstance';
+// import { normalizeFileName } from '../../../../utils';
+interface Comments {
+  feedback?: string;
+  asitec?: string;
+}
 interface DutyListProps {
   groupUsers: GroupAttendanceRes[];
   idList?: number;
@@ -18,279 +26,164 @@ interface DutyListProps {
   isToday?: boolean;
   file?: string;
 }
-type sendData = {
-  fullName: string;
-  description: string;
-  untilDate: string;
-  listId?: number;
-};
 const DutyList = ({
   groupUsers,
   idList,
   onSave,
   hasDuty,
-  isToday,
-  file,
-}: DutyListProps) => {
-  // console.log(groupUsers)
-  const data = groupUsers.map(({ user, description }) => {
-    return {
-      fullName: user.profile.firstName + ' ' + user.profile.lastName,
-      description: description,
-      untilDate: '',
-      listId: idList,
-    };
-  });
+}: // isToday,
+// file,
+DutyListProps) => {
+  const [projectList, setProjectList] = useState<ProjectList[]>();
+  const [searchTerm, setSearchTerm] = useState('');
+  const [editMember, setEditMember] = useState<DutyMember[]>([]);
+  const [dutyId, setDutyId] = useState<number>();
+  const [index, setIndex] = useState<number>();
+  const [dutyItem, setDutyItem] = useState<Duty>();
+  const {
+    register,
+    handleSubmit,
+    //setValue,
+    reset,
+    // watch,
+    // formState: { errors },
+  } = useForm<Comments[]>();
+  const projects = useCallback(() => {
+    axiosInstance.get('duty/projects').then(res => setProjectList(res.data));
+  }, []);
+
   useEffect(() => {
-    // console.log(hasDuty)
-    setEdit(false);
-    if (hasDuty?.length === 0) {
-      setItems(data);
-    } else {
-      setItemsEdit(hasDuty as Duty[]);
-    }
+    projects();
   }, [idList]);
-  const [items, setItems] = useState<sendData[]>([]);
-  const [itemsEdit, setItemsEdit] = useState<Duty[]>([]);
-  const [edit, setEdit] = useState<boolean>(false);
-
-  const handleInputChange = (index: number, field: string, value: string) => {
-    const updatedItems = [...items];
-    updatedItems[index] = {
-      ...updatedItems[index],
-      [field]: value,
-    };
-    setItems(updatedItems);
-  };
-  const handleInputEdit = (index: number, field: string, value: string) => {
-    const editItems = [...itemsEdit];
-    editItems[index] = {
-      ...editItems[index],
-      [field]: value,
-    };
-    setItemsEdit(editItems);
-  };
-  const handleAddRow = () => {
-    setItems([
-      ...items,
-      { fullName: '', description: '', untilDate: '', listId: idList },
-    ]);
-  };
-
-  const handleDeleteRow = (index: number) => {
-    const updatedItems = items.filter((_, i) => i !== index);
-    setItems(updatedItems);
-  };
-  const handleSubmit = () => {
-    // console.log(items)
-    axiosInstance.post(`/duty`, items).then(() => {
-      onSave();
+  useEffect(() => {
+    const resetData = hasDuty?.map(item => {
+      return {
+        feedback: item.feedback || '',
+        asitec: item.asitec || '',
+      };
     });
+    if (resetData) {
+      reset({ ...resetData });
+    }
+  }, [hasDuty, reset]);
+  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
+    setSearchTerm(event.target.value);
   };
-  const formattedDate = (value: string) => {
-    return value.split('T')[0];
-  };
-  const handleUpdate = () => {
-    axiosInstance.patch(`/duty/items`, itemsEdit).then(() => {
-      onSave();
-    });
-  };
-  const handleFileUpload = (e: ChangeEvent<HTMLInputElement>) => {
-    const pdf = e.target.files?.[0];
-    console.log(pdf);
-    const formData = new FormData();
-    formData.append('file', pdf ?? '');
-    const headers = {
-      'Content-type': 'multipart/form-data',
+  const filter = useMemo(() => {
+    if (searchTerm === '') return [];
+    return projectList?.filter(value => value.cui.startsWith(searchTerm));
+  }, [searchTerm]);
+  const addProject = () => {
+    if (!searchTerm) return;
+    const data = {
+      CUI: filter?.[0].cui,
+      project: filter?.[0].projectName,
+      listId: idList,
+      members: groupUsers.map(({ user }) => {
+        return {
+          fullName: user.profile.firstName + ' ' + user.profile.lastName,
+          status: 'NO APTO',
+        };
+      }),
     };
-    axiosInstance
-      .patch(`/attendanceGroup/file/${idList}`, formData, { headers })
-      .then(() => {
-        onSave?.();
-      });
+    axiosInstance.post(`duty/`, data).then(() => onSave?.());
+    // console.log(data)
+  };
+  const onSubmit: SubmitHandler<Comments[]> = async values => {
+    // console.log(values);
+    const { CUI, listId, project } = dutyItem as Duty;
+    const data = {
+      CUI,
+      project,
+      asitec: values[index as number].asitec,
+      feedback: values[index as number].feedback,
+      listId,
+      members: editMember,
+    };
+    // console.log(data);
+    axiosInstance.patch(`duty/items/${dutyId}`, data).then(() => onSave?.());
   };
   return (
     <div className="dl-content">
-      <div className="dl-header">
-        <h1 className="dl-title dl-center">#</h1>
-        <h1 className="dl-title">PARTICIPANTE</h1>
-        <h1 className="dl-title">COMPROMISO DIARIO</h1>
-        <h1 className="dl-title dl-center">FECHA LIMITE</h1>
-      </div>
-      {isToday &&
-        hasDuty &&
-        hasDuty?.length === 0 &&
-        items &&
-        items.map((item, idx) => {
-          // console.log(item)
-          return (
-            <div className="dl-body" key={idx}>
-              <h1 className="dl-list dl-center">{idx + 1}</h1>
-              {groupUsers.length > idx ? (
-                <h1 className="dl-list">{item.fullName}</h1>
-              ) : (
-                <input
-                  type="text"
-                  className="dl-list"
-                  value={item.fullName}
-                  onChange={e =>
-                    handleInputChange(idx, 'fullName', e.target.value)
-                  }
-                />
-              )}
-              <input
-                type="text"
-                className="dl-list"
-                value={item.description}
-                onChange={e =>
-                  handleInputChange(idx, 'description', e.target.value)
-                }
-              />
-              <Input
-                type="date"
-                classNameMain="dl-list"
-                className=""
-                value={item.untilDate}
-                required
-                onChange={e =>
-                  handleInputChange(idx, 'untilDate', e.target.value)
-                }
-              />
-              {groupUsers.length <= idx && (
-                <span
-                  className="dl-delete-btn"
-                  onClick={() => handleDeleteRow(idx)}
-                >
-                  x
-                </span>
-              )}
-            </div>
-          );
-        })}
-      {hasDuty &&
-        hasDuty?.length > 0 &&
-        itemsEdit.map((item, idx) => (
-          <div className="dl-body" key={item.id}>
-            <h1 className="dl-list dl-center">{idx + 1}</h1>
-            {/* <h1 className="dl-list">{item.fullName}</h1> */}
-            {/* {item.fullName ? (
-              <h1 className="dl-list">{item.fullName}</h1>
-            ) : (
-              <input
-                type="text"
-                className="dl-list"
-                value={item.description}
-                onChange={e =>
-                  handleInputChange(idx, 'fullName', e.target.value)
-                }
-              />
-            )} */}
-            <input
-              type="text"
-              className="dl-list"
-              value={item.fullName}
-              disabled={!edit}
-              onChange={e => handleInputEdit(idx, 'fullName', e.target.value)}
-            />
-            <input
-              type="text"
-              className="dl-list"
-              defaultValue={item.description}
-              disabled={!edit}
-              onChange={e =>
-                handleInputEdit(idx, 'description', e.target.value)
-              }
-              // onBlur={e => console.log(e.target.value)}
-            />
-            <Input
-              type="date"
-              classNameMain="dl-list"
-              className=""
-              value={formattedDate(item.untilDate as string)}
-              onChange={e => handleInputEdit(idx, 'untilDate', e.target.value)}
-              disabled={!edit}
-              required
-            />
-            {groupUsers.length <= idx && !hasDuty && (
-              <span
-                className="dl-delete-btn"
-                onClick={() => handleDeleteRow(idx)}
-              >
-                x
-              </span>
-            )}
-          </div>
-        ))}
-      {isToday && hasDuty?.length === 0 && (
-        <div className="dl-btns">
-          <Button
-            text="GUARDAR"
-            className="attendance-add-btn"
-            onClick={handleSubmit}
-            type="submit"
-          />
-          <Button
-            text="AÑADIR"
-            className="attendance-add-btn"
-            onClick={handleAddRow}
-          />
-        </div>
-      )}
       {hasDuty && hasDuty?.length > 0 && (
-        <div className="dl-btns">
-          {edit ? (
-            <>
-              <Button
-                text="Cancelar"
-                className="attendance-add-btn"
-                onClick={() => setEdit(false)}
-                style={{ backgroundColor: 'red' }}
-              />
-              <Button
-                text="Actualizar"
-                className="attendance-add-btn"
-                style={{ backgroundColor: 'green' }}
-                onClick={handleUpdate}
-              />
-            </>
-          ) : (
-            <Button
-              text="Editar"
-              className="attendance-add-btn"
-              onClick={() => setEdit(true)}
-            />
-          )}
-        </div>
+        <>
+          <div className="dl-header">
+            <h1 className="dl-title dl-center">#</h1>
+            <h1 className="dl-title">CUI</h1>
+            <h1 className="dl-title">PROYECTO</h1>
+            <h1 className="dl-title dl-center">ESTUDIO BASICOS</h1>
+            <h1 className="dl-title dl-center">eNCARGADO</h1>
+            <h1 className="dl-title dl-center">AVANCE</h1>
+            <h1 className="dl-title">ULTIMA VIDEO CONFERENCIA</h1>
+            <h1 className="dl-title">VIDEO CONFERENCIA PROGRAMADA</h1>
+            <h1 className="dl-title">SITUACION</h1>
+            <h1 className="dl-title">PETICIONES</h1>
+            <h1 className="dl-title">OBSERVACIONES</h1>
+            <h1 className="dl-title">Asitec</h1>
+          </div>
+          {hasDuty.map((item, idx) => {
+            // console.log(item.feedback);
+            return (
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                key={item.id}
+                className="dl-form"
+              >
+                <div className="dl-body">
+                  <div className="dl-list right-border">{idx + 1}</div>
+                  <div className="dl-list right-border">{item.CUI}</div>
+                  <div className="dl-list right-border">{item.project}</div>
+                  <Members
+                    members={item.members}
+                    dutyId={item.id}
+                    onSave={onSave}
+                    editMember={setEditMember}
+                  />
+                  {/* <input className="dl-list" defaultValue={item.feedback} onBlur={e => setFeedback(e.target.value)}/>
+                <input className="dl-list" defaultValue={item.asitec} onBlur={e => setAsitec(e.target.value)}/> */}
+                  <input
+                    {...register(`${idx}.feedback`)}
+                    className="dl-list right-border"
+                    // defaultValue={item.feedback}
+                  />
+                  <input
+                    {...register(`${idx}.asitec`)}
+                    className="dl-list"
+                    // defaultValue={item.asitec}
+                  />
+                </div>
+                <Button
+                  onClick={() => {
+                    setDutyId(item.id);
+                    setDutyItem(item);
+                    setIndex(idx);
+                  }}
+                  type="submit"
+                  text="Guardar"
+                  icon="save"
+                  className="dl-save-btn"
+                />
+              </form>
+            );
+          })}
+        </>
       )}
-      <div className="divider"></div>
-
-      {!file ? (
-        <UploadFileInput
-          name="Cargar Acta Firmada"
-          subName="O arrastre y suelte el archivo aquí"
-          accept="application/pdf"
-          onChange={handleFileUpload}
+      <div>
+        <Input
+          type="text"
+          placeholder="CUI"
+          label="Buscar CUI de proyecto"
+          onChange={handleSearchChange}
+          value={searchTerm}
         />
-      ) : (
-        <div className="cc-img-area">
-          <a
-            className="cc-img-title"
-            target="_blank"
-            href={`${URL}/file-user/groups/daily/${file}`}
-          >
-            {normalizeFileName(file)}
-          </a>
-          <ButtonDelete
-            icon="trash"
-            className="role-delete-icon"
-            url={`/attendanceGroup/file/${idList}`}
-            type="button"
-            onSave={() => {
-              onSave?.();
-            }}
-          />
-        </div>
-      )}
+        {filter?.[0] && <h5>{filter?.[0].projectName}</h5>}
+        <Button
+          onClick={addProject}
+          text="Agregar"
+          icon="add2"
+          className="dl-add-btn"
+        />
+      </div>
     </div>
   );
 };

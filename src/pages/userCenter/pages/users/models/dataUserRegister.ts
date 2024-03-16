@@ -57,6 +57,23 @@ export const GENDER = [
     abrv: 'F',
   },
 ];
+export const PROJECT_STATUS = [
+  {
+    id: 0,
+    value: 'APTO',
+    color: 'Green',
+  },
+  {
+    id: 1,
+    value: 'NO APTO',
+    color: 'Red',
+  },
+  {
+    id: 2,
+    value: 'EN REVISION',
+    color: 'Yellow',
+  },
+];
 export const DEGREE_DATA = [
   {
     id: 0,

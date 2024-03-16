@@ -7,3 +7,8 @@ export type PdfInfoProps = {
   mod?: string;
   createdAt?: string;
 };
+export type ProjectList = {
+  id: number;
+  cui: string;
+  projectName?: string;
+};

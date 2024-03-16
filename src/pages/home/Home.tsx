@@ -132,9 +132,19 @@ export const Home = () => {
   return (
     <div className="home">
       <h1 className="home-title">
-        BIENVENID@{' '}
-        <span className="title-content-span">{profile.firstName}</span>
+        {profile.gender === 'F' ? (
+          <>
+            BIENVENIDA{' '}
+            <span className="title-content-span">{profile.firstName}</span>
+          </>
+        ) : (
+          <>
+            BIENVENIDO{' '}
+            <span className="title-content-span">{profile.firstName}</span>
+          </>
+        )}
       </h1>
+
       <p className="paragraph">
         ¡Bienvenido a nuestro sistema de asignación de tareas! Aquí podrás
         asignar y gestionar tareas de manera eficiente en tan solo unos pocos

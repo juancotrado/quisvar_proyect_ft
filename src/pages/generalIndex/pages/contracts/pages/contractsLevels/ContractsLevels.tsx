@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { Contract, ContractIndexData } from '../../../../../../types';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
-import { Outlet, useParams } from 'react-router-dom';
+import { Outlet, useParams, useSearchParams } from 'react-router-dom';
 import { AppDispatch, RootState } from '../../../../../../store';
 import { useDispatch, useSelector } from 'react-redux';
 import { getContractThunks } from '../../../../../../store/slices/contract.slice';
@@ -10,6 +10,7 @@ import { DropdownLevelContract } from './components';
 
 export const ContractsLevels = () => {
   const dispatch: AppDispatch = useDispatch();
+  const [params, setParams] = useSearchParams();
 
   const contract = useSelector((state: RootState) => state.contract);
   const { contractId } = useParams();
@@ -57,7 +58,11 @@ export const ContractsLevels = () => {
     const indexContract = JSON.stringify(contractIndex);
     axiosInstance
       .put(`/contract/${contract.id}/index`, { indexContract })
-      .then(() => getContract());
+      .then(() => {
+        params.set('savePhase', String(new Date().getTime()));
+        setParams(params);
+        getContract();
+      });
   };
   return contract ? (
     <>

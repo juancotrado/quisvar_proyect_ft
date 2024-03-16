@@ -16,6 +16,7 @@ interface InputTextProps extends InputHTMLAttributes<HTMLInputElement> {
   type?: string;
   disabled?: boolean;
   classNameMain?: string;
+  className?: string;
   errors?: { [key: string]: any };
   errorPosX?: number;
   errorPosY?: number;
@@ -39,6 +40,7 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
       classNameMain,
       handleSearch,
       styleInput = 1,
+      className,
       ...props
     },
     ref
@@ -68,7 +70,7 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
           <input
             name={name}
             id={name}
-            className={`${STYLE_INPUT[styleInput]} ${
+            className={` ${STYLE_INPUT[styleInput]} ${
               errors && name && errors[name] && 'input-area-error'
             } ${disabled && 'input-disabled'} ${
               (type == 'password' || handleSearch) && 'input-pading-right'

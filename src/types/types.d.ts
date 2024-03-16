@@ -348,6 +348,7 @@ interface Contract extends ContractForm {
   number: number;
   companyId: number | null;
   consortiumId: number | null;
+  isIndependent: boolean;
   details: string | null;
   phases: string;
 }

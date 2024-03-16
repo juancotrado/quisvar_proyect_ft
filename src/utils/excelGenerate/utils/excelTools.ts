@@ -15,9 +15,24 @@ interface formatExcelStyleProp {
   positions: string;
   format: string;
 }
-interface borderExcelStyleProp {
-  row: ExcelJS.Row;
+interface mergeCellRange {
+  wk: ExcelJS.Worksheet;
   positions: string;
+  rowNumber: number;
+  rowNumber2?: number;
+}
+interface BorderExcelStyleWithNumber {
+  row: ExcelJS.Row;
+  initPosition: number;
+  finishPosition: number;
+  border: Partial<ExcelJS.Borders>;
+  counter?: number;
+}
+interface FillContractStyleWithNumber {
+  row: ExcelJS.Row;
+  initPosition: number;
+  arrColor: string[][];
+  counter?: number;
 }
 export const fillRows = (
   row: ExcelJS.Row,
@@ -205,14 +220,86 @@ export const formatExcelStyle = ({
     row.getCell(pos).numFmt = format;
   });
 };
-export const borderExcelStyle = ({ row, positions }: borderExcelStyleProp) => {
+export const formatExcelStyleOtherSeparation = ({
+  row,
+  positions,
+  format,
+}: formatExcelStyleProp) => {
+  const splitPositions = positions.split(',');
+  splitPositions.forEach(pos => {
+    row.getCell(pos).numFmt = format;
+  });
+};
+
+export const mergeCellRange = ({
+  wk,
+  positions,
+  rowNumber,
+  rowNumber2,
+}: mergeCellRange) => {
   const splitPositions = positions.split('');
   splitPositions.forEach(pos => {
-    row.getCell(pos).border = {
-      top: { style: 'thin' },
-      bottom: { style: 'thin' },
-    };
+    wk.mergeCells(`${pos}${rowNumber}:${pos}${rowNumber2}`);
   });
+};
+export const mergeCellRangeWithRow = ({
+  wk,
+  positions,
+  rowNumber,
+}: mergeCellRange) => {
+  const splitPositions = positions.split(',');
+  splitPositions.forEach(pos => {
+    const [value1, value2] = pos.split('-');
+    wk.mergeCells(`${value1}${rowNumber}:${value2}${rowNumber}`);
+  });
+};
+
+export const borderExcelStyleWithNumber = ({
+  row,
+  initPosition,
+  finishPosition,
+  border,
+  counter = 1,
+}: BorderExcelStyleWithNumber) => {
+  for (let i = initPosition; i < finishPosition; i += counter) {
+    row.getCell(i).border = border;
+    if (counter) {
+      row.getCell(i + 1).border = border;
+    }
+  }
+};
+export const fillContractStyleWithNumber = ({
+  row,
+  initPosition,
+  arrColor,
+}: FillContractStyleWithNumber) => {
+  let j = 0;
+  for (let i = initPosition; i < arrColor.length * 3 + initPosition; i += 3) {
+    row.getCell(i).fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: arrColor[j][0] },
+    };
+    row.getCell(i + 1).fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: arrColor[j][1] },
+    };
+    j++;
+  }
+  // for (let i = initPosition; i < finishPosition; i += 3) {
+  //   const [color1, color2] = arrColor;
+  //   row.getCell(i).fill = {
+  //     type: 'pattern',
+  //     pattern: 'solid',
+  //     fgColor: { argb: color1 },
+  //   };
+  //   row.getCell(i + 1).fill = {
+  //     type: 'pattern',
+  //     pattern: 'solid',
+  //     fgColor: { argb: color2 },
+  //   };
+  // }
 };
 
 export const exportExcel = async (name: string, workbook: ExcelJS.Workbook) => {

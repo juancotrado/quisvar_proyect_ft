@@ -6,7 +6,7 @@ import { Contract } from '../../../../types';
 import { Outlet, useSearchParams } from 'react-router-dom';
 import { SidebarContractCard } from './components';
 import { CardRegisterContract } from './views';
-import { Select } from '../../../../components';
+import { IconAction, Select } from '../../../../components';
 import {
   CONTRACT_TYPE,
   INIT_VALUES_FILTER_CONTRACT,
@@ -15,6 +15,7 @@ import {
 import { FilterContract } from './models/type.contracts';
 import { YEAR_DATA } from '../../../specialities/models';
 import { getStatusContract } from './utils';
+import { excelContractReport } from './generateExcel';
 
 let initialContract: Contract[] = [];
 export const Contracts = () => {
@@ -69,10 +70,15 @@ export const Contracts = () => {
     setContracts(filterContracts);
   };
 
+  const handleReport = () => {
+    if (!contracts) return;
+    excelContractReport(contracts);
+  };
   return (
     <div className="contracts">
       <div className="contracts-sidebar">
         <h2 className="contracts-sidebar-tilte">14.CONTRATOS EN ACTIVIDAD</h2>
+        <IconAction icon="file-excel" onClick={handleReport} position="none" />
         <div className="contract-filters-contain">
           <Select
             value={filterContract.status}

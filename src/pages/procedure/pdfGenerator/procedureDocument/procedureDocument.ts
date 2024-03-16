@@ -34,8 +34,8 @@ const procedureDocument = ({
   const toPosition = toProfile.position;
 
   const data = [
-    { textOne: 'Para', textTwo: to, textThre: fromPosition },
-    { textOne: 'De', textTwo: from, textThre: toPosition },
+    { textOne: 'Para', textTwo: to, textThre: toPosition },
+    { textOne: 'De', textTwo: from, textThre: fromPosition },
     { textOne: 'Asunto', textTwo: subject },
     { textOne: 'Fecha', textTwo: formatDateShortSpanish() },
   ];

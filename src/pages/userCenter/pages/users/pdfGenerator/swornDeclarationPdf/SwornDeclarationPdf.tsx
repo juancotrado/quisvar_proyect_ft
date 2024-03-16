@@ -3,11 +3,20 @@ import { styles } from './swornDeclarationStyle';
 import { UserForm } from '../../../../../../types/types';
 import { deleteExtension } from '../../../../../../utils/tools';
 import { SwornDeclaration } from '../../models';
+import { formatDateLongSpanish } from '../../../../../../utils';
 
 interface SwornDeclarationPdfProps {
   data: UserForm & SwornDeclaration;
 }
 const SwornDeclarationPdf = ({ data }: SwornDeclarationPdfProps) => {
+  let dailyDate = null;
+  if (!data.declarationDate || String(data.declarationDate) == 'Invalid Date') {
+    dailyDate = new Date();
+  } else {
+    dailyDate = data.declarationDate;
+    dailyDate.setDate(dailyDate.getDate() + 1);
+  }
+  const formatDate = formatDateLongSpanish(dailyDate);
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -86,8 +95,8 @@ const SwornDeclarationPdf = ({ data }: SwornDeclarationPdfProps) => {
               de Procedimiento Administrativo General cuyo Texto Único Ordenado
               fue aprobado por Decreto Supremo Nº 004-2019-JUS, código civil y
               penal. Me afirmo y me ratifico en lo expresado, en señal de lo
-              cual firmo el presente documento en la ciudad de Puno, en la fecha
-              {data.declarationDate}.
+              cual firmo el presente documento en la ciudad de Puno, el día{' '}
+              {formatDate}.
             </Text>
           </>
         )}
@@ -98,10 +107,12 @@ const SwornDeclarationPdf = ({ data }: SwornDeclarationPdfProps) => {
             </Text>
             <Text style={styles.text}>
               Me comprometo a cumplir el tiempo mínimo de estadía es de{' '}
-              <Text style={styles.textBold}>4 MESES</Text>, el cual deberá
-              cumplir desde el día de la declaración jurada hasta el día de
-              traspasado de cargo o entrega de cargo, este tiempo es considerado
-              PERIODO DE PRUEBA.{'\n'}
+              <Text style={styles.textBold}>
+                {data.declarationMonths} MESES
+              </Text>
+              , el cual deberá cumplir desde el día de la declaración jurada
+              hasta el día de traspasado de cargo o entrega de cargo, este
+              tiempo es considerado PERIODO DE PRUEBA.{'\n'}
               Me comprometo ha presentar mi carta de no continuidad en el cargo
               que desempeño con una anticipación de 15 días hábiles, así mismo
               me hago responsable de traer una persona que desempeñe mis
@@ -196,8 +207,7 @@ const SwornDeclarationPdf = ({ data }: SwornDeclarationPdfProps) => {
               fue aprobado por Decreto Supremo Nº 004-2019-JUS, código civil y
               penal.{'\n'}
               Me afirmo y me ratifico en lo expresado, en señal de lo cual firmo
-              el presente documento en la ciudad de Puno, en la fecha{' '}
-              {data.declarationDate}.
+              el presente documento en la ciudad de Puno, el día {formatDate}.
             </Text>
           </>
         )}

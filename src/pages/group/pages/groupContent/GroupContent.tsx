@@ -16,7 +16,7 @@ export const GroupContent = () => {
 
   useEffect(() => {
     getUserGroup();
-  }, [getUserGroup]);
+  }, [getUserGroup, groupId]);
   // const hasCoordinator = members?.groups?.find(
   //   member => member.users.role === 'MOD' || member.users.role === 'SUPER_MOD'
   // );

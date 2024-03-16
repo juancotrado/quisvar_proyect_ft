@@ -278,12 +278,12 @@ export const GroupDaily = () => {
                 // disabled={title ? true : false}
               />
               <h4 className="gd-header-title">Acta de reunión:</h4>
-              <DutyPdf info={pdfInfo} attendance={groupUsers} duty={hasDuty} />
+              {/* <DutyPdf info={pdfInfo} attendance={groupUsers} duty={hasDuty} /> */}
             </div>
           )}
         </div>
       )}
-      <div>
+      <div className="gd-table">
         {option
           ? groupUsers.length > 0 &&
             calls.length > 0 && (

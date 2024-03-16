@@ -6,6 +6,7 @@ export type SubTaskForm = {
   description?: string;
   days: number;
   type?: AddTask;
+  typeTask: 'basictasks' | 'subtasks';
 };
 
 export const OPTION_LEVEL_TEXT = {

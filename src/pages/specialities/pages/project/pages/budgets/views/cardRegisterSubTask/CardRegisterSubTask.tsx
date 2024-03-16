@@ -39,17 +39,19 @@ const CardRegisterSubTask = () => {
   useEffect(() => {
     handleIsOpen.current = isOpenCardRegisteTask$.getSubject.subscribe(data => {
       setIsOpenModal(data.isOpen);
-      const { task, type } = data;
+      const { task, type, typeTask } = data;
       if (task) {
         reset({
           id: task.id,
           description: task.description,
           days: task.days,
           name: task.name,
+          typeTask,
         });
-        if (type) reset({ ...watch(), type });
+        if (type) reset({ ...watch(), type, typeTask });
       } else {
         setLevelId(data.levelId);
+        reset({ ...watch(), typeTask });
       }
     });
     return () => {
@@ -58,24 +60,23 @@ const CardRegisterSubTask = () => {
   }, [reset, setValue]);
 
   const onSubmit: SubmitHandler<SubTaskForm> = data => {
-    const { type, id, ...resData } = data;
+    const { type, id, typeTask, ...resData } = data;
     const body = { ...resData, stageId };
-    console.log(data);
     if (id) {
       if (type) {
         axiosInstance
-          .post(`subtasks/${id}/${stageId}?type=${type}`, resData)
+          .post(`${typeTask}/${id}/${stageId}?type=${type}`, resData)
           .then(res => {
             socket.emit('client:update-project', res.data);
           });
       } else {
-        axiosInstance.patch(`/subtasks/${id}`, body).then(res => {
+        axiosInstance.patch(`/${typeTask}/${id}`, body).then(res => {
           socket.emit('client:update-project', res.data);
         });
       }
     } else {
       axiosInstance
-        .post('/subtasks', { ...body, levels_Id: levelId })
+        .post(`/${typeTask}`, { ...body, levels_Id: levelId })
         .then(res => {
           socket.emit('client:update-project', res.data);
         });

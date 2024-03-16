@@ -40,6 +40,7 @@ export interface CardRegisteTask extends OpenModal {
   levelId: number | null;
   task?: SubTask;
   type?: AddTask;
+  typeTask: 'subtasks' | 'basictasks';
 }
 export interface CardViewProps extends OpenModal {
   data: AttendanceRange[];

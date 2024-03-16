@@ -44,6 +44,7 @@ import {
   CommunicationInfo,
   RegularProcedureInfo,
   RecoveryPassword,
+  TaskBasics,
 } from '../pages';
 import { ProtectedRole, ProtectedRoute } from '../guards';
 import { NavigationSubMenu } from '.';
@@ -104,7 +105,9 @@ const Navigation = () => {
                       element={<Navigate to="presupuestos" replace />}
                     />
                     <Route path="detalles" element={<GeneralData />} />
-                    <Route path="basicos" element={<BasicsPage />} />
+                    <Route path="basicos" element={<BasicsPage />}>
+                      <Route path="tarea/:taskId" element={<TaskBasics />} />
+                    </Route>
                     <Route path="presupuestos" element={<BudgetsPage />}>
                       <Route path="tarea/:taskId" element={<Task />} />
                     </Route>

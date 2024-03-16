@@ -32,12 +32,15 @@ const typeNumber = {
   ROM: 'I',
   NUM: '1',
 };
-interface ProjectAddLevelProps {
+interface ProjectAddLevelBasics {
   data: Level;
   onSave?: () => void;
 }
 type AddLevel = 'folder' | 'area';
-export const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
+export const ProjectAddLevelBasics = ({
+  data,
+  onSave,
+}: ProjectAddLevelBasics) => {
   const { users: modedators } = useListUsers('MOD');
   const [idCoordinator, setIdCoordinator] = useState<number | null>(null);
   const [addLevel, setAddLevel] = useState<AddLevel | null>(null);
@@ -63,7 +66,7 @@ export const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
       return SnackbarUtilities.warning(
         'Asegurese de elegir un coordinador antes.'
       );
-    const { id, stagesId, rootTypeItem } = data;
+    const { id, stagesId, rootTypeItem, level } = data;
     body = { ...body, rootId: firstLevel ? 0 : id, stagesId: +stagesId };
     if (
       addLevel === 'area' ||
@@ -74,21 +77,21 @@ export const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
     if ((data.isProject || addLevel === 'area') && idCoordinator) {
       body = { ...body, userId: idCoordinator };
     }
-    if (body.typeItem) {
-      let isArea = addLevel === 'area';
-      if (body.rootId > 0) {
-        await axiosInstance.patch(
-          `levels/${id}?item=${body.typeItem}&isArea=${isArea}&type=LEVEL`
-        );
-      } else {
-        await axiosInstance.patch(
-          `levels/${stagesId}?item=${body.typeItem}&isArea=${isArea}&type=STAGE`
-        );
-      }
-    } else {
-      body = { ...body, typeItem: rootTypeItem };
-    }
-    await axiosInstance.post('levels', body);
+    // if (body.typeItem) {
+    //   let isArea = addLevel === 'area';
+    //   if (body.rootId > 0) {
+    //     await axiosInstance.patch(
+    //       `basiclevels/${id}?item=${body.typeItem}&isArea=${isArea}&type=LEVEL`
+    //     );
+    //   } else {
+    //     await axiosInstance.patch(
+    //       `basiclevels/${stagesId}?item=${body.typeItem}&isArea=${isArea}&type=STAGE`
+    //     );
+    //   }
+    // } else {
+    body = { ...body, typeItem: level === 0 ? rootTypeItem : body.typeItem };
+    // }
+    await axiosInstance.post('basiclevels', body);
     onSave?.();
     handleHideForm();
   };
@@ -101,12 +104,12 @@ export const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
     (isOpenCardRegisteTask$.setSubject = {
       isOpen: true,
       levelId: data.id,
-      typeTask: 'subtasks',
+      typeTask: 'basictasks',
     });
 
   const typeImgFolder =
     addLevel === 'folder' ? 'add_folder-blue' : 'add_folder';
-  const typeImgArea = addLevel === 'area' ? 'add_area-blue' : 'add_area';
+  // const typeImgArea = addLevel === 'area' ? 'add_area-blue' : 'add_area';
   const style = {
     borderLeft: `thick solid ${colors[data.level + 1]}`,
   };
@@ -124,13 +127,13 @@ export const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
         </figure>
       </FloatingText>
 
-      {!data.nextLevel?.length && !data.isInclude && !data.isArea && (
+      {/* {!data.nextLevel?.length && !data.isInclude && !data.isArea && (
         <FloatingText text="Agregar Carpeta de Areas">
           <figure className="projectAddLevel-figure" onClick={hadleAddArea}>
             <img src={`/svg/${typeImgArea}.svg`} alt="W3Schools" />
           </figure>
         </FloatingText>
-      )}
+      )} */}
       {!data.nextLevel?.length && !data.isProject && data.level && (
         <FloatingText text="Agregar Tarea">
           <figure className="projectAddLevel-figure" onClick={hadleAddTask}>
@@ -207,5 +210,3 @@ export const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
     </div>
   );
 };
-
-export default ProjectAddLevel;

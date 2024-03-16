@@ -54,7 +54,7 @@ const textRenderLevel = (level: Level) => {
             alignItems: 'flex-end',
           }}
         >
-          {level.listUsers.map(user => (
+          {level?.listUsers.map(user => (
             <Text style={styles.infoText} key={user.dni}>
               {user.firstName} {user.lastName} X{user.count}
             </Text>
@@ -104,7 +104,7 @@ const recursionIndex = (level: Level) => {
   return (
     <View style={styles.dropdownLevel}>
       {existSubtask
-        ? level.subTasks.map(subtask => textRenderSubtask(subtask))
+        ? level?.subTasks.map(subtask => textRenderSubtask(subtask))
         : level?.nextLevel?.map(subLevel => (
             <View key={subLevel.id}>
               {textRenderLevel(subLevel)}

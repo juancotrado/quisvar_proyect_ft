@@ -18,11 +18,14 @@ import {
   FloatingText,
 } from '../../../../../../../../components';
 
-interface LevelSutaskProps {
+interface LevelSubtaskBasicsProps {
   level: Level;
   onSave?: () => void;
 }
-export const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
+export const LevelSubtaskBasics = ({
+  level,
+  onSave,
+}: LevelSubtaskBasicsProps) => {
   const { id: userSessionid } = useSelector(
     (state: RootState) => state.userSession
   );
@@ -39,7 +42,7 @@ export const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
     isOpenCardRegisteTask$.setSubject = {
       isOpen: true,
       levelId: id,
-      typeTask: 'subtasks',
+      typeTask: 'basictasks',
     };
   };
   const handleAddTaskToUpperOrDown = (
@@ -51,11 +54,11 @@ export const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
       levelId: id,
       task: subtask,
       type,
-      typeTask: 'subtasks',
+      typeTask: 'basictasks',
     };
   };
   const handleDeleteTask = (id: number) => {
-    axiosInstance.delete(`subtasks/${id}/${stageId}`).then(res => {
+    axiosInstance.delete(`basictasks/${id}/${stageId}`).then(res => {
       socket.emit('client:update-project', res.data);
     });
   };
@@ -64,7 +67,7 @@ export const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
       isOpen: true,
       levelId: id,
       task: subtask,
-      typeTask: 'subtasks',
+      typeTask: 'basictasks',
     };
   };
 
@@ -73,7 +76,7 @@ export const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
       name: `${subtask.name}(${Date.now()})`,
     };
     axiosInstance
-      .post(`/duplicates/subtask/${subtask.id}`, body)
+      .post(`/duplicates/basictasks/${subtask.id}`, body)
       .then(() => onSave?.());
   };
   const handleOpenButtonDelete = (id: number) => {
@@ -137,7 +140,7 @@ export const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
               </div>
               <div className="levelSubtask-item">
                 <div className="levelSubtask-text">
-                  {modAuthArea ? `S/.${subtask.price}` : '-'}
+                  {modAuthArea ? `S/.${subtask.price ?? 0}` : '-'}
                 </div>
               </div>
               <div className="levelSubtask-item">
@@ -211,5 +214,3 @@ export const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
     </div>
   );
 };
-
-export default LevelSubtask;

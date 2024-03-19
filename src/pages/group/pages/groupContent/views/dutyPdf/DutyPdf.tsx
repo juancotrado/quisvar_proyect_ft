@@ -8,7 +8,7 @@ import {
 } from '@react-pdf/renderer';
 import { styles } from './styledComponents';
 import { Duty, GroupAttendanceRes, PdfInfoProps } from '../../../../types';
-import { _date, actualDate } from '../../../../../../utils';
+import { _date } from '../../../../../../utils';
 interface DutyPdfProps {
   attendance: GroupAttendanceRes[];
   duty: Duty[];
@@ -124,17 +124,17 @@ const DutyPdf: React.FC<DutyPdfProps> = ({ info, attendance, duty }) => {
               </View>
               <View style={{ ...styles.tableCol, width: '25%' }}>
                 <Text style={{ ...styles.headers, marginLeft: 5 }}>
-                  {item.fullName}
+                  {/* {item.fullName} */}
                 </Text>
               </View>
               <View style={{ ...styles.tableCol, width: '60%' }}>
                 <Text style={{ ...styles.headers, marginLeft: 5 }}>
-                  {item.description}
+                  {/* {item.description} */}
                 </Text>
               </View>
               <View style={{ ...styles.tableCol, width: '10%' }}>
                 <Text style={styles.headers}>
-                  {actualDate(new Date(item.untilDate as string))}
+                  {/* {actualDate(new Date(item.untilDate as string))} */}
                 </Text>
               </View>
             </View>

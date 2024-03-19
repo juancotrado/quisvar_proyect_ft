@@ -54,7 +54,7 @@ export const ProjectAddLevelBasics = ({
     formState: { errors },
   } = useForm<DataForm>();
   const hadleAddFolder = () => setAddLevel('folder');
-  const hadleAddArea = () => setAddLevel('area');
+  // const hadleAddArea = () => setAddLevel('area');
   const handleHideForm = () => {
     reset({});
     setAddLevel(null);

@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import './contractRowPhase.css';
 import { INIT_VALUES_PAY, PayData, PhaseData } from '../../models';
 import {
-  CloseIcon,
+  //CloseIcon,
   IconAction,
   Input,
 } from '../../../../../../../../components';

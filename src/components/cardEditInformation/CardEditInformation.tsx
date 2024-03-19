@@ -2,13 +2,15 @@ import { useDispatch, useSelector } from 'react-redux';
 import './cardEditInformation.css';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AppDispatch, RootState } from '../../store';
-import { useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { User } from '../../types';
 import { axiosInstance } from '../../services/axiosInstance';
 import { Button, Input } from '..';
 import { CardRecoveryPassword } from '.';
 import { getUserSession } from '../../store/slices/userSession.slice';
+import CardResizing from '../resizing/CardResizing';
+import { SnackbarUtilities } from '../../utils';
 
 interface CardEditInformationProps {
   isOpen?: boolean;
@@ -18,6 +20,9 @@ interface CardEditInformationProps {
 const CardEditInformation = ({ isOpen, onClose }: CardEditInformationProps) => {
   const dispatch: AppDispatch = useDispatch();
   const [isOpenRecovery, setIsOpenRecovery] = useState(false);
+  const [viewSign, setViewSign] = useState(false);
+  const [viewDetailsSign, setViewSignDetailsSign] = useState(false);
+  const [sign, setSign] = useState<string | null>(null);
   const userSession = useSelector((state: RootState) => state.userSession);
   const { register, handleSubmit, reset } = useForm<User>();
 
@@ -43,8 +48,45 @@ const CardEditInformation = ({ isOpen, onClose }: CardEditInformationProps) => {
     }
   };
 
+  const handleActionFinished = () => {
+    setViewSign(false);
+    setSign(null);
+    setViewSignDetailsSign(false);
+  };
+
+  const handleCloseModal = () => {
+    handleActionFinished();
+    onClose?.();
+  };
+  const handleGetSign = () => {
+    const url = 'encrypt/' + userSession.profile.dni;
+    axiosInstance
+      .get(url)
+      .then(({ config }) => setSign(config.baseURL + '/' + url))
+      .catch(() => setSign(null));
+  };
+
+  const handleGetSignInformation = () => {
+    setViewSignDetailsSign(true);
+    handleGetSign();
+  };
   const handleOpenRecovery = () => setIsOpenRecovery(true);
   const handleCloseRecovery = () => setIsOpenRecovery(false);
+  const handleViewSign = () => {
+    if (!viewSign) handleGetSign();
+    setViewSign(!viewSign);
+  };
+
+  const handleContextMenuImg = (event: MouseEvent<HTMLImageElement>) =>
+    event.preventDefault();
+
+  const handleRemoveSign = () => {
+    axiosInstance.delete('encrypt').then(({ data }) => {
+      handleActionFinished();
+      SnackbarUtilities.success(data.message);
+    });
+  };
+
   return (
     <AnimatePresence>
       {isOpen && (
@@ -68,18 +110,67 @@ const CardEditInformation = ({ isOpen, onClose }: CardEditInformationProps) => {
               <Input {...register('profile.dni')} label="DNI" disabled />
               <Input {...register('email')} label="Correo" disabled />
             </section>
-            <div className="divider"></div>
+            <hr className="divider" />
+            <section className="card-edit-resizing-img">
+              <div className="card-edit-sign-container-header">
+                <span className="card-edit-sign-container-title">
+                  Firma Digital
+                </span>
+                {!sign && (
+                  <Button
+                    type="button"
+                    text="Consultar Estado"
+                    className="controls-btn"
+                    onClick={handleGetSignInformation}
+                  />
+                )}
+              </div>
+              {viewDetailsSign && (
+                <>
+                  {sign ? (
+                    <div className="card-edit-sign-container">
+                      <div className="card-edit-sign-controls">
+                        <Button
+                          type="button"
+                          text={viewSign ? 'CERRAR' : 'DESENCRIPTAR Y VER'}
+                          className="controls-btn"
+                          onClick={handleViewSign}
+                        />
+                        <Button
+                          type="button"
+                          text="ELIMINAR"
+                          onClick={handleRemoveSign}
+                          className="controls-btn controls-btn-red"
+                        />
+                      </div>
+                      {viewSign && (
+                        <figure className="card-edit-sign-image-container">
+                          <img
+                            src={sign}
+                            alt="sign"
+                            onContextMenu={handleContextMenuImg}
+                          />
+                        </figure>
+                      )}
+                    </div>
+                  ) : (
+                    <CardResizing onSave={handleActionFinished} />
+                  )}
+                </>
+              )}
+            </section>
+            <hr className="divider" />
             <div className="col-btns">
               <Button
-                text="CAMBIAR CONTRASEÑA"
+                text="Cambiar contraseña"
                 onClick={handleOpenRecovery}
                 className="bg-btn-close"
                 type="button"
               />
               <Button
                 text="CANCELAR"
-                onClick={onClose}
-                className="bg-btn-close"
+                onClick={handleCloseModal}
+                className="bg-btn-close controls-btn-red"
                 type="button"
               />
               <Button text="GUARDAR" className="bg-inverse" type="submit" />

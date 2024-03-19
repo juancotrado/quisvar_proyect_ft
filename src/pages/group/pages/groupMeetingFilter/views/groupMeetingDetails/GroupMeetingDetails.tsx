@@ -69,12 +69,12 @@ const GroupMeetingDetails = ({ item, onClose }: GroupDetailsProps) => {
         {item.duty.map(value => (
           <div className="gmd-duty-card" key={value.id}>
             <div className="gmd-duty-name">
-              <h3 className="gmd-name">Nombre: {value.fullName}</h3>
-              <h3>Plazo: {_date(value.untilDate as Date)}</h3>
+              {/* <h3 className="gmd-name">Nombre: {value.fullName}</h3> */}
+              {/* <h3>Plazo: {_date(value.untilDate as Date)}</h3> */}
             </div>
             <div className="gmd-description">
               <h3 style={{ fontWeight: '600' }}>Compromiso:</h3>
-              <p className="gmd-text-des">{value.description}</p>
+              {/* <p className="gmd-text-des">{value.description}</p> */}
             </div>
           </div>
         ))}

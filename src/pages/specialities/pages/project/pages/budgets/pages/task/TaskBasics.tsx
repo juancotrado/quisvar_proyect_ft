@@ -44,7 +44,7 @@ export const TaskBasics = () => {
         <LoaderForComponent />
       </div>
     );
-  const { status } = task;
+  //const { status } = task;
   return (
     <div className="task">
       <figure className="close-add-card" onClick={goBack}>

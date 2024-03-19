@@ -7,7 +7,7 @@ import { axiosInstance } from '../../../../services/axiosInstance';
 import { useParams } from 'react-router-dom';
 import { Duty, GroupAttendanceRes, GroupRes, PdfInfoProps } from '../../types';
 import { SocketContext } from '../../../../context';
-import { DutyPdf } from '../groupContent/views';
+//import {  } from '../groupContent/views';
 const now = new Date();
 interface toSend {
   id: number;
@@ -19,7 +19,7 @@ export const GroupDaily = () => {
   const [addBtn, setAddBtn] = useState<boolean>(true);
   const [selectedBtn, setSelectedBtn] = useState<number | null>(null);
   const [option, setOption] = useState<boolean>(true);
-  const [pdfInfo, setPdfInfo] = useState<PdfInfoProps>();
+  const [_, setPdfInfo] = useState<PdfInfoProps>();
   const [hasItems, setHasItems] = useState<boolean>(false);
   const [isToday, setIsToday] = useState<boolean>(true);
   const [showSecond, setShowSecond] = useState<boolean>(false);

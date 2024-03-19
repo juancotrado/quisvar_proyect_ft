@@ -76,7 +76,11 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
     ({ user, status }) => user.id === userSessionId && !status
   );
   const areAuthorizedUsers = isAuthorizedMod || isAuthorizedUser;
-  const { users } = useListUsers();
+  const userList = subTask.Levels.stages.group?.groups?.map(
+    ({ users }) => users
+  );
+  const { users } = useListUsers(null, null, undefined, 'all', userList);
+
   const handleAddUser = (user: DataUser) => {
     axiosInstance
       .patch(`/subtasks/assignUser/${subTask.id}/${stageId}`, [user])

@@ -7,7 +7,7 @@ const useListUsers = (
   roleType: MenuRole | null = null,
   menu?: MenuAccess | null,
   subMenu?: string,
-  onlyActive: boolean = true,
+  onlyActive: boolean | 'all' = true,
   usersData: User[] | null = null
 ) => {
   const listUsers = useSelector((state: RootState) => state.listUsers);
@@ -27,7 +27,7 @@ const useListUsers = (
     (usersList &&
       usersList
         .filter(filterRole)
-        .filter(user => (onlyActive ? user.status : user))
+        .filter(user => (onlyActive !== 'all' ? user.status : user))
         .map(({ profile, ...props }) => ({
           name: `${profile.firstName} ${profile.lastName}`,
           degree: profile.degree,

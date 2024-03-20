@@ -59,10 +59,13 @@ const CardEditInformation = ({ isOpen, onClose }: CardEditInformationProps) => {
     onClose?.();
   };
   const handleGetSign = () => {
-    const url = 'encrypt/' + userSession.profile.dni;
+    const token: string | null = localStorage.getItem('token');
+    const url = 'encrypt/' + userSession.profile.dni + `?token=${token}`;
     axiosInstance
       .get(url)
-      .then(({ config }) => setSign(config.baseURL + '/' + url))
+      .then(({ config }) => {
+        setSign(`${config.baseURL}/${config.url}`);
+      })
       .catch(() => setSign(null));
   };
 
@@ -86,6 +89,15 @@ const CardEditInformation = ({ isOpen, onClose }: CardEditInformationProps) => {
       SnackbarUtilities.success(data.message);
     });
   };
+
+  // const convertBase64ToBlob = (string64: string) => {
+  //   // const blob = await fetch(string64).then(res => res.blob());
+  //   console.log(string64.split(','));
+  //   const binaryData = atob(string64.split(',')[0]);
+  //   const blob = new Blob([binaryData], { type: 'image/png' });
+  //   const url = URL.createObjectURL(blob);
+  //   return url;
+  // };
 
   return (
     <AnimatePresence>

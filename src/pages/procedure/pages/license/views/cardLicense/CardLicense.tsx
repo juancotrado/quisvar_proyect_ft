@@ -89,11 +89,11 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
     } else {
       const updateLicense = {
         reason: values.reason,
-        startDate: new Date(values.startDate),
-        untilDate: new Date(values.untilDate),
+        startDate: values.startDate,
+        untilDate: values.untilDate,
         usersId: userSessionId,
         feedback: data.feedback,
-        status: 'PROCESS',
+        status: 'PROCESO',
       };
       axiosInstance.patch(`/license/${data.id}`, updateLicense).then(() => {
         setIsOpen(false);

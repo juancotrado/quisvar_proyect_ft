@@ -3,20 +3,17 @@ import { styles } from './swornDeclarationStyle';
 import { UserForm } from '../../../../../../types/types';
 import { deleteExtension } from '../../../../../../utils/tools';
 import { SwornDeclaration } from '../../models';
-import { formatDateLongSpanish } from '../../../../../../utils';
+import moment from 'moment/moment';
+import 'moment/locale/es';
 
 interface SwornDeclarationPdfProps {
   data: UserForm & SwornDeclaration;
 }
 const SwornDeclarationPdf = ({ data }: SwornDeclarationPdfProps) => {
-  let dailyDate = null;
-  if (!data.declarationDate || String(data.declarationDate) == 'Invalid Date') {
-    dailyDate = new Date();
-  } else {
-    dailyDate = data.declarationDate;
-    dailyDate.setDate(dailyDate.getDate() + 1);
-  }
-  const formatDate = formatDateLongSpanish(dailyDate);
+  const formatDate =
+    !data.declarationDate || String(data.declarationDate) == 'Invalid Date'
+      ? moment.utc(new Date()).format('LL')
+      : moment.utc(data.declarationDate).format('LL');
   return (
     <Document>
       <Page size="A4" style={styles.page}>

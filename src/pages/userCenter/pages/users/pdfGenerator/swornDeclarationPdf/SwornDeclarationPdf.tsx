@@ -108,7 +108,8 @@ const SwornDeclarationPdf = ({ data }: SwornDeclarationPdfProps) => {
             <Text style={styles.text}>
               Me comprometo a cumplir el tiempo mínimo de estadía es de{' '}
               <Text style={styles.textBold}>
-                {data.declarationMonths} MESES
+                {data.declarationMonths}
+                {data.declarationMonths == 1 ? <> MES</> : <> MESES</>}
               </Text>
               , el cual deberá cumplir desde el día de la declaración jurada
               hasta el día de traspasado de cargo o entrega de cargo, este

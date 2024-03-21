@@ -5,7 +5,7 @@ import { axiosInstance } from '../../../../services/axiosInstance';
 import { Contract } from '../../../../types';
 import { Outlet, useSearchParams } from 'react-router-dom';
 import { SidebarContractCard } from './components';
-import { CardRegisterContract } from './views';
+import { CardObservations, CardRegisterContract } from './views';
 import { IconAction, Select } from '../../../../components';
 import {
   CONTRACT_TYPE,
@@ -78,7 +78,7 @@ export const Contracts = () => {
     <div className="contracts">
       <div className="contracts-sidebar">
         <h2 className="contracts-sidebar-tilte">14.CONTRATOS EN ACTIVIDAD</h2>
-        <IconAction icon="file-excel" onClick={handleReport} position="none" />
+        <IconAction icon="file-excel" onClick={handleReport} />
         <div className="contract-filters-contain">
           <Select
             value={filterContract.status}
@@ -129,6 +129,7 @@ export const Contracts = () => {
         <Outlet />
       </div>
       <CardRegisterContract onSave={getContracts} />
+      <CardObservations />
     </div>
   );
 };

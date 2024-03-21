@@ -1,6 +1,6 @@
 import './detailsContracts.css';
 import { ContractIndexData, Schedule } from '../../../../../../types';
-import { _date, actualDate, SnackbarUtilities } from '../../../../../../utils';
+import { _date, SnackbarUtilities } from '../../../../../../utils';
 import { FocusEvent, useEffect, useState } from 'react';
 import { Button } from '../../../../../../components';
 import { useDispatch, useSelector } from 'react-redux';
@@ -46,7 +46,9 @@ export const DetailsContracts = () => {
     ['Nomenclatura']: contract.name,
     ['CUI']: contract.cui,
     ['Nombre largo del proyecto']: contract.projectName,
-    ['Fecha de firma de contrato']: actualDate(new Date(contract.createdAt)),
+    ['Fecha de firma de contrato']: contract.createdAt
+      ? moment.utc(contract.createdAt).format('DD/MM/YYYY')
+      : '-',
   };
 
   useEffect(() => {
@@ -143,7 +145,7 @@ export const DetailsContracts = () => {
     const hasNotFiles = phaseLevel?.every(phase => phase.hasFile === 'no');
     const dataPhasesWithStatus = phaseLevel?.map((phase, i) => {
       const statusTime = getStatusColor(
-        contract.createdAt,
+        contract.createdAt ?? String(new Date()),
         dataPhases[i],
         phase.uploadDate ?? new Date()
       );
@@ -261,7 +263,9 @@ export const DetailsContracts = () => {
       </div>
       <div className="detailsContracts-phases-contain">
         <div className="detailsContracts-phases-contain-titles">
-          {CONTACT_PHASES_TITLE.map(({ title, type }) => (
+          {CONTACT_PHASES_TITLE.filter(phase =>
+            !contract.createdAt ? phase.type !== 'ejecutionPhase' : phase
+          ).map(({ title, type }) => (
             <h4
               key={type}
               className={`detailsContracts-phases-title ${
@@ -376,7 +380,8 @@ export const DetailsContracts = () => {
                       3: { value: description, fr: '2fr' },
                       4: { value: `${realDay} dias `, fr: '1fr' },
                       5: {
-                        value: moment(contract.createdAt)
+                        value: moment
+                          .utc(contract.createdAt)
                           .add(realDay, 'days')
                           .format('DD-MM-YYYY'),
                         fr: '1fr',

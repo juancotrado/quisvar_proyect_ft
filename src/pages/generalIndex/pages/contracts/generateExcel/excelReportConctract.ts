@@ -58,7 +58,8 @@ const excelContractReport = async (contracts: Contract[]) => {
 
     const transformPayData = payData.map(pay => [pay?.amount || 0, 'SI', 'NO']);
     const transformPhases = phases.map(phase => [
-      moment(contract.createdAt)
+      moment
+        .utc(contract.createdAt)
         .add(phase.realDay, 'days')
         .format('DD/MM/YYYY'),
       'SI',
@@ -73,7 +74,7 @@ const excelContractReport = async (contracts: Contract[]) => {
       null,
       null,
       null,
-      moment(contract.createdAt).format('DD/MM/YYYY'),
+      moment.utc(contract.createdAt).format('DD/MM/YYYY'),
       ...newPhaseArray,
       ...transformPayData.flat(),
     ]);

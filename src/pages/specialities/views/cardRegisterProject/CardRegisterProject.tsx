@@ -88,7 +88,14 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
     if (!cui) return SnackbarUtilities.warning('Campo vacio!!');
     axiosInstance.get(`contract?cui=${cui}`).then(res => {
       const [firstData] = res.data as Contract[];
-      const { department, district, province, projectName, id } = firstData;
+      const {
+        department,
+        district,
+        province,
+        projectName,
+        id,
+        projectShortName,
+      } = firstData;
       reset({
         ...watch(),
         typeSpecialityId: watch('typeSpecialityId'),
@@ -97,6 +104,7 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
         province,
         contractId: id,
         description: projectName,
+        name: projectShortName,
       });
     });
   };
@@ -135,6 +143,7 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
               })}
               name="name"
               type="text"
+              disabled
               placeholder="Nombre Corto "
               errors={errors}
             />

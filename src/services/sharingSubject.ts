@@ -1,6 +1,7 @@
 import { SubjectManager } from '../models';
 import {
   CardLicenseProps,
+  CardObservations,
   CardRegisteContract,
   CardRegisteProject,
   CardRegisteTask,
@@ -44,6 +45,7 @@ export const isOpenCardLicense$ = new SubjectManager<CardLicenseProps>();
 export const isOpenViewDocs$ = new SubjectManager<OpenViewDocs>();
 export const isOpenCardRegisteProject$ =
   new SubjectManager<CardRegisteProject>();
+export const isOpenCardObservations$ = new SubjectManager<CardObservations>();
 export const isOpenCardRegisteContract$ =
   new SubjectManager<CardRegisteContract>();
 export const isOpenCardRegisteTask$ = new SubjectManager<CardRegisteTask>();

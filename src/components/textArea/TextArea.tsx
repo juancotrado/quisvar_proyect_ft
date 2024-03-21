@@ -1,3 +1,4 @@
+import { STYLE_INPUT } from '../Input/inputDefinitions';
 import './TextArea.css';
 import { CSSProperties, TextareaHTMLAttributes, forwardRef } from 'react';
 
@@ -10,6 +11,7 @@ interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   errorPosY?: number;
   isRelative?: boolean;
   disabled?: boolean;
+  styleInput?: number;
 }
 const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
   (
@@ -22,6 +24,8 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       isRelative = false,
       errorPosY = 0,
       disabled,
+      styleInput = 1,
+
       ...props
     },
     ref
@@ -41,7 +45,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           ref={ref}
           {...props}
           name={name}
-          className={`${className} input-container-textarea ${
+          className={`${className} ${STYLE_INPUT[styleInput]} ${
             errors && name && errors[name] && 'input-text-area-error'
           } ${disabled && 'input-disabled'} `}
         />

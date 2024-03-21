@@ -12,12 +12,14 @@ interface DropdownLevelContractProps {
   level: ContractIndexData;
   idContract: number;
   editFileContractIndex: (id: string, value: 'yes' | 'no') => void;
+  handleReportPdf: () => void;
 }
 
 export const DropdownLevelContract = ({
   level,
   idContract,
   editFileContractIndex,
+  handleReportPdf,
 }: DropdownLevelContractProps) => {
   const firstLevel = level.nivel === 0;
   const style = {
@@ -48,7 +50,7 @@ export const DropdownLevelContract = ({
   };
 
   const noHaveFile = (subLevel: ContractIndexData) =>
-    !subLevel.hasFile || subLevel.hasFile === 'no';
+    (!subLevel.hasFile || subLevel.hasFile === 'no') && subLevel.id !== '2.3';
   return (
     <div
       className={`${!firstLevel && 'DropdownLevelContract-dropdown-content'}`}
@@ -56,7 +58,7 @@ export const DropdownLevelContract = ({
       <ul className={`${!firstLevel && 'DropdownLevelContract-dropdown-sub'}`}>
         {level.hasFile ? (
           <div className="DropdownLevelContract-upload-file">
-            {level.hasFile === 'no' && (
+            {level.hasFile === 'no' && level.id !== '2.3' && (
               <UploadFileInput
                 name="Cargar documento"
                 subName="O arrastre y suelte el archivo aquí"
@@ -94,7 +96,22 @@ export const DropdownLevelContract = ({
                       {subLevel.name}
                     </h4>
                   </div>
-                  {subLevel.hasFile === 'yes' && (
+                  {subLevel.id === '2.3' && (
+                    <div className="DropdownLevelContract-file-container">
+                      <a
+                        className="DropdownLevelContract-file-container-anchor"
+                        onClick={handleReportPdf}
+                      >
+                        <figure className="DropdownLevelContract-figure">
+                          <img src="/svg/pdf-red.svg" alt="W3Schools" />
+                        </figure>
+                        <span className="DropdownLevelContract-file-container-name">
+                          Ver pdf
+                        </span>
+                      </a>
+                    </div>
+                  )}
+                  {subLevel.hasFile === 'yes' && subLevel.id !== '2.3' && (
                     <div className="DropdownLevelContract-file-container">
                       <a
                         href={`${URL}/index/contracts/${idContract}/${subLevel.id} ${subLevel.name}.pdf`}
@@ -123,6 +140,7 @@ export const DropdownLevelContract = ({
                 level={subLevel}
                 idContract={idContract}
                 editFileContractIndex={editFileContractIndex}
+                handleReportPdf={handleReportPdf}
               />
             </li>
           ))

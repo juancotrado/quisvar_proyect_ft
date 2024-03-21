@@ -7,7 +7,11 @@ import {
   CloseIcon,
 } from '../../../../../../components';
 import { isOpenCardRegisteContract$ } from '../../../../../../services/sharingSubject';
-import { actualDate, validateWhiteSpace } from '../../../../../../utils';
+import {
+  actualDate,
+  validateCorrectTyping,
+  validateWhiteSpace,
+} from '../../../../../../utils';
 import './cardRegisterContract.css';
 import { useEffect, useRef, useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
@@ -62,7 +66,7 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
             name,
             projectName,
             province,
-            shortName,
+            projectShortName,
             indexContract,
             contractNumber,
             companyId,
@@ -72,7 +76,7 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
           } = contract;
           reset({
             id,
-            createdAt: actualDate(createdAt),
+            createdAt: createdAt ? actualDate(createdAt) : null,
             cui,
             department,
             difficulty,
@@ -81,7 +85,7 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
             projectName,
             indexContract,
             province,
-            shortName,
+            projectShortName,
             contractNumber,
             type,
             amount,
@@ -130,7 +134,6 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
     reset({});
     setIsOpenModal(false);
   };
-
   return (
     <Modal size={50} isOpenProp={isOpenModal}>
       <CloseIcon onClick={closeFunctions} />
@@ -142,17 +145,7 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
         <h2>{watch('id') ? 'ACTUALIZAR CONTRATO' : 'REGISTRAR CONTRATO'}</h2>
         <hr />
         <div className="card-register-project-container-details">
-          <div className="col-input-top">
-            <Input
-              label="Nomenclatura:"
-              {...register('name', {
-                validate: { validateWhiteSpace },
-              })}
-              name="name"
-              type="text"
-              placeholder="Nomenclatura"
-              errors={errors}
-            />
+          <div className="col-input">
             <Input
               label="Nombre de Contrato:"
               {...register('contractNumber', {
@@ -164,6 +157,40 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
               errors={errors}
             />
             <Input
+              label="Nombre Corto del Proyecto:"
+              {...register('projectShortName', {
+                validate: { validateWhiteSpace, validateCorrectTyping },
+              })}
+              name="projectShortName"
+              type="text"
+              placeholder="Nombre Corto del Proyecto "
+              errors={errors}
+            />
+          </div>
+          <div className="col-input">
+            <TextArea
+              label="Nombre Completo del Proyecto:"
+              {...register('projectName', {
+                validate: { validateWhiteSpace },
+              })}
+              name="projectName"
+              placeholder="Nombre completo del Proyecto"
+              errors={errors}
+            />
+          </div>
+          <div className="col-input">
+            <Input
+              label="Nomenclatura:"
+              {...register('name', {
+                validate: { validateWhiteSpace },
+              })}
+              name="name"
+              type="text"
+              placeholder="Nomenclatura"
+              errors={errors}
+            />
+
+            <Input
               label="CUI:"
               {...register('cui', {
                 validate: { validateWhiteSpace },
@@ -172,6 +199,17 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
               placeholder="CUI"
               errors={errors}
             />
+            {companies && (
+              <Select
+                label="Empresa o Consorcio :"
+                {...register('idCoorp')}
+                name="idCoorp"
+                data={companies}
+                itemKey="newId"
+                textField="name"
+                errors={errors}
+              />
+            )}
             <Input
               label="Monto:"
               {...register('amount', {
@@ -184,27 +222,6 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
             />
           </div>
           <div className="col-input">
-            {/* <Input
-              label="Nombre Corto del Proyecto:"
-              {...register('shortName', {
-                validate: { validateWhiteSpace },
-              })}
-              name="shortName"
-              type="text"
-              placeholder="Nombre Corto del Proyecto "
-              errors={errors}
-            /> */}
-            {companies && (
-              <Select
-                label="Empresa o Consorcio :"
-                {...register('idCoorp')}
-                name="idCoorp"
-                data={companies}
-                itemKey="newId"
-                textField="name"
-                errors={errors}
-              />
-            )}
             <Input
               label="Fecha de firma:"
               {...register('createdAt', {
@@ -237,17 +254,6 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
               data={CONTRACT_TYPE}
               itemKey="key"
               textField="name"
-              errors={errors}
-            />
-          </div>
-          <div className="col-input">
-            <TextArea
-              label="Nombre Completo del Proyecto:"
-              {...register('projectName', {
-                validate: { validateWhiteSpace },
-              })}
-              name="projectName"
-              placeholder="Nombre completo del Proyecto"
               errors={errors}
             />
           </div>

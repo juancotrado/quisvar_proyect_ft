@@ -33,6 +33,9 @@ export interface CardRegisteProject {
   isDuplicate: boolean;
   idProject?: number;
 }
+export interface CardObservations extends OpenModal {
+  observations: string;
+}
 export interface CardRegisteContract extends OpenModal {
   contract?: Contract;
 }

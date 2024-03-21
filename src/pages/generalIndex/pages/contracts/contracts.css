@@ -4,6 +4,7 @@
   background-color: #fff;
 }
 .contracts-sidebar {
+  position: relative;
   display: flex;
   flex: 1;
   height: 100%;

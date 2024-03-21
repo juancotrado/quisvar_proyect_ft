@@ -7,6 +7,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getContractThunks } from '../../../../../../store/slices/contract.slice';
 import './contractsLevels.css';
 import { DropdownLevelContract } from './components';
+import { IconAction } from '../../../../../../components';
+import {
+  isOpenCardObservations$,
+  isOpenViewPdf$,
+} from '../../../../../../services/sharingSubject';
+import { ContractPhasePdf } from '../../pdfGenerator';
 
 export const ContractsLevels = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -64,15 +70,33 @@ export const ContractsLevels = () => {
         getContract();
       });
   };
+  const handleReportPdf = () => {
+    if (!contract) return;
+    isOpenViewPdf$.setSubject = {
+      fileNamePdf: contract.contractNumber,
+      pdfComponentFunction: ContractPhasePdf({ contract }),
+      isOpen: true,
+    };
+  };
+  const handleInfo = () => {
+    if (!contract) return;
+    isOpenCardObservations$.setSubject = {
+      isOpen: true,
+      observations: contract.observations,
+    };
+  };
   return contract ? (
     <>
       <div className="contractsLevels-main-level">
         <h3 className="contractsLevels-level-title">{contract.name}</h3>
+        <IconAction icon="Info" onClick={handleInfo} size={1.4} />
+
         <div className="contractsLevels-level-contain">
           <DropdownLevelContract
             level={getLevelData(contract)}
             idContract={contract.id}
             editFileContractIndex={editFileContractIndex}
+            handleReportPdf={handleReportPdf}
           />
         </div>
       </div>

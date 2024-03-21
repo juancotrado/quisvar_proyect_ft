@@ -3,7 +3,7 @@ import { millisecondsToDays } from '../../../../../utils';
 import { PhaseData } from '../pages/detailsContracts/models';
 
 export const getStatusContract = (
-  createdAt: string,
+  createdAt: string | null,
   phases: string,
   contractIndex: ContractIndexData[]
 ) => {
@@ -15,7 +15,7 @@ export const getStatusContract = (
   const findPhase = phasesParse.find(
     daPhase => daPhase.id === findActualIndexPhase?.deliverLettersId
   );
-  if (!findPhase) return 'grey';
+  if (!findPhase || !createdAt) return 'grey';
   return getStatusColor(createdAt, findPhase, new Date());
 };
 export const getStatusColor = (

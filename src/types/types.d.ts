@@ -326,8 +326,8 @@ export interface ContractForm {
   district: string;
   type: ContractType;
   difficulty: 1 | 2 | 3;
-  shortName: string;
-  createdAt: string;
+  projectShortName: string;
+  createdAt: string | null;
   indexContract: string;
   idCoorp: string;
   amount: number;
@@ -348,9 +348,12 @@ interface Contract extends ContractForm {
   number: number;
   companyId: number | null;
   consortiumId: number | null;
+  consortium: ConsortiumType;
+  company: CompanyType;
   isIndependent: boolean;
   details: string | null;
   phases: string;
+  observations: string;
 }
 
 export interface WorkArea {

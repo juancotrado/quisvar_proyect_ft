@@ -1,3 +1,4 @@
+import { URL } from '../../../../services/axiosInstance';
 import { Profile } from '../../../../types';
 import { degreeAbrv, formatDateShortSpanish } from '../../../../utils';
 import { ToData, TypeProcedure } from '../../models';
@@ -12,6 +13,7 @@ interface ProcedureDocumentProps {
   toProfile: ToData;
   size: 'a4' | 'a5';
   type: TypeProcedure;
+  signature?: boolean;
 }
 
 const procedureDocument = ({
@@ -23,6 +25,7 @@ const procedureDocument = ({
   size,
   ccProfiles,
   type,
+  signature = false,
 }: ProcedureDocumentProps) => {
   const from = `${degreeAbrv(fromProfile.degree, fromProfile.job)}. ${
     fromProfile.firstName + ' ' + fromProfile.lastName
@@ -39,7 +42,7 @@ const procedureDocument = ({
     { textOne: 'Asunto', textTwo: subject },
     { textOne: 'Fecha', textTwo: formatDateShortSpanish() },
   ];
-
+  const token = localStorage.getItem('token');
   return `
   <div class="procedureDocument-main procedureDocument-${size}" >
     <p class="procedureDocument-title">${title}</p>
@@ -121,6 +124,11 @@ const procedureDocument = ({
     <div class="line"></div>
     <div class="procedureDocument-font-normal">${body}</div>      
     <div class="procedureDocument-sign">
+      ${
+        signature
+          ? `<img src=${`${URL}/api/v1/encrypt/${fromProfile.dni}?token=${token}`} class="procedureDocument-sign-img"/>`
+          : ''
+      }
       <span class="procedureDocument-sign-line">${from}</span>
       <span>DNI: ${fromProfile.dni}</span>
     </div>

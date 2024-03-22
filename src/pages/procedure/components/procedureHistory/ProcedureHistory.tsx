@@ -80,7 +80,11 @@ const ProcedureHistory = ({
         </div>
       </div>
       {pdfUrl && (
-        <embed src={pdfUrl} type="application/pdf" width="100%" height="100%" />
+        <embed
+          src={pdfUrl}
+          type="application/pdf"
+          style={{ width: '100%', aspectRatio: 0.75 }}
+        />
       )}
       <span></span>
       <div className="message-sender-info">

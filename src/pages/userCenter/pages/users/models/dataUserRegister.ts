@@ -3,6 +3,7 @@ import { UserForm } from '../../../../../types';
 export const JOB_DATA = [
   { value: 'Ingeniería Agronómica', abrv: 'Ing' },
   { value: 'Ingeniería Agroindustrial', abrv: 'Ing' },
+  { value: 'Ingeniería Agrícola', abrv: 'Ing' },
   { value: 'Ingeniería Topográfica y Agrimensura', abrv: 'Ing' },
   { value: 'Ingeniería Civil', abrv: 'Ing' },
   { value: 'Arquitectura y Urbanismo', abrv: 'Arq' },

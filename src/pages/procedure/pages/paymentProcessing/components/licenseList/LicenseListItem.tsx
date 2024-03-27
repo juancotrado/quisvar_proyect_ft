@@ -1,5 +1,5 @@
 // import { Input } from '../../../components';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useListUsers } from '../../../../../../hooks';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { licenseList } from '../../../../../../types';
@@ -7,6 +7,7 @@ import './LicenseListItem.css';
 import { formatDate } from '../../../../../../utils';
 import ButtonDelete from '../../../../../../components/button/ButtonDelete';
 import { Button } from '../../../../../../components';
+import { SocketContext } from '../../../../../../context';
 type license = {
   isEmployee: boolean;
   data: licenseList;
@@ -23,6 +24,7 @@ export const LicenseListItem = ({
   onSave,
 }: license) => {
   const { users } = useListUsers();
+  const socket = useContext(SocketContext);
   const [feedback, setFeedback] = useState('');
   const userName = users.find(user => data.usersId === user.id);
   const handleFeedback = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -35,6 +37,7 @@ export const LicenseListItem = ({
     };
     axiosInstance.patch(`/license/approve/${data.id}`, newLicense).then(() => {
       onSave?.();
+      socket.emit('client:action-button');
     });
   };
   const getDate = (value: string) => {
@@ -125,7 +128,10 @@ export const LicenseListItem = ({
             <ButtonDelete
               icon="trash"
               className="role-delete-icon"
-              onSave={onSave}
+              onSave={() => {
+                onSave;
+                socket.emit('client:action-button');
+              }}
               url={`/license/${data.id}`}
               disabled={data?.status !== 'PROCESO' ?? false}
               passwordRequired

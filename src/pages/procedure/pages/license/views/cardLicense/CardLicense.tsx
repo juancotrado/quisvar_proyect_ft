@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import './CardLicense.css';
 import { Subscription } from 'rxjs';
 import { isOpenCardLicense$ } from '../../../../../../services/sharingSubject';
@@ -14,6 +14,7 @@ import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../store';
 import { licenseList } from '../../../../../../types';
+import { SocketContext } from '../../../../../../context';
 
 type DataLicense = {
   reason: string;
@@ -29,6 +30,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
   const { id: userSessionId } = useSelector(
     (state: RootState) => state.userSession
   );
+  const socket = useContext(SocketContext);
   const [isOpen, setIsOpen] = useState(false);
   const handleIsOpen = useRef<Subscription>(new Subscription());
   const [data, setData] = useState<licenseList>();
@@ -99,6 +101,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
         setIsOpen(false);
         reset({});
         onSave?.();
+        socket.emit('client:action-button');
       });
     }
   };

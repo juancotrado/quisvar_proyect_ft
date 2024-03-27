@@ -109,7 +109,7 @@ const FormRegisterProcedure = ({
 
   const getHtmlString = (size: 'a4' | 'a5') => {
     const idUserReceiver = listCopy.map(user => user.id);
-    const { description, header, title } = watch();
+    const { description, header, title, signature } = watch();
     const usersReceiver = handleReceiverUser([
       +(receiver?.id || 0),
       ...idUserReceiver,
@@ -124,6 +124,7 @@ const FormRegisterProcedure = ({
       fromProfile: profile,
       size,
       type,
+      signature: !!signature,
     });
     return htmlString;
   };
@@ -198,6 +199,7 @@ const FormRegisterProcedure = ({
           className="messagePage-input"
           placeholder="Asunto"
           name="title"
+          styleInput={2}
           type="text"
         />
       )}
@@ -274,6 +276,7 @@ const FormRegisterProcedure = ({
         className="messagePage-input"
         placeholder="Asunto"
         name="header"
+        styleInput={2}
         type="text"
       />
       <Editor
@@ -300,6 +303,17 @@ const FormRegisterProcedure = ({
             <span>Adjuntar reporte</span>
           </div>
         )}
+
+        <label className="card-register-sworn-declaration-check-container">
+          <input
+            type="checkbox"
+            {...register('signature', {
+              value: false,
+            })}
+          />
+          Firma
+        </label>
+
         <div className="pdf-btn-area-view">
           {downloadOptions.map(
             ({ iconOne, iconTwo, id, handleClick, text }) => (

@@ -124,6 +124,9 @@ input[type='number']::-webkit-outer-spin-button {
 .card-register-radio-input-text {
   font-size: 0.85rem;
 }
+.terms-checkbox {
+  margin-right: 10px;
+}
 .card-register-radio-container {
   display: flex;
 

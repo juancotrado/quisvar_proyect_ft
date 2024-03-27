@@ -976,6 +976,7 @@ interface MessageSendType {
   header: string;
   description?: string;
   receiverId: number;
+  signature: boolean;
   type: MessageType['type'];
 }
 export interface Procedure extends MessageSendType {

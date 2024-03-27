@@ -29,6 +29,7 @@ const ViewHtmlToPdf = () => {
 
   const handleDownloadPdf = async () => {
     if (!pdfUrl) return;
+    // var file = new File([pdfUrl], 'name');
     downloadHref(pdfUrl, fileName);
   };
   return (

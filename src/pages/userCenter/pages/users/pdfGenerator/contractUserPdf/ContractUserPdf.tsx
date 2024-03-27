@@ -29,6 +29,26 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
   const professionalService = `${degreeSelect?.title} de nivel ${
     data.professionalLevel
   }${profile.degree !== 'Practicante' ? ' - ' + profile.degree : ''}`;
+  const getMonto = () => {
+    if (profile.job === 'Ingeniería Civil' && data.isStructureSpecialist) {
+      return 600;
+    } else if (
+      profile.job === 'Ingeniería Civil' ||
+      profile.job === 'Arquitectura y Urbanismo'
+    ) {
+      return 400;
+    } else if (
+      profile.job === 'Ingeniería Sanitaria y Ambiental' ||
+      profile.job === 'Ingeniería Topográfica y Agrimensura' ||
+      profile.job === 'Ingeniería Agrícola' ||
+      profile.job === 'Ingeniería Geológica'
+    ) {
+      return 300;
+    } else {
+      return 300;
+    }
+  };
+  const contractualWelcomeAmount = getMonto();
   return (
     <Document>
       <Page size="A4" style={styles.page}>
@@ -320,9 +340,16 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             CLAUSULA SEXTA: BONO DE BIENVENIDA
           </Text>
           <Text style={styles.text}>
-            Se dará un bono de bienvenida el cual consiste en lo siguiente: el
-            CONTRATISTA tendrá como bono (03) tres tareas asignadas por la
-            GERENCIA DE ESTUDIOS.
+            Se dará un bono de bienvenida al contratista en el primer mes
+            laborado, consiste en que el contratista percibirá un monto
+            adicional al monto contractual estipulado en el contrato, esto solo
+            aplica al primer mes laborado según a los siguientes criterios:{' '}
+            <Text style={styles.textBold}>
+              {profile.job} S/. {formatAmountMoney(contractualWelcomeAmount)}{' '}
+              {'('}
+              {NumerosALetras(contractualWelcomeAmount)}
+              {')'}
+            </Text>
           </Text>
           <Text>&nbsp;</Text>
           <Text style={styles.subtitle}>

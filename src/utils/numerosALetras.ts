@@ -39,41 +39,41 @@ function decenas(num: number) {
     case 1:
       switch (numUnidad) {
         case 0:
-          return 'Diez';
+          return ' Diez';
         case 1:
-          return 'Once';
+          return ' Once';
         case 2:
-          return 'Doce';
+          return ' Doce';
         case 3:
-          return 'Trece';
+          return ' Trece';
         case 4:
-          return 'Catorce';
+          return ' Catorce';
         case 5:
-          return 'Quince';
+          return ' Quince';
         default:
-          return 'Dieci' + unidades(numUnidad).toLowerCase();
+          return ' Dieci' + unidades(numUnidad).toLowerCase();
       }
     case 2:
       switch (numUnidad) {
         case 0:
-          return 'Veinte';
+          return ' Veinte';
         default:
-          return 'Veinti' + unidades(numUnidad).toLowerCase();
+          return ' Veinti' + unidades(numUnidad).toLowerCase();
       }
     case 3:
-      return decenasY('Treinta', numUnidad);
+      return decenasY(' Treinta', numUnidad);
     case 4:
-      return decenasY('Cuarenta', numUnidad);
+      return decenasY(' Cuarenta', numUnidad);
     case 5:
-      return decenasY('Cincuenta', numUnidad);
+      return decenasY(' Cincuenta', numUnidad);
     case 6:
-      return decenasY('Sesenta', numUnidad);
+      return decenasY(' Sesenta', numUnidad);
     case 7:
-      return decenasY('Setenta', numUnidad);
+      return decenasY(' Setenta', numUnidad);
     case 8:
-      return decenasY('Ochenta', numUnidad);
+      return decenasY(' Ochenta', numUnidad);
     case 9:
-      return decenasY('Noventa', numUnidad);
+      return decenasY(' Noventa', numUnidad);
     case 0:
       return unidades(numUnidad);
     default:
@@ -92,21 +92,21 @@ function centenas(num: number) {
       }
       return 'Cien';
     case 2:
-      return 'Doscientos ' + decenas(numDecenas);
+      return 'Doscientos' + decenas(numDecenas);
     case 3:
-      return 'Trescientos ' + decenas(numDecenas);
+      return 'Trescientos' + decenas(numDecenas);
     case 4:
-      return 'Cuatrocientos ' + decenas(numDecenas);
+      return 'Cuatrocientos' + decenas(numDecenas);
     case 5:
-      return 'Quinientos ' + decenas(numDecenas);
+      return 'Quinientos' + decenas(numDecenas);
     case 6:
-      return 'Seiscientos ' + decenas(numDecenas);
+      return 'Seiscientos' + decenas(numDecenas);
     case 7:
-      return 'Setecientos ' + decenas(numDecenas);
+      return 'Setecientos' + decenas(numDecenas);
     case 8:
-      return 'Ochocientos ' + decenas(numDecenas);
+      return 'Ochocientos' + decenas(numDecenas);
     case 9:
-      return 'Novecientos ' + decenas(numDecenas);
+      return 'Novecientos' + decenas(numDecenas);
     default:
       return decenas(numDecenas);
   }

@@ -11,7 +11,10 @@ import { useDirectives } from '../../hooks';
 import { isOpenCardFiles$ } from '../../services/sharingSubject';
 import { CardOpenFile } from '../userCenter/pages/users/views';
 const GMT = 5 * 60 * 60 * 1000;
-
+type LicenseRes = {
+  licenses: licenseList[];
+  count: number;
+};
 export const Home = () => {
   const { id, profile } = useSelector((state: RootState) => state.userSession);
   const [licenseData, setLicenseData] = useState<licenseList>();
@@ -34,22 +37,33 @@ export const Home = () => {
   const viewLicense = useCallback(() => {
     const now = new Date();
     const early = 2 * 60 * 60 * 1000;
-    axiosInstance.get<licenseList[]>(`/license/employee/${id}`).then(res => {
+    axiosInstance.get<LicenseRes>(`/license/employee/${id}`).then(res => {
       const untilDate = new Date(
-        new Date(res.data[0].untilDate).getTime() + GMT
+        new Date(res.data.licenses[0].untilDate).getTime() + GMT
       );
       const timer = now.getTime() > untilDate.getTime() - early;
-      if (res.data[0]?.status === 'ACTIVO' && !res.data[0].fine) {
-        setLicenseData(res.data[0]);
+      console.log(res.data.licenses[0]);
+      if (
+        res.data.licenses[0]?.status === 'ACTIVO' &&
+        !res.data.licenses[0].fine
+      ) {
+        setLicenseData(res.data.licenses[0]);
         setViewCard(true);
       }
-      if (res.data[0]?.status === 'ACTIVO' && timer && !res.data[0].fine) {
-        setLicenseData(res.data[0]);
+      if (
+        res.data.licenses[0]?.status === 'ACTIVO' &&
+        timer &&
+        !res.data.licenses[0].fine
+      ) {
+        setLicenseData(res.data.licenses[0]);
         setViewCard(true);
         setDisabledBtn(false);
       }
-      if (res.data[0]?.status === 'INACTIVO' && !res.data[0].fine) {
-        setLicenseData(res.data[0]);
+      if (
+        res.data.licenses[0]?.status === 'INACTIVO' &&
+        !res.data.licenses[0].fine
+      ) {
+        setLicenseData(res.data.licenses[0]);
         setViewCard(true);
         setDisabledBtn(false);
       }
@@ -115,7 +129,7 @@ export const Home = () => {
     const now = new Date();
     now.setHours(now.getHours() - 5);
     axiosInstance
-      .patch(`/license/${licenseData?.id}`, {
+      .patch(`/license/checkout/${licenseData?.id}`, {
         checkout: now,
         fine: calculateFineState(),
         status: 'INACTIVO',

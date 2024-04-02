@@ -42,7 +42,6 @@ export const Home = () => {
         new Date(res.data.licenses[0].untilDate).getTime() + GMT
       );
       const timer = now.getTime() > untilDate.getTime() - early;
-      console.log(res.data.licenses[0]);
       if (
         res.data.licenses[0]?.status === 'ACTIVO' &&
         !res.data.licenses[0].fine
@@ -112,7 +111,6 @@ export const Home = () => {
     const now = new Date();
     const untilDate = new Date(licenseData.untilDate);
     const timeDifference = now.getTime() - (untilDate.getTime() + GMT);
-    // console.log(timeDifference);
     if (timeDifference >= 20 * 60 * 1000) {
       return 'MUY_GRAVE';
     } else if (timeDifference >= 15 * 60 * 1000) {

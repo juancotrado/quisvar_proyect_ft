@@ -19,13 +19,16 @@ export interface OpenWithId extends OpenModal {
   id?: number;
 }
 export interface ViewPdf extends OpenModal {
-  pdfComponentFunction: JSX.Element;
+  pdfComponentFunction?: JSX.Element;
+  pdfBlob?: Blob;
+  pdfUrl?: string;
   fileNamePdf: string;
 }
 export interface ViewHtmlToPdf extends OpenModal {
-  htmlString: string;
+  htmlString?: string;
+  pdfBlob?: Blob;
   fileNamePdf: string;
-  size: 'a4' | 'a5';
+  size?: 'a4' | 'a5';
 }
 export interface CardRegisteProject {
   isOpen: boolean;

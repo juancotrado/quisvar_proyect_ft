@@ -24,10 +24,12 @@ const CardRegisterMessage = ({
   const userSession = useSelector((state: RootState) => state.userSession);
   const navigate = useNavigate();
   const onSubmit = async (data: ProcedureSubmit) => {
-    const { fileUploadFiles, values } = data;
+    const { fileUploadFiles, values, mainFile } = data;
     const body = { ...values, senderId: userSession.id };
+
     const formData = new FormData();
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
+    formData.append('mainProcedure', mainFile, values.title + '.pdf');
     formData.append('data', JSON.stringify(body));
     axiosInstance.post(`/paymail`, formData).then(() => {
       SnackbarUtilities.success('Proceso exitoso ');

@@ -18,10 +18,11 @@ const CardRegisterProcedureGeneral = ({
   type,
 }: CardRegisterProcedureGeneralProps) => {
   const onSubmit = async (data: ProcedureSubmit) => {
-    const { fileUploadFiles, values } = data;
+    const { fileUploadFiles, values, mainFile } = data;
     const formData = new FormData();
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
     formData.append('data', JSON.stringify(values));
+    formData.append('mainProcedure', mainFile, values.title + '.pdf');
     formData.append('category', typeProcedure.category);
     await axiosInstance.post(`/mail`, formData);
     SnackbarUtilities.success('Proceso exitoso ');

@@ -14,3 +14,4 @@ export * from './pdfReportFunctions';
 export * from './roles';
 export * from './tools';
 export * from './transformDataPdf';
+export * from './htmlToString';

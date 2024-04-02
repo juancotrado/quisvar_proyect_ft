@@ -248,6 +248,7 @@
 .regularProcedureInfo-btn-expand {
   width: 100%;
   padding: 0 2rem;
+  overflow: auto;
 }
 
 .message-view-more-files-false {

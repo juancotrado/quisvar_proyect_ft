@@ -96,15 +96,21 @@ export const MessagePage = () => {
   const handleOptionSelect = (option: 'continue' | 'finish') =>
     setProcedureOption(option);
   const onSubmit = async (data: ProcedureSubmit) => {
-    const { fileUploadFiles, values } = data;
+    const { fileUploadFiles, values, mainFile } = data;
     const body = { ...values, paymessageId: message.id };
     const formData = new FormData();
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
+    console.log('mainFile', mainFile, values.title + '.pdf');
+    const headers = {
+      'Content-type': 'multipart/form-data',
+    };
     formData.append('data', JSON.stringify(body));
+    formData.append('mainProcedure', mainFile, values.title + '.pdf');
     axiosInstance
       .post(
         `/paymail/reply?status=${isReply ? 'PROCESO' : 'RECHAZADO'}`,
-        formData
+        formData,
+        { headers }
       )
       .then(() => {
         SnackbarUtilities.success('Proceso exitoso ');
@@ -122,6 +128,8 @@ export const MessagePage = () => {
       function: () => handleArchiverMessage,
     };
   };
+
+  console.log('asd', message);
   return (
     <Resizable
       enable={{

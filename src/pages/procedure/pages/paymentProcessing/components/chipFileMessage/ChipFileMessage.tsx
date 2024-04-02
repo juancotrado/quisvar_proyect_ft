@@ -1,4 +1,5 @@
 import { URL } from '../../../../../../services/axiosInstance';
+import { isOpenViewPdf$ } from '../../../../../../services/sharingSubject';
 import { normalizeFileName } from '../../../../../../utils';
 import './chipFileMessage.css';
 
@@ -28,11 +29,19 @@ const ChipFileMessage = ({
     ? 'file-word'
     : 'file-upload';
 
+  const viewPdf = async () => {
+    isOpenViewPdf$.setSubject = {
+      fileNamePdf: normalizeFileName(text),
+      isOpen: true,
+      pdfUrl: link && dir,
+    };
+  };
+
   const parseLink = 'file-user/' + link?.split('/').slice(1).join('/');
   const dir = `${URL}/${parseLink}`;
   return (
     <div className={`${className} chip-container-file `} onClick={onClick}>
-      <a target="_blank" href={link && dir} className="chip-file-link">
+      <a onClick={viewPdf} className="chip-file-link">
         <div className="chip-file-information">
           <img className="chip-file-icon-doc" src={`/svg/${icon}.svg`} />
           <span className="chip-file-text">{normalizeFileName(text)}</span>

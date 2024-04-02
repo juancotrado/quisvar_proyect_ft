@@ -62,10 +62,12 @@ const RegularProcedureInfo = () => {
     navigate('/tramites/tramite-regular?refresh=true');
   };
   const onSubmit = async (data: ProcedureSubmit) => {
-    const { fileUploadFiles, values } = data;
+    const { fileUploadFiles, values, mainFile } = data;
     const { header, receiverId, title, description } = values;
     const formData = new FormData();
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
+    console.log('mainFile', mainFile);
+    formData.append('mainProcedure', mainFile, values.title + '.pdf');
     formData.append(
       'data',
       JSON.stringify({ header, receiverId, title, description })

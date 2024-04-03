@@ -47,7 +47,7 @@ const CardProvied = () => {
         rules={{ required: 'Debes seleccionar una opción' }}
         render={({ field: { onChange } }) => (
           <AdvancedSelect
-            placeholder="2"
+            placeholder="Selecione una opción"
             options={usersSelect}
             isClearable
             label={'Para:'}

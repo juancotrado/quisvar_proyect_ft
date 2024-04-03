@@ -123,15 +123,16 @@ const procedureDocument = ({
     </div>
     <div class="line"></div>
     <div class="procedureDocument-font-normal">${body}</div>      
+   ${
+     signature
+       ? ` 
     <div class="procedureDocument-sign">
-      ${
-        signature
-          ? `<img src=${`${URL}/api/v1/encrypt/${fromProfile.dni}?token=${token}`} class="procedureDocument-sign-img"/>`
-          : ''
-      }
+      <img src=${`${URL}/api/v1/encrypt/${fromProfile.dni}?token=${token}`} class="procedureDocument-sign-img"/>
       <span class="procedureDocument-sign-line">${from}</span>
       <span>DNI: ${fromProfile.dni}</span>
-    </div>
+    </div>`
+       : ''
+   }
   </div>`;
 };
 

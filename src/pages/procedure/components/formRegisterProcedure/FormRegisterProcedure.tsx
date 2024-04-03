@@ -23,9 +23,10 @@ import {
   Input,
   Select,
 } from '../../../../components';
-import { validateWhiteSpace } from '../../../../utils';
+import { getHtmlPdfBlob, validateWhiteSpace } from '../../../../utils';
 import { Editor } from '@tinymce/tinymce-react';
 import { ChipFileDownLoadProcedure, DocumentProcedure } from '..';
+import { axiosInstance } from '../../../../services/axiosInstance';
 
 interface FormRegisterProcedureProps {
   type: TypeProcedure;
@@ -154,6 +155,8 @@ const FormRegisterProcedure = ({
   const onSubmit: SubmitHandler<MessageSendType> = async data => {
     const secondaryReceiver = listCopy.map(list => ({ userId: list.id }));
     const htmlString = getHtmlString('a4');
+    const blobData = await getHtmlPdfBlob(htmlString, 'a4');
+
     if (!htmlString || !receiver) return;
     const values = {
       ...data,
@@ -162,15 +165,30 @@ const FormRegisterProcedure = ({
       title: watch('title'),
       description: htmlString,
     };
-    submit({ values, fileUploadFiles });
+    submit({ values, fileUploadFiles, mainFile: blobData });
   };
   const showCardReport = () => {
     isOpenCardGenerateReport$.setSubject = true;
   };
+  const getPdfA5 = async () => {
+    const formData = new FormData();
+    const htmlString = getHtmlString('a4');
+    const blobData = await getHtmlPdfBlob(htmlString, 'a4');
+    formData.append('file', blobData);
+    axiosInstance
+      .post('/generate-pdf/two-pages', formData, { responseType: 'blob' })
+      .then(res => {
+        isOpenViewHtmlToPdf$.setSubject = {
+          isOpen: true,
+          fileNamePdf: watch('title'),
+          pdfBlob: res.data,
+        };
+      });
+  };
   const downloadOptions = [
     {
       id: 1,
-      handleClick: () => downLoadPdf('a5'),
+      handleClick: getPdfA5,
       iconOne: 'file-download',
       iconTwo: 'file-download-white',
       text: 'A5',
@@ -297,14 +315,7 @@ const FormRegisterProcedure = ({
         onEditorChange={handleInputChange}
       />
       <div className="messageRegister-options">
-        {showReportBtn && (
-          <div className="messageRegister-report" onClick={showCardReport}>
-            <IconAction icon="clip-icon" position="none" />
-            <span>Adjuntar reporte</span>
-          </div>
-        )}
-
-        <label className="card-register-sworn-declaration-check-container">
+        <label className="messageRegister-check-container">
           <input
             type="checkbox"
             {...register('signature', {
@@ -313,6 +324,12 @@ const FormRegisterProcedure = ({
           />
           Firma
         </label>
+        {showReportBtn && (
+          <div className="messageRegister-report" onClick={showCardReport}>
+            <IconAction icon="clip-icon" position="none" />
+            <span>Adjuntar reporte</span>
+          </div>
+        )}
 
         <div className="pdf-btn-area-view">
           {downloadOptions.map(

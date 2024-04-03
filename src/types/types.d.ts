@@ -988,6 +988,7 @@ export interface Procedure extends MessageSendType {
 export interface ProcedureSubmit {
   values: Procedure;
   fileUploadFiles: File[];
+  mainFile: Blob;
 }
 type ListItemElement = {
   type: 'listItem';

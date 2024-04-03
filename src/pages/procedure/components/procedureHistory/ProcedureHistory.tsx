@@ -1,7 +1,8 @@
-import { useEffect } from 'react';
 import { ChipFileDownLoadProcedure } from '..';
-import { useHtmlToPdf } from '../../../../hooks';
-import { isOpenViewHtmlToPdf$ } from '../../../../services/sharingSubject';
+import {
+  isOpenViewHtmlToPdf$,
+  isOpenViewPdf$,
+} from '../../../../services/sharingSubject';
 import { MessageReply, MessageType, ProfileShort } from '../../../../types';
 import './procedureHistory.css';
 import {
@@ -9,6 +10,7 @@ import {
   normalizeFileName,
 } from '../../../../utils';
 import { ChipFileMessage } from '../../pages/paymentProcessing/components';
+import { URL, axiosInstance } from '../../../../services/axiosInstance';
 
 interface ProcedureHistoryProps {
   messageHistory: MessageReply | MessageType;
@@ -18,38 +20,53 @@ const ProcedureHistory = ({
   messageHistory,
   userMessage,
 }: ProcedureHistoryProps) => {
-  console.log('userMessage', userMessage);
-  const { getPdfToEmbed, pdfUrl } = useHtmlToPdf();
+  const mainDocument = messageHistory?.files
+    ? [...messageHistory?.files].shift()
+    : undefined;
 
-  useEffect(() => {
-    getPdfToEmbed(messageHistory.description, 'a4');
-  }, []);
-
-  const downLoadPdf = (size: 'a4' | 'a5') => {
-    const { description, header } = messageHistory;
-    isOpenViewHtmlToPdf$.setSubject = {
-      isOpen: true,
-      fileNamePdf: header,
-      htmlString: description,
-      size,
-    };
+  const viewPdf = async (size: 'a4' | 'a5') => {
+    if (!mainDocument) return;
+    const mainDocumentUrl = `${URL}/${mainDocument.path}/${mainDocument.name}`;
+    if (size === 'a4') {
+      isOpenViewPdf$.setSubject = {
+        fileNamePdf: messageHistory.title,
+        isOpen: true,
+        pdfUrl: mainDocumentUrl,
+      };
+    }
+    if (size === 'a5') {
+      axiosInstance
+        .post(
+          `/generate-pdf/two-pages?url=${mainDocument.path}/${mainDocument.name}&fileName=${mainDocument.name}`,
+          {},
+          { responseType: 'blob' }
+        )
+        .then(res => {
+          isOpenViewHtmlToPdf$.setSubject = {
+            isOpen: true,
+            fileNamePdf: messageHistory.title,
+            pdfBlob: res.data,
+          };
+        });
+    }
   };
   const downloadOptions = [
     {
       id: 1,
-      handleClick: () => downLoadPdf('a5'),
+      handleClick: () => viewPdf('a5'),
       iconOne: 'file-download',
       iconTwo: 'file-download-white',
       text: 'A5',
     },
     {
       id: 2,
-      handleClick: () => downLoadPdf('a4'),
+      handleClick: () => viewPdf('a4'),
       iconOne: 'file-download',
       iconTwo: 'file-download-white',
       text: 'A4',
     },
   ];
+
   return (
     <div className="procedureHistory">
       <div className="procedureHistory-info">
@@ -79,14 +96,15 @@ const ProcedureHistory = ({
           </div>
         </div>
       </div>
-      {pdfUrl && (
-        <embed
-          src={pdfUrl}
+      {mainDocument && (
+        <object
+          data={`${URL}/${mainDocument.path.replace('public', 'file-user')}/${
+            mainDocument.name
+          }`}
           type="application/pdf"
           style={{ width: '100%', aspectRatio: 0.75 }}
         />
       )}
-      <span></span>
       <div className="message-sender-info">
         <span className="message-sender-name">
           Enviado por{' '}

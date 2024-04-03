@@ -24,12 +24,17 @@ import {
   CONTRACT_TYPE,
   DIFFICULTY_LEVEL,
 } from '../../models';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../../../../store';
+import { getContractThunks } from '../../../../../../store/slices/contract.slice';
 
 interface CardRegisterContractProps {
   onSave: () => void;
 }
 export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
+  const dispatch: AppDispatch = useDispatch();
+
   const [companies, setCompanies] = useState<null | CoorpEntity[]>(null);
   const {
     departaments,
@@ -104,7 +109,10 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
       handleIsOpen.current.unsubscribe();
     };
   }, [reset, setJurisdictionSelectData]);
-
+  // const getContract = (contractId) => {
+  //   if (!contractId) return;
+  //   dispatch(getContractThunks(contractId));
+  // };
   useEffect(() => {
     getSpecialists();
   }, []);
@@ -122,6 +130,7 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
     };
     if (id) {
       await axiosInstance.patch(`contract/${id}`, body);
+      dispatch(getContractThunks(String(id)));
     } else {
       body.indexContract = JSON.stringify(CONTRACT_INDEX_DATA);
       await axiosInstance.post('contract', body);

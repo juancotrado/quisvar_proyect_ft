@@ -1,6 +1,7 @@
 import { Document, Page, Text, View } from '@react-pdf/renderer';
 import { styles } from './stylesReceiptOfPaymentPdf';
 import { ServiceOrderData } from '../../../../../../../../types/types';
+import { formatAmountMoney } from '../../../../../../../../utils';
 interface ReceiptOfPaymentPdfProps {
   data: ServiceOrderData;
 }
@@ -73,7 +74,7 @@ const ReceiptOfPaymentPdf = ({ data }: ReceiptOfPaymentPdfProps) => {
             </View>
             <View style={{ ...styles.tableCol, width: '15%' }}>
               <Text style={{ ...styles.headers, paddingVertical: 20 }}>
-                S/. {data.amount}
+                S/. {formatAmountMoney(data.amount)}
               </Text>
             </View>
           </View>

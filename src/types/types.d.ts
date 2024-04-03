@@ -39,7 +39,7 @@ export interface ServiceOrderData {
   degree: string;
   description: string;
   concept: string;
-  amount: string;
+  amount: number;
   payType: string;
   acountNumber: string;
   acountCheck: string;

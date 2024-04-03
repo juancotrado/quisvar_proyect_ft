@@ -1250,3 +1250,8 @@ export interface Roles {
   menuPoints: MenuRoleForm[];
   menuPointsDb: MenuPoint[];
 }
+
+export interface OptionSelect {
+  value: string;
+  label: string;
+}

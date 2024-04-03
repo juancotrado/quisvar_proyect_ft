@@ -77,6 +77,7 @@ const FormRegisterProcedure = ({
       ),
     [userSessionId, listUser, receiver]
   );
+
   //funcion futura para que el reporte se agrega auntomaticamente
   // const handleIsOpen = useRef<Subscription>(new Subscription());
 
@@ -214,7 +215,6 @@ const FormRegisterProcedure = ({
         <Input
           {...register('title', { validate: { validateWhiteSpace } })}
           errors={errors}
-          className="messagePage-input"
           placeholder="Asunto"
           name="title"
           styleInput={2}
@@ -233,12 +233,12 @@ const FormRegisterProcedure = ({
           textField="value"
           errors={errors}
           placeholder="Tipo de Documento"
-          className="messagePage-input"
+          className="input-style-two"
         />
         {type !== 'comunication' && (
           <div className="imbox-receiver-choice-dropdown">
             <DropDownSimple
-              classNameInput="messagePage-input"
+              classNameInput="input-style-two"
               type="search"
               data={contacts}
               textField="name"
@@ -291,7 +291,6 @@ const FormRegisterProcedure = ({
       <Input
         {...register('header', { validate: { validateWhiteSpace } })}
         errors={errors}
-        className="messagePage-input"
         placeholder="Asunto"
         name="header"
         styleInput={2}

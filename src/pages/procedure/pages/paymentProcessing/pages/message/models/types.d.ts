@@ -1,4 +1,4 @@
-import { MessageTypeImbox } from '../../../../../../../types';
+import { MessageTypeImbox, OptionSelect } from '../../../../../../../types';
 
 export interface HeaderOptionProcedure {
   procedureOpt: 'continue' | 'finish';
@@ -13,4 +13,13 @@ export interface MessageSendType {
   idMessageReply?: number;
   idMessageResend?: number;
   type: MessageTypeImbox;
+}
+
+export interface ProviedForm {
+  title: string;
+  numberPage?: number;
+  pos: number;
+  to: OptionSelect;
+  date: string;
+  observation?: string;
 }

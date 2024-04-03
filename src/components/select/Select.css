@@ -24,3 +24,14 @@
   font-size: var(--size-input);
   padding: 0 0.3rem;
 }
+
+.AdvancedSelect {
+  width: 100%;
+  background-color: var(--color-menu);
+  border: none;
+  font-size: var(--size-input);
+}
+
+.AdvancedSelect input:focus {
+  box-shadow: none;
+}

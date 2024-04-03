@@ -9,7 +9,6 @@ interface AdvancedSelectProps extends SelectProps {
   errors?: { [key: string]: any };
   errorPosX?: number;
   errorPosY?: number;
-  placeholder?: string;
   isRelative?: boolean;
   className?: string;
   refSelect?: Ref<SelectInstance<unknown, boolean, GroupBase<unknown>>>;
@@ -26,7 +25,6 @@ const AdvancedSelect = ({
   isRelative = false,
   className,
   refSelect,
-  placeholder,
   ...props
 }: AdvancedSelectProps) => {
   const style: CSSProperties = {

@@ -1252,6 +1252,6 @@ export interface Roles {
 }
 
 export interface OptionSelect {
-  value: string;
+  value: number;
   label: string;
 }

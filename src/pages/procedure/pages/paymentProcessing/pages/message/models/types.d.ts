@@ -19,7 +19,7 @@ export interface ProviedForm {
   title: string;
   numberPage?: number;
   pos: number;
-  to: OptionSelect;
+  to: OptionSelect | null;
   date: string;
   observation?: string;
 }

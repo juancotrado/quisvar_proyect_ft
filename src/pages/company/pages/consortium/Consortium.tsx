@@ -8,7 +8,7 @@ import {
   isOpenCardConsortium$,
 } from '../../../../services/sharingSubject';
 import { Button } from '../../../../components';
-import { CardConsortium } from '../../views';
+import { CardAddCompany } from './views';
 
 export const Consortium = () => {
   const { id } = useParams();
@@ -145,7 +145,7 @@ export const Consortium = () => {
             />
           </div>
         </div>
-        <CardConsortium onSave={getConsortium} />
+        <CardAddCompany onSave={getConsortium} />
       </div>
     </>
   );

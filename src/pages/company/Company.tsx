@@ -62,10 +62,13 @@ export const Company = () => {
             className="specialist-add-btn"
           />
         </div>
-        <Input
-          placeholder="Buscar por RUC"
-          className="specialist-search-input"
-        />
+        <div className="search-box">
+          <Input
+            placeholder="Buscar por RUC"
+            className="specialist-search-input"
+          />
+        </div>
+
         <div className="scroll-y">
           {!swap &&
             companies &&

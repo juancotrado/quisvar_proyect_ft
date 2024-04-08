@@ -18,3 +18,6 @@
   background-color: #f3f5f7;
   border-radius: 1rem;
 }
+.scroll-y {
+  overflow-y: auto;
+}

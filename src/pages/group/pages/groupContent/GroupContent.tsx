@@ -77,10 +77,10 @@ export const GroupContent = () => {
             <div className="grc-list-header">
               <h1 className="grc-title-member">#</h1>
               <h1 className="grc-title-member">INTEGRANTE</h1>
-              <h1 className="grc-title-member">USUARIO</h1>
+              {/* <h1 className="grc-title-member">USUARIO</h1> */}
               <h1 className="grc-title-member">Borrar</h1>
             </div>
-            <div className="grc-list-members">
+            {/* <div className="grc-list-members">
               <h1 className="grc-member-name">1</h1>
               <h1 className="grc-member-mod">
                 {members?.modId && members?.modId
@@ -105,7 +105,7 @@ export const GroupContent = () => {
                   />
                 </span>
               )}
-            </div>
+            </div> */}
             {members?.groups &&
               members.groups.map((member, index) => (
                 <div className="grc-list-members" key={member?.users.id}>
@@ -114,10 +114,10 @@ export const GroupContent = () => {
                     {member.users.profile.firstName}{' '}
                     {member.users.profile.lastName}
                   </h1>
-                  <span className="ule-size-pc">
+                  {/* <span className="ule-size-pc">
                     <img src="/svg/pc-icon.svg" className="ule-icon-size" />
                     {member.users.profile.userPc ?? '---'}
-                  </span>
+                  </span> */}
                   <span className="ule-size-pc">
                     <ButtonDelete
                       icon="trash"

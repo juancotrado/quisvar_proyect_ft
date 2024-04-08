@@ -975,7 +975,7 @@ interface MessageSendType {
   title: string;
   header: string;
   description?: string;
-  receiverId: number;
+  receiver: OptionSelect;
   signature: boolean;
   type: MessageType['type'];
 }
@@ -1252,6 +1252,12 @@ export interface Roles {
 }
 
 export interface OptionSelect {
-  value: number;
+  value: number | string;
   label: string;
+}
+
+export type StylesVariant = 'primary' | 'secondary';
+
+export interface Profession extends OptionSelect {
+  abrv: string;
 }

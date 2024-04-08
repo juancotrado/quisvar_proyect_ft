@@ -1,7 +1,8 @@
-import { error } from 'console';
 import { CSSProperties, Ref } from 'react';
 import { GroupBase, Props as SelectProps, SelectInstance } from 'react-select';
 import SelectReact from 'react-select';
+import { StylesVariant } from '../../types';
+import { STYLE_SELECT_ADVANCE } from './selectDefinitions';
 
 interface AdvancedSelectProps extends SelectProps {
   label?: string;
@@ -12,6 +13,7 @@ interface AdvancedSelectProps extends SelectProps {
   isRelative?: boolean;
   className?: string;
   refSelect?: Ref<SelectInstance<unknown, boolean, GroupBase<unknown>>>;
+  styleVariant?: StylesVariant;
 }
 
 const AdvancedSelect = ({
@@ -25,6 +27,7 @@ const AdvancedSelect = ({
   isRelative = false,
   className,
   refSelect,
+  styleVariant = 'primary',
   ...props
 }: AdvancedSelectProps) => {
   const style: CSSProperties = {
@@ -35,7 +38,11 @@ const AdvancedSelect = ({
     <div className="select-container">
       {label && <label className="select-label">{label}</label>}
 
-      <SelectReact ref={refSelect} {...props} className="AdvancedSelect" />
+      <SelectReact
+        ref={refSelect}
+        {...props}
+        className={`AdvancedSelect ${STYLE_SELECT_ADVANCE[styleVariant]} ${className}`}
+      />
       {name && errors && errors[name] && (
         <span className="input-span-error" style={style}>
           <img

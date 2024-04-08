@@ -4,10 +4,11 @@ import {
   ProcedureSubmit,
   receiverType,
 } from '../../../../types';
+import './formRegisterProcedure.css';
 import { useTitleProcedure } from '../../hooks';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { SubmitHandler, useForm, Controller } from 'react-hook-form';
 import { useListUsers } from '../../../../hooks';
 import { RADIO_OPTIONS, ToData, TypeProcedure } from '../../models';
 import { procedureDocument } from '../../pdfGenerator';
@@ -17,6 +18,7 @@ import {
 } from '../../../../services/sharingSubject';
 import { TYPE_PROCEDURE } from '../../pages/paymentProcessing/models';
 import {
+  AdvancedSelect,
   Button,
   DropDownSimple,
   IconAction,
@@ -42,7 +44,7 @@ const FormRegisterProcedure = ({
   showReportBtn = false,
   showAddUser = true,
 }: FormRegisterProcedureProps) => {
-  const [receiver, setReceiver] = useState<receiverType | null>(null);
+  // const [receiver, setReceiver] = useState<receiverType | null>(null);
   const [isAddReceiver, setIsAddReceiver] = useState(false);
   const [listCopy, setListCopy] = useState<receiverType[]>([]);
   const urlQuantity =
@@ -63,6 +65,7 @@ const FormRegisterProcedure = ({
     register,
     setValue,
     watch,
+    control,
     formState: { errors },
   } = useForm<MessageSendType>();
   const { users: listUser } = useListUsers(
@@ -70,12 +73,10 @@ const FormRegisterProcedure = ({
     'tramites',
     'tramite-regular'
   );
+
   const contacts = useMemo(
-    () =>
-      listUser.filter(
-        user => user.id !== userSessionId && user.id !== receiver?.id
-      ),
-    [userSessionId, listUser, receiver]
+    () => listUser.filter(user => user.id !== userSessionId),
+    [userSessionId, listUser]
   );
 
   //funcion futura para que el reporte se agrega auntomaticamente
@@ -111,9 +112,9 @@ const FormRegisterProcedure = ({
 
   const getHtmlString = (size: 'a4' | 'a5') => {
     const idUserReceiver = listCopy.map(user => user.id);
-    const { description, header, title, signature } = watch();
+    const { description, header, title, signature, receiver } = watch();
     const usersReceiver = handleReceiverUser([
-      +(receiver?.id || 0),
+      +(receiver.value || 0),
       ...idUserReceiver,
     ]);
     const [toProfile, ...ccProfiles] = usersReceiver;
@@ -158,11 +159,11 @@ const FormRegisterProcedure = ({
     const htmlString = getHtmlString('a4');
     const blobData = await getHtmlPdfBlob(htmlString, 'a4');
 
-    if (!htmlString || !receiver) return;
+    if (!htmlString || !data.receiver) return;
     const values = {
       ...data,
       secondaryReceiver,
-      receiverId: receiver.id,
+      receiverId: data.receiver.value,
       title: watch('title'),
       description: htmlString,
     };
@@ -208,6 +209,11 @@ const FormRegisterProcedure = ({
     setValue('title', title);
   };
   const typeProcedure = TYPE_PROCEDURE[type];
+  const usersSelect = contacts.map(user => ({
+    value: user.id,
+    label: user.name,
+  }));
+
   return (
     <form className="imbox-data-content" onSubmit={handleSubmit(onSubmit)}>
       {watch('title') && (
@@ -233,25 +239,43 @@ const FormRegisterProcedure = ({
           textField="value"
           errors={errors}
           placeholder="Tipo de Documento"
-          className="input-style-two"
+          styleVariant="secondary"
         />
+        {/* {type !== 'comunication' && (
+          // <div className="imbox-receiver-choice-dropdown">
+          <DropDownSimple
+            classNameInput="input-style-two"
+            type="search"
+            data={contacts}
+            textField="name"
+            itemKey="id"
+            placeholder="Dirigido a"
+            selector
+            droper
+            valueInput={(value, id) => setReceiver({ id: +id, value })}
+            required
+          />
+          // </div>
+        )} */}
+
         {type !== 'comunication' && (
-          <div className="imbox-receiver-choice-dropdown">
-            <DropDownSimple
-              classNameInput="input-style-two"
-              type="search"
-              data={contacts}
-              textField="name"
-              itemKey="id"
-              placeholder="Dirigido a"
-              selector
-              droper
-              valueInput={(value, id) => setReceiver({ id: +id, value })}
-              required
-            />
-          </div>
+          <Controller
+            control={control}
+            name="receiver"
+            rules={{ required: 'Debes seleccionar una opción' }}
+            render={({ field: { onChange } }) => (
+              <AdvancedSelect
+                placeholder="Selecione una opción"
+                options={usersSelect}
+                isClearable
+                errors={errors}
+                name="to"
+                onChange={onChange}
+              />
+            )}
+          />
         )}
-        {(receiver || type === 'comunication') && showAddUser && (
+        {(watch('receiver') || type === 'comunication') && showAddUser && (
           <Button
             type="button"
             text={typeProcedure.addUsersText}

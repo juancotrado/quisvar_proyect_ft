@@ -156,7 +156,6 @@ export const MailPage = () => {
               </span>
               <Select
                 data={listStatusMsg}
-                className="mail-option-select"
                 placeholder="Estado"
                 onChange={({ target }) =>
                   target.value !== '0' &&
@@ -165,9 +164,10 @@ export const MailPage = () => {
                 name="Status"
                 itemKey="id"
                 textField="id"
+                styleVariant="secondary"
               />
               <Select
-                className="mail-option-select"
+                styleVariant="secondary"
                 placeholder="Documento"
                 data={listTypeMsg}
                 onChange={({ target }) =>

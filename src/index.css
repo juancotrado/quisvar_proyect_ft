@@ -243,4 +243,5 @@ a.nostyle:visited {
   font-weight: 400;
   height: auto;
   flex: 1;
+  box-shadow: none;
 }

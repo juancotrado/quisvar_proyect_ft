@@ -20,7 +20,7 @@
   width: 100%;
   background-color: var(--color-menu);
   border: none;
-  box-shadow: 0px 2px 0px 0px var(--color-secondary);
+  box-shadow: 0px 2px 0px 0px var(--color-quaternay);
   padding: 0 0.3rem;
   font-size: var(--size-input);
 }
@@ -34,4 +34,24 @@
 
 .AdvancedSelect input:focus {
   box-shadow: none;
+}
+.AdvancedSelectCrud-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.secondary .css-13cymwt-control {
+  height: 1.8rem;
+  width: 100%;
+  background-color: var(--color-menu);
+  border: none;
+  box-shadow: 0px 2px 0px 0px var(--color-quaternay);
+  padding: 0 0.3rem;
+  font-size: var(--size-input);
+  min-height: auto;
+}
+
+.AdvancedSelectCrud-option-actions {
+  display: flex;
+  gap: 0.5rem;
 }

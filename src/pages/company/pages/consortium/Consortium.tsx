@@ -78,23 +78,23 @@ export const Consortium = () => {
               onClick={() => id && handleOpenCard(+id)}
             />
           </div>
-          <div className="consortium-table" key={data?.id}>
+          <div className="consortium-table">
             <div className="consortium-header">
               <h1 className="consortium-member">#</h1>
               <h1 className="consortium-member">Empresa</h1>
               <h1 className="consortium-member">Borrar</h1>
             </div>
             {data &&
-              data?.companies.map((company, index) => (
+              data?.companies.map((item, index) => (
                 <div key={index} className="consortium-company-members">
                   <h1 className="consortium-company-name">{index + 1}</h1>
                   <h1 className="consortium-company-name">
-                    {company?.companies.name}
+                    {item?.companies.name}
                   </h1>
                   <span className="ule-size-pc">
                     <ButtonDelete
                       icon="trash"
-                      url={`/consortium/relation/${company?.companies.id}/${id}`}
+                      url={`/consortium/relation/${item?.companies.id}/${id}`}
                       className="role-delete-icon"
                       onSave={getConsortium}
                     />

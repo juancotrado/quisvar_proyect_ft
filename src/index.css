@@ -6,7 +6,6 @@
   --color-unresolved: #ff3b3b;
   --color-grey: #00000080;
   --color-process: #ffd140;
-  /* --color-unresolved: #d12953; */
   --color-done: #14804a;
   --color-liquidation: #4f5aed;
   --color-asigned: #aa5b00;
@@ -90,8 +89,8 @@ input {
 
 input:focus,
 select:focus {
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
-  border-bottom: 2px solid var(--color-primary);
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2),
+    0px 2px 0px 0px var(--color-primary);
 }
 
 textarea {
@@ -109,7 +108,7 @@ h3 {
 
 .container {
   /* max-width: 1280px; */
-  max-width: 96%;
+  max-width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -170,6 +169,7 @@ a.nostyle:visited {
   color: inherit;
   cursor: auto;
 }
+
 .user-profile-figure {
   width: 2.5rem;
   border-radius: 50%;
@@ -189,6 +189,7 @@ a.nostyle:visited {
   border-radius: 50%;
   transition: 0.5s ease;
 }
+
 .close-icon:hover {
   transform: rotate(-90deg);
 }
@@ -196,15 +197,19 @@ a.nostyle:visited {
 .bg-color-done {
   background-color: var(--color-primary);
 }
+
 .bg-color-unresolved {
   background-color: var(--color-unresolved);
 }
+
 .bg-color-process {
   background-color: var(--color-process);
 }
+
 .bg-color-review {
   background-color: var(--color-review);
 }
+
 .col-input {
   display: flex;
   justify-content: space-between;
@@ -226,4 +231,17 @@ a.nostyle:visited {
   width: 100%;
   background-color: black;
   height: 1px;
+}
+
+.input-style-two {
+  border-radius: 0.25rem;
+  border: 0.5px solid rgba(0, 0, 0, 0.2);
+  padding: 0.5rem;
+  background: #fff;
+  font-size: 0.85rem;
+  font-style: normal;
+  font-weight: 400;
+  height: auto;
+  flex: 1;
+  box-shadow: none;
 }

@@ -2,6 +2,17 @@
   position: absolute;
   right: 0.5rem;
   top: 0.5rem;
-  transition: ease 0.5s;
   cursor: pointer;
+}
+
+.iconAction-hover {
+  transition: ease 5000ms;
+}
+
+.iconAction-hover:hover .hover {
+  display: block;
+}
+
+.iconAction-hover:hover .normal {
+  display: none;
 }

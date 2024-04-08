@@ -58,12 +58,15 @@ export const Specialist = () => {
             className="specialist-add-btn"
           />
         </div>
-        <Input
-          placeholder="Buscar por DNI"
-          className="specialist-search-input"
-          onChange={handleSearch}
-          value={searchTerm}
-        />
+
+        <div className="search-box">
+          <Input
+            placeholder="Buscar por DNI"
+            className="specialist-search-input"
+            onChange={handleSearch}
+            value={searchTerm}
+          />
+        </div>
         {specialist &&
           specialist.map(item => (
             <NavLink

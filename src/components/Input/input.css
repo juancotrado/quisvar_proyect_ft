@@ -8,6 +8,7 @@
   font-size: 0.8rem;
   line-height: 1.5rem;
 }
+
 .input-main-style-2_1 {
   width: 100%;
   padding: 0.3125rem;
@@ -18,6 +19,7 @@
   font-size: 0.65rem;
   font-weight: 600;
 }
+
 .input-main {
   position: relative;
   width: 100%;
@@ -34,12 +36,13 @@
 .input-area {
   height: 1.8rem;
   width: 100%;
-  border-bottom: 2px solid var(--color-secondary);
   background-color: var(--color-menu);
   font-weight: 500;
+  box-shadow: 0px 2px 0px 0px var(--color-secondary);
   padding: 0 0.3rem;
   font-size: var(--size-input);
 }
+
 .input-area[type='radio']:checked:disabled:before {
   accent-color: #312f2b;
   content: '';
@@ -52,6 +55,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
 }
+
 .input-area-error {
   border-color: #df0000;
 }
@@ -61,8 +65,7 @@
   color: #df0000;
   display: flex;
   align-items: center;
-  gap: 0.4rem;
-  bottom: -17px;
+  bottom: -1.23rem;
   left: 1px;
   font-size: 0.6rem;
   font-weight: 500;
@@ -117,8 +120,9 @@
   color: var(--color-primary);
   cursor: not-allowed;
   background-color: var(--color-menu);
-  border-bottom: 2px solid var(--color-primary);
+  box-shadow: 0px 2px 0px 0px var(--color-primary);
 }
+
 .input-pading-right {
   padding-right: 2.5rem;
 }

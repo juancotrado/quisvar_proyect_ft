@@ -20,6 +20,7 @@ import {
 import { useRole } from '../../../../../../hooks';
 import { TYPE_STATUS } from '../../models';
 import {
+  CardProvied,
   CardRegisterMessageUpdate,
   CardRegisterVoucher,
   CardRegisterVoucherDenyOrAccept,
@@ -44,6 +45,7 @@ export const MessagePage = () => {
   const [isReply, setIsReply] = useState(true);
   const [message, setMessage] = useState<MessageType | null>();
   const [viewHistory, setViewHistory] = useState(false);
+  const [isProvied, setIsProvied] = useState(false);
   const [procedureOption, setProcedureOption] = useState<'finish' | 'continue'>(
     'continue'
   );
@@ -87,7 +89,6 @@ export const MessagePage = () => {
     ({ user, role, type }) =>
       user.id === userSessionId && role === 'MAIN' && type == 'RECEIVER'
   );
-  // console.log({ mainReceiverFinish });
 
   const handleSaveRegister = () => {
     navigate('/tramites/tramite-de-pago?refresh=true');
@@ -95,12 +96,13 @@ export const MessagePage = () => {
   const isUserInitMessage = userSessionId === message.userInit.userId;
   const handleOptionSelect = (option: 'continue' | 'finish') =>
     setProcedureOption(option);
+  const handleProvied = () => setIsProvied(!isProvied);
+
   const onSubmit = async (data: ProcedureSubmit) => {
     const { fileUploadFiles, values, mainFile } = data;
     const body = { ...values, paymessageId: message.id };
     const formData = new FormData();
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
-    console.log('mainFile', mainFile, values.title + '.pdf');
     const headers = {
       'Content-type': 'multipart/form-data',
     };
@@ -144,15 +146,7 @@ export const MessagePage = () => {
     >
       {message.status === 'PAGADO' && (
         <div className="message-page-contain message-page-contain--right">
-          <div
-            style={{
-              width: '100%',
-              height: '100%',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
+          <div className="message-page-finish">
             <h2>Tramite Finalizado</h2>
           </div>
         </div>
@@ -161,7 +155,7 @@ export const MessagePage = () => {
         <div className="message-page-contain message-page-contain--right">
           {message.status !== 'FINALIZADO' &&
             message.status !== 'POR_PAGAR' && (
-              <div className="message-header-content-options  message-header--flexStart">
+              <div className="message-header-content-options  ">
                 {HEADER_OPTION.map(({ procedureOpt, text }) => (
                   <ButtonHeader
                     key={procedureOpt}
@@ -170,75 +164,86 @@ export const MessagePage = () => {
                     onClick={() => handleOptionSelect(procedureOpt)}
                   />
                 ))}
+                {procedureOption === 'continue' && (
+                  <IconAction
+                    icon={isProvied ? 'seal-dark' : 'seal'}
+                    size={1.2}
+                    onClick={handleProvied}
+                  />
+                )}
               </div>
             )}
           {procedureOption === 'continue' ? (
-            <>
-              {mainReceiver &&
-                !isUserInitMessage &&
-                message.status !== 'RECHAZADO' && (
-                  <div
-                    className="message-switch"
-                    data-ison={isReply}
-                    onClick={toggleSwitch}
-                  >
-                    {isReply && (
-                      <span className="message-hover-title">NO PROCEDE</span>
-                    )}
-                    <motion.div
-                      className={`message-handle`}
-                      layout
-                      transition={SPRING}
+            isProvied ? (
+              <CardProvied />
+            ) : (
+              <>
+                {mainReceiver &&
+                  !isUserInitMessage &&
+                  message.status !== 'RECHAZADO' && (
+                    <div
+                      className="message-switch"
+                      data-ison={isReply}
+                      onClick={toggleSwitch}
                     >
-                      <span className="span-list-task">
-                        {isReply ? 'Procede' : 'No Procede'}
-                      </span>
-                    </motion.div>
-                    {!isReply && (
-                      <span className="message-hover-title">PROCEDE</span>
-                    )}
-                  </div>
-                )}
-              {mainReceiver &&
-                (message.status === 'PROCESO' ||
-                  message.status === 'RECHAZADO') &&
-                !isUserInitMessage && (
-                  <>
-                    <FormRegisterProcedure
-                      type={'payProcedure'}
-                      submit={data => onSubmit(data)}
-                      showAddUser={false}
-                    />
-                    {hasAccess && !isReply && (
-                      <Button
-                        onClick={handleArchiver}
-                        styleButton={2}
-                        type="button"
-                        text="Archivar Tramite"
+                      {isReply && (
+                        <span className="message-hover-title">NO PROCEDE</span>
+                      )}
+                      <motion.div
+                        className={`message-handle`}
+                        layout
+                        transition={SPRING}
+                      >
+                        <span className="span-list-task">
+                          {isReply ? 'Procede' : 'No Procede'}
+                        </span>
+                      </motion.div>
+                      {!isReply && (
+                        <span className="message-hover-title">PROCEDE</span>
+                      )}
+                    </div>
+                  )}
+                {mainReceiver &&
+                  (message.status === 'PROCESO' ||
+                    message.status === 'RECHAZADO') &&
+                  !isUserInitMessage && (
+                    <>
+                      <FormRegisterProcedure
+                        type={'payProcedure'}
+                        submit={data => onSubmit(data)}
+                        showAddUser={false}
                       />
-                    )}
-                  </>
+                      {hasAccess && !isReply && (
+                        <Button
+                          onClick={handleArchiver}
+                          styleButton={2}
+                          type="button"
+                          text="Archivar Tramite"
+                        />
+                      )}
+                    </>
+                  )}
+                {message.status == 'FINALIZADO' && mainReceiverFinish && (
+                  <CardRegisterVoucher
+                    message={message}
+                    onSave={handleSaveRegister}
+                  />
                 )}
-              {message.status == 'FINALIZADO' && mainReceiverFinish && (
-                <CardRegisterVoucher
-                  message={message}
-                  onSave={handleSaveRegister}
-                />
-              )}
-              {message.status === 'POR_PAGAR' && mainReceiverFinish && (
-                <CardRegisterVoucherDenyOrAccept
-                  message={message}
-                  onSave={handleSaveRegister}
-                />
-              )}
-              {isUserInitMessage && message.status === 'RECHAZADO' && (
-                <CardRegisterMessageUpdate
-                  message={message}
-                  receiverId={mainReceiver?.user.id}
-                  onSave={handleSaveRegister}
-                />
-              )}
-            </>
+                {message.status === 'POR_PAGAR' && mainReceiverFinish && (
+                  <CardRegisterVoucherDenyOrAccept
+                    message={message}
+                    onSave={handleSaveRegister}
+                  />
+                )}
+                {isUserInitMessage && message.status === 'RECHAZADO' && (
+                  <CardRegisterMessageUpdate
+                    message={message}
+                    receiverId={mainReceiver?.user.id}
+                    onSave={handleSaveRegister}
+                  />
+                )}
+              </>
+            )
           ) : (
             <GenerateOrderService
               message={message}

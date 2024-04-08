@@ -1,5 +1,7 @@
+import { StylesVariant } from '../../types';
 import './Select.css';
 import { CSSProperties, SelectHTMLAttributes, forwardRef } from 'react';
+import { STYLE_SELECT } from './selectDefinitions';
 
 interface SelectOptionsProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
@@ -12,6 +14,7 @@ interface SelectOptionsProps extends SelectHTMLAttributes<HTMLSelectElement> {
   errorPosY?: number;
   placeholder?: string;
   isRelative?: boolean;
+  styleVariant?: StylesVariant;
   className?: string;
 }
 export const SelectOptions = forwardRef<HTMLSelectElement, SelectOptionsProps>(
@@ -29,6 +32,7 @@ export const SelectOptions = forwardRef<HTMLSelectElement, SelectOptionsProps>(
       isRelative = false,
       className,
       placeholder,
+      styleVariant = 'primary',
       ...props
     },
     ref
@@ -45,7 +49,7 @@ export const SelectOptions = forwardRef<HTMLSelectElement, SelectOptionsProps>(
           </label>
         )}
         <select
-          className={`${className} select-field`}
+          className={`${STYLE_SELECT[styleVariant]} ${className}`}
           {...props}
           ref={ref}
           defaultValue={defaultValue}

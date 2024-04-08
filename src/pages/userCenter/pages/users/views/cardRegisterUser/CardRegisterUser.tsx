@@ -30,7 +30,7 @@ import { useJurisdiction, useValidatePassword } from '../../../../../../hooks';
 import {
   DEGREE_DATA,
   INITIAL_VALUES_USER,
-  JOB_DATA,
+  // JOB_DATA,
   GENDER,
 } from '../../models';
 import { CarRegisterSwornDeclaration } from '..';

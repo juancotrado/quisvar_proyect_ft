@@ -56,10 +56,10 @@ DutyListProps) => {
     projects();
   }, [idList]);
   useEffect(() => {
-    const resetData = hasDuty?.map(item => {
+    const resetData = hasDuty?.map(() => {
       return {
-        feedback: item.feedback || '',
-        asitec: item.asitec || '',
+        feedback: '',
+        asitec: '',
       };
     });
     if (resetData) {

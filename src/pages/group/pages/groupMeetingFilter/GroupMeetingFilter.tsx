@@ -6,7 +6,7 @@ import { Group } from '../../../../types';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { GroupRes } from '../../types';
 import { _date, formatDate } from '../../../../utils';
-import { DutyPdf } from '../groupContent/views';
+// import { DutyPdf } from '../groupContent/views';
 import { GroupMeetingDetails } from './views/groupMeetingDetails';
 const today = new Date();
 const GroupMeetingFilter = () => {
@@ -98,15 +98,15 @@ const GroupMeetingFilter = () => {
             <div className="gmf-res-content">
               {items &&
                 items.map((item, idx) => {
-                  const info = {
-                    title: item.title ?? '',
-                    group: item.groups.name ?? '',
-                    mod:
-                      (item.groups?.moderator?.profile?.firstName ?? '---') +
-                      ' ' +
-                      (item.groups?.moderator?.profile?.lastName ?? '---'),
-                    createdAt: item.createdAt as string,
-                  };
+                  // const info = {
+                  //   title: item.title ?? '',
+                  //   group: item.groups.name ?? '',
+                  //   mod:
+                  //     (item.groups?.moderator?.profile?.firstName ?? '---') +
+                  //     ' ' +
+                  //     (item.groups?.moderator?.profile?.lastName ?? '---'),
+                  //   createdAt: item.createdAt as string,
+                  // };
                   return (
                     <div
                       className={`gmf-body ${
@@ -126,11 +126,11 @@ const GroupMeetingFilter = () => {
                       </h1>
                       <h1 className="gmf-item">{item.title}</h1>
                       <h1 className="gmf-doc">
-                        <DutyPdf
+                        {/* <DutyPdf
                           info={info}
                           attendance={item.attendance}
                           duty={item.duty}
-                        />
+                        /> */}
                       </h1>
                     </div>
                   );

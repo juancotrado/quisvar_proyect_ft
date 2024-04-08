@@ -1,10 +1,10 @@
 import { ChangeEvent, useEffect, useState, useContext } from 'react';
-import { Button, Input, Select } from '../../../../components';
+import { Button, Input } from '../../../../components';
 import './groupDaily.css';
 import { _date } from '../../../../utils';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { useParams } from 'react-router-dom';
-import { Duty, DutyBasic, GroupAttendanceRes, GroupRes } from '../../types';
+import { DutyBasic, GroupAttendanceRes, GroupRes } from '../../types';
 import { SocketContext } from '../../../../context';
 const now = new Date();
 
@@ -20,10 +20,10 @@ export const GroupDaily = () => {
   const [selectedBtn, setSelectedBtn] = useState<number | null>(null);
   const [isToday, setIsToday] = useState<boolean>(true);
   const [calls, setCalls] = useState<GroupRes[]>([]);
-  const [dateValue, setDateValue] = useState<string>(_date(now));
-  const [hasDuty, setHasDuty] = useState<DutyBasic[]>([]);
-  const [groupUsers, setGroupUsers] = useState<GroupAttendanceRes[]>([]);
-  const [dataProjects, setDataProjects] = useState<Projects[]>([]);
+  const [, setDateValue] = useState<string>(_date(now));
+  const [, setHasDuty] = useState<DutyBasic[]>([]);
+  const [, setGroupUsers] = useState<GroupAttendanceRes[]>([]);
+  const [, setDataProjects] = useState<Projects[]>([]);
   const { groupId } = useParams();
 
   useEffect(() => {

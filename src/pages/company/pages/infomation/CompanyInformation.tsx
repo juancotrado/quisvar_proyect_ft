@@ -3,6 +3,7 @@ import './companyInformation.css';
 import { useCallback, useEffect, useState } from 'react';
 import { Companies } from '../../../../types';
 import { URL, axiosInstance } from '../../../../services/axiosInstance';
+import { isOpenCardCompany$ } from '../../../../services/sharingSubject';
 // import { AnimatePresence, motion } from 'framer-motion';
 
 export const CompanyInformation = () => {
@@ -25,25 +26,36 @@ export const CompanyInformation = () => {
     getCompanies();
     return setProjectSelected(null);
   }, [getCompanies]);
-
+  const handleAddCompany = (id?: number) => {
+    isOpenCardCompany$.setSubject = {
+      isOpen: true,
+      id,
+    };
+  };
   return (
     <>
       <div className="company-experience"></div>
       <div className="company-data">
         <div className="company-main-info">
-          <span className="company-main-img">
-            <img
-              className="company-img-size"
-              src={
-                data?.img
-                  ? `${URL}/images/img/companies/${data.img}`
-                  : '/svg/user_icon.svg'
-              }
-            />
-          </span>
+          <div className=" company-main-img-center">
+            <span className="company-main-img">
+              <img
+                className="company-img-size"
+                src={
+                  data?.img
+                    ? `${URL}/images/img/companies/${data.img}`
+                    : '/svg/user_icon.svg'
+                }
+              />
+            </span>
+          </div>
           <div className="company-info-text">
             <div className="company-icons-area">
-              <img src="/svg/pencil-line.svg" className="company-info-icon" />
+              <img
+                src="/svg/pencil-line.svg"
+                className="company-info-icon"
+                onClick={() => handleAddCompany(data?.id)}
+              />
               <span className="company-icon-cv">
                 <img src="/svg/download.svg" className="company-info-icon" />
                 <h4>CV</h4>

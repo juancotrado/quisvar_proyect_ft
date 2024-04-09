@@ -89,9 +89,10 @@
 
 .grc-list-header {
   display: grid;
-  grid-template-columns: 0.5fr 5fr 2fr 0.5fr;
+  grid-template-columns: 0.5fr 7fr 2fr;
   background-color: var(--color-gray);
   padding: 0.5rem 0.4rem;
+  gap: 4px;
 }
 
 .grc-title-member {
@@ -101,9 +102,10 @@
 }
 .grc-list-members {
   display: grid;
-  grid-template-columns: 0.5fr 5fr 2fr 0.5fr;
+  grid-template-columns: 0.5fr 7fr 2fr;
   padding: 0rem 0.625rem;
   align-items: center;
+  gap: 4px;
 }
 .grc-member-name {
   font-size: 0.8rem;

@@ -1,10 +1,14 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import './CardRegisterUser.css';
 import { useEffect, useRef, useState } from 'react';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
-import { isOpenCardRegisterUser$ } from '../../../../../../services/sharingSubject';
+import { isOpenCardProfession$, isOpenCardRegisterUser$ } from '../../../../../../services/sharingSubject';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { UserForm, GeneralFile, RoleForm } from '../../../../../../types';
+import {
+  UserForm,
+  GeneralFile,
+  RoleForm,
+  Profession,
+} from '../../../../../../types';
 import {
   validateEmail,
   validateWhiteSpace,
@@ -15,6 +19,7 @@ import {
   validateRuc,
 } from '../../../../../../utils';
 import {
+  AdvancedSelectCrud,
   Button,
   CloseIcon,
   Input,
@@ -26,10 +31,10 @@ import { useJurisdiction, useValidatePassword } from '../../../../../../hooks';
 import {
   DEGREE_DATA,
   INITIAL_VALUES_USER,
-  JOB_DATA,
   GENDER,
 } from '../../models';
 import { CarRegisterSwornDeclaration } from '..';
+import { CardAddProfession } from '../cardAddProfession';
 
 interface CardRegisterUserProps {
   onSave?: () => void;
@@ -39,6 +44,7 @@ interface CardRegisterUserProps {
 const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [roles, setRoles] = useState<RoleForm[] | null>(null);
+  const [professions, setProfessions] = useState<Profession[] | null>(null);
   const handleIsOpen = useRef<Subscription>(new Subscription());
 
   const {
@@ -46,6 +52,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
     handleSubmit,
     reset,
     watch,
+    control,
     formState: { errors },
   } = useForm<UserForm>({
     defaultValues: INITIAL_VALUES_USER,
@@ -62,6 +69,15 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
     setJurisdictionSelectData,
   } = useJurisdiction();
 
+  useEffect(() => {
+    getProfession();
+  }, []);
+
+  const getProfession = () => {
+    axiosInstance.get(`/profession`).then(res => {
+      setProfessions(res.data);
+    });
+  };
   useEffect(() => {
     handleIsOpen.current = isOpenCardRegisterUser$.getSubject.subscribe(
       data => {
@@ -108,9 +124,10 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
 
   const onSubmit: SubmitHandler<UserForm> = async data => {
     if (errorPassword?.verifyPassword) return;
-    const { cv, declaration, id, ...newData } = data;
+    const { cv, declaration, id, ...resData } = data;
+    const newData = { ...resData, job: resData.job.value }
     if (id) {
-      axiosInstance.put(`/profile/${id}`, data).then(successfulShipment);
+      axiosInstance.put(`/profile/${id}`, newData).then(successfulShipment);
     } else {
       const fileCv = cv?.[0] as File;
       const fileDeclaration = declaration?.[0] as File;
@@ -156,6 +173,24 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
     reset();
   };
 
+  const handleCreateProfession = (label: string) => {
+    isOpenCardProfession$.setSubject = {
+      isOpen: true,
+      data: {
+        value: 0,
+        abrv: '',
+        label
+      }
+    }
+  }
+  const handleEditProfession = ({ abrv, label, value }: Profession) => {
+    isOpenCardProfession$.setSubject = {
+      isOpen: true,
+      data: {
+        abrv, label, value
+      }
+    }
+  }
   const userData = watch();
   const { id: userId } = userData;
 
@@ -168,7 +203,6 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
             {userId ? 'EDITAR DATOS DE USUARIO' : 'REGISTRO DE NUEVO USUARIO'}
           </h1>
           <h3 className="card-register-title-info">Datos de Personales:</h3>
-
           <div className="card-register-content">
             <div className="col-input">
               <Input
@@ -310,16 +344,21 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
               />
             </div>
             <div className="col-input">
-              <Select
-                label="Profesión:"
-                {...register('job', {
-                  validate: { validateWhiteSpace },
-                })}
-                data={JOB_DATA}
-                itemKey="value"
-                textField="value"
-                errors={errors}
-              />
+              {professions && (
+                <AdvancedSelectCrud
+                  control={control}
+                  name="job"
+                  itemKey="value"
+                  options={professions}
+                  errors={errors}
+                  styleVariant="secondary"
+                  label="Profesión:"
+                  onCreateOption={handleCreateProfession}
+                  onEditOption={handleEditProfession}
+                  onSave={getProfession}
+                  urlDelete={'/profession'}
+                />
+              )}
               {roles && (
                 <Select
                   label="Rol:"
@@ -435,6 +474,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
           />
         )}
       </div>
+      <CardAddProfession onSave={getProfession} />
     </Modal>
   );
 };

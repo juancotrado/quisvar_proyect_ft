@@ -255,7 +255,12 @@ const CardCompany = ({ onSave }: CardCompanyProps) => {
             />
           )}
         </div>
-        <Button text="Guardar" type="submit" className="btn-area" />
+        <Button
+          text="Guardar"
+          styleButton={3}
+          type="submit"
+          className="btn-area"
+        />
       </form>
     </Modal>
   );

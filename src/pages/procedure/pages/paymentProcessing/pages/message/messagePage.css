@@ -14,6 +14,14 @@
   flex: 1.25;
 }
 
+.message-page-finish {
+  width: '100%';
+  height: '100%';
+  display: 'flex';
+  align-items: 'center';
+  justify-content: 'center';
+}
+
 .message-page-contain--left {
   flex: 1;
 }
@@ -144,14 +152,11 @@
 }
 
 .message-header-content-options {
+  position: relative;
   display: flex;
-  justify-content: flex-end;
   height: 2.1rem;
-  width: 100%;
-}
-
-.message-header--flexStart {
   justify-content: flex-start;
+  width: 100%;
   gap: 1rem;
   align-items: center;
 }
@@ -231,6 +236,7 @@
   background-color: var(--color-bg-asigned);
   color: var(--color-asigned);
 }
+
 .message-status-PENDIENTE {
   background-color: var(--color-bg-asigned);
   color: var(--color-asigned);
@@ -245,6 +251,7 @@
   background-color: var(--color-bg-done);
   color: var(--color-done);
 }
+
 .regularProcedureInfo-btn-expand {
   width: 100%;
   padding: 0 2rem;
@@ -409,18 +416,6 @@
   align-items: center;
 }
 
-.messagePage-input {
-  border-radius: 0.25rem;
-  border: 0.5px solid rgba(0, 0, 0, 0.2);
-  padding: 0.5rem;
-  background: #fff;
-  font-size: 0.85rem;
-  font-style: normal;
-  font-weight: 400;
-  height: auto;
-  flex: 1;
-}
-
 .messagePage-btn-submit {
   border-radius: 0.3125rem;
   border: 0.8px solid var(--Primary, #0e9cd8);
@@ -433,6 +428,7 @@
   font-size: 0.8rem;
   font-weight: 600;
 }
+
 .btn-submit--red {
   background-color: #d12953;
 }

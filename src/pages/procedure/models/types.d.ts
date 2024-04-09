@@ -1,4 +1,4 @@
-import { Degree } from '../../../types';
+import { Degree, Profession } from '../../../types';
 
 export type MailTypeProcedure = 'RECEIVER' | 'SENDER' | 'ARCHIVER';
 export type MailTypeProcedureSpanish = 'RECIBIDOS' | 'ENVIADOS' | 'ARCHIVADOS';
@@ -14,7 +14,7 @@ export interface ToData {
   name: string;
   degree: Degree;
   position: string;
-  job: string;
+  job: Profession;
 }
 
 export type TypeProcedure =

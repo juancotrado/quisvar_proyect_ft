@@ -5,8 +5,8 @@ import { DutyMember } from '../../../types';
 import './members.css';
 import { Dispatch, useEffect, useState } from 'react';
 import { axiosInstance } from '../../../../../services/axiosInstance';
-import { Button, Select } from '../../../../../components';
-import { PROJECT_STATUS } from '../../../../userCenter/pages/users/models';
+import { Button } from '../../../../../components';
+// import { PROJECT_STATUS } from '../../../../userCenter/pages/users/models';
 interface MembersProps {
   members: DutyMember[];
   dutyId: number;
@@ -49,17 +49,17 @@ const Members = ({ members, dutyId, onSave, editMember }: MembersProps) => {
   const handleAddRow = () => {
     axiosInstance.post(`dutyMembers/${dutyId}`).then(() => onSave?.());
   };
-  const handleDeleteRow = (id: number) => {
-    axiosInstance.delete(`dutyMembers/${id}`).then(() => onSave?.());
-  };
+  // const handleDeleteRow = (id: number) => {
+  //   axiosInstance.delete(`dutyMembers/${id}`).then(() => onSave?.());
+  // };
 
-  const textColor = (value: string) => {
-    return value === 'APTO'
-      ? 'green'
-      : value === 'EN REVISION'
-      ? 'orange'
-      : 'red';
-  };
+  // const textColor = (value: string) => {
+  //   return value === 'APTO'
+  //     ? 'green'
+  //     : value === 'EN REVISION'
+  //     ? 'orange'
+  //     : 'red';
+  // };
 
   return (
     <div className="member-container">
@@ -86,70 +86,6 @@ const Members = ({ members, dutyId, onSave, editMember }: MembersProps) => {
                 handleChange(idx, 'fullName', e.target.value);
               }}
             />
-            <input
-              {...register(`${idx}.progress` as const)}
-              className={`member-list right-border ${
-                idx !== 0 && 'top-border'
-              }`}
-              onBlur={e => {
-                if (e.target.value === member.progress) return;
-                handleChange(idx, 'progress', e.target.value);
-              }}
-            />
-            <input
-              type="date"
-              {...register(`${idx}.lastMeeting` as const)}
-              className={`member-list right-border ${
-                idx !== 0 && 'top-border'
-              }`}
-              onBlur={e => {
-                if (e.target.value === member.lastMeeting) return;
-                handleChange(idx, 'lastMeeting', e.target.value);
-              }}
-            />
-            <input
-              type="date"
-              {...register(`${idx}.futureMeeting` as const)}
-              className={`member-list right-border ${
-                idx !== 0 && 'top-border'
-              }`}
-              onBlur={e => {
-                if (e.target.value === member.futureMeeting) return;
-                handleChange(idx, 'futureMeeting', e.target.value);
-              }}
-            />
-            <Select
-              {...register(`${idx}.status` as const)}
-              className={`member-select right-border ${
-                idx !== 0 && 'top-border'
-              }`}
-              style={{ color: textColor(member.status) }}
-              onChange={e => {
-                if (e.target.value === member.status) return;
-                handleChange(idx, 'status', e.target.value);
-              }}
-              data={PROJECT_STATUS}
-              itemKey="value"
-              textField="value"
-            />
-            <input
-              {...register(`${idx}.request` as const)}
-              className={`member-list right-border ${
-                idx !== 0 && 'top-border'
-              }`}
-              onBlur={e => {
-                if (e.target.value === member.request) return;
-                handleChange(idx, 'request', e.target.value);
-              }}
-            />
-            {!member.fullName && (
-              <button
-                onClick={() => handleDeleteRow(member.id as number)}
-                style={{ position: 'absolute' }}
-              >
-                X
-              </button>
-            )}
           </div>
         ))}
       <Button icon="add1" onClick={handleAddRow} className="member-add" />

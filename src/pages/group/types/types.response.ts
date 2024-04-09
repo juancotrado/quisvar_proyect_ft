@@ -15,8 +15,11 @@ export type GroupRes = {
       };
     };
   };
-  attendance: GroupAttendanceRes[];
-  duty: Duty[];
+  // attendance: GroupAttendanceRes[];
+  duty: DutyBasic[];
+};
+export type DutyBasic = {
+  duty: Pick<Duty, 'id' | 'CUI' | 'project' | 'shortName'>;
 };
 export type GroupAttendanceRes = {
   id: number;
@@ -45,25 +48,31 @@ export type GroupUsersRes = {
 //   untilDate?: Date | string;
 //   createdAt?: Date | string;
 // };
-export type DutyMember = {
-  id?: number;
-  position?: string;
-  fullName: string;
-  progress?: string;
-  lastMeeting?: Date | string;
-  futureMeeting?: Date | string;
-  status: string;
-  request?: string;
-  dutyId: number;
-};
-
 export type Duty = {
   id: number;
   CUI: string;
   project: string;
-  asitec?: string;
-  feedback?: string;
+  shortName: string;
+  titleMeeting?: string;
+  dutyGroup?: string;
+  members: DutyMember[];
   listId: number;
   createdAt?: Date | string;
-  members: DutyMember[];
+};
+export type DutyMember = {
+  id?: number;
+  position?: string;
+  fullName: string;
+  task: DutyTasks[];
+  feedBack?: string;
+  dailyDuty?: string;
+  attendance?: string;
+  dutyId: number;
+};
+
+export type DutyTasks = {
+  id: number;
+  name?: string;
+  percentage?: number;
+  dutyMemberId: number;
 };

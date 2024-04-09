@@ -10,6 +10,7 @@ interface IconActionProps {
   bottom?: number;
   top?: number;
   icon: string;
+  iconTwo?: string;
   position?: 'none' | 'auto';
   zIndex?: number;
 }
@@ -22,6 +23,7 @@ const IconAction = ({
   right,
   top,
   icon,
+  iconTwo,
   position,
   zIndex,
 }: IconActionProps) => {
@@ -36,14 +38,19 @@ const IconAction = ({
   };
   return (
     <figure
-      className={`${position !== 'none' && 'iconAction'} ${className}`}
+      className={`${position !== 'none' && 'iconAction'} ${className} ${
+        iconTwo && 'iconAction-hover'
+      }`}
       style={style}
       onClick={e => {
         e.stopPropagation();
         onClick?.();
       }}
     >
-      <img src={`/svg/${icon}.svg`} alt="close" />
+      <img src={`/svg/${icon}.svg`} alt={icon} className="normal" />
+      {iconTwo && (
+        <img src={`/svg/${iconTwo}.svg`} alt={iconTwo} className="hover" />
+      )}
     </figure>
   );
 };

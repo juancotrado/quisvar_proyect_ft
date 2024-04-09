@@ -241,7 +241,7 @@ type Profile = {
   id: number;
   degree: Degree;
   description: string;
-  job: string;
+  job: Profession;
   firstName: string;
   firstNameRef: string;
   lastNameRef: string;
@@ -520,7 +520,7 @@ export interface UserForm {
   district: string;
   roleId: number | null;
   ruc: string;
-  job: string;
+  job: Profession ;
   cv: FileList | null;
   firstNameRef: string;
   lastNameRef: string;
@@ -700,13 +700,14 @@ export type CompanyType = {
 
 export type ConsortiumType = {
   id: number;
+  img?: string;
   manager: string;
   name: string;
-  img?: string;
   companies: SubCompany[];
 };
 type SubCompany = {
   companies: Pick<Companies, 'id' | 'name' | 'img'>;
+  percentaje?: string;
 };
 export type ExpertType = {
   id: number;
@@ -975,7 +976,7 @@ interface MessageSendType {
   title: string;
   header: string;
   description?: string;
-  receiverId: number;
+  receiver: OptionSelect;
   signature: boolean;
   type: MessageType['type'];
 }
@@ -996,21 +997,21 @@ type ListItemElement = {
 };
 export type ElementType =
   | {
-      type: 'paragraph';
-      content: string;
-    }
+    type: 'paragraph';
+    content: string;
+  }
   | {
-      type: 'table';
-      data: string[][];
-    }
+    type: 'table';
+    data: string[][];
+  }
   | {
-      type: 'orderedList';
-      items: ListItemElement[];
-    }
+    type: 'orderedList';
+    items: ListItemElement[];
+  }
   | {
-      type: 'unorderedList';
-      items: ListItemElement[];
-    };
+    type: 'unorderedList';
+    items: ListItemElement[];
+  };
 export interface ListUserExtend extends Omit<User, 'profile'> {
   name: string;
   degree: string;
@@ -1249,4 +1250,15 @@ export interface Roles {
   name: string;
   menuPoints: MenuRoleForm[];
   menuPointsDb: MenuPoint[];
+}
+
+export interface OptionSelect {
+  value: number | string;
+  label: string;
+}
+
+export type StylesVariant = 'primary' | 'secondary';
+
+export interface Profession extends OptionSelect {
+  abrv: string;
 }

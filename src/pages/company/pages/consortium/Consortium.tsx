@@ -7,7 +7,7 @@ import {
   isOpenCardAddCompany$,
   isOpenCardConsortium$,
 } from '../../../../services/sharingSubject';
-import { Button } from '../../../../components';
+import { Button, ButtonDelete } from '../../../../components';
 import { CardAddCompany } from './views';
 
 export const Consortium = () => {
@@ -29,10 +29,10 @@ export const Consortium = () => {
       id,
     };
   };
-  const deleteCompany = async (company: number, id: number) => {
-    axiosInstance.delete(`/consortium/relation/${company}/${id}`);
-    getConsortium();
-  };
+  // const deleteCompany = async (company: number, id: number) => {
+  //   axiosInstance.delete(`/consortium/relation/${company}/${id}`);
+  //   getConsortium();
+  // };
   const handleAddConsortium = async (id?: number) => {
     isOpenCardConsortium$.setSubject = {
       isOpen: true,
@@ -111,25 +111,25 @@ export const Consortium = () => {
               onClick={() => id && handleOpenCard(+id)}
             /> */}
           </div>
-          <div className="consortium-table" key={data?.id}>
+          <div className="consortium-table">
             <div className="consortium-header">
               <h1 className="consortium-member">#</h1>
               <h1 className="consortium-member">Empresa</h1>
               <h1 className="consortium-member">% Porcentaje</h1>
             </div>
             {data &&
-              data?.companies.map((company, index) => (
+              data?.companies.map((item, index) => (
                 <div key={index} className="consortium-company-members">
                   <h1 className="consortium-company-name">{index + 1}</h1>
                   <h1 className="consortium-company-name">
-                    {company?.companies.name}
-                  </h1>{' '}
-                  <h1 className="consortium-company-name">50%</h1>
-                  <span className=" ">
-                    <Button
-                      icon="trash-red"
-                      onClick={() => deleteCompany(company?.companies.id, id)}
-                      className="subtaskFile-btn-delete"
+                    {item?.companies.name}
+                  </h1>
+                  <span className="ule-size-pc">
+                    <ButtonDelete
+                      icon="trash"
+                      url={`/consortium/relation/${item?.companies.id}/${id}`}
+                      className="role-delete-icon"
+                      onSave={getConsortium}
                     />
                   </span>
                 </div>

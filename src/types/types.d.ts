@@ -700,13 +700,14 @@ export type CompanyType = {
 
 export type ConsortiumType = {
   id: number;
+  img?: string;
   manager: string;
   name: string;
-  img?: string;
   companies: SubCompany[];
 };
 type SubCompany = {
   companies: Pick<Companies, 'id' | 'name' | 'img'>;
+  percentaje?: string;
 };
 export type ExpertType = {
   id: number;

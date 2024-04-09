@@ -1,36 +1,29 @@
 import { ChangeEvent, useEffect, useState, useContext } from 'react';
 import { Button, Input } from '../../../../components';
-import { DutyList, GroupAttendance } from '../../components';
 import './groupDaily.css';
 import { _date } from '../../../../utils';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { useParams } from 'react-router-dom';
-import { Duty, GroupAttendanceRes, GroupRes, PdfInfoProps } from '../../types';
+import { DutyBasic, GroupAttendanceRes, GroupRes } from '../../types';
 import { SocketContext } from '../../../../context';
-//import {  } from '../groupContent/views';
 const now = new Date();
-interface toSend {
+
+interface Projects {
   id: number;
-  status: string;
-  description?: string;
+  name: string;
+  district: string;
 }
+
 export const GroupDaily = () => {
   const socket = useContext(SocketContext);
   const [addBtn, setAddBtn] = useState<boolean>(true);
   const [selectedBtn, setSelectedBtn] = useState<number | null>(null);
-  const [option, setOption] = useState<boolean>(true);
-  const [_, setPdfInfo] = useState<PdfInfoProps>();
-  const [hasItems, setHasItems] = useState<boolean>(false);
   const [isToday, setIsToday] = useState<boolean>(true);
-  const [showSecond, setShowSecond] = useState<boolean>(false);
   const [calls, setCalls] = useState<GroupRes[]>([]);
-  const [idList, setIdList] = useState<number>();
-  const [dateValue, setDateValue] = useState<string>(_date(now));
-  const [title, setTitle] = useState<string | undefined>('');
-  const [file, setFile] = useState<string | undefined>('');
-  const [hasDuty, setHasDuty] = useState<Duty[]>([]);
-  const [groupUsers, setGroupUsers] = useState<GroupAttendanceRes[]>([]);
-  const [sendItems, setSendItems] = useState<toSend[]>([]);
+  const [, setDateValue] = useState<string>(_date(now));
+  const [, setHasDuty] = useState<DutyBasic[]>([]);
+  const [, setGroupUsers] = useState<GroupAttendanceRes[]>([]);
+  const [, setDataProjects] = useState<Projects[]>([]);
   const { groupId } = useParams();
 
   useEffect(() => {
@@ -43,20 +36,13 @@ export const GroupDaily = () => {
     };
   }, []);
 
-  const getMembers = () => {
-    axiosInstance
-      .get<GroupAttendanceRes[]>(`/attendanceGroup/users/${groupId}`)
-      .then(res => {
-        setGroupUsers(res.data);
-        setHasItems(false);
-        const resultado = res.data.map(({ id, status }) => ({
-          id,
-          status,
-          description: '',
-        }));
-        setSendItems(resultado);
-      });
-  };
+  // const getMembers = () => {
+  //   axiosInstance
+  //     .get<GroupAttendanceRes[]>(`/attendanceGroup/users/${groupId}`)
+  //     .then(res => {
+  //       setGroupUsers(res.data);
+  //     });
+  // };
 
   useEffect(() => {
     getTodayCalls();
@@ -72,8 +58,9 @@ export const GroupDaily = () => {
         `/attendanceGroup/list/${groupId}?date=${dateValue ?? _date(today)}`
       )
       .then(res => {
+        // console.log(res.data)
         setCalls(res.data);
-        setAddBtn(res.data[res.data.length - 1]?.attendance.length !== 0);
+        setAddBtn(res.data[res.data.length - 1]?.duty.length !== 0);
         if (position) {
           const pos = res.data.findIndex(item => item.id === position);
           viewList(res.data[pos], pos + 1);
@@ -81,9 +68,14 @@ export const GroupDaily = () => {
           viewList(res.data[res.data.length - 1], res.data.length);
         }
       });
+    axiosInstance.get(`groups/projects/${groupId}`).then(res => {
+      console.log(res.data);
+      setDataProjects(res.data);
+    });
     position = undefined;
     dateValue = undefined;
   };
+  // console.log(dataProjects);
   const getDate = (e: ChangeEvent<HTMLInputElement>) => {
     const today = new Date();
     const { value } = e.target;
@@ -91,7 +83,7 @@ export const GroupDaily = () => {
     setGroupUsers([]);
     setCalls([]);
     setHasDuty([]);
-    setOption(true);
+    // setOption(true);
     axiosInstance
       .get<GroupRes[]>(`/attendanceGroup/list/${groupId}?date=${value}`)
       .then(res => {
@@ -101,12 +93,10 @@ export const GroupDaily = () => {
   };
   const addList = (order: number) => {
     setAddBtn(false);
-    setTitle('');
-    setFile('');
     setGroupUsers([]);
     setCalls([]);
     setHasDuty([]);
-    setOption(true);
+    // setOption(true);
     const today = new Date();
     const values = {
       nombre: order.toString(),
@@ -126,47 +116,18 @@ export const GroupDaily = () => {
         setCalls(res.data);
       });
   };
-  const handleRadioChange = (
-    status: string,
-    id: number,
-    description?: string
-  ) => {
-    const updatedSendItems = sendItems.map(item => {
-      if (item.id === id) {
-        return {
-          ...item,
-          status,
-          description: description || item.description,
-        };
-      }
-      return item;
-    });
-    setSendItems(updatedSendItems);
-  };
+
   const viewList = (item: GroupRes, idx: number) => {
-    setPdfInfo({
-      title: item?.title ?? '',
-      group: `Grupo : ${item?.groups.name}`,
-      mod: `${
-        item?.groups.moderator.profile.firstName +
-        ' ' +
-        item?.groups.moderator.profile.lastName
-      }`,
-      createdAt: item?.createdAt as string,
-    });
-    setIdList(item?.id);
-    setTitle(item?.title ?? '');
-    setFile(item?.file ?? '');
     setGroupUsers([]);
     setHasDuty([]);
-    setShowSecond(false);
-    if (item?.attendance.length > 0) {
-      setGroupUsers(item?.attendance);
-      setShowSecond(true);
-      setHasItems(true);
+    // setShowSecond(false);
+    if (item?.duty.length > 0) {
+      // setGroupUsers(item?.duty);
+      // setShowSecond(true);
+      // setHasItems(true);
       setHasDuty(item?.duty);
     } else {
-      getMembers();
+      // getMembers();
     }
     setSelectedBtn(idx);
   };
@@ -179,29 +140,7 @@ export const GroupDaily = () => {
       getTodayCalls();
     });
   };
-  const handleRegisterCall = () => {
-    const data = sendItems.map(({ id, ...rest }) => ({
-      ...rest,
-      userId: id,
-      groupListId: idList,
-    }));
-    // setAddBtn(!addBtn)
-    axiosInstance.post(`/attendanceGroup/relation`, data).then(() => {
-      socket.emit('client:action-button');
-      setAddBtn(true);
-      setGroupUsers([]);
-      getTodayCalls();
-    });
-  };
-  const handleChangeTitle = (e: ChangeEvent<HTMLInputElement>) => {
-    const { value } = e.target;
-    if (value === title) return;
-    axiosInstance
-      .patch(`/attendanceGroup/list/title/${idList}`, { title: value })
-      .then(() => {
-        getTodayCalls(idList, undefined);
-      });
-  };
+  // console.log(hasDuty)
   return (
     <div className="gd-content">
       <div className="gd-header">
@@ -214,11 +153,12 @@ export const GroupDaily = () => {
             max={_date(now)}
             defaultValue={_date(now)}
           />
+          {/* Calls per day 1 2 3 ... */}
           {calls &&
             calls.map((call, idx) => {
               return (
                 <div key={call.id} style={{ position: 'relative' }}>
-                  {!call?.attendance.length && (
+                  {!call?.duty.length && (
                     <span
                       onClick={() => handleDeleteList(call.id)}
                       className="gd-close-span"
@@ -249,74 +189,14 @@ export const GroupDaily = () => {
           )}
         </span>
       </div>
-      {calls.length > 0 && groupUsers.length > 0 && (
-        <div className="gd-attach">
-          <div className="gd-options">
-            <Button
-              text="Asistencias"
-              className="gd-options-btn"
-              onClick={() => setOption(true)}
-              type="button"
-            />
-            {showSecond && (
-              <Button
-                text="Compromisos"
-                className="gd-options-btn"
-                onClick={() => setOption(false)}
-                type="button"
-              />
-            )}
-          </div>
-          {!option && showSecond && (
-            <div className="gd-titles">
-              <h4 className="gd-header-title">Asunto de la reunión:</h4>
-              <input
-                placeholder="--> Inserte un titulo aquí <--"
-                className="gdh-input"
-                defaultValue={title}
-                onBlur={handleChangeTitle}
-                // disabled={title ? true : false}
-              />
-              <h4 className="gd-header-title">Acta de reunión:</h4>
-              {/* <DutyPdf info={pdfInfo} attendance={groupUsers} duty={hasDuty} /> */}
-            </div>
-          )}
-        </div>
-      )}
+      {/* General table */}
       <div className="gd-table">
-        {option
-          ? groupUsers.length > 0 &&
-            calls.length > 0 && (
-              <div className="gda-content">
-                <GroupAttendance
-                  hasItems={hasItems}
-                  groupUsers={groupUsers}
-                  onRadioChange={(e, v, d) => {
-                    handleRadioChange(e, v, d);
-                  }}
-                />
-                {isToday && !addBtn && !hasItems && (
-                  <Button
-                    onClick={handleRegisterCall}
-                    className="gda-save"
-                    // icon="plus"
-                    text="Guardar"
-                  />
-                )}
-              </div>
-            )
-          : (hasDuty.length > 0 || isToday) &&
-            groupUsers.length > 0 &&
-            showSecond && (
-              <DutyList
-                groupUsers={groupUsers}
-                isToday={isToday}
-                hasDuty={hasDuty}
-                file={file}
-                idList={idList}
-                onSave={() => getTodayCalls(idList, dateValue)}
-              />
-            )}
+        {/* <Select
+          itemKey="id"
+          name="xd"
+          textField="district"
+          data={dataProjects}
+        /> */}
       </div>
     </div>
   );

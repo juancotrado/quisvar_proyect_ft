@@ -254,13 +254,13 @@ export const DetailsContracts = () => {
   };
   return (
     <div className="detailsContracts">
-      <div>
+      {/* <div>
         <h5 className="detailsContracts-title">Datos del Procedimiento</h5>
         {Object.entries(dataProcedures).map(([title, value]) => (
           <ContractRow key={title} title={title} value={value} />
         ))}
         <div className="detailsContracts-row-container" />
-      </div>
+      </div> */}
       <div className="detailsContracts-phases-contain">
         <div className="detailsContracts-phases-contain-titles">
           {CONTACT_PHASES_TITLE.filter(phase =>
@@ -313,13 +313,14 @@ export const DetailsContracts = () => {
             </>
           )}
         </div>
+        ------
         {contractPhase === 'convocationPhase' && (
           <>
             {details ? (
               <div>
                 <ContractRowSchedule
                   data={{
-                    1: { value: 'Etapa', fr: '1fr' },
+                    12: { value: 'Etapa', fr: '1fr' },
                     2: { value: 'Fecha Inicio', fr: '1fr' },
                     3: { value: 'Fecha Fin', fr: '1fr' },
                   }}
@@ -356,7 +357,6 @@ export const DetailsContracts = () => {
             )}
           </>
         )}
-
         {contractPhase === 'ejecutionPhase' &&
           (viewTableEjecution ? (
             <div>
@@ -402,7 +402,7 @@ export const DetailsContracts = () => {
                 <span className="detailsContracts-text-title">Nombre</span>
                 <span className="detailsContracts-text-title">Descripcion</span>
                 <span className="detailsContracts-text-title">
-                  Plazo de presentación
+                  Plazo de presentaciónes
                 </span>
               </div>
               <div className="detailsContracts-phases">

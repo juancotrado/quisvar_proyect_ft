@@ -16,7 +16,7 @@ interface AdvancedSelectCrudProps {
   onCreateOption?: (value: string) => void;
   onEditOption?: (value: any) => void;
   onSave?: () => void;
-  urlDelete: string
+  urlDelete: string;
 }
 const AdvancedSelectCrud = ({
   options,
@@ -34,32 +34,33 @@ const AdvancedSelectCrud = ({
 }: AdvancedSelectCrudProps) => {
   const [selectData, setSelectData] = useState(options);
   useEffect(() => {
-    setSelectData(options)
-  }, [options])
-
+    setSelectData(options);
+  }, [options]);
 
   const Option = (props: OptionProps<any>) => {
-    const { data } = props
-    const isNew = data.__isNew__
+    const { data } = props;
+    const isNew = data.__isNew__;
     return (
       <components.Option {...props}>
         <div className="AdvancedSelectCrud-option">
           <span style={{ marginRight: '8px' }}>{data.label}</span>
 
-          {!isNew && <div className="AdvancedSelectCrud-option-actions">
-            <ButtonDelete
-              icon="trash-red"
-              url={`${urlDelete}/${data.value}`}
-              className="subtaskFile-btn-delete"
-              onSave={onSave}
-              type='button'
-            />
-            <IconAction
-              icon="pencil-line"
-              position="none"
-              onClick={() => onEditOption?.(data)}
-            />
-          </div>}
+          {!isNew && (
+            <div className="AdvancedSelectCrud-option-actions">
+              <ButtonDelete
+                icon="trash-red"
+                url={`${urlDelete}/${data.value}`}
+                className="subtaskFile-btn-delete"
+                onSave={onSave}
+                type="button"
+              />
+              <IconAction
+                icon="pencil-line"
+                position="none"
+                onClick={() => onEditOption?.(data)}
+              />
+            </div>
+          )}
         </div>
       </components.Option>
     );
@@ -77,7 +78,7 @@ const AdvancedSelectCrud = ({
           isClearable
           isCreatable
           onCreateOption={onCreateOption}
-          value={selectData.find((c) => c.value === data[itemKey])}
+          value={selectData.find(c => c.value === data?.[itemKey])}
           label={label}
           errors={errors}
           name={name}

@@ -24,7 +24,7 @@ export const transformDataPdf = ({ data }: transformDataPdfProps) => {
         name: `${item.user.profile.firstName} ${item.user.profile.lastName}`,
         degree: filterJob(
           item.user.profile.degree,
-          item.user.profile.job
+          item.user.profile.job.label
         ) as string,
         position: item.user.profile.description || '',
       };
@@ -50,12 +50,12 @@ export const transformDataPdf = ({ data }: transformDataPdfProps) => {
       day: 'numeric',
       hour12: true,
     }),
-    toDegree: filterJob(userTo?.user.profile.degree, userTo?.user.profile.job),
+    toDegree: filterJob(userTo?.user.profile.degree, userTo?.user.profile.job.label),
     toPosition: userTo?.user.profile.description,
     dni: userFrom?.user.profile.dni,
     fromDegree: filterJob(
       userFrom?.user.profile.degree,
-      userFrom?.user.profile.job
+      userFrom?.user.profile.job.label
     ),
     fromPosition: userFrom?.user.profile.description,
   };

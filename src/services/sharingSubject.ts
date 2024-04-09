@@ -12,6 +12,7 @@ import {
   OpenConfirmAction,
   OpenEspecialistExperienceDescription,
   OpenEspecialistTrainingDescription,
+  OpenProfessionCard,
   OpenViewDocs,
   OpenWithId,
   ViewHtmlToPdf,
@@ -27,6 +28,7 @@ export const isOpenCardRegisterUser$ = new SubjectManager<ViewRegisterUser>();
 export const isOpenCardAddEquipment$ =
   new SubjectManager<CardWorkStationProps>();
 export const isOpenCardAssing$ = new SubjectManager<OpenAssignCard>();
+export const isOpenCardProfession$ = new SubjectManager<OpenProfessionCard>();
 export const isOpenCardAddGroup$ = new SubjectManager<OpenWithId>();
 export const isOpenCardAddCompany$ = new SubjectManager<OpenWithId>();
 export const isOpenCardGenerateReport$ = new SubjectManager<boolean>();

@@ -1,5 +1,5 @@
-import { DEGREE_DATA, JOB_DATA } from '../pages/userCenter/pages/users/models';
-import { Degree, Feedback, Level, RangeDays } from '../types/types';
+import { DEGREE_DATA } from '../pages/userCenter/pages/users/models';
+import { Degree, Feedback, Level, Profession, RangeDays } from '../types/types';
 import { getListByRole } from './roles';
 import html2pdf from 'html2pdf.js';
 
@@ -173,9 +173,9 @@ export const transformDaysObject = (days: RangeDays[]) => {
         };
         const daysPushValues = days[i + 1]
           ? [
-              ...floatDays,
-              { ...days[i + 1], day: +(1 - sumFloatDay).toFixed(1) },
-            ]
+            ...floatDays,
+            { ...days[i + 1], day: +(1 - sumFloatDay).toFixed(1) },
+          ]
           : floatDays;
         result.push(daysPushValues);
       } else {
@@ -259,9 +259,9 @@ export const formatAmountMoney = (amount: number) => {
   const AmountTransform = amountSplit[0].split('').reverse();
   const decimalAMount = amountSplit[1]
     ? '.' +
-      Number('0.' + amountSplit[1])
-        .toFixed(2)
-        .split('.')[1]
+    Number('0.' + amountSplit[1])
+      .toFixed(2)
+      .split('.')[1]
     : '.00';
 
   let thousanAmount = '';
@@ -289,10 +289,9 @@ export const downloadHref = (url: string, name: string) => {
   link.remove();
 };
 
-export const degreeAbrv = (degree: Degree, job: string) => {
+export const degreeAbrv = (degree: Degree, job: Profession) => {
   if (degree === 'Titulado') {
-    const findDegree = JOB_DATA.find(({ value }) => value === job);
-    return findDegree?.abrv;
+    return job.label;
   }
   const findDegree = DEGREE_DATA.find(({ value }) => value === degree);
   return findDegree?.abrv;
@@ -322,5 +321,4 @@ export const htmlToPdf = (
       result = pdf.output('datauristring');
     });
   return result;
-  // return pdf.output('datauristring');
 };

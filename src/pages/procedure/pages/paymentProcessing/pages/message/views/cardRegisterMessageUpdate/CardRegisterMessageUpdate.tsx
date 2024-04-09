@@ -128,12 +128,12 @@ const CardRegisterMessageUpdate = ({
         day: 'numeric',
         hour12: true,
       }),
-      toDegree: filterJob(toUser?.degree, toUser?.job),
+      toDegree: filterJob(toUser?.degree, toUser?.job.label),
       toPosition: toUser?.position,
       dni: userSession.profile.dni,
       fromDegree: filterJob(
         userSession.profile.degree,
-        userSession.profile.job
+        userSession.profile.job.label
       ),
       fromPosition: userSession.profile.description,
     });

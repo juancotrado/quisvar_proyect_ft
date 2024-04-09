@@ -17,7 +17,11 @@ export const INITIAL_STATE: User = {
     userId: 0,
     degree: 'Practicante',
     description: '',
-    job: '',
+    job: {
+      abrv: '',
+      label: '',
+      value: ''
+    },
     department: '',
     province: '',
     district: '',

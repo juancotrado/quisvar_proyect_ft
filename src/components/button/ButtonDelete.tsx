@@ -22,7 +22,6 @@ interface ButtonProps extends HTMLMotionProps<'button'> {
   notIsVisible?: boolean;
   imageStyle?: string;
   fileName?: string;
-  // sizeIcon?: boolean;
   passwordRequired?: boolean;
 }
 const ButtonDelete = ({
@@ -44,9 +43,16 @@ const ButtonDelete = ({
   const [customFuction, setCustomFuction] = useState<(() => void) | null>(null);
   const [password, setPassword] = useState<string>('');
   const handleCloseButton = () => {
+
     setAskPassword(false);
     setIsAlertOpen(!isAlertOpen);
   };
+
+  const handleDelete = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    setAskPassword(false);
+    setIsAlertOpen(true);
+  }
   const handleSendDelete = async () => {
     if (customOnClick) {
       customOnClick();
@@ -91,12 +97,9 @@ const ButtonDelete = ({
   return (
     <>
       <motion.button
-        // whileHover={{ scale: 1.05 }}
-        // whileTap={{ scale: 0.9 }}
-        onClick={handleCloseButton}
-        className={`${className} btn-main  btn-delete ${
-          notIsVisible && 'btn-hiden'
-        }`}
+        onClick={handleDelete}
+        className={`${className} btn-main  btn-delete ${notIsVisible && 'btn-hiden'
+          }`}
         type={type}
         {...otherProps}
       >
@@ -104,9 +107,8 @@ const ButtonDelete = ({
           <img
             src={`/svg/${icon}.svg`}
             alt={`${icon}`}
-            className={`${
-              text ? 'btn-main-text' : 'btn-main-img'
-            } ${imageStyle} `}
+            className={`${text ? 'btn-main-text' : 'btn-main-img'
+              } ${imageStyle} `}
           />
         )}
         {text}
@@ -131,9 +133,8 @@ const ButtonDelete = ({
               {!askPassword ? (
                 <>
                   <img src="/svg/trashdark.svg" className="alert-modal-trash" />
-                  <h3>{`¿Estas seguro que deseas eliminar este registro${
-                    fileName && ', ' + fileName
-                  }?`}</h3>
+                  <h3>{`¿Estas seguro que deseas eliminar este registro${fileName && ', ' + fileName
+                    }?`}</h3>
                   <div className="container-btn">
                     <Button
                       text="No, cancelar"

@@ -106,7 +106,7 @@ const UserInfo = ({ user, index, onPrint, roles }: UserInfoProps) => {
         /> */}
         {/* )} */}
       </div>
-      <div className="col-span job-container">{profile.job}</div>
+      <div className="col-span job-container">{profile.job.label}</div>
       <div className="col-span phone-container">{profile.phone}</div>
       <div className="col-span">
         {user.id !== userSessionId && (

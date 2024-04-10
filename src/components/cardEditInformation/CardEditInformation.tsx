@@ -110,7 +110,15 @@ const CardEditInformation = ({ isOpen, onClose }: CardEditInformationProps) => {
           className="modal-edit-info"
         >
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="col-input">
+            <Button
+              onClick={handleCloseModal}
+              icon="close"
+              className="controls-btn card-edit-btn-close-modal"
+              iconSize={1.3}
+              styleButton={0}
+              type="button"
+            />
+            <div className="card-edit-header-info">
               <h1>INFORMACIÓN BÁSICA</h1>
             </div>
             <div className="divider"></div>
@@ -176,16 +184,15 @@ const CardEditInformation = ({ isOpen, onClose }: CardEditInformationProps) => {
               <Button
                 text="Cambiar contraseña"
                 onClick={handleOpenRecovery}
-                className="bg-btn-close"
+                styleButton={4}
                 type="button"
               />
               <Button
-                text="CANCELAR"
-                onClick={handleCloseModal}
-                className="bg-btn-close controls-btn-red"
-                type="button"
+                text="GUARDAR"
+                styleButton={4}
+                className="bg-inverse"
+                type="submit"
               />
-              <Button text="GUARDAR" className="bg-inverse" type="submit" />
             </div>
           </form>
           {isOpenRecovery && (

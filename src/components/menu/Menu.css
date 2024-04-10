@@ -38,8 +38,7 @@
 
 .line {
   width: 96%;
-  height: 1px;
-  margin-left: 2%;
+  height: 2px;
   background-color: white;
 }
 .fullname-menu {

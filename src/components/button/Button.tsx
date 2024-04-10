@@ -41,7 +41,10 @@ export const Button = ({
     >
       {icon && (
         <figure className={`${imageStyle} `} style={styleIcon}>
-          <img src={`/svg/${icon}.svg`} />
+          <img
+            src={`/svg/${icon}.svg`}
+            style={{ height: '100%', width: '100%' }}
+          />
         </figure>
       )}
       {text}

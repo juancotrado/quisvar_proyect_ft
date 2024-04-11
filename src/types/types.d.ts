@@ -206,7 +206,7 @@ export type MenuAccess =
   | 'indice-general'
   | 'grupos';
 
-export type User = {
+export interface User {
   id: number;
   email: string;
   password: string;
@@ -229,8 +229,12 @@ export type User = {
     workStationId: number;
     workStation: WorkStation;
   };
-};
+}
 
+export interface UserSelect extends User {
+  value: string;
+  label: string;
+}
 export type Degree =
   | 'Practicante'
   | 'Egresado'
@@ -520,7 +524,7 @@ export interface UserForm {
   district: string;
   roleId: number | null;
   ruc: string;
-  job: Profession ;
+  job: Profession;
   cv: FileList | null;
   firstNameRef: string;
   lastNameRef: string;
@@ -997,21 +1001,21 @@ type ListItemElement = {
 };
 export type ElementType =
   | {
-    type: 'paragraph';
-    content: string;
-  }
+      type: 'paragraph';
+      content: string;
+    }
   | {
-    type: 'table';
-    data: string[][];
-  }
+      type: 'table';
+      data: string[][];
+    }
   | {
-    type: 'orderedList';
-    items: ListItemElement[];
-  }
+      type: 'orderedList';
+      items: ListItemElement[];
+    }
   | {
-    type: 'unorderedList';
-    items: ListItemElement[];
-  };
+      type: 'unorderedList';
+      items: ListItemElement[];
+    };
 export interface ListUserExtend extends Omit<User, 'profile'> {
   name: string;
   degree: string;

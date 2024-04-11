@@ -1,8 +1,12 @@
-import { ChangeEvent, useMemo, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import {
   MessageSendType,
+  Option,
+  OptionSelect,
   ProcedureSubmit,
+  User,
   receiverType,
+  UserSelect,
 } from '../../../../types';
 import './formRegisterProcedure.css';
 import { useTitleProcedure } from '../../hooks';
@@ -47,6 +51,7 @@ const FormRegisterProcedure = ({
   // const [receiver, setReceiver] = useState<receiverType | null>(null);
   const [isAddReceiver, setIsAddReceiver] = useState(false);
   const [listCopy, setListCopy] = useState<receiverType[]>([]);
+  const [contacts, setContacts] = useState<null | UserSelect[]>(null);
   const urlQuantity =
     type === 'payProcedure'
       ? '/paymail/imbox/quantity'
@@ -68,16 +73,32 @@ const FormRegisterProcedure = ({
     control,
     formState: { errors },
   } = useForm<MessageSendType>();
-  const { users: listUser } = useListUsers(
-    'MOD',
-    'tramites',
-    'tramite-regular'
-  );
+  // const { users: listUser } = useListUsers(
+  //   'MOD',
+  //   'tramites',
+  //   'tramite-regular'
+  // );
 
-  const contacts = useMemo(
-    () => listUser.filter(user => user.id !== userSessionId),
-    [userSessionId, listUser]
-  );
+  // const contacts = useMemo(
+  //   () => listUser.filter(user => user.id !== userSessionId),
+  //   [userSessionId, listUser]
+  // );
+
+  useEffect(() => {
+    getContacs();
+  }, []);
+
+  const getContacs = () => {
+    const url = `/office?menuId=${2}&typeRol=MOD&subMenuId=${1}`;
+    axiosInstance.get<User[]>(url).then(res => {
+      const contacts: UserSelect[] = res.data.map(user => ({
+        value: String(user.id),
+        label: user.profile.firstName + ' ' + user.profile.lastName,
+        ...user,
+      }));
+      setContacts(contacts);
+    });
+  };
 
   //funcion futura para que el reporte se agrega auntomaticamente
   // const handleIsOpen = useRef<Subscription>(new Subscription());
@@ -209,10 +230,10 @@ const FormRegisterProcedure = ({
     setValue('title', title);
   };
   const typeProcedure = TYPE_PROCEDURE[type];
-  const usersSelect = contacts.map(user => ({
-    value: user.id,
-    label: user.name,
-  }));
+  // const usersSelect = contacts.map(user => ({
+  //   value: user.id,
+  //   label: user.name,
+  // }));
 
   return (
     <form className="imbox-data-content" onSubmit={handleSubmit(onSubmit)}>
@@ -258,15 +279,15 @@ const FormRegisterProcedure = ({
           // </div>
         )} */}
 
-        {type !== 'comunication' && (
+        {type !== 'comunication' && contacts && (
           <Controller
             control={control}
             name="receiver"
             rules={{ required: 'Debes seleccionar una opción' }}
             render={({ field: { onChange } }) => (
               <AdvancedSelect
-                placeholder="Selecione una opción"
-                options={usersSelect}
+                placeholder="Dirigida a"
+                options={contacts}
                 isClearable
                 errors={errors}
                 name="to"
@@ -300,16 +321,18 @@ const FormRegisterProcedure = ({
               />
             </div>
           ))}
-          <DropDownSimple
-            classNameInput="messagePage-input"
-            type="search"
-            data={contacts}
-            placeholder="Buscar...."
-            textField="name"
-            itemKey="id"
-            droper
-            valueInput={(value, id) => handleAddUser({ id: +id, value })}
-          />
+          {contacts && (
+            <DropDownSimple
+              classNameInput="messagePage-input"
+              type="search"
+              data={contacts}
+              placeholder="Buscar...."
+              textField="name"
+              itemKey="id"
+              droper
+              valueInput={(value, id) => handleAddUser({ id: +id, value })}
+            />
+          )}
         </div>
       )}
       <Input

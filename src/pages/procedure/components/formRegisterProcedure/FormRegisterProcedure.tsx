@@ -47,8 +47,8 @@ const FormRegisterProcedure = ({
   showReportBtn = false,
   showAddUser = true,
 }: FormRegisterProcedureProps) => {
-  const [isAddReceiver, setIsAddReceiver] = useState(false);
-  // const [listCopy, setListCopy] = useState<receiverType[]>([]);
+  const isComunication = type === 'comunication';
+  const [isAddReceiver, setIsAddReceiver] = useState(isComunication);
   const [contacts, setContacts] = useState<null | Contact[]>(null);
   const [secondaryContacts, setSecondaryContacts] = useState<
     null | userSelect[]
@@ -103,7 +103,9 @@ const FormRegisterProcedure = ({
           return userWithArea;
         })
         .flat();
-      setContacts(contacts);
+      if (isComunication) {
+        setContacts(contacts);
+      }
       setSecondaryContacts(secondaryContacts);
     });
   };
@@ -148,23 +150,25 @@ const FormRegisterProcedure = ({
       receiver,
       secondaryReceiver,
     } = watch();
-    const isArea = receiver.value.includes('area');
-    let toProfile!: ToData;
-    if (isArea && 'manager' in receiver) {
-      const { profile } = receiver.manager;
-      toProfile = {
-        name: profile.firstName + ' ' + profile.lastName,
-        degree: profile.degree,
-        position: profile.description,
-        job: profile.job,
-      };
-    } else if ('profile' in receiver) {
-      toProfile = {
-        name: receiver.label,
-        degree: receiver.profile.degree,
-        position: receiver.profile.description,
-        job: receiver.profile.job,
-      };
+    let toProfile: ToData | null = null;
+    if (receiver) {
+      const isArea = receiver.value.includes('area');
+      if (isArea && 'manager' in receiver) {
+        const { profile } = receiver.manager;
+        toProfile = {
+          name: profile.firstName + ' ' + profile.lastName,
+          degree: profile.degree,
+          position: profile.description,
+          job: profile.job,
+        };
+      } else if ('profile' in receiver) {
+        toProfile = {
+          name: receiver.label,
+          degree: receiver.profile.degree,
+          position: receiver.profile.description,
+          job: receiver.profile.job,
+        };
+      }
     }
     const ccProfiles =
       secondaryReceiver?.map(receiver => {
@@ -233,6 +237,8 @@ const FormRegisterProcedure = ({
     isOpenCardGenerateReport$.setSubject = true;
   };
   const getPdfA5 = async () => {
+    const isValid = await trigger();
+    if (!isValid) return;
     const formData = new FormData();
     const htmlString = getHtmlString('a4');
     const blobData = await getHtmlPdfBlob(htmlString, 'a4');
@@ -303,10 +309,6 @@ const FormRegisterProcedure = ({
       </components.Option>
     );
   };
-  // const usersSelect = contacts.map(user => ({
-  //   value: user.id,
-  //   label: user.name,
-  // }));
 
   return (
     <form className="imbox-data-content" onSubmit={handleSubmit(onSubmit)}>
@@ -336,39 +338,46 @@ const FormRegisterProcedure = ({
           styleVariant="secondary"
         />
 
-        {type !== 'comunication' && contacts && (
-          <Controller
-            control={control}
-            name="receiver"
-            rules={{ required: 'Debes seleccionar una opción' }}
-            render={({ field: { onChange } }) => (
-              <AdvancedSelect
-                placeholder="Dirigida a"
-                options={contacts}
-                components={{ Option }}
-                isClearable
-                errors={errors}
-                name="receiver"
-                onChange={onChange}
+        {!isComunication && contacts && (
+          <>
+            <Controller
+              control={control}
+              name="receiver"
+              rules={{
+                required: contacts && 'Debes seleccionar una opción',
+              }}
+              render={({ field: { onChange } }) => (
+                <AdvancedSelect
+                  placeholder="Dirigido a"
+                  options={contacts}
+                  components={{ Option }}
+                  isClearable
+                  errors={errors}
+                  name="receiver"
+                  onChange={onChange}
+                />
+              )}
+            />
+
+            {watch('receiver') && showAddUser && (
+              <Button
+                type="button"
+                text={typeProcedure.addUsersText}
+                className="inbox-copy-button"
+                onClick={handleAddCopy}
               />
             )}
-          />
-        )}
-        {(watch('receiver') || type === 'comunication') && showAddUser && (
-          <Button
-            type="button"
-            text={typeProcedure.addUsersText}
-            className="inbox-copy-button"
-            onClick={handleAddCopy}
-          />
+          </>
         )}
       </div>
 
       {isAddReceiver && secondaryContacts && (
         <div className="imbox-receiver-container-copy">
-          <span className="imbox-receiver-label">
-            {typeProcedure.addUsersText}:{' '}
-          </span>
+          {!isComunication && (
+            <span className="imbox-receiver-label">
+              {typeProcedure.addUsersText}:{' '}
+            </span>
+          )}
           <Controller
             control={control}
             name="secondaryReceiver"
@@ -402,6 +411,7 @@ const FormRegisterProcedure = ({
         init={{
           min_height: 500,
           paste_data_images: false,
+          language: 'es',
           plugins: [
             'advlist autolink lists link image charmap print preview anchor',
             'searchreplace visualblocks code fullscreen checklist',

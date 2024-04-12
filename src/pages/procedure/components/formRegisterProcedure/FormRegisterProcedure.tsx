@@ -103,7 +103,7 @@ const FormRegisterProcedure = ({
           return userWithArea;
         })
         .flat();
-      if (isComunication) {
+      if (!isComunication) {
         setContacts(contacts);
       }
       setSecondaryContacts(secondaryContacts);

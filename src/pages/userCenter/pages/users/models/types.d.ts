@@ -9,5 +9,4 @@ export interface ContractUser {
   date: Date;
   month: number;
   projectNumber: number;
-  isStructureSpecialist: boolean;
 }

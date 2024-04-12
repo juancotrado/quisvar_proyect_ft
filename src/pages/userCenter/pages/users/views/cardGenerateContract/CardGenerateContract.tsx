@@ -69,14 +69,6 @@ const CardGenerateContract = ({ user }: CardGenerateContractProps) => {
         placeholder="Número de proyecto"
         className="generalData-edit-info-input"
       />
-      <label className="card-register-radio-input-text">
-        <input
-          {...register('isStructureSpecialist')}
-          type="checkbox"
-          className="terms-checkbox"
-        />
-        Ing. Civil Especialista en Estructuras
-      </label>
 
       <Button icon="preview-pdf" text="Generar Contrato" styleButton={2} />
     </form>

@@ -29,29 +29,9 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
   const professionalService = `${degreeSelect?.title} de nivel ${
     data.professionalLevel
   }${profile.degree !== 'Practicante' ? ' - ' + profile.degree : ''}`;
-  const getMonto = () => {
-    if (
-      profile.job.label === 'Ingeniería Civil' &&
-      data.isStructureSpecialist
-    ) {
-      return 600;
-    } else if (
-      profile.job.label === 'Ingeniería Civil' ||
-      profile.job.label === 'Arquitectura y Urbanismo'
-    ) {
-      return 400;
-    } else if (
-      profile.job.label === 'Ingeniería Sanitaria y Ambiental' ||
-      profile.job.label === 'Ingeniería Topográfica y Agrimensura' ||
-      profile.job.label === 'Ingeniería Agrícola' ||
-      profile.job.label === 'Ingeniería Geológica'
-    ) {
-      return 300;
-    } else {
-      return 300;
-    }
-  };
-  const contractualWelcomeAmount = getMonto();
+
+  const contractualWelcomeAmount = profile.job.amount;
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>

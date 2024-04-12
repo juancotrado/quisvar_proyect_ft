@@ -21,4 +21,5 @@
 .user-content {
   padding: 38px;
   background-color: white;
+  overflow: auto;
 }

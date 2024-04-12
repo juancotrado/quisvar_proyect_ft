@@ -1,7 +1,10 @@
 import './CardRegisterUser.css';
 import { useEffect, useRef, useState } from 'react';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
-import { isOpenCardProfession$, isOpenCardRegisterUser$ } from '../../../../../../services/sharingSubject';
+import {
+  isOpenCardProfession$,
+  isOpenCardRegisterUser$,
+} from '../../../../../../services/sharingSubject';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
   UserForm,
@@ -28,11 +31,7 @@ import {
 } from '../../../../../../components';
 import { Subscription } from 'rxjs';
 import { useJurisdiction, useValidatePassword } from '../../../../../../hooks';
-import {
-  DEGREE_DATA,
-  INITIAL_VALUES_USER,
-  GENDER,
-} from '../../models';
+import { DEGREE_DATA, INITIAL_VALUES_USER, GENDER } from '../../models';
 import { CarRegisterSwornDeclaration } from '..';
 import { CardAddProfession } from '../cardAddProfession';
 
@@ -125,7 +124,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
   const onSubmit: SubmitHandler<UserForm> = async data => {
     if (errorPassword?.verifyPassword) return;
     const { cv, declaration, id, ...resData } = data;
-    const newData = { ...resData, job: resData.job.value }
+    const newData = { ...resData, job: resData.job.value };
     if (id) {
       axiosInstance.put(`/profile/${id}`, newData).then(successfulShipment);
     } else {
@@ -179,18 +178,22 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
       data: {
         value: 0,
         abrv: '',
-        label
-      }
-    }
-  }
-  const handleEditProfession = ({ abrv, label, value }: Profession) => {
+        label,
+        amount: 0,
+      },
+    };
+  };
+  const handleEditProfession = ({ abrv, label, value, amount }: Profession) => {
     isOpenCardProfession$.setSubject = {
       isOpen: true,
       data: {
-        abrv, label, value
-      }
-    }
-  }
+        abrv,
+        label,
+        value,
+        amount,
+      },
+    };
+  };
   const userData = watch();
   const { id: userId } = userData;
 

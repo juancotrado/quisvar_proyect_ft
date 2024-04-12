@@ -135,32 +135,6 @@ h3 {
   width: 14px;
 }
 
-/* custom scrollbar */
-::-webkit-scrollbar {
-  width: 5px;
-  height: 4px;
-  background-color: #a8a8a83c;
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background-color: #0000001a;
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: var(--color-secondary);
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: #0000004d;
-}
-
-::-webkit-scrollbar-thumb:active {
-  background-color: #00000066;
-}
-
 a.nostyle:link {
   text-decoration: inherit;
   cursor: auto;

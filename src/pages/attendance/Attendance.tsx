@@ -234,7 +234,6 @@ export const Attendance = () => {
   // console.log(callLists)
   return (
     <div className="attendance">
-        <img src="/svg/calendary-icon.svg" alt="" className="attendance-icon" />
       <Navbar title="asistencia" />
       <div className="attendance-content">
         <span className="attendance-date">

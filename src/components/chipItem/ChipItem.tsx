@@ -13,7 +13,7 @@ const ChipItem = ({ item }: ChipItemProps) => {
       <NavLink
         to={item.route}
         className={({ isActive }) =>
-          isActive ? 'item-nav nav-active' : 'item-nav    '
+          isActive ? 'item-nav nav-active' : 'item-nav'
         }
       >
         <span className="items-list-icon">

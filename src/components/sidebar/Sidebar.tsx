@@ -164,7 +164,7 @@ const Sidebar = () => {
   return (
     <>
       <div className={`sidebar ${sidebarShow && 'sidebar---show'}`}>
-        <nav className="nav-container containerXD ">
+        <nav className="nav-container ">
           <div className="nav-options">
             <figure className="sidebar-figure">
               <img

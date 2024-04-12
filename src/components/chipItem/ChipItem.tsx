@@ -6,22 +6,19 @@ interface ChipItemProps {
 }
 
 const ChipItem = ({ item }: ChipItemProps) => {
-  const [message, setMenssage] = useState(false);
-  const showMessage = () => setMenssage(true);
-  const hiddenMessage = () => setMenssage(false);
+  const [message] = useState(false);
 
   return (
     <li>
       <NavLink
         to={item.route}
         className={({ isActive }) =>
-          isActive ? 'item-nav nav-active' : 'item-nav nav-inactive'
+          isActive ? 'item-nav nav-active' : 'item-nav'
         }
-        onMouseEnter={showMessage}
-        onMouseLeave={hiddenMessage}
       >
         <span className="items-list-icon">
           <img src={`/svg/menu/${item.route}.svg`} />
+          <p className="items-list-name">{item.title}</p>
         </span>
         {message && (
           <span className="item-list-icon-message">{item.title}</span>

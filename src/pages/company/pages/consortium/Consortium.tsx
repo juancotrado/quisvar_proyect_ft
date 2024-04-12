@@ -38,7 +38,7 @@ export const Consortium = () => {
       isOpen: true,
       id,
     };
-    getConsortium();
+    // getConsortium();
   };
   return (
     <>
@@ -148,8 +148,7 @@ export const Consortium = () => {
             />
           </div>
         </div>
-        <CardAddCompany onSave={Consortium} />
-        {/* <CardConsortium onSave={getConsortium} /> */}
+        <CardAddCompany onSave={getConsortium} />
       </div>
     </>
   );

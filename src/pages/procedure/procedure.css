@@ -1,10 +1,8 @@
 .procedure {
   width: 100%;
   height: 100%;
-  padding: 1rem;
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
 }
 
 .procedure-header {
@@ -12,17 +10,24 @@
   display: flex;
   background: white;
   align-items: center;
-  padding: 1rem;
+  gap: 6.25rem;
+  height: 5.125rem;
+  padding: 0 1.25rem;
 }
 
 .procedure-header-menus {
-  position: absolute;
-  left: 50%;
-  transform: translate(-50%, 0);
   display: flex;
-  gap: 1rem;
+  gap: 25px;
+  align-self: stretch;
 }
-
+@media (max-width: 1000px) {
+  .procedure-header {
+    gap: 2.25rem;
+  }
+  .procedure-header-menus {
+    gap: 15px;
+  }
+}
 .procedure-main {
   width: 100%;
   max-width: 100%;
@@ -36,7 +41,7 @@
   width: 100%;
   position: relative;
   background-color: #fff;
-  padding: 0.5rem;
+  padding: 1.875rem;
   transition: 0.3s left ease;
   filter: drop-shadow(0px 4px 3px rgb(0 0 0 / 0.3));
   height: 100%;

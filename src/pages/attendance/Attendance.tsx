@@ -23,6 +23,7 @@ import { generateReportDaily, generateReportRange } from './excelGenerator';
 import { AttendanceList, CardViewPdf, Legend } from './components';
 import { CALLS } from './models';
 import { RootState } from '../../store';
+import { Navbar } from '../../components/navbar';
 interface sendItemsProps {
   usersId: number;
   status: string;
@@ -233,199 +234,200 @@ export const Attendance = () => {
   // console.log(callLists)
   return (
     <div className="attendance">
-      <div className="attendance-head">
-        <div>
-          <h1 className="main-title">
-            <span className="main-title-span">Asistencia</span>
-          </h1>
-        </div>
-      </div>
-      <span className="attendance-date">
-        <img src="/svg/calendary-icon.svg" alt="" className="attendance-icon" />
-        <Input
-          type="date"
-          onChange={getDate}
-          classNameMain="attendace-date-filter"
-          max={_date(today)}
-          defaultValue={_date(today)}
-        />
-        <div className="attendance-call-container">
-          {callLists?.map(data => (
-            <div
-              className="attendance-call-status"
-              onClick={() => {
-                showAttendanceUsers(data);
-              }}
-              key={data.id}
-            >
-              {!data?.users.length && (
-                <CloseIcon
-                  onClick={deleteLastList}
-                  className="attendance-icon-close"
+      <Navbar title="asistencia" />
+      <div className="attendance-content">
+        <span className="attendance-date">
+          <img
+            src="/svg/calendary-icon.svg"
+            alt=""
+            className="attendance-icon"
+          />
+          <Input
+            type="date"
+            onChange={getDate}
+            classNameMain="attendace-date-filter"
+            max={_date(today)}
+            defaultValue={_date(today)}
+          />
+          <div className="attendance-call-container">
+            {callLists?.map(data => (
+              <div
+                className="attendance-call-status"
+                onClick={() => {
+                  showAttendanceUsers(data);
+                }}
+                key={data.id}
+              >
+                {!data?.users.length && (
+                  <CloseIcon
+                    onClick={deleteLastList}
+                    className="attendance-icon-close"
+                  />
+                )}
+                <img
+                  src={`/svg/${
+                    !data?.users.length
+                      ? 'arrow-pressed'
+                      : callList?.id !== data.id
+                      ? 'arrow-gray'
+                      : 'arrow-border'
+                  }.svg`}
+                  className="attendance-img"
+                />
+                <p className="attendance-text">{data.timer}</p>
+              </div>
+            ))}
+            {callLists?.length !== 22 &&
+              isCompletCallAttendance &&
+              todayVerify && (
+                <Button
+                  onClick={addCall}
+                  className="attendance-add-btn"
+                  // icon="plus"
+                  text="Añadir Nueva Lista"
                 />
               )}
-              <img
-                src={`/svg/${
-                  !data?.users.length
-                    ? 'arrow-pressed'
-                    : callList?.id !== data.id
-                    ? 'arrow-gray'
-                    : 'arrow-border'
-                }.svg`}
-                className="attendance-img"
-              />
-              <p className="attendance-text">{data.timer}</p>
-            </div>
-          ))}
-          {callLists?.length !== 22 &&
-            isCompletCallAttendance &&
-            todayVerify && (
-              <Button
-                onClick={addCall}
-                className="attendance-add-btn"
-                // icon="plus"
-                text="Añadir Nueva Lista"
-              />
-            )}
-        </div>
-      </span>
-      {callList && (
-        <div className="attendance-card-container-main">
-          <div className="attendance-card-container-list">
-            {callList.users.length === 0 && (
-              <div className="attendance-btn-area">
-                <Button
-                  text="Mandar notificación"
-                  onClick={callNotification}
-                  className="attendance-btn-notify"
-                />
-                <Button
-                  text="Guardar Lista"
-                  onClick={generateAttendance}
-                  className="attendance-btn-save"
-                />
-              </div>
-            )}
-            <div className="attendance-card-container" ref={componentRef}>
-              <div className="attendance-header">
-                <div className="attendance-list-text hide-field">ITEM</div>
-                <div className="attendance-list-text hide-field">CUARTOS</div>
-                <div className="attendance-list-text">APELLIDO Y NOMBRE</div>
-                <div className="attendance-list-text hide-field">DNI</div>
-                <div className="attendance-list-text hide-field">CELULAR</div>
-                <div className="attendance-list-text hide-field">EQUIPO</div>
-                <div className="attendance-list-text hide-field">USUARIO</div>
-                <div className="attendance-list-text attendance-config head-p">
-                  P
-                </div>
-                <div className="attendance-list-text attendance-config head-t">
-                  T
-                </div>
-                <div className="attendance-list-text attendance-config head-f">
-                  F
-                </div>
-                <div className="attendance-list-text attendance-config head-g">
-                  G
-                </div>
-                <div className="attendance-list-text attendance-config head-m">
-                  M
-                </div>
-                <div className="attendance-list-text attendance-config head-l">
-                  L
-                </div>
-              </div>
-              {filterUsers?.map((user, index) => (
-                <AttendanceList
-                  key={user.id}
-                  onRadioChange={(e, v) => {
-                    // console.log(e, v);
-                    handleRadioChange(e, v);
-                  }}
-                  user={user}
-                  status={getStatus(user)}
-                  index={index}
-                  list={license}
-                />
-              ))}
-            </div>
           </div>
-          <div className="attendance-info-area">
-            <Legend />
-            <div className="attendance-report-container">
-              <div className="attendance-reports">
-                <label className="attendance-labels">
-                  Generar asistencia actual
-                </label>
-                <div className="attendace-btns">
+        </span>
+        {callList && (
+          <div className="attendance-card-container-main">
+            <div className="attendance-card-container-list">
+              {callList.users.length === 0 && (
+                <div className="attendance-btn-area">
                   <Button
-                    icon="report-pdf-icon"
-                    text="Vista Previa"
-                    onClick={() => genarteReportDaily('pdf')}
-                    className="attendance-btn-link"
-                    imageStyle="attendance-btn-link-image"
-                    disabled={callLists?.[0].users.length === 0}
+                    text="Mandar notificación"
+                    onClick={callNotification}
+                    className="attendance-btn-notify"
                   />
+                  <Button
+                    text="Guardar Lista"
+                    onClick={generateAttendance}
+                    className="attendance-btn-save"
+                  />
+                </div>
+              )}
+              <div className="attendance-card-container" ref={componentRef}>
+                <div className="attendance-header">
+                  <div className="attendance-list-text hide-field">ITEM</div>
+                  <div className="attendance-list-text hide-field">CUARTOS</div>
+                  <div className="attendance-list-text">APELLIDO Y NOMBRE</div>
+                  <div className="attendance-list-text hide-field">DNI</div>
+                  <div className="attendance-list-text hide-field">CELULAR</div>
+                  <div className="attendance-list-text hide-field">EQUIPO</div>
+                  <div className="attendance-list-text hide-field">USUARIO</div>
+                  <div className="attendance-list-text attendance-config head-p">
+                    P
+                  </div>
+                  <div className="attendance-list-text attendance-config head-t">
+                    T
+                  </div>
+                  <div className="attendance-list-text attendance-config head-f">
+                    F
+                  </div>
+                  <div className="attendance-list-text attendance-config head-g">
+                    G
+                  </div>
+                  <div className="attendance-list-text attendance-config head-m">
+                    M
+                  </div>
+                  <div className="attendance-list-text attendance-config head-l">
+                    L
+                  </div>
+                </div>
+                {filterUsers?.map((user, index) => (
+                  <AttendanceList
+                    key={user.id}
+                    onRadioChange={(e, v) => {
+                      // console.log(e, v);
+                      handleRadioChange(e, v);
+                    }}
+                    user={user}
+                    status={getStatus(user)}
+                    index={index}
+                    list={license}
+                  />
+                ))}
+              </div>
+            </div>
+            <div className="attendance-info-area">
+              <Legend />
+              <div className="attendance-report-container">
+                <div className="attendance-reports">
+                  <label className="attendance-labels">
+                    Generar asistencia actual
+                  </label>
+                  <div className="attendace-btns">
+                    <Button
+                      icon="report-pdf-icon"
+                      text="Vista Previa"
+                      onClick={() => genarteReportDaily('pdf')}
+                      className="attendance-btn-link"
+                      imageStyle="attendance-btn-link-image"
+                      disabled={callLists?.[0].users.length === 0}
+                    />
 
-                  <Button
-                    text="Descargar Excel"
-                    icon="report-excel-icon"
-                    onClick={() => genarteReportDaily('excel')}
-                    className="attendance-btn-link"
-                    imageStyle="attendance-btn-link-image"
-                  />
+                    <Button
+                      text="Descargar Excel"
+                      icon="report-excel-icon"
+                      onClick={() => genarteReportDaily('excel')}
+                      className="attendance-btn-link"
+                      imageStyle="attendance-btn-link-image"
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="attendance-reports">
-                <label className="attendance-labels">
-                  Reporte de asistencia
-                </label>
-                <div className="attendace-btns">
-                  <Input
-                    label="Fecha inicio"
-                    type="date"
-                    name="startDate"
-                    onChange={handleRangeData}
-                    classNameMain="attendace-date-filter"
-                    max={_date(today)}
-                    required
-                  />
-                  <Input
-                    label="Fecha fin"
-                    type="date"
-                    name="endDate"
-                    onChange={handleRangeData}
-                    classNameMain="attendace-date-filter"
-                    max={_date(today)}
-                    required
-                  />
-                </div>
-                <div className="attendace-btns">
-                  <Button
-                    text="Vista Previa"
-                    onClick={() => genarteReportRange('pdf')}
-                    icon="report-pdf-icon"
-                    className="attendance-btn-link"
-                    imageStyle="attendance-btn-link-image"
-                  />
-                  <Button
-                    text="Reporte en Excel"
-                    onClick={() => genarteReportRange('excel')}
-                    icon="report-excel-icon"
-                    className="attendance-btn-link"
-                    imageStyle="attendance-btn-link-image"
-                  />
+                <div className="attendance-reports">
+                  <label className="attendance-labels">
+                    Reporte de asistencia
+                  </label>
+                  <div className="attendace-btns">
+                    <Input
+                      label="Fecha inicio"
+                      type="date"
+                      name="startDate"
+                      onChange={handleRangeData}
+                      classNameMain="attendace-date-filter"
+                      max={_date(today)}
+                      required
+                    />
+                    <Input
+                      label="Fecha fin"
+                      type="date"
+                      name="endDate"
+                      onChange={handleRangeData}
+                      classNameMain="attendace-date-filter"
+                      max={_date(today)}
+                      required
+                    />
+                  </div>
+                  <div className="attendace-btns">
+                    <Button
+                      text="Vista Previa"
+                      onClick={() => genarteReportRange('pdf')}
+                      icon="report-pdf-icon"
+                      className="attendance-btn-link"
+                      imageStyle="attendance-btn-link-image"
+                    />
+                    <Button
+                      text="Reporte en Excel"
+                      onClick={() => genarteReportRange('excel')}
+                      icon="report-excel-icon"
+                      className="attendance-btn-link"
+                      imageStyle="attendance-btn-link-image"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-      )}
-      {!callList && callLists && callLists?.length > 0 && (
-        <div className="attendance-list-empty">
-          <h1>Seleccione una Lista</h1>
-        </div>
-      )}
-      <CardViewPdf />
+        )}
+        {!callList && callLists && callLists?.length > 0 && (
+          <div className="attendance-list-empty">
+            <h1>Seleccione una Lista</h1>
+          </div>
+        )}
+        <CardViewPdf />
+      </div>
+
       {/* <input type='datetime-local' onChange={e=> console.log(e.target.value)}/> */}
     </div>
   );

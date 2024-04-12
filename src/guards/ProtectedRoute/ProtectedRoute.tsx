@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import {
-  Header,
+  Sidebar,
   ViewHtmlToPdf,
   ViewPdf,
   ButtonDelete,
@@ -44,7 +44,7 @@ export const ProtectedRoute = () => {
   return (
     <SocketProvider>
       <div className="app-container">
-        <Header />
+        <Sidebar />
         <div className="main-container" onClick={clossToggle}>
           <Outlet />
         </div>

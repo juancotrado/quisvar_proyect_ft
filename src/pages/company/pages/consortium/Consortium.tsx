@@ -59,13 +59,11 @@ export const Consortium = () => {
           </div>
           <div className="company-info-text">
             <div className="company-icons-area">
-              <div>
-                <img
-                  src="/svg/pencil-line.svg"
-                  className="company-info-icon"
-                  onClick={() => handleAddConsortium(data?.id)}
-                />
-              </div>
+              <img
+                src="/svg/pencil-line.svg"
+                className="company-info-icon"
+                onClick={() => handleAddConsortium(data?.id)}
+              />
 
               <span className="company-icon-cv">
                 <img src="/svg/download.svg" className="company-info-icon" />
@@ -115,7 +113,8 @@ export const Consortium = () => {
             <div className="consortium-header">
               <h1 className="consortium-member">#</h1>
               <h1 className="consortium-member">Empresa</h1>
-              <h1 className="consortium-member">% Porcentaje</h1>
+              <h1 className="consortium-member">Porcentaje</h1>
+              <h1 className="consortium-member">Acciones</h1>
             </div>
             {data &&
               data?.companies.map((item, index) => (
@@ -124,7 +123,11 @@ export const Consortium = () => {
                   <h1 className="consortium-company-name">
                     {item?.companies.name}
                   </h1>
+                  <h1 className="consortium-company-name">
+                    {item?.percentaje}%
+                  </h1>
                   <span className="ule-size-pc">
+                    <p>Editar</p>
                     <ButtonDelete
                       icon="trash"
                       url={`/consortium/relation/${item?.companies.id}/${id}`}
@@ -145,7 +148,8 @@ export const Consortium = () => {
             />
           </div>
         </div>
-        <CardAddCompany onSave={getConsortium} />
+        <CardAddCompany onSave={Consortium} />
+        {/* <CardConsortium onSave={getConsortium} /> */}
       </div>
     </>
   );

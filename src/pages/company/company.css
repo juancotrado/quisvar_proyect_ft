@@ -17,7 +17,7 @@
 }
 .cs-selected {
   background-color: #f3f5f7;
-  border-radius: 1rem;
+  border-radius: 0.75rem;
 }
 .scroll-y {
   overflow-y: auto;

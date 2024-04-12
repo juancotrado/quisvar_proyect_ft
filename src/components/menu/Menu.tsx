@@ -15,13 +15,13 @@ const Menu = ({ data }: any) => {
       className="header-toggle"
     >
       <p className="fullname-menu">{profile.firstName} </p>
-      <div className="line"></div>
+      <br className="line"></br>
       {data.map(
         (value: any) =>
           value.id !== 2 && (
             <motion.li
               key={value.id}
-              whileTap={{ scale: 0.9 }}
+              whileTap={{ scale: 0.96 }}
               onClick={() => value.action()}
               className="list-menu"
             >

@@ -1,16 +1,19 @@
-import { ChangeEvent, useMemo, useState } from 'react';
-import {
-  MessageSendType,
-  ProcedureSubmit,
-  receiverType,
-} from '../../../../types';
+import { ChangeEvent, useEffect, useState } from 'react';
+import { MessageSendType, ProcedureSubmit, Office } from '../../../../types';
+import { components } from 'react-select';
+
 import './formRegisterProcedure.css';
 import { useTitleProcedure } from '../../hooks';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
 import { SubmitHandler, useForm, Controller } from 'react-hook-form';
-import { useListUsers } from '../../../../hooks';
-import { RADIO_OPTIONS, ToData, TypeProcedure } from '../../models';
+import {
+  Contact,
+  RADIO_OPTIONS,
+  ToData,
+  TypeProcedure,
+  userSelect,
+} from '../../models';
 import { procedureDocument } from '../../pdfGenerator';
 import {
   isOpenCardGenerateReport$,
@@ -20,7 +23,6 @@ import { TYPE_PROCEDURE } from '../../pages/paymentProcessing/models';
 import {
   AdvancedSelect,
   Button,
-  DropDownSimple,
   IconAction,
   Input,
   Select,
@@ -29,6 +31,7 @@ import { getHtmlPdfBlob, validateWhiteSpace } from '../../../../utils';
 import { Editor } from '@tinymce/tinymce-react';
 import { ChipFileDownLoadProcedure, DocumentProcedure } from '..';
 import { axiosInstance } from '../../../../services/axiosInstance';
+import { OptionProps } from 'react-select';
 
 interface FormRegisterProcedureProps {
   type: TypeProcedure;
@@ -44,9 +47,12 @@ const FormRegisterProcedure = ({
   showReportBtn = false,
   showAddUser = true,
 }: FormRegisterProcedureProps) => {
-  // const [receiver, setReceiver] = useState<receiverType | null>(null);
   const [isAddReceiver, setIsAddReceiver] = useState(false);
-  const [listCopy, setListCopy] = useState<receiverType[]>([]);
+  // const [listCopy, setListCopy] = useState<receiverType[]>([]);
+  const [contacts, setContacts] = useState<null | Contact[]>(null);
+  const [secondaryContacts, setSecondaryContacts] = useState<
+    null | userSelect[]
+  >(null);
   const urlQuantity =
     type === 'payProcedure'
       ? '/paymail/imbox/quantity'
@@ -54,11 +60,9 @@ const FormRegisterProcedure = ({
   const { handleTitle } = useTitleProcedure(urlQuantity);
   const [fileUploadFiles, setFileUploadFiles] = useState<File[]>([]);
 
-  const { profile, id: userSessionId } = useSelector(
-    (state: RootState) => state.userSession
-  );
+  const { profile } = useSelector((state: RootState) => state.userSession);
   const handleAddCopy = () => {
-    setIsAddReceiver(true);
+    setIsAddReceiver(!isAddReceiver);
   };
   const {
     handleSubmit,
@@ -66,18 +70,43 @@ const FormRegisterProcedure = ({
     setValue,
     watch,
     control,
+    trigger,
     formState: { errors },
   } = useForm<MessageSendType>();
-  const { users: listUser } = useListUsers(
-    'MOD',
-    'tramites',
-    'tramite-regular'
-  );
 
-  const contacts = useMemo(
-    () => listUser.filter(user => user.id !== userSessionId),
-    [userSessionId, listUser]
-  );
+  useEffect(() => {
+    getContacs();
+  }, []);
+
+  const getContacs = () => {
+    const url = `/office?menuId=${2}&typeRol=MOD&subMenuId=${
+      TYPE_PROCEDURE[type]
+    }`;
+    const secondaryContacts: userSelect[] = [];
+    axiosInstance.get<Office[]>(url).then(res => {
+      const contacts = res.data
+        .map(el => {
+          const users = el.users.map(({ user }) => ({
+            value: 'user-' + user.id,
+            label: user.profile.firstName + ' ' + user.profile.lastName,
+            ...user,
+          }));
+          secondaryContacts.push(...users);
+          const area = {
+            value: 'area-' + el.id,
+            id: el.id,
+            label: el.name,
+            quantity: el._count.users,
+            manager: el.manager!,
+          };
+          const userWithArea = [area, ...users];
+          return userWithArea;
+        })
+        .flat();
+      setContacts(contacts);
+      setSecondaryContacts(secondaryContacts);
+    });
+  };
 
   //funcion futura para que el reporte se agrega auntomaticamente
   // const handleIsOpen = useRef<Subscription>(new Subscription());
@@ -99,31 +128,65 @@ const FormRegisterProcedure = ({
   //     handleIsOpen.current.unsubscribe();
   //   };
   // }, []);
-  const handleReceiverUser = (usersId: number[]) => {
-    const findUsers = usersId.map(userId => {
-      const receiverUser = listUser.find(({ id }) => id === userId);
-      if (!receiverUser) return;
-      const { name, degree, position, job } = receiverUser;
-      return { name, degree, position, job };
-    });
-    const filterUser = findUsers.filter(user => !!user) as ToData[];
-    return filterUser;
-  };
+  // const handleReceiverUser = (usersId: number[]) => {
+  //   const findUsers = usersId.map(userId => {
+  //     const receiverUser = listUser.find(({ id }) => id === userId);
+  //     if (!receiverUser) return;
+  //     const { name, degree, position, job } = receiverUser;
+  //     return { name, degree, position, job };
+  //   });
+  //   const filterUser = findUsers.filter(user => !!user) as ToData[];
+  //   return filterUser;
+  // };
 
   const getHtmlString = (size: 'a4' | 'a5') => {
-    const idUserReceiver = listCopy.map(user => user.id);
-    const { description, header, title, signature, receiver } = watch();
-    const usersReceiver = handleReceiverUser([
-      +(receiver.value || 0),
-      ...idUserReceiver,
-    ]);
-    const [toProfile, ...ccProfiles] = usersReceiver;
+    const {
+      description,
+      header,
+      title,
+      signature,
+      receiver,
+      secondaryReceiver,
+    } = watch();
+    const isArea = receiver.value.includes('area');
+    let toProfile!: ToData;
+    if (isArea && 'manager' in receiver) {
+      const { profile } = receiver.manager;
+      toProfile = {
+        name: profile.firstName + ' ' + profile.lastName,
+        degree: profile.degree,
+        position: profile.description,
+        job: profile.job,
+      };
+    } else if ('profile' in receiver) {
+      toProfile = {
+        name: receiver.label,
+        degree: receiver.profile.degree,
+        position: receiver.profile.description,
+        job: receiver.profile.job,
+      };
+    }
+    const ccProfiles =
+      secondaryReceiver?.map(receiver => {
+        if ('profile' in receiver) {
+          return {
+            name: receiver.label,
+            degree: receiver.profile.degree,
+            position: receiver.profile.description,
+            job: receiver.profile.job,
+          };
+        }
+      }) ?? [];
+    let filteredCcProfiles = ccProfiles.filter(
+      profile => profile !== undefined
+    ) as ToData[];
+
     const htmlString = procedureDocument({
       title,
       subject: header,
       body: description ?? '',
       toProfile,
-      ccProfiles,
+      ccProfiles: filteredCcProfiles,
       fromProfile: profile,
       size,
       type,
@@ -131,7 +194,9 @@ const FormRegisterProcedure = ({
     });
     return htmlString;
   };
-  const downLoadPdf = (size: 'a4' | 'a5') => {
+  const downLoadPdf = async (size: 'a4' | 'a5') => {
+    const isValid = await trigger();
+    if (!isValid) return;
     const htmlString = getHtmlString(size);
     if (!htmlString) return;
     isOpenViewHtmlToPdf$.setSubject = {
@@ -142,28 +207,23 @@ const FormRegisterProcedure = ({
     };
   };
 
-  const handleAddUser = (user: receiverType) => {
-    const getId = listCopy.find(list => list.id == user.id);
-    if (!getId) setListCopy([...listCopy, user]);
-  };
-
-  const handleRemoveUser = (user: receiverType) => {
-    const filterValue = listCopy.filter(list => list.id !== user.id);
-    if (!filterValue.length) setIsAddReceiver(false);
-    setListCopy(filterValue);
-  };
   const handleInputChange = (event: string) => setValue('description', event);
 
   const onSubmit: SubmitHandler<MessageSendType> = async data => {
-    const secondaryReceiver = listCopy.map(list => ({ userId: list.id }));
+    const secondaryReceiver =
+      data.secondaryReceiver?.map(receiver => ({
+        userId: receiver.id,
+      })) ?? [];
     const htmlString = getHtmlString('a4');
     const blobData = await getHtmlPdfBlob(htmlString, 'a4');
 
+    const isArea = data.receiver.value.includes('area');
     if (!htmlString || !data.receiver) return;
     const values = {
       ...data,
       secondaryReceiver,
-      receiverId: data.receiver.value,
+      receiverId: !isArea ? data.receiver.id : undefined,
+      officeId: isArea ? data.receiver.id : undefined,
       title: watch('title'),
       description: htmlString,
     };
@@ -209,10 +269,44 @@ const FormRegisterProcedure = ({
     setValue('title', title);
   };
   const typeProcedure = TYPE_PROCEDURE[type];
-  const usersSelect = contacts.map(user => ({
-    value: user.id,
-    label: user.name,
-  }));
+  const Option = (props: OptionProps<any>) => {
+    const { data, isSelected } = props;
+    const isArea = data.value.includes('area');
+    return (
+      <components.Option {...props}>
+        <div className="AdvancedSelectCrud-option">
+          <span
+            style={{
+              marginRight: '8px',
+              display: 'flex',
+              gap: 5,
+              alignItems: 'center',
+            }}
+            className={`formRegisterProcedure-text-${isArea ? 'area' : 'user'}`}
+          >
+            {isArea && (
+              <IconAction
+                size={2}
+                icon={isSelected ? 'office-white' : 'office'}
+                position="none"
+              />
+            )}
+            {!isArea && '- '} {data.label}
+          </span>
+
+          {isArea && (
+            <span className="formRegisterProcedure-count-office">
+              {data.quantity}
+            </span>
+          )}
+        </div>
+      </components.Option>
+    );
+  };
+  // const usersSelect = contacts.map(user => ({
+  //   value: user.id,
+  //   label: user.name,
+  // }));
 
   return (
     <form className="imbox-data-content" onSubmit={handleSubmit(onSubmit)}>
@@ -241,35 +335,20 @@ const FormRegisterProcedure = ({
           placeholder="Tipo de Documento"
           styleVariant="secondary"
         />
-        {/* {type !== 'comunication' && (
-          // <div className="imbox-receiver-choice-dropdown">
-          <DropDownSimple
-            classNameInput="input-style-two"
-            type="search"
-            data={contacts}
-            textField="name"
-            itemKey="id"
-            placeholder="Dirigido a"
-            selector
-            droper
-            valueInput={(value, id) => setReceiver({ id: +id, value })}
-            required
-          />
-          // </div>
-        )} */}
 
-        {type !== 'comunication' && (
+        {type !== 'comunication' && contacts && (
           <Controller
             control={control}
             name="receiver"
             rules={{ required: 'Debes seleccionar una opción' }}
             render={({ field: { onChange } }) => (
               <AdvancedSelect
-                placeholder="Selecione una opción"
-                options={usersSelect}
+                placeholder="Dirigida a"
+                options={contacts}
+                components={{ Option }}
                 isClearable
                 errors={errors}
-                name="to"
+                name="receiver"
                 onChange={onChange}
               />
             )}
@@ -285,30 +364,28 @@ const FormRegisterProcedure = ({
         )}
       </div>
 
-      {isAddReceiver && (
+      {isAddReceiver && secondaryContacts && (
         <div className="imbox-receiver-container-copy">
           <span className="imbox-receiver-label">
             {typeProcedure.addUsersText}:{' '}
           </span>
-          {listCopy.map(list => (
-            <div className="imbox-receiver-chip" key={list.id}>
-              <span className="imbox-receiver-chip-name">{list.value}</span>
-              <img
-                className="imbox-receiver-chip-icon-close "
-                onClick={() => handleRemoveUser(list)}
-                src="/svg/circle-xmark-solid.svg"
+          <Controller
+            control={control}
+            name="secondaryReceiver"
+            rules={{
+              required: isAddReceiver && 'Debes seleccionar una opción',
+            }}
+            render={({ field: { onChange } }) => (
+              <AdvancedSelect
+                placeholder="Dirigida a"
+                options={secondaryContacts}
+                isClearable
+                errors={errors}
+                isMulti
+                name="secondaryReceiver"
+                onChange={onChange}
               />
-            </div>
-          ))}
-          <DropDownSimple
-            classNameInput="messagePage-input"
-            type="search"
-            data={contacts}
-            placeholder="Buscar...."
-            textField="name"
-            itemKey="id"
-            droper
-            valueInput={(value, id) => handleAddUser({ id: +id, value })}
+            )}
           />
         </div>
       )}

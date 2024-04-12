@@ -1,4 +1,4 @@
-import { Degree, Profession } from '../../../types';
+import { Degree, Profession, UserProfile } from '../../../types';
 
 export type MailTypeProcedure = 'RECEIVER' | 'SENDER' | 'ARCHIVER';
 export type MailTypeProcedureSpanish = 'RECIBIDOS' | 'ENVIADOS' | 'ARCHIVADOS';
@@ -21,3 +21,17 @@ export type TypeProcedure =
   | 'comunication'
   | 'regularProcedure'
   | 'payProcedure';
+
+export interface OfficeSelect {
+  value: string;
+  label: string;
+  manager: UserProfile;
+  quantity: number;
+  id: number;
+}
+
+export interface userSelect extends UserProfile {
+  value: string;
+  label: string;
+}
+export type Contact = OfficeSelect | userSelect;

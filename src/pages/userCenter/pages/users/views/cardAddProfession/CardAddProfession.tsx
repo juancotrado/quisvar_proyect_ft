@@ -1,18 +1,21 @@
 import { Subscription } from 'rxjs';
-import { Button, CloseIcon, Input, Modal } from '../../../../../../components'
-import './cardAddProfession.css'
+import { Button, CloseIcon, Input, Modal } from '../../../../../../components';
+import './cardAddProfession.css';
 import { useEffect, useRef, useState } from 'react';
 import { isOpenCardProfession$ } from '../../../../../../services/sharingSubject';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Profession } from '../../../../../../types';
 import { validateWhiteSpace } from '../../../../../../utils';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
+import { useDispatch } from 'react-redux';
+import { AppDispatch } from '../../../../../../store';
+import { getListUsers } from '../../../../../../store/slices/listUsers.slice';
 
 interface CardAddProfessionProps {
   onSave?: () => void;
-
 }
 const CardAddProfession = ({ onSave }: CardAddProfessionProps) => {
+  const dispatch: AppDispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
   const {
     register,
@@ -23,34 +26,42 @@ const CardAddProfession = ({ onSave }: CardAddProfessionProps) => {
   } = useForm<Profession>();
   const handleIsOpen = useRef<Subscription>(new Subscription());
   useEffect(() => {
-    handleIsOpen.current = isOpenCardProfession$.getSubject.subscribe(({ isOpen, data }) => {
-      setIsOpen(isOpen);
-      if (data) {
-        const { abrv, label, value } = data
-        reset({
-          abrv, label, value
-        });
+    handleIsOpen.current = isOpenCardProfession$.getSubject.subscribe(
+      ({ isOpen, data }) => {
+        setIsOpen(isOpen);
+        if (data) {
+          const { abrv, label, value } = data;
+          reset({
+            abrv,
+            label,
+            value,
+          });
+        }
       }
-    });
+    );
 
     return () => {
       handleIsOpen.current.unsubscribe();
     };
   }, []);
-  const onSubmit: SubmitHandler<Profession> = async ({ abrv, label, value }) => {
+  const onSubmit: SubmitHandler<Profession> = async ({
+    abrv,
+    label,
+    value,
+  }) => {
     const body = {
-      abrv, label
-    }
-    let res
+      abrv,
+      label,
+    };
     if (value) {
-      res = await axiosInstance.patch(`/profession/${value}`, body)
+      await axiosInstance.patch(`/profession/${value}`, body);
     } else {
-      res = await axiosInstance.post(`/profession`, body)
+      await axiosInstance.post(`/profession`, body);
+      dispatch(getListUsers());
     }
-    console.log("res Profesio", res.data)
-    onSave?.()
-    closeFunctions()
-  }
+    onSave?.();
+    closeFunctions();
+  };
   const closeFunctions = () => {
     setIsOpen(false);
     reset({});
@@ -79,7 +90,6 @@ const CardAddProfession = ({ onSave }: CardAddProfessionProps) => {
           />
         </div>
 
-
         <div className="btn-build">
           <Button
             text={watch('value') ? 'GUARDAR' : 'CREAR'}
@@ -91,7 +101,7 @@ const CardAddProfession = ({ onSave }: CardAddProfessionProps) => {
         </div>
       </form>
     </Modal>
-  )
-}
+  );
+};
 
-export default CardAddProfession
+export default CardAddProfession;

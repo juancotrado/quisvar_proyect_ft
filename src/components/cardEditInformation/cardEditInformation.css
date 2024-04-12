@@ -40,8 +40,19 @@
   top: var(--header-height);
 }
 
+.card-edit-header-info {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+.card-edit-btn-close-modal {
+  position: absolute;
+  top: 0.7rem;
+  left: 0.7rem;
+}
 .col-btns {
   display: flex;
+  gap: 1rem;
   overflow-x: hidden;
   width: 100%;
   justify-content: space-around;
@@ -80,6 +91,7 @@
   border: 2px solid var(--color-primary);
   max-width: 400px;
   cursor: not-allowed;
+  background-color: #f3f1f1e0;
 }
 
 .card-edit-sign-container-header {

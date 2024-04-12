@@ -37,7 +37,7 @@
 .imbox-data-content {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.1rem;
   padding: 0.5rem;
   overflow-y: auto;
 }
@@ -90,7 +90,6 @@
 
 .imbox-receiver-container-copy {
   width: 100%;
-  flex-wrap: wrap;
   align-items: center;
   display: flex;
   gap: 0.5rem;

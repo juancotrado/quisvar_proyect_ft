@@ -6,7 +6,7 @@
 
 .consortium-header {
   display: grid;
-  grid-template-columns: 0.5fr 5fr 3fr;
+  grid-template-columns: 0.5fr 4.5fr 2fr 1fr;
   background-color: #d7e2ed;
   padding: 0.5rem 0.4rem;
 }
@@ -19,7 +19,7 @@
 
 .consortium-company-members {
   display: grid;
-  grid-template-columns: 0.5fr 5fr 2fr 0.5fr;
+  grid-template-columns: 0.5fr 4.5fr 2fr 1fr;
   padding: 0rem 0.625rem;
   align-items: center;
 }

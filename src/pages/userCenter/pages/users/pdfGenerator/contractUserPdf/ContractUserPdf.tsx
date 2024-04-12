@@ -30,18 +30,21 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
     data.professionalLevel
   }${profile.degree !== 'Practicante' ? ' - ' + profile.degree : ''}`;
   const getMonto = () => {
-    if (profile.job === 'Ingeniería Civil' && data.isStructureSpecialist) {
+    if (
+      profile.job.label === 'Ingeniería Civil' &&
+      data.isStructureSpecialist
+    ) {
       return 600;
     } else if (
-      profile.job === 'Ingeniería Civil' ||
-      profile.job === 'Arquitectura y Urbanismo'
+      profile.job.label === 'Ingeniería Civil' ||
+      profile.job.label === 'Arquitectura y Urbanismo'
     ) {
       return 400;
     } else if (
-      profile.job === 'Ingeniería Sanitaria y Ambiental' ||
-      profile.job === 'Ingeniería Topográfica y Agrimensura' ||
-      profile.job === 'Ingeniería Agrícola' ||
-      profile.job === 'Ingeniería Geológica'
+      profile.job.label === 'Ingeniería Sanitaria y Ambiental' ||
+      profile.job.label === 'Ingeniería Topográfica y Agrimensura' ||
+      profile.job.label === 'Ingeniería Agrícola' ||
+      profile.job.label === 'Ingeniería Geológica'
     ) {
       return 300;
     } else {
@@ -78,7 +81,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             parte, al
             <Text style={styles.textRed}>
               {' '}
-              {profile.degree} en {profile.job} {profile.firstName}{' '}
+              {profile.degree} en {profile.job.label} {profile.firstName}{' '}
               {profile.lastName}
             </Text>
             , con <Text style={styles.textRed}> DNI Nº {profile.dni}</Text>, en
@@ -345,8 +348,8 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             adicional al monto contractual estipulado en el contrato, esto solo
             aplica al primer mes laborado según a los siguientes criterios:{' '}
             <Text style={styles.textBold}>
-              {profile.job} S/. {formatAmountMoney(contractualWelcomeAmount)}{' '}
-              {'('}
+              {profile.job.label} S/.{' '}
+              {formatAmountMoney(contractualWelcomeAmount)} {'('}
               {NumerosALetras(contractualWelcomeAmount)}
               {').'}
             </Text>

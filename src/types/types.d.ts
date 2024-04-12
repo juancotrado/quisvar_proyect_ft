@@ -1,3 +1,5 @@
+import { Contact } from '../pages/procedure/models';
+
 export interface SpecialityType {
   id: number;
   name: string;
@@ -55,6 +57,39 @@ export interface ReportForm {
   concept: string;
   porcentageValue: number;
   title: string;
+}
+export interface Office {
+  id: number;
+  name: string;
+  quantity: number;
+  manager?: UserProfile;
+  users: UserElement[];
+  _count: {
+    users: number;
+  };
+}
+
+export interface UserElement {
+  user: UserProfile;
+  isOfficeManager: boolean;
+}
+
+export interface UserProfile {
+  id: number;
+  ruc: null | string;
+  address: string;
+  profile: Profile;
+  office?: string;
+}
+
+export interface ProfileOffice {
+  firstName: string;
+  lastName: string;
+  dni: string;
+  phone: string;
+  degree: string;
+  description: string;
+  job: string;
 }
 
 export interface ExcelData extends ReportForm {
@@ -206,7 +241,7 @@ export type MenuAccess =
   | 'indice-general'
   | 'grupos';
 
-export type User = {
+export interface User {
   id: number;
   email: string;
   password: string;
@@ -229,8 +264,12 @@ export type User = {
     workStationId: number;
     workStation: WorkStation;
   };
-};
+}
 
+export interface UserSelect extends User {
+  value: string;
+  label: string;
+}
 export type Degree =
   | 'Practicante'
   | 'Egresado'
@@ -520,7 +559,7 @@ export interface UserForm {
   district: string;
   roleId: number | null;
   ruc: string;
-  job: Profession ;
+  job: Profession;
   cv: FileList | null;
   firstNameRef: string;
   lastNameRef: string;
@@ -976,12 +1015,15 @@ interface MessageSendType {
   title: string;
   header: string;
   description?: string;
-  receiver: OptionSelect;
+  receiver: Contact;
+  secondaryReceiver?: Contact[];
   signature: boolean;
   type: MessageType['type'];
 }
 export interface Procedure extends MessageSendType {
-  secondaryReceiver: {
+  officeId?: number;
+  receiverId?: number;
+  secondaryReceiver?: {
     userId: number;
   }[];
 }
@@ -997,21 +1039,21 @@ type ListItemElement = {
 };
 export type ElementType =
   | {
-    type: 'paragraph';
-    content: string;
-  }
+      type: 'paragraph';
+      content: string;
+    }
   | {
-    type: 'table';
-    data: string[][];
-  }
+      type: 'table';
+      data: string[][];
+    }
   | {
-    type: 'orderedList';
-    items: ListItemElement[];
-  }
+      type: 'orderedList';
+      items: ListItemElement[];
+    }
   | {
-    type: 'unorderedList';
-    items: ListItemElement[];
-  };
+      type: 'unorderedList';
+      items: ListItemElement[];
+    };
 export interface ListUserExtend extends Omit<User, 'profile'> {
   name: string;
   degree: string;

@@ -22,7 +22,7 @@ const GeneralDataGroupRow = ({ user, index }: GeneralDataGroupRowProps) => {
         {capitalizeText(`${user?.role?.name}`)}
       </span>
       <span className="generalData-infor-group-text generalData-table-text-alter">
-        {user.profile.job}
+        {user.profile.job.label}
       </span>
       <span className="generalData-infor-group-text generalData-table-text-alter">
         {user.profile.degree}

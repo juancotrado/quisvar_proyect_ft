@@ -135,6 +135,30 @@ h3 {
   width: 14px;
 }
 
+/* custom scrollbar */
+.items-list {
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  width: 9px;
+  height: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: #eceaea;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c0c0c0;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* fin */
 a.nostyle:link {
   text-decoration: inherit;
   cursor: auto;

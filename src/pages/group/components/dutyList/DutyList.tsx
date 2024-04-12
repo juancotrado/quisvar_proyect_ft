@@ -1,188 +1,59 @@
-import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react';
-import { Duty, DutyMember, GroupAttendanceRes, ProjectList } from '../../types';
-// import { URL } from '../../../../services/axiosInstance';
+import { useForm } from 'react-hook-form';
+import { Duty, DutyMember } from '../../types';
 import './dutyList.css';
-import {
-  Button,
-  //ButtonDelete,
-  Input,
-  //UploadFileInput,
-} from '../../../../components';
-import { axiosInstance } from '../../../../services/axiosInstance';
-import { _date } from '../../../../utils';
+import { useEffect, useState } from 'react';
+// import { Input } from '../../../../components';
+import { validateWhiteSpace } from '../../../../utils';
 import { Members } from './members';
-import { SubmitHandler, useForm } from 'react-hook-form';
-// import { axiosInstance } from '../../../../services/axiosInstance';
-// import { normalizeFileName } from '../../../../utils';
-interface Comments {
-  feedback?: string;
-  asitec?: string;
-}
 interface DutyListProps {
-  groupUsers: GroupAttendanceRes[];
-  idList?: number;
-  onSave: () => void;
-  hasDuty?: Duty[];
-  isToday?: boolean;
-  file?: string;
+  data: Duty;
 }
-const DutyList = ({
-  groupUsers,
-  idList,
-  onSave,
-  hasDuty,
-}: // isToday,
-// file,
-DutyListProps) => {
-  const [projectList, setProjectList] = useState<ProjectList[]>();
-  const [searchTerm, setSearchTerm] = useState('');
-  const [editMember, setEditMember] = useState<DutyMember[]>([]);
-  const [dutyId, setDutyId] = useState<number>();
-  const [index, setIndex] = useState<number>();
-  const [dutyItem, setDutyItem] = useState<Duty>();
+const DutyList = ({ data }: DutyListProps) => {
+  const [editMembers, setEditMembers] = useState<DutyMember[]>([]);
   const {
     register,
-    handleSubmit,
-    //setValue,
+    // handleSubmit,
+    // setValue,
     reset,
     // watch,
     // formState: { errors },
-  } = useForm<Comments[]>();
-  const projects = useCallback(() => {
-    axiosInstance.get('duty/projects').then(res => setProjectList(res.data));
-  }, []);
+  } = useForm<Duty>();
+
+  console.log(data);
 
   useEffect(() => {
-    projects();
-  }, [idList]);
-  useEffect(() => {
-    const resetData = hasDuty?.map(() => {
-      return {
-        feedback: '',
-        asitec: '',
-      };
-    });
-    if (resetData) {
-      reset({ ...resetData });
+    if (data) {
+      reset({
+        ...data,
+      });
     }
-  }, [hasDuty, reset]);
-  const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchTerm(event.target.value);
-  };
-  const filter = useMemo(() => {
-    if (searchTerm === '') return [];
-    return projectList?.filter(value => value.cui.startsWith(searchTerm));
-  }, [searchTerm]);
-  const addProject = () => {
-    if (!searchTerm) return;
-    const data = {
-      CUI: filter?.[0].cui,
-      project: filter?.[0].projectName,
-      listId: idList,
-      members: groupUsers.map(({ user }) => {
-        return {
-          fullName: user.profile.firstName + ' ' + user.profile.lastName,
-          status: 'NO APTO',
-        };
-      }),
-    };
-    axiosInstance.post(`duty/`, data).then(() => onSave?.());
-    // console.log(data)
-  };
-  const onSubmit: SubmitHandler<Comments[]> = async values => {
-    // console.log(values);
-    const { CUI, listId, project } = dutyItem as Duty;
-    const data = {
-      CUI,
-      project,
-      asitec: values[index as number].asitec,
-      feedback: values[index as number].feedback,
-      listId,
-      members: editMember,
-    };
-    // console.log(data);
-    axiosInstance.patch(`duty/items/${dutyId}`, data).then(() => onSave?.());
-  };
+  }, [data]);
+  console.log(editMembers);
   return (
-    <div className="dl-content">
-      {hasDuty && hasDuty?.length > 0 && (
-        <>
-          <div className="dl-header">
-            <h1 className="dl-title dl-center">#</h1>
-            <h1 className="dl-title">CUI</h1>
-            <h1 className="dl-title">PROYECTO</h1>
-            <h1 className="dl-title dl-center">ESTUDIO BASICOS</h1>
-            <h1 className="dl-title dl-center">eNCARGADO</h1>
-            <h1 className="dl-title dl-center">AVANCE</h1>
-            <h1 className="dl-title">ULTIMA VIDEO CONFERENCIA</h1>
-            <h1 className="dl-title">VIDEO CONFERENCIA PROGRAMADA</h1>
-            <h1 className="dl-title">SITUACION</h1>
-            <h1 className="dl-title">PETICIONES</h1>
-            <h1 className="dl-title">OBSERVACIONES</h1>
-            <h1 className="dl-title">Asitec</h1>
-          </div>
-          {hasDuty.map((item, idx) => {
-            // console.log(item.feedback);
-            return (
-              <form
-                onSubmit={handleSubmit(onSubmit)}
-                key={item.id}
-                className="dl-form"
-              >
-                <div className="dl-body">
-                  <div className="dl-list right-border">{idx + 1}</div>
-                  <div className="dl-list right-border">{item.CUI}</div>
-                  <div className="dl-list right-border">{item.project}</div>
-                  <Members
-                    members={item.members}
-                    dutyId={item.id}
-                    onSave={onSave}
-                    editMember={setEditMember}
-                  />
-                  {/* <input className="dl-list" defaultValue={item.feedback} onBlur={e => setFeedback(e.target.value)}/>
-                <input className="dl-list" defaultValue={item.asitec} onBlur={e => setAsitec(e.target.value)}/> */}
-                  <input
-                    {...register(`${idx}.feedback`)}
-                    className="dl-list right-border"
-                    // defaultValue={item.feedback}
-                  />
-                  <input
-                    {...register(`${idx}.asitec`)}
-                    className="dl-list"
-                    // defaultValue={item.asitec}
-                  />
-                </div>
-                <Button
-                  onClick={() => {
-                    setDutyId(item.id);
-                    setDutyItem(item);
-                    setIndex(idx);
-                  }}
-                  type="submit"
-                  text="Guardar"
-                  icon="save"
-                  className="dl-save-btn"
-                />
-              </form>
-            );
-          })}
-        </>
-      )}
-      <div>
-        <Input
-          type="text"
-          placeholder="CUI"
-          label="Buscar CUI de proyecto"
-          onChange={handleSearchChange}
-          value={searchTerm}
+    <div className="dl-container">
+      <input {...register('titleMeeting', { validate: validateWhiteSpace })} />
+      <div className="dl-theader">
+        <h2 className="dl-title">COMPROMISOS</h2>
+        <h2 className="dl-title">INFORMES</h2>
+        <h2 className="dl-title">ASISTENCIA</h2>
+      </div>
+      <div className="dl-header">
+        <h2 className="dl-title">#</h2>
+        <h2 className="dl-title">APELLIDOS Y NOMBRES</h2>
+        <h2 className="dl-title">ASISTENCIA</h2>
+        <h2 className="dl-title">TAREAS</h2>
+        <h2 className="dl-title">COMENTARIOS</h2>
+        <h2 className="dl-title">COMPROMISO DIARIO</h2>
+        <h2 className="dl-title">COMPROMISO GRUPAL</h2>
+      </div>
+      <div className="dl-body">
+        <Members
+          members={data.members}
+          dutyId={data.id}
+          onSave={() => {}}
+          editMember={e => setEditMembers(e)}
         />
-        {filter?.[0] && <h5>{filter?.[0].projectName}</h5>}
-        <Button
-          onClick={addProject}
-          text="Agregar"
-          icon="add2"
-          className="dl-add-btn"
-        />
+        <input {...register('dutyGroup', { validate: validateWhiteSpace })} />
       </div>
     </div>
   );

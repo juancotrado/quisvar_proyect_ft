@@ -2,10 +2,11 @@ import { useCallback, useEffect, useState } from 'react';
 import { NavLink, Outlet, useParams } from 'react-router-dom';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import './groupContent.css';
-import { Group } from '../../../../types';
+import { Group, Option } from '../../../../types';
 import { isOpenCardAddGroup$ } from '../../../../services/sharingSubject';
-import { Button, ButtonDelete } from '../../../../components';
+import { Button, ButtonDelete, DotsRight } from '../../../../components';
 import { CardAddGroup } from './views';
+import { ContextMenuTrigger } from 'rctx-contextmenu';
 
 export const GroupContent = () => {
   const { groupId, name } = useParams();
@@ -26,6 +27,13 @@ export const GroupContent = () => {
       id,
     };
   };
+
+  const changeMod = (id: number, change: boolean) => {
+    axiosInstance
+      .patch(`groups/relation/${id}/${groupId}`, { mod: change })
+      .then(() => getUserGroup());
+  };
+
   return (
     <div className="grc-main">
       <div className="grc-header">
@@ -80,58 +88,61 @@ export const GroupContent = () => {
               {/* <h1 className="grc-title-member">USUARIO</h1> */}
               <h1 className="grc-title-member">Borrar</h1>
             </div>
-            {/* <div className="grc-list-members">
-              <h1 className="grc-member-name">1</h1>
-              <h1 className="grc-member-mod">
-                {members?.modId && members?.modId
-                  ? `${
-                      members.moderator.profile.firstName +
-                      ' ' +
-                      members.moderator.profile.lastName
-                    }`
-                  : 'Sin coordinador'}
-              </h1>
-              <span className="ule-size-pc">
-                <img src="/svg/pc-icon.svg" className="ule-icon-size" />
-                {members?.modId ? members.moderator.profile.userPc : '---'}
-              </span>
-              {members?.modId && (
-                <span className="ule-size-pc">
-                  <ButtonDelete
-                    icon="trash"
-                    url={`/groups/mod/${groupId}`}
-                    className="role-delete-icon"
-                    onSave={getUserGroup}
-                  />
-                </span>
-              )}
-            </div> */}
             {members?.groups &&
-              members.groups.map((member, index) => (
-                <div className="grc-list-members" key={member?.users.id}>
-                  <h1 className="grc-member-name">{index + 2}</h1>
-                  <h1 className="grc-member-name">
-                    {member.users.profile.firstName}{' '}
-                    {member.users.profile.lastName}
-                  </h1>
-                  {/* <span className="ule-size-pc">
+              members.groups.map((member, index) => {
+                const mod: Option[] = [
+                  {
+                    name: 'Hacer coordinador',
+                    type: 'button',
+                    // icon: 'person',
+                    function: () => changeMod(member.users.id, true),
+                  },
+                ];
+                const noMod: Option[] = [
+                  {
+                    name: 'Hacer miembro',
+                    type: 'button',
+                    // icon: 'person',
+                    function: () => changeMod(member.users.id, false),
+                  },
+                ];
+                return (
+                  <div key={member?.users.id}>
+                    <ContextMenuTrigger
+                      className="grc-list-members"
+                      id={`group-${member.users.id}`}
+                    >
+                      <h1 className="grc-member-name">{index + 1}</h1>
+                      <h1
+                        className={`grc-member-${member.mod ? 'mod' : 'name'}`}
+                      >
+                        {member.users.profile.firstName}{' '}
+                        {member.users.profile.lastName}
+                      </h1>
+                      {/* <span className="ule-size-pc">
                     <img src="/svg/pc-icon.svg" className="ule-icon-size" />
                     {member.users.profile.userPc ?? '---'}
                   </span> */}
-                  <span className="ule-size-pc">
-                    <ButtonDelete
-                      icon="trash"
-                      url={`/groups/relation/${member?.users.id}/${groupId}`}
-                      className="role-delete-icon"
-                      onSave={getUserGroup}
+                      <span className="ule-size-pc">
+                        <ButtonDelete
+                          icon="trash"
+                          url={`/groups/relation/${member?.users.id}/${groupId}`}
+                          className="role-delete-icon"
+                          onSave={getUserGroup}
+                        />
+                      </span>
+                    </ContextMenuTrigger>
+                    <DotsRight
+                      data={member.mod ? noMod : mod}
+                      idContext={`group-${member.users.id}`}
                     />
-                  </span>
-                </div>
-              ))}
+                  </div>
+                );
+              })}
           </div>
         </section>
       </div>
-      <CardAddGroup onSave={getUserGroup} modId={members?.modId} />
+      <CardAddGroup onSave={getUserGroup} />
     </div>
   );
 };

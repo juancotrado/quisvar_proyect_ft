@@ -16,11 +16,10 @@ export type GroupRes = {
     };
   };
   // attendance: GroupAttendanceRes[];
-  duty: DutyBasic[];
+  duty: Duty[];
 };
-export type DutyBasic = {
-  duty: Pick<Duty, 'id' | 'CUI' | 'project' | 'shortName'>;
-};
+export type DutyBasic = Pick<Duty, 'id' | 'CUI' | 'project' | 'shortName'>;
+
 export type GroupAttendanceRes = {
   id: number;
   // description: string;

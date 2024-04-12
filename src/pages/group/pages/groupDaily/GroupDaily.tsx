@@ -1,17 +1,19 @@
 import { ChangeEvent, useEffect, useState, useContext } from 'react';
-import { Button, Input } from '../../../../components';
+import { Button, Input, Select } from '../../../../components';
 import './groupDaily.css';
 import { _date } from '../../../../utils';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { useParams } from 'react-router-dom';
-import { DutyBasic, GroupAttendanceRes, GroupRes } from '../../types';
+import { Duty, DutyBasic, GroupAttendanceRes, GroupRes } from '../../types';
 import { SocketContext } from '../../../../context';
+import { DutyList } from '../../components';
 const now = new Date();
 
 interface Projects {
   id: number;
   name: string;
   district: string;
+  cui: true;
 }
 
 export const GroupDaily = () => {
@@ -20,10 +22,12 @@ export const GroupDaily = () => {
   const [selectedBtn, setSelectedBtn] = useState<number | null>(null);
   const [isToday, setIsToday] = useState<boolean>(true);
   const [calls, setCalls] = useState<GroupRes[]>([]);
+  const [idList, setIdList] = useState<number>();
   const [, setDateValue] = useState<string>(_date(now));
-  const [, setHasDuty] = useState<DutyBasic[]>([]);
+  const [hasDuty, setHasDuty] = useState<Duty[]>([]);
+  const [dutyView, setDutyView] = useState<Duty>();
   const [, setGroupUsers] = useState<GroupAttendanceRes[]>([]);
-  const [, setDataProjects] = useState<Projects[]>([]);
+  const [dataProjects, setDataProjects] = useState<Projects[]>([]);
   const { groupId } = useParams();
 
   useEffect(() => {
@@ -68,8 +72,8 @@ export const GroupDaily = () => {
           viewList(res.data[res.data.length - 1], res.data.length);
         }
       });
-    axiosInstance.get(`groups/projects/${groupId}`).then(res => {
-      console.log(res.data);
+    axiosInstance.get<Projects[]>(`groups/projects/${groupId}`).then(res => {
+      // console.log(res.data);
       setDataProjects(res.data);
     });
     position = undefined;
@@ -118,6 +122,7 @@ export const GroupDaily = () => {
   };
 
   const viewList = (item: GroupRes, idx: number) => {
+    setIdList(item.id);
     setGroupUsers([]);
     setHasDuty([]);
     // setShowSecond(false);
@@ -140,7 +145,21 @@ export const GroupDaily = () => {
       getTodayCalls();
     });
   };
-  // console.log(hasDuty)
+  const createDuty = (item: string) => {
+    const { name, district, cui } = dataProjects.find(
+      project => project.id === +item
+    ) as Projects;
+    const data = {
+      CUI: cui,
+      project: name,
+      shortName: district,
+      listId: idList,
+    };
+    axiosInstance.post(`duty/`, data).then(() => getTodayCalls());
+  };
+  const viewDuty = (item: Duty) => {
+    setDutyView(item);
+  };
   return (
     <div className="gd-content">
       <div className="gd-header">
@@ -191,12 +210,25 @@ export const GroupDaily = () => {
       </div>
       {/* General table */}
       <div className="gd-table">
-        {/* <Select
-          itemKey="id"
-          name="xd"
-          textField="district"
-          data={dataProjects}
-        /> */}
+        {hasDuty &&
+          hasDuty.map(item => {
+            return (
+              <span key={item.id} onClick={() => viewDuty(item)}>
+                {item.shortName}
+              </span>
+            );
+          })}
+        <div style={{ width: '100px' }}>
+          <Select
+            itemKey="id"
+            name="select"
+            textField="district"
+            data={dataProjects}
+            placeholder="Proyecto"
+            onChange={e => createDuty(e.target.value)}
+          />
+        </div>
+        {dutyView && <DutyList data={dutyView} />}
       </div>
     </div>
   );

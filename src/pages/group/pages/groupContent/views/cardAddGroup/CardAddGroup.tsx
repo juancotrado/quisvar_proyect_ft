@@ -15,23 +15,15 @@ interface UserId {
 }
 interface CardAddGroupProps {
   onSave: () => void;
-  modId?: number;
 }
-const CardAddGroup = ({ onSave, modId }: CardAddGroupProps) => {
+const CardAddGroup = ({ onSave }: CardAddGroupProps) => {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const [hasId, setHasId] = useState<number>();
   const handleIsOpen = useRef<Subscription>(new Subscription());
   const [searchTerm, setSearchTerm] = useState('');
   const { listUsers: users } = useSelector((state: RootState) => state);
 
-  const {
-    // register,
-    handleSubmit,
-    //setValue,
-    // reset,
-    // watch,
-    // formState: { errors },
-  } = useForm<UserId>();
+  const { handleSubmit } = useForm<UserId>();
 
   useEffect(() => {
     handleIsOpen.current = isOpenCardAddGroup$.getSubject.subscribe(value => {
@@ -43,24 +35,14 @@ const CardAddGroup = ({ onSave, modId }: CardAddGroupProps) => {
       handleIsOpen.current.unsubscribe();
     };
   }, []);
-  const onSubmit: SubmitHandler<UserId> = async () => {
-    if (modId) {
-      await axiosInstance
-        .post(`groups/relation/${filterList[0].id}/${hasId}`)
-        .then(() => {
-          setIsOpen(false);
-          setSearchTerm('');
-          onSave();
-        });
-    } else {
-      await axiosInstance
-        .patch(`groups/${hasId}`, { modId: filterList[0].id })
-        .then(() => {
-          setIsOpen(false);
-          setSearchTerm('');
-          onSave();
-        });
-    }
+  const onSubmit: SubmitHandler<UserId> = () => {
+    axiosInstance
+      .post(`groups/relation/${filterList[0].id}/${hasId}`)
+      .then(() => {
+        setIsOpen(false);
+        setSearchTerm('');
+        onSave();
+      });
   };
 
   const closeFunctions = () => {
@@ -86,7 +68,7 @@ const CardAddGroup = ({ onSave, modId }: CardAddGroupProps) => {
     <Modal size={50} isOpenProp={isOpen}>
       <form onSubmit={handleSubmit(onSubmit)} className="card-register-users">
         <CloseIcon onClick={closeFunctions} />
-        <h1>Asignar {modId ? 'Integrante' : 'Coordinador'}</h1>
+        <h1>Asignar Integrante</h1>
         <div className="col-input">
           <Input
             type="text"

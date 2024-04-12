@@ -1,5 +1,9 @@
 import { CSSProperties, Ref } from 'react';
-import SelectReact, { GroupBase, Props as SelectProps, SelectInstance } from 'react-select';
+import SelectReact, {
+  GroupBase,
+  Props as SelectProps,
+  SelectInstance,
+} from 'react-select';
 // import SelectReact from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { StylesVariant } from '../../types';
@@ -39,13 +43,13 @@ const AdvancedSelect = ({
     transform: `translate(${errorPosX}px,${errorPosY}px)`,
     position: isRelative ? 'static' : 'absolute',
   };
-  const SelectComponent = isCreatable ? CreatableSelect : SelectReact
+  const SelectComponent = isCreatable ? CreatableSelect : SelectReact;
   return (
     <div className="select-container">
       {label && <label className="select-label">{label}</label>}
 
       <SelectComponent
-        formatCreateLabel={(inputValue) => "Crear: " + inputValue}
+        formatCreateLabel={inputValue => 'Crear: ' + inputValue}
         onCreateOption={onCreateOption}
         ref={refSelect}
         {...props}
@@ -59,7 +63,7 @@ const AdvancedSelect = ({
             className="input-span-icon"
           />
           {errors[name]?.type === 'required'
-            ? 'Por favor llene el campo.'
+            ? errors[name].message || 'Por favor llene el campo.'
             : errors[name].message}
         </span>
       )}

@@ -1,3 +1,5 @@
+import { Contact } from '../pages/procedure/models';
+
 export interface SpecialityType {
   id: number;
   name: string;
@@ -55,6 +57,39 @@ export interface ReportForm {
   concept: string;
   porcentageValue: number;
   title: string;
+}
+export interface Office {
+  id: number;
+  name: string;
+  quantity: number;
+  manager?: UserProfile;
+  users: UserElement[];
+  _count: {
+    users: number;
+  };
+}
+
+export interface UserElement {
+  user: UserProfile;
+  isOfficeManager: boolean;
+}
+
+export interface UserProfile {
+  id: number;
+  ruc: null | string;
+  address: string;
+  profile: Profile;
+  office?: string;
+}
+
+export interface ProfileOffice {
+  firstName: string;
+  lastName: string;
+  dni: string;
+  phone: string;
+  degree: string;
+  description: string;
+  job: string;
 }
 
 export interface ExcelData extends ReportForm {
@@ -980,12 +1015,15 @@ interface MessageSendType {
   title: string;
   header: string;
   description?: string;
-  receiver: OptionSelect;
+  receiver: Contact;
+  secondaryReceiver?: Contact[];
   signature: boolean;
   type: MessageType['type'];
 }
 export interface Procedure extends MessageSendType {
-  secondaryReceiver: {
+  officeId?: number;
+  receiverId?: number;
+  secondaryReceiver?: {
     userId: number;
   }[];
 }

@@ -173,9 +173,9 @@ export const transformDaysObject = (days: RangeDays[]) => {
         };
         const daysPushValues = days[i + 1]
           ? [
-            ...floatDays,
-            { ...days[i + 1], day: +(1 - sumFloatDay).toFixed(1) },
-          ]
+              ...floatDays,
+              { ...days[i + 1], day: +(1 - sumFloatDay).toFixed(1) },
+            ]
           : floatDays;
         result.push(daysPushValues);
       } else {
@@ -259,9 +259,9 @@ export const formatAmountMoney = (amount: number) => {
   const AmountTransform = amountSplit[0].split('').reverse();
   const decimalAMount = amountSplit[1]
     ? '.' +
-    Number('0.' + amountSplit[1])
-      .toFixed(2)
-      .split('.')[1]
+      Number('0.' + amountSplit[1])
+        .toFixed(2)
+        .split('.')[1]
     : '.00';
 
   let thousanAmount = '';
@@ -291,7 +291,7 @@ export const downloadHref = (url: string, name: string) => {
 
 export const degreeAbrv = (degree: Degree, job: Profession) => {
   if (degree === 'Titulado') {
-    return job.label;
+    return job.abrv;
   }
   const findDegree = DEGREE_DATA.find(({ value }) => value === degree);
   return findDegree?.abrv;

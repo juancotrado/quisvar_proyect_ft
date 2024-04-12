@@ -19,17 +19,20 @@ export const TYPE_PROCEDURE = {
     title: 'Nuevo comunicado',
     addUsersText: '+ Destinatario',
     accessTo: 'comunicado',
+    idSubmenu: 3,
   },
   regularProcedure: {
     category: 'DIRECT',
     title: 'Nuevo tramite Regular',
     accessTo: 'tramite-regular',
     addUsersText: '+Cc',
+    idSubmenu: 2,
   },
   payProcedure: {
     category: 'NORMAL',
     title: 'tramite-de-pago',
     accessTo: '',
     addUsersText: '+Cc',
+    idSubmenu: 1,
   },
 };

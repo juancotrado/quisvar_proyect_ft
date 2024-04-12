@@ -39,6 +39,7 @@ interface FormRegisterProcedureProps {
   initValueEditor?: string;
   showReportBtn?: boolean;
   showAddUser?: boolean;
+  initValues?: MessageSendType;
 }
 const FormRegisterProcedure = ({
   type,
@@ -46,6 +47,7 @@ const FormRegisterProcedure = ({
   initValueEditor = '',
   showReportBtn = false,
   showAddUser = true,
+  initValues,
 }: FormRegisterProcedureProps) => {
   const isComunication = type === 'comunication';
   const [isAddReceiver, setIsAddReceiver] = useState(isComunication);
@@ -72,7 +74,7 @@ const FormRegisterProcedure = ({
     control,
     trigger,
     formState: { errors },
-  } = useForm<MessageSendType>();
+  } = useForm<MessageSendType>({ defaultValues: initValues });
 
   useEffect(() => {
     getContacs();
@@ -221,7 +223,7 @@ const FormRegisterProcedure = ({
     const htmlString = getHtmlString('a4');
     const blobData = await getHtmlPdfBlob(htmlString, 'a4');
 
-    const isArea = data.receiver.value.includes('area');
+    const isArea = data.receiver?.value.includes('area');
     if (!htmlString || !data.receiver) return;
     const values = {
       ...data,

@@ -126,7 +126,7 @@ const procedureDocument = ({
         .join('')}    
     </div>
     <div class="line"></div>
-    <div class="procedureDocument-font-normal">${body}</div>      
+    <div class="procedureDocument-font-normal main-body">${body}</div>      
    ${
      signature
        ? ` 

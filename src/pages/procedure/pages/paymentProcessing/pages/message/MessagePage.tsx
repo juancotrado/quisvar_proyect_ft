@@ -2,7 +2,11 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
-import { MessageType, ProcedureSubmit } from '../../../../../../types';
+import {
+  MessageSendType,
+  MessageType,
+  ProcedureSubmit,
+} from '../../../../../../types';
 import './messagePage.css';
 import { RootState } from '../../../../../../store';
 import { useSelector } from 'react-redux';
@@ -21,7 +25,6 @@ import { useRole } from '../../../../../../hooks';
 import { TYPE_STATUS } from '../../models';
 import {
   CardProvied,
-  CardRegisterMessageUpdate,
   CardRegisterVoucher,
   CardRegisterVoucherDenyOrAccept,
   GenerateOrderService,
@@ -118,6 +121,24 @@ export const MessagePage = () => {
         SnackbarUtilities.success('Proceso exitoso ');
         handleSaveRegister();
       });
+  };
+  const getInitValuesForForm = (): MessageSendType => {
+    const { header, title, type } = message;
+
+    return {
+      header,
+      title,
+      description: '',
+      type,
+      signature: false,
+    };
+  };
+  const transformDescriptionValues = () => {
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = message.description;
+    const elementDescription = tempElement.querySelector('.main-body');
+
+    return elementDescription?.innerHTML || '';
   };
   const handleArchiverMessage = () => {
     axiosInstance
@@ -236,10 +257,12 @@ export const MessagePage = () => {
                   />
                 )}
                 {isUserInitMessage && message.status === 'RECHAZADO' && (
-                  <CardRegisterMessageUpdate
-                    message={message}
-                    receiverId={mainReceiver?.user.id}
-                    onSave={handleSaveRegister}
+                  <FormRegisterProcedure
+                    type={'payProcedure'}
+                    submit={data => onSubmit(data)}
+                    showAddUser={false}
+                    initValues={getInitValuesForForm()}
+                    initValueEditor={transformDescriptionValues()}
                   />
                 )}
               </>

@@ -1015,7 +1015,7 @@ interface MessageSendType {
   title: string;
   header: string;
   description?: string;
-  receiver: Contact;
+  receiver?: Contact;
   secondaryReceiver?: Contact[];
   signature: boolean;
   type: MessageType['type'];

@@ -1243,19 +1243,12 @@ export interface UserGroup {
     };
     role: UserRoleType;
   };
+  mod: boolean;
 }
 export interface Group {
   id: number;
   name: string;
   gNumber: number;
-  modId?: number;
-  moderator: {
-    profile: {
-      firstName: string;
-      lastName: string;
-      userPc: string;
-    };
-  };
   groups?: UserGroup[];
 }
 

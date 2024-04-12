@@ -10,7 +10,7 @@ interface ProcedureDocumentProps {
   subject: string;
   body: string;
   fromProfile: Profile;
-  toProfile: ToData;
+  toProfile: ToData | null;
   size: 'a4' | 'a5';
   type: TypeProcedure;
   signature?: boolean;
@@ -31,10 +31,10 @@ const procedureDocument = ({
     fromProfile.firstName + ' ' + fromProfile.lastName
   }`;
   const fromPosition = fromProfile.description;
-  const to = `${degreeAbrv(toProfile.degree, toProfile.job)}. ${
-    toProfile.name
-  }`;
-  const toPosition = toProfile.position;
+  const to =
+    toProfile &&
+    `${degreeAbrv(toProfile.degree, toProfile.job)}. ${toProfile?.name}`;
+  const toPosition = toProfile?.position;
 
   const data = [
     { textOne: 'Para', textTwo: to, textThre: toPosition },
@@ -55,13 +55,17 @@ const procedureDocument = ({
               ${textOne}
             </span>
             <div class="procedureDocument-flex-column">
-              <span class="procedureDocument-right-text procedureDocument-font-normal">
+             ${
+               textTwo
+                 ? ` <span class="procedureDocument-right-text procedureDocument-font-normal">
                 <span class="procedureDocument-font-bold">:</span> 
                 <div class="procedureDocument-flex-column">
-                <span>${textTwo}</span>
-                ${textThre ? ` <strong>${textThre ?? ''}</strong>` : ''}
-              </div>
-              </span>
+                  <span>${textTwo}</span>
+                  ${textThre ? ` <strong>${textThre ?? ''}</strong>` : ''}
+                </div>
+              </span>`
+                 : ''
+             }
               ${
                 textOne === 'Para' &&
                 type === 'comunication' &&

@@ -96,7 +96,7 @@
 }
 
 .imbox-receiver-label {
-  width: fit-content;
+  text-wrap: nowrap;
 }
 
 .imbox-receiver-choice-dropdown {

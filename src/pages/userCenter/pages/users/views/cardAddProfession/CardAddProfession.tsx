@@ -5,7 +5,10 @@ import { useEffect, useRef, useState } from 'react';
 import { isOpenCardProfession$ } from '../../../../../../services/sharingSubject';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Profession } from '../../../../../../types';
-import { validateWhiteSpace } from '../../../../../../utils';
+import {
+  validateWhiteSpace,
+  validateOnlyDecimals,
+} from '../../../../../../utils';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../../../../../../store';
@@ -30,11 +33,12 @@ const CardAddProfession = ({ onSave }: CardAddProfessionProps) => {
       ({ isOpen, data }) => {
         setIsOpen(isOpen);
         if (data) {
-          const { abrv, label, value } = data;
+          const { abrv, label, value, amount } = data;
           reset({
             abrv,
             label,
             value,
+            amount,
           });
         }
       }
@@ -48,10 +52,12 @@ const CardAddProfession = ({ onSave }: CardAddProfessionProps) => {
     abrv,
     label,
     value,
+    amount,
   }) => {
     const body = {
       abrv,
       label,
+      amount,
     };
     if (value) {
       await axiosInstance.patch(`/profession/${value}`, body);
@@ -60,7 +66,7 @@ const CardAddProfession = ({ onSave }: CardAddProfessionProps) => {
       dispatch(getListUsers());
     }
     onSave?.();
-    closeFunctions();
+    // closeFunctions();
   };
   const closeFunctions = () => {
     setIsOpen(false);
@@ -68,37 +74,51 @@ const CardAddProfession = ({ onSave }: CardAddProfessionProps) => {
   };
   return (
     <Modal size={50} isOpenProp={isOpen}>
-      <form onSubmit={handleSubmit(onSubmit)} className="card-register-users">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="card-register-users"
+        autoComplete="off"
+      >
         <CloseIcon onClick={closeFunctions} />
         <h1>Agregar Profesión</h1>
         <div className="col-input">
           <Input
+            label="Nombre:"
             {...register('label', {
               validate: { validateWhiteSpace },
             })}
+            name="label"
             placeholder="Nombre..."
-            label="Nombre:"
             errors={errors}
             type="text"
           />
           <Input
-            {...register('abrv')}
-            placeholder="abrv..."
-            label="Abreviatura"
+            label="Abreviatura:"
+            {...register('abrv', {
+              validate: { validateWhiteSpace },
+            })}
+            name="abrv"
+            placeholder="Abreviatura..."
             errors={errors}
             type="text"
           />
-        </div>
-
-        <div className="btn-build">
-          <Button
-            text={watch('value') ? 'GUARDAR' : 'CREAR'}
-            className="btn-area"
-            whileTap={{ scale: 0.9 }}
-            type="submit"
-            styleButton={4}
+          <Input
+            label="Monto:"
+            {...register('amount', {
+              validate: { validateWhiteSpace, validateOnlyDecimals },
+              valueAsNumber: true,
+            })}
+            name="amount"
+            placeholder="Monto..."
+            errors={errors}
           />
         </div>
+
+        <Button
+          text={watch('value') ? 'GUARDAR' : 'CREAR'}
+          type="submit"
+          styleButton={4}
+        />
       </form>
     </Modal>
   );

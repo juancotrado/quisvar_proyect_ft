@@ -1303,4 +1303,5 @@ export type StylesVariant = 'primary' | 'secondary';
 
 export interface Profession extends OptionSelect {
   abrv: string;
+  amount: number;
 }

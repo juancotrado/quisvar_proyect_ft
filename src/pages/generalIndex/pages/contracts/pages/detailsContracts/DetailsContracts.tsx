@@ -254,13 +254,13 @@ export const DetailsContracts = () => {
   };
   return (
     <div className="detailsContracts">
-      {/* <div>
+      <div>
         <h5 className="detailsContracts-title">Datos del Procedimiento</h5>
         {Object.entries(dataProcedures).map(([title, value]) => (
           <ContractRow key={title} title={title} value={value} />
         ))}
         <div className="detailsContracts-row-container" />
-      </div> */}
+      </div>
       <div className="detailsContracts-phases-contain">
         <div className="detailsContracts-phases-contain-titles">
           {CONTACT_PHASES_TITLE.filter(phase =>
@@ -313,7 +313,6 @@ export const DetailsContracts = () => {
             </>
           )}
         </div>
-        ------
         {contractPhase === 'convocationPhase' && (
           <>
             {details ? (

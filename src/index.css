@@ -45,6 +45,8 @@
   --color-AreaLvl: #70ad474f;
   --color-SubtaskLvl: #fff;
   --size-contract-header: 12vh;
+  --navbar-height: 60px;
+  --sidebar-width: 82px;
 }
 
 html {

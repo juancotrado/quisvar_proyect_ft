@@ -1,4 +1,4 @@
-import './header.css';
+import './sidebar.css';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useContext, useEffect, useRef, useState, MouseEvent } from 'react';
 import { Subscription } from 'rxjs';
@@ -11,11 +11,11 @@ import { motion } from 'framer-motion';
 import { getIconDefault } from '../../utils';
 import { getUserSession } from '../../store/slices/userSession.slice';
 
-const Header = () => {
+const Sidebar = () => {
   const { stageId, taskId } = useParams();
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
-  const [headerShow, setHeaderShow] = useState(false);
+  const [sidebarShow, setSidebarShow] = useState(false);
   const socket = useContext(SocketContext);
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenMoreInfo, setIsOpenMoreInfo] = useState(false);
@@ -78,9 +78,9 @@ const Header = () => {
   const handleHome = () => {
     navigate('/home');
   };
-  const handleShowHeader = (e: MouseEvent<HTMLDivElement>) => {
+  const handleShowSidebar = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
-    setHeaderShow(!headerShow);
+    setSidebarShow(!sidebarShow);
   };
 
   // const selectPdfForUserRol = () => {
@@ -103,7 +103,7 @@ const Header = () => {
   const toggleMenuMoreInfo = () => setIsOpenMoreInfo(!isOpenMoreInfo);
 
   useEffect(() => {
-    const handleClick = () => setHeaderShow(false);
+    const handleClick = () => setSidebarShow(false);
     window.addEventListener('click', handleClick);
     return () => window.removeEventListener('click', handleClick);
   }, []);
@@ -163,10 +163,10 @@ const Header = () => {
   ];
   return (
     <>
-      <header className={`header ${headerShow && 'header---show'}`}>
-        <nav className="nav-container container">
+      <div className={`sidebar ${sidebarShow && 'sidebar---show'}`}>
+        <nav className="nav-container containerXD ">
           <div className="nav-options">
-            <figure className="header-figure">
+            <figure className="sidebar-figure">
               <img
                 className="nav-logo"
                 src="/img/logo_img.png"
@@ -211,9 +211,9 @@ const Header = () => {
         </nav>
 
         {<CardEditInformation isOpen={openModalInfo} onClose={closeModal} />}
-      </header>
-      <div className="header-menu-open" onClick={handleShowHeader}>
-        <figure className="header-menu_figure">
+      </div>
+      <div className="sidebar-menu-open" onClick={handleShowSidebar}>
+        <figure className="sidebar-menu_figure">
           <img src={`/svg/menu_default.svg`} alt="menu" />
         </figure>
       </div>
@@ -221,4 +221,4 @@ const Header = () => {
   );
 };
 
-export default Header;
+export default Sidebar;

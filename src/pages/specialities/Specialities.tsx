@@ -63,7 +63,7 @@ export const Specialities = () => {
           top: false,
           right: true,
           bottom: false,
-          left: true,
+          left: false,
         }}
       >
         {sectors ? (

@@ -16,9 +16,11 @@ import { FilterContract } from './models/type.contracts';
 import { YEAR_DATA } from '../../../specialities/models';
 import { getStatusContract } from './utils';
 import { excelContractReport } from './generateExcel';
+import { Resizable } from 're-resizable';
 
 let initialContract: Contract[] = [];
 export const Contracts = () => {
+  const [isSidebarHidden, setIsSidebarHidden] = useState(false);
   const [contracts, setContracts] = useState<Contract[] | null>(null);
   const [filterContract, setFilterContract] = useState<FilterContract>(
     INIT_VALUES_FILTER_CONTRACT
@@ -31,6 +33,14 @@ export const Contracts = () => {
 
   useEffect(() => {
     getContracts();
+    const handleResize = () => {
+      setIsSidebarHidden(window.innerWidth < 1000);
+    };
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, [params, filterContract.date, filterContract.type]);
 
   const getContracts = () => {
@@ -74,12 +84,41 @@ export const Contracts = () => {
     if (!contracts) return;
     excelContractReport(contracts);
   };
+  const toggleSidebarVisibility = () => {
+    setIsSidebarHidden(!isSidebarHidden);
+  };
   return (
     <div className="contracts">
-      <div className="contracts-sidebar">
-        <h2 className="contracts-sidebar-tilte">14.CONTRATOS EN ACTIVIDAD</h2>
+      {/* rezise */}
+      <Resizable
+        defaultSize={{
+          width: 300,
+          height: '100%',
+        }}
+        //  className="contracts-sidebar"
+        className={`contracts-sidebar ${
+          isSidebarHidden ? 'sidebar-hidden' : ''
+        }`}
+        enable={{
+          top: false,
+          right: true,
+          bottom: false,
+          left: false,
+        }}
+      >
+        <h2
+          className={`contracts-sidebar-tilte ${
+            isSidebarHidden ? 'display-hidden' : ''
+          }`}
+        >
+          14.CONTRATOS EN ACTIVIDAD
+        </h2>
         <IconAction icon="file-excel" onClick={handleReport} />
-        <div className="contract-filters-contain">
+        <div
+          className={`${
+            isSidebarHidden ? 'display-hidden' : 'contract-filters-contain'
+          }`}
+        >
           <Select
             value={filterContract.status}
             name="status"
@@ -118,12 +157,43 @@ export const Contracts = () => {
             />
           ))}
         </div>
-        <div className="contracts-add-content" onClick={addContract}>
+        <div
+          className={`contracts-add-content ${
+            isSidebarHidden ? 'display-hidden' : ''
+          }`}
+          onClick={addContract}
+        >
           <span className="contracts-add-span">Añadir Contrato</span>
           <figure className="contracts-sideba-figure">
             <img src="/svg/plus.svg" alt="W3Schools" />
           </figure>
         </div>
+      </Resizable>
+      <div className="button-sidebar">
+        <button className="button-icon" onClick={toggleSidebarVisibility}>
+          <svg
+            className={`icon ${isSidebarHidden ? 'icon-invert' : ''}`}
+            version="1.1"
+            id="Layer_1"
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 330 330"
+            stroke="#ffffff"
+          >
+            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+            <g
+              id="SVGRepo_tracerCarrier"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            ></g>
+            <g id="SVGRepo_iconCarrier">
+              {' '}
+              <path
+                id="XMLID_222_"
+                d="M250.606,154.389l-150-149.996c-5.857-5.858-15.355-5.858-21.213,0.001 c-5.857,5.858-5.857,15.355,0.001,21.213l139.393,139.39L79.393,304.394c-5.857,5.858-5.857,15.355,0.001,21.213 C82.322,328.536,86.161,330,90,330s7.678-1.464,10.607-4.394l149.999-150.004c2.814-2.813,4.394-6.628,4.394-10.606 C255,161.018,253.42,157.202,250.606,154.389z"
+              ></path>{' '}
+            </g>
+          </svg>
+        </button>
       </div>
       <div className="contracts-main">
         <Outlet />

@@ -1,11 +1,11 @@
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 // import { Input } from '../../../../../components';
 import { _date } from '../../../../../utils';
 import { DutyMember } from '../../../types';
 import './members.css';
 import { Dispatch, useEffect, useState } from 'react';
 import { axiosInstance } from '../../../../../services/axiosInstance';
-import { Button } from '../../../../../components';
+import { AdvancedSelect, Button } from '../../../../../components';
 // import { PROJECT_STATUS } from '../../../../userCenter/pages/users/models';
 interface MembersProps {
   members: DutyMember[];
@@ -13,12 +13,23 @@ interface MembersProps {
   onSave: () => void;
   editMember: Dispatch<React.SetStateAction<DutyMember[]>>;
 }
+
+const options = [
+  { color: '#57d9a3b6', value: 'PUNTUAL', label: 'PUNTUAL' },
+  { color: '#ffd240ab', value: 'TARDE', label: 'TARDE' },
+  { color: '#df00003a', value: 'SIMPLE', label: 'FALTA' },
+  { color: '#df00006e', value: 'GRAVE', label: 'GRAVE' },
+  { color: '#c00000a2', value: 'MUY_GRAVE', label: 'MUY GRAVE' },
+  { color: '#2263e58f', value: 'PERMISO', label: 'LICENCIA' },
+];
+
 const Members = ({ members, dutyId, onSave, editMember }: MembersProps) => {
   const [sendItems, setSendItems] = useState<DutyMember[]>([]);
   const {
     register,
     // handleSubmit,
     //setValue,
+    control,
     reset,
     // watch,
     // formState: { errors },
@@ -26,7 +37,17 @@ const Members = ({ members, dutyId, onSave, editMember }: MembersProps) => {
   useEffect(() => {
     if (members) {
       setSendItems(members);
-      reset({ ...members });
+      const xd = members.map(member => {
+        return {
+          id: member.id,
+          position: member.position,
+          fullName: member.fullName,
+          feedBack: member.feedBack,
+          dailyDuty: member.dailyDuty,
+          attendance: member.attendance,
+        };
+      });
+      reset(xd);
     }
   }, [members, reset]);
   // console.log(members);
@@ -42,40 +63,17 @@ const Members = ({ members, dutyId, onSave, editMember }: MembersProps) => {
     setSendItems(updatedItems);
 
     editMember(updatedItems);
-
-    // const toSend = sendItems?.find((value,index) => value.id = idx)
-    // console.log(updatedItems);
   };
   const handleAddRow = () => {
     axiosInstance.post(`dutyMembers/${dutyId}`).then(() => onSave?.());
   };
-  // const handleDeleteRow = (id: number) => {
-  //   axiosInstance.delete(`dutyMembers/${id}`).then(() => onSave?.());
-  // };
-
-  // const textColor = (value: string) => {
-  //   return value === 'APTO'
-  //     ? 'green'
-  //     : value === 'EN REVISION'
-  //     ? 'orange'
-  //     : 'red';
-  // };
 
   return (
     <div className="member-container">
       {sendItems &&
         sendItems.map((member, idx) => (
           <div className="member-body" key={idx}>
-            <input
-              {...register(`${idx}.position` as const)}
-              className={`member-list right-border ${
-                idx !== 0 && 'top-border'
-              }`}
-              onBlur={e => {
-                if (e.target.value === member.position) return;
-                handleChange(idx, 'position', e.target.value);
-              }}
-            />
+            <h1>{idx + 1}</h1>
             <input
               {...register(`${idx}.fullName` as const)}
               className={`member-list right-border ${
@@ -84,6 +82,42 @@ const Members = ({ members, dutyId, onSave, editMember }: MembersProps) => {
               onBlur={e => {
                 if (e.target.value === member.fullName) return;
                 handleChange(idx, 'fullName', e.target.value);
+              }}
+            />
+            <Controller
+              control={control}
+              name={`${idx}.attendance` as const}
+              rules={{ required: 'Debes seleccionar una opción' }}
+              render={({ field: { onChange } }) => (
+                <AdvancedSelect
+                  // placeholder="Dirigida a"
+                  options={options}
+                  isClearable
+                  // errors={errors}
+                  name="to"
+                  onChange={onChange}
+                />
+              )}
+            />
+            <h1 className="member-list">xd</h1>
+            <input
+              {...register(`${idx}.feedBack` as const)}
+              className={`member-list right-border ${
+                idx !== 0 && 'top-border'
+              }`}
+              onBlur={e => {
+                if (e.target.value === member.feedBack) return;
+                handleChange(idx, 'feedBack', e.target.value);
+              }}
+            />
+            <input
+              {...register(`${idx}.dailyDuty` as const)}
+              className={`member-list right-border ${
+                idx !== 0 && 'top-border'
+              }`}
+              onBlur={e => {
+                if (e.target.value === member.dailyDuty) return;
+                handleChange(idx, 'dailyDuty', e.target.value);
               }}
             />
           </div>

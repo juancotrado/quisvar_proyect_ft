@@ -28,10 +28,12 @@ export interface OfficeSelect {
   manager: UserProfile;
   quantity: number;
   id: number;
+  isDisabled?: boolean;
 }
 
 export interface userSelect extends UserProfile {
   value: string;
   label: string;
+  isDisabled?: boolean;
 }
 export type Contact = OfficeSelect | userSelect;

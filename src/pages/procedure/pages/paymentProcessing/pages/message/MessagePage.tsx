@@ -174,7 +174,8 @@ export const MessagePage = () => {
       )}
       {(mainReceiver || mainReceiverFinish) && message.status !== 'PAGADO' && (
         <div className="message-page-contain message-page-contain--right">
-          {message.status !== 'FINALIZADO' &&
+          {!hasAccess &&
+            message.status !== 'FINALIZADO' &&
             message.status !== 'POR_PAGAR' && (
               <div className="message-header-content-options  ">
                 {HEADER_OPTION.map(({ procedureOpt, text }) => (
@@ -196,7 +197,7 @@ export const MessagePage = () => {
             )}
           {procedureOption === 'continue' ? (
             isProvied ? (
-              <CardProvied />
+              <CardProvied type={'payProcedure'} message={message} />
             ) : (
               <>
                 {mainReceiver &&

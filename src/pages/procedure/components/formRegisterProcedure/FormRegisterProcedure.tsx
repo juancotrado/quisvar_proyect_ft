@@ -1,6 +1,5 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import { MessageSendType, ProcedureSubmit, Office } from '../../../../types';
-import { components } from 'react-select';
 
 import './formRegisterProcedure.css';
 import { useTitleProcedure } from '../../hooks';
@@ -31,7 +30,7 @@ import { getHtmlPdfBlob, validateWhiteSpace } from '../../../../utils';
 import { Editor } from '@tinymce/tinymce-react';
 import { ChipFileDownLoadProcedure, DocumentProcedure } from '..';
 import { axiosInstance } from '../../../../services/axiosInstance';
-import { OptionProps } from 'react-select';
+import { OptionSelectProcedure } from '../optionSelectProcedure';
 
 interface FormRegisterProcedureProps {
   type: TypeProcedure;
@@ -277,40 +276,6 @@ const FormRegisterProcedure = ({
     setValue('title', title);
   };
   const typeProcedure = TYPE_PROCEDURE[type];
-  const Option = (props: OptionProps<any>) => {
-    const { data, isSelected } = props;
-    const isArea = data.value.includes('area');
-    return (
-      <components.Option {...props}>
-        <div className="AdvancedSelectCrud-option">
-          <span
-            style={{
-              marginRight: '8px',
-              display: 'flex',
-              gap: 5,
-              alignItems: 'center',
-            }}
-            className={`formRegisterProcedure-text-${isArea ? 'area' : 'user'}`}
-          >
-            {isArea && (
-              <IconAction
-                size={2}
-                icon={isSelected ? 'office-white' : 'office'}
-                position="none"
-              />
-            )}
-            {!isArea && '- '} {data.label}
-          </span>
-
-          {isArea && (
-            <span className="formRegisterProcedure-count-office">
-              {data.quantity}
-            </span>
-          )}
-        </div>
-      </components.Option>
-    );
-  };
 
   return (
     <form className="imbox-data-content" onSubmit={handleSubmit(onSubmit)}>
@@ -352,7 +317,7 @@ const FormRegisterProcedure = ({
                 <AdvancedSelect
                   placeholder="Dirigido a"
                   options={contacts}
-                  components={{ Option }}
+                  components={{ Option: OptionSelectProcedure }}
                   isClearable
                   errors={errors}
                   name="receiver"

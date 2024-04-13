@@ -932,6 +932,7 @@ export interface MessageType {
   filesPay: {
     files: fileMesage[];
   }[];
+  office: Office;
   files?: fileMesage[];
   status: MessageStatus;
   users: userMessage[];

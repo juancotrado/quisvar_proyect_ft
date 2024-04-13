@@ -1,4 +1,5 @@
 import { MessageTypeImbox, OptionSelect } from '../../../../../../../types';
+import { Contact } from '../../../../../models';
 
 export interface HeaderOptionProcedure {
   procedureOpt: 'continue' | 'finish';
@@ -17,9 +18,7 @@ export interface MessageSendType {
 
 export interface ProviedForm {
   title: string;
+  observations: string;
   numberPage?: number;
-  pos: number;
-  to: OptionSelect | null;
-  date: string;
-  observation?: string;
+  to: Contact;
 }

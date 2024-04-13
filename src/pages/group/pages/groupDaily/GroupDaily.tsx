@@ -4,7 +4,7 @@ import './groupDaily.css';
 import { _date } from '../../../../utils';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { useParams } from 'react-router-dom';
-import { Duty, DutyBasic, GroupAttendanceRes, GroupRes } from '../../types';
+import { Duty, GroupAttendanceRes, GroupRes } from '../../types';
 import { SocketContext } from '../../../../context';
 import { DutyList } from '../../components';
 const now = new Date();

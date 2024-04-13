@@ -149,7 +149,7 @@ export const INITIAL_VALUES_USER: UserForm = {
   degree: '',
   address: '',
   ruc: '',
-  job: { abrv: '', label: '', value: '' },
+  job: { abrv: '', label: '', value: '', amount: 0 },
   cv: null,
   declaration: null,
   department: '',

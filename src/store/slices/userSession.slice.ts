@@ -20,7 +20,8 @@ export const INITIAL_STATE: User = {
     job: {
       abrv: '',
       label: '',
-      value: ''
+      value: '',
+      amount: 0,
     },
     department: '',
     province: '',

@@ -39,7 +39,7 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps>(
       isRelative = false,
       classNameMain,
       handleSearch,
-      styleInput = 1,
+      styleInput = 2,
       className,
       ...props
     },

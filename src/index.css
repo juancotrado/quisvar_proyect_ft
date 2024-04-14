@@ -247,7 +247,8 @@ a.nostyle:visited {
 }
 fieldset {
   padding: 1rem;
-  border-color: #000;
+  border-color: #ddd;
+  border-radius: 0.5rem;
 }
 legend {
   padding: 0;

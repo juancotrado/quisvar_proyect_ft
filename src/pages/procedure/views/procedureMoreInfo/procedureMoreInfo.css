@@ -1,0 +1,89 @@
+.procedureMoreInfo {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 0 1rem 1rem 1rem;
+  border-radius: 0.2rem;
+  background: #fff;
+  box-shadow: -2px 4px 4px 0px rgba(0, 0, 0, 0.25);
+  height: 100%;
+}
+.procedureMoreInfo-header-content {
+  position: relative;
+  background-color: #fff;
+  border-bottom: 1px solid #e3e3e3;
+  width: 100%;
+}
+.procedureMoreInfo-main {
+  width: 100%;
+  overflow-y: auto;
+}
+.procedureMoreInfo-sender-info-details {
+  display: flex;
+  align-items: center;
+  padding-right: 1rem;
+  justify-content: space-between;
+  align-items: flex-end;
+  width: 100%;
+  height: 3rem;
+
+  gap: 0.2rem;
+}
+
+.procedureMoreInfo-contain--left {
+  flex: 1;
+}
+.procedureMoreInfo-sender-info {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.procedureMoreInfo-sender-name {
+  color: #000;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 22rem;
+}
+.procedureMoreInfo-date-send {
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 20px;
+}
+.procedureMoreInfo-card-status-message {
+  border-radius: var(--radius-button);
+  padding: 0.1rem 0.4rem;
+  font-size: 12px;
+  font-weight: 600;
+}
+.procedureMoreInfo-status-ARCHIVADO {
+  background-color: var(--color-bg-liquidation);
+  color: var(--color-liquidation);
+}
+
+.procedureMoreInfo-status-PROCESO {
+  background-color: var(--color-bg-asigned);
+  color: var(--color-asigned);
+}
+
+.procedureMoreInfo-status-PENDIENTE {
+  background-color: var(--color-bg-asigned);
+  color: var(--color-asigned);
+}
+
+.procedureMoreInfo-status-RECHAZADO {
+  background-color: var(--color-bg-unresolved);
+  color: var(--color-unresolved);
+}
+
+.procedureMoreInfo-status-FINALIZADO {
+  background-color: var(--color-bg-done);
+  color: var(--color-done);
+}

@@ -932,6 +932,7 @@ export interface MessageType {
   filesPay: {
     files: fileMesage[];
   }[];
+  office: Office;
   files?: fileMesage[];
   status: MessageStatus;
   users: userMessage[];
@@ -1015,7 +1016,7 @@ interface MessageSendType {
   title: string;
   header: string;
   description?: string;
-  receiver: Contact;
+  receiver?: Contact;
   secondaryReceiver?: Contact[];
   signature: boolean;
   type: MessageType['type'];

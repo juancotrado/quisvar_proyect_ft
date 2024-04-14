@@ -29,7 +29,7 @@ import './cardRegisterMessageUpdate.css';
 import { useListUsers } from '../../../../../../../../hooks';
 import { PDFGenerator } from '../../../../pdfGenerate';
 import { JOB_DATA } from '../../../../../../../userCenter/pages/users/models';
-import DocumentProcedure from '../../../../../../components/documentProcedure/DocumentProcedure';
+import { DocumentProcedure } from '../../../../../../components';
 
 interface MessageSendType {
   title: string;

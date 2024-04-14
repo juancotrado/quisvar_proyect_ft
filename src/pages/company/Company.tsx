@@ -1,5 +1,5 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { DotsRight, Input, Button } from '../../components';
+import { DotsRight, Input, Button, Aside } from '../../components';
 import {
   isOpenCardCompany$,
   isOpenCardConsortium$,
@@ -11,6 +11,7 @@ import { Companies, Option } from '../../types';
 import { URL } from '../../services/axiosInstance';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import { CardCompany, CardConsortium } from './views';
+// import React, {  ReactNode } from 'react';
 
 export const Company = () => {
   const [companies, setCompanies] = useState<Companies[]>();
@@ -41,8 +42,8 @@ export const Company = () => {
     };
   };
   return (
-    <div className="company container">
-      <div className="specialist-list ">
+    <div className="company">
+      <Aside>
         <div className="specialist-add-area">
           <button
             className={`consortium-title ${!swap && 'cs-selected'}`}
@@ -66,6 +67,7 @@ export const Company = () => {
           <Input
             placeholder="Buscar por RUC"
             className="specialist-search-input"
+            styleInput={4}
           />
         </div>
 
@@ -155,7 +157,7 @@ export const Company = () => {
               );
             })}
         </div>
-      </div>
+      </Aside>
       <section className="specialist-info">
         <Outlet />
       </section>

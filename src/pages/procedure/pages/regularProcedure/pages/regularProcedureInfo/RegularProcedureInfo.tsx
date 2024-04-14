@@ -67,7 +67,6 @@ const RegularProcedureInfo = () => {
     const { header, receiverId, title, description } = values;
     const formData = new FormData();
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
-    console.log('mainFile', mainFile);
     formData.append('mainProcedure', mainFile, values.title + '.pdf');
     formData.append(
       'data',

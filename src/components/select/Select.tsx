@@ -32,7 +32,7 @@ export const SelectOptions = forwardRef<HTMLSelectElement, SelectOptionsProps>(
       isRelative = false,
       className,
       placeholder,
-      styleVariant = 'primary',
+      styleVariant = 'secondary',
       ...props
     },
     ref

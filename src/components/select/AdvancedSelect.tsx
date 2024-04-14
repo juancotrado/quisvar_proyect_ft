@@ -30,7 +30,6 @@ const AdvancedSelect = ({
   errorPosX = 0,
   errorPosY = 0,
   errors,
-  defaultValue,
   isRelative = false,
   className,
   refSelect,

@@ -35,7 +35,6 @@ const ViewPdf = () => {
         }, 60000);
       }
       if (pdfUrl) {
-        console.log(2);
         setPdfUrl(pdfUrl);
         setPdfComponent(null);
         setPdfUrlBlob(null);

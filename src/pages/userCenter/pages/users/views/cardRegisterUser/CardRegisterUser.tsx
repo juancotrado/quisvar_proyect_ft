@@ -90,7 +90,6 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
         id: el.id,
         label: el.name,
       }));
-      console.log(offices);
       setOffices(offices);
     });
   };
@@ -110,7 +109,6 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
           id: office.id,
           label: office.name,
         }));
-        console.log('user', offices);
         if (user?.id) {
           const { profile, id, email, address, ruc, roleId } = user;
           const { department, province, district } = profile;

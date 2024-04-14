@@ -146,7 +146,6 @@ export const MessagePage = () => {
   };
   const { firstName, lastName } = message.userInit.user.profile;
 
-  console.log('asd', message);
   return (
     <Resizable
       enable={{

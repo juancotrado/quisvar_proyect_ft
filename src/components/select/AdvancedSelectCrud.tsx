@@ -73,7 +73,6 @@ const AdvancedSelectCrud = ({
       name={name}
       rules={{ required: 'Debes seleccionar una opción' }}
       render={({ field: { onChange: onChangeForm, value: data } }) => {
-        console.log(data);
         return (
           <AdvancedSelect
             placeholder={placeholder}

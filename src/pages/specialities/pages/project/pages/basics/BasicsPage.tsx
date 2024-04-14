@@ -34,7 +34,6 @@ export const BasicsPage = () => {
       if (stageId) {
         socket.emit('join', `project-${stageId}`);
         const resBasic = await axiosInstance.get(`/basiclevels/${stageId}`);
-        console.log(resBasic);
         setlevels({
           ...res.data,
           stagesId: +stageId,

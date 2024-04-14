@@ -83,7 +83,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
   }, []);
 
   const getOffices = () => {
-    const url = `/office`;
+    const url = `/office?includeUsers=false`;
     axiosInstance.get<Office[]>(url).then(res => {
       const offices = res.data.map(el => ({
         value: String(el.id),

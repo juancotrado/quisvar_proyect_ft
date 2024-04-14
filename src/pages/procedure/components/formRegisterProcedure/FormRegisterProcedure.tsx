@@ -81,7 +81,7 @@ const FormRegisterProcedure = ({
 
   const getContacs = () => {
     const url = `/office?menuId=${2}&typeRol=MOD&subMenuId=${
-      TYPE_PROCEDURE[type]
+      TYPE_PROCEDURE[type].idSubmenu
     }`;
     const secondaryContacts: userSelect[] = [];
     axiosInstance.get<Office[]>(url).then(res => {
@@ -104,6 +104,7 @@ const FormRegisterProcedure = ({
           return userWithArea;
         })
         .flat();
+      console.log('contacts', contacts);
       if (!isComunication) {
         setContacts(contacts);
       }

@@ -89,7 +89,7 @@ input {
   outline: transparent;
 }
 
-input:focus,
+/* input:focus, */
 select:focus {
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2),
     0px 2px 0px 0px var(--color-primary);

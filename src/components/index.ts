@@ -38,3 +38,4 @@ export * from './buttonHeader';
 export * from './headerOption';
 export * from './viewHtmlToPdf';
 export * from './confirmAction';
+export * from './aside';

@@ -41,7 +41,7 @@ close-add-card.content-area {
 
 .input-label {
   width: 100%;
-  color: #203881;
+  color: rgb(72, 70, 70);
   font-size: var(--size-label);
   font-family: 'Montserrat', sans-serif;
 }

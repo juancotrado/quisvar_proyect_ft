@@ -68,6 +68,12 @@ const Sidebar = () => {
   const handleNotification = () => {
     navigate('lista-de-notificaciones');
   };
+  const goChannel = () => {
+    window.open(
+      'https://www.youtube.com/playlist?list=PLhad5zNNJa9qVLbdRPzOX2oMXcwcbn_ND',
+      '_blank'
+    );
+  };
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -133,6 +139,7 @@ const Sidebar = () => {
       id: 1,
       name: 'Ver Video tutorial',
       icon: '/svg/file-video-solid.svg',
+      action: goChannel,
     },
     {
       id: 3,

@@ -19,6 +19,7 @@
   color: var(--color-secondary);
   font-weight: 600;
   font-size: 18px;
+  padding: 0 0.8rem;
 }
 
 .gr-content {

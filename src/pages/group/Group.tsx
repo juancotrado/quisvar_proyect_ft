@@ -4,7 +4,7 @@ import { axiosInstance } from '../../services/axiosInstance';
 import { Group as GroupData } from '../../types';
 import { Outlet } from 'react-router-dom';
 import { GroupBtnAdd, GroupListBar, GroupMeetingBar } from './components';
-import { Button } from '../../components';
+import { Aside, Button } from '../../components';
 
 export const Group = () => {
   const [groups, setGroups] = useState<GroupData[]>();
@@ -19,7 +19,7 @@ export const Group = () => {
 
   return (
     <div className="gr-container">
-      <section className="gr-list">
+      <Aside>
         <h1 className="gr-title">REUNIONES</h1>
         <GroupMeetingBar />
         <h1 className="gr-title">GRUPOS</h1>
@@ -37,7 +37,8 @@ export const Group = () => {
         ) : (
           <GroupBtnAdd setBtnActive={() => setAdd(!add)} onSave={getgroups} />
         )}
-      </section>
+      </Aside>
+
       <section className="gr-content">
         <Outlet />
       </section>

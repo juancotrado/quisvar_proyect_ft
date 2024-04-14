@@ -22,10 +22,6 @@
   justify-content: 'center';
 }
 
-.message-page-contain--left {
-  flex: 1;
-}
-
 .messagePage-type-document {
   text-align: center;
   width: 100%;
@@ -205,13 +201,6 @@
   white-space: nowrap;
 }
 
-.message-card-status-message {
-  border-radius: var(--radius-button);
-  padding: 0.1rem 0.4rem;
-  font-size: 12px;
-  font-weight: 600;
-}
-
 .message-sender-info-container {
   display: flex;
   gap: 0.5rem;
@@ -225,31 +214,6 @@
   justify-content: space-between;
   width: 100%;
   gap: 0.2rem;
-}
-
-.message-status-ARCHIVADO {
-  background-color: var(--color-bg-liquidation);
-  color: var(--color-liquidation);
-}
-
-.message-status-PROCESO {
-  background-color: var(--color-bg-asigned);
-  color: var(--color-asigned);
-}
-
-.message-status-PENDIENTE {
-  background-color: var(--color-bg-asigned);
-  color: var(--color-asigned);
-}
-
-.message-status-RECHAZADO {
-  background-color: var(--color-bg-unresolved);
-  color: var(--color-unresolved);
-}
-
-.message-status-FINALIZADO {
-  background-color: var(--color-bg-done);
-  color: var(--color-done);
 }
 
 .regularProcedureInfo-btn-expand {
@@ -345,7 +309,6 @@
   gap: 0.5rem;
   font-size: 14px;
   align-items: center;
-  /* grid-template-columns: repeat(4, minmax(0, 1fr)); */
 }
 
 .message-container-file-information {

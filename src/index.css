@@ -89,7 +89,7 @@ input {
   outline: transparent;
 }
 
-input:focus,
+/* input:focus, */
 select:focus {
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2),
     0px 2px 0px 0px var(--color-primary);
@@ -244,4 +244,15 @@ a.nostyle:visited {
   height: auto;
   flex: 1;
   box-shadow: none;
+}
+fieldset {
+  padding: 1rem;
+  border-color: #ddd;
+  border-radius: 0.5rem;
+}
+legend {
+  padding: 0;
+  font-size: 2rem;
+  color: var(--color-secondary);
+  font-weight: 700;
 }

@@ -33,7 +33,7 @@
   gap: 1rem;
 }
 
-.input-area {
+.input-primary {
   height: 1.8rem;
   width: 100%;
   background-color: var(--color-menu);
@@ -43,7 +43,11 @@
   font-size: var(--size-input);
 }
 
-.input-area[type='radio']:checked:disabled:before {
+.input-primary[type='radio'] {
+  box-shadow: none;
+}
+
+.input-primary[type='radio']:checked:disabled:before {
   accent-color: #312f2b;
   content: '';
   width: 10px;
@@ -56,10 +60,14 @@
   transform: translate(-50%, -50%);
 }
 
-.input-area-error {
+.input-primary-error {
   border-color: #df0000;
 }
 
+.input-main-style-2:focus {
+  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2),
+    0px 0px 0px 2px var(--color-primary);
+}
 .input-span-error {
   position: absolute;
   color: #df0000;
@@ -73,7 +81,7 @@
 
 .input-label {
   width: 100%;
-  color: var(--color-quaternay);
+  color: rgb(72, 70, 70);
   font-weight: 500;
   font-size: var(--size-label);
 }
@@ -125,4 +133,26 @@
 
 .input-pading-right {
   padding-right: 2.5rem;
+}
+
+.input-modern {
+  width: 100%;
+  display: flex;
+  padding: 6px 12px;
+  align-items: center;
+  gap: 8px;
+  height: 36px;
+  align-self: stretch;
+  border-radius: 6px;
+  background: white;
+  outline: 1px solid gainsboro;
+  outline-offset: 0px;
+  box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.06),
+    0px 0px 0px 1px rgba(104, 113, 130, 0.16);
+}
+
+.input-modern:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 1px;
+  border: 0px;
 }

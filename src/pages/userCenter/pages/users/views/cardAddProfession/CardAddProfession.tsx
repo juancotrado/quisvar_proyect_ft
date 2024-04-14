@@ -66,7 +66,7 @@ const CardAddProfession = ({ onSave }: CardAddProfessionProps) => {
       dispatch(getListUsers());
     }
     onSave?.();
-    // closeFunctions();
+    closeFunctions();
   };
   const closeFunctions = () => {
     setIsOpen(false);
@@ -80,7 +80,7 @@ const CardAddProfession = ({ onSave }: CardAddProfessionProps) => {
         autoComplete="off"
       >
         <CloseIcon onClick={closeFunctions} />
-        <h1>Agregar Profesión</h1>
+        <h1>{watch('value') ? 'Editar' : 'Agregar'} Profesión</h1>
         <div className="col-input">
           <Input
             label="Nombre:"

@@ -4,6 +4,7 @@ import {
   AttendanceRange,
   Contract,
   Equipment,
+  OfficeClass,
   Profession,
   Specialists,
   SubTask,
@@ -80,6 +81,9 @@ export interface OpenEspecialistTrainingDescription extends OpenModal {
 }
 export interface OpenProfessionCard extends OpenModal {
   data?: Profession;
+}
+export interface OpenOfficeCard extends OpenModal {
+  data?: OfficeClass;
 }
 export interface OpenAssignCard extends OpenModal {
   id: number;

@@ -26,7 +26,6 @@ const AddNewRol = ({
 
   const addMenuPoint = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const { value, id } = target;
-    console.log(value, id);
     const newMenuOption = handleMenu(value as MenuRole, +id, saveMenuPoints);
     setsaveMenuPoints(newMenuOption);
   };

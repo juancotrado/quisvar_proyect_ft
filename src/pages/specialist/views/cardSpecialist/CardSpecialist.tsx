@@ -71,19 +71,19 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
     <Modal size={50} isOpenProp={isOpen}>
       <form onSubmit={handleSubmit(onSubmit)} className="card-specialist">
         <CloseIcon onClick={closeFunctions} />
-        <h1>Registrar nuevo especialista</h1>
+        <h2>Registrar nuevo especialista</h2>
 
         <div className="specialist-col">
           <Input
+            styleInput={4}
             label="Nombres"
-            placeholder="Nombres"
             {...register('firstName', { required: true })}
             name="firstName"
             errors={errors}
           />
           <Input
+            styleInput={4}
             label="Apellidos"
-            placeholder="Apellidos"
             {...register('lastName', { required: true })}
             name="lastName"
             errors={errors}
@@ -92,22 +92,22 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
 
         <div className="specialist-col">
           <Input
+            styleInput={4}
             label="Profesion"
-            placeholder="Profesion"
             {...register('career', { required: true })}
             name="career"
             errors={errors}
           />
           <Input
+            styleInput={4}
             label="Grado"
-            placeholder="Grado"
             {...register('degree', { required: true })}
             name="degree"
             errors={errors}
           />
           <Input
+            styleInput={4}
             label="Colegiatura"
-            placeholder="Colegiatura"
             {...register('CIP', { required: true })}
             name="CIP"
             errors={errors}
@@ -115,33 +115,32 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
         </div>
         <div className="specialist-col">
           <Input
+            styleInput={4}
             label="DNI"
-            placeholder="DNI"
             {...register('dni', { required: true })}
             name="dni"
             errors={errors}
           />
           <Input
+            styleInput={4}
             label="Correo"
-            placeholder="Correo"
             {...register('email', { required: true })}
             name="email"
             errors={errors}
           />
         </div>
         <div className="specialist-col">
-          {/* <Input label="Areas de Especialidad" /> */}
+          {/* <Input styleInput={4} label="Areas de Especialidad" /> */}
           <Input
+            styleInput={4}
             label="Celular"
-            placeholder="Celular"
             type="number"
             {...register('phone', { required: true })}
             name="phone"
             errors={errors}
           />
-          {/* <Input
+          {/* <Input styleInput={4}
             label="Tarifa"
-            placeholder="S/. 00.00"
             {...register('price')}
             name="price"
             errors={errors}
@@ -149,6 +148,7 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
         </div>
         <div className="specialist-col">
           <Input
+            styleInput={4}
             label="Curriculum Vitae"
             type="file"
             {...register('cv')}
@@ -156,6 +156,7 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
             errors={errors}
           />
           <Input
+            styleInput={4}
             label="Documento de Acuerdo"
             type="file"
             {...register('agreement')}
@@ -163,7 +164,7 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
             errors={errors}
           />
         </div>
-        <Button text="Guardar" type="submit" />
+        <Button text="Guardar" type="submit" styleButton={4} />
       </form>
     </Modal>
   );

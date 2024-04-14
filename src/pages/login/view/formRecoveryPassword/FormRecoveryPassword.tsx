@@ -14,7 +14,6 @@ const FormRecoveryPassword = () => {
   } = useForm<recoveryPasswordForm>();
 
   const sendForm: SubmitHandler<recoveryPasswordForm> = data => {
-    console.log(data);
     axiosInstance
       .post('/auth/forgot-password', data)
       .then(res => {

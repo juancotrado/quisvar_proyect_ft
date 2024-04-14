@@ -1,5 +1,5 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { Input, Button } from '../../components';
+import { Input, Button, Aside } from '../../components';
 import { isOpenCardSpecialist$ } from '../../services/sharingSubject';
 import './specialist.css';
 import { SpecialistList } from '../../types';
@@ -48,8 +48,8 @@ export const Specialist = () => {
     apiSubjectRef.current.next(value);
   };
   return (
-    <div className="specialist container">
-      <div className="specialist-list">
+    <div className="specialist">
+      <Aside>
         <div className="specialist-add-area">
           <h3 className="specialist-title">Especialistas: </h3>
           <Button
@@ -65,6 +65,7 @@ export const Specialist = () => {
             className="specialist-search-input"
             onChange={handleSearch}
             value={searchTerm}
+            styleInput={4}
           />
         </div>
         {specialist &&
@@ -87,7 +88,8 @@ export const Specialist = () => {
               </div>
             </NavLink>
           ))}
-      </div>
+      </Aside>
+
       <section className="specialist-info">
         <Outlet />
       </section>

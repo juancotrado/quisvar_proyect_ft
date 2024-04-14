@@ -2,15 +2,16 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
-import { MessageType, ProcedureSubmit } from '../../../../../../types';
+import {
+  MessageSendType,
+  MessageType,
+  ProcedureSubmit,
+} from '../../../../../../types';
 import './messagePage.css';
 import { RootState } from '../../../../../../store';
 import { useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
-import {
-  SnackbarUtilities,
-  formatDateHourLongSpanish,
-} from '../../../../../../utils';
+import { SnackbarUtilities } from '../../../../../../utils';
 import {
   Button,
   ButtonHeader,
@@ -21,18 +22,15 @@ import { useRole } from '../../../../../../hooks';
 import { TYPE_STATUS } from '../../models';
 import {
   CardProvied,
-  CardRegisterMessageUpdate,
   CardRegisterVoucher,
   CardRegisterVoucherDenyOrAccept,
   GenerateOrderService,
 } from './views';
 import { HEADER_OPTION, SPRING } from './models';
 import { Resizable } from 're-resizable';
-import {
-  FormRegisterProcedure,
-  ProcedureHistory,
-} from '../../../../components';
+import { FormRegisterProcedure } from '../../../../components';
 import { isOpenConfirmAction$ } from '../../../../../../services/sharingSubject';
+import { ProcedureMoreInfo } from '../../../../views/procedureMoreInfo';
 
 export const MessagePage = () => {
   const navigate = useNavigate();
@@ -44,7 +42,6 @@ export const MessagePage = () => {
   );
   const [isReply, setIsReply] = useState(true);
   const [message, setMessage] = useState<MessageType | null>();
-  const [viewHistory, setViewHistory] = useState(false);
   const [isProvied, setIsProvied] = useState(false);
   const [procedureOption, setProcedureOption] = useState<'finish' | 'continue'>(
     'continue'
@@ -67,7 +64,6 @@ export const MessagePage = () => {
     navigate('/tramites/tramite-de-pago');
   };
   const toggleSwitch = () => setIsReply(!isReply);
-  const handleViewHistory = () => setViewHistory(!viewHistory);
 
   if (!message)
     return (
@@ -119,6 +115,24 @@ export const MessagePage = () => {
         handleSaveRegister();
       });
   };
+  const getInitValuesForForm = (): MessageSendType => {
+    const { header, title, type } = message;
+
+    return {
+      header,
+      title,
+      description: '',
+      type,
+      signature: false,
+    };
+  };
+  const transformDescriptionValues = () => {
+    const tempElement = document.createElement('div');
+    tempElement.innerHTML = message.description;
+    const elementDescription = tempElement.querySelector('.main-body');
+
+    return elementDescription?.innerHTML || '';
+  };
   const handleArchiverMessage = () => {
     axiosInstance
       .patch(`/paymail/archived/${message.id}`)
@@ -130,8 +144,8 @@ export const MessagePage = () => {
       function: () => handleArchiverMessage,
     };
   };
+  const { firstName, lastName } = message.userInit.user.profile;
 
-  console.log('asd', message);
   return (
     <Resizable
       enable={{
@@ -153,7 +167,8 @@ export const MessagePage = () => {
       )}
       {(mainReceiver || mainReceiverFinish) && message.status !== 'PAGADO' && (
         <div className="message-page-contain message-page-contain--right">
-          {message.status !== 'FINALIZADO' &&
+          {!hasAccess &&
+            message.status !== 'FINALIZADO' &&
             message.status !== 'POR_PAGAR' && (
               <div className="message-header-content-options  ">
                 {HEADER_OPTION.map(({ procedureOpt, text }) => (
@@ -175,7 +190,7 @@ export const MessagePage = () => {
             )}
           {procedureOption === 'continue' ? (
             isProvied ? (
-              <CardProvied />
+              <CardProvied type={'payProcedure'} message={message} />
             ) : (
               <>
                 {mainReceiver &&
@@ -236,10 +251,12 @@ export const MessagePage = () => {
                   />
                 )}
                 {isUserInitMessage && message.status === 'RECHAZADO' && (
-                  <CardRegisterMessageUpdate
-                    message={message}
-                    receiverId={mainReceiver?.user.id}
-                    onSave={handleSaveRegister}
+                  <FormRegisterProcedure
+                    type={'payProcedure'}
+                    submit={data => onSubmit(data)}
+                    showAddUser={false}
+                    initValues={getInitValuesForForm()}
+                    initValueEditor={transformDescriptionValues()}
                   />
                 )}
               </>
@@ -253,59 +270,12 @@ export const MessagePage = () => {
         </div>
       )}
 
-      <div className="regularProcedureInfo  message-page-contain--left">
-        <div className="regularProcedureInfo-header-content ">
-          <IconAction icon="close" onClick={handleClose} />
-          <div className="regularProcedureInfo-sender-info-details">
-            <div className="message-sender-info">
-              <IconAction icon="user-sender" position="none" />
-              <span className="message-sender-name">
-                Tramite de :{' '}
-                <b>
-                  {message.userInit.user.profile.firstName}{' '}
-                  {message.userInit.user.profile.lastName}
-                </b>{' '}
-              </span>
-              <span className="message-date-send">
-                {formatDateHourLongSpanish(message.createdAt)}
-              </span>
-            </div>
-            <span
-              className={`message-card-status-message message-status-${message.status}`}
-            >
-              {TYPE_STATUS[message.status]}
-            </span>
-          </div>
-        </div>
-        <div className="regularProcedureInfo-main">
-          <ProcedureHistory
-            messageHistory={message}
-            userMessage={message.userInit.user.profile}
-          />
-          {message?.history.length > 0 && (
-            <div className="regularProcedureInfo-btn-expand">
-              <Button
-                className={`message-view-more-files-${viewHistory}`}
-                text={`${viewHistory ? 'Ocultar' : 'Ver'} documentos recibidos`}
-                icon="down"
-                onClick={handleViewHistory}
-              />
-            </div>
-          )}
-          <div className="message-container-files-grid">
-            {viewHistory &&
-              [...message?.history]
-                .reverse()
-                .map(history => (
-                  <ProcedureHistory
-                    messageHistory={history}
-                    key={history.id}
-                    userMessage={history.user.profile}
-                  />
-                ))}
-          </div>
-        </div>
-      </div>
+      <ProcedureMoreInfo
+        handleClose={handleClose}
+        message={message}
+        status={TYPE_STATUS[message.status]}
+        userInitSender={firstName + ' ' + lastName}
+      />
     </Resizable>
   );
 };

@@ -54,7 +54,7 @@ const ContractRowPhase = ({
   ) => {
     const { name, value } = e.target;
     if (name === 'days') {
-      console.log(phaseData);
+      // console.log(phaseData);
     }
     const values = {
       ...phaseData,

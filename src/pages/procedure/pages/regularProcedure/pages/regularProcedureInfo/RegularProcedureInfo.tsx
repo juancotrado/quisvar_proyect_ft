@@ -20,6 +20,7 @@ import {
 } from '../../../../components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../store';
+import { ProcedureMoreInfo } from '../../../../views/procedureMoreInfo';
 const RegularProcedureInfo = () => {
   const navigate = useNavigate();
   const { messageId } = useParams();
@@ -66,7 +67,6 @@ const RegularProcedureInfo = () => {
     const { header, receiverId, title, description } = values;
     const formData = new FormData();
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
-    console.log('mainFile', mainFile);
     formData.append('mainProcedure', mainFile, values.title + '.pdf');
     formData.append(
       'data',
@@ -114,59 +114,15 @@ const RegularProcedureInfo = () => {
           )}
         </div>
       )}
-      <div className="regularProcedureInfo  message-page-contain--left">
-        <div className="regularProcedureInfo-header-content ">
-          <IconAction icon="close" onClick={handleClose} />
-          <div className="regularProcedureInfo-sender-info-details">
-            <div className="message-sender-info">
-              <IconAction icon="user-sender" position="none" />
-              <span className="message-sender-name">
-                Tramite de :{' '}
-                <b>
-                  {initialSender.profile.firstName}{' '}
-                  {initialSender.profile.lastName}
-                </b>{' '}
-              </span>
-              <span className="message-date-send">
-                {formatDateHourLongSpanish(message.createdAt)}
-              </span>
-            </div>
-            <span
-              className={`message-card-status-message message-status-${message.status}`}
-            >
-              {TYPE_STATUS_REGULAR_PROCEDURA[message.status]}
-            </span>
-          </div>
-        </div>
-        <div className="regularProcedureInfo-main">
-          <ProcedureHistory
-            messageHistory={message}
-            userMessage={initialSender.profile}
-          />
-          {message?.history.length > 0 && (
-            <div className="regularProcedureInfo-btn-expand">
-              <Button
-                className={`message-view-more-files-${viewHistory}`}
-                text={`${viewHistory ? 'Ocultar' : 'Ver'} documentos recibidos`}
-                icon="down"
-                onClick={handleViewHistory}
-              />
-            </div>
-          )}
-          <div className="message-container-files-grid">
-            {viewHistory &&
-              [...message?.history]
-                .reverse()
-                .map(history => (
-                  <ProcedureHistory
-                    messageHistory={history}
-                    key={history.id}
-                    userMessage={history.user.profile}
-                  />
-                ))}
-          </div>
-        </div>
-      </div>
+
+      <ProcedureMoreInfo
+        handleClose={handleClose}
+        message={message}
+        status={TYPE_STATUS_REGULAR_PROCEDURA[message.status]}
+        userInitSender={
+          initialSender.profile.firstName + ' ' + initialSender.profile.lastName
+        }
+      />
     </Resizable>
   );
 };

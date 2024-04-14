@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react';
 import { OptionSelect, StylesVariant } from '../../types';
-import { OptionProps, components } from 'react-select';
+import { OptionProps, components, Props as SelectProps } from 'react-select';
 import { AdvancedSelect, ButtonDelete, IconAction } from '..';
 import { Control, Controller } from 'react-hook-form';
 
-interface AdvancedSelectCrudProps {
+interface AdvancedSelectCrudProps extends SelectProps {
   options: OptionSelect[];
   control: Control<any, any, any>;
   errors?: { [key: string]: any };
@@ -31,6 +31,7 @@ const AdvancedSelectCrud = ({
   urlDelete,
   itemKey,
   placeholder = 'Seleccione...',
+  ...props
 }: AdvancedSelectCrudProps) => {
   const [selectData, setSelectData] = useState(options);
   useEffect(() => {
@@ -57,6 +58,7 @@ const AdvancedSelectCrud = ({
               <IconAction
                 icon="pencil-line"
                 position="none"
+                size={1.5}
                 onClick={() => onEditOption?.(data)}
               />
             </div>
@@ -70,22 +72,26 @@ const AdvancedSelectCrud = ({
       control={control}
       name={name}
       rules={{ required: 'Debes seleccionar una opción' }}
-      render={({ field: { onChange: onChangeForm, value: data } }) => (
-        <AdvancedSelect
-          placeholder={placeholder}
-          components={{ Option }}
-          options={selectData}
-          isClearable
-          isCreatable
-          onCreateOption={onCreateOption}
-          value={selectData.find(c => c.value === data?.[itemKey])}
-          label={label}
-          errors={errors}
-          name={name}
-          onChange={onChangeForm}
-          styleVariant={styleVariant}
-        />
-      )}
+      render={({ field: { onChange: onChangeForm, value: data } }) => {
+        console.log(data);
+        return (
+          <AdvancedSelect
+            placeholder={placeholder}
+            components={{ Option }}
+            options={selectData}
+            isClearable
+            isCreatable
+            onCreateOption={onCreateOption}
+            value={selectData.find(c => c.value === data?.[itemKey])}
+            label={label}
+            errors={errors}
+            name={name}
+            onChange={onChangeForm}
+            styleVariant={styleVariant}
+            {...props}
+          />
+        );
+      }}
     />
   );
 };

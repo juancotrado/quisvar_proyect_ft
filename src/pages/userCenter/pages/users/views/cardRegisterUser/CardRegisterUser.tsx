@@ -2,6 +2,7 @@ import './CardRegisterUser.css';
 import { useEffect, useRef, useState } from 'react';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import {
+  isOpenCardOffice$,
   isOpenCardProfession$,
   isOpenCardRegisterUser$,
 } from '../../../../../../services/sharingSubject';
@@ -11,6 +12,7 @@ import {
   GeneralFile,
   RoleForm,
   Profession,
+  Office,
 } from '../../../../../../types';
 import {
   validateEmail,
@@ -31,9 +33,15 @@ import {
 } from '../../../../../../components';
 import { Subscription } from 'rxjs';
 import { useJurisdiction, useValidatePassword } from '../../../../../../hooks';
-import { DEGREE_DATA, INITIAL_VALUES_USER, GENDER } from '../../models';
+import {
+  DEGREE_DATA,
+  INITIAL_VALUES_USER,
+  GENDER,
+  OfficeSelect,
+} from '../../models';
 import { CarRegisterSwornDeclaration } from '..';
 import { CardAddProfession } from '../cardAddProfession';
+import { CardAddOffice } from '../cardAddOffice';
 
 interface CardRegisterUserProps {
   onSave?: () => void;
@@ -42,6 +50,7 @@ interface CardRegisterUserProps {
 
 const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [offices, setOffices] = useState<null | OfficeSelect[]>(null);
   const [roles, setRoles] = useState<RoleForm[] | null>(null);
   const [professions, setProfessions] = useState<Profession[] | null>(null);
   const handleIsOpen = useRef<Subscription>(new Subscription());
@@ -70,8 +79,21 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
 
   useEffect(() => {
     getProfession();
+    getOffices();
   }, []);
 
+  const getOffices = () => {
+    const url = `/office`;
+    axiosInstance.get<Office[]>(url).then(res => {
+      const offices = res.data.map(el => ({
+        value: String(el.id),
+        id: el.id,
+        label: el.name,
+      }));
+      console.log(offices);
+      setOffices(offices);
+    });
+  };
   const getProfession = () => {
     axiosInstance.get(`/profession`).then(res => {
       setProfessions(res.data);
@@ -83,6 +105,12 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
         const { isOpen, user, roles } = data;
         setRoles(roles);
         setIsOpen(isOpen);
+        const offices = user?.offices.map(({ office }) => ({
+          value: String(office.id),
+          id: office.id,
+          label: office.name,
+        }));
+        console.log('user', offices);
         if (user?.id) {
           const { profile, id, email, address, ruc, roleId } = user;
           const { department, province, district } = profile;
@@ -110,6 +138,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
             roleId,
             phoneRef: profile.phoneRef,
             gender: profile.gender,
+            offices,
           });
         } else {
           reset(INITIAL_VALUES_USER);
@@ -123,8 +152,9 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
 
   const onSubmit: SubmitHandler<UserForm> = async data => {
     if (errorPassword?.verifyPassword) return;
-    const { cv, declaration, id, ...resData } = data;
-    const newData = { ...resData, job: resData.job.value };
+    const { cv, declaration, id, offices, ...resData } = data;
+    const officeIds = offices.map(office => office.id);
+    const newData = { ...resData, job: resData.job.value, officeIds };
     if (id) {
       axiosInstance.put(`/profile/${id}`, newData).then(successfulShipment);
     } else {
@@ -176,12 +206,21 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
     isOpenCardProfession$.setSubject = {
       isOpen: true,
       data: {
-        value: 0,
+        value: '0',
         abrv: '',
         label,
         amount: 0,
       },
     };
+  };
+
+  const handleCreateOffice = (label: string) => {
+    const body = {
+      name: label,
+    };
+    axiosInstance.post('/office', body).then(() => {
+      getOffices();
+    });
   };
   const handleEditProfession = ({ abrv, label, value, amount }: Profession) => {
     isOpenCardProfession$.setSubject = {
@@ -191,6 +230,15 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
         label,
         value,
         amount,
+      },
+    };
+  };
+  const handleEditOffice = ({ label, id }: OfficeSelect) => {
+    isOpenCardOffice$.setSubject = {
+      isOpen: true,
+      data: {
+        id,
+        name: label,
       },
     };
   };
@@ -349,6 +397,23 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
                   label="Usuario(00):"
                 />
               </div>
+              {offices && (
+                <AdvancedSelectCrud
+                  defaultValue={watch('offices')}
+                  control={control}
+                  name="offices"
+                  itemKey="value"
+                  options={offices}
+                  errors={errors}
+                  styleVariant="primary"
+                  label="Oficina:"
+                  isMulti
+                  onCreateOption={handleCreateOffice}
+                  onEditOption={handleEditOffice}
+                  onSave={getOffices}
+                  urlDelete={'/office'}
+                />
+              )}
               <div className="col-input">
                 {professions && (
                   <AdvancedSelectCrud
@@ -357,7 +422,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
                     itemKey="value"
                     options={professions}
                     errors={errors}
-                    styleVariant="secondary"
+                    styleVariant="primary"
                     label="Profesión:"
                     onCreateOption={handleCreateProfession}
                     onEditOption={handleEditProfession}
@@ -430,40 +495,44 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
               )}
             </div>
           </fieldset>
-          <h3 className="card-register-title-info">Datos de Referencia:</h3>
-          <div className="card-register-content">
-            <div className="col-input">
-              <Input
-                {...register('firstNameRef')}
-                placeholder="Nombres"
-                label="Nombres:"
-                errors={errors}
-              />
-              <Input
-                {...register('lastNameRef')}
-                placeholder="Apellidos"
-                errors={errors}
-                label="Apellidos:"
-              />
+          <fieldset>
+            <legend className="card-register-title-info">
+              Datos de Referencia
+            </legend>
+            <div className="card-register-content">
+              <div className="col-input">
+                <Input
+                  {...register('firstNameRef')}
+                  placeholder="Nombres"
+                  label="Nombres:"
+                  errors={errors}
+                />
+                <Input
+                  {...register('lastNameRef')}
+                  placeholder="Apellidos"
+                  errors={errors}
+                  label="Apellidos:"
+                />
+              </div>
+              <div className="col-input">
+                <Input
+                  {...register('addressRef')}
+                  placeholder="Dirección"
+                  label="Dirección:"
+                  errors={errors}
+                />
+                <Input
+                  {...register('phoneRef', {
+                    validate: validateOnlyNumbers,
+                  })}
+                  placeholder="Celular"
+                  label="Celular:"
+                  type="number"
+                  errors={errors}
+                />
+              </div>
             </div>
-            <div className="col-input">
-              <Input
-                {...register('addressRef')}
-                placeholder="Dirección"
-                label="Dirección:"
-                errors={errors}
-              />
-              <Input
-                {...register('phoneRef', {
-                  validate: validateOnlyNumbers,
-                })}
-                placeholder="Celular"
-                label="Celular:"
-                type="number"
-                errors={errors}
-              />
-            </div>
-          </div>
+          </fieldset>
           <div className="btn-build">
             <Button
               text={userId ? 'GUARDAR' : 'CREAR'}
@@ -482,6 +551,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
         )}
       </div>
       <CardAddProfession onSave={getProfession} />
+      <CardAddOffice onSave={getOffices} />
     </Modal>
   );
 };

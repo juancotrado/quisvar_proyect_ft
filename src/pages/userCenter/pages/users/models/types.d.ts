@@ -10,3 +10,9 @@ export interface ContractUser {
   month: number;
   projectNumber: number;
 }
+export interface OfficeSelect {
+  id: numnber;
+  label: string;
+  quantity?: number;
+  value: string;
+}

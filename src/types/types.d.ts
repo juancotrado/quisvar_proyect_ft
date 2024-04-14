@@ -1,4 +1,4 @@
-import { Contact } from '../pages/procedure/models';
+import { Contact, OfficeSelect } from '../pages/procedure/models';
 
 export interface SpecialityType {
   id: number;
@@ -57,6 +57,16 @@ export interface ReportForm {
   concept: string;
   porcentageValue: number;
   title: string;
+}
+
+export interface OfficeGeneral {
+  isOfficeManager: boolean;
+  office: OfficeClass;
+}
+
+export interface OfficeClass {
+  id: number;
+  name: string;
 }
 export interface Office {
   id: number;
@@ -252,6 +262,7 @@ export interface User {
   contract: string | null;
   cv: string | null;
   declaration: string | null;
+  offices: OfficeGeneral[];
   withdrawalDeclaration: string | null;
   ruc: string;
   address: string;
@@ -560,6 +571,7 @@ export interface UserForm {
   roleId: number | null;
   ruc: string;
   job: Profession;
+  offices: OfficeSelect[];
   cv: FileList | null;
   firstNameRef: string;
   lastNameRef: string;
@@ -1289,7 +1301,7 @@ export interface Roles {
 }
 
 export interface OptionSelect {
-  value: number | string;
+  value: string;
   label: string;
 }
 

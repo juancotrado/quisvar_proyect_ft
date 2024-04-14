@@ -245,3 +245,13 @@ a.nostyle:visited {
   flex: 1;
   box-shadow: none;
 }
+fieldset {
+  padding: 1rem;
+  border-color: #000;
+}
+legend {
+  padding: 0;
+  font-size: 2rem;
+  color: var(--color-secondary);
+  font-weight: 700;
+}

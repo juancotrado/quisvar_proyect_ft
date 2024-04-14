@@ -87,3 +87,12 @@
   background-color: var(--color-bg-done);
   color: var(--color-done);
 }
+.procedureMoreInfo-container-files-grid {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 0.5rem;
+  font-size: 14px;
+  align-items: center;
+  /* grid-template-columns: repeat(4, minmax(0, 1fr)); */
+}

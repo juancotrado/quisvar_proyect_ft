@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import {
   MessageSendType,
@@ -36,7 +36,8 @@ export const MessagePage = () => {
   const navigate = useNavigate();
   const { paymessageId } = useParams();
   const { hasAccess } = useRole('MOD', 'tramites', 'tramite-de-pago');
-
+  const { state } = useLocation();
+  const isReception: boolean = state?.isReception;
   const { id: userSessionId } = useSelector(
     (state: RootState) => state.userSession
   );
@@ -158,118 +159,126 @@ export const MessagePage = () => {
       minWidth={'30%'}
       className={`message-page-container `}
     >
-      {message.status === 'PAGADO' && (
-        <div className="message-page-contain message-page-contain--right">
-          <div className="message-page-finish">
-            <h2>Tramite Finalizado</h2>
-          </div>
-        </div>
-      )}
-      {(mainReceiver || mainReceiverFinish) && message.status !== 'PAGADO' && (
-        <div className="message-page-contain message-page-contain--right">
-          {hasAccess &&
-            message.status !== 'FINALIZADO' &&
-            message.status !== 'POR_PAGAR' && (
-              <div className="message-header-content-options  ">
-                {HEADER_OPTION.map(({ procedureOpt, text }) => (
-                  <ButtonHeader
-                    key={procedureOpt}
-                    isActive={procedureOption === procedureOpt}
-                    text={text}
-                    onClick={() => handleOptionSelect(procedureOpt)}
-                  />
-                ))}
-                {procedureOption === 'continue' && (
-                  <IconAction
-                    icon={isProvied ? 'seal-dark' : 'seal'}
-                    size={1.2}
-                    onClick={handleProvied}
+      {!isReception && (
+        <>
+          {message.status === 'PAGADO' && (
+            <div className="message-page-contain message-page-contain--right">
+              <div className="message-page-finish">
+                <h2>Tramite Finalizado</h2>
+              </div>
+            </div>
+          )}
+          {(mainReceiver || mainReceiverFinish) &&
+            message.status !== 'PAGADO' && (
+              <div className="message-page-contain message-page-contain--right">
+                {hasAccess &&
+                  message.status !== 'FINALIZADO' &&
+                  message.status !== 'POR_PAGAR' && (
+                    <div className="message-header-content-options  ">
+                      {HEADER_OPTION.map(({ procedureOpt, text }) => (
+                        <ButtonHeader
+                          key={procedureOpt}
+                          isActive={procedureOption === procedureOpt}
+                          text={text}
+                          onClick={() => handleOptionSelect(procedureOpt)}
+                        />
+                      ))}
+                      {procedureOption === 'continue' && (
+                        <IconAction
+                          icon={isProvied ? 'seal-dark' : 'seal'}
+                          size={1.2}
+                          onClick={handleProvied}
+                        />
+                      )}
+                    </div>
+                  )}
+                {procedureOption === 'continue' ? (
+                  isProvied ? (
+                    <CardProvied type={'payProcedure'} message={message} />
+                  ) : (
+                    <>
+                      {mainReceiver &&
+                        !isUserInitMessage &&
+                        message.status !== 'RECHAZADO' && (
+                          <div
+                            className="message-switch"
+                            data-ison={isReply}
+                            onClick={toggleSwitch}
+                          >
+                            {isReply && (
+                              <span className="message-hover-title">
+                                NO PROCEDE
+                              </span>
+                            )}
+                            <motion.div
+                              className={`message-handle`}
+                              layout
+                              transition={SPRING}
+                            >
+                              <span className="span-list-task">
+                                {isReply ? 'Procede' : 'No Procede'}
+                              </span>
+                            </motion.div>
+                            {!isReply && (
+                              <span className="message-hover-title">
+                                PROCEDE
+                              </span>
+                            )}
+                          </div>
+                        )}
+                      {mainReceiver &&
+                        (message.status === 'PROCESO' ||
+                          message.status === 'RECHAZADO') &&
+                        !isUserInitMessage && (
+                          <>
+                            <FormRegisterProcedure
+                              type={'payProcedure'}
+                              submit={data => onSubmit(data)}
+                              showAddUser={false}
+                            />
+                            {hasAccess && !isReply && (
+                              <Button
+                                onClick={handleArchiver}
+                                styleButton={2}
+                                type="button"
+                                text="Archivar Tramite"
+                              />
+                            )}
+                          </>
+                        )}
+                      {message.status == 'FINALIZADO' && mainReceiverFinish && (
+                        <CardRegisterVoucher
+                          message={message}
+                          onSave={handleSaveRegister}
+                        />
+                      )}
+                      {message.status === 'POR_PAGAR' && mainReceiverFinish && (
+                        <CardRegisterVoucherDenyOrAccept
+                          message={message}
+                          onSave={handleSaveRegister}
+                        />
+                      )}
+                      {isUserInitMessage && message.status === 'RECHAZADO' && (
+                        <FormRegisterProcedure
+                          type={'payProcedure'}
+                          submit={data => onSubmit(data)}
+                          showAddUser={false}
+                          initValues={getInitValuesForForm()}
+                          initValueEditor={transformDescriptionValues()}
+                        />
+                      )}
+                    </>
+                  )
+                ) : (
+                  <GenerateOrderService
+                    message={message}
+                    onSave={handleSaveRegister}
                   />
                 )}
               </div>
             )}
-          {procedureOption === 'continue' ? (
-            isProvied ? (
-              <CardProvied type={'payProcedure'} message={message} />
-            ) : (
-              <>
-                {mainReceiver &&
-                  !isUserInitMessage &&
-                  message.status !== 'RECHAZADO' && (
-                    <div
-                      className="message-switch"
-                      data-ison={isReply}
-                      onClick={toggleSwitch}
-                    >
-                      {isReply && (
-                        <span className="message-hover-title">NO PROCEDE</span>
-                      )}
-                      <motion.div
-                        className={`message-handle`}
-                        layout
-                        transition={SPRING}
-                      >
-                        <span className="span-list-task">
-                          {isReply ? 'Procede' : 'No Procede'}
-                        </span>
-                      </motion.div>
-                      {!isReply && (
-                        <span className="message-hover-title">PROCEDE</span>
-                      )}
-                    </div>
-                  )}
-                {mainReceiver &&
-                  (message.status === 'PROCESO' ||
-                    message.status === 'RECHAZADO') &&
-                  !isUserInitMessage && (
-                    <>
-                      <FormRegisterProcedure
-                        type={'payProcedure'}
-                        submit={data => onSubmit(data)}
-                        showAddUser={false}
-                      />
-                      {hasAccess && !isReply && (
-                        <Button
-                          onClick={handleArchiver}
-                          styleButton={2}
-                          type="button"
-                          text="Archivar Tramite"
-                        />
-                      )}
-                    </>
-                  )}
-                {message.status == 'FINALIZADO' && mainReceiverFinish && (
-                  <CardRegisterVoucher
-                    message={message}
-                    onSave={handleSaveRegister}
-                  />
-                )}
-                {message.status === 'POR_PAGAR' && mainReceiverFinish && (
-                  <CardRegisterVoucherDenyOrAccept
-                    message={message}
-                    onSave={handleSaveRegister}
-                  />
-                )}
-                {isUserInitMessage && message.status === 'RECHAZADO' && (
-                  <FormRegisterProcedure
-                    type={'payProcedure'}
-                    submit={data => onSubmit(data)}
-                    showAddUser={false}
-                    initValues={getInitValuesForForm()}
-                    initValueEditor={transformDescriptionValues()}
-                  />
-                )}
-              </>
-            )
-          ) : (
-            <GenerateOrderService
-              message={message}
-              onSave={handleSaveRegister}
-            />
-          )}
-        </div>
+        </>
       )}
-
       <ProcedureMoreInfo
         handleClose={handleClose}
         message={message}

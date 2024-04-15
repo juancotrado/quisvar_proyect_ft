@@ -32,9 +32,6 @@ const ProcedureMoreInfo = ({
             <span className="procedureMoreInfo-sender-name">
               Tramite de : <b>{userInitSender}</b>{' '}
             </span>
-            <span className="procedureMoreInfo-date-send">
-              {formatDateHourLongSpanish(message.createdAt)}
-            </span>
           </div>
           <span
             className={`procedureMoreInfo-card-status-message procedureMoreInfo-status-${message.status}`}
@@ -42,6 +39,9 @@ const ProcedureMoreInfo = ({
             {status}
           </span>
         </div>
+        <span className="procedureMoreInfo-date-send">
+          {formatDateHourLongSpanish(message.createdAt)}
+        </span>
       </div>
       <div className="procedureMoreInfo-main">
         <ProcedureHistory

@@ -15,7 +15,7 @@ const cardMessageReception = ({
   handleButton,
   onClick,
 }: cardMessageReceptionProps) => {
-  const [sender, receiver] = reception.users;
+  const [receiver, sender] = reception.users;
   return (
     <div className={`cardMessageRow-container pointer`} onClick={onClick}>
       <div className="card-message-section-item">

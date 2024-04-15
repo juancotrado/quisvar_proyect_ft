@@ -154,19 +154,21 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
     const officeIds = offices.map(office => office.id);
     const newData = { ...resData, job: resData.job.value, officeIds };
     if (id) {
-      axiosInstance.put(`/profile/${id}`, newData).then(successfulShipment);
+      await axiosInstance.put(`/profile/${id}`, newData);
     } else {
       const fileCv = cv?.[0] as File;
       const fileDeclaration = declaration?.[0] as File;
+      const { officeIds, ...body } = newData;
       const formData = new FormData();
-      for (const [key, value] of Object.entries(newData)) {
+      for (const [key, value] of Object.entries(body)) {
         formData.append(key, String(value));
       }
       formData.append('fileUserCv', fileCv);
       formData.append('fileUserDeclaration', fileDeclaration);
-
-      axiosInstance.post(`/users`, formData).then(successfulShipment);
+      formData.append('officeIds', JSON.stringify(officeIds));
+      await axiosInstance.post(`/users`, formData);
     }
+    successfulShipment();
   };
 
   const searchUserForDNI = () => {

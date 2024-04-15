@@ -1,11 +1,6 @@
 import { useEffect, useState } from 'react';
 import './mailPage.css';
-import {
-  MailType,
-  MessageSender,
-  MessageStatus,
-  MessageTypeImbox,
-} from '../../../../types';
+import { MailType, MessageSender } from '../../../../types';
 import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
 import { listStatusMsg, listTypeMsg } from '../../../../utils';
 import {
@@ -20,6 +15,10 @@ import { CardRegisterMessage } from './views';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { CardMessageHeader } from '../../components';
 import { useRole } from '../../../../hooks';
+import { MessageFunction } from '../../models';
+import { ReceptionView } from '../../views/reception';
+import { RootState } from '../../../../store';
+import { useSelector } from 'react-redux';
 
 const InitTMail: MailType['type'] = 'RECEIVER';
 
@@ -29,19 +28,22 @@ export const MailPage = () => {
 
   const [searchParams] = useSearchParams();
   const [listMessage, setListMessage] = useState<MailType[] | null>(null);
-  // const [isResizing, setIsResizing] = useState(false);
+  // const [listReception, setListReception] = useState<Reception[] | null>(null);
   const [totalMail, setTotalMail] = useState(0);
   const [skip, setSkip] = useState(0);
+
+  const { isAccessReception } = useSelector(
+    (state: RootState) => state.userSession
+  );
+
   //-----------------------------QUERIES-----------------------------------
-  const [typeMsg, setTypeMsg] = useState<MessageTypeImbox | null>(null);
   const [typeMail, setTypeMail] = useState<MessageSender | null>(InitTMail);
-  const [statusMsg, setStatusMsg] = useState<MessageStatus | null>(null);
   //-----------------------------------------------------------------------
   const refresh = !!searchParams.get('refresh') || false;
   const [isNewMessage, setIsNewMessage] = useState(false);
   //-----------------------------------------------------------------------
 
-  useEffect(() => getMessages(), [typeMail, typeMsg, statusMsg, refresh]);
+  useEffect(() => getMessages({}), [refresh]);
 
   const handleNewMessage = () => {
     setIsNewMessage(true);
@@ -50,36 +52,41 @@ export const MailPage = () => {
     setIsNewMessage(false);
   };
   const handleSaveMessage = () => {
-    getMessages();
+    getMessages({});
     setIsNewMessage(false);
   };
-  const getMessages = () => {
+  const getMessages = ({
+    typeMail,
+    statusMsg,
+    typeMsg,
+    skip,
+  }: MessageFunction) => {
     const type = (typeMail && `&type=${typeMail}`) || '';
     const status = (statusMsg && `&status=${statusMsg}`) || '';
     const typeMessage = (typeMsg && `&typeMessage=${typeMsg}`) || '';
     const offset = `&skip=${skip}`;
     const query = `/paymail?${type}${status}${typeMessage}${offset}`;
-    if (typeMail !== 'LICENSE') {
-      axiosInstance.get(query).then(res => {
-        setListMessage(res.data.mail);
-        setTotalMail(res.data.total);
-      });
-    }
+    axiosInstance.get(query).then(res => {
+      setListMessage(res.data.mail);
+      setTotalMail(res.data.total);
+    });
   };
   const handleSelectReceiver = () => {
     setTypeMail('RECEIVER');
-    setStatusMsg(null);
-    setTypeMsg(null);
+    getMessages({ typeMail: 'RECEIVER' });
   };
   const handleSelectSender = () => {
     setTypeMail('SENDER');
-    setStatusMsg(null);
-    setTypeMsg(null);
+    getMessages({ typeMail: 'SENDER' });
   };
   const handleArchived = () => {
     setTypeMail(null);
-    setStatusMsg('ARCHIVADO');
-    setTypeMsg(null);
+    getMessages({ statusMsg: 'ARCHIVADO' });
+  };
+  const handleReception = async () => {
+    setTypeMail('RECEPTION');
+    // const { data } = await axiosInstance.get<Reception[]>(`/paymail/holding`);
+    // setListReception(data);
   };
 
   const handleViewMessage = (id: number, type: MailType['type']) => {
@@ -112,11 +119,18 @@ export const MailPage = () => {
       funcion: handleSelectSender,
     },
     {
-      iconOn: 'archiver-box',
+      iconOn: 'archive-regular',
       iconOff: 'archiver-box-black',
       text: 'ARCHIVADOS',
       isActive: !typeMail,
       funcion: handleArchived,
+    },
+    {
+      iconOn: 'desk-filled',
+      iconOff: 'desk-regular',
+      text: 'MESA DE PARTES',
+      isActive: typeMail === 'RECEPTION',
+      funcion: handleReception,
     },
   ];
 
@@ -126,14 +140,15 @@ export const MailPage = () => {
         <div className={`message-container-header`}>
           <IconAction
             icon="refresh"
-            onClick={getMessages}
+            onClick={() => getMessages({})}
             right={0.9}
             top={3.7}
           />
           <div className="message-options-filter">
             <div className="message-header-option">
-              {optionsMailHeader.map(
-                ({ funcion, iconOff, iconOn, text, isActive }) => (
+              {optionsMailHeader
+                .slice(0, isAccessReception ? 4 : 3)
+                .map(({ funcion, iconOff, iconOn, text, isActive }) => (
                   <HeaderOptionBtn
                     key={text}
                     iconOff={iconOff}
@@ -143,8 +158,7 @@ export const MailPage = () => {
                     onClick={funcion}
                     width={10}
                   />
-                )
-              )}
+                ))}
             </div>
             <div className="mail-main-options-container">
               <span className="mail-main-options-title-filter">
@@ -159,7 +173,7 @@ export const MailPage = () => {
                 placeholder="Estado"
                 onChange={({ target }) =>
                   target.value !== '0' &&
-                  setStatusMsg(target.value as MessageStatus)
+                  getMessages({ statusMsg: target.value })
                 }
                 name="Status"
                 itemKey="id"
@@ -171,8 +185,7 @@ export const MailPage = () => {
                 placeholder="Documento"
                 data={listTypeMsg}
                 onChange={({ target }) =>
-                  target.value !== '0' &&
-                  setTypeMsg(target.value as MessageTypeImbox)
+                  target.value !== '0' && getMessages({ typeMsg: target.value })
                 }
                 name="type"
                 itemKey="id"
@@ -188,20 +201,26 @@ export const MailPage = () => {
           </div>
         </div>
         <div className="mail-grid-container">
-          <CardMessageHeader option="payProcedure" typeMail={typeMail} />
-          {listMessage &&
-            listMessage.map(({ paymessage, paymessageId, type }) => (
-              <CardMessage
-                isActive={false}
-                key={paymessageId}
-                type={type}
-                onArchiver={handleSaveMessage}
-                onClick={() => handleViewMessage(paymessageId, type)}
-                message={paymessage}
-                option="payProcedure"
-                hasAccess={hasAccess}
-              />
-            ))}
+          {typeMail !== 'RECEPTION' ? (
+            <>
+              <CardMessageHeader option="payProcedure" typeMail={typeMail} />
+              {listMessage &&
+                listMessage.map(({ paymessage, paymessageId, type }) => (
+                  <CardMessage
+                    isActive={false}
+                    key={paymessageId}
+                    type={type}
+                    onArchiver={handleSaveMessage}
+                    onClick={() => handleViewMessage(paymessageId, type)}
+                    message={paymessage}
+                    option="payProcedure"
+                    hasAccess={hasAccess}
+                  />
+                ))}
+            </>
+          ) : (
+            <ReceptionView />
+          )}
         </div>
         <div className="mail-footer-section">
           <Button

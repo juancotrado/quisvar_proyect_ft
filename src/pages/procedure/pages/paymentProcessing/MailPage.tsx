@@ -17,6 +17,8 @@ import { CardMessageHeader } from '../../components';
 import { useRole } from '../../../../hooks';
 import { MessageFunction } from '../../models';
 import { ReceptionView } from '../../views/reception';
+import { RootState } from '../../../../store';
+import { useSelector } from 'react-redux';
 
 const InitTMail: MailType['type'] = 'RECEIVER';
 
@@ -29,6 +31,11 @@ export const MailPage = () => {
   // const [listReception, setListReception] = useState<Reception[] | null>(null);
   const [totalMail, setTotalMail] = useState(0);
   const [skip, setSkip] = useState(0);
+
+  const { isAccessReception } = useSelector(
+    (state: RootState) => state.userSession
+  );
+
   //-----------------------------QUERIES-----------------------------------
   const [typeMail, setTypeMail] = useState<MessageSender | null>(InitTMail);
   //-----------------------------------------------------------------------
@@ -139,8 +146,9 @@ export const MailPage = () => {
           />
           <div className="message-options-filter">
             <div className="message-header-option">
-              {optionsMailHeader.map(
-                ({ funcion, iconOff, iconOn, text, isActive }) => (
+              {optionsMailHeader
+                .slice(0, isAccessReception ? 4 : 3)
+                .map(({ funcion, iconOff, iconOn, text, isActive }) => (
                   <HeaderOptionBtn
                     key={text}
                     iconOff={iconOff}
@@ -150,8 +158,7 @@ export const MailPage = () => {
                     onClick={funcion}
                     width={10}
                   />
-                )
-              )}
+                ))}
             </div>
             <div className="mail-main-options-container">
               <span className="mail-main-options-title-filter">

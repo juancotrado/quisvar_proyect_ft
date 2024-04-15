@@ -262,6 +262,7 @@ export interface User {
   contract: string | null;
   cv: string | null;
   declaration: string | null;
+  isAccessReception: boolean;
   offices: OfficeGeneral[];
   withdrawalDeclaration: string | null;
   ruc: string;

@@ -206,7 +206,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
     isOpenCardProfession$.setSubject = {
       isOpen: true,
       data: {
-        value: '0',
+        value: '',
         abrv: '',
         label,
         amount: 0,
@@ -417,7 +417,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
               <div className="col-input">
                 {professions && (
                   <AdvancedSelectCrud
-                    control={control}
+                    // control={control}
                     name="job"
                     itemKey="value"
                     options={professions}

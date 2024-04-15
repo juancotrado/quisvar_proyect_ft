@@ -6,12 +6,12 @@ import { Control, Controller } from 'react-hook-form';
 
 interface AdvancedSelectCrudProps extends SelectProps {
   options: OptionSelect[];
-  control: Control<any, any, any>;
+  control?: Control<any, any, any>;
   errors?: { [key: string]: any };
   label?: string;
   name: string;
   placeholder?: string;
-  itemKey: string;
+  itemKey?: string;
   styleVariant?: StylesVariant;
   onCreateOption?: (value: string) => void;
   onEditOption?: (value: any) => void;
@@ -67,7 +67,7 @@ const AdvancedSelectCrud = ({
       </components.Option>
     );
   };
-  return (
+  return control && itemKey ? (
     <Controller
       control={control}
       name={name}
@@ -91,6 +91,20 @@ const AdvancedSelectCrud = ({
           />
         );
       }}
+    />
+  ) : (
+    <AdvancedSelect
+      placeholder={placeholder}
+      components={{ Option }}
+      options={selectData}
+      isClearable
+      isCreatable
+      onCreateOption={onCreateOption}
+      label={label}
+      errors={errors}
+      name={name}
+      styleVariant={styleVariant}
+      {...props}
     />
   );
 };

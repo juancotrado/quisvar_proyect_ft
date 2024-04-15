@@ -167,7 +167,7 @@ export const MessagePage = () => {
       )}
       {(mainReceiver || mainReceiverFinish) && message.status !== 'PAGADO' && (
         <div className="message-page-contain message-page-contain--right">
-          {!hasAccess &&
+          {hasAccess &&
             message.status !== 'FINALIZADO' &&
             message.status !== 'POR_PAGAR' && (
               <div className="message-header-content-options  ">

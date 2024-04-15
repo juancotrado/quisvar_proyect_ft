@@ -262,6 +262,7 @@ export interface User {
   contract: string | null;
   cv: string | null;
   declaration: string | null;
+  isAccessReception: boolean;
   offices: OfficeGeneral[];
   withdrawalDeclaration: string | null;
   ruc: string;
@@ -917,7 +918,7 @@ export interface MailTypeComunication extends MailOrigin {
   messageId: number;
   message: MessageType;
 }
-export type MessageSender = 'SENDER' | 'RECEIVER' | 'LICENSE';
+export type MessageSender = 'SENDER' | 'RECEIVER' | 'LICENSE' | 'RECEPTION';
 export type MessageStatus =
   | 'PROCESO'
   | 'RECHAZADO'

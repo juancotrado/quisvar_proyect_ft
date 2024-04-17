@@ -12,6 +12,7 @@ import {
   Equipment as Equip,
   GeneralFile,
   RoleForm,
+  User,
   WorkStation,
 } from '../../../../types';
 import { AppDispatch, RootState } from '../../../../store';
@@ -63,14 +64,16 @@ const UsersList = () => {
 
   const filterList = useMemo(() => {
     if (!users) return [];
-
     const filteredByStatus = users.filter(user => user.status === isArchived);
-
     if (!searchTerm) return filteredByStatus;
+    const filetUser = ({ profile }: User) => {
+      const fullName = profile.lastName + ' ' + profile.firstName;
+      return isNaN(+searchTerm)
+        ? fullName.toLowerCase().includes(searchTerm.toLowerCase())
+        : profile.dni.startsWith(searchTerm);
+    };
 
-    return filteredByStatus.filter(user =>
-      user.profile.dni.startsWith(searchTerm)
-    );
+    return filteredByStatus.filter(filetUser);
   }, [isArchived, searchTerm, users]);
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -107,7 +110,7 @@ const UsersList = () => {
         <div className="userList-options">
           <Input
             type="text"
-            placeholder="Buscar por DNI"
+            placeholder="Buscar por DNI o nombre"
             value={searchTerm}
             onChange={handleSearchChange}
             classNameMain="filter-user-input"

@@ -10,7 +10,6 @@ import {
   SnackbarUtilities,
 } from '../../../../../../utils';
 import { FormRegisterProcedure } from '../../../../components';
-import { useNavigate } from 'react-router-dom';
 
 interface CardRegisterMessageProps {
   onClosing?: () => void;
@@ -22,7 +21,6 @@ const CardRegisterMessage = ({
   onSave,
 }: CardRegisterMessageProps) => {
   const userSession = useSelector((state: RootState) => state.userSession);
-  const navigate = useNavigate();
   const onSubmit = async (data: ProcedureSubmit) => {
     const { fileUploadFiles, values, mainFile } = data;
     const body = { ...values, senderId: userSession.id };
@@ -38,7 +36,7 @@ const CardRegisterMessage = ({
   };
   const handleSave = () => {
     onSave?.();
-    navigate('?loader=true');
+    handleClose();
   };
 
   const handleClose = () => {

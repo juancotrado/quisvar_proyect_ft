@@ -12,6 +12,7 @@ import {
   Equipment as Equip,
   GeneralFile,
   RoleForm,
+  User,
   WorkStation,
 } from '../../../../types';
 import { AppDispatch, RootState } from '../../../../store';
@@ -63,14 +64,16 @@ const UsersList = () => {
 
   const filterList = useMemo(() => {
     if (!users) return [];
-
     const filteredByStatus = users.filter(user => user.status === isArchived);
-
     if (!searchTerm) return filteredByStatus;
+    const filetUser = ({ profile }: User) => {
+      const fullName = profile.lastName + ' ' + profile.firstName;
+      return isNaN(+searchTerm)
+        ? fullName.toLowerCase().includes(searchTerm.toLowerCase())
+        : profile.dni.startsWith(searchTerm);
+    };
 
-    return filteredByStatus.filter(user =>
-      user.profile.dni.startsWith(searchTerm)
-    );
+    return filteredByStatus.filter(filetUser);
   }, [isArchived, searchTerm, users]);
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -107,50 +110,32 @@ const UsersList = () => {
         <div className="userList-options">
           <Input
             type="text"
-            placeholder="Buscar por DNI"
+            placeholder="Buscar por DNI o nombre"
             value={searchTerm}
             onChange={handleSearchChange}
             classNameMain="filter-user-input"
           />
+          <div className="userList-number">
+            Usuarios {isArchived ? 'Activos' : 'Inactivos'}:{' '}
+            <span
+              className={`${
+                !isArchived ? 'btn-filter-unavailable' : 'btn-filter-available'
+              } user-count`}
+            >
+              {filterList.length}
+            </span>
+          </div>
           <div className="userList-options-right">
-            <p>
-              Usuarios {isArchived ? 'Activos' : 'Inactivos'}:{' '}
-              <span
-                className={`${
-                  !isArchived
-                    ? 'btn-filter-unavailable'
-                    : 'btn-filter-available'
-                } user-count`}
-              >
-                {filterList.length}
-              </span>
-            </p>
             <Button
               text={`${isArchived ? 'Ver archivados' : 'Ver en actividad'}`}
-              className={`btn-filter ${
+              className={`${
                 isArchived ? 'btn-filter-unavailable' : 'btn-filter-available'
               }`}
               onClick={() => setIsArchived(!isArchived)}
             />
-            <Button
-              text="Equipos"
-              className="userList-btn"
-              // onClick={handleOpenCardFiles}
-            />
-            <Button
-              text="Ver Directivas"
-              className="userList-btn"
-              onClick={handleOpenCardFiles}
-            />
-
-            <div>
-              <Button
-                text="Agregar"
-                icon="plus"
-                className="userList-btn"
-                onClick={addUser}
-              />
-            </div>
+            <Button text="Equipos" />
+            <Button text="Ver Directivas" onClick={handleOpenCardFiles} />
+            <Button text="Agregar" icon="plus" onClick={addUser} />
           </div>
         </div>
         <div className="header-container-list header-grid-row">

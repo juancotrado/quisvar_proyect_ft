@@ -8,7 +8,6 @@ import {
 } from '../../../../../../services/sharingSubject';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
-  UserForm,
   GeneralFile,
   RoleForm,
   Profession,
@@ -38,6 +37,7 @@ import {
   INITIAL_VALUES_USER,
   GENDER,
   OfficeSelect,
+  UserForm,
 } from '../../models';
 import { CarRegisterSwornDeclaration } from '..';
 import { CardAddProfession } from '../cardAddProfession';
@@ -58,6 +58,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
   const {
     register,
     handleSubmit,
+    setValue,
     reset,
     watch,
     control,
@@ -93,7 +94,8 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
       setOffices(offices);
     });
   };
-  const getProfession = () => {
+  const getProfession = (data?: Profession) => {
+    if (data) setValue('job', data);
     axiosInstance.get(`/profession`).then(res => {
       setProfessions(res.data);
     });
@@ -218,7 +220,12 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
     const body = {
       name: label,
     };
-    axiosInstance.post('/office', body).then(() => {
+    axiosInstance.post<Office>('/office', body).then(({ data }) => {
+      const { offices } = watch();
+      setValue('offices', [
+        ...offices,
+        { id: data.id, label: data.name, value: String(data.id) },
+      ]);
       getOffices();
     });
   };
@@ -402,7 +409,6 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
                   defaultValue={watch('offices')}
                   control={control}
                   name="offices"
-                  itemKey="value"
                   options={offices}
                   errors={errors}
                   styleVariant="primary"
@@ -417,7 +423,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
               <div className="col-input">
                 {professions && (
                   <AdvancedSelectCrud
-                    // control={control}
+                    control={control}
                     name="job"
                     itemKey="value"
                     options={professions}

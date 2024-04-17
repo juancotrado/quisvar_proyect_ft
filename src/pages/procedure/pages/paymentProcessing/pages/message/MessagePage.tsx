@@ -88,7 +88,7 @@ export const MessagePage = () => {
   );
 
   const handleSaveRegister = () => {
-    navigate('/tramites/tramite-de-pago?refresh=true');
+    navigate('/tramites/tramite-de-pago?refresh=' + Date.now());
   };
   const isUserInitMessage = userSessionId === message.userInit.userId;
   const handleOptionSelect = (option: 'continue' | 'finish') =>
@@ -159,7 +159,7 @@ export const MessagePage = () => {
       minWidth={'30%'}
       className={`message-page-container `}
     >
-      {!isReception && (
+      {!isReception && message.status !== 'ARCHIVADO' && (
         <>
           {message.status === 'PAGADO' && (
             <div className="message-page-contain message-page-contain--right">

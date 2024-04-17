@@ -120,7 +120,7 @@ const CardProvied = ({ type, message }: CardProviedProps) => {
       `/${TYPE_PROCEDURE[type].provied}/reply-seal`,
       formData
     );
-    navigate('/tramites/tramite-de-pago?refresh=true');
+    navigate('/tramites/tramite-de-pago?refresh=' + Date.now());
   };
 
   return (

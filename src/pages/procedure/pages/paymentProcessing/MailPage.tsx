@@ -1,6 +1,11 @@
 import { useEffect, useState } from 'react';
 import './mailPage.css';
-import { MailType, MessageSender } from '../../../../types';
+import {
+  MailType,
+  MessageSender,
+  MessageStatus,
+  MessageTypeImbox,
+} from '../../../../types';
 import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
 import { listStatusMsg, listTypeMsg } from '../../../../utils';
 import {
@@ -43,7 +48,11 @@ export const MailPage = () => {
   const [isNewMessage, setIsNewMessage] = useState(false);
   //-----------------------------------------------------------------------
 
-  useEffect(() => getMessages({}), [refresh]);
+  useEffect(() => {
+    console.log('typeMail', typeMail);
+    if (!typeMail) return;
+    getMessages({ typeMail });
+  }, [refresh]);
 
   const handleNewMessage = () => {
     setIsNewMessage(true);
@@ -52,7 +61,7 @@ export const MailPage = () => {
     setIsNewMessage(false);
   };
   const handleSaveMessage = () => {
-    getMessages({});
+    getMessages({ typeMail: typeMail || 'RECEIVER' });
     setIsNewMessage(false);
   };
   const getMessages = ({
@@ -64,8 +73,9 @@ export const MailPage = () => {
     const type = (typeMail && `&type=${typeMail}`) || '';
     const status = (statusMsg && `&status=${statusMsg}`) || '';
     const typeMessage = (typeMsg && `&typeMessage=${typeMsg}`) || '';
-    const offset = `&skip=${skip}`;
+    const offset = skip ? `&skip=${skip}` : '';
     const query = `/paymail?${type}${status}${typeMessage}${offset}`;
+    console.log('query', query, type);
     axiosInstance.get(query).then(res => {
       setListMessage(res.data.mail);
       setTotalMail(res.data.total);
@@ -173,7 +183,7 @@ export const MailPage = () => {
                 placeholder="Estado"
                 onChange={({ target }) =>
                   target.value !== '0' &&
-                  getMessages({ statusMsg: target.value })
+                  getMessages({ statusMsg: target.value as MessageStatus })
                 }
                 name="Status"
                 itemKey="id"
@@ -185,7 +195,8 @@ export const MailPage = () => {
                 placeholder="Documento"
                 data={listTypeMsg}
                 onChange={({ target }) =>
-                  target.value !== '0' && getMessages({ typeMsg: target.value })
+                  target.value !== '0' &&
+                  getMessages({ typeMsg: target.value as MessageTypeImbox })
                 }
                 name="type"
                 itemKey="id"

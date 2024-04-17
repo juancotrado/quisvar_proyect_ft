@@ -1,6 +1,8 @@
 import {
   Degree,
+  MessageSender,
   MessageStatus,
+  MessageTypeImbox,
   Profession,
   Profile,
   UserProfile,
@@ -67,7 +69,7 @@ export interface UserElement {
 
 export interface MessageFunction {
   typeMail?: MessageSender;
-  statusMsg?: MessageTypeImbox;
+  statusMsg?: MessageStatus;
   typeMsg?: MessageTypeImbox;
   skip?: number;
 }

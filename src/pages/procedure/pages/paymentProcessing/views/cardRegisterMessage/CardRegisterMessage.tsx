@@ -38,7 +38,7 @@ const CardRegisterMessage = ({
   };
   const handleSave = () => {
     onSave?.();
-    navigate('?loader=true');
+    handleClose();
   };
 
   const handleClose = () => {

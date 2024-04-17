@@ -88,7 +88,7 @@ export const MessagePage = () => {
   );
 
   const handleSaveRegister = () => {
-    navigate('/tramites/tramite-de-pago?refresh=true');
+    navigate('/tramites/tramite-de-pago?refresh=' + Date.now());
   };
   const isUserInitMessage = userSessionId === message.userInit.userId;
   const handleOptionSelect = (option: 'continue' | 'finish') =>

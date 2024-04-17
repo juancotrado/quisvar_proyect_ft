@@ -44,12 +44,12 @@ export const listTypeMsg: { id: MessageTypeImbox }[] = [
   { id: 'OFICIO' },
 ];
 
-export const listStatusMsg: { id: MessageStatus }[] = [
-  { id: 'ARCHIVADO' },
-  { id: 'FINALIZADO' },
-  { id: 'GUARDADO' },
-  { id: 'PROCESO' },
-  { id: 'RECHAZADO' },
+export const listStatusMsg: { id: MessageStatus; label: string }[] = [
+  { id: 'FINALIZADO', label: 'FINALIZADO' },
+  { id: 'GUARDADO', label: 'GUARDADO' },
+  { id: 'PROCESO', label: 'PROCESO' },
+  { id: 'RECHAZADO', label: 'RECHAZADO' },
+  { id: 'POR_PAGAR', label: 'POR PAGAR' },
 ];
 
 export const radioOptions = [

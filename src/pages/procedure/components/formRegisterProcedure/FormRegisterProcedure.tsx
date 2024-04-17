@@ -104,7 +104,6 @@ const FormRegisterProcedure = ({
           return userWithArea;
         })
         .flat();
-      console.log('contacts', contacts);
       if (!isComunication) {
         setContacts(contacts);
       }

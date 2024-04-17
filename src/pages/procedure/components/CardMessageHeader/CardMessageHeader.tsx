@@ -42,7 +42,7 @@ const CardMessageHeader = ({ typeMail, option }: CardMessageHeaderProps) => {
       <div className="cardMessageHeader-header-item">
         <span>FECHA DE ENVÍO</span>
       </div>
-      {hasAccess && (
+      {hasAccess && typeMail !== 'ARCHIVER' && (
         <div className="cardMessageHeader-header-item cardMessageHeader-cursor-none">
           <span>ARCHIVAR</span>
         </div>

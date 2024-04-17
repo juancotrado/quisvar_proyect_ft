@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import './mailPage.css';
 import {
   MailType,
@@ -33,7 +33,6 @@ export const MailPage = () => {
 
   const [searchParams] = useSearchParams();
   const [listMessage, setListMessage] = useState<MailType[] | null>(null);
-  // const [listReception, setListReception] = useState<Reception[] | null>(null);
   const [totalMail, setTotalMail] = useState(0);
   const [skip, setSkip] = useState(0);
 
@@ -42,15 +41,15 @@ export const MailPage = () => {
   );
 
   //-----------------------------QUERIES-----------------------------------
-  const [typeMail, setTypeMail] = useState<MessageSender | null>(InitTMail);
+  const [typeMail, setTypeMail] = useState<MessageSender>(InitTMail);
+  const [typeMsg, setTypeMsg] = useState<MessageTypeImbox | null>(null);
+  const [statusMsg, setStatusMsg] = useState<MessageStatus | null>(null);
   //-----------------------------------------------------------------------
   const refresh = !!searchParams.get('refresh') || false;
   const [isNewMessage, setIsNewMessage] = useState(false);
   //-----------------------------------------------------------------------
 
   useEffect(() => {
-    console.log('typeMail', typeMail);
-    if (!typeMail) return;
     getMessages({ typeMail });
   }, [refresh]);
 
@@ -61,7 +60,7 @@ export const MailPage = () => {
     setIsNewMessage(false);
   };
   const handleSaveMessage = () => {
-    getMessages({ typeMail: typeMail || 'RECEIVER' });
+    getMessages({ typeMail: typeMail || 'RECEIVER', statusMsg, typeMsg });
     setIsNewMessage(false);
   };
   const getMessages = ({
@@ -75,28 +74,10 @@ export const MailPage = () => {
     const typeMessage = (typeMsg && `&typeMessage=${typeMsg}`) || '';
     const offset = skip ? `&skip=${skip}` : '';
     const query = `/paymail?${type}${status}${typeMessage}${offset}`;
-    console.log('query', query, type);
     axiosInstance.get(query).then(res => {
       setListMessage(res.data.mail);
       setTotalMail(res.data.total);
     });
-  };
-  const handleSelectReceiver = () => {
-    setTypeMail('RECEIVER');
-    getMessages({ typeMail: 'RECEIVER' });
-  };
-  const handleSelectSender = () => {
-    setTypeMail('SENDER');
-    getMessages({ typeMail: 'SENDER' });
-  };
-  const handleArchived = () => {
-    setTypeMail(null);
-    getMessages({ statusMsg: 'ARCHIVADO' });
-  };
-  const handleReception = async () => {
-    setTypeMail('RECEPTION');
-    // const { data } = await axiosInstance.get<Reception[]>(`/paymail/holding`);
-    // setListReception(data);
   };
 
   const handleViewMessage = (id: number, type: MailType['type']) => {
@@ -112,6 +93,14 @@ export const MailPage = () => {
     const limit = Math.floor(skip / 20);
     if (0 < limit) setSkip(skip === 21 ? skip - 21 : skip - 20);
   };
+  const handleSelectOption = (option: MessageSender) => {
+    setTypeMail(option);
+    setTypeMsg(null);
+    setStatusMsg(null);
+    if (option === 'RECEPTION') return;
+    if (option === 'ARCHIVER') return getMessages({ statusMsg: 'ARCHIVADO' });
+    getMessages({ typeMail: option });
+  };
 
   const optionsMailHeader = [
     {
@@ -119,31 +108,53 @@ export const MailPage = () => {
       iconOff: 'inbox-black',
       text: 'RECIBIDOS',
       isActive: typeMail === 'RECEIVER',
-      funcion: handleSelectReceiver,
+      funcion: () => handleSelectOption('RECEIVER'),
     },
     {
       iconOn: 'tabler',
       iconOff: 'tabler-black',
       text: 'ENVIADOS',
       isActive: typeMail === 'SENDER',
-      funcion: handleSelectSender,
+      funcion: () => handleSelectOption('SENDER'),
     },
     {
       iconOn: 'archive-regular',
       iconOff: 'archiver-box-black',
       text: 'ARCHIVADOS',
-      isActive: !typeMail,
-      funcion: handleArchived,
+      isActive: typeMail === 'ARCHIVER',
+      funcion: () => handleSelectOption('ARCHIVER'),
     },
     {
       iconOn: 'desk-filled',
       iconOff: 'desk-regular',
       text: 'MESA DE PARTES',
       isActive: typeMail === 'RECEPTION',
-      funcion: handleReception,
+      funcion: () => handleSelectOption('RECEPTION'),
     },
   ];
 
+  const handleFilter = ({ target }: ChangeEvent<HTMLSelectElement>) => {
+    const { value, name } = target;
+    if (!value) return;
+    if (name === 'status') {
+      const statusMsg = value as MessageStatus;
+      setStatusMsg(statusMsg);
+      getMessages({
+        statusMsg,
+        typeMail,
+        typeMsg,
+      });
+    }
+    if (name === 'type') {
+      const typeMsg = value as MessageTypeImbox;
+      setTypeMsg(typeMsg);
+      getMessages({
+        typeMsg,
+        typeMail,
+        statusMsg,
+      });
+    }
+  };
   return (
     <>
       <div className="mail-main-master-container">
@@ -179,25 +190,21 @@ export const MailPage = () => {
                 Filtrar
               </span>
               <Select
+                value={statusMsg || ''}
                 data={listStatusMsg}
                 placeholder="Estado"
-                onChange={({ target }) =>
-                  target.value !== '0' &&
-                  getMessages({ statusMsg: target.value as MessageStatus })
-                }
-                name="Status"
+                onChange={handleFilter}
+                name="status"
                 itemKey="id"
-                textField="id"
+                textField="label"
                 styleVariant="secondary"
               />
               <Select
+                value={typeMsg || ''}
                 styleVariant="secondary"
                 placeholder="Documento"
                 data={listTypeMsg}
-                onChange={({ target }) =>
-                  target.value !== '0' &&
-                  getMessages({ typeMsg: target.value as MessageTypeImbox })
-                }
+                onChange={handleFilter}
                 name="type"
                 itemKey="id"
                 textField="id"
@@ -222,6 +229,7 @@ export const MailPage = () => {
                     key={paymessageId}
                     type={type}
                     onArchiver={handleSaveMessage}
+                    typeMail={typeMail}
                     onClick={() => handleViewMessage(paymessageId, type)}
                     message={paymessage}
                     option="payProcedure"

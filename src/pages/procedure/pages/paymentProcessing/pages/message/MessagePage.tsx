@@ -159,7 +159,7 @@ export const MessagePage = () => {
       minWidth={'30%'}
       className={`message-page-container `}
     >
-      {!isReception && (
+      {!isReception && message.status !== 'ARCHIVADO' && (
         <>
           {message.status === 'PAGADO' && (
             <div className="message-page-contain message-page-contain--right">

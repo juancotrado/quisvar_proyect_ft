@@ -553,38 +553,6 @@ export interface AreaForm {
   name: string;
 }
 
-export interface UserForm {
-  id: number;
-  email: string;
-  password: string;
-  firstName: string;
-  lastName: string;
-  dni: string;
-  phone: string;
-  degree: string;
-  address: string;
-  department: string;
-  room: string;
-  gender: string;
-  userPc: string;
-  province: string;
-  district: string;
-  roleId: number | null;
-  ruc: string;
-  job: Profession;
-  offices: OfficeSelect[];
-  cv: FileList | null;
-  firstNameRef: string;
-  lastNameRef: string;
-  phoneRef: string;
-  description?: string;
-  userPc: string;
-  addressRef: string;
-  declaration: FileList | null;
-  role: Role | null;
-  roleName: string;
-}
-
 export interface Level {
   id: number;
   item: string;
@@ -918,7 +886,12 @@ export interface MailTypeComunication extends MailOrigin {
   messageId: number;
   message: MessageType;
 }
-export type MessageSender = 'SENDER' | 'RECEIVER' | 'LICENSE' | 'RECEPTION';
+export type MessageSender =
+  | 'SENDER'
+  | 'RECEIVER'
+  | 'LICENSE'
+  | 'RECEPTION'
+  | 'ARCHIVER';
 export type MessageStatus =
   | 'PROCESO'
   | 'RECHAZADO'

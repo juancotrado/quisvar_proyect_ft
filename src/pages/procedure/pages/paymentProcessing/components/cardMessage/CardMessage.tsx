@@ -14,6 +14,7 @@ interface CardMessageProps {
   onArchiver?: () => void;
   option: TypeProcedure;
   hasAccess: boolean;
+  typeMail: MessageSender;
 }
 
 const CardMessage = ({
@@ -24,6 +25,7 @@ const CardMessage = ({
   isActive,
   option,
   hasAccess,
+  typeMail,
 }: CardMessageProps) => {
   const contactUser = message.users.find(user => user.type !== type);
 
@@ -84,7 +86,7 @@ const CardMessage = ({
               {formatDateHourLongSpanish(message.updatedAt)}
             </span>
           </div>
-          {hasAccess ? (
+          {hasAccess && typeMail !== 'ARCHIVER' ? (
             <div
               className="card-message-section-item message-cursor-none"
               onClick={e => e.stopPropagation()}

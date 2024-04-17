@@ -15,7 +15,7 @@ import { AppDispatch } from '../../../../../../store';
 import { getListUsers } from '../../../../../../store/slices/listUsers.slice';
 
 interface CardAddProfessionProps {
-  onSave?: () => void;
+  onSave?: (data?: Profession) => void;
 }
 const CardAddProfession = ({ onSave }: CardAddProfessionProps) => {
   const dispatch: AppDispatch = useDispatch();
@@ -61,11 +61,12 @@ const CardAddProfession = ({ onSave }: CardAddProfessionProps) => {
     };
     if (value) {
       await axiosInstance.patch(`/profession/${value}`, body);
+      onSave?.();
     } else {
-      await axiosInstance.post(`/profession`, body);
+      const res = await axiosInstance.post<Profession>(`/profession`, body);
       dispatch(getListUsers());
+      onSave?.(res.data);
     }
-    onSave?.();
     closeFunctions();
   };
   const closeFunctions = () => {

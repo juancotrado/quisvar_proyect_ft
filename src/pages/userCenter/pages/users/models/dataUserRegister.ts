@@ -1,4 +1,4 @@
-import { UserForm } from '../../../../../types';
+import { UserForm } from './types';
 
 export const JOB_DATA = [
   { value: 'Ingeniería Agronómica', abrv: 'Ing' },
@@ -163,6 +163,7 @@ export const INITIAL_VALUES_USER: UserForm = {
   room: '',
   userPc: '',
   role: null,
+  offices: [],
   gender: '',
   roleName: '',
 };

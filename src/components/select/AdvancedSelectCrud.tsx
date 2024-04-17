@@ -31,6 +31,7 @@ const AdvancedSelectCrud = ({
   urlDelete,
   itemKey,
   placeholder = 'Seleccione...',
+  isMulti,
   ...props
 }: AdvancedSelectCrudProps) => {
   const [selectData, setSelectData] = useState(options);
@@ -73,6 +74,7 @@ const AdvancedSelectCrud = ({
       name={name}
       rules={{ required: 'Debes seleccionar una opción' }}
       render={({ field: { onChange: onChangeForm, value: data } }) => {
+        console.log('data', data);
         return (
           <AdvancedSelect
             placeholder={placeholder}
@@ -81,12 +83,17 @@ const AdvancedSelectCrud = ({
             isClearable
             isCreatable
             onCreateOption={onCreateOption}
-            value={selectData.find(c => c.value === data?.[itemKey])}
+            value={
+              !isMulti
+                ? selectData.find(c => c.value === data?.[itemKey])
+                : data
+            }
             label={label}
             errors={errors}
             name={name}
             onChange={onChangeForm}
             styleVariant={styleVariant}
+            isMulti={isMulti}
             {...props}
           />
         );

@@ -69,7 +69,7 @@ export interface UserElement {
 
 export interface MessageFunction {
   typeMail?: MessageSender;
-  statusMsg?: MessageStatus;
-  typeMsg?: MessageTypeImbox;
+  statusMsg?: MessageStatus | null;
+  typeMsg?: MessageTypeImbox | null;
   skip?: number;
 }

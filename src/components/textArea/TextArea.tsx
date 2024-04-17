@@ -24,7 +24,7 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
       isRelative = false,
       errorPosY = 0,
       disabled,
-      styleInput = 1,
+      styleInput = 2,
 
       ...props
     },

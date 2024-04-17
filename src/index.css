@@ -89,12 +89,6 @@ input {
   outline: transparent;
 }
 
-/* input:focus, */
-select:focus {
-  box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2),
-    0px 2px 0px 0px var(--color-primary);
-}
-
 textarea {
   font-family: inherit;
   border: none;
@@ -233,18 +227,6 @@ a.nostyle:visited {
   height: 1px;
 }
 
-.input-style-two {
-  border-radius: 0.25rem;
-  border: 0.5px solid rgba(0, 0, 0, 0.2);
-  padding: 0.5rem;
-  background: #fff;
-  font-size: 0.85rem;
-  font-style: normal;
-  font-weight: 400;
-  height: auto;
-  flex: 1;
-  box-shadow: none;
-}
 fieldset {
   padding: 1rem;
   border-color: #ddd;

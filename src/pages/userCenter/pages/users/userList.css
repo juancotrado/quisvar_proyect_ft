@@ -73,9 +73,20 @@
 }
 
 .user-count {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   padding: 0.2rem;
+  border-radius: 50%;
+  width: 2rem;
+  font-weight: 600;
+  aspect-ratio: 1;
 }
-
+.userList-number {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 .userList-options-right {
   display: flex;
   height: 100%;

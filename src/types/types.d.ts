@@ -1178,7 +1178,7 @@ export type TrainingName = {
   specialistId: number;
 };
 export type AreaSpecialtyName = {
-  specialtyName: string;
+  specialtyName: OptionSelect;
   specialistId: number;
 };
 

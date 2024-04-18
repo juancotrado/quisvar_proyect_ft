@@ -7,7 +7,7 @@ import {
   MessageTypeImbox,
 } from '../../../../types';
 import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
-import { listStatusMsg, listTypeMsg } from '../../../../utils';
+import { holdingOptions, listStatusMsg, listTypeMsg } from '../../../../utils';
 import {
   Button,
   CardGenerateReport,
@@ -32,6 +32,12 @@ export const MailPage = () => {
   const { hasAccess } = useRole('MOD', 'tramites', 'tramite-de-pago');
 
   const [searchParams] = useSearchParams();
+  const { offices } = useSelector((state: RootState) => state.userSession);
+
+  const officeSelect = offices.map(office => ({
+    ...office,
+    label: office.office.name,
+  }));
   const [listMessage, setListMessage] = useState<MailType[] | null>(null);
   const [totalMail, setTotalMail] = useState(0);
   const [skip, setSkip] = useState(0);
@@ -43,9 +49,12 @@ export const MailPage = () => {
   //-----------------------------QUERIES-----------------------------------
   const [typeMail, setTypeMail] = useState<MessageSender>(InitTMail);
   const [typeMsg, setTypeMsg] = useState<MessageTypeImbox | null>(null);
+  const [officeMsg, setOfficeMsg] = useState<string | null>(null);
   const [statusMsg, setStatusMsg] = useState<MessageStatus | null>(null);
+  const [holdingReception, setHoldingReception] = useState<'yes' | 'no'>('yes');
+
   //-----------------------------------------------------------------------
-  const refresh = !!searchParams.get('refresh') || false;
+  const refresh = searchParams.get('refresh');
   const [isNewMessage, setIsNewMessage] = useState(false);
   //-----------------------------------------------------------------------
 
@@ -60,20 +69,27 @@ export const MailPage = () => {
     setIsNewMessage(false);
   };
   const handleSaveMessage = () => {
-    getMessages({ typeMail: typeMail || 'RECEIVER', statusMsg, typeMsg });
+    getMessages({
+      typeMail: typeMail || 'RECEIVER',
+      statusMsg,
+      typeMsg,
+      officeMsg,
+    });
     setIsNewMessage(false);
   };
   const getMessages = ({
     typeMail,
     statusMsg,
     typeMsg,
+    officeMsg,
     skip,
   }: MessageFunction) => {
     const type = (typeMail && `&type=${typeMail}`) || '';
     const status = (statusMsg && `&status=${statusMsg}`) || '';
     const typeMessage = (typeMsg && `&typeMessage=${typeMsg}`) || '';
     const offset = skip ? `&skip=${skip}` : '';
-    const query = `/paymail?${type}${status}${typeMessage}${offset}`;
+    const officeId = officeMsg ? `&officeId=${officeMsg}` : '';
+    const query = `/paymail?${type}${status}${typeMessage}${offset}${officeId}`;
     axiosInstance.get(query).then(res => {
       setListMessage(res.data.mail);
       setTotalMail(res.data.total);
@@ -97,6 +113,8 @@ export const MailPage = () => {
     setTypeMail(option);
     setTypeMsg(null);
     setStatusMsg(null);
+    setOfficeMsg(null);
+    setHoldingReception('yes');
     if (option === 'RECEPTION') return;
     if (option === 'ARCHIVER') return getMessages({ statusMsg: 'ARCHIVADO' });
     getMessages({ typeMail: option });
@@ -135,36 +153,50 @@ export const MailPage = () => {
 
   const handleFilter = ({ target }: ChangeEvent<HTMLSelectElement>) => {
     const { value, name } = target;
-    if (!value) return;
+    // if (!value) return;
     if (name === 'status') {
       const statusMsg = value as MessageStatus;
       setStatusMsg(statusMsg);
+      if (typeMail === 'RECEPTION') return;
       getMessages({
         statusMsg,
         typeMail,
+        officeMsg,
         typeMsg,
       });
     }
     if (name === 'type') {
       const typeMsg = value as MessageTypeImbox;
       setTypeMsg(typeMsg);
+      if (typeMail === 'RECEPTION') return;
       getMessages({
         typeMsg,
         typeMail,
         statusMsg,
+        officeMsg,
       });
+    }
+    if (name === 'office') {
+      const officeMsg = value;
+      setOfficeMsg(value);
+      if (typeMail === 'RECEPTION') return;
+      getMessages({
+        typeMsg,
+        typeMail,
+        statusMsg,
+        officeMsg,
+      });
+    }
+
+    if (name === 'condition') {
+      const holdingReception = value as 'yes' | 'no';
+      setHoldingReception(holdingReception);
     }
   };
   return (
     <>
       <div className="mail-main-master-container">
         <div className={`message-container-header`}>
-          <IconAction
-            icon="refresh"
-            onClick={() => getMessages({})}
-            right={0.9}
-            top={3.7}
-          />
           <div className="message-options-filter">
             <div className="message-header-option">
               {optionsMailHeader
@@ -189,16 +221,18 @@ export const MailPage = () => {
                 />
                 Filtrar
               </span>
-              <Select
-                value={statusMsg || ''}
-                data={listStatusMsg}
-                placeholder="Estado"
-                onChange={handleFilter}
-                name="status"
-                itemKey="id"
-                textField="label"
-                styleVariant="secondary"
-              />
+              {typeMail !== 'ARCHIVER' && (
+                <Select
+                  value={statusMsg || ''}
+                  data={listStatusMsg}
+                  placeholder="Estado"
+                  onChange={handleFilter}
+                  name="status"
+                  itemKey="id"
+                  textField="label"
+                  styleVariant="secondary"
+                />
+              )}
               <Select
                 value={typeMsg || ''}
                 styleVariant="secondary"
@@ -208,6 +242,36 @@ export const MailPage = () => {
                 name="type"
                 itemKey="id"
                 textField="id"
+              />
+
+              <Select
+                style={{ width: '11rem' }}
+                value={officeMsg || ''}
+                styleVariant="secondary"
+                placeholder="Oficina"
+                data={officeSelect}
+                onChange={handleFilter}
+                name="office"
+                itemKey="officeId"
+                textField="label"
+              />
+              {typeMail === 'RECEPTION' && (
+                <Select
+                  value={holdingReception || ''}
+                  styleVariant="secondary"
+                  placeholder="Condición"
+                  data={holdingOptions}
+                  onChange={handleFilter}
+                  name="condition"
+                  itemKey="id"
+                  textField="label"
+                />
+              )}
+              <IconAction
+                icon="refresh"
+                onClick={() => handleSelectOption(typeMail)}
+                size={4}
+                position="none"
               />
             </div>
             <Button
@@ -238,7 +302,12 @@ export const MailPage = () => {
                 ))}
             </>
           ) : (
-            <ReceptionView />
+            <ReceptionView
+              officeMsg={officeMsg}
+              typeMsg={typeMsg}
+              statusMsg={statusMsg}
+              holdingReception={holdingReception}
+            />
           )}
         </div>
         <div className="mail-footer-section">

@@ -52,12 +52,16 @@ const cardMessageReception = ({
         onClick={e => e.stopPropagation()}
         style={{ justifyContent: 'center' }}
       >
-        <Button
-          icon="check-blue"
-          style={{ border: 'none', backgroundColor: 'inherit' }}
-          text="Aprobar"
-          onClick={() => handleButton(reception.id)}
-        />
+        {reception.onHolding ? (
+          <Button
+            icon="check-blue"
+            style={{ border: 'none', backgroundColor: 'inherit' }}
+            text="Aprobar"
+            onClick={() => handleButton(reception.id)}
+          />
+        ) : (
+          'Aprobado'
+        )}
       </div>
     </div>
   );

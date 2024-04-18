@@ -1,34 +1,40 @@
 .mail-main-options-title-filter {
   display: flex;
-  margin-top: 0.3rem;
   align-items: center;
   height: 20px;
   font-size: 0.8rem;
   font-weight: 500;
 }
+
 .mail-mail-options-title-filter-img {
   width: 1.2rem;
   height: 1.2rem;
 }
+
 .mail-main-options-container {
+  align-items: center;
   display: flex;
   gap: 0.5rem;
   width: fit-content;
 }
+
 .message-header-option {
   display: flex;
 }
+
 @media (max-width: 768px) {
   .mail-main-options-container {
     flex-wrap: wrap;
   }
 }
+
 .message-container-header-options {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 0.5rem;
 }
+
 .mail-main-options-btn {
   background-color: var(--color-menu);
   border: 0;
@@ -55,6 +61,7 @@
   min-width: 3rem;
   max-width: 9rem;
 }
+
 .options-main-selected {
   border-bottom: 3px solid var(--color-quaternay);
 }
@@ -68,6 +75,7 @@
   filter: drop-shadow(0px 4px 3px rgb(0 0 0 / 0.3));
   height: 100%;
 }
+
 .mail-messages-container {
   /* overflow-y: auto; */
   margin: 0 0.3rem;
@@ -79,12 +87,14 @@
   background-color: #fff;
   font-size: 0.8rem;
 }
+
 .message-container-header {
   /* position: sticky; */
   top: 0;
   display: flex;
   flex-direction: column;
 }
+
 .message-options-filter {
   display: flex;
   gap: 0.5rem;
@@ -115,10 +125,12 @@
   border-start-end-radius: var(--radius-button);
   border-end-start-radius: var(--radius-button);
 }
+
 .mail-m-size-false {
   width: 0;
   max-width: 70vw;
 }
+
 .mail-footer-section {
   position: fixed;
   display: flex;
@@ -127,9 +139,11 @@
   bottom: 1rem;
   right: 1rem;
 }
+
 .mail-pagination-title {
   font-size: 15px;
 }
+
 .mail-previus-btn-pagination {
   display: flex;
   padding: 0;
@@ -137,16 +151,19 @@
   border: none;
   border-radius: 0;
 }
+
 .mail-previus-btn-pagination img {
   transform: rotate(90deg);
   width: 100%;
   height: 100%;
 }
+
 .mail-next-btn-pagination img {
   transform: rotate(-90deg);
   width: 100%;
   height: 100%;
 }
+
 .mail-next-btn-pagination {
   display: flex;
   padding: 0;
@@ -154,6 +171,7 @@
   border: none;
   border-radius: 0;
 }
+
 .mail-license {
   color: var(--color-primary);
   cursor: pointer;
@@ -164,9 +182,11 @@
   align-items: center;
   gap: 0.25rem;
 }
+
 .mail-license:hover {
   text-decoration: underline;
 }
+
 .mail-grid-container {
   overflow-y: auto;
   height: 80%;

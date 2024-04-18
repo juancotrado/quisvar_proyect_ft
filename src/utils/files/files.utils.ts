@@ -61,6 +61,11 @@ export const radioOptions = [
   { id: 'COORDINACION', value: 'COORDINACION' },
 ];
 
+export const holdingOptions = [
+  { id: 'yes', label: 'APROBADO' },
+  { id: 'no', label: 'POR APROBAR' },
+];
+
 export const HashFile = (name: string) => {
   const newValue = name.split(' ');
   const parseValue = newValue.map(value => value.slice(0, 1).toUpperCase());

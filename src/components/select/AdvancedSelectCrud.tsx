@@ -11,7 +11,6 @@ interface AdvancedSelectCrudProps extends SelectProps {
   label?: string;
   name: string;
   placeholder?: string;
-  itemKey?: string;
   styleVariant?: StylesVariant;
   onCreateOption?: (value: string) => void;
   onEditOption?: (value: any) => void;
@@ -29,7 +28,6 @@ const AdvancedSelectCrud = ({
   onCreateOption,
   onSave,
   urlDelete,
-  itemKey,
   placeholder = 'Seleccione...',
   isMulti,
   ...props
@@ -68,7 +66,7 @@ const AdvancedSelectCrud = ({
       </components.Option>
     );
   };
-  return control && itemKey ? (
+  return control ? (
     <Controller
       control={control}
       name={name}
@@ -84,9 +82,7 @@ const AdvancedSelectCrud = ({
             isCreatable
             onCreateOption={onCreateOption}
             value={
-              !isMulti
-                ? selectData.find(c => c.value === data?.[itemKey])
-                : data
+              !isMulti ? selectData.find(c => c.value === data.value) : data
             }
             label={label}
             errors={errors}

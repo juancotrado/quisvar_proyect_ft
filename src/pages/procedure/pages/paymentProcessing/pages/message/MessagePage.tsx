@@ -1,6 +1,11 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useCallback, useEffect, useState } from 'react';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import {
+  useLocation,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import {
   MessageSendType,
@@ -34,6 +39,9 @@ import { ProcedureMoreInfo } from '../../../../views/procedureMoreInfo';
 
 export const MessagePage = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const officeMsg = searchParams.get('officeId');
+  const officeId = officeMsg ? `&officeId=${officeMsg}` : '';
   const { paymessageId } = useParams();
   const { hasAccess } = useRole('MOD', 'tramites', 'tramite-de-pago');
   const { state } = useLocation();
@@ -50,11 +58,15 @@ export const MessagePage = () => {
   //----------------------------------------------------------------------------
   const getMessage = useCallback(
     (id: string) => {
-      axiosInstance.get(`/paymail/${id}`).then(res => {
-        setMessage(res.data);
-      });
+      if (officeMsg && isNaN(+officeMsg)) {
+        navigate('/tramites/tramite-de-pago');
+      } else {
+        axiosInstance.get(`/paymail/${id}?${officeId}`).then(res => {
+          setMessage(res.data);
+        });
+      }
     },
-    [userSessionId]
+    [userSessionId, officeMsg]
   );
   useEffect(() => {
     if (paymessageId && userSessionId) getMessage(paymessageId);
@@ -82,6 +94,7 @@ export const MessagePage = () => {
       role === 'MAIN' &&
       type == 'RECEIVER'
   );
+
   const mainReceiverFinish = users.some(
     ({ user, role, type }) =>
       user.id === userSessionId && role === 'MAIN' && type == 'RECEIVER'
@@ -90,9 +103,12 @@ export const MessagePage = () => {
   const handleSaveRegister = () => {
     navigate('/tramites/tramite-de-pago?refresh=' + Date.now());
   };
+
   const isUserInitMessage = userSessionId === message.userInit.userId;
+
   const handleOptionSelect = (option: 'continue' | 'finish') =>
     setProcedureOption(option);
+
   const handleProvied = () => setIsProvied(!isProvied);
 
   const onSubmit = async (data: ProcedureSubmit) => {
@@ -116,6 +132,7 @@ export const MessagePage = () => {
         handleSaveRegister();
       });
   };
+
   const getInitValuesForForm = (): MessageSendType => {
     const { header, title, type } = message;
 
@@ -127,6 +144,7 @@ export const MessagePage = () => {
       signature: false,
     };
   };
+
   const transformDescriptionValues = () => {
     const tempElement = document.createElement('div');
     tempElement.innerHTML = message.description;
@@ -134,11 +152,13 @@ export const MessagePage = () => {
 
     return elementDescription?.innerHTML || '';
   };
+
   const handleArchiverMessage = () => {
     axiosInstance
       .patch(`/paymail/archived/${message.id}`)
       .then(handleSaveRegister);
   };
+
   const handleArchiver = () => {
     isOpenConfirmAction$.setSubject = {
       isOpen: true,

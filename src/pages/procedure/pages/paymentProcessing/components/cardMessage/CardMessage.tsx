@@ -63,8 +63,10 @@ const CardMessage = ({
           <div className="card-message-section-item">
             <span className={`card-status-message status-${message.status}`}>
               {option === 'comunication' && 'Comunicado'}
-              {option === 'payProcedure' &&
-                TYPE_STATUS[message.status]?.toLowerCase()}
+              {option === 'payProcedure' && message.onHolding
+                ? 'en espera'
+                : option === 'payProcedure' &&
+                  TYPE_STATUS[message.status]?.toLowerCase()}
               {option === 'regularProcedure' &&
                 TYPE_STATUS_REGULAR_PROCEDURA[message.status]?.toLowerCase()}
             </span>

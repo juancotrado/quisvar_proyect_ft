@@ -96,9 +96,10 @@ export const MailPage = () => {
     });
   };
 
-  const handleViewMessage = (id: number, type: MailType['type']) => {
+  const handleViewMessage = (id: number) => {
     setIsNewMessage(false);
-    navigate(`${id}?type=${type}`);
+    const officeId = officeMsg ? `&officeId=${officeMsg}` : '';
+    navigate(`${id}?${officeId}`);
   };
   const handleNextPage = () => {
     const total = Math.floor(totalMail / 20);
@@ -294,7 +295,7 @@ export const MailPage = () => {
                     type={type}
                     onArchiver={handleSaveMessage}
                     typeMail={typeMail}
-                    onClick={() => handleViewMessage(paymessageId, type)}
+                    onClick={() => handleViewMessage(paymessageId)}
                     message={paymessage}
                     option="payProcedure"
                     hasAccess={hasAccess}

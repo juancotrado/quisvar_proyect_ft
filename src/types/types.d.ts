@@ -914,6 +914,7 @@ export interface MessageType {
   description: string;
   createdAt: Date;
   header: string;
+  onHolding: boolean;
   initialSender: userMessage;
   filesPay: {
     files: fileMesage[];

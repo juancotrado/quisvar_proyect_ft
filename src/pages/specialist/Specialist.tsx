@@ -18,6 +18,7 @@ export const Specialist = () => {
   }, []);
   const getSpecialists = () => {
     axiosInstance.get('/specialists').then(item => setSpecialist(item.data));
+    axiosInstance.get('/listSpecialties').then(item => console.log(item.data));
   };
   const handleAddSpecilist = () => {
     isOpenCardSpecialist$.setSubject = {

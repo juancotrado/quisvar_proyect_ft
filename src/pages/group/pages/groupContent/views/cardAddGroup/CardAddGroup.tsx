@@ -21,7 +21,7 @@ const CardAddGroup = ({ onSave }: CardAddGroupProps) => {
   const [hasId, setHasId] = useState<number>();
   const handleIsOpen = useRef<Subscription>(new Subscription());
   const [searchTerm, setSearchTerm] = useState('');
-  const { listUsers: users } = useSelector((state: RootState) => state);
+  const users = useSelector((state: RootState) => state.listUsers);
 
   const { handleSubmit } = useForm<UserId>();
 

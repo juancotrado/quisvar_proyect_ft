@@ -28,6 +28,7 @@ const IconAction = ({
   zIndex,
 }: IconActionProps) => {
   const style: CSSProperties = {
+    cursor: 'pointer',
     width: `${size}rem`,
     height: `${size}rem`,
     left: `${left}rem`,

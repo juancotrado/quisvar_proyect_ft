@@ -229,7 +229,7 @@ a.nostyle:visited {
 
 fieldset {
   padding: 1rem;
-  border-color: #ddd;
+  border-color: #eeeeee50;
   border-radius: 0.5rem;
 }
 legend {

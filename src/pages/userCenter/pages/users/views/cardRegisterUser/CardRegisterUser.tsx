@@ -425,7 +425,6 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
                   <AdvancedSelectCrud
                     control={control}
                     name="job"
-                    itemKey="value"
                     options={professions}
                     errors={errors}
                     styleVariant="primary"

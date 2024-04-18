@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Input } from '../../../../../../components';
+import { AdvancedSelectCrud } from '../../../../../../components';
 import {
   AreaSpecialty,
   AreaSpecialtyName,
@@ -14,6 +14,10 @@ import {
   sumAllExperience,
 } from '../../../../../../utils';
 import { ExperienceTable } from '..';
+import { CardEditSpecialties } from '../../views/cardEditSpecialties';
+import { isOpenCardOffice$ } from '../../../../../../services/sharingSubject';
+import { OfficeSelect } from '../../../../../procedure/models';
+import { SpecialtiesSelect } from '../../../../../userCenter/pages/users/models';
 
 interface ExperienceProps {
   experiences?: Experience[];
@@ -30,16 +34,17 @@ export const ExperienceInformation = ({
   const [experienceSelected, setExperienceSelected] = useState<number | null>(
     null
   );
+  const [specialties, setProfessions] = useState<SpecialtiesSelect[] | null>(
+    null
+  );
   const [openAddSpeciality, setOpenAddSpeciality] = useState<boolean>(false);
   const { infoId } = useParams();
   const {
     handleSubmit,
-    register,
     reset,
-    // watch,
+    control,
     formState: { errors },
   } = useForm<AreaSpecialtyName>();
-
   useEffect(() => {
     return () => {
       setExperienceSelected(null);
@@ -48,7 +53,7 @@ export const ExperienceInformation = ({
 
   const onSubmitData: SubmitHandler<AreaSpecialtyName> = async body => {
     const data = {
-      specialtyName: body.specialtyName,
+      specialtyName: body.specialtyName.label,
       specialistId: Number(infoId),
     };
     axiosInstance.post('/areaSpecialtyList', data).then(() => {
@@ -69,9 +74,42 @@ export const ExperienceInformation = ({
     setOpenAddSpeciality(false);
     reset({});
   };
+  const handleCreateOffice = (label: string) => {
+    const body = {
+      name: label,
+    };
+    axiosInstance.post('/listSpecialties', body).then(() => {
+      getSpecialties();
+    });
+  };
   const handleDelete = (id: number) => {
     axiosInstance.delete(`/areaSpecialty/${id}`).then(() => onSave?.());
   };
+
+  useEffect(() => {
+    getSpecialties();
+  }, []);
+
+  const getSpecialties = () => {
+    axiosInstance
+      .get(`/listSpecialties`)
+      .then(res => {
+        setProfessions(res.data);
+      })
+      .catch(error => {
+        console.error('Error fetching professions:', error);
+      });
+  };
+  const handleEditSS = ({ label, id }: SpecialtiesSelect) => {
+    isOpenCardOffice$.setSubject = {
+      isOpen: true,
+      data: {
+        id,
+        name: label,
+      },
+    };
+  };
+
   return (
     <>
       <span className="specialist-info-title">Especialidades</span>
@@ -121,35 +159,39 @@ export const ExperienceInformation = ({
               <h3>Añadir especialidad</h3>
             </div>
           ) : (
-            <form
-              onSubmit={handleSubmit(onSubmitData)}
-              className="projectAddLevel-form"
-            >
-              <Input
-                {...register('specialtyName', {
-                  validate: { validateWhiteSpace, validateCorrectTyping },
-                })}
-                name="specialtyName"
-                placeholder="Nombre de la especialidad"
-                className="specialist-add-experience-field"
-                errors={errors}
-              />
-              <figure
-                className="projectAddLevel-figure"
-                onClick={handleSubmit(onSubmitData)}
+            specialties && (
+              <form
+                onSubmit={handleSubmit(onSubmitData)}
+                className="projectAddLevel-form"
               >
-                <img src="/svg/icon_save.svg" alt="W3Schools" />
-              </figure>
-              <figure
-                className="projectAddLevel-figure"
-                onClick={handleHideForm}
-              >
-                <img src="/svg/icon_close.svg" alt="W3Schools" />
-              </figure>
-            </form>
+                <AdvancedSelectCrud
+                  control={control}
+                  options={specialties}
+                  name="specialtyName"
+                  itemKey="value"
+                  onCreateOption={handleCreateOffice}
+                  onEditOption={handleEditSS}
+                  urlDelete={'/listSpecialties'}
+                  onSave={getSpecialties}
+                />
+                <figure
+                  className="projectAddLevel-figure"
+                  onClick={handleSubmit(onSubmitData)}
+                >
+                  <img src="/svg/icon_save.svg" alt="W3Schools" />
+                </figure>
+                <figure
+                  className="projectAddLevel-figure"
+                  onClick={handleHideForm}
+                >
+                  <img src="/svg/icon_close.svg" alt="W3Schools" />
+                </figure>
+              </form>
+            )
           )}
         </span>
       </div>
+      <CardEditSpecialties onSave={getSpecialties} />
     </>
   );
 };

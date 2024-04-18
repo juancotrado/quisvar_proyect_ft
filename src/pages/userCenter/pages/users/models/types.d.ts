@@ -18,6 +18,11 @@ export interface OfficeSelect {
   quantity?: number;
   value: string;
 }
+export interface SpecialtiesSelect {
+  id: numnber;
+  label: string;
+  value: string;
+}
 export interface UserForm {
   id: number;
   email: string;

@@ -12,7 +12,7 @@
   flex-direction: column;
 }
 .grc-group-title {
-  height: calc(100% * 2 / 3);
+  height: 50%;
   display: flex;
   justify-content: flex-start;
   padding: 0 1rem;
@@ -22,7 +22,16 @@
 }
 .grc-options-container {
   display: flex;
-  height: calc(100% * 1 / 3);
+  height: 50%;
+  justify-content: space-between;
+  align-items: center;
+}
+.grc-navs {
+  display: flex;
+}
+.grc-btn-nav {
+  height: 27px;
+  margin-right: 1rem;
 }
 .grc-options {
   padding: 0.625rem 1.875rem;
@@ -41,24 +50,33 @@
   color: var(--color-primary);
 }
 .grc-body {
-  width: 100%;
+  /* width: 100%; */
   height: calc(100% - 7rem);
   background-color: var(--color-menu);
-  height: 100%;
-  display: flex;
+  /* height: 100%; */
+  /* display: grid;
+  grid-template-columns: 2fr 1fr; */
   gap: 0.5rem;
 }
-
+.show {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+}
+.no-show {
+  display: flex;
+  width: 100%;
+}
 .grc-performance {
   background-color: white;
-  width: calc(100% * 2 / 3);
+  width: 100%;
   height: 100%;
-  padding: 1.5rem 1rem;
+  padding: 0.5rem 1rem;
+  overflow-y: auto;
 }
 
 .grc-list-users {
   background-color: white;
-  width: calc(100% * 1 / 3);
+  max-width: 100%;
   height: 100%;
   padding: 1.5rem 1rem;
   display: flex;

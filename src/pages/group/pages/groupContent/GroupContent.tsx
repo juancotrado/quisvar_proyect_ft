@@ -11,6 +11,7 @@ import { ContextMenuTrigger } from 'rctx-contextmenu';
 export const GroupContent = () => {
   const { groupId, name } = useParams();
   const [members, setMembers] = useState<Group>();
+  const [show, setShow] = useState<boolean>(true);
   const getUserGroup = useCallback(() => {
     axiosInstance.get(`/groups/${groupId}`).then(res => setMembers(res.data));
   }, [groupId]);
@@ -41,106 +42,117 @@ export const GroupContent = () => {
           {name}: {members?.name}
         </h1>
         <div className="grc-options-container">
-          <NavLink
-            to={`proyectos/${groupId}`}
-            className={({ isActive }) =>
-              `grc-options  ${isActive && 'grc-selected'} `
-            }
-          >
-            <h4>PROYECTOS</h4>
-          </NavLink>
-          <NavLink
-            to={`reuniones/${groupId}`}
-            className={({ isActive }) =>
-              `grc-options  ${isActive && 'grc-selected'} `
-            }
-          >
-            <h4>REUNIONES DIARIAS</h4>
-          </NavLink>
-          <NavLink
+          <div className="grc-navs">
+            <NavLink
+              to={`proyectos/${groupId}`}
+              className={({ isActive }) =>
+                `grc-options  ${isActive && 'grc-selected'} `
+              }
+            >
+              <h4>PROYECTOS</h4>
+            </NavLink>
+            <NavLink
+              to={`reuniones/${groupId}`}
+              className={({ isActive }) =>
+                `grc-options  ${isActive && 'grc-selected'} `
+              }
+            >
+              <h4>REUNIONES DIARIAS</h4>
+            </NavLink>
+          </div>
+          {/* <NavLink
             to={`semanal/${groupId}`}
             className={({ isActive }) =>
               `grc-options  ${isActive && 'grc-selected'} `
             }
           >
             <h4>COMPROMISOS SEMANALES</h4>
-          </NavLink>
+          </NavLink> */}
+          <Button
+            text={`${show ? 'Ocultar' : 'Mostrar'} integrantes`}
+            onClick={() => setShow(!show)}
+            className="grc-btn-nav"
+          />
         </div>
       </div>
-      <div className="grc-body">
+      <div className={`grc-body ${show ? 'show' : 'no-show'}`}>
         <section className="grc-performance">
           <Outlet />
         </section>
-        <section className="grc-list-users">
-          <div className="grc-title-list">
-            <h1 className="grc-title-name">INTEGRANTES</h1>
-            <Button
-              text="Agregar"
-              icon="plus"
-              className="grc-btn-add"
-              onClick={() => groupId && handleOpenCard(+groupId)}
-            />
-          </div>
-          <div className="grc-member-table">
-            <div className="grc-list-header">
-              <h1 className="grc-title-member">#</h1>
-              <h1 className="grc-title-member">INTEGRANTE</h1>
-              {/* <h1 className="grc-title-member">USUARIO</h1> */}
-              <h1 className="grc-title-member">Borrar</h1>
+        {show && (
+          <section className="grc-list-users">
+            <div className="grc-title-list">
+              <h1 className="grc-title-name">INTEGRANTES</h1>
+              <Button
+                text="Agregar"
+                icon="plus"
+                className="grc-btn-add"
+                onClick={() => groupId && handleOpenCard(+groupId)}
+              />
             </div>
-            {members?.groups &&
-              members.groups.map((member, index) => {
-                const mod: Option[] = [
-                  {
-                    name: 'Hacer coordinador',
-                    type: 'button',
-                    // icon: 'person',
-                    function: () => changeMod(member.users.id, true),
-                  },
-                ];
-                const noMod: Option[] = [
-                  {
-                    name: 'Hacer miembro',
-                    type: 'button',
-                    // icon: 'person',
-                    function: () => changeMod(member.users.id, false),
-                  },
-                ];
-                return (
-                  <div key={member?.users.id}>
-                    <ContextMenuTrigger
-                      className="grc-list-members"
-                      id={`group-${member.users.id}`}
-                    >
-                      <h1 className="grc-member-name">{index + 1}</h1>
-                      <h1
-                        className={`grc-member-${member.mod ? 'mod' : 'name'}`}
+            <div className="grc-member-table">
+              <div className="grc-list-header">
+                <h1 className="grc-title-member">#</h1>
+                <h1 className="grc-title-member">INTEGRANTE</h1>
+                {/* <h1 className="grc-title-member">USUARIO</h1> */}
+                <h1 className="grc-title-member">Borrar</h1>
+              </div>
+              {members?.groups &&
+                members.groups.map((member, index) => {
+                  const mod: Option[] = [
+                    {
+                      name: 'Hacer coordinador',
+                      type: 'button',
+                      // icon: 'person',
+                      function: () => changeMod(member.users.id, true),
+                    },
+                  ];
+                  const noMod: Option[] = [
+                    {
+                      name: 'Hacer miembro',
+                      type: 'button',
+                      // icon: 'person',
+                      function: () => changeMod(member.users.id, false),
+                    },
+                  ];
+                  return (
+                    <div key={member?.users.id}>
+                      <ContextMenuTrigger
+                        className="grc-list-members"
+                        id={`group-${member.users.id}`}
                       >
-                        {member.users.profile.firstName}{' '}
-                        {member.users.profile.lastName}
-                      </h1>
-                      {/* <span className="ule-size-pc">
+                        <h1 className="grc-member-name">{index + 1}</h1>
+                        <h1
+                          className={`grc-member-${
+                            member.mod ? 'mod' : 'name'
+                          }`}
+                        >
+                          {member.users.profile.firstName}{' '}
+                          {member.users.profile.lastName}
+                        </h1>
+                        {/* <span className="ule-size-pc">
                     <img src="/svg/pc-icon.svg" className="ule-icon-size" />
                     {member.users.profile.userPc ?? '---'}
                   </span> */}
-                      <span className="ule-size-pc">
-                        <ButtonDelete
-                          icon="trash"
-                          url={`/groups/relation/${member?.users.id}/${groupId}`}
-                          className="role-delete-icon"
-                          onSave={getUserGroup}
-                        />
-                      </span>
-                    </ContextMenuTrigger>
-                    <DotsRight
-                      data={member.mod ? noMod : mod}
-                      idContext={`group-${member.users.id}`}
-                    />
-                  </div>
-                );
-              })}
-          </div>
-        </section>
+                        <span className="ule-size-pc">
+                          <ButtonDelete
+                            icon="trash"
+                            url={`/groups/relation/${member?.users.id}/${groupId}`}
+                            className="role-delete-icon"
+                            onSave={getUserGroup}
+                          />
+                        </span>
+                      </ContextMenuTrigger>
+                      <DotsRight
+                        data={member.mod ? noMod : mod}
+                        idContext={`group-${member.users.id}`}
+                      />
+                    </div>
+                  );
+                })}
+            </div>
+          </section>
+        )}
       </div>
       <CardAddGroup onSave={getUserGroup} />
     </div>

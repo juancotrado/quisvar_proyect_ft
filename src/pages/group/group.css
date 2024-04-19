@@ -6,7 +6,7 @@
 
 .gr-list {
   display: flex;
-  width: 17rem;
+  min-width: 10rem;
   /* height: 100%; */
   padding: 1.4375rem 0.5rem;
   flex-direction: column;

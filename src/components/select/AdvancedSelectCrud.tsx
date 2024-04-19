@@ -2,23 +2,34 @@ import { useEffect, useState } from 'react';
 import { OptionSelect, StylesVariant } from '../../types';
 import { OptionProps, components, Props as SelectProps } from 'react-select';
 import { AdvancedSelect, ButtonDelete, IconAction } from '..';
-import { Control, Controller } from 'react-hook-form';
+import {
+  Control,
+  Controller,
+  FieldErrors,
+  FieldValues,
+  Path,
+} from 'react-hook-form';
 
-interface AdvancedSelectCrudProps extends SelectProps {
-  options: OptionSelect[];
-  control?: Control<any, any, any>;
-  errors?: { [key: string]: any };
+interface AdvancedSelectCrudProps<
+  OptionValues extends OptionSelect,
+  FormData extends FieldValues
+> extends SelectProps {
+  options: OptionValues[];
+  control?: Control<FormData>;
+  errors?: FieldErrors<FormData>;
   label?: string;
-  name: string;
+  name: Path<FormData>;
   placeholder?: string;
-  itemKey?: string;
   styleVariant?: StylesVariant;
   onCreateOption?: (value: string) => void;
-  onEditOption?: (value: any) => void;
+  onEditOption?: (value: OptionValues) => void;
   onSave?: () => void;
   urlDelete: string;
 }
-const AdvancedSelectCrud = ({
+const AdvancedSelectCrud = <
+  OptionValues extends OptionSelect,
+  FormData extends FieldValues
+>({
   options,
   control,
   errors,
@@ -29,12 +40,11 @@ const AdvancedSelectCrud = ({
   onCreateOption,
   onSave,
   urlDelete,
-  itemKey,
   placeholder = 'Seleccione...',
   isMulti,
   ...props
-}: AdvancedSelectCrudProps) => {
-  const [selectData, setSelectData] = useState(options);
+}: AdvancedSelectCrudProps<OptionValues, FormData>) => {
+  const [selectData, setSelectData] = useState<OptionValues[]>(options);
   useEffect(() => {
     setSelectData(options);
   }, [options]);
@@ -68,7 +78,7 @@ const AdvancedSelectCrud = ({
       </components.Option>
     );
   };
-  return control && itemKey ? (
+  return control ? (
     <Controller
       control={control}
       name={name}
@@ -84,9 +94,7 @@ const AdvancedSelectCrud = ({
             isCreatable
             onCreateOption={onCreateOption}
             value={
-              !isMulti
-                ? selectData.find(c => c.value === data?.[itemKey])
-                : data
+              !isMulti ? selectData.find(c => c.value === data.value) : data
             }
             label={label}
             errors={errors}

@@ -54,6 +54,7 @@ export type Duty = {
   shortName: string;
   titleMeeting?: string;
   dutyGroup?: string;
+  dutyGroupDate?: string;
   members: DutyMember[];
   listId: number;
   createdAt?: Date | string;
@@ -64,7 +65,9 @@ export type DutyMember = {
   fullName: string;
   task: DutyTasks[];
   feedBack?: string;
+  feedBackDate?: string;
   dailyDuty?: string;
+  dailyDutyDate?: string;
   attendance?: string;
   dutyId: number;
 };

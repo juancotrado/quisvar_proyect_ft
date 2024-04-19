@@ -173,7 +173,7 @@
 .smi-add-specialty {
   display: flex;
   justify-content: space-between;
-  width: 12rem;
+  /* width: 12rem; */
   color: var(--color-primary);
   cursor: pointer;
   padding: 1.25rem 0;

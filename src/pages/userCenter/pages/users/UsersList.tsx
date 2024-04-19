@@ -115,45 +115,27 @@ const UsersList = () => {
             onChange={handleSearchChange}
             classNameMain="filter-user-input"
           />
+          <div className="userList-number">
+            Usuarios {isArchived ? 'Activos' : 'Inactivos'}:{' '}
+            <span
+              className={`${
+                !isArchived ? 'btn-filter-unavailable' : 'btn-filter-available'
+              } user-count`}
+            >
+              {filterList.length}
+            </span>
+          </div>
           <div className="userList-options-right">
-            <p>
-              Usuarios {isArchived ? 'Activos' : 'Inactivos'}:{' '}
-              <span
-                className={`${
-                  !isArchived
-                    ? 'btn-filter-unavailable'
-                    : 'btn-filter-available'
-                } user-count`}
-              >
-                {filterList.length}
-              </span>
-            </p>
             <Button
               text={`${isArchived ? 'Ver archivados' : 'Ver en actividad'}`}
-              className={`btn-filter ${
+              className={`${
                 isArchived ? 'btn-filter-unavailable' : 'btn-filter-available'
               }`}
               onClick={() => setIsArchived(!isArchived)}
             />
-            <Button
-              text="Equipos"
-              className="userList-btn"
-              // onClick={handleOpenCardFiles}
-            />
-            <Button
-              text="Ver Directivas"
-              className="userList-btn"
-              onClick={handleOpenCardFiles}
-            />
-
-            <div>
-              <Button
-                text="Agregar"
-                icon="plus"
-                className="userList-btn"
-                onClick={addUser}
-              />
-            </div>
+            <Button text="Equipos" />
+            <Button text="Ver Directivas" onClick={handleOpenCardFiles} />
+            <Button text="Agregar" icon="plus" onClick={addUser} />
           </div>
         </div>
         <div className="header-container-list header-grid-row">

@@ -1,35 +1,44 @@
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 // import { Input } from '../../../../../components';
 import { _date } from '../../../../../utils';
-import { DutyMember } from '../../../types';
+import { DutyMember, DutyTasks } from '../../../types';
 import './members.css';
 import { Dispatch, useEffect, useState } from 'react';
 import { axiosInstance } from '../../../../../services/axiosInstance';
-import { AdvancedSelect, Button } from '../../../../../components';
+import { Button, Select } from '../../../../../components';
+import { MembersTasks } from './tasks';
 // import { PROJECT_STATUS } from '../../../../userCenter/pages/users/models';
 interface MembersProps {
   members: DutyMember[];
   dutyId: number;
   onSave: () => void;
+  edit: boolean;
   editMember: Dispatch<React.SetStateAction<DutyMember[]>>;
 }
 
 const options = [
-  { color: '#57d9a3b6', value: 'PUNTUAL', label: 'PUNTUAL' },
-  { color: '#ffd240ab', value: 'TARDE', label: 'TARDE' },
-  { color: '#df00003a', value: 'SIMPLE', label: 'FALTA' },
-  { color: '#df00006e', value: 'GRAVE', label: 'GRAVE' },
-  { color: '#c00000a2', value: 'MUY_GRAVE', label: 'MUY GRAVE' },
-  { color: '#2263e58f', value: 'PERMISO', label: 'LICENCIA' },
+  { id: 1, color: '#57d9a3b6', value: 'PUNTUAL', label: 'PUNTUAL' },
+  { id: 2, color: '#ffd240ab', value: 'TARDE', label: 'TARDE' },
+  { id: 3, color: '#df00003a', value: 'SIMPLE', label: 'FALTA' },
+  { id: 4, color: '#df00006e', value: 'GRAVE', label: 'GRAVE' },
+  { id: 5, color: '#c00000a2', value: 'MUY_GRAVE', label: 'MUY GRAVE' },
+  { id: 6, color: '#2263e58f', value: 'PERMISO', label: 'LICENCIA' },
 ];
 
-const Members = ({ members, dutyId, onSave, editMember }: MembersProps) => {
+const Members = ({
+  members,
+  dutyId,
+  onSave,
+  editMember,
+  edit,
+}: MembersProps) => {
   const [sendItems, setSendItems] = useState<DutyMember[]>([]);
+  // const [editTasks, setEditTasks] = useState<DutyTasks[]>([]);
   const {
     register,
     // handleSubmit,
     //setValue,
-    control,
+    // control,
     reset,
     // watch,
     // formState: { errors },
@@ -37,23 +46,16 @@ const Members = ({ members, dutyId, onSave, editMember }: MembersProps) => {
   useEffect(() => {
     if (members) {
       setSendItems(members);
-      const xd = members.map(member => {
-        return {
-          id: member.id,
-          position: member.position,
-          fullName: member.fullName,
-          feedBack: member.feedBack,
-          dailyDuty: member.dailyDuty,
-          attendance: member.attendance,
-        };
-      });
-      reset(xd);
+      reset({ ...members });
     }
-  }, [members, reset]);
+  }, [members, reset, edit]);
   // console.log(members);
 
-  const handleChange = (idx: number, field: string, value: string) => {
-    console.log(field, value);
+  const handleChange = (
+    idx: number,
+    field: string,
+    value: string | DutyTasks[]
+  ) => {
     if (!value) return;
     const updatedItems = [...sendItems];
     updatedItems[idx] = {
@@ -73,7 +75,7 @@ const Members = ({ members, dutyId, onSave, editMember }: MembersProps) => {
       {sendItems &&
         sendItems.map((member, idx) => (
           <div className="member-body" key={idx}>
-            <h1>{idx + 1}</h1>
+            <h1 className="member-index">{idx + 1}</h1>
             <input
               {...register(`${idx}.fullName` as const)}
               className={`member-list right-border ${
@@ -83,43 +85,81 @@ const Members = ({ members, dutyId, onSave, editMember }: MembersProps) => {
                 if (e.target.value === member.fullName) return;
                 handleChange(idx, 'fullName', e.target.value);
               }}
+              disabled={!!member.fullName || !edit}
             />
-            <Controller
-              control={control}
-              name={`${idx}.attendance` as const}
-              rules={{ required: 'Debes seleccionar una opción' }}
-              render={({ field: { onChange } }) => (
-                <AdvancedSelect
-                  // placeholder="Dirigida a"
-                  options={options}
-                  isClearable
-                  // errors={errors}
-                  name="to"
-                  onChange={onChange}
-                />
-              )}
+            <Select
+              {...register(`${idx}.attendance` as const)}
+              itemKey="label"
+              name="select"
+              textField="label"
+              data={options}
+              // placeholder="Proyecto"
+              onChange={e => handleChange(idx, 'attendance', e.target.value)}
+              disabled={!edit}
             />
-            <h1 className="member-list">xd</h1>
-            <input
-              {...register(`${idx}.feedBack` as const)}
-              className={`member-list right-border ${
-                idx !== 0 && 'top-border'
-              }`}
-              onBlur={e => {
-                if (e.target.value === member.feedBack) return;
-                handleChange(idx, 'feedBack', e.target.value);
-              }}
+            <MembersTasks
+              tasks={member.task}
+              editTask={e => handleChange(idx, 'task', e as DutyTasks[])}
+              edit={edit}
             />
-            <input
-              {...register(`${idx}.dailyDuty` as const)}
-              className={`member-list right-border ${
-                idx !== 0 && 'top-border'
-              }`}
-              onBlur={e => {
-                if (e.target.value === member.dailyDuty) return;
-                handleChange(idx, 'dailyDuty', e.target.value);
-              }}
-            />
+            <div className="member-daily">
+              <textarea
+                {...register(`${idx}.feedBack` as const)}
+                className={`member-list right-border ${
+                  idx !== 0 && 'top-border'
+                }`}
+                onBlur={e => {
+                  if (e.target.value === member.feedBack) return;
+                  handleChange(idx, 'feedBack', e.target.value);
+                }}
+                style={{
+                  minHeight: '50px',
+                  resize: 'none',
+                  overflow: 'hidden',
+                  border: '1px solid #ccc',
+                }}
+                disabled={!edit}
+              />
+              <input
+                {...register(`${idx}.feedBackDate` as const)}
+                type="date"
+                className="member-date"
+                disabled={!edit}
+                onChange={e => {
+                  if (e.target.value === member.feedBackDate) return;
+                  handleChange(idx, 'feedBackDate', e.target.value);
+                }}
+              />
+            </div>
+            <div className="member-daily">
+              <textarea
+                {...register(`${idx}.dailyDuty` as const)}
+                className={`member-list right-border ${
+                  idx !== 0 && 'top-border'
+                }`}
+                style={{
+                  minHeight: '50px',
+                  resize: 'none',
+                  overflow: 'hidden',
+                  border: '1px solid #ccc',
+                }}
+                onBlur={e => {
+                  if (e.target.value === member.dailyDuty) return;
+                  handleChange(idx, 'dailyDuty', e.target.value);
+                }}
+                disabled={!edit}
+              />
+              <input
+                {...register(`${idx}.dailyDutyDate` as const)}
+                type="date"
+                className="member-date"
+                disabled={!edit}
+                onChange={e => {
+                  if (e.target.value === member.dailyDutyDate) return;
+                  handleChange(idx, 'dailyDutyDate', e.target.value);
+                }}
+              />
+            </div>
           </div>
         ))}
       <Button icon="add1" onClick={handleAddRow} className="member-add" />

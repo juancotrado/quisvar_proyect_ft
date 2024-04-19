@@ -71,5 +71,6 @@ export interface MessageFunction {
   typeMail?: MessageSender;
   statusMsg?: MessageStatus | null;
   typeMsg?: MessageTypeImbox | null;
+  officeMsg?: string | null;
   skip?: number;
 }

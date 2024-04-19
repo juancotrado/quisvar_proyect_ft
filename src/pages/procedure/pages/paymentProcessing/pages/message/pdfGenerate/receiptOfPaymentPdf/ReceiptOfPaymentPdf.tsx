@@ -21,7 +21,7 @@ const ReceiptOfPaymentPdf = ({ data }: ReceiptOfPaymentPdfProps) => {
             HE RECIBIDO DE LA EMPRESA
             <Text style={styles.textBold}>
               {' '}
-              {data.companyName.toUpperCase()}
+              {data.company.name.toUpperCase()}
             </Text>{' '}
             POR CONCEPTO DE :
           </Text>

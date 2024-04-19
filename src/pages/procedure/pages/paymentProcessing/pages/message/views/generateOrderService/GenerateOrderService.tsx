@@ -1,14 +1,16 @@
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import {
   Input,
   Select,
   TextArea,
   Button,
+  AdvancedSelect,
 } from '../../../../../../../../components';
 import './generateOrderService.css';
 import { validateWhiteSpace } from '../../../../../../../../utils';
 import {
   Companies,
+  CompanySelect,
   MessageType,
   ServiceOrderForm,
 } from '../../../../../../../../types';
@@ -27,18 +29,25 @@ const GenerateOrderService = ({
   message,
   onSave,
 }: GenerateOrderServiceProps) => {
-  const [companies, setCompanies] = useState<null | Companies[]>(null);
+  const [companies, setCompanies] = useState<null | CompanySelect[]>(null);
 
   const {
     handleSubmit,
     register,
     watch,
+    setValue,
+    control,
     formState: { errors },
   } = useForm<ServiceOrderForm>();
 
   useEffect(() => {
-    axiosInstance.get('/companies').then(res => {
-      setCompanies(res.data);
+    axiosInstance.get<Companies[]>('/companies').then(res => {
+      const transformData: CompanySelect[] = res.data.map(el => ({
+        ...el,
+        label: el.name,
+        value: String(el.id),
+      }));
+      setCompanies(transformData);
     });
   }, []);
 
@@ -53,17 +62,15 @@ const GenerateOrderService = ({
 
   const getData = () => {
     const { profile, ruc, address } = message.userInit.user;
-    const { companyId, ...formData } = watch();
-    const companySelect = companies?.find(company => company.id === +companyId);
+    const { company, ...formData } = watch();
     const dataServiceOrder = {
       ...formData,
       ...profile,
       ruc,
       address,
       title: message.title,
-      companyName: companySelect?.name ?? '',
-      companyRuc: companySelect?.ruc ?? '',
-      companyId,
+      company,
+      companyId: company.id,
     };
     return dataServiceOrder;
   };
@@ -81,6 +88,7 @@ const GenerateOrderService = ({
       isOpen: true,
     };
   };
+  console.log(watch('company')?.orderQuantity);
   return (
     <div className="generateOrderService">
       <h2 className="generateOrderService-title">
@@ -92,18 +100,27 @@ const GenerateOrderService = ({
       >
         <div className="col-input">
           {companies && (
-            <Select
-              {...register('companyId', {
-                validate: { validateWhiteSpace },
-              })}
-              label="Empresa:"
-              name="companyId"
-              data={companies}
-              itemKey="id"
-              textField="name"
-              errors={errors}
-              placeholder="Seleccionar la empresa"
-              className="messagePage-input"
+            <Controller
+              control={control}
+              name="company"
+              rules={{ required: 'Debes seleccionar una opción' }}
+              render={({ field: { onChange: onChangeForm } }) => (
+                <AdvancedSelect
+                  placeholder="Selecione una opción"
+                  options={companies}
+                  isClearable
+                  label={'Empresa:'}
+                  errors={errors}
+                  name="company"
+                  onChange={value => {
+                    setValue(
+                      'ordenNumber',
+                      (value as CompanySelect).orderQuantity
+                    );
+                    onChangeForm(value);
+                  }}
+                />
+              )}
             />
           )}
           <Input

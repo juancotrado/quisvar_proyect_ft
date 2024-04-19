@@ -39,7 +39,7 @@ export interface ServiceOrderForm {
   payType: string;
   acountNumber: string;
   acountCheck: string;
-  companyId: string;
+  company: CompanySelect;
   ordenNumber: number;
 }
 export interface ServiceOrderData extends ServiceOrderForm {
@@ -51,8 +51,8 @@ export interface ServiceOrderData extends ServiceOrderForm {
   description: string;
   ruc: string;
   address: string;
-  companyName: string;
-  companyRuc: string;
+  // companyName: string;
+  // companyRuc: string;
   title: string;
 }
 export interface ReportForm {
@@ -1108,7 +1108,7 @@ export type getLicenses = {
   // status: licenseStatus;
   usersId: number;
 };
-export type Companies = {
+export interface Companies {
   id: number;
   name: string;
   ruc: string;
@@ -1121,7 +1121,10 @@ export type Companies = {
   CCI: string;
   img?: string;
   description: string;
-};
+  orderQuantity: number;
+}
+
+export type CompanySelect = Companies & OptionSelect;
 export type SpecialistProject = {
   id: number;
   specialistId: number;

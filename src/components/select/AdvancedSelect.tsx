@@ -8,11 +8,13 @@ import SelectReact, {
 import CreatableSelect from 'react-select/creatable';
 import { StylesVariant } from '../../types';
 import { STYLE_SELECT_ADVANCE } from './selectDefinitions';
+import { FieldErrors, FieldValues, Path } from 'react-hook-form';
 
-interface AdvancedSelectProps extends SelectProps {
+interface AdvancedSelectProps<FormData extends FieldValues>
+  extends SelectProps {
   label?: string;
-  data?: { [key: string]: any }[];
-  errors?: { [key: string]: any };
+  name: Path<FormData>;
+  errors?: FieldErrors<FormData>;
   errorPosX?: number;
   errorPosY?: number;
   onCreateOption?: (inputValue: string) => void;
@@ -23,9 +25,8 @@ interface AdvancedSelectProps extends SelectProps {
   styleVariant?: StylesVariant;
 }
 
-const AdvancedSelect = ({
+const AdvancedSelect = <FormData extends FieldValues>({
   label,
-  data,
   name,
   errorPosX = 0,
   errorPosY = 0,
@@ -37,7 +38,7 @@ const AdvancedSelect = ({
   styleVariant = 'primary',
   onCreateOption,
   ...props
-}: AdvancedSelectProps) => {
+}: AdvancedSelectProps<FormData>) => {
   const style: CSSProperties = {
     transform: `translate(${errorPosX}px,${errorPosY}px)`,
     position: isRelative ? 'static' : 'absolute',
@@ -62,8 +63,8 @@ const AdvancedSelect = ({
             className="input-span-icon"
           />
           {errors[name]?.type === 'required'
-            ? errors[name].message || 'Por favor llene el campo.'
-            : errors[name].message}
+            ? errors[name]?.message?.toString() || 'Por favor llene el campo.'
+            : errors[name]?.message?.toString()}
         </span>
       )}
     </div>

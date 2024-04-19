@@ -33,18 +33,22 @@ interface Schedule {
   initDate: string;
   finishDate: string;
 }
-export interface ServiceOrderData {
+export interface ServiceOrderForm {
+  concept: string;
+  amount: string;
+  payType: string;
+  acountNumber: string;
+  acountCheck: string;
+  companyId: string;
+  ordenNumber: number;
+}
+export interface ServiceOrderData extends ServiceOrderForm {
   firstName: string;
   lastName: string;
   dni: string;
   phone: string;
   degree: string;
   description: string;
-  concept: string;
-  amount: string;
-  payType: string;
-  acountNumber: string;
-  acountCheck: string;
   ruc: string;
   address: string;
   companyName: string;
@@ -1213,14 +1217,7 @@ export interface Equipment {
     };
   };
 }
-export interface ServiceOrderForm {
-  concept: string;
-  amount: string;
-  payType: string;
-  acountNumber: string;
-  acountCheck: string;
-  companyId: string;
-}
+
 export interface UserGroup {
   users: {
     id: number;

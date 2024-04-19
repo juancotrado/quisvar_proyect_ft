@@ -13,7 +13,7 @@ const ReceiptOfPaymentPdf = ({ data }: ReceiptOfPaymentPdfProps) => {
             alignItems: 'center',
           }}
         >
-          <Text style={styles.title}>RECIBO DE PAGO</Text>
+          <Text style={styles.title}>RECIBO DE PAGO - {data.ordenNumber}</Text>
         </View>
         <View style={{ gap: 15 }}>
           <Text style={styles.text}>

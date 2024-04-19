@@ -39,13 +39,6 @@ close-add-card.content-area {
   width: 100%;
 }
 
-.input-label {
-  width: 100%;
-  color: rgb(72, 70, 70);
-  font-size: var(--size-label);
-  font-family: 'Montserrat', sans-serif;
-}
-
 .switch-status-label {
   /* font-size: var(--size-label); */
   text-transform: uppercase;

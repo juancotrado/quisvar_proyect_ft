@@ -174,8 +174,8 @@ export const MessagePage = () => {
         bottom: false,
         left: true,
       }}
-      maxWidth={'73%'}
-      minWidth={'30%'}
+      maxWidth={'60%'}
+      minWidth={'50%'}
       className={`message-page-container `}
     >
       {!isReception && message.status !== 'ARCHIVADO' && (

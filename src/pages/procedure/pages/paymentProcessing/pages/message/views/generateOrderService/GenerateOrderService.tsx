@@ -63,6 +63,7 @@ const GenerateOrderService = ({
       title: message.title,
       companyName: companySelect?.name ?? '',
       companyRuc: companySelect?.ruc ?? '',
+      companyId,
     };
     return dataServiceOrder;
   };
@@ -89,38 +90,51 @@ const GenerateOrderService = ({
         className="generateOrderService-form"
         onSubmit={handleSubmit(onSubmit)}
       >
-        {companies && (
-          <Select
-            {...register('companyId', {
+        <div className="col-input">
+          {companies && (
+            <Select
+              {...register('companyId', {
+                validate: { validateWhiteSpace },
+              })}
+              label="Empresa:"
+              name="companyId"
+              data={companies}
+              itemKey="id"
+              textField="name"
+              errors={errors}
+              placeholder="Seleccionar la empresa"
+              className="messagePage-input"
+            />
+          )}
+          <Input
+            label="Numero de orden:"
+            {...register('ordenNumber', {
               validate: { validateWhiteSpace },
+              valueAsNumber: true,
             })}
-            name="companyId"
-            data={companies}
-            itemKey="id"
-            textField="name"
             errors={errors}
-            placeholder="Seleccionar la empresa"
-            className="messagePage-input"
+            placeholder="N° Orden"
+            name="ordenNumber"
+            type="number"
           />
-        )}
+        </div>
         <TextArea
           label="Concepto:"
           {...register('concept', {
             validate: { validateWhiteSpace },
           })}
+          defaultValue={message.header}
           rows={3}
           isRelative
           name="concept"
           placeholder="Concepto"
           errors={errors}
-          className="messagePage-input"
         />
-        <div className="messagePage-input-contain">
+        <div className="col-input">
           <Input
             label="Monto (S/.):"
             {...register('amount', { validate: { validateWhiteSpace } })}
             errors={errors}
-            className="messagePage-input"
             placeholder="Monto"
             name="amount"
             type="number"
@@ -136,7 +150,6 @@ const GenerateOrderService = ({
             textField="value"
             errors={errors}
             placeholder="Seleccione"
-            className="messagePage-input"
           />
         </div>
         {watch('payType') === 'CUENTA' && (

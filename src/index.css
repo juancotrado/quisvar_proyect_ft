@@ -238,3 +238,10 @@ legend {
   color: var(--color-secondary);
   font-weight: 700;
 }
+.input-label {
+  width: 100%;
+  color: var(--color-gray-text);
+  font-weight: 500;
+  font-size: var(--size-label);
+  height: 1.6rem;
+}

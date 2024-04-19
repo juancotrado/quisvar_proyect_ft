@@ -25,13 +25,6 @@
   width: 100%;
 }
 
-.input-label {
-  width: 100%;
-  height: 25px;
-  color: rgb(72, 70, 70);
-  font-size: var(--size-label);
-}
-
 select:focus {
   outline: none;
 }

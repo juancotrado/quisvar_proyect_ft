@@ -46,7 +46,7 @@ const AdvancedSelect = <FormData extends FieldValues>({
   const SelectComponent = isCreatable ? CreatableSelect : SelectReact;
   return (
     <div className="select-container">
-      {label && <label className="select-label">{label}</label>}
+      {label && <label className="input-label">{label}</label>}
 
       <SelectComponent
         formatCreateLabel={inputValue => 'Crear: ' + inputValue}

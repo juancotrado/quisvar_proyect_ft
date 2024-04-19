@@ -20,7 +20,7 @@ import { CardRegisterMessage } from './views';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { CardMessageHeader } from '../../components';
 import { useRole } from '../../../../hooks';
-import { MessageFunction } from '../../models';
+import { MessageFunction, Reception } from '../../models';
 import { ReceptionView } from '../../views/reception';
 import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
@@ -33,6 +33,7 @@ export const MailPage = () => {
 
   const [searchParams] = useSearchParams();
   const { offices } = useSelector((state: RootState) => state.userSession);
+  const [listReception, setListReception] = useState<Reception[] | null>(null);
 
   const officeSelect = offices.map(office => ({
     ...office,
@@ -82,13 +83,28 @@ export const MailPage = () => {
     statusMsg,
     typeMsg,
     officeMsg,
+    holdingReception,
     skip,
   }: MessageFunction) => {
     const type = typeMail && typeMail !== 'ARCHIVER' ? `&type=${typeMail}` : '';
     const status = (statusMsg && `&status=${statusMsg}`) || '';
     const typeMessage = (typeMsg && `&typeMessage=${typeMsg}`) || '';
     const offset = skip ? `&skip=${skip}` : '';
+
     const officeId = officeMsg ? `&officeId=${officeMsg}` : '';
+    if (typeMail === 'RECEPTION') {
+      const onHolding = holdingReception
+        ? `&onHolding=${holdingReception === 'yes'}`
+        : '';
+      axiosInstance
+        .get<Reception[]>(
+          `/paymail/holding?${officeId}${status}${typeMessage}${onHolding}`
+        )
+        .then(({ data }) => {
+          setListReception(data);
+        });
+      return;
+    }
     const query = `/paymail?${type}${status}${typeMessage}${offset}${officeId}`;
     axiosInstance.get(query).then(res => {
       setListMessage(res.data.mail);
@@ -116,10 +132,10 @@ export const MailPage = () => {
     setStatusMsg(null);
     setOfficeMsg(null);
     setHoldingReception('yes');
-    if (option === 'RECEPTION') return;
     if (option === 'ARCHIVER') {
       setStatusMsg('ARCHIVADO');
       getMessages({ statusMsg: 'ARCHIVADO' });
+      return;
     }
     getMessages({ typeMail: option });
   };
@@ -161,40 +177,47 @@ export const MailPage = () => {
     if (name === 'status') {
       const statusMsg = value as MessageStatus;
       setStatusMsg(statusMsg);
-      if (typeMail === 'RECEPTION') return;
       getMessages({
         statusMsg,
         typeMail,
         officeMsg,
         typeMsg,
+        holdingReception,
       });
     }
     if (name === 'type') {
       const typeMsg = value as MessageTypeImbox;
       setTypeMsg(typeMsg);
-      if (typeMail === 'RECEPTION') return;
       getMessages({
         typeMsg,
         typeMail,
         statusMsg,
         officeMsg,
+        holdingReception,
       });
     }
     if (name === 'office') {
       const officeMsg = value;
       setOfficeMsg(value);
-      if (typeMail === 'RECEPTION') return;
       getMessages({
         typeMsg,
         typeMail,
         statusMsg,
         officeMsg,
+        holdingReception,
       });
     }
 
     if (name === 'condition') {
       const holdingReception = value as 'yes' | 'no';
       setHoldingReception(holdingReception);
+      getMessages({
+        typeMsg,
+        typeMail,
+        statusMsg,
+        officeMsg,
+        holdingReception,
+      });
     }
   };
   return (
@@ -306,12 +329,12 @@ export const MailPage = () => {
                 ))}
             </>
           ) : (
-            <ReceptionView
-              officeMsg={officeMsg}
-              typeMsg={typeMsg}
-              statusMsg={statusMsg}
-              holdingReception={holdingReception}
-            />
+            listReception && (
+              <ReceptionView
+                onSave={() => handleSelectOption(typeMail)}
+                listReception={listReception}
+              />
+            )
           )}
         </div>
         <div className="mail-footer-section">

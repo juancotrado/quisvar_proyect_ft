@@ -73,4 +73,5 @@ export interface MessageFunction {
   typeMsg?: MessageTypeImbox | null;
   officeMsg?: string | null;
   skip?: number;
+  holdingReception?: 'yes' | 'no' | null;
 }

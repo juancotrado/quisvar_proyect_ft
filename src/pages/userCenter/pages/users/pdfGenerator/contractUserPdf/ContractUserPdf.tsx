@@ -331,7 +331,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
               {profile.job.label} S/.{' '}
               {formatAmountMoney(contractualWelcomeAmount)} {'('}
               {NumerosALetras(contractualWelcomeAmount)}
-              {')'}
+              {').'}
             </Text>
           </Text>
           <Text>&nbsp;</Text>

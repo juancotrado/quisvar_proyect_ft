@@ -79,13 +79,6 @@
   font-weight: 500;
 }
 
-.input-label {
-  width: 100%;
-  color: rgb(72, 70, 70);
-  font-weight: 500;
-  font-size: var(--size-label);
-}
-
 .input-label-col {
   display: flex;
   align-items: center;

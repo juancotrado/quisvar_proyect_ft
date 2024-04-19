@@ -28,7 +28,7 @@ const cardMessageReception = ({
       </div>
       <div className="card-message-section-item ">
         <span className="card-status-span ">
-          {sender.user.profile.firstName} {sender.user.profile.lastName}
+          {sender?.user.profile.firstName} {sender?.user.profile.lastName}
         </span>
       </div>
       <div className="card-message-section-item">

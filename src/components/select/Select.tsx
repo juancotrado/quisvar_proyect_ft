@@ -44,7 +44,7 @@ export const SelectOptions = forwardRef<HTMLSelectElement, SelectOptionsProps>(
     return (
       <div className="select-container">
         {label && (
-          <label htmlFor="email" className="select-label">
+          <label htmlFor="email" className="input-label">
             {label}
           </label>
         )}

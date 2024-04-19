@@ -262,7 +262,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
           </h1>
           <fieldset>
             <legend className="card-register-title-info">
-              Datos de Personales:
+              Datos de Personales
             </legend>
             <div className="card-register-content">
               <div className="col-input">

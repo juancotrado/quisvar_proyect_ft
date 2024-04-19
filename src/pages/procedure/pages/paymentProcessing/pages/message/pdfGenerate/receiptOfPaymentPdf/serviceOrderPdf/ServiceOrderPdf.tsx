@@ -36,7 +36,7 @@ export const ServiceOrderPdf = ({ data }: ServiceOrderPdfProps) => {
           </View>
           <View style={styles.tableRow}>
             <View style={{ ...styles.tableCol, width: '50%' }}>
-              <Text style={styles.headers}>1</Text>
+              <Text style={styles.headers}>{data.ordenNumber}</Text>
             </View>
             <View style={{ ...styles.tableCol, width: '50%' }}>
               <Text style={styles.headers}>{currentData}</Text>

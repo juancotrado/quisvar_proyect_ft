@@ -2,7 +2,10 @@ import { Document, Page, Text, View } from '@react-pdf/renderer';
 import { styles } from './styleServiceOrderPdf';
 import { ServiceOrderData } from '../../../../../../../../../types/types';
 import { NumerosALetras } from '../../../../../../../../../utils/numerosALetras';
-import { formatDate } from '../../../../../../../../../utils';
+import {
+  formatAmountMoney,
+  formatDate,
+} from '../../../../../../../../../utils';
 // window.convertir = require(' numero-a-letras ');
 interface ServiceOrderPdfProps {
   data: ServiceOrderData;
@@ -99,7 +102,7 @@ export const ServiceOrderPdf = ({ data }: ServiceOrderPdfProps) => {
             </View>
             <View style={{ ...styles.tableCol, width: '15%' }}>
               <Text style={styles.headers}>
-                {Number(data.amount).toFixed(2)}
+                {formatAmountMoney(+data.amount)}
               </Text>
             </View>
           </View>
@@ -107,7 +110,7 @@ export const ServiceOrderPdf = ({ data }: ServiceOrderPdfProps) => {
         <View style={styles.footer}>
           <Text style={styles.text}>SON:{NumerosALetras(+data.amount)}</Text>
           <Text style={styles.text}>
-            TOTAL S/ {Number(data.amount).toFixed(2)}
+            TOTAL S/ {formatAmountMoney(+data.amount)}
           </Text>
         </View>
         <View style={styles.signature}>

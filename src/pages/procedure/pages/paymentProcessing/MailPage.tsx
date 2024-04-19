@@ -84,7 +84,7 @@ export const MailPage = () => {
     officeMsg,
     skip,
   }: MessageFunction) => {
-    const type = (typeMail && `&type=${typeMail}`) || '';
+    const type = typeMail && typeMail !== 'ARCHIVER' ? `&type=${typeMail}` : '';
     const status = (statusMsg && `&status=${statusMsg}`) || '';
     const typeMessage = (typeMsg && `&typeMessage=${typeMsg}`) || '';
     const offset = skip ? `&skip=${skip}` : '';
@@ -117,7 +117,10 @@ export const MailPage = () => {
     setOfficeMsg(null);
     setHoldingReception('yes');
     if (option === 'RECEPTION') return;
-    if (option === 'ARCHIVER') return getMessages({ statusMsg: 'ARCHIVADO' });
+    if (option === 'ARCHIVER') {
+      setStatusMsg('ARCHIVADO');
+      getMessages({ statusMsg: 'ARCHIVADO' });
+    }
     getMessages({ typeMail: option });
   };
 

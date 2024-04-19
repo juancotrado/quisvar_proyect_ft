@@ -47,6 +47,8 @@ const GenerateOrderService = ({
     axiosInstance
       .patch(`/paymail/done/${message.id}`, {
         paymentPdfData: JSON.stringify(data),
+        ordenNumber: data.ordenNumber,
+        companyId: +data.companyId,
       })
       .then(onSave);
   };

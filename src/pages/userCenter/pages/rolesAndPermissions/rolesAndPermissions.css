@@ -41,7 +41,7 @@
 
 .rolesAndPermissions-table-subHeader {
   display: grid;
-  background-color: var(--color-gray);
+  background-color: var(--color-primarylight);
   grid-template-columns: 2fr;
 }
 .rolesAndPermissions-table-body {

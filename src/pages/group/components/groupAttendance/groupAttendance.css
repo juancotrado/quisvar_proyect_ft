@@ -13,7 +13,7 @@
 .ga-header {
   display: grid;
   grid-template-columns: 0.5fr 5fr 1fr;
-  background-color: var(--color-gray);
+  background-color: var(--color-primarylight);
   padding: 0.5rem 0.4rem;
 }
 

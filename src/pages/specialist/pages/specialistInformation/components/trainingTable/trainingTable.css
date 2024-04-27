@@ -10,7 +10,7 @@
   width: 100%;
   height: 2rem;
   font-size: 0.6875rem;
-  background-color: var(--color-gray);
+  background-color: var(--color-primarylight);
   grid-template-columns: 0.5fr 1.5fr 1.5fr 1fr 1.5fr 1fr;
   padding: 0 0.3rem;
   align-items: center;

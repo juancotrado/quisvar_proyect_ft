@@ -56,6 +56,7 @@
   /* height: 100%; */
   /* display: grid;
   grid-template-columns: 2fr 1fr; */
+  position: relative;
   gap: 0.5rem;
 }
 .show {
@@ -108,7 +109,7 @@
 .grc-list-header {
   display: grid;
   grid-template-columns: 0.5fr 7fr 2fr;
-  background-color: var(--color-gray);
+  background-color: var(--color-primarylight);
   padding: 0.5rem 0.4rem;
   gap: 4px;
 }

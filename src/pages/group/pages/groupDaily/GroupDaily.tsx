@@ -7,6 +7,8 @@ import { useParams } from 'react-router-dom';
 import { Duty, GroupRes } from '../../types';
 import { SocketContext } from '../../../../context';
 import { DutyList } from '../../components';
+// import { motion } from 'framer-motion';
+import HiddenOptions from '../groupContent/views/hiddenOptions/HiddenOptions';
 const now = new Date();
 
 interface Projects {
@@ -29,6 +31,8 @@ export const GroupDaily = () => {
   const [dutyView, setDutyView] = useState<Duty>();
   // const [, setGroupUsers] = useState<GroupAttendanceRes[]>([]);
   const [dataProjects, setDataProjects] = useState<Projects[]>([]);
+  const [isVisible, setIsVisible] = useState(false);
+
   const { groupId } = useParams();
 
   useEffect(() => {
@@ -89,7 +93,7 @@ export const GroupDaily = () => {
     axiosInstance
       .get<GroupRes[]>(`/attendanceGroup/list/${groupId}?date=${value}`)
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         setCalls(res.data);
         setIsToday(_date(today) === value);
         if (res.data.length > 0)
@@ -168,6 +172,10 @@ export const GroupDaily = () => {
   const viewDuty = (item: Duty) => {
     // console.log(idx)
     setDutyView(item);
+  };
+
+  const openCard = (e: boolean) => {
+    setIsVisible(e);
   };
   return (
     <div className="gd-content">
@@ -266,13 +274,14 @@ export const GroupDaily = () => {
           />
         )}
       </div>
-      <div className="gd-sub-options">
-        <span className="gd-sub">Avances</span>
-        <span className="gd-sub">Compromisos</span>
-        <span className="gd-sub">Estado ASITEC</span>
-        <span className="gd-sub">Pendientes</span>
-        <span className="gd-sub">Observaciones</span>
-      </div>
+      {groupId && dutyView && dutyView.id && (
+        <HiddenOptions
+          visible={isVisible}
+          showCard={openCard}
+          duty={+groupId}
+          CUI={dutyView.CUI}
+        />
+      )}
     </div>
   );
 };

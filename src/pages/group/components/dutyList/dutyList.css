@@ -36,7 +36,7 @@
 .dl-header {
   display: grid;
   grid-template-columns: 0.2fr 1.5fr 0.5fr 2fr 1fr 1fr 1fr;
-  background-color: var(--color-gray);
+  background-color: var(--color-primarylight);
   padding: 0.5rem 0.4rem;
   align-items: center;
   width: 80vw;

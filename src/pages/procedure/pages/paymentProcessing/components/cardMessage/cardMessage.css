@@ -9,7 +9,7 @@
   height: 2rem;
   padding: 0 0.3rem;
   align-items: center;
-  background-color: var(--color-gray);
+  background-color: var(--color-primarylight);
   grid-template-columns: repeat(2, minmax(0, 1fr)) minmax(0, 2fr) repeat(
       5,
       minmax(0, 1fr)

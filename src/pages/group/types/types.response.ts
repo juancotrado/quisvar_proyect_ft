@@ -78,3 +78,11 @@ export type DutyTasks = {
   percentage?: number;
   dutyMemberId: number;
 };
+export interface Days {
+  day: string;
+  date: string;
+  members: {
+    fullName: string;
+    tasks: DutyTasks[];
+  }[];
+}

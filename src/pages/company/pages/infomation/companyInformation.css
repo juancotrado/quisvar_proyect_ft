@@ -14,7 +14,7 @@
   align-items: center;
   gap: 1.875rem;
   flex-shrink: 0;
-  background-color: var(--color-gray);
+  background-color: var(--color-primarylight);
 }
 
 .company-hr {

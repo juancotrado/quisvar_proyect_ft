@@ -29,7 +29,7 @@
 .gmf-header {
   display: grid;
   grid-template-columns: 0.5fr 2fr 2fr 4fr 0.5fr;
-  background-color: var(--color-gray);
+  background-color: var(--color-primarylight);
   padding: 0.5rem 0.4rem;
 }
 .gmf-title {
@@ -66,7 +66,7 @@
 }
 .gmf-btn {
   border: 1px solid var(--color-secondary);
-  background-color: var(--color-gray);
+  background-color: var(--color-primarylight);
 }
 .gmf-doc {
   width: 15px;

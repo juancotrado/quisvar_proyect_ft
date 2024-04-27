@@ -68,7 +68,7 @@
 .generalData-infor-group-header {
   display: grid;
   grid-template-columns: 0.5fr 5fr 3fr 3fr 2fr;
-  background-color: var(--color-gray);
+  background-color: var(--color-primarylight);
   padding: 0.75rem 0.5rem;
 }
 .generalData-infor-group-text {

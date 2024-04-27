@@ -1,8 +1,8 @@
 import { Document, Image, Page, Text, View } from '@react-pdf/renderer';
 import { styles } from './swornDeclarationStyle';
-import { UserForm } from '../../../../../../types/types';
+// import { UserForm } from '../../../../../../types/types';
 import { deleteExtension } from '../../../../../../utils/tools';
-import { SwornDeclaration } from '../../models';
+import { SwornDeclaration, UserForm } from '../../models';
 import moment from 'moment/moment';
 import 'moment/locale/es';
 
@@ -40,7 +40,7 @@ const SwornDeclarationPdf = ({ data }: SwornDeclarationPdfProps) => {
           el presente documento.
         </Text>
         <View style={{ marginLeft: 50 }}>
-          {data?.declarations?.map(declaration => (
+          {data?.declarations?.map((declaration: any) => (
             <Text style={styles.text} key={declaration}>
               ■ Cumplir con las directivas: {deleteExtension(declaration)}
             </Text>

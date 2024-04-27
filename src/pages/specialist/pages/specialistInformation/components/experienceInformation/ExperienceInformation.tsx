@@ -9,14 +9,14 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { useParams } from 'react-router-dom';
 import {
-  validateCorrectTyping,
-  validateWhiteSpace,
+  // validateCorrectTyping,
+  // validateWhiteSpace,
   sumAllExperience,
 } from '../../../../../../utils';
 import { ExperienceTable } from '..';
 import { CardEditSpecialties } from '../../views/cardEditSpecialties';
 import { isOpenCardOffice$ } from '../../../../../../services/sharingSubject';
-import { OfficeSelect } from '../../../../../procedure/models';
+// import { OfficeSelect } from '../../../../../procedure/models';
 import { SpecialtiesSelect } from '../../../../../userCenter/pages/users/models';
 
 interface ExperienceProps {
@@ -43,7 +43,7 @@ export const ExperienceInformation = ({
     handleSubmit,
     reset,
     control,
-    formState: { errors },
+    // formState: { errors },
   } = useForm<AreaSpecialtyName>();
   useEffect(() => {
     return () => {
@@ -168,7 +168,6 @@ export const ExperienceInformation = ({
                   control={control}
                   options={specialties}
                   name="specialtyName"
-                  itemKey="value"
                   onCreateOption={handleCreateOffice}
                   onEditOption={handleEditSS}
                   urlDelete={'/listSpecialties'}

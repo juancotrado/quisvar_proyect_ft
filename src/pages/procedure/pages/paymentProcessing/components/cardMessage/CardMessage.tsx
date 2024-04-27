@@ -14,7 +14,7 @@ interface CardMessageProps {
   onArchiver?: () => void;
   option: TypeProcedure;
   hasAccess: boolean;
-  typeMail: MessageSender;
+  typeMail?: MessageSender;
 }
 
 const CardMessage = ({

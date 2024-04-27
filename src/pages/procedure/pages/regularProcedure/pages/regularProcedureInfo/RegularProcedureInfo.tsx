@@ -3,21 +3,11 @@ import './regularProcedureInfo.css';
 import { MessageType, ProcedureSubmit } from '../../../../../../types';
 import { useEffect, useState } from 'react';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
-import {
-  Button,
-  IconAction,
-  LoaderForComponent,
-} from '../../../../../../components';
-import {
-  SnackbarUtilities,
-  formatDateHourLongSpanish,
-} from '../../../../../../utils';
+import { Button, LoaderForComponent } from '../../../../../../components';
+import { SnackbarUtilities } from '../../../../../../utils';
 import { Resizable } from 're-resizable';
 import { TYPE_STATUS_REGULAR_PROCEDURA } from '../../../paymentProcessing/models';
-import {
-  FormRegisterProcedure,
-  ProcedureHistory,
-} from '../../../../components';
+import { FormRegisterProcedure } from '../../../../components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../store';
 import { ProcedureMoreInfo } from '../../../../views/procedureMoreInfo';
@@ -25,9 +15,9 @@ const RegularProcedureInfo = () => {
   const navigate = useNavigate();
   const { messageId } = useParams();
   const [message, setMessage] = useState<MessageType | null>();
-  const [viewHistory, setViewHistory] = useState(false);
+  // const [viewHistory, setViewHistory] = useState(false);
 
-  const handleViewHistory = () => setViewHistory(!viewHistory);
+  // const handleViewHistory = () => setViewHistory(!viewHistory);
   const { id: userSessionId } = useSelector(
     (state: RootState) => state.userSession
   );

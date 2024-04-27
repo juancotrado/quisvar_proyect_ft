@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Button, CloseIcon, Input, Modal } from '../../../../../../components';
 import { validateWhiteSpace } from '../../../../../../utils';
 import { AppDispatch } from '../../../../../../store';

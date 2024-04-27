@@ -1,10 +1,10 @@
 import { PDFDownloadLink } from '@react-pdf/renderer';
-import { GeneralFile, RoleForm, UserForm } from '../../../../../../types';
+import { GeneralFile, RoleForm } from '../../../../../../types';
 import './carRegisterSwornDeclaration.css';
 import { SwornDeclarationPdf } from '../../pdfGenerator';
 import { deleteExtension } from '../../../../../../utils';
 import { useForm } from 'react-hook-form';
-import { SwornDeclaration } from '../../models';
+import { SwornDeclaration, UserForm } from '../../models';
 import { Button } from '../../../../../../components';
 
 interface CarRegisterSwornDeclarationProps {

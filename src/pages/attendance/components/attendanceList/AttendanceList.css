@@ -1,6 +1,6 @@
 .attendanceList-container {
   display: grid;
-  grid-template-columns: 0.5fr 1fr 2fr 1fr 1fr 1fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr;
+  grid-template-columns: 0.5fr 1fr 2fr 1fr 1fr 1fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr;
   width: 100%;
   /* height: 3.7rem; */
   background-color: #fff;
@@ -90,6 +90,10 @@
 .list-l {
   background-color: var(--color-list-l);
   accent-color: #2263e5;
+}
+.list-s {
+  background-color: var(--color-list-s);
+  accent-color: #4736c9;
 }
 @media (max-width: 768px) {
   .attendanceList-col {

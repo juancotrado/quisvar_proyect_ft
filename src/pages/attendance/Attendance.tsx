@@ -333,6 +333,9 @@ export const Attendance = () => {
                   <div className="attendance-list-text attendance-config head-l">
                     L
                   </div>
+                  <div className="attendance-list-text attendance-config head-l">
+                    S
+                  </div>
                 </div>
                 {filterUsers?.map((user, index) => (
                   <AttendanceList

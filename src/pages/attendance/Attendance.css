@@ -49,7 +49,7 @@
   top: 0;
   z-index: 2;
   /* grid-template-columns: repeat(6, minmax(0, 1fr)); */
-  grid-template-columns: 0.5fr 1fr 2fr 1fr 1fr 1fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr;
+  grid-template-columns: 0.5fr 1fr 2fr 1fr 1fr 1fr 1fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr;
   width: 100%;
   /* border-bottom: 0.15rem solid var(--color-quaternay); */
   border: 0.1rem solid rgba(201, 193, 193, 0.329);
@@ -102,6 +102,10 @@
 
 .head-l {
   border-bottom: 2px solid var(--color-list-l);
+}
+
+.head-l {
+  border-bottom: 2px solid var(--color-list-s);
 }
 
 .attendance-icon {

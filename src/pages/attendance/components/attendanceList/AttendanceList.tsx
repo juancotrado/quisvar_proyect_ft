@@ -128,6 +128,16 @@ export const AttendanceList = ({
           disabled={isActive ? true : !!status}
         />
       </div>
+      <div className="attendanceList-col attendanceList-place attendanceList-config list-s">
+        <Input
+          type="radio"
+          value="PERMISO"
+          classNameMain="attendanceList-radio"
+          checked={selectedValue === 'SALIDA'}
+          onChange={() => handleRadioChange('SALIDA', usersId)}
+          disabled={isActive ? true : !!status}
+        />
+      </div>
     </div>
   );
 };

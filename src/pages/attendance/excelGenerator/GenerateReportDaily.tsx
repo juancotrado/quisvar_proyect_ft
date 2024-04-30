@@ -62,6 +62,7 @@ export async function generateReportDaily({
       GRAVE: 'G',
       MUY_GRAVE: 'M',
       PERMISO: 'L',
+      SALIDA: 'S',
     };
 
     const orderedStatus: string[] = [];
@@ -121,6 +122,7 @@ export async function generateReportDaily({
     if (status === 'G') return 'F19191';
     if (status === 'M') return 'D2595B';
     if (status === 'L') return '83A8F0';
+    if (status === 'S') return '877CDC';
   };
 
   filterdUsers.forEach((data: AttendanceRange, idx: number) => {

@@ -66,6 +66,7 @@ const GenerateAttendanceDailyPDF = ({
       GRAVE: 'G',
       MUY_GRAVE: 'M',
       PERMISO: 'L',
+      SALIDA: 'S',
     };
 
     const orderedStatus: string[] = [];
@@ -188,6 +189,7 @@ const GenerateAttendanceDailyPDF = ({
                 if (status === 'G') return '#F19191';
                 if (status === 'M') return '#D2595B';
                 if (status === 'L') return '#83A8F0';
+                if (status === 'S') return '#877cdc';
               };
               return (
                 <View key={value.id} style={styles.tableRow}>

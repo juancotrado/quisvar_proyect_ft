@@ -13,14 +13,8 @@ import {
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../store';
-import { licenseList } from '../../../../../../types';
+import { DataLicense, licenseList } from '../../../../../../types';
 import { SocketContext } from '../../../../../../context';
-
-type DataLicense = {
-  reason: string;
-  startDate: string;
-  untilDate: string;
-};
 
 interface CardLicenseProps {
   onSave?: () => void;
@@ -32,9 +26,11 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
   );
   const socket = useContext(SocketContext);
   const [isOpen, setIsOpen] = useState(false);
+  const [option, setOption] = useState<boolean>(true);
+  const [selectedValue, setSelectedValue] = useState<string>('Salida de campo');
   const handleIsOpen = useRef<Subscription>(new Subscription());
   const [data, setData] = useState<licenseList>();
-  const [type, setType] = useState<string | undefined>('');
+  const [isFree, setIsFree] = useState<string | undefined>('');
   const formattedDate = (value: string) => {
     const parts = value.split(':');
     const result = parts.slice(0, 2).join(':');
@@ -53,7 +49,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
     handleIsOpen.current = isOpenCardLicense$.getSubject.subscribe(value => {
       setIsOpen(value.isOpen);
       setData(value.data);
-      setType(value.type);
+      setIsFree(value.type);
     });
     return () => {
       handleIsOpen.current.unsubscribe();
@@ -64,6 +60,12 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
       setValue('startDate', formattedDate(data?.startDate));
       setValue('untilDate', formattedDate(data?.untilDate));
       setValue('reason', data.reason ?? '');
+      if (data.type === 'SALIDA') {
+        setSelectedValue(data.reason as string);
+        setOption(true);
+      } else {
+        setOption(false);
+      }
     }
   }, [data, setValue]);
 
@@ -73,15 +75,31 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
   };
   const onSubmit: SubmitHandler<DataLicense> = values => {
     if (!data) {
-      if (type === 'free') {
-        axiosInstance.post(`license/free`, values).then(() => {
+      if (isFree === 'free') {
+        const sendFree = {
+          reason: values.reason,
+          startDate: values.startDate,
+          untilDate: values.untilDate,
+          type: 'PERMISO',
+        };
+        axiosInstance.post(`license/free`, sendFree).then(() => {
           setIsOpen(false);
           reset({});
           onSave?.();
         });
       } else {
+        const send = {
+          reason: option
+            ? selectedValue === 'Otro'
+              ? values.reason
+              : selectedValue
+            : values.reason,
+          startDate: values.startDate,
+          untilDate: values.untilDate,
+          type: option ? 'SALIDA' : 'PERMISO',
+        };
         axiosInstance
-          .post(`license`, { usersId: userSessionId, ...values })
+          .post(`license`, { usersId: userSessionId, ...send })
           .then(() => {
             setIsOpen(false);
             reset({});
@@ -90,9 +108,14 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
       }
     } else {
       const updateLicense = {
-        reason: values.reason,
+        reason: option
+          ? selectedValue === 'Otro'
+            ? values.reason
+            : selectedValue
+          : values.reason,
         startDate: values.startDate,
         untilDate: values.untilDate,
+        type: option ? 'SALIDA' : 'PERMISO',
         usersId: userSessionId,
         feedback: data.feedback,
         status: 'PROCESO',
@@ -122,8 +145,36 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
         className="card-generate-report"
         autoComplete="off"
       >
+        {!isFree && (
+          <div className="cl-options">
+            <button
+              type="button"
+              className={`cl-span ${option && 'cl-selected'}`}
+              onClick={() => setOption(true)}
+              disabled={data && data?.type === 'SALIDA'}
+            >
+              <img src="/public/svg/cl-route.svg" />
+              <h2 className={`clo-text ${option && 'cl-color'}`}>
+                Hoja de ruta
+              </h2>
+            </button>
+            <button
+              type="button"
+              className={`cl-span ${!option && 'cl-selected'}`}
+              onClick={() => setOption(false)}
+              disabled={data && data?.type === 'PERMISO'}
+            >
+              <img src="/public/svg/cl-card.svg" />
+              <h2 className={`clo-text ${!option && 'cl-color'}`}>Licencia</h2>
+            </button>
+          </div>
+        )}
         <div className="report-title">
-          <h2>Nueva solicitud de licencia</h2>
+          <h2 className="r-title">
+            {!isFree
+              ? 'Nueva solicitud de licencia'
+              : 'Asignar dia libre para todos'}
+          </h2>
         </div>
         <CloseIcon onClick={showModal} />
         <div className="col-input">
@@ -144,7 +195,52 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
             required
           />
         </div>
-        <TextArea label="Motivo" {...register('reason')} name="reason" />
+        {!isFree && option ? (
+          <div className="cl-radios">
+            <div className="cl-label">
+              <Input
+                type="radio"
+                value="PERMISO"
+                classNameMain="attendanceList-radio"
+                checked={selectedValue === 'Salida de campo'}
+                onChange={() => setSelectedValue('Salida de campo')}
+              />
+              <h1 className="cl-text">Salida de campo</h1>
+            </div>
+            <div className="cl-label">
+              <Input
+                type="radio"
+                value="PERMISO"
+                classNameMain="attendanceList-radio"
+                checked={selectedValue === 'Tramite documentario'}
+                onChange={() => setSelectedValue('Tramite documentario')}
+              />
+              <h1 className="cl-text">Tramite documentario</h1>
+            </div>
+            <div className="cl-label">
+              <Input
+                type="radio"
+                value="PERMISO"
+                classNameMain="attendanceList-radio"
+                checked={selectedValue === 'Otro'}
+                onChange={() => setSelectedValue('Otro')}
+                // disabled={isActive ? true : !!status}
+              />
+              <h1 className="cl-text">Otro</h1>
+            </div>
+            {selectedValue === 'Otro' && (
+              <div className="cl-label">
+                <Input
+                  placeholder="Especifique"
+                  {...register('reason')}
+                  required
+                />
+              </div>
+            )}
+          </div>
+        ) : (
+          <TextArea label="Motivo" {...register('reason')} name="reason" />
+        )}
         <Button type="submit" text="Enviar" styleButton={4} />
       </form>
     </Modal>

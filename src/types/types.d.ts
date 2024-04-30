@@ -1083,13 +1083,15 @@ type listDetails =
   | 'SIMPLE'
   | 'GRAVE'
   | 'MUY_GRAVE'
-  | 'PERMISO';
+  | 'PERMISO'
+  | 'SALIDA';
 export type licenseList = {
   id: number;
   usersId: number;
   reason?: string;
   checkout?: string;
   feedback?: string;
+  type?: string;
   status: licenseStatus;
   fine?: listDetails;
   startDate: string;
@@ -1107,6 +1109,7 @@ export type getLicenses = {
   id: number;
   // status: licenseStatus;
   usersId: number;
+  type: string;
 };
 export interface Companies {
   id: number;
@@ -1285,4 +1288,10 @@ export type StylesVariant = 'primary' | 'secondary';
 export interface Profession extends OptionSelect {
   abrv: string;
   amount: number;
+}
+export interface DataLicense {
+  reason: string;
+  startDate: string;
+  untilDate: string;
+  type: string;
 }

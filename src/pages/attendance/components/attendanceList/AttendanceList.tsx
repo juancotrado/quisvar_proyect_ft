@@ -21,14 +21,12 @@ export const AttendanceList = ({
   const [isActive, setisActive] = useState<boolean>(false);
   const haslength = list.find(lis => lis.usersId === user.id);
   const [usersId, setUserId] = useState<number>(user.id);
-
   const getLicense = useCallback(() => {
     if (haslength) {
       setisActive(!!haslength);
     }
-
     if (!status) {
-      setSelectedValue(haslength ? 'PERMISO' : 'PUNTUAL');
+      setSelectedValue(haslength ? haslength.type : 'PUNTUAL');
     } else {
       setSelectedValue(status);
     }

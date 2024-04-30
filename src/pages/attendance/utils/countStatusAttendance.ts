@@ -7,6 +7,7 @@ export function countStatusAttendance(data: AttendanceRange) {
   let graveCount = 0;
   let mgraveCount = 0;
   let permisoCount = 0;
+  let salidaCount = 0;
 
   data?.list.forEach((item: userAttendance) => {
     switch (item.status) {
@@ -28,6 +29,9 @@ export function countStatusAttendance(data: AttendanceRange) {
       case 'PERMISO':
         permisoCount++;
         break;
+      case 'SALIDA':
+        salidaCount++;
+        break;
       default:
         // Manejar otros estados si es necesario
         break;
@@ -42,5 +46,6 @@ export function countStatusAttendance(data: AttendanceRange) {
     GRAVE: graveCount,
     MUY_GRAVE: mgraveCount,
     PERMISO: permisoCount,
+    SALIDA: salidaCount,
   };
 }

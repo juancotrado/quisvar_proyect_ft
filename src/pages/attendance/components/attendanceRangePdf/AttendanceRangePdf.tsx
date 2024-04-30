@@ -98,7 +98,16 @@ const generatePDF = (data: AttendanceRange[], rangeDate: RangeDate) => {
             >
               <Text style={styles.headers}>L</Text>
             </View>
-            <View style={{ ...styles.tableCol, width: '13.6%' }}>
+            <View
+              style={{
+                ...styles.tableCol,
+                width: '3.4%',
+                backgroundColor: '#877CDC',
+              }}
+            >
+              <Text style={styles.headers}>S</Text>
+            </View>
+            <View style={{ ...styles.tableCol, width: '10.2%' }}>
               <Text style={styles.headers}>TOTAL</Text>
             </View>
           </View>
@@ -190,7 +199,16 @@ const generatePDF = (data: AttendanceRange[], rangeDate: RangeDate) => {
                   <View
                     style={{
                       ...styles.tableCol,
-                      width: '13.6%',
+                      width: '3.4%',
+                      backgroundColor: '#877CDC',
+                    }}
+                  >
+                    <Text style={styles.headers}>{counts.SALIDA}</Text>
+                  </View>
+                  <View
+                    style={{
+                      ...styles.tableCol,
+                      width: '10.2%',
                       ...styles.totalCurrency,
                     }}
                   >

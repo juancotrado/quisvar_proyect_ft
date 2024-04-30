@@ -42,9 +42,10 @@ export async function generateReportRange({
       counts.GRAVE,
       counts.MUY_GRAVE,
       counts.PERMISO,
+      counts.SALIDA,
       getPrice(counts),
     ]);
-    const columnLetters = 'BCDEFGHIJKLM';
+    const columnLetters = 'BCDEFGHIJKLMN';
     columnLetters.split('').forEach(columnLetter => {
       const cell = dataRows.getCell(columnLetter);
       cell.border = {
@@ -84,14 +85,19 @@ export async function generateReportRange({
       pattern: 'solid',
       fgColor: { argb: '7da4ee' },
     };
-    dataRows.getCell('M').numFmt = moneyFormat;
-    dataRows.getCell('M').font = {
+    dataRows.getCell('M').fill = {
+      type: 'pattern',
+      pattern: 'solid',
+      fgColor: { argb: '877cdc' },
+    };
+    dataRows.getCell('N').numFmt = moneyFormat;
+    dataRows.getCell('N').font = {
       color: { argb: 'FF0000' },
     };
     rowNumber++;
   });
   const endLine = rowNumber;
-  wk.pageSetup.printArea = 'A1:M' + (endLine + 9);
+  wk.pageSetup.printArea = 'A1:N' + (endLine + 9);
   workbook.xlsx.writeBuffer().then(data => {
     const blob = new Blob([data], {
       type: 'application/vnd.openxmlformats-officedocument.spreadsheet.sheet',

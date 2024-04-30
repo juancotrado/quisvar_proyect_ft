@@ -1,0 +1,53 @@
+.cl-radios {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.cl-label {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.cl-text {
+  font-family: Montserrat;
+  font-size: 14px;
+  font-weight: 300;
+  line-height: 17.07px;
+  text-align: left;
+}
+
+.cl-options {
+  display: flex;
+  width: 100%;
+}
+
+.cl-span {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  border-bottom: 0.5px solid rgba(139, 139, 139, 1);
+}
+.cl-selected {
+  border-bottom: 2px solid var(--color-secondary);
+}
+.clo-text {
+  font-family: Montserrat;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 18px;
+  letter-spacing: 0.03em;
+  text-align: left;
+}
+.cl-color {
+  color: var(--color-secondary);
+}
+.r-title {
+  font-family: Montserrat;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 18.29px;
+  text-align: left;
+}

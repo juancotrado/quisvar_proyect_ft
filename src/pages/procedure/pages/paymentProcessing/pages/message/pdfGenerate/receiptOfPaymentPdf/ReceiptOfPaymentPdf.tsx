@@ -1,20 +1,28 @@
 import { Document, Page, Text, View } from '@react-pdf/renderer';
 import { styles } from './stylesReceiptOfPaymentPdf';
 import { ServiceOrderData } from '../../../../../../../../types/types';
-import { formatAmountMoney } from '../../../../../../../../utils';
+import { formatAmountMoney, formatDate } from '../../../../../../../../utils';
 interface ReceiptOfPaymentPdfProps {
   data: ServiceOrderData;
 }
 const ReceiptOfPaymentPdf = ({ data }: ReceiptOfPaymentPdfProps) => {
+  const date = formatDate(new Date(), { year: 'numeric' });
+  const numberOrder = data.ordenNumber.toString().padStart(2, '0');
+  console.log(numberOrder);
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <View
-          style={{
-            alignItems: 'center',
-          }}
-        >
-          <Text style={styles.title}>RECIBO DE PAGO - {data.ordenNumber}</Text>
+        <View style={{ position: 'relative' }}>
+          <View style={styles.title_enum}>
+            <Text>
+              {data.ordenNumber.toString().padStart(4, '0')} - {date}
+            </Text>
+          </View>
+        </View>
+        <View style={{ alignItems: 'center' }}>
+          <Text style={{ color: '#00B050', ...styles.title }}>
+            RECIBO DE PAGO
+          </Text>
         </View>
         <View style={{ gap: 15 }}>
           <Text style={styles.text}>

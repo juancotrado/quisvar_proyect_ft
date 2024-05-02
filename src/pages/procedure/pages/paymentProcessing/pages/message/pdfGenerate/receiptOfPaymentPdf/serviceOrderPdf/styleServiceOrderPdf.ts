@@ -1,8 +1,10 @@
 import { StyleSheet, Font } from '@react-pdf/renderer';
 import ArialNarrowBold from '/fonts/Arial-Narrow-Bold.ttf';
 import ArialNarrow from '/fonts/Arial-Narrow.ttf';
+import Calibri from '/fonts/Calibri.ttf';
 Font.register({ family: 'Arial Narrow Bold', src: ArialNarrowBold });
 Font.register({ family: 'Arial Narrow', src: ArialNarrow });
+Font.register({ family: 'Calibri', src: Calibri });
 export const styles = StyleSheet.create({
   title: {
     fontSize: 16,
@@ -42,6 +44,10 @@ export const styles = StyleSheet.create({
   },
   text: {
     fontSize: 9,
+  },
+  text_info: {
+    fontSize: 9,
+    fontFamily: 'Calibri',
   },
   signatureText: {
     fontSize: 9,

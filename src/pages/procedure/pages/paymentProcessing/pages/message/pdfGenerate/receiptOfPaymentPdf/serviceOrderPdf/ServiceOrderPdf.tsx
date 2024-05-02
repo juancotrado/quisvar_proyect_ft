@@ -49,18 +49,18 @@ export const ServiceOrderPdf = ({ data }: ServiceOrderPdfProps) => {
 
         <View style={styles.info}>
           <View style={styles.infoLeft}>
-            <Text style={styles.text}>
+            <Text style={styles.text_info}>
               Señores: {data.firstName} {data.lastName}
             </Text>
-            <Text style={styles.text}>Direccion: {data.address}</Text>
-            <Text style={styles.text}>Doc. Ref: {data.title}</Text>
-            <Text style={styles.text}>
+            <Text style={styles.text_info}>Direccion: {data.address}</Text>
+            <Text style={styles.text_info}>Doc. Ref: {data.title}</Text>
+            <Text style={styles.text_info}>
               Facturar a Nombre de: {data.company.name}
             </Text>
           </View>
           <View style={styles.infoRight}>
-            <Text style={styles.text}>RUC: {data.ruc}</Text>
-            <Text style={styles.text}>RUC: {data.company.ruc}</Text>
+            <Text style={styles.text_info}>RUC: {data.ruc}</Text>
+            <Text style={styles.text_info}>RUC: {data.company.ruc}</Text>
           </View>
         </View>
         <View style={styles.table}>

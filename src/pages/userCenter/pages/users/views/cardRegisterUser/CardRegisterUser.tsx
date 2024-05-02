@@ -365,23 +365,23 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
                   label="Departamento:"
                   {...register('department', {
                     validate: { validateWhiteSpace },
+                    onChange: handleGetProvinces,
                   })}
                   name="department"
                   data={departaments}
                   itemKey="nombre_ubigeo"
                   textField="nombre_ubigeo"
-                  onChange={handleGetProvinces}
                   errors={errors}
                 />
                 <Select
                   label="Provincia:"
                   {...register('province', {
                     validate: { validateWhiteSpace },
+                    onChange: handleGetDistricts,
                   })}
                   name="province"
                   data={provinces}
                   itemKey="nombre_ubigeo"
-                  onChange={handleGetDistricts}
                   textField="nombre_ubigeo"
                   errors={errors}
                 />

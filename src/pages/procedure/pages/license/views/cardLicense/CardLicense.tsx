@@ -15,7 +15,8 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../store';
 import { DataLicense, licenseList } from '../../../../../../types';
 import { SocketContext } from '../../../../../../context';
-
+import { textAlign } from 'html2canvas/dist/types/css/property-descriptors/text-align';
+import { SnackbarUtilities } from '../../../../../../utils';
 interface CardLicenseProps {
   onSave?: () => void;
 }
@@ -27,7 +28,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
   const socket = useContext(SocketContext);
   const [isOpen, setIsOpen] = useState(false);
   const [option, setOption] = useState<boolean>(true);
-  const [selectedValue, setSelectedValue] = useState<string>('Salida de campo');
+  const [selectedValue, setSelectedValue] = useState<string>('');
   const handleIsOpen = useRef<Subscription>(new Subscription());
   const [data, setData] = useState<licenseList>();
   const [isFree, setIsFree] = useState<string | undefined>('');
@@ -88,6 +89,8 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
           onSave?.();
         });
       } else {
+        if (option && !selectedValue)
+          return SnackbarUtilities.error('Seleccione el motivo de su salida');
         const send = {
           reason: option
             ? selectedValue === 'Otro'
@@ -172,7 +175,9 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
         <div className="report-title">
           <h2 className="r-title">
             {!isFree
-              ? 'Nueva solicitud de licencia'
+              ? option
+                ? 'Nueva solicitud de licencia por motivos de la empresa'
+                : 'Nueva solicitud de licencia por motivos personales'
               : 'Asignar dia libre para todos'}
           </h2>
         </div>
@@ -195,6 +200,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
             required
           />
         </div>
+        <h3 className="input-label">Motivo del permiso:</h3>
         {!isFree && option ? (
           <div className="cl-radios">
             <div className="cl-label">
@@ -204,6 +210,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
                 classNameMain="attendanceList-radio"
                 checked={selectedValue === 'Salida de campo'}
                 onChange={() => setSelectedValue('Salida de campo')}
+                required
               />
               <h1 className="cl-text">Salida de campo</h1>
             </div>
@@ -214,6 +221,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
                 classNameMain="attendanceList-radio"
                 checked={selectedValue === 'Tramite documentario'}
                 onChange={() => setSelectedValue('Tramite documentario')}
+                required
               />
               <h1 className="cl-text">Tramite documentario</h1>
             </div>
@@ -224,6 +232,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
                 classNameMain="attendanceList-radio"
                 checked={selectedValue === 'Otro'}
                 onChange={() => setSelectedValue('Otro')}
+                required
                 // disabled={isActive ? true : !!status}
               />
               <h1 className="cl-text">Otro</h1>
@@ -239,7 +248,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
             )}
           </div>
         ) : (
-          <TextArea label="Motivo" {...register('reason')} name="reason" />
+          <TextArea {...register('reason')} name="reason" />
         )}
         <Button type="submit" text="Enviar" styleButton={4} />
       </form>

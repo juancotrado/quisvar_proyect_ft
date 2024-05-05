@@ -94,7 +94,7 @@ const AdvancedSelectCrud = <
             isCreatable
             onCreateOption={onCreateOption}
             value={
-              !isMulti ? selectData.find(c => c.value === data.value) : data
+              !isMulti ? selectData.find(c => c.value === data?.value) : data
             }
             label={label}
             errors={errors}

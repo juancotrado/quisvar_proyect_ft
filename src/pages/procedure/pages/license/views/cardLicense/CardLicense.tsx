@@ -15,7 +15,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../store';
 import { DataLicense, licenseList } from '../../../../../../types';
 import { SocketContext } from '../../../../../../context';
-import { textAlign } from 'html2canvas/dist/types/css/property-descriptors/text-align';
+//import { textAlign } from 'html2canvas/dist/types/css/property-descriptors/text-align';
 import { SnackbarUtilities } from '../../../../../../utils';
 interface CardLicenseProps {
   onSave?: () => void;
@@ -156,7 +156,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
               onClick={() => setOption(true)}
               disabled={data && data?.type === 'SALIDA'}
             >
-              <img src="/public/svg/cl-route.svg" />
+              <img src="/svg/cl-route.svg" />
               <h2 className={`clo-text ${option && 'cl-color'}`}>
                 Hoja de ruta
               </h2>
@@ -167,7 +167,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
               onClick={() => setOption(false)}
               disabled={data && data?.type === 'PERMISO'}
             >
-              <img src="/public/svg/cl-card.svg" />
+              <img src="/svg/cl-card.svg" />
               <h2 className={`clo-text ${!option && 'cl-color'}`}>Licencia</h2>
             </button>
           </div>

@@ -72,7 +72,6 @@ const CardObservations = () => {
             {...register('observations', {
               validate: { validateWhiteSpace },
             })}
-            isRelative
             rows={15}
             name="observations"
             className="input-main-style-2_1"

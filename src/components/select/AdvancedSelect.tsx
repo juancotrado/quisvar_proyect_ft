@@ -1,4 +1,4 @@
-import { CSSProperties, Ref } from 'react';
+import { Ref } from 'react';
 import SelectReact, {
   GroupBase,
   Props as SelectProps,
@@ -9,6 +9,7 @@ import CreatableSelect from 'react-select/creatable';
 import { StylesVariant } from '../../types';
 import { STYLE_SELECT_ADVANCE } from './selectDefinitions';
 import { FieldErrors, FieldValues, Path } from 'react-hook-form';
+import { InputErrorInfo } from '../inputErrorInfo';
 
 interface AdvancedSelectProps<FormData extends FieldValues>
   extends SelectProps {
@@ -19,7 +20,7 @@ interface AdvancedSelectProps<FormData extends FieldValues>
   errorPosY?: number;
   onCreateOption?: (inputValue: string) => void;
   isCreatable?: boolean;
-  isRelative?: boolean;
+  errorRelative?: boolean;
   className?: string;
   refSelect?: Ref<SelectInstance<unknown, boolean, GroupBase<unknown>>>;
   styleVariant?: StylesVariant;
@@ -31,7 +32,7 @@ const AdvancedSelect = <FormData extends FieldValues>({
   errorPosX = 0,
   errorPosY = 0,
   errors,
-  isRelative = false,
+  errorRelative = false,
   className,
   refSelect,
   isCreatable,
@@ -39,10 +40,6 @@ const AdvancedSelect = <FormData extends FieldValues>({
   onCreateOption,
   ...props
 }: AdvancedSelectProps<FormData>) => {
-  const style: CSSProperties = {
-    transform: `translate(${errorPosX}px,${errorPosY}px)`,
-    position: isRelative ? 'static' : 'absolute',
-  };
   const SelectComponent = isCreatable ? CreatableSelect : SelectReact;
   return (
     <div className="select-container">
@@ -56,16 +53,13 @@ const AdvancedSelect = <FormData extends FieldValues>({
         className={`AdvancedSelect ${STYLE_SELECT_ADVANCE[styleVariant]} ${className}`}
       />
       {name && errors && errors[name] && (
-        <span className="input-span-error" style={style}>
-          <img
-            src="/svg/warning.svg"
-            alt="warning"
-            className="input-span-icon"
-          />
-          {errors[name]?.type === 'required'
-            ? errors[name]?.message?.toString() || 'Por favor llene el campo.'
-            : errors[name]?.message?.toString()}
-        </span>
+        <InputErrorInfo
+          errors={errors}
+          name={name}
+          isRelative={errorRelative}
+          errorPosX={errorPosX}
+          errorPosY={errorPosY}
+        />
       )}
     </div>
   );

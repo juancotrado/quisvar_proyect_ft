@@ -143,7 +143,6 @@ const GenerateOrderService = ({
           })}
           defaultValue={message.header}
           rows={3}
-          isRelative
           name="concept"
           placeholder="Concepto"
           errors={errors}

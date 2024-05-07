@@ -66,7 +66,7 @@ const InputText = forwardRef(
               errors && name && errors[name] && 'input-area-error'
             } ${disabled && 'input-disabled'} ${
               (type == 'password' || handleSearch) && 'input-pading-right'
-            }`}
+            } ${className}`}
             disabled={disabled}
             ref={ref}
             type={typeAux}

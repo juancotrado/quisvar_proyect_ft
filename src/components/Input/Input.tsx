@@ -1,7 +1,7 @@
 import Eye from '/svg/eye.svg';
 import EyeClose from '/svg/eyeClose.svg';
 import './input.css';
-import { InputHTMLAttributes, useState, forwardRef } from 'react';
+import { InputHTMLAttributes, useState, forwardRef, ForwardedRef } from 'react';
 import { STYLE_INPUT } from './inputDefinitions';
 import { FieldErrors, FieldValues, Path } from 'react-hook-form';
 import { InputErrorInfo } from '../inputErrorInfo';
@@ -20,8 +20,8 @@ interface InputTextProps<FormData extends FieldValues>
   styleInput?: number;
 }
 
-const InputText = forwardRef<HTMLInputElement, InputTextProps<FieldValues>>(
-  (
+const InputText = forwardRef(
+  <FormData extends FieldValues>(
     {
       name,
       label,
@@ -37,8 +37,8 @@ const InputText = forwardRef<HTMLInputElement, InputTextProps<FieldValues>>(
       styleInput = 2,
       className,
       ...props
-    },
-    ref
+    }: InputTextProps<FormData>,
+    ref: ForwardedRef<HTMLInputElement>
   ) => {
     const [isShow, setIsShow] = useState(false);
     const viewPassword = () => setIsShow(!isShow);

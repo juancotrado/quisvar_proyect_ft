@@ -68,16 +68,6 @@
   box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2),
     0px 0px 0px 2px var(--color-primary);
 }
-.input-span-error {
-  position: absolute;
-  color: #df0000;
-  display: flex;
-  align-items: center;
-  bottom: -1.23rem;
-  left: 1px;
-  font-size: 0.6rem;
-  font-weight: 500;
-}
 
 .input-label-col {
   display: flex;
@@ -110,11 +100,6 @@
   display: flex;
   flex-direction: row-reverse;
   align-items: center;
-}
-
-.input-span-icon {
-  width: 1rem;
-  height: 1rem;
 }
 
 .input-disabled {

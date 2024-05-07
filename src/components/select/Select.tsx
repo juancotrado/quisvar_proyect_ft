@@ -1,84 +1,82 @@
-import { StylesVariant } from '../../types';
 import './Select.css';
-import { CSSProperties, SelectHTMLAttributes, forwardRef } from 'react';
+import { StylesVariant } from '../../types';
+import { ForwardedRef, SelectHTMLAttributes, forwardRef } from 'react';
 import { STYLE_SELECT } from './selectDefinitions';
+import { InputErrorInfo } from '../inputErrorInfo';
+import { FieldErrors, FieldValues, Path } from 'react-hook-form';
 
-interface SelectOptionsProps extends SelectHTMLAttributes<HTMLSelectElement> {
+interface SelectOptionsProps<
+  T extends { [key: string]: any },
+  FormData extends FieldValues
+> extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
-  data?: { [key: string]: any }[];
-  itemKey: string;
-  textField: string;
-  name: string;
-  errors?: { [key: string]: any };
+  data?: T[];
+  itemKey: keyof T;
+  textField: keyof T;
+  name?: Path<FormData>;
+  errors?: FieldErrors<FormData>;
   errorPosX?: number;
   errorPosY?: number;
   placeholder?: string;
-  isRelative?: boolean;
+  errorRelative?: boolean;
   styleVariant?: StylesVariant;
-  className?: string;
 }
-export const SelectOptions = forwardRef<HTMLSelectElement, SelectOptionsProps>(
-  (
-    {
-      label,
-      data,
-      itemKey,
-      textField,
-      name,
-      errorPosX = 0,
-      errorPosY = 0,
-      errors,
-      defaultValue,
-      isRelative = false,
-      className,
-      placeholder,
-      styleVariant = 'secondary',
-      ...props
-    },
-    ref
-  ) => {
-    const style: CSSProperties = {
-      transform: `translate(${errorPosX}px,${errorPosY}px)`,
-      position: isRelative ? 'static' : 'absolute',
-    };
-    return (
-      <div className="select-container">
-        {label && (
-          <label htmlFor="email" className="input-label">
-            {label}
-          </label>
-        )}
-        <select
-          className={`${STYLE_SELECT[styleVariant]} ${className}`}
-          {...props}
-          ref={ref}
-          defaultValue={defaultValue}
+export const SelectOptions = forwardRef(function <
+  T extends { [key: string]: any },
+  FormData extends FieldValues
+>(
+  {
+    label,
+    data,
+    itemKey,
+    textField,
+    name,
+    errorPosX = 0,
+    errorPosY = 0,
+    errors,
+    defaultValue,
+    errorRelative = false,
+    className,
+    placeholder,
+    styleVariant = 'secondary',
+    ...props
+  }: SelectOptionsProps<T, FormData>,
+  ref: ForwardedRef<HTMLSelectElement>
+) {
+  return (
+    <div className="select-container">
+      {label && (
+        <label htmlFor="email" className="input-label">
+          {label}
+        </label>
+      )}
+      <select
+        className={`${STYLE_SELECT[styleVariant]} ${className}`}
+        {...props}
+        ref={ref}
+        defaultValue={defaultValue}
+        name={name}
+      >
+        <option value={''}>{`${
+          placeholder ? placeholder : 'Seleccionar'
+        }`}</option>
+        {data?.map(element => (
+          <option key={element[itemKey]} value={element[itemKey]}>
+            {element[textField]}
+          </option>
+        ))}
+      </select>
+      {name && errors && errors[name] && (
+        <InputErrorInfo
+          errors={errors}
           name={name}
-        >
-          <option value={''}>{`${
-            placeholder ? placeholder : 'Seleccionar'
-          }`}</option>
-          {data?.map(element => (
-            <option key={element[itemKey]} value={element[itemKey]}>
-              {element[textField]}
-            </option>
-          ))}
-        </select>
-        {name && errors && errors[name] && (
-          <span className="input-span-error" style={style}>
-            <img
-              src="/svg/warning.svg"
-              alt="warning"
-              className="input-span-icon"
-            />
-            {errors[name]?.type === 'required'
-              ? 'Por favor llene el campo.'
-              : errors[name].message}
-          </span>
-        )}
-      </div>
-    );
-  }
-);
+          isRelative={errorRelative}
+          errorPosX={errorPosX}
+          errorPosY={errorPosY}
+        />
+      )}
+    </div>
+  );
+});
 
 export default SelectOptions;

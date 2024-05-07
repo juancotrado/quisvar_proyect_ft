@@ -6,10 +6,6 @@
   position: relative;
 }
 
-.input-text-area-error {
-  border-color: #df0000 !important;
-}
-
 .input-container-textarea {
   width: 100%;
   font-size: var(--size-input);

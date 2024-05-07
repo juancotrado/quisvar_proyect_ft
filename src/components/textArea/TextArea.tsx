@@ -1,39 +1,35 @@
+import { FieldErrors, FieldValues, Path } from 'react-hook-form';
 import { STYLE_INPUT } from '../Input/inputDefinitions';
+import { InputErrorInfo } from '../inputErrorInfo';
 import './TextArea.css';
-import { CSSProperties, TextareaHTMLAttributes, forwardRef } from 'react';
+import { ForwardedRef, TextareaHTMLAttributes, forwardRef } from 'react';
 
-interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface TextAreaProps<FormData extends FieldValues>
+  extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
-  name?: string;
-  className?: string;
-  errors?: { [key: string]: any };
+  name?: Path<FormData>;
+  errors?: FieldErrors<FormData>;
   errorPosX?: number;
   errorPosY?: number;
-  isRelative?: boolean;
-  disabled?: boolean;
+  errorRelative?: boolean;
   styleInput?: number;
 }
-const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
-  (
+const TextArea = forwardRef(
+  <FormData extends FieldValues>(
     {
       label,
       name,
       className,
       errors,
       errorPosX = 0,
-      isRelative = false,
+      errorRelative = false,
       errorPosY = 0,
       disabled,
       styleInput = 2,
-
       ...props
-    },
-    ref
+    }: TextAreaProps<FormData>,
+    ref: ForwardedRef<HTMLTextAreaElement>
   ) => {
-    const style: CSSProperties = {
-      transform: `translate(${errorPosX}px,${errorPosY}px)`,
-      position: isRelative ? 'static' : 'absolute',
-    };
     return (
       <div className="input-container">
         {label && (
@@ -46,20 +42,17 @@ const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
           {...props}
           name={name}
           className={`${className} ${STYLE_INPUT[styleInput]} ${
-            errors && name && errors[name] && 'input-text-area-error'
-          } ${disabled && 'input-disabled'} `}
+            disabled && 'input-disabled'
+          } `}
         />
         {name && errors && errors[name] && (
-          <span className="input-span-error" style={style}>
-            <img
-              src="/svg/warning.svg"
-              alt="warning"
-              className="input-span-icon"
-            />
-            {errors[name]?.type === 'required'
-              ? 'Por favor llene el campo.'
-              : errors[name].message}
-          </span>
+          <InputErrorInfo
+            errors={errors}
+            name={name}
+            isRelative={errorRelative}
+            errorPosX={errorPosX}
+            errorPosY={errorPosY}
+          />
         )}
       </div>
     );

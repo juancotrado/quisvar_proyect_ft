@@ -1,4 +1,5 @@
 import { CSSProperties } from 'react';
+import './inputErrorInfo.css';
 import { FieldErrors, FieldValues, Path } from 'react-hook-form';
 
 interface InputErrorInfoProps<FormData extends FieldValues> {
@@ -20,8 +21,12 @@ const InputErrorInfo = <FormData extends FieldValues>({
     position: isRelative ? 'static' : 'absolute',
   };
   return (
-    <span className="input-span-error" style={style}>
-      <img src="/svg/warning.svg" alt="warning" className="input-span-icon" />
+    <span className="inputErrorInfo" style={style}>
+      <img
+        src="/svg/warning.svg"
+        alt="warning"
+        className="inputErrorInfo-icon"
+      />
       {errors[name]?.type === 'required'
         ? 'Por favor llene el campo.'
         : errors[name]?.message?.toString()}

@@ -298,8 +298,8 @@ const FormRegisterProcedure = ({
           onChange={handleChangeTitle}
           name="type"
           data={RADIO_OPTIONS}
-          itemKey="id"
-          textField="value"
+          extractValue={({ id }) => id}
+          renderTextField={({ value }) => value}
           errors={errors}
           placeholder="Tipo de Documento"
           styleVariant="secondary"

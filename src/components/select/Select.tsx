@@ -1,6 +1,11 @@
 import './Select.css';
 import { StylesVariant } from '../../types';
-import { ForwardedRef, SelectHTMLAttributes, forwardRef } from 'react';
+import {
+  ForwardedRef,
+  ReactNode,
+  SelectHTMLAttributes,
+  forwardRef,
+} from 'react';
 import { STYLE_SELECT } from './selectDefinitions';
 import { InputErrorInfo } from '../inputErrorInfo';
 import { FieldErrors, FieldValues, Path } from 'react-hook-form';
@@ -11,8 +16,8 @@ interface SelectOptionsProps<
 > extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
   data?: T[];
-  itemKey: keyof T;
-  textField: keyof T;
+  renderTextField?: (data: T) => ReactNode;
+  extractValue: (data: T) => string | number;
   name?: Path<FormData>;
   errors?: FieldErrors<FormData>;
   errorPosX?: number;
@@ -28,8 +33,6 @@ export const SelectOptions = <
   {
     label,
     data,
-    itemKey,
-    textField,
     name,
     errorPosX = 0,
     errorPosY = 0,
@@ -38,6 +41,8 @@ export const SelectOptions = <
     errorRelative = false,
     className,
     placeholder,
+    extractValue,
+    renderTextField,
     styleVariant = 'secondary',
     ...props
   }: SelectOptionsProps<T, FormData>,
@@ -61,8 +66,8 @@ export const SelectOptions = <
           placeholder ? placeholder : 'Seleccionar'
         }`}</option>
         {data?.map(element => (
-          <option key={element[itemKey]} value={element[itemKey]}>
-            {element[textField]}
+          <option key={extractValue(element)} value={extractValue(element)}>
+            {renderTextField && renderTextField(element)}
           </option>
         ))}
       </select>

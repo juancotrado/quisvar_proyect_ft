@@ -64,7 +64,7 @@ export interface ReportForm {
 }
 
 export interface OfficeGeneral {
-  isOfficeManager: boolean;
+  officeId: number;
   office: OfficeClass;
 }
 

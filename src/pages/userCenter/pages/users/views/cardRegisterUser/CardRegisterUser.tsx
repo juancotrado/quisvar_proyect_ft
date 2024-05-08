@@ -297,8 +297,8 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
                   })}
                   name="gender"
                   data={GENDER}
-                  itemKey="abrv"
-                  textField="value"
+                  extractValue={({ abrv }) => abrv}
+                  renderTextField={({ value }) => value}
                   errors={errors}
                 />
               </div>
@@ -369,8 +369,8 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
                   })}
                   name="department"
                   data={departaments}
-                  itemKey="nombre_ubigeo"
-                  textField="nombre_ubigeo"
+                  extractValue={({ nombre_ubigeo }) => nombre_ubigeo}
+                  renderTextField={({ nombre_ubigeo }) => nombre_ubigeo}
                   errors={errors}
                 />
                 <Select
@@ -381,8 +381,8 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
                   })}
                   name="province"
                   data={provinces}
-                  itemKey="nombre_ubigeo"
-                  textField="nombre_ubigeo"
+                  extractValue={({ nombre_ubigeo }) => nombre_ubigeo}
+                  renderTextField={({ nombre_ubigeo }) => nombre_ubigeo}
                   errors={errors}
                 />
                 <Select
@@ -392,8 +392,8 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
                   })}
                   name="district"
                   data={districts}
-                  itemKey="nombre_ubigeo"
-                  textField="nombre_ubigeo"
+                  extractValue={({ nombre_ubigeo }) => nombre_ubigeo}
+                  renderTextField={({ nombre_ubigeo }) => nombre_ubigeo}
                   errors={errors}
                 />
                 <Input
@@ -442,8 +442,8 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
                       validate: { validateWhiteSpace },
                       valueAsNumber: true,
                     })}
-                    itemKey="id"
-                    textField="name"
+                    extractValue={({ id }) => id}
+                    renderTextField={({ name }) => name}
                     data={roles}
                     errors={errors}
                   />
@@ -455,8 +455,8 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
                   })}
                   name="degree"
                   data={DEGREE_DATA}
-                  itemKey="value"
-                  textField="value"
+                  extractValue={({ value }) => value}
+                  renderTextField={({ value }) => value}
                   errors={errors}
                 />
               </div>
@@ -471,9 +471,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
                   label="RUC:"
                 />
                 <Input
-                  {...register('description', {
-                    // validate: { validateRuc },
-                  })}
+                  {...register('description', {})}
                   placeholder="cargo"
                   type="text"
                   errors={errors}

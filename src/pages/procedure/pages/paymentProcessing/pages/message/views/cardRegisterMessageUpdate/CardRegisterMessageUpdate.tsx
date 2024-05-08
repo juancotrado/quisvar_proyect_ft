@@ -158,8 +158,8 @@ const CardRegisterMessageUpdate = ({
           })}
           name="type"
           data={radioOptions}
-          itemKey="id"
-          textField="value"
+          extractValue={({ id }) => id}
+          renderTextField={({ value }) => value}
           errors={errors}
           placeholder="Tipo de Documento"
           className="messagePage-input"

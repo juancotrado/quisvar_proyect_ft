@@ -152,8 +152,8 @@ const GeneralData = () => {
                 placeholder="Asignar Grupo"
                 name="groupId"
                 data={groups}
-                itemKey="id"
-                textField="name"
+                extractValue={({ id }) => id}
+                renderTextField={({ name }) => name}
                 errors={errors}
                 className="generalData-edit-info-input"
                 disabled={!modAuth}

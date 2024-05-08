@@ -163,8 +163,8 @@ export const BudgetsPage = () => {
           <Select
             name="difficulty"
             data={COST_DATA}
-            itemKey="key"
-            textField="value"
+            extractValue={({ key }) => key}
+            renderTextField={({ value }) => value}
             defaultValue={degree}
             onChange={({ target }) =>
               levelFilterForDegree(target.value as DegreType)

@@ -35,10 +35,10 @@ export const MailPage = () => {
   const { offices } = useSelector((state: RootState) => state.userSession);
   const [listReception, setListReception] = useState<Reception[] | null>(null);
 
-  const officeSelect = offices.map(office => ({
-    ...office,
-    label: office.office.name,
-  }));
+  // const officeSelect = offices.map(office => ({
+  //   ...office,
+  //   label: office.office.name,
+  // }));
   const [listMessage, setListMessage] = useState<MailType[] | null>(null);
   const [totalMail, setTotalMail] = useState(0);
   const [skip, setSkip] = useState(0);
@@ -255,8 +255,8 @@ export const MailPage = () => {
                   placeholder="Estado"
                   onChange={handleFilter}
                   name="status"
-                  itemKey="id"
-                  textField="label"
+                  extractValue={({ id }) => id}
+                  renderTextField={({ label }) => label}
                   styleVariant="secondary"
                 />
               )}
@@ -267,8 +267,8 @@ export const MailPage = () => {
                 data={listTypeMsg}
                 onChange={handleFilter}
                 name="type"
-                itemKey="id"
-                textField="id"
+                extractValue={({ id }) => id}
+                renderTextField={({ id }) => id}
               />
 
               <Select
@@ -276,11 +276,11 @@ export const MailPage = () => {
                 value={officeMsg || ''}
                 styleVariant="secondary"
                 placeholder="Oficina"
-                data={officeSelect}
+                data={offices}
                 onChange={handleFilter}
                 name="office"
-                itemKey="officeId"
-                textField="label"
+                extractValue={({ officeId }) => officeId}
+                renderTextField={({ office }) => office.name}
               />
               {typeMail === 'RECEPTION' && (
                 <Select
@@ -290,8 +290,8 @@ export const MailPage = () => {
                   data={holdingOptions}
                   onChange={handleFilter}
                   name="condition"
-                  itemKey="id"
-                  textField="label"
+                  extractValue={({ id }) => id}
+                  renderTextField={({ label }) => label}
                 />
               )}
               <IconAction

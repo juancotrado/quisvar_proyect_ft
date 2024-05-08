@@ -123,8 +123,8 @@ export const Contracts = () => {
             value={filterContract.status}
             name="status"
             data={STATUS_CONTRACT}
-            itemKey="key"
-            textField="name"
+            extractValue={({ key }) => key}
+            renderTextField={({ name }) => name}
             placeholder="Estado"
             className="contract-filter-select"
             onChange={handleFilterStatus}
@@ -132,8 +132,8 @@ export const Contracts = () => {
           <Select
             name="date"
             data={YEAR_DATA}
-            itemKey="year"
-            textField="year"
+            extractValue={({ year }) => year}
+            renderTextField={({ year }) => year}
             placeholder="Año"
             className="contract-filter-select"
             onChange={handleFilterValues}
@@ -141,8 +141,8 @@ export const Contracts = () => {
           <Select
             name="type"
             data={CONTRACT_TYPE}
-            itemKey="key"
-            textField="name"
+            extractValue={({ key }) => key}
+            renderTextField={({ name }) => name}
             placeholder="Tipo"
             className="contract-filter-select"
             onChange={handleFilterValues}

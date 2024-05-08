@@ -163,8 +163,8 @@ const GenerateOrderService = ({
             })}
             name="payType"
             data={PAY_TYPE_OPTIONS}
-            itemKey="id"
-            textField="value"
+            extractValue={({ id }) => id}
+            renderTextField={({ value }) => value}
             errors={errors}
             placeholder="Seleccione"
           />

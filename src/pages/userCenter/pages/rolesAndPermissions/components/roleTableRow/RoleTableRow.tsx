@@ -45,14 +45,14 @@ const RoleTableRow = ({ rol, onSave }: RoleTableRowProps) => {
     setRole(target.value);
 
   useEffect(() => {
-    setEditMenuPoints(rol.menuPointsDb);
-    setMenuPoints(rol.menuPoints);
+    // setEditMenuPoints(rol.menuPointsDb);
+    // setMenuPoints(rol.menuPoints);
     return () => {
       if (timeoutRef.current) {
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [rol]);
+  }, []);
 
   const handleEditMenuPoint = ({ target }: ChangeEvent<HTMLInputElement>) => {
     const { value, id } = target;

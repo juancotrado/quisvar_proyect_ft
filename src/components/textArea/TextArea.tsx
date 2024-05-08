@@ -14,49 +14,47 @@ interface TextAreaProps<FormData extends FieldValues>
   errorRelative?: boolean;
   styleInput?: number;
 }
-const TextArea = forwardRef(
-  <FormData extends FieldValues>(
-    {
-      label,
-      name,
-      className,
-      errors,
-      errorPosX = 0,
-      errorRelative = false,
-      errorPosY = 0,
-      disabled,
-      styleInput = 2,
-      ...props
-    }: TextAreaProps<FormData>,
-    ref: ForwardedRef<HTMLTextAreaElement>
-  ) => {
-    return (
-      <div className="input-container">
-        {label && (
-          <label htmlFor={name} className="input-label">
-            {label}
-          </label>
-        )}
-        <textarea
-          ref={ref}
-          {...props}
+const TextArea = <FormData extends FieldValues>(
+  {
+    label,
+    name,
+    className,
+    errors,
+    errorPosX = 0,
+    errorRelative = false,
+    errorPosY = 0,
+    disabled,
+    styleInput = 2,
+    ...props
+  }: TextAreaProps<FormData>,
+  ref: ForwardedRef<HTMLTextAreaElement>
+) => {
+  return (
+    <div className="input-container">
+      {label && (
+        <label htmlFor={name} className="input-label">
+          {label}
+        </label>
+      )}
+      <textarea
+        ref={ref}
+        {...props}
+        name={name}
+        className={`${className} ${STYLE_INPUT[styleInput]} ${
+          disabled && 'input-disabled'
+        } `}
+      />
+      {name && errors && errors[name] && (
+        <InputErrorInfo
+          errors={errors}
           name={name}
-          className={`${className} ${STYLE_INPUT[styleInput]} ${
-            disabled && 'input-disabled'
-          } `}
+          isRelative={errorRelative}
+          errorPosX={errorPosX}
+          errorPosY={errorPosY}
         />
-        {name && errors && errors[name] && (
-          <InputErrorInfo
-            errors={errors}
-            name={name}
-            isRelative={errorRelative}
-            errorPosX={errorPosX}
-            errorPosY={errorPosY}
-          />
-        )}
-      </div>
-    );
-  }
-);
+      )}
+    </div>
+  );
+};
 
-export default TextArea;
+export default forwardRef(TextArea);

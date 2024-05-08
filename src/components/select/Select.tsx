@@ -21,7 +21,7 @@ interface SelectOptionsProps<
   errorRelative?: boolean;
   styleVariant?: StylesVariant;
 }
-export const SelectOptions = forwardRef(function <
+export const SelectOptions = <
   T extends Record<string, any>,
   FormData extends FieldValues
 >(
@@ -42,7 +42,7 @@ export const SelectOptions = forwardRef(function <
     ...props
   }: SelectOptionsProps<T, FormData>,
   ref: ForwardedRef<HTMLSelectElement>
-) {
+) => {
   return (
     <div className="select-container">
       {label && (
@@ -77,6 +77,6 @@ export const SelectOptions = forwardRef(function <
       )}
     </div>
   );
-});
+};
 
-export default SelectOptions;
+export default forwardRef(SelectOptions);

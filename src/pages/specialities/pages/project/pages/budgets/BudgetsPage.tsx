@@ -29,20 +29,29 @@ export const BudgetsPage = () => {
   const [levels, setlevels] = useState<Level | null>(null);
   const [openFilter, setOpenFilter] = useState(false);
   const socket = useContext(SocketContext);
-  const getLevels = useCallback(() => {
-    axiosInstance
-      .get(`/stages/${stageId}`, {
-        headers: { noLoader: true },
-      })
-      .then(res => {
-        if (stageId) {
-          socket.emit('join', `project-${stageId}`);
-          setlevels({ ...res.data, stagesId: +stageId });
-        }
-      });
-  }, [socket, stageId]);
+  const getLevels = useCallback(
+    (signal: AbortSignal) => {
+      axiosInstance
+        .get(`/stages/${stageId}`, {
+          headers: { noLoader: true },
+          signal,
+        })
+        .then(res => {
+          if (stageId) {
+            socket.emit('join', `project-${stageId}`);
+            setlevels({ ...res.data, stagesId: +stageId });
+          }
+        });
+    },
+    [socket, stageId]
+  );
   useEffect(() => {
-    getLevels();
+    const abortController = new AbortController();
+    const { signal } = abortController;
+    getLevels(signal);
+    return () => {
+      abortController.abort();
+    };
   }, [getLevels, stageId]);
   useEffect(() => {
     socket.on('server:update-project', (Level: Level) => {

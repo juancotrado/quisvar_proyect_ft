@@ -40,25 +40,21 @@ const setAuthorizationHeader = (config: AxiosRequestConfig) => {
 
 export const axiosInterceptor = () => {
   axiosInstance.interceptors.request.use(req => {
-    console.log('requestsCount', requestsCount);
-    console.log('req:req', req);
     showLoader(req.headers?.noLoader);
     setAuthorizationHeader(req);
     return req;
   });
   axiosInstance.interceptors.response.use(
     res => {
-      console.log('response:res', res.config);
       hideLoader(res.config.headers?.noLoader);
       return res;
     },
     err => {
       if (err instanceof AxiosError) {
-        console.log('err', err.config);
         const { response, config } = err;
         hideLoader(config?.headers?.noLoader);
         if (!response) {
-          SnackbarUtilities.error(err.message);
+          if (err.code !== 'ERR_CANCELED') SnackbarUtilities.error(err.message);
           return Promise.reject(err);
         }
         if (response.data.error.name === 'JsonWebTokenError') {

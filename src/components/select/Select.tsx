@@ -6,7 +6,7 @@ import { InputErrorInfo } from '../inputErrorInfo';
 import { FieldErrors, FieldValues, Path } from 'react-hook-form';
 
 interface SelectOptionsProps<
-  T extends { [key: string]: any },
+  T extends Record<string, any>,
   FormData extends FieldValues
 > extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
@@ -22,7 +22,7 @@ interface SelectOptionsProps<
   styleVariant?: StylesVariant;
 }
 export const SelectOptions = forwardRef(function <
-  T extends { [key: string]: any },
+  T extends Record<string, any>,
   FormData extends FieldValues
 >(
   {

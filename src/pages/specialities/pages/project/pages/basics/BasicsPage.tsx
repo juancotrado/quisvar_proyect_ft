@@ -30,17 +30,23 @@ export const BasicsPage = () => {
   const [openFilter, setOpenFilter] = useState(false);
   const socket = useContext(SocketContext);
   const getLevels = useCallback(() => {
-    axiosInstance.get(`/stages/${stageId}`).then(async res => {
-      if (stageId) {
-        socket.emit('join', `project-${stageId}`);
-        const resBasic = await axiosInstance.get(`/basiclevels/${stageId}`);
-        setlevels({
-          ...res.data,
-          stagesId: +stageId,
-          nextLevel: resBasic.data,
-        });
-      }
-    });
+    axiosInstance
+      .get(`/stages/${stageId}`, {
+        headers: { noLoader: true },
+      })
+      .then(async res => {
+        if (stageId) {
+          socket.emit('join', `project-${stageId}`);
+          const resBasic = await axiosInstance.get(`/basiclevels/${stageId}`, {
+            headers: { noLoader: true },
+          });
+          setlevels({
+            ...res.data,
+            stagesId: +stageId,
+            nextLevel: resBasic.data,
+          });
+        }
+      });
   }, [socket, stageId]);
   useEffect(() => {
     getLevels();
@@ -110,12 +116,7 @@ export const BasicsPage = () => {
     levelFilter('');
   };
 
-  if (!levels)
-    return (
-      <div className="task-loader">
-        <LoaderForComponent />
-      </div>
-    );
+  if (!levels) return <LoaderForComponent />;
   return (
     <>
       <div className="budgetsPage-filter-contain">

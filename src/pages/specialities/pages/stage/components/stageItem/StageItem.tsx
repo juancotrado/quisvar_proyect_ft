@@ -126,7 +126,7 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
                     autoFocus
                   />
                   <div className="stageItem-icon-area">
-                    <button>
+                    <button style={{ backgroundColor: 'transparent' }}>
                       <IconAction
                         size={1.5}
                         icon="check-blue"
@@ -134,7 +134,7 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
                         onClick={handleSubmit(onSubmitData)}
                       />
                     </button>
-                    <button>
+                    <button style={{ backgroundColor: 'transparent' }}>
                       <IconAction
                         size={1.5}
                         icon="cross-red"

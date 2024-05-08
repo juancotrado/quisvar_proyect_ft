@@ -15,6 +15,9 @@ export const Task = () => {
 
   useEffect(() => {
     getTask();
+    return () => {
+      setTask(null);
+    };
   }, [taskId]);
 
   useEffect(() => {
@@ -27,10 +30,12 @@ export const Task = () => {
   }, [socket]);
 
   const getTask = () => {
-    axiosInstance.get(`/subtasks/${taskId}`).then(res => {
-      setTask(res.data);
-      socket.emit('join', `task-${taskId}`);
-    });
+    axiosInstance
+      .get(`/subtasks/${taskId}`, { headers: { noLoader: true } })
+      .then(res => {
+        setTask(res.data);
+        socket.emit('join', `task-${taskId}`);
+      });
   };
 
   const navigate = useNavigate();

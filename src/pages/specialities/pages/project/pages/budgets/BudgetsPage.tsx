@@ -30,12 +30,16 @@ export const BudgetsPage = () => {
   const [openFilter, setOpenFilter] = useState(false);
   const socket = useContext(SocketContext);
   const getLevels = useCallback(() => {
-    axiosInstance.get(`/stages/${stageId}`).then(res => {
-      if (stageId) {
-        socket.emit('join', `project-${stageId}`);
-        setlevels({ ...res.data, stagesId: +stageId });
-      }
-    });
+    axiosInstance
+      .get(`/stages/${stageId}`, {
+        headers: { noLoader: true },
+      })
+      .then(res => {
+        if (stageId) {
+          socket.emit('join', `project-${stageId}`);
+          setlevels({ ...res.data, stagesId: +stageId });
+        }
+      });
   }, [socket, stageId]);
   useEffect(() => {
     getLevels();
@@ -88,19 +92,13 @@ export const BudgetsPage = () => {
     levelFilter('');
   };
 
-  if (!levels)
-    return (
-      <div className="task-loader">
-        <LoaderForComponent />
-      </div>
-    );
+  if (!levels) return <LoaderForComponent />;
   return (
     <>
       <div className="budgetsPage-filter-contain">
         <div className="budgetsPage-filter">
           <FloatingText text="Descargar Índice" xPos={-50}>
             <PDFDownloadLink
-              // document={GenerateIndexPdf({ data: levels })}
               document={<GenerateIndexPdf data={levels} />}
               fileName={`${levels.projectName}.pdf`}
               className="budgetsPage-filter-icon"

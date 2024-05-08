@@ -26,10 +26,12 @@ export const TaskBasics = () => {
   }, [socket]);
 
   const getTask = () => {
-    axiosInstance.get(`/basictasks/${taskId}`).then(res => {
-      setTask(res.data);
-      socket.emit('join', `task-${taskId}`);
-    });
+    axiosInstance
+      .get(`/basictasks/${taskId}`, { headers: { noLoader: true } })
+      .then(res => {
+        setTask(res.data);
+        socket.emit('join', `task-${taskId}`);
+      });
   };
 
   const navigate = useNavigate();

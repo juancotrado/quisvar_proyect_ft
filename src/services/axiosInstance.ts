@@ -1,4 +1,4 @@
-import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
+import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 import { SnackbarUtilities } from '../utils/SnackbarManager';
 import { errorToken$, loader$ } from './sharingSubject';
 
@@ -12,17 +12,21 @@ export const axiosInstance: AxiosInstance = axios.create({
 
 let requestsCount = 0;
 
-const showLoader = () => {
-  if (requestsCount === 0) {
-    loader$.setSubject = true;
+const showLoader = (noLoader: boolean = false) => {
+  if (!noLoader) {
+    if (requestsCount === 0) {
+      loader$.setSubject = true;
+    }
+    requestsCount++;
   }
-  requestsCount++;
 };
 
-const hideLoader = () => {
-  requestsCount--;
-  if (requestsCount === 0) {
-    loader$.setSubject = false;
+const hideLoader = (noLoader: boolean = false) => {
+  if (!noLoader) {
+    requestsCount--;
+    if (requestsCount === 0) {
+      loader$.setSubject = false;
+    }
   }
 };
 const setAuthorizationHeader = (config: AxiosRequestConfig) => {
@@ -36,30 +40,36 @@ const setAuthorizationHeader = (config: AxiosRequestConfig) => {
 
 export const axiosInterceptor = () => {
   axiosInstance.interceptors.request.use(req => {
-    showLoader();
+    console.log('requestsCount', requestsCount);
+    console.log('req:req', req);
+    showLoader(req.headers?.noLoader);
     setAuthorizationHeader(req);
     return req;
   });
   axiosInstance.interceptors.response.use(
     res => {
-      hideLoader();
+      console.log('response:res', res.config);
+      hideLoader(res.config.headers?.noLoader);
       return res;
     },
     err => {
-      const { response } = err;
-      hideLoader();
-      if (!response) {
-        SnackbarUtilities.error(err.message);
+      if (err instanceof AxiosError) {
+        console.log('err', err.config);
+        const { response, config } = err;
+        hideLoader(config?.headers?.noLoader);
+        if (!response) {
+          SnackbarUtilities.error(err.message);
+          return Promise.reject(err);
+        }
+        if (response.data.error.name === 'JsonWebTokenError') {
+          localStorage.removeItem('token');
+          localStorage.removeItem('arrChecked');
+          errorToken$.setSubject = true;
+          return;
+        }
+        SnackbarUtilities.error(response.data.message);
         return Promise.reject(err);
       }
-      if (response.data.error.name === 'JsonWebTokenError') {
-        localStorage.removeItem('token');
-        localStorage.removeItem('arrChecked');
-        errorToken$.setSubject = true;
-        return;
-      }
-      SnackbarUtilities.error(response.data.message);
-      return Promise.reject(err);
     }
   );
 };

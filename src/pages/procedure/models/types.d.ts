@@ -8,8 +8,16 @@ import {
   UserProfile,
 } from '../../../types';
 
-export type MailTypeProcedure = 'RECEIVER' | 'SENDER' | 'ARCHIVER';
-export type MailTypeProcedureSpanish = 'RECIBIDOS' | 'ENVIADOS' | 'ARCHIVADOS';
+export type MailTypeProcedure =
+  | 'RECEIVER'
+  | 'SENDER'
+  | 'ARCHIVER'
+  | 'RECEPTION';
+export type MailTypeProcedureSpanish =
+  | 'RECIBIDOS'
+  | 'ENVIADOS'
+  | 'ARCHIVADOS'
+  | 'MESA DE PARTES';
 export interface OptionsMailHeader {
   id: number;
   iconOn: string;

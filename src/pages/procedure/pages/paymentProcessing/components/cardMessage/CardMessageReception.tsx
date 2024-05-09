@@ -33,7 +33,7 @@ const cardMessageReception = ({
       </div>
       <div className="card-message-section-item">
         <span className={`card-status-span `}>
-          {receiver.user.profile.firstName} {receiver.user.profile.lastName}
+          {receiver?.user.profile.firstName} {receiver?.user.profile.lastName}
         </span>
       </div>
       <div className="card-message-section-item">

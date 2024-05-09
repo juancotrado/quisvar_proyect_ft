@@ -5,13 +5,17 @@ import { CardRegisterProcedureGeneral } from '../../views';
 import { CardMessageHeader } from '../../components';
 import { CardMessage } from '../paymentProcessing/components';
 import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRole } from '../../../../hooks';
+import { ReceptionView } from '../../views/reception';
+import { Reception } from '../../models';
+import { axiosInstance } from '../../../../services/axiosInstance';
 
 const RegularProcedure = () => {
   const navigate = useNavigate();
   const { hasAccess } = useRole('MOD', 'tramites', 'tramite-regular');
   const [params] = useSearchParams();
+  const [listReception, setListReception] = useState<Reception[] | null>(null);
 
   const { optionsMailHeader, typeMail } = useSelectReceiver();
   const {
@@ -26,7 +30,13 @@ const RegularProcedure = () => {
   );
 
   useEffect(() => {
-    getMessages();
+    if (typeMail === 'RECEPTION') {
+      axiosInstance.get<Reception[]>(`/mail/holding`).then(({ data }) => {
+        setListReception(data);
+      });
+    } else {
+      getMessages();
+    }
   }, [typeMail, params]);
 
   const handleViewMessage = (id: number) => {
@@ -66,19 +76,34 @@ const RegularProcedure = () => {
           />
         </div>
         <div className="mail-grid-container">
-          <CardMessageHeader option="regularProcedure" typeMail={typeMail} />
-          {listMessage?.map(({ message, messageId, type }) => (
-            <CardMessage
-              isActive={false}
-              key={messageId}
-              type={type}
-              onArchiver={handleSaveMessage}
-              onClick={() => handleViewMessage(messageId)}
-              message={message}
-              option="regularProcedure"
-              hasAccess={hasAccess}
-            />
-          ))}
+          {typeMail !== 'RECEPTION' ? (
+            <>
+              <CardMessageHeader
+                option="regularProcedure"
+                typeMail={typeMail}
+              />
+              {listMessage?.map(({ message, messageId, type }) => (
+                <CardMessage
+                  isActive={false}
+                  key={messageId}
+                  type={type}
+                  onArchiver={handleSaveMessage}
+                  onClick={() => handleViewMessage(messageId)}
+                  message={message}
+                  option="regularProcedure"
+                  hasAccess={hasAccess}
+                />
+              ))}
+            </>
+          ) : (
+            listReception && (
+              <ReceptionView
+                onSave={() => {}}
+                type="regularProcedure"
+                listReception={listReception}
+              />
+            )
+          )}
         </div>
       </div>
       <Outlet />

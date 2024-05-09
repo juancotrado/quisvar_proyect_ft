@@ -35,10 +35,6 @@ export const MailPage = () => {
   const { offices } = useSelector((state: RootState) => state.userSession);
   const [listReception, setListReception] = useState<Reception[] | null>(null);
 
-  // const officeSelect = offices.map(office => ({
-  //   ...office,
-  //   label: office.office.name,
-  // }));
   const [listMessage, setListMessage] = useState<MailType[] | null>(null);
   const [totalMail, setTotalMail] = useState(0);
   const [skip, setSkip] = useState(0);
@@ -331,6 +327,7 @@ export const MailPage = () => {
           ) : (
             listReception && (
               <ReceptionView
+                type="payProcedure"
                 onSave={() => handleSelectOption(typeMail)}
                 listReception={listReception}
               />

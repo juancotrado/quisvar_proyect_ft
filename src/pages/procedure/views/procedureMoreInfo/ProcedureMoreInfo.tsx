@@ -46,7 +46,10 @@ const ProcedureMoreInfo = ({
       <div className="procedureMoreInfo-main">
         <ProcedureHistory
           messageHistory={message}
-          userMessage={message.initialSender.user.profile}
+          userMessage={
+            message?.userInit?.user.profile ||
+            message?.initialSender?.user.profile
+          }
         />
         {message?.history.length > 0 && (
           <div className="regularProcedureInfo-btn-expand">

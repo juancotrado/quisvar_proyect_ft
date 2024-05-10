@@ -36,8 +36,8 @@ const CardGenerateContract = ({ user }: CardGenerateContractProps) => {
           valueAsNumber: true,
         })}
         data={PROFESSIONAL_SERVICE_LEVEL_DATA}
-        itemKey="id"
-        textField="value"
+        extractValue={({ id }) => id}
+        renderTextField={({ value }) => value}
         className="generalData-edit-info-input"
       />
       <h4 className="cardGenerateContract-subtitle">Fecha:</h4>

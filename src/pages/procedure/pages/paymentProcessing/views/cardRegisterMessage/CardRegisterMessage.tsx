@@ -29,10 +29,9 @@ const CardRegisterMessage = ({
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
     formData.append('mainProcedure', mainFile, values.title + '.pdf');
     formData.append('data', JSON.stringify(body));
-    axiosInstance.post(`/paymail`, formData).then(() => {
-      SnackbarUtilities.success('Proceso exitoso ');
-      handleSave();
-    });
+    await axiosInstance.post(`/paymail`, formData);
+    SnackbarUtilities.success('Proceso exitoso ');
+    handleSave();
   };
   const handleSave = () => {
     onSave?.();

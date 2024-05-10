@@ -10,6 +10,7 @@ const useSelectReceiver = (
     'ARCHIVADOS',
     'ENVIADOS',
     'RECIBIDOS',
+    'MESA DE PARTES',
   ]
 ) => {
   const [typeMail, setTypeMail] = useState<MailTypeProcedure>('RECEIVER');
@@ -38,6 +39,14 @@ const useSelectReceiver = (
       text: 'ARCHIVADOS',
       isActive: typeMail === 'ARCHIVER',
       funcion: () => handleSelectReceiver('ARCHIVER'),
+    },
+    {
+      id: 4,
+      iconOn: 'desk-filled',
+      iconOff: 'desk-regular',
+      text: 'MESA DE PARTES',
+      isActive: typeMail === 'RECEPTION',
+      funcion: () => handleSelectReceiver('RECEPTION'),
     },
   ];
 

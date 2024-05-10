@@ -243,7 +243,6 @@ export const DetailsContracts = () => {
           deliverLettersId: pay.id,
         };
       });
-      // const payTransfomr=covertPhases.map(({}))
       levelId2[1].nextLevel = phaseTransform;
       levelId2[0].nextLevel = payTransform;
       const indexContract = JSON.stringify(contractIndex);

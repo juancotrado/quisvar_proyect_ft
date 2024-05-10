@@ -89,11 +89,10 @@ const Members = ({
             />
             <Select
               {...register(`${idx}.attendance` as const)}
-              itemKey="label"
               name="select"
-              textField="label"
+              extractValue={({ label }) => label}
+              renderTextField={({ label }) => label}
               data={options}
-              // placeholder="Proyecto"
               onChange={e => handleChange(idx, 'attendance', e.target.value)}
               disabled={!edit}
             />

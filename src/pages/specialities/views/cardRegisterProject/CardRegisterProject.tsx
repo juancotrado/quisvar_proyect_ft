@@ -124,7 +124,6 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
           <div className="col-input-top">
             <div className="edit-this">
               <Input
-                isRelative
                 label="CUI:"
                 {...register('CUI', {
                   validate: { validateWhiteSpace },
@@ -136,7 +135,6 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
               />
             </div>
             <Input
-              isRelative
               label="Nombre Corto:"
               {...register('name', {
                 validate: { validateWhiteSpace, validateCorrectTyping },
@@ -153,7 +151,6 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
             {...register('description', {
               validate: { validateWhiteSpace },
             })}
-            isRelative
             name="description"
             disabled
             placeholder="Nombre completo del Proyecto"
@@ -161,7 +158,6 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
           />
           <div className="col-input">
             <Input
-              isRelative
               label="Departamento:"
               {...register('department', {
                 validate: { validateWhiteSpace },
@@ -171,7 +167,6 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
               errors={errors}
             />
             <Input
-              isRelative
               label="Provincia:"
               {...register('province', {
                 validate: { validateWhiteSpace },
@@ -181,7 +176,6 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
               errors={errors}
             />
             <Input
-              isRelative
               label="Distrito:"
               {...register('district', {
                 validate: { validateWhiteSpace },

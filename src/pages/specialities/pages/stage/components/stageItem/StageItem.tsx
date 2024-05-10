@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Option, StageSubtask } from '../../../../../../types';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { DotsRight, Input } from '../../../../../../components';
+import { DotsRight, IconAction, Input } from '../../../../../../components';
 import {
   validateCorrectTyping,
   validateWhiteSpace,
@@ -95,7 +95,11 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
       <NavLink to={openEdit ? currentRoute : `etapa/${stage.id}`}>
         {({ isActive }) => (
           <ContextMenuTrigger id={`stage-${stage.id}`}>
-            <div className="stage-header-div" key={stage.id + 1}>
+            <div
+              className="stage-header-div"
+              key={stage.id + 1}
+              onClick={e => e.stopPropagation()}
+            >
               {!openEdit ? (
                 <span
                   className={
@@ -114,32 +118,28 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
                   <Input
                     {...register('name', {
                       validate: { validateWhiteSpace, validateCorrectTyping },
+                      value: stage.name,
                     })}
                     name="name"
-                    placeholder={stage.name}
-                    className="stageItem-input stage-add-input"
+                    className="stageItem-input"
                     errors={errors}
+                    autoFocus
                   />
-                  <div
-                    className="stageItem-icon-area"
-                    onClick={e => e.stopPropagation()}
-                  >
-                    <button
-                      className="stage-icon-action"
-                      onClick={handleSubmit(onSubmitData)}
-                    >
-                      <img
-                        src="/svg/check-blue.svg"
-                        style={{ width: '20px', height: '20px' }}
+                  <div className="stageItem-icon-area">
+                    <button style={{ backgroundColor: 'transparent' }}>
+                      <IconAction
+                        size={1.5}
+                        icon="check-blue"
+                        position="none"
+                        onClick={handleSubmit(onSubmitData)}
                       />
                     </button>
-                    <button
-                      onClick={handleOpenEdit}
-                      className="stage-icon-action"
-                    >
-                      <img
-                        src="/svg/cross-red.svg"
-                        style={{ width: '20px', height: '20px' }}
+                    <button style={{ backgroundColor: 'transparent' }}>
+                      <IconAction
+                        size={1.5}
+                        icon="cross-red"
+                        position="none"
+                        onClick={handleOpenEdit}
                       />
                     </button>
                   </div>

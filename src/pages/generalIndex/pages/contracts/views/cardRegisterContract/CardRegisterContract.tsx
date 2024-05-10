@@ -214,8 +214,8 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
                 {...register('idCoorp')}
                 name="idCoorp"
                 data={companies}
-                itemKey="newId"
-                textField="name"
+                extractValue={({ newId }) => newId}
+                renderTextField={({ name }) => name}
                 errors={errors}
               />
             )}
@@ -250,8 +250,8 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
               })}
               name="difficulty"
               data={DIFFICULTY_LEVEL}
-              itemKey="key"
-              textField="name"
+              extractValue={({ key }) => key}
+              renderTextField={({ name }) => name}
               errors={errors}
             />
             <Select
@@ -261,8 +261,8 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
               })}
               name="type"
               data={CONTRACT_TYPE}
-              itemKey="key"
-              textField="name"
+              extractValue={({ key }) => key}
+              renderTextField={({ name }) => name}
               errors={errors}
             />
           </div>
@@ -274,8 +274,8 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
               })}
               name="department"
               data={departaments}
-              itemKey="nombre_ubigeo"
-              textField="nombre_ubigeo"
+              extractValue={({ nombre_ubigeo }) => nombre_ubigeo}
+              renderTextField={({ nombre_ubigeo }) => nombre_ubigeo}
               onChange={handleGetProvinces}
               errors={errors}
             />
@@ -286,9 +286,9 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
               })}
               name="province"
               data={provinces}
-              itemKey="nombre_ubigeo"
               onChange={handleGetDistricts}
-              textField="nombre_ubigeo"
+              extractValue={({ nombre_ubigeo }) => nombre_ubigeo}
+              renderTextField={({ nombre_ubigeo }) => nombre_ubigeo}
               errors={errors}
             />
             <Select
@@ -298,8 +298,8 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
               })}
               name="district"
               data={districts}
-              itemKey="nombre_ubigeo"
-              textField="nombre_ubigeo"
+              extractValue={({ nombre_ubigeo }) => nombre_ubigeo}
+              renderTextField={({ nombre_ubigeo }) => nombre_ubigeo}
               errors={errors}
             />
           </div>

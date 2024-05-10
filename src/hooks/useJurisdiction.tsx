@@ -2,7 +2,7 @@ import provincesJson from '../utils/ubigeo/provincias.json';
 import distritosJson from '../utils/ubigeo/distritos.json';
 import departamentsJson from '../utils/ubigeo/departamentos.json';
 import { ChangeEvent, useState } from 'react';
-import { Ubigeo } from '../types/types';
+import { Ubigeo } from '../types';
 
 const useJurisdiction = () => {
   const [provinces, setProvinces] = useState<Ubigeo[]>([]);

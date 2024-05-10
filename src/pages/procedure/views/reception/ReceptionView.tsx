@@ -1,15 +1,17 @@
 import './receptionView.css';
-import { Reception } from '../../models';
+import { Reception, TypeProcedure } from '../../models';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { CardReceptionHeader } from '../../components';
 import { CardMessageReception } from '../../pages/paymentProcessing/components';
 import { useNavigate } from 'react-router-dom';
+import { TYPE_PROCEDURE } from '../../pages/paymentProcessing/models';
 
 interface ReceptionViewProps {
   listReception: Reception[];
+  type: TypeProcedure;
   onSave: () => void;
 }
-const ReceptionView = ({ listReception, onSave }: ReceptionViewProps) => {
+const ReceptionView = ({ listReception, onSave, type }: ReceptionViewProps) => {
   const navigate = useNavigate();
 
   const handleViewMessage = (id: number) => {
@@ -17,9 +19,11 @@ const ReceptionView = ({ listReception, onSave }: ReceptionViewProps) => {
   };
   const handleApprove = (id: number) => {
     const body = { ids: [id] };
-    axiosInstance.put(`paymail/holding`, body).then(() => {
-      onSave();
-    });
+    axiosInstance
+      .put(`${TYPE_PROCEDURE[type].provied}/holding`, body)
+      .then(() => {
+        onSave();
+      });
   };
   return (
     <>

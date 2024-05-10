@@ -1,69 +1,60 @@
+import { FieldErrors, FieldValues, Path } from 'react-hook-form';
 import { STYLE_INPUT } from '../Input/inputDefinitions';
+import { InputErrorInfo } from '../inputErrorInfo';
 import './TextArea.css';
-import { CSSProperties, TextareaHTMLAttributes, forwardRef } from 'react';
+import { ForwardedRef, TextareaHTMLAttributes, forwardRef } from 'react';
 
-interface TextAreaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
+interface TextAreaProps<FormData extends FieldValues>
+  extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   label?: string;
-  name?: string;
-  className?: string;
-  errors?: { [key: string]: any };
+  name?: Path<FormData>;
+  errors?: FieldErrors<FormData>;
   errorPosX?: number;
   errorPosY?: number;
-  isRelative?: boolean;
-  disabled?: boolean;
+  errorRelative?: boolean;
   styleInput?: number;
 }
-const TextArea = forwardRef<HTMLTextAreaElement, TextAreaProps>(
-  (
-    {
-      label,
-      name,
-      className,
-      errors,
-      errorPosX = 0,
-      isRelative = false,
-      errorPosY = 0,
-      disabled,
-      styleInput = 2,
-
-      ...props
-    },
-    ref
-  ) => {
-    const style: CSSProperties = {
-      transform: `translate(${errorPosX}px,${errorPosY}px)`,
-      position: isRelative ? 'static' : 'absolute',
-    };
-    return (
-      <div className="input-container">
-        {label && (
-          <label htmlFor={name} className="input-label">
-            {label}
-          </label>
-        )}
-        <textarea
-          ref={ref}
-          {...props}
+const TextArea = <FormData extends FieldValues>(
+  {
+    label,
+    name,
+    className,
+    errors,
+    errorPosX = 0,
+    errorRelative = false,
+    errorPosY = 0,
+    disabled,
+    styleInput = 2,
+    ...props
+  }: TextAreaProps<FormData>,
+  ref: ForwardedRef<HTMLTextAreaElement>
+) => {
+  return (
+    <div className="input-container">
+      {label && (
+        <label htmlFor={name} className="input-label">
+          {label}
+        </label>
+      )}
+      <textarea
+        ref={ref}
+        {...props}
+        name={name}
+        className={`${className} ${STYLE_INPUT[styleInput]} ${
+          disabled && 'input-disabled'
+        } `}
+      />
+      {name && errors && errors[name] && (
+        <InputErrorInfo
+          errors={errors}
           name={name}
-          className={`${className} ${STYLE_INPUT[styleInput]} ${
-            errors && name && errors[name] && 'input-text-area-error'
-          } ${disabled && 'input-disabled'} `}
+          isRelative={errorRelative}
+          errorPosX={errorPosX}
+          errorPosY={errorPosY}
         />
-        {name && errors && errors[name] && (
-          <span className="input-span-error" style={style}>
-            <img
-              src="/svg/warning.svg"
-              alt="warning"
-              className="input-span-icon"
-            />
-            {errors[name]?.type === 'required'
-              ? 'Por favor llene el campo.'
-              : errors[name].message}
-          </span>
-        )}
-      </div>
-    );
-  }
-);
+      )}
+    </div>
+  );
+};
 
-export default TextArea;
+export default forwardRef(TextArea);

@@ -1,9 +1,5 @@
 import { FocusEvent } from 'react';
-import {
-  //CloseIcon,
-  IconAction,
-  Input,
-} from '../../../../../../../../components';
+import { IconAction, Input } from '../../../../../../../../components';
 import { PayData } from '../../models';
 import './contractRowPay.css';
 import { useSelector } from 'react-redux';

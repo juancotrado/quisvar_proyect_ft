@@ -83,29 +83,26 @@ const AdvancedSelectCrud = <
       control={control}
       name={name}
       rules={{ required: 'Debes seleccionar una opción' }}
-      render={({ field: { onChange: onChangeForm, value: data } }) => {
-        console.log('data', data);
-        return (
-          <AdvancedSelect
-            placeholder={placeholder}
-            components={{ Option }}
-            options={selectData}
-            isClearable
-            isCreatable
-            onCreateOption={onCreateOption}
-            value={
-              !isMulti ? selectData.find(c => c.value === data.value) : data
-            }
-            label={label}
-            errors={errors}
-            name={name}
-            onChange={onChangeForm}
-            styleVariant={styleVariant}
-            isMulti={isMulti}
-            {...props}
-          />
-        );
-      }}
+      render={({ field: { onChange: onChangeForm, value: data } }) => (
+        <AdvancedSelect
+          placeholder={placeholder}
+          components={{ Option }}
+          options={selectData}
+          isClearable
+          isCreatable
+          onCreateOption={onCreateOption}
+          value={
+            !isMulti ? selectData.find(c => c.value === data?.value) : data
+          }
+          label={label}
+          errors={errors}
+          name={name}
+          onChange={onChangeForm}
+          styleVariant={styleVariant}
+          isMulti={isMulti}
+          {...props}
+        />
+      )}
     />
   ) : (
     <AdvancedSelect

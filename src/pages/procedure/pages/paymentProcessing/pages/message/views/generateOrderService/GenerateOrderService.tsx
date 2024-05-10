@@ -143,7 +143,6 @@ const GenerateOrderService = ({
           })}
           defaultValue={message.header}
           rows={3}
-          isRelative
           name="concept"
           placeholder="Concepto"
           errors={errors}
@@ -164,8 +163,8 @@ const GenerateOrderService = ({
             })}
             name="payType"
             data={PAY_TYPE_OPTIONS}
-            itemKey="id"
-            textField="value"
+            extractValue={({ id }) => id}
+            renderTextField={({ value }) => value}
             errors={errors}
             placeholder="Seleccione"
           />

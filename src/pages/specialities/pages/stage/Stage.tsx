@@ -25,14 +25,21 @@ export const Stage = () => {
     if (id) {
       getStages();
     }
+    return () => {
+      setProject(null);
+    };
   }, [projectId, id]);
 
   const getStages = () => {
-    axiosInstance.get<ProjectType>(`/projects/${projectId}`).then(res => {
-      const isModsAuthProject = res.data.hasAccessInStage || hasAccess;
-      dispatch(setModAuthProject(isModsAuthProject));
-      setProject(res.data);
-    });
+    axiosInstance
+      .get<ProjectType>(`/projects/${projectId}`, {
+        headers: { noLoader: true },
+      })
+      .then(res => {
+        const isModsAuthProject = res.data.hasAccessInStage || hasAccess;
+        dispatch(setModAuthProject(isModsAuthProject));
+        setProject(res.data);
+      });
   };
 
   return (

@@ -2,7 +2,13 @@
 
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { Group, StageForm, StageInfo } from '../../../../../../types';
-import { CostTable, Input, Select, Button } from '../../../../../../components';
+import {
+  CostTable,
+  Input,
+  Select,
+  Button,
+  LoaderForComponent,
+} from '../../../../../../components';
 import {
   validateOnlyNumbers,
   validateWhiteSpace,
@@ -34,23 +40,27 @@ const GeneralData = () => {
   }, []);
 
   const getStageDetails = () => {
-    axiosInstance.get<StageInfo>(`/stages/details/${stageId}`).then(res => {
-      const {
-        professionalCost,
-        bachelorCost,
-        groupId,
-        graduateCost,
-        internCost,
-      } = res.data;
-      reset({
-        bachelorCost,
-        groupId: groupId ?? '',
-        professionalCost,
-        graduateCost,
-        internCost,
+    axiosInstance
+      .get<StageInfo>(`/stages/details/${stageId}`, {
+        headers: { noLoader: true },
+      })
+      .then(res => {
+        const {
+          professionalCost,
+          bachelorCost,
+          groupId,
+          graduateCost,
+          internCost,
+        } = res.data;
+        reset({
+          bachelorCost,
+          groupId: groupId ?? '',
+          professionalCost,
+          graduateCost,
+          internCost,
+        });
+        setStageInfo(res.data);
       });
-      setStageInfo(res.data);
-    });
   };
 
   const dataInfoStage = () => {
@@ -67,7 +77,11 @@ const GeneralData = () => {
     };
   };
   const getGroups = () => {
-    axiosInstance.get(`/groups/all`).then(res => setGroups(res.data));
+    axiosInstance
+      .get(`/groups/all`, {
+        headers: { noLoader: true },
+      })
+      .then(res => setGroups(res.data));
   };
   const onSubmitStage: SubmitHandler<StageForm> = async body => {
     axiosInstance
@@ -76,6 +90,8 @@ const GeneralData = () => {
   };
 
   const groupsStage = stageInfo?.group?.groups ?? [];
+  if (!groups || !stageInfo) return <LoaderForComponent />;
+
   return (
     <div className="generalData">
       <div className="generalData-main-info">
@@ -136,8 +152,8 @@ const GeneralData = () => {
                 placeholder="Asignar Grupo"
                 name="groupId"
                 data={groups}
-                itemKey="id"
-                textField="name"
+                extractValue={({ id }) => id}
+                renderTextField={({ name }) => name}
                 errors={errors}
                 className="generalData-edit-info-input"
                 disabled={!modAuth}

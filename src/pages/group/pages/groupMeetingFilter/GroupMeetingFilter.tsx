@@ -68,9 +68,9 @@ const GroupMeetingFilter = () => {
           <div>
             <Select
               {...register('groupId')}
-              itemKey="id"
               data={groups}
-              textField="name"
+              extractValue={({ id }) => id}
+              renderTextField={({ name }) => name}
               placeholder="Todos"
               name="groupId"
               label="Grupos"

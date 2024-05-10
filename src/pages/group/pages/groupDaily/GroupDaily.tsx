@@ -252,9 +252,9 @@ export const GroupDaily = () => {
               ) : (
                 <div className="gd-cross">
                   <Select
-                    itemKey="id"
                     name="select"
-                    textField="district"
+                    extractValue={({ id }) => id}
+                    renderTextField={({ district }) => district}
                     data={dataProjects}
                     placeholder="Proyecto"
                     onChange={e => createDuty(e.target.value)}

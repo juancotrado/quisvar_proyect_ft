@@ -73,9 +73,9 @@ export const Specialities = () => {
               required={true}
               name="typeSpeciality"
               data={YEAR_DATA}
-              itemKey="year"
               onChange={handleFilterForYear}
-              textField="year"
+              extractValue={({ year }) => year}
+              renderTextField={({ year }) => year}
             />
             <DropDownSidebarSpeciality
               data={{

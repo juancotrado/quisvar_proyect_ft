@@ -1,5 +1,4 @@
 import React from 'react';
-declare module 'html2pdf.js';
 declare module 'react' {
   function forwardRef<T, P = {}>(
     render: (props: P, ref: Ref<T>) => ReactElement | null

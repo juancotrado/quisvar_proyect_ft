@@ -10,10 +10,8 @@ import { STYLE_SELECT } from './selectDefinitions';
 import { InputErrorInfo } from '../inputErrorInfo';
 import { FieldErrors, FieldValues, Path } from 'react-hook-form';
 
-interface SelectOptionsProps<
-  T extends Record<string, any>,
-  FormData extends FieldValues
-> extends SelectHTMLAttributes<HTMLSelectElement> {
+interface SelectOptionsProps<T, FormData extends FieldValues>
+  extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
   data?: T[];
   renderTextField?: (data: T) => ReactNode;
@@ -26,10 +24,7 @@ interface SelectOptionsProps<
   errorRelative?: boolean;
   styleVariant?: StylesVariant;
 }
-export const SelectOptions = <
-  T extends Record<string, any>,
-  FormData extends FieldValues
->(
+export const SelectOptions = <T, FormData extends FieldValues>(
   {
     label,
     data,

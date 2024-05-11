@@ -1,6 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react';
-import { MessageSendType, ProcedureSubmit, Office } from '../../../../types';
 
+import { MessageSendType, ProcedureSubmit, Office } from '../../../../types';
 import './formRegisterProcedure.css';
 import { useTitleProcedure } from '../../hooks';
 import { useSelector } from 'react-redux';
@@ -313,15 +313,16 @@ const FormRegisterProcedure = ({
               rules={{
                 required: contacts && 'Debes seleccionar una opción',
               }}
-              render={({ field: { onChange } }) => (
+              render={({ field }) => (
                 <AdvancedSelect
+                  {...field}
                   placeholder="Dirigido a"
                   options={contacts}
-                  components={{ Option: OptionSelectProcedure }}
+                  components={{
+                    Option: OptionSelectProcedure,
+                  }}
                   isClearable
                   errors={errors}
-                  name="receiver"
-                  onChange={onChange}
                 />
               )}
             />
@@ -351,15 +352,15 @@ const FormRegisterProcedure = ({
             rules={{
               required: isAddReceiver && 'Debes seleccionar una opción',
             }}
-            render={({ field: { onChange } }) => (
+            render={({ field }) => (
               <AdvancedSelect
+                {...field}
                 placeholder="Dirigida a"
                 options={secondaryContacts}
                 isClearable
                 errors={errors}
                 isMulti
                 name="secondaryReceiver"
-                onChange={onChange}
               />
             )}
           />

@@ -105,8 +105,9 @@ const GenerateOrderService = ({
               control={control}
               name="company"
               rules={{ required: 'Debes seleccionar una opción' }}
-              render={({ field: { onChange: onChangeForm } }) => (
+              render={({ field }) => (
                 <AdvancedSelect
+                  {...field}
                   placeholder="Selecione una opción"
                   options={companies}
                   isClearable
@@ -114,11 +115,8 @@ const GenerateOrderService = ({
                   errors={errors}
                   name="company"
                   onChange={value => {
-                    setValue(
-                      'ordenNumber',
-                      (value as CompanySelect).orderQuantity
-                    );
-                    onChangeForm(value);
+                    setValue('ordenNumber', value?.orderQuantity ?? 0);
+                    field.onChange(value);
                   }}
                 />
               )}

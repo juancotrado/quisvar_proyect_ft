@@ -35,11 +35,7 @@
 .AdvancedSelect input:focus {
   box-shadow: none;
 }
-.AdvancedSelectCrud-option {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+
 .secondary .css-13cymwt-control {
   height: 1.8rem;
   width: 100%;
@@ -51,11 +47,6 @@
   min-height: auto;
 }
 
-.AdvancedSelectCrud-option-actions {
-  display: flex;
-  gap: 1rem;
-  align-items: flex-end;
-}
 .select-style-two {
   border-radius: 0.25rem;
   border: 0.5px solid rgba(0, 0, 0, 0.2);

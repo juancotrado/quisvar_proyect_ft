@@ -1,4 +1,4 @@
-import { Contact, OfficeSelect } from '../pages/procedure/models';
+import { OfficeSelect } from '../pages/procedure/models';
 
 export interface SpecialityType {
   id: number;
@@ -1127,7 +1127,8 @@ export interface Companies {
   orderQuantity: number;
 }
 
-export type CompanySelect = Companies & OptionSelect;
+// export type CompanySelect = Companies & OptionSelect;
+export interface CompanySelect extends Companies, OptionSelect {}
 export type SpecialistProject = {
   id: number;
   specialistId: number;

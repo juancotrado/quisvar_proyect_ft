@@ -2,13 +2,14 @@ import { components } from 'react-select';
 import { OptionProps } from 'react-select';
 import { IconAction } from '../../../../components';
 import './optionSelectProcedure.css';
+import { Contact } from '../../models';
 
-const OptionSelectProcedure = (props: OptionProps<any>) => {
+function OptionSelectProcedure(props: OptionProps<Contact>) {
   const { data, isSelected } = props;
-  const isArea = data.value.includes('area');
+  const isArea = 'quantity' in data;
   return (
     <components.Option {...props}>
-      <div className="optionSelectProcedure">
+      <div className="optionSelectProcedure" key={props.innerProps.key}>
         <span
           style={{
             marginRight: '8px',
@@ -36,6 +37,6 @@ const OptionSelectProcedure = (props: OptionProps<any>) => {
       </div>
     </components.Option>
   );
-};
+}
 
 export default OptionSelectProcedure;

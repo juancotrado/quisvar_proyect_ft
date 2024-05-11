@@ -154,17 +154,16 @@ const CardProvied = ({ type, message }: CardProviedProps) => {
           control={control}
           name="to"
           rules={{ required: 'Debes seleccionar una opción' }}
-          render={({ field: { onChange } }) => (
+          render={({ field }) => (
             <AdvancedSelect
+              {...field}
               placeholder="Selecione una opción"
               options={contacts}
               components={{ Option: OptionSelectProcedure }}
               isClearable
               label={'Para:'}
               errors={errors}
-              name="to"
-              isOptionDisabled={option => !!(option as Contact)?.isDisabled}
-              onChange={onChange}
+              isOptionDisabled={option => !!option?.isDisabled}
             />
           )}
         />

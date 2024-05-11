@@ -24,7 +24,6 @@ export * from './loaderText';
 export * from './menu';
 export * from './portal';
 export * from './select';
-export * from './taskCounter';
 export * from './textArea';
 export * from './uploadFile';
 export * from './uploadFileInput';

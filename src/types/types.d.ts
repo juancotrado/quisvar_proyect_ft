@@ -1126,7 +1126,15 @@ export interface Companies {
   description: string;
   orderQuantity: number;
 }
-
+export interface CompaniesForm extends Companies {
+  img?: File[];
+}
+export interface MenuMoreInfo {
+  id: number;
+  name: string;
+  icon: string;
+  action: () => void;
+}
 // export type CompanySelect = Companies & OptionSelect;
 export interface CompanySelect extends Companies, OptionSelect {}
 export type SpecialistProject = {

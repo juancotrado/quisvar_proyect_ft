@@ -40,7 +40,7 @@ const SwornDeclarationPdf = ({ data }: SwornDeclarationPdfProps) => {
           el presente documento.
         </Text>
         <View style={{ marginLeft: 50 }}>
-          {data?.declarations?.map((declaration: any) => (
+          {data?.declarations?.map(declaration => (
             <Text style={styles.text} key={declaration}>
               ■ Cumplir con las directivas: {deleteExtension(declaration)}
             </Text>

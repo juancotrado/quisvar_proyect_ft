@@ -1,15 +1,15 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { RootState } from '../../store';
 import { useSelector } from 'react-redux';
 import InputText from '../Input/Input';
 import Button from '../button/Button';
 import { axiosInstance } from '../../services/axiosInstance';
+import { validateRepeatPassword } from '../../utils';
 
 interface Recovery {
   oldpassword: string;
   newpassword: string;
+  verifyPassword: string;
 }
 
 interface CardRecoveryPasswordProps {
@@ -17,7 +17,7 @@ interface CardRecoveryPasswordProps {
 }
 
 const CardRecoveryPassword = ({ onClose }: CardRecoveryPasswordProps) => {
-  const { userSession } = useSelector((state: RootState) => state);
+  const userSession = useSelector((state: RootState) => state.userSession);
   const {
     register,
     handleSubmit,
@@ -25,7 +25,6 @@ const CardRecoveryPassword = ({ onClose }: CardRecoveryPasswordProps) => {
     watch,
     formState: { errors },
   } = useForm<Recovery>();
-  const [errorPassword, setErrorPassword] = useState<{ [key: string]: any }>();
 
   const onSubmit = async (values: Recovery) => {
     if (userSession?.id !== undefined) {
@@ -34,15 +33,6 @@ const CardRecoveryPassword = ({ onClose }: CardRecoveryPasswordProps) => {
         onClose?.();
       });
     }
-  };
-
-  const verifyPasswords = ({ target }: React.FocusEvent<HTMLInputElement>) => {
-    const error = {
-      verifyPassword: { message: 'Las contraseñas no coinciden' },
-    };
-    watch('newpassword') !== target.value
-      ? setErrorPassword(error)
-      : setErrorPassword({});
   };
 
   const handleClose = () => {
@@ -57,10 +47,9 @@ const CardRecoveryPassword = ({ onClose }: CardRecoveryPasswordProps) => {
       <div className="divider"></div>
       <section className="inputs-section">
         <InputText
-          {...register('oldpassword')}
+          {...(register('oldpassword'), { required: true })}
           errors={errors}
           name="oldpassword"
-          onBlur={e => verifyPasswords(e)}
           placeholder="Contraseña actual"
           type="password"
           autoComplete="no"
@@ -76,9 +65,12 @@ const CardRecoveryPassword = ({ onClose }: CardRecoveryPasswordProps) => {
           label="Contraseña Nueva"
         />
         <InputText
-          errors={errorPassword}
+          errors={errors}
+          {...register('verifyPassword', {
+            required: true,
+            validate: val => validateRepeatPassword(val, watch('newpassword')),
+          })}
           name="verifyPassword"
-          onBlur={verifyPasswords}
           placeholder="Confirmar contraseña nueva"
           type="password"
           autoComplete="no"

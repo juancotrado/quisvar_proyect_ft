@@ -7,6 +7,5 @@ export { default as useRole } from './useRole';
 export { default as useSector } from './useSector';
 export { default as useSocket } from './useSocket';
 export { default as useUserPorcetage } from './useUserPorcetage';
-export { default as useValidatePassword } from './useValidatePassword';
 export { default as useSubMenus } from './useSubMenus';
 export { default as useHtmlToPdf } from './useHtmlToPdf';

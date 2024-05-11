@@ -1,3 +1,5 @@
+import { Area } from 'react-easy-crop';
+
 export const createImage = (url: string) => {
   const newImage: Promise<HTMLImageElement> = new Promise((resolve, reject) => {
     const image = new Image();
@@ -24,7 +26,7 @@ export const getRadianAngle = (degreeValue: number) =>
 
 export async function getCroppedImg(
   imageSrc: string,
-  pixelCrop: any,
+  pixelCrop: Area,
   rotation = 0,
   flip = { horizontal: false, vertical: false }
 ) {

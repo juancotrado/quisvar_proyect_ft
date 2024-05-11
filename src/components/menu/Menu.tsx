@@ -2,8 +2,13 @@ import { motion } from 'framer-motion';
 import './Menu.css';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
+import { MenuMoreInfo } from '../../types';
 
-const Menu = ({ data }: any) => {
+interface MenuProps {
+  data: MenuMoreInfo[];
+}
+
+const Menu = ({ data }: MenuProps) => {
   const { profile } = useSelector((state: RootState) => state.userSession);
 
   return (
@@ -17,7 +22,7 @@ const Menu = ({ data }: any) => {
       <p className="fullname-menu">{profile.firstName} </p>
       <br className="line"></br>
       {data.map(
-        (value: any) =>
+        value =>
           value.id !== 2 && (
             <motion.li
               key={value.id}

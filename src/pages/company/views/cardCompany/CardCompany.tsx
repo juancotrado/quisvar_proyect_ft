@@ -10,7 +10,7 @@ import {
   CloseIcon,
 } from '../../../../components';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { Companies } from '../../../../types';
+import { Companies, CompaniesForm } from '../../../../types';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import {
   normalizeFileName,
@@ -33,7 +33,7 @@ const CardCompany = ({ onSave }: CardCompanyProps) => {
     reset,
     // watch,
     formState: { errors },
-  } = useForm<Companies>();
+  } = useForm<CompaniesForm>();
 
   const formattedDate = (value: string) => {
     const parts = value.split('T');
@@ -55,7 +55,7 @@ const CardCompany = ({ onSave }: CardCompanyProps) => {
       handleIsOpen.current.unsubscribe();
     };
   }, []);
-  const onSubmit: SubmitHandler<Companies> = values => {
+  const onSubmit: SubmitHandler<CompaniesForm> = values => {
     const headers = {
       'Content-type': 'multipart/form-data',
     };

@@ -10,7 +10,7 @@ import {
   Modal,
 } from '../../../../components';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { ConsortiumType } from '../../../../types';
+import { ConsortiumType, ConsortiumTypeForm } from '../../../../types';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { normalizeFileName, validateJPGExtension } from '../../../../utils';
 
@@ -30,7 +30,7 @@ const CardConsortium = ({ onSave }: CardConsortiumProps) => {
     reset,
     // watch,
     formState: { errors },
-  } = useForm<ConsortiumType>();
+  } = useForm<ConsortiumTypeForm>();
   const closeFunctions = () => {
     setHasId(undefined);
     setIsOpen(false);
@@ -46,7 +46,7 @@ const CardConsortium = ({ onSave }: CardConsortiumProps) => {
       handleIsOpen.current.unsubscribe();
     };
   }, []);
-  const onSubmit: SubmitHandler<ConsortiumType> = values => {
+  const onSubmit: SubmitHandler<ConsortiumTypeForm> = values => {
     const headers = {
       'Content-type': 'multipart/form-data',
     };

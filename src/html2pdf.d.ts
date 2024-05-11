@@ -90,7 +90,7 @@ declare module 'html2pdf.js' {
   };
 
   type Html2PdfThen = {
-    output: (value: string) => void;
+    output: (value: string) => blob;
     setPage(value: number);
     addImage(
       docImg: string,

@@ -15,7 +15,6 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../store';
 import { DataLicense, licenseList } from '../../../../../../types';
 import { SocketContext } from '../../../../../../context';
-import { textAlign } from 'html2canvas/dist/types/css/property-descriptors/text-align';
 import { SnackbarUtilities } from '../../../../../../utils';
 interface CardLicenseProps {
   onSave?: () => void;

@@ -247,7 +247,10 @@ const CardCompany = ({ onSave }: CardCompanyProps) => {
             )
           ) : (
             <Input
-              {...register('img', { validate: validateJPGExtension })}
+              {...register('img', {
+                validate: validateJPGExtension,
+              })}
+              name="img"
               placeholder=""
               errors={errors}
               label="Imagen de la empresa"

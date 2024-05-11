@@ -729,6 +729,9 @@ export type ConsortiumType = {
   name: string;
   companies: SubCompany[];
 };
+export interface ConsortiumTypeForm extends ConsortiumType {
+  img: FileList;
+}
 type SubCompany = {
   companies: Pick<Companies, 'id' | 'name' | 'img'>;
   percentaje?: string;
@@ -1023,7 +1026,7 @@ export interface Procedure extends MessageSendType {
 export interface ProcedureSubmit {
   values: Procedure;
   fileUploadFiles: File[];
-  mainFile: Blob;
+  mainFile: blob;
 }
 type ListItemElement = {
   type: 'listItem';
@@ -1127,7 +1130,7 @@ export interface Companies {
   orderQuantity: number;
 }
 export interface CompaniesForm extends Companies {
-  img?: File[];
+  img: FileList;
 }
 export interface MenuMoreInfo {
   id: number;

@@ -1,5 +1,3 @@
-import { UserForm } from './types';
-
 export const JOB_DATA = [
   { value: 'Ingeniería Agronómica', abrv: 'Ing' },
   { value: 'Ingeniería Agroindustrial', abrv: 'Ing' },

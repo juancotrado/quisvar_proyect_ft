@@ -21,6 +21,7 @@ import {
   validateDNI,
   validateOnlyNumbers,
   validateRuc,
+  validateRepeatPassword,
 } from '../../../../../../utils';
 import {
   AdvancedSelectCrud,
@@ -31,14 +32,8 @@ import {
   Select,
 } from '../../../../../../components';
 import { Subscription } from 'rxjs';
-import { useJurisdiction, useValidatePassword } from '../../../../../../hooks';
-import {
-  DEGREE_DATA,
-  INITIAL_VALUES_USER,
-  GENDER,
-  OfficeSelect,
-  UserForm,
-} from '../../models';
+import { useJurisdiction } from '../../../../../../hooks';
+import { DEGREE_DATA, GENDER, OfficeSelect, UserForm } from '../../models';
 import { CarRegisterSwornDeclaration } from '..';
 import { CardAddProfession } from '../cardAddProfession';
 import { CardAddOffice } from '../cardAddOffice';
@@ -63,12 +58,8 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
     watch,
     control,
     formState: { errors },
-  } = useForm<UserForm>({
-    defaultValues: INITIAL_VALUES_USER,
-  });
-  const { errorPassword, verifyPasswords } = useValidatePassword(
-    watch('password')
-  );
+  } = useForm<UserForm>();
+
   const {
     departaments,
     districts,
@@ -141,7 +132,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
             offices,
           });
         } else {
-          reset(INITIAL_VALUES_USER);
+          reset({});
         }
       }
     );
@@ -151,7 +142,6 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
   }, []);
 
   const onSubmit: SubmitHandler<UserForm> = async data => {
-    if (errorPassword?.verifyPassword) return;
     const { cv, declaration, id, offices, ...resData } = data;
     const officeIds = offices.map(office => office.id);
     const newData = { ...resData, job: resData.job.value, officeIds };
@@ -308,16 +298,22 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
                     {...register('password', {
                       required: true,
                     })}
+                    name="password"
                     errors={errors}
                     placeholder="Contraseña"
                     type="password"
                     autoComplete="new-password"
                     label="Contraseña:"
                   />
+
                   <Input
-                    errors={errorPassword}
-                    name="verifyPassword"
-                    onBlur={verifyPasswords}
+                    {...register('confirmPassword', {
+                      required: true,
+                      validate: val =>
+                        validateRepeatPassword(val, watch('password')),
+                    })}
+                    name="confirmPassword"
+                    errors={errors}
                     placeholder="Confirmar contraseña"
                     type="password"
                     autoComplete="new-password"

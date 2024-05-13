@@ -44,6 +44,9 @@ export const validateEmail = (value: string) => {
   const regex = /^[\w]+(\.[\w]+)*@[\w]+(\.[\w]+)*\.[a-zA-Z]{2,5}$/i;
   return !regex.test(value) ? 'Ingresar un email valido' : true;
 };
+export const validateRepeatPassword = (value: string, password: string) => {
+  return password != value ? 'Your passwords do no match' : true;
+};
 
 export const validateDNI = (value: string) => {
   const message = validateOnlyNumbers(value);
@@ -56,8 +59,9 @@ export const validateRuc = (value: string) => {
   if (typeof message === 'string') return message;
   return value.length !== 11 ? 'Ingresar un ruc valido' : true;
 };
-export const validateJPGExtension = (value: any) => {
-  if (!value?.[0]) return true; // puede que se tenga imagen o no
+export const validateJPGExtension = (value: FileList) => {
+  const [file] = value;
+  if (!file) return true; // puede que se tenga imagen o no
   const regex = /\.(jpg|jpeg|png|gif)$/i;
-  return !regex.test(value?.[0].name) ? 'Ingrese un archivo .jpg' : true;
+  return !regex.test(file.name) ? 'Ingrese un archivo .jpg' : true;
 };

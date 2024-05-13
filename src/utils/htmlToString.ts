@@ -1,4 +1,4 @@
-import html2pdf from 'html2pdf.js';
+import html2pdf, { Html2PdfOptions } from 'html2pdf.js';
 import docImg from '/img/plantillaDocs.png';
 import { loader$ } from '../services/sharingSubject';
 
@@ -9,7 +9,7 @@ export const getHtmlPdfBlob = async (
 ) => {
   loader$.setSubject = true;
 
-  const options = {
+  const options: Html2PdfOptions = {
     margin: [20, 22, 14, 22],
     filename: name,
     image: { type: 'jpeg', quality: 1 },

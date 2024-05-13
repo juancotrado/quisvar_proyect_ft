@@ -10,6 +10,7 @@ import { AppDispatch, RootState } from '../../store';
 import { motion } from 'framer-motion';
 import { getIconDefault } from '../../utils';
 import { getUserSession } from '../../store/slices/userSession.slice';
+import { MenuMoreInfo } from '../../types';
 
 const Sidebar = () => {
   const { stageId, taskId } = useParams();
@@ -134,7 +135,7 @@ const Sidebar = () => {
       action: toggleMenu,
     },
   ];
-  const menuMoreInfo = [
+  const menuMoreInfo: MenuMoreInfo[] = [
     {
       id: 1,
       name: 'Ver Video tutorial',
@@ -145,10 +146,10 @@ const Sidebar = () => {
       id: 3,
       name: 'Ver PDF',
       icon: '/svg/file-pdf-solid.svg',
-      // action: selectPdfForUserRol,
+      action: () => {},
     },
   ];
-  const menu = [
+  const menu: MenuMoreInfo[] = [
     {
       id: 1,
       name: 'Editar Perfil',
@@ -159,7 +160,7 @@ const Sidebar = () => {
       id: 3,
       name: 'Acerca de',
       icon: '/svg/question-circle.svg',
-      action: null,
+      action: () => {},
     },
     {
       id: 4,

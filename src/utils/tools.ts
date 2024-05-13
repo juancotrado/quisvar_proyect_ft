@@ -1,7 +1,6 @@
+import html2pdf, { Html2PdfOptions } from 'html2pdf.js';
 import { DEGREE_DATA } from '../pages/userCenter/pages/users/models';
 import { Degree, Feedback, Level, Profession, RangeDays } from '../types/types';
-import { getListByRole } from './roles';
-import html2pdf from 'html2pdf.js';
 
 export const findProject = (data: Level[]): boolean => {
   let existProyect = false;
@@ -47,8 +46,7 @@ export const generateUniqueColorForDNI = (dni: string) => {
 
   return hexadecimalColo;
 };
-export const getRole = (role: string) =>
-  getListByRole('SUPER_ADMIN').find(e => e.id === role)?.value;
+
 export const getDayDiferency = (firsDate: string, lastDate: string) => {
   const untilDateTime =
     new Date(lastDate).getTime() - new Date(firsDate).getTime();
@@ -302,7 +300,7 @@ export const htmlToPdf = (
   size: 'a4' | 'a5',
   name: string = 'document'
 ) => {
-  const options = {
+  const options: Html2PdfOptions = {
     margin: [14, 22, 14, 22],
     filename: name,
     image: { type: 'jpeg', quality: 1 },
@@ -317,7 +315,7 @@ export const htmlToPdf = (
     .from(htmlString)
     .toPdf()
     .get('pdf')
-    .then((pdf: any) => {
+    .then(pdf => {
       result = pdf.output('datauristring');
     });
   return result;

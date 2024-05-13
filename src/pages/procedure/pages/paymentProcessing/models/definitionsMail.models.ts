@@ -21,6 +21,8 @@ export const TYPE_PROCEDURE = {
     accessTo: 'comunicado',
     provied: 'mail',
     idSubmenu: 3,
+    idName: 'messageId',
+    previewPdf: 'seal-message',
   },
   regularProcedure: {
     category: 'DIRECT',
@@ -29,6 +31,8 @@ export const TYPE_PROCEDURE = {
     provied: 'mail',
     addUsersText: '+Cc',
     idSubmenu: 2,
+    idName: 'messageId',
+    previewPdf: 'seal-message',
   },
   payProcedure: {
     category: 'NORMAL',
@@ -37,5 +41,7 @@ export const TYPE_PROCEDURE = {
     accessTo: '',
     addUsersText: '+Cc',
     idSubmenu: 1,
+    idName: 'paymessageId',
+    previewPdf: 'seal-paymessage',
   },
 };

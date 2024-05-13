@@ -74,7 +74,7 @@ const CardResizing = ({ onSave }: CardResizingProps) => {
       'Content-type': 'multipart/form-data',
     };
     const formData = new FormData();
-    if (imageSrc && imageName) {
+    if (imageSrc && imageName && croppedAreaPixels) {
       const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels);
       if (!croppedImage) return;
       const image = await convertUrlToBlob(croppedImage);
@@ -88,7 +88,7 @@ const CardResizing = ({ onSave }: CardResizingProps) => {
 
   const downloadCroppedImage = async () => {
     const ref = document.createElement('a');
-    if (imageSrc) {
+    if (imageSrc && croppedAreaPixels) {
       const croppedImage = await getCroppedImg(imageSrc, croppedAreaPixels);
       if (!croppedImage) return;
       ref.href = croppedImage;

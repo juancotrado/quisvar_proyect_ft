@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { OptionSelect, StylesVariant } from '../../types';
-import { OptionProps, components, Props as SelectProps } from 'react-select';
-import { AdvancedSelect, ButtonDelete, IconAction } from '..';
+import { Props as SelectProps } from 'react-select';
+import { AdvancedSelect } from '..';
 import {
   Control,
   Controller,
@@ -9,11 +9,12 @@ import {
   FieldValues,
   Path,
 } from 'react-hook-form';
+import { OptionCrudSelect } from './optionComponents';
 
 interface AdvancedSelectCrudProps<
   OptionValues extends OptionSelect,
   FormData extends FieldValues
-> extends SelectProps {
+> extends SelectProps<OptionValues> {
   options: OptionValues[];
   control?: Control<FormData>;
   errors?: FieldErrors<FormData>;
@@ -26,6 +27,7 @@ interface AdvancedSelectCrudProps<
   onSave?: () => void;
   urlDelete: string;
 }
+
 const AdvancedSelectCrud = <
   OptionValues extends OptionSelect,
   FormData extends FieldValues
@@ -45,39 +47,11 @@ const AdvancedSelectCrud = <
   ...props
 }: AdvancedSelectCrudProps<OptionValues, FormData>) => {
   const [selectData, setSelectData] = useState<OptionValues[]>(options);
+
   useEffect(() => {
     setSelectData(options);
   }, [options]);
 
-  const Option = (props: OptionProps<any>) => {
-    const { data } = props;
-    const isNew = data.__isNew__;
-    return (
-      <components.Option {...props}>
-        <div className="AdvancedSelectCrud-option">
-          <span style={{ marginRight: '8px' }}>{data.label}</span>
-
-          {!isNew && (
-            <div className="AdvancedSelectCrud-option-actions">
-              <ButtonDelete
-                icon="trash-red"
-                url={`${urlDelete}/${data.value}`}
-                className="subtaskFile-btn-delete"
-                onSave={onSave}
-                type="button"
-              />
-              <IconAction
-                icon="pencil-line"
-                position="none"
-                size={1.5}
-                onClick={() => onEditOption?.(data)}
-              />
-            </div>
-          )}
-        </div>
-      </components.Option>
-    );
-  };
   return control ? (
     <Controller
       control={control}
@@ -85,8 +59,18 @@ const AdvancedSelectCrud = <
       rules={{ required: 'Debes seleccionar una opción' }}
       render={({ field: { onChange: onChangeForm, value: data } }) => (
         <AdvancedSelect
+          {...props}
           placeholder={placeholder}
-          components={{ Option }}
+          components={{
+            Option: props => (
+              <OptionCrudSelect
+                {...props}
+                onSave={onSave}
+                onEditOption={onEditOption}
+                urlDelete={data => `${urlDelete}/${data.value}`}
+              />
+            ),
+          }}
           options={selectData}
           isClearable
           isCreatable
@@ -100,14 +84,23 @@ const AdvancedSelectCrud = <
           onChange={onChangeForm}
           styleVariant={styleVariant}
           isMulti={isMulti}
-          {...props}
         />
       )}
     />
   ) : (
     <AdvancedSelect
+      {...props}
       placeholder={placeholder}
-      components={{ Option }}
+      components={{
+        Option: props => (
+          <OptionCrudSelect
+            {...props}
+            onSave={onSave}
+            onEditOption={onEditOption}
+            urlDelete={data => `${urlDelete}/${data.value}`}
+          />
+        ),
+      }}
       options={selectData}
       isClearable
       isCreatable
@@ -116,7 +109,6 @@ const AdvancedSelectCrud = <
       errors={errors}
       name={name}
       styleVariant={styleVariant}
-      {...props}
     />
   );
 };

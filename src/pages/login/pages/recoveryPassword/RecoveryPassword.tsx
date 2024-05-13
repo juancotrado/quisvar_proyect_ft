@@ -2,8 +2,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { Input } from '../../../../components';
-import { SnackbarUtilities } from '../../../../utils';
-import { useValidatePassword } from '../../../../hooks';
+import { SnackbarUtilities, validateRepeatPassword } from '../../../../utils';
 import './recoveryPassword.css';
 interface resetPassworForm {
   newPassword: string;
@@ -19,12 +18,10 @@ const RecoveryPassword = () => {
     watch,
     formState: { errors },
   } = useForm<resetPassworForm>();
-  const { errorPassword, verifyPasswords } = useValidatePassword(
-    watch('newPassword')
-  );
+
   const sendForm: SubmitHandler<resetPassworForm> = data => {
     const { newPassword, verifyPassword } = data;
-    if (errorPassword?.verifyPassword || newPassword !== verifyPassword) return;
+    if (newPassword !== verifyPassword) return;
     axiosInstance
       .post('/auth/new-password', data, {
         headers: {
@@ -73,12 +70,15 @@ const RecoveryPassword = () => {
               </div>
               <div className="form-group">
                 <Input
-                  {...register('verifyPassword', { required: true })}
+                  {...register('verifyPassword', {
+                    required: true,
+                    validate: val =>
+                      validateRepeatPassword(val, watch('newPassword')),
+                  })}
                   name="verifyPassword"
-                  onBlur={verifyPasswords}
                   placeholder="Confirmar contraseña"
                   type="password"
-                  errors={errorPassword}
+                  errors={errors}
                   label="Confirmar contraseña:"
                   styleInput={2}
                 />

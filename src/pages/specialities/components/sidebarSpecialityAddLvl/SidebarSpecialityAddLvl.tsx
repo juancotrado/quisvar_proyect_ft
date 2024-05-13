@@ -1,6 +1,6 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import './sidebarSpecialityAddLvl.css';
-import { useEffect, useState } from 'react';
+import { MouseEvent, useEffect, useState } from 'react';
 import { DotsRight, Input, Button } from '../../../../components';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { validateCorrectTyping, validateWhiteSpace } from '../../../../utils';
@@ -65,7 +65,7 @@ const SidebarSpecialityAddLvl = ({
       function: handleSubmit(onSubmitData),
     },
   ];
-  const handleAddlevel = (e: any) => {
+  const handleAddlevel = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     if (keyNameId === 'typespecialityId') {
       isOpenCardRegisteProject$.setSubject = {

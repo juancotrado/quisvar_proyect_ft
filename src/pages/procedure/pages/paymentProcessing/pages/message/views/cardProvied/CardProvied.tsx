@@ -86,9 +86,13 @@ const CardProvied = ({ type, message }: CardProviedProps) => {
     formData.append('data', JSON.stringify(body));
 
     axiosInstance
-      .post(`/generate-pdf/seal-paymessage/${message.id}`, formData, {
-        responseType: 'blob',
-      })
+      .post(
+        `/generate-pdf/${TYPE_PROCEDURE[type].previewPdf}/${message.id}`,
+        formData,
+        {
+          responseType: 'blob',
+        }
+      )
       .then(res => {
         isOpenViewHtmlToPdf$.setSubject = {
           isOpen: true,
@@ -103,7 +107,7 @@ const CardProvied = ({ type, message }: CardProviedProps) => {
       title,
       header: title,
       officeId: to.id,
-      paymessageId: message.id,
+      [TYPE_PROCEDURE[type].idName]: message.id,
       observations,
       numberPage,
       to: to.label,
@@ -111,9 +115,7 @@ const CardProvied = ({ type, message }: CardProviedProps) => {
     const formData = new FormData();
 
     fileUploadFiles.forEach(file => formData.append('fileMail', file));
-    // for (const [key, value] of Object.entries(body)) {
-    //   formData.append(data, String(value));
-    // }
+
     formData.append('data', JSON.stringify(body, null, 3));
 
     await axiosInstance.post(
@@ -141,7 +143,7 @@ const CardProvied = ({ type, message }: CardProviedProps) => {
           {...register('numberPage', {
             validate: { validateWhiteSpace, validateOnlyNumbers },
             valueAsNumber: true,
-            value: message.office.quantity,
+            value: message.office?.quantity,
           })}
           errors={errors}
           label="Númeracion:"
@@ -154,17 +156,16 @@ const CardProvied = ({ type, message }: CardProviedProps) => {
           control={control}
           name="to"
           rules={{ required: 'Debes seleccionar una opción' }}
-          render={({ field: { onChange } }) => (
+          render={({ field }) => (
             <AdvancedSelect
+              {...field}
               placeholder="Selecione una opción"
               options={contacts}
               components={{ Option: OptionSelectProcedure }}
               isClearable
               label={'Para:'}
               errors={errors}
-              name="to"
-              isOptionDisabled={option => !!(option as Contact)?.isDisabled}
-              onChange={onChange}
+              isOptionDisabled={option => !!option?.isDisabled}
             />
           )}
         />

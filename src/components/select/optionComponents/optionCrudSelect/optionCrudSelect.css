@@ -1,0 +1,16 @@
+.OptionCrudSelect-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.OptionCrudSelect-option-actions {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-end;
+}
+.OptionCrudSelect-btn-delete {
+  width: 0.8rem;
+  padding: 0;
+  border: none;
+  background-color: transparent;
+}

@@ -1,5 +1,3 @@
-import { UserForm } from './types';
-
 export const JOB_DATA = [
   { value: 'Ingeniería Agronómica', abrv: 'Ing' },
   { value: 'Ingeniería Agroindustrial', abrv: 'Ing' },
@@ -137,33 +135,3 @@ export const PROFESSIONAL_SERVICE_LEVEL_DATA = [
   { id: 2, value: 'Nivel 2' },
   { id: 3, value: 'Nivel 3' },
 ];
-
-export const INITIAL_VALUES_USER: UserForm = {
-  id: 0,
-  email: '',
-  password: '',
-  firstName: '',
-  lastName: '',
-  dni: '',
-  phone: '',
-  degree: '',
-  address: '',
-  ruc: '',
-  job: { abrv: '', label: '', value: '', amount: 0 },
-  cv: null,
-  declaration: null,
-  department: '',
-  province: '',
-  district: '',
-  firstNameRef: '',
-  lastNameRef: '',
-  phoneRef: '',
-  addressRef: '',
-  roleId: null,
-  room: '',
-  userPc: '',
-  role: null,
-  offices: [],
-  gender: '',
-  roleName: '',
-};

@@ -7,7 +7,7 @@ import {
 import './company.css';
 import { useEffect, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
-import { Companies, Option } from '../../types';
+import { Companies, ConsortiumType, Option } from '../../types';
 import { URL } from '../../services/axiosInstance';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import { CardCompany, CardConsortium } from './views';
@@ -15,7 +15,7 @@ import { CardCompany, CardConsortium } from './views';
 
 export const Company = () => {
   const [companies, setCompanies] = useState<Companies[]>();
-  const [consortiums, setConsortiums] = useState<any[]>();
+  const [consortiums, setConsortiums] = useState<ConsortiumType[]>();
   const [swap, setSwap] = useState<boolean>(false);
   useEffect(() => {
     getCompanies();

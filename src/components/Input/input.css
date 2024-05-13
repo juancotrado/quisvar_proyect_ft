@@ -102,13 +102,6 @@
   align-items: center;
 }
 
-.input-disabled {
-  color: var(--color-primary);
-  cursor: not-allowed;
-  background-color: var(--color-menu);
-  box-shadow: 0px 2px 0px 0px var(--color-primary);
-}
-
 .input-pading-right {
   padding-right: 2.5rem;
 }

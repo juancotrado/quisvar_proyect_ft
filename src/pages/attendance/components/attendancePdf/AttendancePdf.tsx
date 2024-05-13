@@ -286,6 +286,31 @@ const GenerateAttendanceDailyPDF = ({
                 </View>
               </View>
             ))}
+          <View style={styles.information}>
+            <View style={{ ...styles.tableCol, width: '10%' }}>
+              <Text style={styles.headers}>7</Text>
+            </View>
+            <View
+              style={{
+                ...styles.tableCol,
+                width: '12%',
+                backgroundColor: '#877CDC',
+              }}
+            >
+              <Text style={styles.headers}>S</Text>
+            </View>
+            <View style={{ ...styles.tableCol, width: '28%' }}>
+              <Text style={styles.headers}>
+                Salida de campo o permiso laboral (S)
+              </Text>
+            </View>
+            <View style={{ ...styles.tableCol, width: '15%' }}>
+              <Text style={styles.headers}>s/. 0.00</Text>
+            </View>
+            <View style={{ ...styles.tableCol, width: '35%' }}>
+              <Text style={styles.headers}>s/. 0.00</Text>
+            </View>
+          </View>
         </View>
       </Page>
     </Document>

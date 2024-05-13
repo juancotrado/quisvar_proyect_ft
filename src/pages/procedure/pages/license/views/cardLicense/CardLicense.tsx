@@ -155,7 +155,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
               onClick={() => setOption(true)}
               disabled={data && data?.type === 'SALIDA'}
             >
-              <img src="/public/svg/cl-route.svg" />
+              <img src="/svg/cl-route.svg" />
               <h2 className={`clo-text ${option && 'cl-color'}`}>
                 Hoja de ruta
               </h2>
@@ -166,7 +166,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
               onClick={() => setOption(false)}
               disabled={data && data?.type === 'PERMISO'}
             >
-              <img src="/public/svg/cl-card.svg" />
+              <img src="/svg/cl-card.svg" />
               <h2 className={`clo-text ${!option && 'cl-color'}`}>Licencia</h2>
             </button>
           </div>

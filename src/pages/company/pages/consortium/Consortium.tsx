@@ -116,27 +116,24 @@ export const Consortium = () => {
               <h1 className="consortium-member">Porcentaje</h1>
               <h1 className="consortium-member">Acciones</h1>
             </div>
-            {data &&
-              data?.companies.map((item, index) => (
-                <div key={index} className="consortium-company-members">
-                  <h1 className="consortium-company-name">{index + 1}</h1>
-                  <h1 className="consortium-company-name">
-                    {item?.companies.name}
-                  </h1>
-                  <h1 className="consortium-company-name">
-                    {item?.percentaje}%
-                  </h1>
-                  <span className="ule-size-pc">
-                    <p>Editar</p>
-                    <ButtonDelete
-                      icon="trash"
-                      url={`/consortium/relation/${item?.companies.id}/${id}`}
-                      className="role-delete-icon"
-                      onSave={getConsortium}
-                    />
-                  </span>
-                </div>
-              ))}
+            {data?.companies?.map((item, index) => (
+              <div key={index} className="consortium-company-members">
+                <h1 className="consortium-company-name">{index + 1}</h1>
+                <h1 className="consortium-company-name">
+                  {item?.companies.name}
+                </h1>
+                <h1 className="consortium-company-name">{item?.percentaje}%</h1>
+                <span className="ule-size-pc">
+                  <p>Editar</p>
+                  <ButtonDelete
+                    icon="trash"
+                    url={`/consortium/relation/${item?.companies.id}/${id}`}
+                    className="role-delete-icon"
+                    onSave={getConsortium}
+                  />
+                </span>
+              </div>
+            ))}
           </div>
           <div className="btn-build">
             <Button

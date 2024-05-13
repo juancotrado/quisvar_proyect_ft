@@ -15,10 +15,3 @@
   /* border-radius: var(--radius-input); */
   padding: 0.5rem;
 }
-
-.input-disabled {
-  color: var(--color-primary);
-  cursor: not-allowed;
-  background-color: var(--color-menu);
-  border-bottom: 2px solid var(--color-primary);
-}

@@ -246,3 +246,9 @@ legend {
   font-size: var(--size-label);
   height: 1.6rem;
 }
+.input-disabled:not([type='radio']) {
+  color: var(--color-primary);
+  cursor: not-allowed;
+  background-color: var(--color-menu);
+  box-shadow: 0px 2px 0px 0px var(--color-primary);
+}

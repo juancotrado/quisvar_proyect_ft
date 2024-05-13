@@ -3,4 +3,18 @@
   flex-direction: column;
   gap: 1.25rem;
   padding: 1.5rem;
+  height: 500px;
+  background-color: rgba(122, 120, 120, 0.904);
+}
+.ele {
+  background-color: red;
+  padding: 2px;
+  cursor: grab;
+  width: 200px;
+  height: 100px;
+}
+.drag {
+  border: 2px solid red;
+  width: 200px;
+  height: 100px;
 }

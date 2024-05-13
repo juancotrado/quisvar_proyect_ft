@@ -13,12 +13,14 @@ interface GroupBtnAddProps {
   onSave: () => void;
   setBtnActive: (e: boolean) => void;
   groupName?: string;
+  groupLength?: number;
   id?: number;
 }
 const GroupBtnAdd = ({
   onSave,
   setBtnActive,
   groupName,
+  groupLength,
   id,
 }: GroupBtnAddProps) => {
   const {
@@ -36,6 +38,7 @@ const GroupBtnAdd = ({
   const onSubmit: SubmitHandler<StageName> = values => {
     const data = {
       name: values.name,
+      gNumber: (groupLength || 0) + 1,
     };
     if (groupName) {
       axiosInstance.patch(`/groups/${id}`, data).then(() => {

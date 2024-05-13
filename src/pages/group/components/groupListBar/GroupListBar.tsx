@@ -5,21 +5,16 @@ import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
 import { DotsRight } from '../../../../components';
 import { GroupBtnAdd } from '..';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 interface GroupListBarProps {
   group: Group;
   onSave: () => void;
+  editOrder: boolean;
 }
-const GroupListBar = ({ group, onSave }: GroupListBarProps) => {
+const GroupListBar = ({ group, onSave, editOrder }: GroupListBarProps) => {
   const [edit, setEdit] = useState<boolean>(false);
-  // const handleEditContract = () =>
-  //   (isOpenCardRegisteContract$.setSubject = { isOpen: true, contract });
-
-  //   const handleDeleteContract = () =>
-  //     axiosInstance.delete(`contract/${contract.id}`).then(() => {
-  //       SnackbarUtilities.success('El Contrato fue eliminado exitosamente');
-  //       onSave();
-  //     });
 
   const dataDots: Option[] = [
     {
@@ -28,22 +23,40 @@ const GroupListBar = ({ group, onSave }: GroupListBarProps) => {
       icon: 'pencil',
       function: () => setEdit(true),
     },
-    // {
-    //   name: 'Eliminar',
-    //   type: 'button',
-    //   icon: 'trash-red',
-    //   //   function: handleDeleteContract,
-    //   function: undefined,
-    // },
   ];
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    // isDragging,
+  } = useSortable({
+    id: group.id,
+    data: {
+      type: 'Group',
+      group,
+    },
+  });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
   return (
     <ContextMenuTrigger id={`gr-sidebar-${group.id}`} key={group.id}>
       {!edit ? (
         <NavLink
-          to={`contenido/${group.id}/GRUPO-${group.gNumber}`}
+          to={`${
+            editOrder ? '' : `contenido/${group.id}/GRUPO-${group.gNumber}`
+          }`}
           className={({ isActive }) =>
             `gr-sidebar-data  ${isActive && 'contract-selected'} `
           }
+          ref={setNodeRef}
+          style={style}
+          {...attributes}
+          {...listeners}
         >
           <figure className="gr-sidebar-figure">
             <img

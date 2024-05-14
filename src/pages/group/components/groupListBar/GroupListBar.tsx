@@ -10,8 +10,8 @@ import { CSS } from '@dnd-kit/utilities';
 
 interface GroupListBarProps {
   group: Group;
-  onSave: () => void;
-  editOrder: boolean;
+  onSave?: () => void;
+  editOrder?: boolean;
 }
 const GroupListBar = ({ group, onSave, editOrder }: GroupListBarProps) => {
   const [edit, setEdit] = useState<boolean>(false);
@@ -30,7 +30,7 @@ const GroupListBar = ({ group, onSave, editOrder }: GroupListBarProps) => {
     setNodeRef,
     transform,
     transition,
-    // isDragging,
+    isDragging,
   } = useSortable({
     id: group.id,
     data: {
@@ -42,7 +42,11 @@ const GroupListBar = ({ group, onSave, editOrder }: GroupListBarProps) => {
     transform: CSS.Transform.toString(transform),
     transition,
   };
-
+  if (isDragging) {
+    return (
+      <div ref={setNodeRef} style={style} className=" gr-sidebar-data xd"></div>
+    );
+  }
   return (
     <ContextMenuTrigger id={`gr-sidebar-${group.id}`} key={group.id}>
       {!edit ? (
@@ -75,7 +79,7 @@ const GroupListBar = ({ group, onSave, editOrder }: GroupListBarProps) => {
       ) : (
         <GroupBtnAdd
           setBtnActive={() => setEdit(!edit)}
-          onSave={onSave}
+          onSave={() => onSave?.()}
           groupName={group.name}
           id={group.id}
         />

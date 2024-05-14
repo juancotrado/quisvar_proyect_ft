@@ -34,3 +34,7 @@
   color: var(--color-primary);
   /* height: 100%; */
 }
+.gr-order {
+  display: flex;
+  gap: 0.5rem;
+}

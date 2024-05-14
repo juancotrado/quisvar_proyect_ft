@@ -1,12 +1,14 @@
 import SelectReact, {
   GroupBase,
   Props as ReactSelectProps,
+  SelectInstance,
 } from 'react-select';
 import CreatableSelect from 'react-select/creatable';
 import { StylesVariant } from '../../types';
 import { STYLE_SELECT_ADVANCE } from './selectDefinitions';
 import { FieldErrors, FieldValues, Path } from 'react-hook-form';
 import { InputErrorInfo } from '../inputErrorInfo';
+import { Ref, forwardRef } from 'react';
 
 interface AdvancedSelectProps<
   OptionType,
@@ -29,19 +31,22 @@ const AdvancedSelect = <
   OptionType,
   FormData extends FieldValues,
   IsMulti extends boolean = false
->({
-  label,
-  errorPosX = 0,
-  errorPosY = 0,
-  errors,
-  errorRelative = false,
-  className,
-  isCreatable,
-  styleVariant = 'primary',
-  onCreateOption,
-  name,
-  ...props
-}: AdvancedSelectProps<OptionType, FormData, IsMulti>) => {
+>(
+  {
+    label,
+    errorPosX = 0,
+    errorPosY = 0,
+    errors,
+    errorRelative = false,
+    className,
+    isCreatable,
+    styleVariant = 'primary',
+    onCreateOption,
+    name,
+    ...props
+  }: AdvancedSelectProps<OptionType, FormData, IsMulti>,
+  ref: Ref<SelectInstance<OptionType, IsMulti, GroupBase<OptionType>>>
+) => {
   const SelectComponent = isCreatable ? CreatableSelect : SelectReact;
   return (
     <div className="select-container">
@@ -49,10 +54,10 @@ const AdvancedSelect = <
       <SelectComponent
         formatCreateLabel={inputValue => 'Crear: ' + inputValue}
         onCreateOption={onCreateOption}
+        ref={ref}
         {...props}
         className={`AdvancedSelect ${STYLE_SELECT_ADVANCE[styleVariant]} ${className}`}
       />
-
       {name && errors && errors[name] && (
         <InputErrorInfo
           errors={errors}
@@ -66,4 +71,4 @@ const AdvancedSelect = <
   );
 };
 
-export default AdvancedSelect;
+export default forwardRef(AdvancedSelect);

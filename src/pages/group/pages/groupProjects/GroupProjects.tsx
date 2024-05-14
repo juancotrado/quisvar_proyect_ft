@@ -20,12 +20,13 @@ const data = [
   { id: 3, text: 'elemento 3' },
   { id: 4, text: 'elemento 4' },
 ];
-const disabled = true;
+
 export const GroupProjects = () => {
   const [activeElem, setActiveElem] = useState<Obj | null>(null);
   const [values, setValues] = useState<Obj[]>(data);
   const itemsId = useMemo(() => values.map(item => item.id), [values]);
   const onDragStart = (event: DragStartEvent) => {
+    console.log(event.active.data.current?.item);
     if (event.active.data.current?.type === 'Group')
       setActiveElem(event.active.data.current.item);
   };
@@ -41,22 +42,18 @@ export const GroupProjects = () => {
       return arrayMove(values, activeItemIndex, overItemIndex);
     });
   };
+  console.log(activeElem);
   return (
     <DndContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
       <div className="gp-content">
-        {disabled && (
-          <SortableContext items={itemsId}>
-            {values && values.map(item => <Items item={item} key={item.id} />)}
-          </SortableContext>
-        )}
+        <SortableContext items={itemsId}>
+          {values && values.map(item => <Items item={item} key={item.id} />)}
+        </SortableContext>
       </div>
-      {disabled &&
-        createPortal(
-          <DragOverlay>
-            {activeElem && <Items item={activeElem} />}
-          </DragOverlay>,
-          document.body
-        )}
+      {createPortal(
+        <DragOverlay>{activeElem && <Items item={activeElem} />}</DragOverlay>,
+        document.body
+      )}
     </DndContext>
   );
 };

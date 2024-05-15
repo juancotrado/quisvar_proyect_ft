@@ -251,7 +251,7 @@ const CardSubtaskProcess = ({ subTask }: CardSubtaskProcess) => {
                   subtaskStatus={status}
                   dataFeedback={dataFeedback}
                   type="deprecated"
-                  text="Rechazar"
+                  text="Evaluar"
                   userId={userSessionId}
                   porcentagesForUser={Object.values(porcetageForUser)}
                 />

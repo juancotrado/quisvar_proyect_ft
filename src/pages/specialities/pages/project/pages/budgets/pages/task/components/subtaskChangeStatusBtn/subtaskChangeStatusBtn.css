@@ -4,8 +4,8 @@
   border: none;
 }
 .DENY {
-  background-color: #c81d1e;
+  background-color: var(--color-review);
 }
 .ASIG {
-  background-color: #69d957;
+  background-color: var(--color-done);
 }

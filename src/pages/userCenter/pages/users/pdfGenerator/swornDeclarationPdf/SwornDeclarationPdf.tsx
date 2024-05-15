@@ -1,6 +1,5 @@
 import { Document, Image, Page, Text, View } from '@react-pdf/renderer';
 import { styles } from './swornDeclarationStyle';
-// import { UserForm } from '../../../../../../types/types';
 import { deleteExtension } from '../../../../../../utils/tools';
 import { SwornDeclaration, UserForm } from '../../models';
 import moment from 'moment/moment';
@@ -10,10 +9,13 @@ interface SwornDeclarationPdfProps {
   data: UserForm & SwornDeclaration;
 }
 const SwornDeclarationPdf = ({ data }: SwornDeclarationPdfProps) => {
-  const formatDate =
-    !data.declarationDate || String(data.declarationDate) == 'Invalid Date'
-      ? moment.utc(new Date()).format('LL')
-      : moment.utc(data.declarationDate).format('LL');
+  const date =
+    data.declarationDate || String(data.declarationDate) == 'Invalid Date'
+      ? new Date()
+      : data.declarationDate;
+
+  const formatDate = moment.utc(date).format('LL');
+
   return (
     <Document>
       <Page size="A4" style={styles.page}>

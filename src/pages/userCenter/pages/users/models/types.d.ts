@@ -11,6 +11,7 @@ export interface ContractUser {
   date: Date;
   month: number;
   projectNumber: number;
+  numberContract: number;
 }
 export interface OfficeSelect {
   id: numnber;

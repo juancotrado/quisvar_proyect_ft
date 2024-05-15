@@ -3,26 +3,21 @@ import docImg from '/img/plantillaDocs.jpg';
 import { styles } from './contractUserStyle';
 import { User } from '../../../../../../types';
 import { ContractUser, DEGREE_DATA } from '../../models';
-import {
-  NumerosALetras,
-  formatAmountMoney,
-  formatDateLongSpanish,
-} from '../../../../../../utils';
+import { NumerosALetras, formatAmountMoney } from '../../../../../../utils';
+import moment from 'moment/moment';
+import 'moment/locale/es';
 interface ContractUserPdfProps {
   data: User & ContractUser;
 }
 const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
   const { profile } = data;
-  let dailyDate = null;
-  if (!data.date || String(data.date) == 'Invalid Date') {
-    dailyDate = new Date();
-  } else {
-    dailyDate = data.date;
-    dailyDate.setDate(dailyDate.getDate() + 1);
-  }
-  const formatDate = formatDateLongSpanish(dailyDate);
+
+  const formatDate =
+    !data.date || String(data.date) == 'Invalid Date'
+      ? moment.utc(new Date()).format('LL')
+      : moment.utc(data.date).format('LL');
   const documentTitle = `CONTRATO SERVICIOS PROFESIONALES N° ${String(
-    data.profile.id
+    data.numberContract || data.profile.id
   ).padStart(3, '0')} - 2024/G.G-DHYRIUM S.A.A`;
   const degreeSelect = DEGREE_DATA.find(el => el.value === profile.degree);
   const contractualAmount = degreeSelect?.cost[data.professionalLevel] ?? 0;

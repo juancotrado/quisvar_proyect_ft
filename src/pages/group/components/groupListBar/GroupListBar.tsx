@@ -74,7 +74,9 @@ const GroupListBar = ({ group, onSave, editOrder }: GroupListBarProps) => {
             <h5 className="gr-sidebar-cui">{group.name}</h5>
           </div>
 
-          <DotsRight data={dataDots} idContext={`gr-sidebar-${group.id}`} />
+          {!editOrder && (
+            <DotsRight data={dataDots} idContext={`gr-sidebar-${group.id}`} />
+          )}
         </NavLink>
       ) : (
         <GroupBtnAdd

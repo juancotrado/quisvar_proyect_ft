@@ -19,7 +19,13 @@ export const LicenseListHeader = ({ isEmployee, refresh }: license) => {
         item
       </div>
       {!isEmployee && <div className="license-header-items">solicitante</div>}
-      <div className="license-header-items">fecha de envío</div>
+      <div className="license-header-items">Revisado por</div>
+      <div
+        className="license-header-items"
+        style={{ justifyContent: 'center' }}
+      >
+        fecha de envío
+      </div>
       <div className="license-header-items">motivo</div>
       <div className="license-header-items">estado</div>
       <div className="license-header-items">salida</div>

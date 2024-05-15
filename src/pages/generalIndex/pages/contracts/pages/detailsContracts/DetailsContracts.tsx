@@ -135,9 +135,7 @@ export const DetailsContracts = () => {
   };
   const hasFileInPay = (id: string) => {
     const payLevel = contractIndex.at(1)?.nextLevel?.[0].nextLevel;
-
     const findPayLevel = payLevel?.find(pay => pay.deliverLettersId === id);
-
     return findPayLevel?.hasFile === 'yes';
   };
   const statusPhase = (id: string) => {
@@ -185,8 +183,6 @@ export const DetailsContracts = () => {
     setDataPhases(newPhase);
   };
   const savePhases = async () => {
-    // console.log(dataPhases);
-    // return;
     const phasesWithRealDay = dataPhases.map((el, index) => {
       let realDay = el.days;
       if (isIndependent) {

@@ -38,7 +38,7 @@ const CardGenerateContract = ({ user }: CardGenerateContractProps) => {
         data={PROFESSIONAL_SERVICE_LEVEL_DATA}
         extractValue={({ id }) => id}
         renderTextField={({ value }) => value}
-        className="generalData-edit-info-input"
+        styleVariant="secondary"
       />
       <h4 className="cardGenerateContract-subtitle">Fecha:</h4>
       <Input
@@ -47,7 +47,16 @@ const CardGenerateContract = ({ user }: CardGenerateContractProps) => {
         })}
         type="date"
         placeholder="Fecha"
-        className="generalData-edit-info-input"
+        styleInput={2}
+      />
+      <h4 className="cardGenerateContract-subtitle">Number de Contrato:</h4>
+      <Input
+        {...register('numberContract', {
+          valueAsNumber: true,
+        })}
+        type="number"
+        placeholder="numero de contrato"
+        styleInput={2}
       />
       <h4 className="cardGenerateContract-subtitle">Número de meses:</h4>
 
@@ -57,7 +66,7 @@ const CardGenerateContract = ({ user }: CardGenerateContractProps) => {
         })}
         type="number"
         placeholder="Meses"
-        className="generalData-edit-info-input"
+        styleInput={2}
       />
       <h4 className="cardGenerateContract-subtitle">Número de proyectos:</h4>
 
@@ -67,7 +76,7 @@ const CardGenerateContract = ({ user }: CardGenerateContractProps) => {
         })}
         type="number"
         placeholder="Número de proyecto"
-        className="generalData-edit-info-input"
+        styleInput={2}
       />
 
       <Button icon="preview-pdf" text="Generar Contrato" styleButton={2} />

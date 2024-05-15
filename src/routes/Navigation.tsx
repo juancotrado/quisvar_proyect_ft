@@ -48,6 +48,7 @@ import {
 } from '../pages';
 import { ProtectedRole, ProtectedRoute } from '../guards';
 import { NavigationSubMenu } from '.';
+import { DayTaskProvider } from '../context';
 
 const Navigation = () => {
   return (
@@ -108,7 +109,14 @@ const Navigation = () => {
                     <Route path="basicos" element={<BasicsPage />}>
                       <Route path="tarea/:taskId" element={<TaskBasics />} />
                     </Route>
-                    <Route path="presupuestos" element={<BudgetsPage />}>
+                    <Route
+                      path="presupuestos"
+                      element={
+                        <DayTaskProvider>
+                          <BudgetsPage />
+                        </DayTaskProvider>
+                      }
+                    >
                       <Route path="tarea/:taskId" element={<Task />} />
                     </Route>
                   </Route>

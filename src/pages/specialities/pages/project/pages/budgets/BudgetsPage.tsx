@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
-import { SocketContext } from '../../../../../../context';
+import { DayTaskContext, SocketContext } from '../../../../../../context';
 import { DegreType, Level, StatusType } from '../../../../../../types';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { motion } from 'framer-motion';
@@ -18,9 +18,14 @@ import { DropdownLevel, MoreInfo, StatusText } from './components';
 import { COST_DATA, FILTER_OPTIONS } from './models';
 import { GenerateDetailedIndexPdf, GenerateIndexPdf } from './pdfgenerator';
 import { CardRegisterSubTask } from './views';
+import { getIdsSubTasksRecursive } from '../../utils/tools';
 
 export const BudgetsPage = () => {
   const { stageId } = useParams();
+  const { handleIsEditDayTask, setDayTaksRef, dayTask } =
+    useContext(DayTaskContext);
+
+  console.log('asdasd', dayTask);
   const modAuthProject = useSelector(
     (state: RootState) => state.modAuthProject
   );
@@ -39,12 +44,17 @@ export const BudgetsPage = () => {
         .then(res => {
           if (stageId) {
             socket.emit('join', `project-${stageId}`);
-            setlevels({ ...res.data, stagesId: +stageId });
+            const levels = { ...res.data, stagesId: +stageId };
+            setlevels(levels);
+            const idsLevel = getIdsSubTasksRecursive(levels);
+            console.log('idsLevel', idsLevel);
+            setDayTaksRef?.(idsLevel);
           }
         });
     },
     [socket, stageId]
   );
+
   useEffect(() => {
     const abortController = new AbortController();
     const { signal } = abortController;
@@ -53,6 +63,15 @@ export const BudgetsPage = () => {
       abortController.abort();
     };
   }, [getLevels, stageId]);
+  useEffect(() => {
+    const abortController = new AbortController();
+    const { signal } = abortController;
+    getLevels(signal);
+    return () => {
+      abortController.abort();
+    };
+  }, [getLevels, stageId]);
+
   useEffect(() => {
     socket.on('server:update-project', (Level: Level) => {
       if (stageId) setlevels(Level);
@@ -136,6 +155,13 @@ export const BudgetsPage = () => {
           >
             <img src="/svg/filter.svg" />
             Filtrar
+          </span>
+          <span
+            className="budgetsPage-filter-icon"
+            onClick={handleIsEditDayTask}
+          >
+            <img src="/svg/filter.svg" />
+            Edtar tareas ss
           </span>
           {openFilter && (
             <motion.div

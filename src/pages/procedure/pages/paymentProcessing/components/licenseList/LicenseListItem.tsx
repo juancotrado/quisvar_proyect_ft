@@ -8,6 +8,8 @@ import { formatDate } from '../../../../../../utils';
 import ButtonDelete from '../../../../../../components/button/ButtonDelete';
 import { Button } from '../../../../../../components';
 import { SocketContext } from '../../../../../../context';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../../../store';
 type license = {
   isEmployee: boolean;
   data: licenseList;
@@ -24,9 +26,12 @@ export const LicenseListItem = ({
   onSave,
 }: license) => {
   const { users } = useListUsers();
+
   const socket = useContext(SocketContext);
   const [feedback, setFeedback] = useState('');
+  const { id } = useSelector((state: RootState) => state.userSession);
   const userName = users.find(user => data.usersId === user.id);
+  const supervisorName = users.find(user => data.supervisorId === user.id);
   const handleFeedback = (e: React.FocusEvent<HTMLInputElement>) => {
     setFeedback(e.target.value);
   };
@@ -34,6 +39,7 @@ export const LicenseListItem = ({
     const newLicense = {
       status: value,
       feedback,
+      supervisorId: id,
     };
     axiosInstance.patch(`/license/approve/${data.id}`, newLicense).then(() => {
       onSave?.();
@@ -67,9 +73,25 @@ export const LicenseListItem = ({
         {index + 1}
       </div>
       {!isEmployee && (
-        <div className="license-header-items">{userName?.name}</div>
+        <div
+          className="license-header-items"
+          style={{ cursor: 'context-menu' }}
+          title={userName?.name}
+        >
+          {userName?.name}
+        </div>
       )}
-      <div className="license-header-items">
+      <div
+        className="license-header-items"
+        style={{ justifyContent: 'center' }}
+        title={data.supervisorId ? supervisorName?.name : '---'}
+      >
+        {data.supervisorId ? supervisorName?.name : '---'}
+      </div>
+      <div
+        className="license-header-items"
+        style={{ justifyContent: 'center' }}
+      >
         {formatDate(new Date(data.createdAt))}
       </div>
       <div className="license-header-items">{data.reason}</div>

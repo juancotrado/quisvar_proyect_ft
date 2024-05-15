@@ -80,6 +80,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
           reason: values.reason,
           startDate: values.startDate,
           untilDate: values.untilDate,
+          supervisorId: userSessionId,
           type: 'PERMISO',
         };
         axiosInstance.post(`license/free`, sendFree).then(() => {

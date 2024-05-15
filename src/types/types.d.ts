@@ -1091,6 +1091,7 @@ type listDetails =
 export type licenseList = {
   id: number;
   usersId: number;
+  supervisorId?: number;
   reason?: string;
   checkout?: string;
   feedback?: string;

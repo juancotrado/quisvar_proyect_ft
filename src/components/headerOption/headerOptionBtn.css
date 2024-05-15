@@ -7,14 +7,14 @@
   gap: 1.5rem;
   border-radius: 1px;
   border: none;
-  border-bottom: 0.5px solid #8b8b8b;
+  border-bottom: 0.5px solid var(--color-gray);
   color: black;
 }
 .headerOptionBtn-header-btn:hover {
-  background-color: #f5f5f5;
+  background-color: var(--color-gray-ligth);
 }
 .headerOptionBtn-header-btn-selected {
-  border-bottom: 2px solid #001b69;
+  border-bottom: 2px solid var(--color-secondary);
   color: var(--color-secondary);
 }
 .headerOptionBtn-img-icon {

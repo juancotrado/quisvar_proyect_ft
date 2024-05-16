@@ -4,21 +4,19 @@ import { styles } from './contractUserStyle';
 import { User } from '../../../../../../types';
 import { ContractUser, DEGREE_DATA } from '../../models';
 import { NumerosALetras, formatAmountMoney } from '../../../../../../utils';
-import moment from 'moment/moment';
-import 'moment/locale/es';
+import { formatFullDateUtc } from '../../../../../../utils/dayjsSpanish';
+
 interface ContractUserPdfProps {
   data: User & ContractUser;
 }
+
 const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
   const { profile } = data;
-
-  const formatDate =
-    !data.date || String(data.date) == 'Invalid Date'
-      ? moment.utc(new Date()).format('LL')
-      : moment.utc(data.date).format('LL');
+  const date = formatFullDateUtc(data.date);
   const documentTitle = `CONTRATO SERVICIOS PROFESIONALES N° ${String(
     data.numberContract || data.profile.id
   ).padStart(3, '0')} - 2024/G.G-DHYRIUM S.A.A`;
+
   const degreeSelect = DEGREE_DATA.find(el => el.value === profile.degree);
   const contractualAmount = degreeSelect?.cost[data.professionalLevel] ?? 0;
   const professionalService = `${degreeSelect?.title} de nivel ${
@@ -741,7 +739,7 @@ const ContractUserPdf = ({ data }: ContractUserPdfProps) => {
             </Text>
             <Text style={styles.text}>
               En señal de conformidad las partes suscriben este documento en la
-              ciudad de Puno, {formatDate}.
+              ciudad de Puno, {date}.
             </Text>
           </View>
           <View

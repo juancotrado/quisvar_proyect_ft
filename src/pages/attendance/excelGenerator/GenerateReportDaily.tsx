@@ -1,6 +1,6 @@
 import * as ExcelJS from 'exceljs';
 import { AttendanceRange } from '../../../types/types';
-import { formatDate } from '../../../utils';
+import { formatFullDateUtc } from '../../../utils/dayjsSpanish';
 interface GenerateReportDailyProps {
   startDate: string;
   printData: AttendanceRange[];
@@ -33,18 +33,12 @@ export async function generateReportDaily({
   const wk = workbook.getWorksheet('Hoja1');
 
   let rowNumber = 6;
-  const parseDate = (value?: string) => {
-    const dailyDate = new Date(value ? value : new Date());
-    dailyDate.setDate(dailyDate.getDate() + 1);
-    return formatDate(dailyDate, {
-      year: 'numeric',
-      month: 'long',
-      day: '2-digit',
-    });
-  };
+
   const distance = 'NOP';
   if (!wk) return;
-  wk.getCell('B3').value = `LISTA DE ASISTENCIA DEL ${parseDate(startDate)}`;
+  wk.getCell('B3').value = `LISTA DE ASISTENCIA DEL ${formatFullDateUtc(
+    startDate
+  )}`.toUpperCase();
   initialCalls.length > 7
     ? wk.mergeCells(`B3:${distance.charAt(initialCalls.length - 8)}3`)
     : wk.mergeCells('B3:M3');

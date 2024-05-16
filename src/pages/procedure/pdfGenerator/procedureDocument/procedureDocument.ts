@@ -1,6 +1,7 @@
 import { URL } from '../../../../services/axiosInstance';
 import { Profile } from '../../../../types';
-import { degreeAbrv, formatDateShortSpanish } from '../../../../utils';
+import { degreeAbrv } from '../../../../utils';
+import { formatFullDateUtc } from '../../../../utils/dayjsSpanish';
 import { ToData, TypeProcedure } from '../../models';
 import './procedureDocument.css';
 
@@ -40,7 +41,7 @@ const procedureDocument = ({
     { textOne: 'Para', textTwo: to, textThre: toPosition },
     { textOne: 'De', textTwo: from, textThre: fromPosition },
     { textOne: 'Asunto', textTwo: subject },
-    { textOne: 'Fecha', textTwo: formatDateShortSpanish() },
+    { textOne: 'Fecha', textTwo: formatFullDateUtc() },
   ];
   const token = localStorage.getItem('token');
   return `

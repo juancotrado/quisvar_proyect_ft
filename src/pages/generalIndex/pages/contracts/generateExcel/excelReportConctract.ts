@@ -10,8 +10,8 @@ import {
   moneyFormat,
 } from '../../../../../utils';
 import { Contract, ContractIndexData } from '../../../../../types';
-import moment from 'moment';
 import { PhaseData } from '../pages/detailsContracts/models';
+import dayjsSpanish, { formatDateUtc } from '../../../../../utils/dayjsSpanish';
 
 const excelContractReport = async (contracts: Contract[]) => {
   const response = await fetch('/templates/report_template_contract_V2.xlsx');
@@ -58,10 +58,9 @@ const excelContractReport = async (contracts: Contract[]) => {
 
     const transformPayData = payData.map(pay => [pay?.amount || 0, 'SI', 'NO']);
     const transformPhases = phases.map(phase => [
-      moment
-        .utc(contract.createdAt)
-        .add(phase.realDay, 'days')
-        .format('DD/MM/YYYY'),
+      formatDateUtc(
+        dayjsSpanish(contract.createdAt).add(phase.realDay ?? 0, 'days')
+      ),
       'SI',
       'NO',
     ]);
@@ -74,7 +73,7 @@ const excelContractReport = async (contracts: Contract[]) => {
       null,
       null,
       null,
-      moment.utc(contract.createdAt).format('DD/MM/YYYY'),
+      formatDateUtc(contract.createdAt),
       ...newPhaseArray,
       ...transformPayData.flat(),
     ]);

@@ -1,7 +1,7 @@
 import { Button } from '../../../../../../components';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { MessageSender, MessageType } from '../../../../../../types';
-import { formatDateHourLongSpanish } from '../../../../../../utils';
+import { formatDateTimeUtc } from '../../../../../../utils/dayjsSpanish';
 import { TypeProcedure } from '../../../../models';
 import { TYPE_STATUS, TYPE_STATUS_REGULAR_PROCEDURA } from '../../models';
 import './cardMessage.css';
@@ -85,7 +85,7 @@ const CardMessage = ({
           )}
           <div className="card-message-section-item">
             <span className="card-status-span ">
-              {formatDateHourLongSpanish(message.updatedAt)}
+              {formatDateTimeUtc(message.updatedAt)}
             </span>
           </div>
           {hasAccess && typeMail !== 'ARCHIVER' ? (

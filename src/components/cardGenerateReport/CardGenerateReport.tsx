@@ -13,8 +13,8 @@ import {
   validatePorcentage,
   validateWhiteSpace,
   excelReport,
-  formatDateLongSpanish,
 } from '../../utils';
+import { formatDateWeekdayUtc } from '../../utils/dayjsSpanish';
 
 interface CardGenerateReportProps {
   employeeId?: number;
@@ -45,8 +45,8 @@ const CardGenerateReport = ({ employeeId }: CardGenerateReportProps) => {
     setIsOpen(false);
   };
   const onSubmit: SubmitHandler<ReportForm> = async data => {
-    const initialDate = formatDateLongSpanish(data.initialDate);
-    const untilDate = formatDateLongSpanish(data.untilDate);
+    const initialDate = formatDateWeekdayUtc(data.initialDate);
+    const untilDate = formatDateWeekdayUtc(data.untilDate);
     const totalDays = getTimeOut(data.initialDate, data.untilDate) / 24;
     const idGenerate = employeeId ?? userId;
     const URL = `/reports/user/${idGenerate}?initial=${data.initialDate}&until=${data.untilDate}&status=DONE`;

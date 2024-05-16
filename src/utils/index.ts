@@ -12,5 +12,4 @@ export * from './navigation';
 export * from './numerosALetras';
 export * from './pdfReportFunctions';
 export * from './tools';
-export * from './transformDataPdf';
 export * from './htmlToString';

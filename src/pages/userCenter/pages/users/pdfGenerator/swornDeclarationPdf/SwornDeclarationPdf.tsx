@@ -2,19 +2,13 @@ import { Document, Image, Page, Text, View } from '@react-pdf/renderer';
 import { styles } from './swornDeclarationStyle';
 import { deleteExtension } from '../../../../../../utils/tools';
 import { SwornDeclaration, UserForm } from '../../models';
-import moment from 'moment/moment';
-import 'moment/locale/es';
+import { formatFullDateUtc } from '../../../../../../utils/dayjsSpanish';
 
 interface SwornDeclarationPdfProps {
   data: UserForm & SwornDeclaration;
 }
 const SwornDeclarationPdf = ({ data }: SwornDeclarationPdfProps) => {
-  const date =
-    data.declarationDate || String(data.declarationDate) == 'Invalid Date'
-      ? new Date()
-      : data.declarationDate;
-
-  const formatDate = moment.utc(date).format('LL');
+  const formatDate = formatFullDateUtc(data.declarationDate);
 
   return (
     <Document>

@@ -5,12 +5,10 @@ import {
 } from '../../../../services/sharingSubject';
 import { MessageReply, MessageType, ProfileShort } from '../../../../types';
 import './procedureHistory.css';
-import {
-  formatDateHourLongSpanish,
-  normalizeFileName,
-} from '../../../../utils';
+import { normalizeFileName } from '../../../../utils';
 import { ChipFileMessage } from '../../pages/paymentProcessing/components';
 import { URL, axiosInstance } from '../../../../services/axiosInstance';
+import { formatDateTimeUtc } from '../../../../utils/dayjsSpanish';
 
 interface ProcedureHistoryProps {
   messageHistory: MessageReply | MessageType;
@@ -113,7 +111,7 @@ const ProcedureHistory = ({
           </b>
         </span>
         <span className="message-date-send">
-          {formatDateHourLongSpanish(new Date(messageHistory.createdAt))}
+          {formatDateTimeUtc(new Date(messageHistory.createdAt))}
         </span>
       </div>
       <div className="message-container-files-grid">

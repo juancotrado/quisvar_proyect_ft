@@ -8,7 +8,6 @@ import { AppDispatch, RootState } from '../../../../../../store';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { getContractThunks } from '../../../../../../store/slices/contract.slice';
 import { v4 as uuidv4 } from 'uuid';
-import moment from 'moment';
 
 import {
   ContractRowSchedule,
@@ -23,6 +22,9 @@ import {
 } from './models';
 import { useSearchParams } from 'react-router-dom';
 import { getStatusColor } from '../../utils';
+import dayjsSpanish, {
+  formatDateUtc,
+} from '../../../../../../utils/dayjsSpanish';
 
 export const DetailsContracts = () => {
   const [textareaValue, setTextareaValue] = useState<string | null>(null);
@@ -47,7 +49,7 @@ export const DetailsContracts = () => {
     ['CUI']: contract.cui,
     ['Nombre largo del proyecto']: contract.projectName,
     ['Fecha de firma de contrato']: contract.createdAt
-      ? moment.utc(contract.createdAt).format('DD/MM/YYYY')
+      ? formatDateUtc(contract.createdAt)
       : '-',
   };
 
@@ -374,10 +376,13 @@ export const DetailsContracts = () => {
                       3: { value: description, fr: '2fr' },
                       4: { value: `${realDay} dias `, fr: '1fr' },
                       5: {
-                        value: moment
-                          .utc(contract.createdAt)
-                          .add(realDay, 'days')
-                          .format('DD-MM-YYYY'),
+                        value: formatDateUtc(
+                          dayjsSpanish(contract.createdAt).add(
+                            realDay ?? 0,
+                            'day'
+                          ),
+                          '-'
+                        ),
                         fr: '1fr',
                       },
                     }}

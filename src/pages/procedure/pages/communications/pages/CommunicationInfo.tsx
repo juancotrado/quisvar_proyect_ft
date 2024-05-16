@@ -4,17 +4,14 @@ import { axiosInstance } from '../../../../../services/axiosInstance';
 import { MessageType } from '../../../../../types';
 import { useEffect, useState } from 'react';
 import './communicationInfo.css';
-import {
-  filterFilesByAttempt,
-  formatDateHourLongSpanish,
-  normalizeFileName,
-} from '../../../../../utils';
+import { filterFilesByAttempt, normalizeFileName } from '../../../../../utils';
 
 import { isOpenViewHtmlToPdf$ } from '../../../../../services/sharingSubject';
 import { ChipFileDownLoadProcedure } from '../../../components';
 import { useHtmlToPdf } from '../../../../../hooks';
 import { ChipFileMessage } from '../../paymentProcessing/components';
 import { Resizable } from 're-resizable';
+import { formatDateTimeUtc } from '../../../../../utils/dayjsSpanish';
 
 const CommunicationInfo = () => {
   const navigate = useNavigate();
@@ -109,7 +106,7 @@ const CommunicationInfo = () => {
               <span className="message-sender-name">Enviado Por ti</span>
             )}
             <span className="message-date-send">
-              {formatDateHourLongSpanish(message.createdAt)}
+              {formatDateTimeUtc(message.createdAt)}
             </span>
           </div>
         </div>

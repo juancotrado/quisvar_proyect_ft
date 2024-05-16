@@ -2,8 +2,8 @@ import { useState } from 'react';
 import { Button, IconAction } from '../../../../components';
 import { MessageType } from '../../../../types';
 import { ProcedureHistory } from '../../components';
-import { formatDateHourLongSpanish } from '../../../../utils';
 import './procedureMoreInfo.css';
+import { formatDateTimeUtc } from '../../../../utils/dayjsSpanish';
 
 interface ProcedureMoreInfoProps {
   handleClose: () => void;
@@ -40,7 +40,7 @@ const ProcedureMoreInfo = ({
           </span>
         </div>
         <span className="procedureMoreInfo-date-send">
-          {formatDateHourLongSpanish(message.createdAt)}
+          {formatDateTimeUtc(message.createdAt)}
         </span>
       </div>
       <div className="procedureMoreInfo-main">

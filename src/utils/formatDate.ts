@@ -70,43 +70,5 @@ export const getTimeOut = (
   return transformToHours;
 };
 
-export const formatDateLongSpanish = (date?: string | Date) => {
-  const format = formatDate(new Date(date ?? ''), {
-    day: 'numeric',
-    weekday: 'long',
-    month: 'long',
-    year: 'numeric',
-  });
-  const dayName = format.split(',')[0];
-
-  const capitalizedDayName = dayName.charAt(0).toUpperCase() + dayName.slice(1);
-
-  const formattedDate = format.replace(dayName, capitalizedDayName);
-
-  return formattedDate;
-  //return format; // martes, 2 de enero de 2024;
-};
-export const formatDateHourLongSpanish = (date?: string | Date) => {
-  const format = formatDate(new Date(date ?? new Date()), {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour12: true,
-    hour: '2-digit',
-    minute: '2-digit',
-  });
-
-  return format; // martes, 2 de enero de 2024;
-};
-
-export const formatDateShortSpanish = (date?: string | Date) => {
-  const format = formatDate(new Date(date ?? new Date()), {
-    day: 'numeric',
-    month: 'long',
-    year: 'numeric',
-  });
-  return format; // 2 de enero de 2024;
-};
-
 export const millisecondsToDays = (value: number) =>
   value / (1000 * 60 * 60 * 24);

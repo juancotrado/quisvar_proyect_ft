@@ -101,6 +101,7 @@ export const Home = () => {
       hour: 'numeric',
       minute: 'numeric',
     });
+    console.log(res);
     return res;
   };
   const calculateFineState = () => {

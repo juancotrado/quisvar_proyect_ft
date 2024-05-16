@@ -5,14 +5,11 @@ import './moreInfo.css';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
 import { toggle$ } from '../../../../../../../../services/sharingSubject';
-import {
-  excelSimpleReport,
-  formatDateLongSpanish,
-  formatMoney,
-} from '../../../../../../../../utils';
+import { excelSimpleReport, formatMoney } from '../../../../../../../../utils';
 import { MoreInfoUsers } from '..';
 import { useArchiver } from '../../../../../../../../hooks';
 import { FloatingText } from '../../../../../../../../components';
+import { formatDateWeekdayUtc } from '../../../../../../../../utils/dayjsSpanish';
 interface MoreInfoProps {
   data: Level;
 }
@@ -47,7 +44,7 @@ export const MoreInfo = ({ data }: MoreInfoProps) => {
         department,
         district,
         province,
-        initialDate: formatDateLongSpanish(initialDate),
+        initialDate: formatDateWeekdayUtc(initialDate),
         cui,
         projectName,
         moderatorName,

@@ -2,10 +2,11 @@ import { Document, Image, Page, Text, View } from '@react-pdf/renderer';
 import { Contract } from '../../../../../../types';
 import docImg from '/img/plantillaDocs.png';
 import { styles } from './contractPhaseStyle';
-import moment from 'moment/moment';
-import 'moment/locale/es';
 import { NumerosALetras } from '../../../../../../utils';
 import { PhaseData } from '../../pages/detailsContracts/models';
+import dayjsSpanish, {
+  formatFullDateUtc,
+} from '../../../../../../utils/dayjsSpanish';
 
 interface ContractPhasePdfProps {
   contract: Contract;
@@ -79,7 +80,7 @@ const ContractPhasePdf = ({ contract }: ContractPhasePdfProps) => {
                   FECHA DE FIRMA DE CONTRATO:{' '}
                 </Text>{' '}
                 {contract.createdAt
-                  ? moment.utc(contract.createdAt).format('LL')
+                  ? formatFullDateUtc(contract.createdAt)
                   : '-'}
               </Text>
             </View>
@@ -100,10 +101,12 @@ const ContractPhasePdf = ({ contract }: ContractPhasePdfProps) => {
                   </Text>{' '}
                   <Text style={styles.textRedBold}>
                     {contract.createdAt
-                      ? moment
-                          .utc(contract.createdAt)
-                          .add(phase.realDay, 'days')
-                          .format('LL')
+                      ? formatFullDateUtc(
+                          dayjsSpanish(contract.createdAt).add(
+                            phase.realDay ?? 0,
+                            'days'
+                          )
+                        )
                       : '-'}
                   </Text>{' '}
                   (a los {phase.realDay} dias de plazo){' '}

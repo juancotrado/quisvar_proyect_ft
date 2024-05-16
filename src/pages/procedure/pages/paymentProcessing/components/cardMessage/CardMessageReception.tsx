@@ -1,8 +1,7 @@
-import moment from 'moment/moment';
-import 'moment/locale/es';
 import { Button } from '../../../../../../components';
 import { Reception } from '../../../../models';
 import { TYPE_STATUS } from '../../models';
+import { formatDateTimeUtc } from '../../../../../../utils/dayjsSpanish';
 
 interface cardMessageReceptionProps {
   reception: Reception;
@@ -20,7 +19,7 @@ const cardMessageReception = ({
     <div className={`cardMessageRow-container pointer`} onClick={onClick}>
       <div className="card-message-section-item">
         <span className="card-status-span">
-          {moment(reception.updatedAt).format('DD/MM/YYYY, hh:mm a')}
+          {formatDateTimeUtc(reception.updatedAt)}
         </span>
       </div>
       <div className="card-message-section-item">

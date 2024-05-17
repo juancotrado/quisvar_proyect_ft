@@ -6,9 +6,11 @@ dayjsSpanish.locale('es');
 dayjsSpanish.extend(utcPlugin);
 
 const transformValidDate = (date?: ConfigType) => {
-  if (!date) return dayjsSpanish();
   const isValid = dayjsSpanish(date).isValid();
-  return isValid ? dayjsSpanish.utc(date) : dayjsSpanish();
+  if (!date || !isValid) return dayjsSpanish();
+  return date.toString().includes('GMT')
+    ? dayjsSpanish.utc(date)
+    : dayjsSpanish(date);
 };
 
 // Returns time in "7:18 PM" format

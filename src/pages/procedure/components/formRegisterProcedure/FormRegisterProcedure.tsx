@@ -39,6 +39,7 @@ interface FormRegisterProcedureProps {
   showReportBtn?: boolean;
   showAddUser?: boolean;
   initValues?: MessageSendType;
+  handleFinish?: () => void;
 }
 const FormRegisterProcedure = ({
   type,
@@ -47,6 +48,7 @@ const FormRegisterProcedure = ({
   showReportBtn = false,
   showAddUser = true,
   initValues,
+  handleFinish,
 }: FormRegisterProcedureProps) => {
   const isComunication = type === 'comunication';
   const [isAddReceiver, setIsAddReceiver] = useState(isComunication);
@@ -425,7 +427,18 @@ const FormRegisterProcedure = ({
       </div>
 
       <DocumentProcedure getFilesList={files => setFileUploadFiles(files)} />
-      <Button type="submit" text="Enviar" styleButton={4} />
+      <div className="formRegister-btns">
+        <Button type="submit" text="Enviar" styleButton={4} />
+        {handleFinish && (
+          <Button
+            type="button"
+            style={{ backgroundColor: 'red', borderColor: 'red' }}
+            text="Finalizar tramite"
+            onClick={handleFinish}
+            styleButton={4}
+          />
+        )}
+      </div>
     </form>
   );
 };

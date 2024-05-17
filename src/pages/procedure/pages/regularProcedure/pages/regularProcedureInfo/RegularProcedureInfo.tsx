@@ -3,11 +3,7 @@ import './regularProcedureInfo.css';
 import { MessageType, ProcedureSubmit } from '../../../../../../types';
 import { useEffect, useState } from 'react';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
-import {
-  Button,
-  IconAction,
-  LoaderForComponent,
-} from '../../../../../../components';
+import { IconAction, LoaderForComponent } from '../../../../../../components';
 import { SnackbarUtilities } from '../../../../../../utils';
 import { Resizable } from 're-resizable';
 import { TYPE_STATUS_REGULAR_PROCEDURA } from '../../../paymentProcessing/models';
@@ -22,9 +18,6 @@ const RegularProcedureInfo = () => {
   const [message, setMessage] = useState<MessageType | null>();
   const [isProvied, setIsProvied] = useState(false);
 
-  // const [viewHistory, setViewHistory] = useState(false);
-
-  // const handleViewHistory = () => setViewHistory(!viewHistory);
   const { id: userSessionId } = useSelector(
     (state: RootState) => state.userSession
   );
@@ -80,7 +73,7 @@ const RegularProcedureInfo = () => {
   };
 
   const handleDoneProcedure = () => {
-    axiosInstance.patch(`/mail/${messageId}/done`).then(handleSaveRegister);
+    axiosInstance.patch(`/mail/done/${messageId}`).then(handleSaveRegister);
   };
 
   const initialSender = message.initialSender.user;
@@ -114,16 +107,10 @@ const RegularProcedureInfo = () => {
                 <FormRegisterProcedure
                   type={'regularProcedure'}
                   submit={data => onSubmit(data)}
+                  handleFinish={handleDoneProcedure}
                 />
               )}
             </>
-          )}
-          {userSessionId === initialSender.id && (
-            <Button
-              text="Finalizar tramite"
-              onClick={handleDoneProcedure}
-              styleButton={3}
-            />
           )}
         </div>
       )}

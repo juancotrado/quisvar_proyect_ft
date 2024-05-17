@@ -9,7 +9,6 @@ interface ButtonProps extends HTMLMotionProps<'button'> {
   icon?: string;
   imageStyle?: string;
   styleButton?: number;
-  style?: CSSProperties;
   onClick: (e: React.MouseEvent<HTMLElement>) => void;
   iconSize?: number;
 }
@@ -23,7 +22,6 @@ export const Button = ({
   iconSize = 1,
   disabled,
   styleButton = 1,
-  style,
   ...otherProps
 }: ButtonProps) => {
   const styleIcon: CSSProperties = {
@@ -33,7 +31,6 @@ export const Button = ({
     <motion.button
       whileHover={{ scale: 1.02 }}
       disabled={disabled}
-      style={style}
       whileTap={{ scale: 0.99 }}
       onClick={onClick}
       className={`${STYLE_BUTTON[styleButton]} ${className} ${

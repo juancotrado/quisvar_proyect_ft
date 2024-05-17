@@ -16,3 +16,7 @@
 .iconAction-hover:hover .normal {
   display: none;
 }
+
+.IconAction-shadown {
+  filter: drop-shadow(0px 0px 1px #000);
+}

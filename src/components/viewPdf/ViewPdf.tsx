@@ -71,7 +71,8 @@ const ViewPdf = () => {
           top={0.188}
           right={0.3}
           onClick={handleClose}
-          size={0.8}
+          size={1}
+          shadow
         />
         <div className="viewPdf-download-link" onClick={handleDownloadPdf}>
           Descargar documento

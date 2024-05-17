@@ -13,6 +13,7 @@ interface IconActionProps {
   iconTwo?: string;
   position?: 'none' | 'auto';
   zIndex?: number;
+  shadow?: boolean;
 }
 const IconAction = ({
   onClick,
@@ -26,6 +27,7 @@ const IconAction = ({
   iconTwo,
   position,
   zIndex,
+  shadow,
 }: IconActionProps) => {
   const style: CSSProperties = {
     cursor: 'pointer',
@@ -48,7 +50,11 @@ const IconAction = ({
         onClick?.();
       }}
     >
-      <img src={`/svg/${icon}.svg`} alt={icon} className="normal" />
+      <img
+        src={`/svg/${icon}.svg`}
+        alt={icon}
+        className={`normal ${shadow && 'IconAction-shadown'}`}
+      />
       {iconTwo && (
         <img src={`/svg/${iconTwo}.svg`} alt={iconTwo} className="hover" />
       )}

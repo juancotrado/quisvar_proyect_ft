@@ -131,8 +131,6 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
             gender: profile.gender,
             offices,
           });
-        } else {
-          reset({});
         }
       }
     );
@@ -191,7 +189,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
 
   const closeFunctions = () => {
     setIsOpen(false);
-    reset();
+    reset({ id: null });
   };
 
   const handleCreateProfession = (label: string) => {

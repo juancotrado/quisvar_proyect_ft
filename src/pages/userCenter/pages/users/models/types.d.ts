@@ -25,7 +25,7 @@ export interface SpecialtiesSelect {
   value: string;
 }
 export interface UserForm {
-  id: number;
+  id: number | null;
   email: string;
   password: string;
   confirmPassword: string;

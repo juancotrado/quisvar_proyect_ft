@@ -27,6 +27,7 @@ const CardRegisterProcedureGeneral = ({
     await axiosInstance.post(`/mail`, formData);
     SnackbarUtilities.success('Proceso exitoso ');
     onSave?.();
+    onClosing();
   };
 
   const typeProcedure = TYPE_PROCEDURE[type];

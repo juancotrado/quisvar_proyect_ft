@@ -7,6 +7,7 @@ import {
   Input,
 } from '../../../../../../../../components';
 import {
+  SnackbarUtilities,
   validateOnlyNumbers,
   validateWhiteSpace,
 } from '../../../../../../../../utils';
@@ -23,9 +24,10 @@ import { isOpenViewHtmlToPdf$ } from '../../../../../../../../services/sharingSu
 interface CardProviedProps {
   type: TypeProcedure;
   message: MessageType;
+  onSave?: () => void;
 }
 
-const CardProvied = ({ type, message }: CardProviedProps) => {
+const CardProvied = ({ type, message, onSave }: CardProviedProps) => {
   const [contacts, setContacts] = useState<null | Contact[]>(null);
   const [fileUploadFiles, setFileUploadFiles] = useState<File[]>([]);
   const navigate = useNavigate();
@@ -122,6 +124,8 @@ const CardProvied = ({ type, message }: CardProviedProps) => {
       `/${TYPE_PROCEDURE[type].provied}/reply-seal`,
       formData
     );
+    SnackbarUtilities.success('La operación se realizo con exito.');
+    onSave?.();
     navigate('/tramites/tramite-de-pago?refresh=' + Date.now());
   };
 

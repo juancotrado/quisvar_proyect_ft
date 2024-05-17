@@ -102,7 +102,11 @@ const RegularProcedureInfo = () => {
                 />
               </div>
               {isProvied ? (
-                <CardProvied type={'regularProcedure'} message={message} />
+                <CardProvied
+                  type={'regularProcedure'}
+                  message={message}
+                  onSave={handleClose}
+                />
               ) : (
                 <FormRegisterProcedure
                   type={'regularProcedure'}

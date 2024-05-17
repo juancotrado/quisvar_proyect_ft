@@ -2,6 +2,7 @@ import { Button } from '../../../../../../components';
 import { Reception } from '../../../../models';
 import { TYPE_STATUS } from '../../models';
 import { formatDateTimeUtc } from '../../../../../../utils/dayjsSpanish';
+import { UserProfile } from '../../../../../../types';
 
 interface cardMessageReceptionProps {
   reception: Reception;
@@ -15,24 +16,27 @@ const cardMessageReception = ({
   onClick,
 }: cardMessageReceptionProps) => {
   const [receiver, sender] = reception.users;
+
+  const mainReceiver = reception.users.find(
+    user => user.role === 'MAIN' && user.type === 'RECEIVER'
+  );
+
+  const getFullName = (user?: UserProfile) =>
+    user ? `${user.profile.firstName} ${user.profile.lastName}` : '---';
   return (
     <div className={`cardMessageRow-container pointer`} onClick={onClick}>
-      <div className="card-message-section-item">
-        <span className="card-status-span">
-          {formatDateTimeUtc(reception.updatedAt)}
-        </span>
-      </div>
       <div className="card-message-section-item">
         <span className="card-status-span ">{reception.title}</span>
       </div>
       <div className="card-message-section-item ">
-        <span className="card-status-span ">
-          {sender?.user.profile.firstName} {sender?.user.profile.lastName}
-        </span>
+        <span className="card-status-span ">{getFullName(sender?.user)}</span>
+      </div>
+      <div className="card-message-section-item ">
+        <span className="card-status-span ">{reception.header}</span>
       </div>
       <div className="card-message-section-item">
         <span className={`card-status-span `}>
-          {receiver?.user.profile.firstName} {receiver?.user.profile.lastName}
+          {getFullName(receiver?.user)}
         </span>
       </div>
       <div className="card-message-section-item">
@@ -41,10 +45,14 @@ const cardMessageReception = ({
         </span>
       </div>
       <div className="card-message-section-item">
-        <span className={`card-status-span`}>---</span>
+        <span className={`card-status-span`}>
+          {reception?.office?.name || getFullName(mainReceiver?.user)}
+        </span>
       </div>
       <div className="card-message-section-item">
-        <span className="card-status-span ">--</span>
+        <span className="card-status-span">
+          {formatDateTimeUtc(reception.updatedAt)}
+        </span>
       </div>
       <div
         className="card-message-section-item message-cursor-none"

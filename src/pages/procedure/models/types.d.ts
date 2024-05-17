@@ -3,6 +3,7 @@ import {
   MessageSender,
   MessageStatus,
   MessageTypeImbox,
+  Office,
   Profession,
   Profile,
   UserProfile,
@@ -58,6 +59,7 @@ export interface Reception {
   id: number;
   header: string;
   status: MessageStatus;
+  office: Office;
   type: string;
   title: string;
   createdAt: Date;

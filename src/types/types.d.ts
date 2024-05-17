@@ -980,20 +980,10 @@ export interface userMessage {
     id: number;
     ruc: string;
     address: string;
-    profile: Pick<
-      Profile,
-      | 'firstName'
-      | 'lastName'
-      | 'dni'
-      | 'phone'
-      | 'degree'
-      | 'description'
-      | 'job'
-    >;
+    profile: Profile;
   };
   userId: number;
 }
-
 export interface fileMesage {
   id: number;
   attempt: string;

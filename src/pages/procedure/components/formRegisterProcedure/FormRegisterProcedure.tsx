@@ -40,6 +40,7 @@ interface FormRegisterProcedureProps {
   showAddUser?: boolean;
   initValues?: MessageSendType;
   handleFinish?: () => void;
+  optionalContacs?: userSelect[] | false;
 }
 const FormRegisterProcedure = ({
   type,
@@ -49,6 +50,7 @@ const FormRegisterProcedure = ({
   showAddUser = true,
   initValues,
   handleFinish,
+  optionalContacs,
 }: FormRegisterProcedureProps) => {
   const isComunication = type === 'comunication';
   const [isAddReceiver, setIsAddReceiver] = useState(isComunication);
@@ -62,7 +64,6 @@ const FormRegisterProcedure = ({
       : '/mail/imbox/quantity';
   const { handleTitle } = useTitleProcedure(urlQuantity);
   const [fileUploadFiles, setFileUploadFiles] = useState<File[]>([]);
-
   const { profile } = useSelector((state: RootState) => state.userSession);
   const handleAddCopy = () => {
     setIsAddReceiver(!isAddReceiver);
@@ -79,9 +80,11 @@ const FormRegisterProcedure = ({
 
   useEffect(() => {
     getContacs();
-  }, []);
+  }, [optionalContacs]);
 
   const getContacs = () => {
+    if (optionalContacs) return setContacts(optionalContacs);
+
     const url = `/office?menuId=${2}&typeRol=MOD&subMenuId=${
       TYPE_PROCEDURE[type].idSubmenu
     }`;

@@ -29,16 +29,18 @@ const RegularProcedure = () => {
     false
   );
 
+  const handleMessages = () =>
+    typeMail === 'RECEPTION' ? getReceptionData() : getMessages();
+
   useEffect(() => {
-    if (typeMail === 'RECEPTION') {
-      axiosInstance.get<Reception[]>(`/mail/holding`).then(({ data }) => {
-        setListReception(data);
-      });
-    } else {
-      getMessages();
-    }
+    handleMessages();
   }, [typeMail, params]);
 
+  const getReceptionData = () => {
+    axiosInstance.get<Reception[]>(`/mail/holding`).then(({ data }) => {
+      setListReception(data);
+    });
+  };
   const handleViewMessage = (id: number) => {
     navigate(`${id}`);
   };
@@ -48,7 +50,7 @@ const RegularProcedure = () => {
         <div className="procedure-flow-header">
           <IconAction
             icon="refresh"
-            onClick={getMessages}
+            onClick={handleMessages}
             right={0.3}
             top={3.3}
           />
@@ -98,7 +100,7 @@ const RegularProcedure = () => {
           ) : (
             listReception && (
               <ReceptionView
-                onSave={() => {}}
+                onSave={getReceptionData}
                 type="regularProcedure"
                 listReception={listReception}
               />
@@ -110,7 +112,7 @@ const RegularProcedure = () => {
       {isNewMessage && (
         <CardRegisterProcedureGeneral
           onClosing={handleNewMessage}
-          onSave={handleSaveMessage}
+          onSave={handleMessages}
           type={'regularProcedure'}
         />
       )}

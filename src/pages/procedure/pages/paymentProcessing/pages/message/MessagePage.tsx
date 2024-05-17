@@ -35,6 +35,7 @@ import { Resizable } from 're-resizable';
 import { FormRegisterProcedure } from '../../../../components';
 import { isOpenConfirmAction$ } from '../../../../../../services/sharingSubject';
 import { ProcedureMoreInfo } from '../../../../views/procedureMoreInfo';
+import { userSelect } from '../../../../models';
 
 export const MessagePage = () => {
   const navigate = useNavigate();
@@ -164,6 +165,21 @@ export const MessagePage = () => {
       function: () => handleArchiverMessage,
     };
   };
+
+  const getHistoryContacts = () => {
+    const contacts: userSelect[] = users.map(
+      ({ user: { id, profile, address, ruc } }) => ({
+        value: 'user-' + id,
+        label: profile.firstName + ' ' + profile.lastName,
+        address: address,
+        profile: profile,
+        ruc: ruc,
+        id: id,
+      })
+    );
+
+    return contacts;
+  };
   const { firstName, lastName } = message.userInit.user.profile;
 
   return (
@@ -213,7 +229,11 @@ export const MessagePage = () => {
                   )}
                 {procedureOption === 'continue' ? (
                   isProvied ? (
-                    <CardProvied type={'payProcedure'} message={message} />
+                    <CardProvied
+                      type={'payProcedure'}
+                      message={message}
+                      onSave={handleClose}
+                    />
                   ) : (
                     <>
                       {mainReceiver &&
@@ -254,6 +274,9 @@ export const MessagePage = () => {
                               type={'payProcedure'}
                               submit={data => onSubmit(data)}
                               showAddUser={false}
+                              optionalContacs={
+                                hasAccess && !isReply && getHistoryContacts()
+                              }
                             />
                             {hasAccess && !isReply && (
                               <Button

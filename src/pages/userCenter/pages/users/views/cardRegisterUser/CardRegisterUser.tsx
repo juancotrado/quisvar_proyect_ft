@@ -211,7 +211,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
     axiosInstance.post<Office>('/office', body).then(({ data }) => {
       const { offices } = watch();
       setValue('offices', [
-        ...offices,
+        ...(offices ?? []),
         { id: data.id, label: data.name, value: String(data.id) },
       ]);
       getOffices();

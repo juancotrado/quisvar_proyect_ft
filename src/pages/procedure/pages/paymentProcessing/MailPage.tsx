@@ -24,6 +24,7 @@ import { MessageFunction, Reception } from '../../models';
 import { ReceptionView } from '../../views/reception';
 import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
+import { TableMail } from '../../components/tableMail';
 
 const InitTMail: MailType['type'] = 'RECEIVER';
 
@@ -306,33 +307,38 @@ export const MailPage = () => {
           </div>
         </div>
         <div className="mail-grid-container">
-          {typeMail !== 'RECEPTION' ? (
-            <>
-              <CardMessageHeader option="payProcedure" typeMail={typeMail} />
-              {listMessage &&
-                listMessage.map(({ paymessage, paymessageId, type }) => (
-                  <CardMessage
-                    isActive={false}
-                    key={paymessageId}
-                    type={type}
-                    onArchiver={handleSaveMessage}
-                    typeMail={typeMail}
-                    onClick={() => handleViewMessage(paymessageId)}
-                    message={paymessage}
-                    option="payProcedure"
-                    hasAccess={hasAccess}
-                  />
-                ))}
-            </>
-          ) : (
-            listReception && (
-              <ReceptionView
-                type="payProcedure"
-                onSave={() => handleSelectOption(typeMail)}
-                listReception={listReception}
-              />
-            )
-          )}
+          {typeMail !== 'RECEPTION'
+            ? // <>
+              //   <CardMessageHeader option="payProcedure" typeMail={typeMail} />
+              //   {listMessage &&
+              //     listMessage.map(({ paymessage, paymessageId, type }) => (
+              //       <CardMessage
+              //         isActive={false}
+              //         key={paymessageId}
+              //         type={type}
+              //         onArchiver={handleSaveMessage}
+              //         typeMail={typeMail}
+              //         onClick={() => handleViewMessage(paymessageId)}
+              //         message={paymessage}
+              //         option="payProcedure"
+              //         hasAccess={hasAccess}
+              //       />
+              //     ))}
+              // </>
+
+              listMessage && (
+                <TableMail
+                  data={listMessage.map(({ paymessage }) => paymessage)}
+                  onArchiver={handleSaveMessage}
+                />
+              )
+            : listReception && (
+                <ReceptionView
+                  type="payProcedure"
+                  onSave={() => handleSelectOption(typeMail)}
+                  listReception={listReception}
+                />
+              )}
         </div>
         <div className="mail-footer-section">
           <Button

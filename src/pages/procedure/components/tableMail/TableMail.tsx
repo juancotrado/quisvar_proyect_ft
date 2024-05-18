@@ -9,6 +9,7 @@ import { formatDateTimeUtc } from '../../../../utils/dayjsSpanish';
 import './tableMail.css';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { IconAction } from '../../../../components';
+import { HTMLProps, useEffect, useRef } from 'react';
 interface tableMailProps {
   data: MessageType[];
   onArchiver?: () => void;
@@ -27,14 +28,60 @@ interface tableMailProps {
 //   "onHoldingDate": "2024-05-17T05:15:14.602Z",
 //   "users": []
 // }
+function IndeterminateCheckbox({
+  indeterminate,
+  className = '',
+  ...rest
+}: { indeterminate?: boolean } & HTMLProps<HTMLInputElement>) {
+  const ref = useRef<HTMLInputElement>(null!);
+
+  useEffect(() => {
+    if (typeof indeterminate === 'boolean') {
+      ref.current.indeterminate = !rest.checked && indeterminate;
+    }
+  }, [ref, indeterminate]);
+
+  return (
+    <input
+      type="checkbox"
+      ref={ref}
+      className={className + ' cursor-pointer'}
+      {...rest}
+    />
+  );
+}
+
 const tableMail = ({ data, onArchiver }: tableMailProps) => {
   const columnHelper = createColumnHelper<MessageType>();
 
-  // const getContactUser
   const handleArchiverAction = (id: number) => {
     axiosInstance.patch(`/paymail/archived/${id}`).then(onArchiver);
   };
+
   const columns = [
+    columnHelper.accessor('id', {
+      header: ({ table }) => (
+        <IndeterminateCheckbox
+          {...{
+            checked: table.getIsAllRowsSelected(),
+            indeterminate: table.getIsSomeRowsSelected(),
+            onChange: table.getToggleAllRowsSelectedHandler(),
+          }}
+        />
+      ),
+      cell: ({ row }) => (
+        <div className="px-1">
+          <IndeterminateCheckbox
+            {...{
+              checked: row.getIsSelected(),
+              disabled: !row.getCanSelect(),
+              indeterminate: row.getIsSomeSelected(),
+              onChange: row.getToggleSelectedHandler(),
+            }}
+          />
+        </div>
+      ),
+    }),
     columnHelper.accessor('title', {
       header: () => 'Documento',
     }),
@@ -108,7 +155,13 @@ const tableMail = ({ data, onArchiver }: tableMailProps) => {
       </thead>
       <tbody>
         {table.getRowModel().rows.map(row => (
-          <tr key={row.id} className="tableMail-body-row">
+          <tr
+            key={row.id}
+            className="tableMail-body-row"
+            onClick={() => {
+              console.log(row.original.id);
+            }}
+          >
             {row.getVisibleCells().map(cell => (
               <td key={cell.id} className="tableMail-body-item">
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}

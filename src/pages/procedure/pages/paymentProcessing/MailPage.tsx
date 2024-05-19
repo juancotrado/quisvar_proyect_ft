@@ -4,6 +4,7 @@ import {
   MailType,
   MessageSender,
   MessageStatus,
+  MessageType,
   MessageTypeImbox,
 } from '../../../../types';
 import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
@@ -15,16 +16,16 @@ import {
   IconAction,
   Select,
 } from '../../../../components';
-import { CardMessage } from './components';
 import { CardRegisterMessage } from './views';
 import { axiosInstance } from '../../../../services/axiosInstance';
-import { CardMessageHeader } from '../../components';
 import { useRole } from '../../../../hooks';
 import { MessageFunction, Reception } from '../../models';
 import { ReceptionView } from '../../views/reception';
 import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
 import { TableMail } from '../../components/tableMail';
+import { createColumnHelper } from '@tanstack/react-table';
+import { formatDateTimeUtc } from '../../../../utils/dayjsSpanish';
 
 const InitTMail: MailType['type'] = 'RECEIVER';
 
@@ -32,7 +33,7 @@ export const MailPage = () => {
   const navigate = useNavigate();
   const { hasAccess } = useRole('MOD', 'tramites', 'tramite-de-pago');
 
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams({ type: InitTMail });
   const { offices } = useSelector((state: RootState) => state.userSession);
   const [listReception, setListReception] = useState<Reception[] | null>(null);
 
@@ -46,9 +47,7 @@ export const MailPage = () => {
 
   //-----------------------------QUERIES-----------------------------------
   const [typeMail, setTypeMail] = useState<MessageSender>(InitTMail);
-  const [typeMsg, setTypeMsg] = useState<MessageTypeImbox | null>(null);
   const [officeMsg, setOfficeMsg] = useState<string | null>(null);
-  const [statusMsg, setStatusMsg] = useState<MessageStatus | null>(null);
   const [holdingReception, setHoldingReception] = useState<'yes' | 'no'>('yes');
 
   //-----------------------------------------------------------------------
@@ -57,7 +56,7 @@ export const MailPage = () => {
   //-----------------------------------------------------------------------
 
   useEffect(() => {
-    getMessages({ typeMail });
+    getMessagesByQuery();
   }, [refresh]);
 
   const handleNewMessage = () => {
@@ -67,52 +66,54 @@ export const MailPage = () => {
     setIsNewMessage(false);
   };
   const handleSaveMessage = () => {
-    getMessages({
-      typeMail: typeMail || 'RECEIVER',
-      statusMsg,
-      typeMsg,
-      officeMsg,
-    });
+    getMessagesByQuery();
     setIsNewMessage(false);
   };
-  const getMessages = ({
-    typeMail,
-    statusMsg,
-    typeMsg,
-    officeMsg,
-    holdingReception,
-    skip,
-  }: MessageFunction) => {
-    const type = typeMail && typeMail !== 'ARCHIVER' ? `&type=${typeMail}` : '';
-    const status = (statusMsg && `&status=${statusMsg}`) || '';
-    const typeMessage = (typeMsg && `&typeMessage=${typeMsg}`) || '';
-    const offset = skip ? `&skip=${skip}` : '';
-
-    const officeId = officeMsg ? `&officeId=${officeMsg}` : '';
-    if (typeMail === 'RECEPTION') {
-      const onHolding = holdingReception
-        ? `&onHolding=${holdingReception === 'yes'}`
-        : '';
-      axiosInstance
-        .get<Reception[]>(
-          `/paymail/holding?${officeId}${status}${typeMessage}${onHolding}`
-        )
-        .then(({ data }) => {
-          setListReception(data);
-        });
-      return;
-    }
-    const query = `/paymail?${type}${status}${typeMessage}${offset}${officeId}`;
+  const getMessagesByQuery = (queryParam: string = searchParams.toString()) => {
+    const query = `/paymail?${queryParam}`;
     axiosInstance.get(query).then(res => {
       setListMessage(res.data.mail);
       setTotalMail(res.data.total);
     });
   };
+  // const getMessages = ({
+  //   typeMail,
+  //   statusMsg,
+  //   typeMsg,
+  //   officeMsg,
+  //   holdingReception,
+  //   skip,
+  // }: MessageFunction) => {
+  //   const type = typeMail && typeMail !== 'ARCHIVER' ? `&type=${typeMail}` : '';
+  //   const status = (statusMsg && `&status=${statusMsg}`) || '';
+  //   const typeMessage = (typeMsg && `&typeMessage=${typeMsg}`) || '';
+  //   const offset = skip ? `&skip=${skip}` : '';
+
+  //   const officeId = officeMsg ? `&officeId=${officeMsg}` : '';
+  //   if (typeMail === 'RECEPTION') {
+  //     const onHolding = holdingReception
+  //       ? `&onHolding=${holdingReception === 'yes'}`
+  //       : '';
+  //     axiosInstance
+  //       .get<Reception[]>(
+  //         `/paymail/holding?${officeId}${status}${typeMessage}${onHolding}`
+  //       )
+  //       .then(({ data }) => {
+  //         setListReception(data);
+  //       });
+  //     return;
+  //   }
+  //   const query = `/paymail?${type}${status}${typeMessage}${offset}${officeId}`;
+  //   axiosInstance.get(query).then(res => {
+  //     setListMessage(res.data.mail);
+  //     setTotalMail(res.data.total);
+  //   });
+  // };
 
   const handleViewMessage = (id: number) => {
     setIsNewMessage(false);
-    const officeId = officeMsg ? `&officeId=${officeMsg}` : '';
-    navigate(`${id}?${officeId}`);
+
+    navigate(`${id}?${searchParams}`);
   };
   const handleNextPage = () => {
     const total = Math.floor(totalMail / 20);
@@ -124,17 +125,26 @@ export const MailPage = () => {
     if (0 < limit) setSkip(skip === 21 ? skip - 21 : skip - 20);
   };
   const handleSelectOption = (option: MessageSender) => {
+    const keyParam = option === 'ARCHIVER' ? 'status' : 'type';
+    const value = option === 'ARCHIVER' ? 'ARCHIVADO' : option;
+    setSearchParams({
+      [keyParam]: value,
+    });
+    const query = `${keyParam}=${value}`;
+    getMessagesByQuery(query);
     setTypeMail(option);
-    setTypeMsg(null);
-    setStatusMsg(null);
-    setOfficeMsg(null);
-    setHoldingReception('yes');
-    if (option === 'ARCHIVER') {
-      setStatusMsg('ARCHIVADO');
-      getMessages({ statusMsg: 'ARCHIVADO' });
-      return;
-    }
-    getMessages({ typeMail: option });
+
+    // setTypeMail(option);
+    // setTypeMsg(null);
+    // setStatusMsg(null);
+    // setOfficeMsg(null);
+    // setHoldingReception('yes');
+    // if (option === 'ARCHIVER') {
+    //   setStatusMsg('ARCHIVADO');
+    //   getMessages({ statusMsg: 'ARCHIVADO' });
+    //   return;
+    // }
+    // getMessages({ typeMail: option });
   };
 
   const optionsMailHeader = [
@@ -168,54 +178,107 @@ export const MailPage = () => {
     },
   ];
 
+  const columnHelper = createColumnHelper<MessageType>();
+  const columns = [
+    columnHelper.accessor('title', {
+      header: () => 'Documento',
+    }),
+    columnHelper.accessor(
+      ({ users }) => users.find(user => user.type === 'SENDER')?.user,
+      {
+        id: 'lastName',
+        cell: ({ getValue }) =>
+          getValue()?.profile
+            ? getValue()?.profile.firstName + ' ' + getValue()?.profile.lastName
+            : '',
+        header: () => 'Remitente',
+      }
+    ),
+    columnHelper.accessor('header', {
+      header: () => 'Asunto',
+    }),
+    columnHelper.accessor('status', {
+      header: () => 'Estado',
+      cell: info => (
+        <span className={` tableMail-status status-${info.getValue()}`}>
+          {info.getValue()}
+        </span>
+      ),
+    }),
+    columnHelper.accessor(({ userInit }) => userInit.user, {
+      header: 'Tramitante',
+      cell: ({ getValue }) =>
+        getValue()?.profile.firstName + ' ' + getValue()?.profile.lastName,
+    }),
+    columnHelper.accessor('updatedAt', {
+      header: 'Fecha de envio',
+      cell: ({ getValue }) => formatDateTimeUtc(getValue()),
+    }),
+    columnHelper.accessor('id', {
+      header: 'Visualizar',
+
+      cell: ({ getValue }) => (
+        <i
+          onClick={() => handleViewMessage(getValue())}
+          className="tableMail-archiver"
+        >
+          <IconAction icon="eye" position="none" />
+          Ver
+        </i>
+      ),
+    }),
+  ];
+
   const handleFilter = ({ target }: ChangeEvent<HTMLSelectElement>) => {
     const { value, name } = target;
-    // if (!value) return;
-    if (name === 'status') {
-      const statusMsg = value as MessageStatus;
-      setStatusMsg(statusMsg);
-      getMessages({
-        statusMsg,
-        typeMail,
-        officeMsg,
-        typeMsg,
-        holdingReception,
-      });
-    }
-    if (name === 'type') {
-      const typeMsg = value as MessageTypeImbox;
-      setTypeMsg(typeMsg);
-      getMessages({
-        typeMsg,
-        typeMail,
-        statusMsg,
-        officeMsg,
-        holdingReception,
-      });
-    }
-    if (name === 'office') {
-      const officeMsg = value;
-      setOfficeMsg(value);
-      getMessages({
-        typeMsg,
-        typeMail,
-        statusMsg,
-        officeMsg,
-        holdingReception,
-      });
-    }
+    value ? searchParams.set(name, value) : searchParams.delete(name);
+    setSearchParams(searchParams);
+    getMessagesByQuery(searchParams.toString());
+    // if (name === 'status') {
+    //   const statusMsg = value as MessageStatus;
+    //   setStatusMsg(statusMsg);
+    //   getMessages({
+    //     statusMsg,
+    //     typeMail,
+    //     officeMsg,
+    //     typeMsg,
+    //     holdingReception,
+    //   });
+    // }
+    // if (name === 'type') {
+    //   const typeMsg = value as MessageTypeImbox;
+    //   setTypeMsg(typeMsg);
+    //   getMessages({
+    //     typeMsg,
+    //     typeMail,
+    //     statusMsg,
+    //     officeMsg,
+    //     holdingReception,
+    //   });
+    // }
+    // if (name === 'office') {
+    //   const officeMsg = value;
+    //   setOfficeMsg(value);
+    //   getMessages({
+    //     typeMsg,
+    //     typeMail,
+    //     statusMsg,
+    //     officeMsg,
+    //     holdingReception,
+    //   });
+    // }
 
-    if (name === 'condition') {
-      const holdingReception = value as 'yes' | 'no';
-      setHoldingReception(holdingReception);
-      getMessages({
-        typeMsg,
-        typeMail,
-        statusMsg,
-        officeMsg,
-        holdingReception,
-      });
-    }
+    // if (name === 'condition') {
+    //   const holdingReception = value as 'yes' | 'no';
+    //   setHoldingReception(holdingReception);
+    //   getMessages({
+    //     typeMsg,
+    //     typeMail,
+    //     statusMsg,
+    //     officeMsg,
+    //     holdingReception,
+    //   });
+    // }
   };
   return (
     <>
@@ -247,7 +310,7 @@ export const MailPage = () => {
               </span>
               {typeMail !== 'ARCHIVER' && (
                 <Select
-                  value={statusMsg || ''}
+                  value={searchParams.get('status') ?? ''}
                   data={listStatusMsg}
                   placeholder="Estado"
                   onChange={handleFilter}
@@ -258,19 +321,19 @@ export const MailPage = () => {
                 />
               )}
               <Select
-                value={typeMsg || ''}
+                value={searchParams.get('typeMessage') ?? ''}
                 styleVariant="secondary"
                 placeholder="Documento"
                 data={listTypeMsg}
                 onChange={handleFilter}
-                name="type"
+                name="typeMessage"
                 extractValue={({ id }) => id}
                 renderTextField={({ id }) => id}
               />
 
               <Select
                 style={{ width: '11rem' }}
-                value={officeMsg || ''}
+                value={searchParams.get('office') ?? ''}
                 styleVariant="secondary"
                 placeholder="Oficina"
                 data={offices}
@@ -281,7 +344,7 @@ export const MailPage = () => {
               />
               {typeMail === 'RECEPTION' && (
                 <Select
-                  value={holdingReception || ''}
+                  value={searchParams.get('condition') ?? ''}
                   styleVariant="secondary"
                   placeholder="Condición"
                   data={holdingOptions}
@@ -293,7 +356,7 @@ export const MailPage = () => {
               )}
               <IconAction
                 icon="refresh"
-                onClick={() => handleSelectOption(typeMail)}
+                onClick={getMessagesByQuery}
                 size={4}
                 position="none"
               />
@@ -308,28 +371,13 @@ export const MailPage = () => {
         </div>
         <div className="mail-grid-container">
           {typeMail !== 'RECEPTION'
-            ? // <>
-              //   <CardMessageHeader option="payProcedure" typeMail={typeMail} />
-              //   {listMessage &&
-              //     listMessage.map(({ paymessage, paymessageId, type }) => (
-              //       <CardMessage
-              //         isActive={false}
-              //         key={paymessageId}
-              //         type={type}
-              //         onArchiver={handleSaveMessage}
-              //         typeMail={typeMail}
-              //         onClick={() => handleViewMessage(paymessageId)}
-              //         message={paymessage}
-              //         option="payProcedure"
-              //         hasAccess={hasAccess}
-              //       />
-              //     ))}
-              // </>
-
-              listMessage && (
+            ? listMessage && (
                 <TableMail
                   data={listMessage.map(({ paymessage }) => paymessage)}
-                  onArchiver={handleSaveMessage}
+                  columns={columns}
+                  rowDataSelection={data =>
+                    console.log('esta es mi data', data)
+                  }
                 />
               )
             : listReception && (

@@ -39,9 +39,6 @@ import { userSelect } from '../../../../models';
 
 export const MessagePage = () => {
   const navigate = useNavigate();
-  const [searchParams] = useSearchParams();
-  const officeMsg = searchParams.get('officeId');
-  const officeId = officeMsg ? `&officeId=${officeMsg}` : '';
   const { paymessageId } = useParams();
   const { hasAccess } = useRole('MOD', 'tramites', 'tramite-de-pago');
   const { state } = useLocation();
@@ -58,15 +55,11 @@ export const MessagePage = () => {
   //----------------------------------------------------------------------------
   const getMessage = useCallback(
     (id: string) => {
-      if (officeMsg && isNaN(+officeMsg)) {
-        navigate('/tramites/tramite-de-pago');
-      } else {
-        axiosInstance.get(`/paymail/${id}?${officeId}`).then(res => {
-          setMessage(res.data);
-        });
-      }
+      axiosInstance.get(`/paymail/${id}`).then(res => {
+        setMessage(res.data);
+      });
     },
-    [userSessionId, officeMsg]
+    [userSessionId]
   );
   useEffect(() => {
     if (paymessageId && userSessionId) getMessage(paymessageId);
@@ -191,7 +184,7 @@ export const MessagePage = () => {
         left: true,
       }}
       maxWidth={'60%'}
-      minWidth={'50%'}
+      minWidth={'40%'}
       className={`message-page-container `}
     >
       {!isReception && message.status !== 'ARCHIVADO' && (

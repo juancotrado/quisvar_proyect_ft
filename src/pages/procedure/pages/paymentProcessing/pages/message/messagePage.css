@@ -1,4 +1,5 @@
 .message-page-container {
+  width: 100%;
   display: flex;
   position: relative;
   height: 100%;

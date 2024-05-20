@@ -62,8 +62,8 @@ export const radioOptions = [
 ];
 
 export const holdingOptions = [
-  { id: 'yes', label: 'POR APROBAR' },
-  { id: 'no', label: 'APROBADO' },
+  { id: 'true', label: 'POR APROBAR' },
+  { id: 'false', label: 'APROBADO' },
 ];
 
 export const HashFile = (name: string) => {

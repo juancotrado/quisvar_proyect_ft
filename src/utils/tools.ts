@@ -1,6 +1,13 @@
 import html2pdf, { Html2PdfOptions } from 'html2pdf.js';
 import { DEGREE_DATA } from '../pages/userCenter/pages/users/models';
-import { Degree, Feedback, Level, Profession, RangeDays } from '../types/types';
+import {
+  Degree,
+  Feedback,
+  Level,
+  Profession,
+  RangeDays,
+  UserProfile,
+} from '../types/types';
 
 export const findProject = (data: Level[]): boolean => {
   let existProyect = false;
@@ -320,3 +327,6 @@ export const htmlToPdf = (
     });
   return result;
 };
+
+export const getFullName = (user?: UserProfile) =>
+  user ? `${user.profile.firstName} ${user.profile.lastName}` : '---';

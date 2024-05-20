@@ -1,12 +1,6 @@
 import { ChangeEvent, useEffect, useState } from 'react';
 import './mailPage.css';
-import {
-  MailType,
-  MessageSender,
-  MessageStatus,
-  MessageType,
-  MessageTypeImbox,
-} from '../../../../types';
+import { MailType, MessageSender, MessageType } from '../../../../types';
 import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
 import { holdingOptions, listStatusMsg, listTypeMsg } from '../../../../utils';
 import {
@@ -19,7 +13,7 @@ import {
 import { CardRegisterMessage } from './views';
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { useRole } from '../../../../hooks';
-import { MessageFunction, Reception } from '../../models';
+import { Reception } from '../../models';
 import { ReceptionView } from '../../views/reception';
 import { RootState } from '../../../../store';
 import { useSelector } from 'react-redux';
@@ -47,7 +41,6 @@ export const MailPage = () => {
 
   //-----------------------------QUERIES-----------------------------------
   const [typeMail, setTypeMail] = useState<MessageSender>(InitTMail);
-  const [officeMsg, setOfficeMsg] = useState<string | null>(null);
   const [holdingReception, setHoldingReception] = useState<'yes' | 'no'>('yes');
 
   //-----------------------------------------------------------------------
@@ -131,20 +124,9 @@ export const MailPage = () => {
       [keyParam]: value,
     });
     const query = `${keyParam}=${value}`;
-    getMessagesByQuery(query);
     setTypeMail(option);
-
-    // setTypeMail(option);
-    // setTypeMsg(null);
-    // setStatusMsg(null);
-    // setOfficeMsg(null);
-    // setHoldingReception('yes');
-    // if (option === 'ARCHIVER') {
-    //   setStatusMsg('ARCHIVADO');
-    //   getMessages({ statusMsg: 'ARCHIVADO' });
-    //   return;
-    // }
-    // getMessages({ typeMail: option });
+    if (option === 'RECEPTION') return;
+    getMessagesByQuery(query);
   };
 
   const optionsMailHeader = [
@@ -233,52 +215,8 @@ export const MailPage = () => {
     const { value, name } = target;
     value ? searchParams.set(name, value) : searchParams.delete(name);
     setSearchParams(searchParams);
+    if (typeMail === 'RECEPTION') return;
     getMessagesByQuery(searchParams.toString());
-    // if (name === 'status') {
-    //   const statusMsg = value as MessageStatus;
-    //   setStatusMsg(statusMsg);
-    //   getMessages({
-    //     statusMsg,
-    //     typeMail,
-    //     officeMsg,
-    //     typeMsg,
-    //     holdingReception,
-    //   });
-    // }
-    // if (name === 'type') {
-    //   const typeMsg = value as MessageTypeImbox;
-    //   setTypeMsg(typeMsg);
-    //   getMessages({
-    //     typeMsg,
-    //     typeMail,
-    //     statusMsg,
-    //     officeMsg,
-    //     holdingReception,
-    //   });
-    // }
-    // if (name === 'office') {
-    //   const officeMsg = value;
-    //   setOfficeMsg(value);
-    //   getMessages({
-    //     typeMsg,
-    //     typeMail,
-    //     statusMsg,
-    //     officeMsg,
-    //     holdingReception,
-    //   });
-    // }
-
-    // if (name === 'condition') {
-    //   const holdingReception = value as 'yes' | 'no';
-    //   setHoldingReception(holdingReception);
-    //   getMessages({
-    //     typeMsg,
-    //     typeMail,
-    //     statusMsg,
-    //     officeMsg,
-    //     holdingReception,
-    //   });
-    // }
   };
   return (
     <>
@@ -344,12 +282,12 @@ export const MailPage = () => {
               />
               {typeMail === 'RECEPTION' && (
                 <Select
-                  value={searchParams.get('condition') ?? ''}
+                  value={searchParams.get('onHolding') ?? ''}
                   styleVariant="secondary"
                   placeholder="Condición"
                   data={holdingOptions}
                   onChange={handleFilter}
-                  name="condition"
+                  name="onHolding"
                   extractValue={({ id }) => id}
                   renderTextField={({ label }) => label}
                 />
@@ -370,23 +308,21 @@ export const MailPage = () => {
           </div>
         </div>
         <div className="mail-grid-container">
-          {typeMail !== 'RECEPTION'
-            ? listMessage && (
-                <TableMail
-                  data={listMessage.map(({ paymessage }) => paymessage)}
-                  columns={columns}
-                  rowDataSelection={data =>
-                    console.log('esta es mi data', data)
-                  }
-                />
-              )
-            : listReception && (
-                <ReceptionView
-                  type="payProcedure"
-                  onSave={() => handleSelectOption(typeMail)}
-                  listReception={listReception}
-                />
-              )}
+          {typeMail !== 'RECEPTION' ? (
+            listMessage && (
+              <TableMail
+                data={listMessage.map(({ paymessage }) => paymessage)}
+                columns={columns}
+                rowDataSelection={data => console.log('esta es mi data', data)}
+              />
+            )
+          ) : (
+            <ReceptionView
+              type="payProcedure"
+              searchParams={searchParams}
+              onSave={() => handleSelectOption(typeMail)}
+            />
+          )}
         </div>
         <div className="mail-footer-section">
           <Button

@@ -41,7 +41,7 @@ const SubtasksMoreInfo = ({ task }: SubtasksMoreInfoProps) => {
           {task?.createdAt ? _date(task?.createdAt) : '-'}
         </div>
       </div>
-      <div className="subtasksMoreInfo-item">
+      {/* <div className="subtasksMoreInfo-item">
         <h3 className="subtasksMoreInfo-item-title">PRECIO</h3>
         <div className="subtasksMoreInfo-item-text">
           <figure className="subtasksMoreInfo-item-icon">
@@ -49,11 +49,7 @@ const SubtasksMoreInfo = ({ task }: SubtasksMoreInfoProps) => {
           </figure>
           {task.price}
         </div>
-      </div>
-      <div className="subtasksMoreInfo-item">
-        <h3 className="subtasksMoreInfo-item-title">ESTADO ACTUAL</h3>
-        <StatusText status={task.status} />
-      </div>
+      </div> */}
       <div className="subtasksMoreInfo-item">
         <h3 className="subtasksMoreInfo-item-title">FECHA DE INICIO</h3>
         <div className="subtasksMoreInfo-item-text">
@@ -63,6 +59,19 @@ const SubtasksMoreInfo = ({ task }: SubtasksMoreInfoProps) => {
           {task.users.at(0)?.untilDate
             ? _date(task.users.at(0)?.untilDate || new Date())
             : '-'}
+        </div>
+      </div>
+      <div className="subtasksMoreInfo-item">
+        <h3 className="subtasksMoreInfo-item-title">ESTADO ACTUAL</h3>
+        <StatusText status={task.status} />
+      </div>
+      <div className="subtasksMoreInfo-item">
+        <h3 className="subtasksMoreInfo-item-title">TOTAL DE DIAS</h3>
+        <div className="subtasksMoreInfo-item-text">
+          <figure className="subtasksMoreInfo-item-icon">
+            <img src="/svg/timer-icon.svg" alt="W3Schools" />
+          </figure>
+          {task.days}
         </div>
       </div>
       <div className="subtasksMoreInfo-item">
@@ -76,15 +85,6 @@ const SubtasksMoreInfo = ({ task }: SubtasksMoreInfoProps) => {
             <img src="/svg/hours-icon.svg" alt="W3Schools" />
           </figure>
           {task.users.length ? getTimeOut() + ' Dias' : '-'}
-        </div>
-      </div>
-      <div className="subtasksMoreInfo-item">
-        <h3 className="subtasksMoreInfo-item-title">TOTAL DE DIAS</h3>
-        <div className="subtasksMoreInfo-item-text">
-          <figure className="subtasksMoreInfo-item-icon">
-            <img src="/svg/timer-icon.svg" alt="W3Schools" />
-          </figure>
-          {task.days}
         </div>
       </div>
     </div>

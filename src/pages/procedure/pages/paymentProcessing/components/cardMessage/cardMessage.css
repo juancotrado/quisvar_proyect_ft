@@ -63,26 +63,6 @@
   white-space: nowrap;
   width: 100%;
 }
-.status-ARCHIVADO {
-  background-color: var(--color-bg-liquidation);
-  color: var(--color-liquidation);
-}
-.status-PROCESO {
-  background-color: var(--color-bg-asigned);
-  color: var(--color-asigned);
-}
-.status-RECHAZADO {
-  background-color: var(--color-bg-unresolved);
-  color: var(--color-unresolved);
-}
-.status-FINALIZADO {
-  background-color: var(--color-bg-done);
-  color: var(--color-done);
-}
-.status-PAGADO {
-  background-color: var(--color-bg-done);
-  color: var(--color-done);
-}
 
 .message-isOpen {
   background-color: #fff;

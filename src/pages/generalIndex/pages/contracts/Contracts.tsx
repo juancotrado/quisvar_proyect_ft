@@ -126,7 +126,7 @@ export const Contracts = () => {
             extractValue={({ key }) => key}
             renderTextField={({ name }) => name}
             placeholder="Estado"
-            className="contract-filter-select"
+            styleVariant="tertiary"
             onChange={handleFilterStatus}
           />
           <Select
@@ -135,7 +135,7 @@ export const Contracts = () => {
             extractValue={({ year }) => year}
             renderTextField={({ year }) => year}
             placeholder="Año"
-            className="contract-filter-select"
+            styleVariant="tertiary"
             onChange={handleFilterValues}
           />
           <Select
@@ -144,7 +144,7 @@ export const Contracts = () => {
             extractValue={({ key }) => key}
             renderTextField={({ name }) => name}
             placeholder="Tipo"
-            className="contract-filter-select"
+            styleVariant="tertiary"
             onChange={handleFilterValues}
           />
         </div>

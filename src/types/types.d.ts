@@ -1,4 +1,4 @@
-import { OfficeSelect } from '../pages/procedure/models';
+import { OfficeSelect, Reception } from '../pages/procedure/models';
 
 export interface SpecialityType {
   id: number;
@@ -889,6 +889,15 @@ export interface MailType extends MailOrigin {
   paymessageId: number;
   paymessage: MessageType;
 }
+
+export interface PayMailNumeration {
+  mailList: MailType[];
+  total: number;
+}
+export interface ReceptionMailNumeration {
+  mailList: Reception[];
+  total: number;
+}
 export interface MailTypeComunication extends MailOrigin {
   messageId: number;
   message: MessageType;
@@ -1286,7 +1295,7 @@ export interface OptionSelect {
   label: string;
 }
 
-export type StylesVariant = 'primary' | 'secondary';
+export type StylesVariant = 'primary' | 'secondary' | 'tertiary';
 
 export interface Profession extends OptionSelect {
   abrv: string;
@@ -1297,4 +1306,8 @@ export interface DataLicense {
   startDate: string;
   untilDate: string;
   type: string;
+}
+export interface PaginationTable {
+  pageIndex: number;
+  pageSize: number;
 }

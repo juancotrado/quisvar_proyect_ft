@@ -1,0 +1,32 @@
+.labelStatus-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.labelStatus {
+  border-radius: 0.2rem;
+  padding: 0.2rem 0.4rem;
+  font-weight: 600;
+  font-size: 0.6rem;
+}
+
+.status-ARCHIVADO {
+  background-color: var(--color-bg-liquidation);
+  color: var(--color-liquidation);
+}
+.status-PROCESO {
+  background-color: var(--color-bg-asigned);
+  color: var(--color-asigned);
+}
+.status-RECHAZADO {
+  background-color: var(--color-bg-unresolved);
+  color: var(--color-unresolved);
+}
+.status-FINALIZADO {
+  background-color: var(--color-bg-done);
+  color: var(--color-done);
+}
+.status-PAGADO {
+  background-color: var(--color-bg-done);
+  color: var(--color-done);
+}

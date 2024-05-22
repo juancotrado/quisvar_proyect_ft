@@ -39,6 +39,8 @@ import { userSelect } from '../../../../models';
 
 export const MessagePage = () => {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
   const { paymessageId } = useParams();
   const { hasAccess } = useRole('MOD', 'tramites', 'tramite-de-pago');
   const { state } = useLocation();
@@ -67,7 +69,7 @@ export const MessagePage = () => {
   }, [getMessage, paymessageId, userSessionId]);
 
   const handleClose = () => {
-    navigate('/tramites/tramite-de-pago');
+    navigate('/tramites/tramite-de-pago?' + searchParams);
   };
   const toggleSwitch = () => setIsReply(!isReply);
 
@@ -94,7 +96,7 @@ export const MessagePage = () => {
   );
 
   const handleSaveRegister = () => {
-    navigate('/tramites/tramite-de-pago?refresh=' + Date.now());
+    navigate('/tramites/tramite-de-pago?refresh=' + Date.now() + searchParams);
   };
 
   const isUserInitMessage = userSessionId === message.userInit.userId;

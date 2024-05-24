@@ -57,12 +57,15 @@ const useRegularMail = () => {
   const handleSelectOption = (option: MessageSender) => {
     const keyParam = option === 'ARCHIVER' ? 'status' : 'type';
     const value = option === 'ARCHIVER' ? 'ARCHIVADO' : option;
-    setSearchParams({
+    const params = {
       limit: '20',
       page: '0',
       [keyParam]: value,
-    });
+    };
+    if (option === 'RECEPTION') params.onHolding = 'true';
+    setSearchParams(params);
   };
+
   const handleFilter = ({ target }: ChangeEvent<HTMLSelectElement>) => {
     const { value, name } = target;
     value ? searchParams.set(name, value) : searchParams.delete(name);

@@ -65,7 +65,7 @@ const ReceptionView = ({
   ];
 
   const columns = [
-    ...(!(searchParams.get('onHolding') === 'false') ? columnPagination : []),
+    ...(!(searchParams.get('onHolding') === 'true') ? [] : columnPagination),
     columnHelper.accessor('title', {
       header: () => 'Documento',
     }),
@@ -159,7 +159,7 @@ const ReceptionView = ({
         total={totalMail}
         columns={columns}
         rowSelectionData={
-          searchParams.get('onHolding') === 'false' ? null : setSelectData
+          searchParams.get('onHolding') === 'true' ? setSelectData : null
         }
         getPagination={getMessagesPagination}
         isLoading={isLoading}

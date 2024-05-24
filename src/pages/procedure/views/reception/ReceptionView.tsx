@@ -14,7 +14,6 @@ import { formatDateTimeUtc } from '../../../../utils/dayjsSpanish';
 import { TableMail } from '../../components/tableMail';
 import { LabelStatus } from '../../components';
 import { PaginationTable } from '../../../../types';
-import { original } from '@reduxjs/toolkit';
 
 interface ReceptionViewProps {
   searchParams: URLSearchParams;

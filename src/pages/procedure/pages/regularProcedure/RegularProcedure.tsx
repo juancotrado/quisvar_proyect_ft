@@ -313,7 +313,7 @@ const RegularProcedure = () => {
           </>
         ) : (
           <ReceptionView
-            type="payProcedure"
+            type="regularProcedure"
             totalMail={regularMailQuery.data?.total}
             searchParams={searchParams}
             onSave={regularMailQuery.refetch}

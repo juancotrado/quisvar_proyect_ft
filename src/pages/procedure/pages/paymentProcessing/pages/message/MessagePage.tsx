@@ -36,10 +36,12 @@ import { FormRegisterProcedure } from '../../../../components';
 import { isOpenConfirmAction$ } from '../../../../../../services/sharingSubject';
 import { ProcedureMoreInfo } from '../../../../views/procedureMoreInfo';
 import { userSelect } from '../../../../models';
+import { usePayMail } from '../../hooks';
 
 export const MessagePage = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
+  const { payMailQuery } = usePayMail();
 
   const { paymessageId } = useParams();
   const { hasAccess } = useRole('MOD', 'tramites', 'tramite-de-pago');
@@ -96,7 +98,8 @@ export const MessagePage = () => {
   );
 
   const handleSaveRegister = () => {
-    navigate('/tramites/tramite-de-pago?refresh=' + Date.now() + searchParams);
+    payMailQuery.refetch();
+    navigate('/tramites/tramite-de-pago');
   };
 
   const isUserInitMessage = userSessionId === message.userInit.userId;

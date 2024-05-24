@@ -3,7 +3,7 @@ import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { MessageSender, MessageType } from '../../../../../../types';
 import { formatDateTimeUtc } from '../../../../../../utils/dayjsSpanish';
 import { TypeProcedure } from '../../../../models';
-import { TYPE_STATUS, TYPE_STATUS_REGULAR_PROCEDURA } from '../../models';
+import { TYPE_STATUS, TYPE_STATUS_REGULAR_PROCEDURE } from '../../models';
 import './cardMessage.css';
 
 interface CardMessageProps {
@@ -68,7 +68,7 @@ const CardMessage = ({
                 : option === 'payProcedure' &&
                   TYPE_STATUS[message.status]?.toLowerCase()}
               {option === 'regularProcedure' &&
-                TYPE_STATUS_REGULAR_PROCEDURA[message.status]?.toLowerCase()}
+                TYPE_STATUS_REGULAR_PROCEDURE[message.status]?.toLowerCase()}
             </span>
           </div>
           <div className="card-message-section-item">

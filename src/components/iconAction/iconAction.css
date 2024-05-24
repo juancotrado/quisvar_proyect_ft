@@ -1,3 +1,11 @@
+.iconAction-container {
+  display: flex;
+  gap: 0.4rem;
+  align-items: center;
+  font-weight: 700;
+  font-size: 0.7rem;
+  cursor: pointer;
+}
 .iconAction {
   position: absolute;
   right: 0.5rem;

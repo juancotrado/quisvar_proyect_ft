@@ -1,14 +1,15 @@
-import { MessageStatus } from '../../../../types';
 import './labelStatus.css';
 
 interface LabelStatusProps {
-  status: MessageStatus;
+  status: string;
 }
 
 const LabelStatus = ({ status }: LabelStatusProps) => {
   return (
     <div className="labelStatus-container">
-      <span className={`labelStatus status-${status}`}>{status}</span>
+      <span className={`labelStatus status-${status}`}>
+        {status.replaceAll('_', ' ')}
+      </span>
     </div>
   );
 };

@@ -902,6 +902,15 @@ export interface MailTypeComunication extends MailOrigin {
   messageId: number;
   message: MessageType;
 }
+export interface MailGeneral extends MailOrigin {
+  messageId: number;
+  message: MessageType;
+}
+
+export interface MailGeneralNumeration {
+  mailList: MailGeneral[];
+  total: number;
+}
 export type MessageSender =
   | 'SENDER'
   | 'RECEIVER'
@@ -915,7 +924,9 @@ export type MessageStatus =
   | 'FINALIZADO'
   | 'GUARDADO'
   | 'POR_PAGAR'
-  | 'PAGADO';
+  | 'PAGADO'
+  | 'PENDIENTE';
+
 export type MessageTypeImbox =
   | 'INFORME'
   | 'CARTA'

@@ -18,6 +18,10 @@
   background-color: var(--color-bg-asigned);
   color: var(--color-asigned);
 }
+.status-PENDIENTE {
+  background-color: var(--color-bg-asigned);
+  color: var(--color-asigned);
+}
 .status-RECHAZADO {
   background-color: var(--color-bg-unresolved);
   color: var(--color-unresolved);
@@ -26,7 +30,11 @@
   background-color: var(--color-bg-done);
   color: var(--color-done);
 }
-.status-PAGADO {
+.status-POR_PAGAR {
   background-color: var(--color-bg-done);
   color: var(--color-done);
+}
+.status-EN_ESPERA {
+  background-color: var(--color-bg-correction);
+  color: var(--color-correction);
 }

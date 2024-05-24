@@ -1,15 +1,10 @@
-import { ChangeEvent, useEffect, useState } from 'react';
+import { useState } from 'react';
 import './mailPage.css';
-import {
-  MailType,
-  MessageSender,
-  MessageType,
-  PaginationTable,
-  PayMailNumeration,
-} from '../../../../types';
+import { MessageType } from '../../../../types';
 import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
 import {
   SnackbarUtilities,
+  getFullName,
   holdingOptions,
   listStatusMsg,
   listTypeMsg,
@@ -20,7 +15,6 @@ import {
   HeaderOptionBtn,
   IconAction,
   IndeterminateCheckbox,
-  LoaderForComponent,
   Select,
 } from '../../../../components';
 import { CardRegisterMessage } from './views';
@@ -33,43 +27,36 @@ import { TableMail } from '../../components/tableMail';
 import { createColumnHelper } from '@tanstack/react-table';
 import { formatDateTimeUtc } from '../../../../utils/dayjsSpanish';
 import { LabelStatus } from '../../components';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
-
-const InitTMail: MailType['type'] = 'RECEIVER';
-
-const InitPaginationValue = { offset: '0', limit: '30' };
+import { usePayMail } from './hooks';
+import { Reception } from '../../models';
+import { TYPE_STATUS } from './models';
 
 export const MailPage = () => {
   const navigate = useNavigate();
   const { hasAccess } = useRole('MOD', 'tramites', 'tramite-de-pago');
 
-  const [searchParams, setSearchParams] = useSearchParams({
-    type: InitTMail,
-    ...InitPaginationValue,
-  });
+  const [searchParams] = useSearchParams();
   const { offices } = useSelector((state: RootState) => state.userSession);
 
-  const [listMessage, setListMessage] = useState<MailType[] | null>(null);
   const [selectData, setSelectData] = useState<MessageType[] | null>(null);
-  const [totalMail, setTotalMail] = useState(0);
 
   const { isAccessReception } = useSelector(
     (state: RootState) => state.userSession
   );
 
-  //-----------------------------QUERIES-----------------------------------
-  const [typeMail, setTypeMail] = useState<MessageSender>(InitTMail);
-
-  //-----------------------------------------------------------------------
-  const refresh = searchParams.get('refresh');
   const [isNewMessage, setIsNewMessage] = useState(false);
   //-----------------------------------------------------------------------
-
-  useEffect(() => {
-    if (refresh) {
-      getMessagesByQuery();
-    }
-  }, [refresh]);
+  const {
+    payMailQuery,
+    handleSelectOption,
+    typeMail,
+    getMessagesPagination,
+    handleFilter,
+    office,
+    onHolding,
+    status,
+    typeMessage,
+  } = usePayMail();
 
   const handleNewMessage = () => {
     setIsNewMessage(true);
@@ -78,58 +65,13 @@ export const MailPage = () => {
     setIsNewMessage(false);
   };
   const handleSaveMessage = () => {
-    getMessagesByQuery();
+    payMailQuery.refetch();
     handleCloseMessage();
-  };
-  const getMessagesByQuery = async (
-    queryParam: string = searchParams.toString()
-  ) => {
-    const query = `/paymail?${queryParam}`;
-    const res = await axiosInstance.get<PayMailNumeration>(query, {
-      headers: {
-        noLoader: true,
-      },
-    });
-    const { mailList, total } = res.data;
-    setListMessage(mailList);
-    setTotalMail(total);
-  };
-  const dataQuery = useQuery({
-    queryKey: ['payListMessage'],
-    queryFn: getMessagesByQuery,
-    placeholderData: keepPreviousData,
-  });
-
-  const getMessagesPagination = async ({
-    pageIndex,
-    pageSize,
-  }: PaginationTable) => {
-    searchParams.set('offset', String(pageIndex));
-    searchParams.set('limit', String(pageSize));
-    setSearchParams(searchParams);
-    await getMessagesByQuery(searchParams.toString());
   };
 
   const handleViewMessage = (id: number) => {
     setIsNewMessage(false);
-
     navigate(`${id}?${searchParams}`);
-  };
-
-  const handleSelectOption = (option: MessageSender) => {
-    const keyParam = option === 'ARCHIVER' ? 'status' : 'type';
-    const value = option === 'ARCHIVER' ? 'ARCHIVADO' : option;
-    const { limit, offset } = InitPaginationValue;
-    setSearchParams({
-      ...InitPaginationValue,
-      [keyParam]: value,
-    });
-    const query = `${keyParam}=${value}&offset=${offset}&limit=${limit}`;
-    setTypeMail(option);
-
-    if (option === 'RECEPTION') return;
-    setListMessage(null);
-    getMessagesByQuery(query);
   };
 
   const optionsMailHeader = [
@@ -151,7 +93,7 @@ export const MailPage = () => {
       iconOn: 'archive-regular',
       iconOff: 'archiver-box-black',
       text: 'ARCHIVADOS',
-      isActive: typeMail === 'ARCHIVER',
+      isActive: status === 'ARCHIVADO',
       funcion: () => handleSelectOption('ARCHIVER'),
     },
     {
@@ -191,28 +133,47 @@ export const MailPage = () => {
     columnHelper.accessor('title', {
       header: () => 'Documento',
     }),
-    columnHelper.accessor(
-      ({ users }) => users.find(user => user.type === 'SENDER')?.user,
-      {
-        id: 'lastName',
-        cell: ({ getValue }) =>
-          getValue()?.profile
-            ? getValue()?.profile.firstName + ' ' + getValue()?.profile.lastName
-            : '',
-        header: () => 'Remitente',
-      }
-    ),
+    ...(typeMail !== 'SENDER'
+      ? [
+          columnHelper.accessor(
+            ({ users }) => users.find(user => user.type === 'SENDER')?.user,
+            {
+              id: 'sender',
+              cell: ({ getValue, row: { original } }) =>
+                original.office?.name || getFullName(getValue()),
+              header: () => 'Remitente',
+              enableHiding: true,
+            }
+          ),
+        ]
+      : []),
+    ...(typeMail !== 'RECEIVER'
+      ? [
+          columnHelper.accessor(
+            ({ users }) => users.find(user => user.type === 'RECEIVER')?.user,
+            {
+              id: 'receiver',
+              cell: ({ getValue, row: { original } }) =>
+                original.office?.name || getFullName(getValue()),
+              header: () => 'Destinatario',
+            }
+          ),
+        ]
+      : []),
     columnHelper.accessor('header', {
       header: () => 'Asunto',
     }),
     columnHelper.accessor('status', {
       header: () => 'Estado',
-      cell: ({ getValue }) => <LabelStatus status={getValue()} />,
+      cell: ({ getValue, row: { original } }) => (
+        <LabelStatus
+          status={original.onHolding ? 'EN_ESPERA' : TYPE_STATUS[getValue()]}
+        />
+      ),
     }),
     columnHelper.accessor(({ userInit }) => userInit.user, {
       header: 'Tramitante',
-      cell: ({ getValue }) =>
-        getValue()?.profile.firstName + ' ' + getValue()?.profile.lastName,
+      cell: ({ getValue }) => getFullName(getValue()),
     }),
     columnHelper.accessor('updatedAt', {
       header: 'Fecha de envio',
@@ -233,25 +194,16 @@ export const MailPage = () => {
     }),
   ];
 
-  const handleFilter = ({ target }: ChangeEvent<HTMLSelectElement>) => {
-    const { value, name } = target;
-    value ? searchParams.set(name, value) : searchParams.delete(name);
-    setSearchParams(searchParams);
-    if (typeMail === 'RECEPTION') return;
-    getMessagesByQuery(searchParams.toString());
-  };
-
   const handleArchive = () => {
     if (!selectData) return;
     const ids = selectData.map(el => el.id);
     const body = { ids };
     axiosInstance.patch(`paymail/archived/list`, body).then(() => {
       SnackbarUtilities.success('Tramite archivado.');
-      getMessagesByQuery();
+      payMailQuery.refetch();
     });
   };
 
-  console.log('listMessage', listMessage);
   return (
     <>
       <div className="mail-main-master-container">
@@ -280,9 +232,9 @@ export const MailPage = () => {
                 />
                 Filtrar
               </span>
-              {typeMail !== 'ARCHIVER' && (
+              {status !== 'ARCHIVADO' && (
                 <Select
-                  value={searchParams.get('status') ?? ''}
+                  value={status}
                   data={listStatusMsg}
                   placeholder="Estado"
                   onChange={handleFilter}
@@ -293,7 +245,7 @@ export const MailPage = () => {
                 />
               )}
               <Select
-                value={searchParams.get('typeMessage') ?? ''}
+                value={typeMessage}
                 styleVariant="tertiary"
                 placeholder="Documento"
                 data={listTypeMsg}
@@ -304,7 +256,7 @@ export const MailPage = () => {
               />
 
               <Select
-                value={searchParams.get('office') ?? ''}
+                value={office}
                 styleVariant="tertiary"
                 placeholder="Oficina"
                 data={offices}
@@ -315,7 +267,7 @@ export const MailPage = () => {
               />
               {typeMail === 'RECEPTION' && (
                 <Select
-                  value={searchParams.get('onHolding') ?? ''}
+                  value={onHolding}
                   styleVariant="tertiary"
                   placeholder="Condición"
                   data={holdingOptions}
@@ -327,8 +279,7 @@ export const MailPage = () => {
               )}
               <IconAction
                 icon="refresh"
-                onClick={getMessagesByQuery}
-                size={4}
+                onClick={payMailQuery.refetch}
                 position="none"
               />
             </div>
@@ -341,40 +292,35 @@ export const MailPage = () => {
           </div>
         </div>
         {typeMail !== 'RECEPTION' ? (
-          listMessage ? (
-            <>
+          <>
+            <div className="mail-options">
               {selectData && selectData?.length > 0 && (
-                <span
-                  style={{
-                    fontWeight: '700',
-                    fontSize: '0.6rem',
-                    cursor: 'pointer',
-                  }}
+                <IconAction
+                  icon="bx_cabinet"
+                  text="Archivar"
                   onClick={handleArchive}
-                >
-                  Archivar
-                </span>
+                />
               )}
-              <TableMail
-                key={typeMail}
-                data={listMessage.map(({ paymessage }) => paymessage)}
-                columns={columns}
-                total={totalMail}
-                rowSelectionData={
-                  typeMail === 'ARCHIVER' ? null : setSelectData
-                }
-                fetchData={getMessagesPagination}
-              />
-            </>
-          ) : (
-            <LoaderForComponent />
-          )
+            </div>
+            <TableMail
+              key={typeMail}
+              data={payMailQuery.data?.listMessage as MessageType[]}
+              total={payMailQuery.data?.total}
+              columns={columns}
+              rowSelectionData={typeMail === 'ARCHIVER' ? null : setSelectData}
+              getPagination={getMessagesPagination}
+              isLoading={payMailQuery.isFetching}
+            />
+          </>
         ) : (
           <ReceptionView
-            setSearchParams={setSearchParams}
             type="payProcedure"
+            totalMail={payMailQuery.data?.total}
             searchParams={searchParams}
-            onSave={() => handleSelectOption(typeMail)}
+            onSave={payMailQuery.refetch}
+            receptionMail={payMailQuery.data?.listMessage as Reception[]}
+            getMessagesPagination={getMessagesPagination}
+            isLoading={payMailQuery.isFetching}
           />
         )}
       </div>

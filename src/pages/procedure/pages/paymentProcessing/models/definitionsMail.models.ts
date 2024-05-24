@@ -1,14 +1,16 @@
-export const TYPE_STATUS = {
+import { MessageStatus } from '../../../../../types';
+
+export const TYPE_STATUS: Record<MessageStatus, string> = {
   PROCESO: 'PROCESO',
-  PENDIENTE: 'PENDIENTE',
   RECHAZADO: 'RECHAZADO',
+  PENDIENTE: 'PENDIENTE',
   ARCHIVADO: 'ARCHIVADO',
   FINALIZADO: 'PROCESO',
   GUARDADO: 'GUARDADO',
-  POR_PAGAR: 'POR PAGAR',
+  POR_PAGAR: 'POR_PAGAR',
   PAGADO: 'PAGADO',
 };
-export const TYPE_STATUS_REGULAR_PROCEDURA = {
+export const TYPE_STATUS_REGULAR_PROCEDURE: Record<MessageStatus, string> = {
   ...TYPE_STATUS,
   FINALIZADO: 'FINALIZADO',
 };

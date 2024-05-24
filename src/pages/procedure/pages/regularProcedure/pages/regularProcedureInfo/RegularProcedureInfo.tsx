@@ -6,18 +6,20 @@ import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { IconAction, LoaderForComponent } from '../../../../../../components';
 import { SnackbarUtilities } from '../../../../../../utils';
 import { Resizable } from 're-resizable';
-import { TYPE_STATUS_REGULAR_PROCEDURA } from '../../../paymentProcessing/models';
+import { TYPE_STATUS_REGULAR_PROCEDURE } from '../../../paymentProcessing/models';
 import { FormRegisterProcedure } from '../../../../components';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../store';
 import { ProcedureMoreInfo } from '../../../../views/procedureMoreInfo';
 import { CardProvied } from '../../../paymentProcessing/pages/message/views';
+import { useRegularMail } from '../../hooks';
 const RegularProcedureInfo = () => {
   const navigate = useNavigate();
   const { messageId } = useParams();
   const [message, setMessage] = useState<MessageType | null>();
   const [isProvied, setIsProvied] = useState(false);
 
+  const { regularMailQuery } = useRegularMail();
   const { id: userSessionId } = useSelector(
     (state: RootState) => state.userSession
   );
@@ -52,7 +54,8 @@ const RegularProcedureInfo = () => {
   );
 
   const handleSaveRegister = () => {
-    navigate('/tramites/tramite-regular?refresh=true');
+    regularMailQuery.refetch();
+    navigate('/tramites/tramite-regular');
   };
   const onSubmit = async (data: ProcedureSubmit) => {
     const { fileUploadFiles, values, mainFile } = data;
@@ -122,7 +125,7 @@ const RegularProcedureInfo = () => {
       <ProcedureMoreInfo
         handleClose={handleClose}
         message={message}
-        status={TYPE_STATUS_REGULAR_PROCEDURA[message.status]}
+        status={TYPE_STATUS_REGULAR_PROCEDURE[message.status]}
         userInitSender={
           initialSender.profile.firstName + ' ' + initialSender.profile.lastName
         }

@@ -14,6 +14,7 @@ interface IconActionProps {
   position?: 'none' | 'auto';
   zIndex?: number;
   shadow?: boolean;
+  text?: string;
 }
 const IconAction = ({
   onClick,
@@ -28,24 +29,28 @@ const IconAction = ({
   position,
   zIndex,
   shadow,
+  text,
 }: IconActionProps) => {
   const style: CSSProperties = {
     cursor: 'pointer',
-    width: `${size}rem`,
-    height: `${size}rem`,
+    maxWidth: `${size}rem`,
+    maxHeight: `${size}rem`,
+    minWidth: `${size}rem`,
+    minHeight: `${size}rem`,
     left: `${left}rem`,
     right: `${right}rem`,
     top: `${top}rem`,
     bottom: `${bottom}rem`,
     zIndex,
   };
-  return (
+  const Icon = (
     <figure
-      className={`${position !== 'none' && 'iconAction'} ${className} ${
-        iconTwo && 'iconAction-hover'
-      }`}
+      className={`${
+        position !== 'none' && !text && 'iconAction'
+      } ${className} ${iconTwo && 'iconAction-hover'}`}
       style={style}
       onClick={e => {
+        if (text) return;
         e.stopPropagation();
         onClick?.();
       }}
@@ -59,6 +64,20 @@ const IconAction = ({
         <img src={`/svg/${iconTwo}.svg`} alt={iconTwo} className="hover" />
       )}
     </figure>
+  );
+
+  return text ? (
+    <div
+      className="iconAction-container"
+      onClick={e => {
+        e.stopPropagation();
+        onClick?.();
+      }}
+    >
+      {Icon} {text}
+    </div>
+  ) : (
+    Icon
   );
 };
 

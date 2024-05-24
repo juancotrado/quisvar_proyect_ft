@@ -1,71 +1,42 @@
 import './receptionView.css';
 import { Reception, TypeProcedure } from '../../models';
 import { axiosInstance } from '../../../../services/axiosInstance';
-import { SetURLSearchParams, useNavigate } from 'react-router-dom';
-import { TYPE_PROCEDURE } from '../../pages/paymentProcessing/models';
-import { SnackbarUtilities, getFullName } from '../../../../utils';
-import { useEffect, useState } from 'react';
-import { createColumnHelper } from '@tanstack/react-table';
+import { useNavigate } from 'react-router-dom';
 import {
-  IconAction,
-  IndeterminateCheckbox,
-  LoaderForComponent,
-} from '../../../../components';
+  TYPE_PROCEDURE,
+  TYPE_STATUS_REGULAR_PROCEDURE,
+} from '../../pages/paymentProcessing/models';
+import { SnackbarUtilities, getFullName } from '../../../../utils';
+import { useState } from 'react';
+import { createColumnHelper } from '@tanstack/react-table';
+import { IconAction, IndeterminateCheckbox } from '../../../../components';
 import { formatDateTimeUtc } from '../../../../utils/dayjsSpanish';
 import { TableMail } from '../../components/tableMail';
 import { LabelStatus } from '../../components';
-import {
-  PaginationTable,
-  PayMailNumeration,
-  ReceptionMailNumeration,
-} from '../../../../types';
+import { PaginationTable } from '../../../../types';
+import { original } from '@reduxjs/toolkit';
 
 interface ReceptionViewProps {
-  // listReception: Reception[];
-  setSearchParams: SetURLSearchParams;
   searchParams: URLSearchParams;
   type: TypeProcedure;
   onSave: () => void;
+  receptionMail?: Reception[];
+  totalMail?: number;
+  getMessagesPagination?: (data: PaginationTable) => void;
+  isLoading: boolean;
 }
 const ReceptionView = ({
   onSave,
   type,
   searchParams,
-  setSearchParams,
+  receptionMail,
+  totalMail,
+  isLoading,
+  getMessagesPagination,
 }: ReceptionViewProps) => {
   const navigate = useNavigate();
 
-  const [receptionMail, setReceptionMail] =
-    useState<ReceptionMailNumeration | null>(null);
   const [selectData, setSelectData] = useState<Reception[] | null>(null);
-
-  useEffect(() => {
-    getReceptionMsgByQuery();
-  }, [searchParams]);
-
-  const getReceptionMsgByQuery = async (
-    queryParam: string = searchParams.toString()
-  ) => {
-    const { data } = await axiosInstance.get<ReceptionMailNumeration>(
-      `/paymail/holding?${queryParam}`,
-      {
-        headers: {
-          noLoader: true,
-        },
-      }
-    );
-    setReceptionMail(data);
-  };
-
-  const getMessagesPagination = async ({
-    pageIndex,
-    pageSize,
-  }: PaginationTable) => {
-    searchParams.set('offset', String(pageIndex));
-    searchParams.set('limit', String(pageSize));
-    setSearchParams(searchParams);
-    await getReceptionMsgByQuery(searchParams.toString());
-  };
 
   const handleViewMessage = (id: number) => {
     navigate(`${id}?${searchParams}`, { state: { isReception: true } });
@@ -111,18 +82,35 @@ const ReceptionView = ({
     }),
     columnHelper.accessor('status', {
       header: () => 'Estado',
-      cell: ({ getValue }) => <LabelStatus status={getValue()} />,
+      cell: ({ getValue, row: { original } }) => (
+        <LabelStatus
+          status={
+            original.onHolding
+              ? 'EN_ESPERA'
+              : TYPE_STATUS_REGULAR_PROCEDURE[getValue()]
+          }
+        />
+      ),
     }),
 
     columnHelper.accessor('office', {
+      id: 'office-sender',
+      header: 'Remitente/Dependencia actual',
+      cell: ({ getValue, row: { original } }) => {
+        const userReceiver = original.users.find(
+          user => user.type === 'SENDER'
+        )?.user;
+        return getValue()?.name || getFullName(userReceiver);
+      },
+    }),
+    columnHelper.accessor('office', {
+      id: 'office-receiver',
       header: 'Destinatario/Dependencia actual',
       cell: ({ getValue, row: { original } }) => {
         const userReceiver = original.users.find(
           user => user.type === 'RECEIVER'
         )?.user;
-        return original.onHolding
-          ? 'Mesa de Partes'
-          : getValue()?.name || getFullName(userReceiver);
+        return getValue()?.name || getFullName(userReceiver);
       },
     }),
     columnHelper.accessor('updatedAt', {
@@ -158,31 +146,25 @@ const ReceptionView = ({
 
   return (
     <>
-      {selectData && selectData.length > 0 && (
-        <span
-          style={{
-            fontWeight: '700',
-            fontSize: '0.6rem',
-            cursor: 'pointer',
-          }}
-          onClick={handleApprove}
-        >
-          Aprobar
-        </span>
-      )}
-      {receptionMail ? (
-        <TableMail
-          data={receptionMail.mailList}
-          total={receptionMail.total}
-          columns={columns}
-          rowSelectionData={
-            searchParams.get('onHolding') === 'false' ? null : setSelectData
-          }
-          fetchData={getMessagesPagination}
-        />
-      ) : (
-        <LoaderForComponent />
-      )}
+      <div className="mail-options">
+        {selectData && selectData.length > 0 && (
+          <IconAction
+            icon="check-black-blue"
+            text="Aprobar"
+            onClick={handleApprove}
+          />
+        )}
+      </div>
+      <TableMail
+        data={receptionMail}
+        total={totalMail}
+        columns={columns}
+        rowSelectionData={
+          searchParams.get('onHolding') === 'false' ? null : setSelectData
+        }
+        getPagination={getMessagesPagination}
+        isLoading={isLoading}
+      />
     </>
   );
 };

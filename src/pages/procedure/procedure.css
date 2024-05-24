@@ -57,3 +57,11 @@
 .procedure-flow-option {
   display: flex;
 }
+
+.mail-options {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  height: 1.4rem;
+  padding: 0 1rem;
+}

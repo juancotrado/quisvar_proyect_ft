@@ -52,7 +52,7 @@ const RegularProcedure = () => {
 
   const handleMessage = () => setIsNewMessage(!isNewMessage);
 
-  const [selectData, setSelectData] = useState<any[] | null>(null);
+  const [selectData, setSelectData] = useState<MessageType[] | null>(null);
 
   // const { optionsMailHeader, typeMail } = useSelectReceiver();
   const optionsMailHeader: OptionsMailHeader[] = [
@@ -99,7 +99,7 @@ const RegularProcedure = () => {
     if (!selectData) return;
     const ids = selectData.map(el => el.id);
     const body = { ids };
-    axiosInstance.patch(`paymail/archived/list`, body).then(() => {
+    axiosInstance.patch(`mail/archived/list`, body).then(() => {
       SnackbarUtilities.success('Tramite archivado.');
       regularMailQuery.refetch();
     });

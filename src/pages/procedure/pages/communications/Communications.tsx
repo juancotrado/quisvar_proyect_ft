@@ -1,82 +1,151 @@
-import { Button, HeaderOptionBtn, IconAction } from '../../../../components';
+import {
+  Button,
+  HeaderOptionBtn,
+  IconAction,
+  Select,
+} from '../../../../components';
 import './communications.css';
-import { useMessage, useSelectReceiver } from '../../hooks';
+import { useSelectReceiver } from '../../hooks';
 import { CardRegisterProcedureGeneral } from '../../views';
-import { CardMessage } from '../paymentProcessing/components';
-import { CardMessageHeader } from '../../components';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useRole } from '../../../../hooks';
+import useComunication from './hooks/useComunication';
+import { useState } from 'react';
+import { MessageType } from '../../../../types';
+import { TableMail } from '../../components/tableMail';
+import { createColumnHelper } from '@tanstack/react-table';
+import { getFullName, listTypeMsg } from '../../../../utils';
+import { formatDateTimeUtc } from '../../../../utils/dayjsSpanish';
 
 const Communications = () => {
   const navigate = useNavigate();
+  const [isNewMessage, setIsNewMessage] = useState(false);
+
+  const handleMessage = () => setIsNewMessage(!isNewMessage);
+
   const {
-    handleNewMessage,
-    handleSaveMessage,
-    isNewMessage,
-    listMessage,
-    getMessages,
-  } = useMessage('/mail?category=GLOBAL');
+    getMessagesPagination,
+    comunicationQuery,
+    handleFilter,
+    typeMessage,
+  } = useComunication();
   const { optionsMailHeader } = useSelectReceiver(['RECIBIDOS']);
   const { hasAccess } = useRole('MOD', 'tramites', 'comunicado');
 
+  const columnHelper = createColumnHelper<MessageType>();
+  const columns = [
+    columnHelper.accessor('title', {
+      header: () => 'Documento',
+    }),
+    columnHelper.accessor(
+      ({ users }) => users.find(user => user.type === 'SENDER')?.user,
+      {
+        id: 'sender',
+        cell: ({ getValue, row: { original } }) =>
+          original.office?.name || getFullName(getValue()),
+        header: () => 'Remitente',
+        enableHiding: true,
+      }
+    ),
+
+    columnHelper.accessor('header', {
+      header: () => 'Asunto',
+    }),
+    columnHelper.accessor('updatedAt', {
+      header: 'Fecha de envio',
+      cell: ({ getValue }) => formatDateTimeUtc(getValue()),
+    }),
+    columnHelper.accessor('id', {
+      header: 'Visualizar',
+
+      cell: ({ getValue }) => (
+        <i
+          onClick={() => handleViewMessage(getValue())}
+          className="tableMail-archiver"
+        >
+          <IconAction icon="eye" position="none" />
+          Ver
+        </i>
+      ),
+    }),
+  ];
   const handleViewMessage = (id: number) => {
     navigate(`${id}`);
   };
+  const handleSaveMessage = () => {
+    comunicationQuery.refetch();
+    handleMessage();
+  };
   return (
     <>
-      <div className="procedure-flow-main">
-        <div className="procedure-flow-header">
-          <IconAction
-            icon="refresh"
-            onClick={getMessages}
-            right={0.9}
-            top={3.2}
-          />
-          <div className="procedure-flow-option">
-            {optionsMailHeader.map(
-              ({ funcion, id, iconOff, iconOn, text, isActive }) => (
-                <HeaderOptionBtn
-                  key={id}
-                  iconOff={iconOff}
-                  iconOn={iconOn}
-                  text={text}
-                  isActive={isActive}
-                  onClick={funcion}
-                  width={10}
+      <div className="mail-main-master-container">
+        <div className="message-container-header">
+          <div className="message-options-filter">
+            <div className="message-header-option">
+              {optionsMailHeader.map(
+                ({ funcion, id, iconOff, iconOn, text, isActive }) => (
+                  <HeaderOptionBtn
+                    key={id}
+                    iconOff={iconOff}
+                    iconOn={iconOn}
+                    text={text}
+                    isActive={isActive}
+                    onClick={funcion}
+                    width={10}
+                  />
+                )
+              )}
+            </div>
+            <div className="mail-main-options-container">
+              <span className="mail-main-options-title-filter">
+                <img
+                  className="mail-mail-options-title-filter-img"
+                  src="/svg/filter.svg"
                 />
-              )
+                Filtrar
+              </span>
+
+              <Select
+                value={typeMessage}
+                styleVariant="tertiary"
+                placeholder="Documento"
+                data={listTypeMsg}
+                onChange={handleFilter}
+                name="typeMessage"
+                extractValue={({ id }) => id}
+                renderTextField={({ id }) => id}
+              />
+
+              <IconAction
+                icon="refresh"
+                onClick={comunicationQuery.refetch}
+                position="none"
+              />
+            </div>
+            {hasAccess && (
+              <Button
+                onClick={handleMessage}
+                icon="plus-dark"
+                text="Nuevo Trámite"
+                styleButton={3}
+              />
             )}
           </div>
-          {hasAccess && (
-            <Button
-              onClick={handleNewMessage}
-              icon="plus-dark"
-              text="Nuevo comunicado"
-              styleButton={3}
-            />
-          )}
         </div>
-        <div className="mail-grid-container">
-          <CardMessageHeader typeMail={'RECEIVER'} option="comunication" />
-
-          {listMessage?.map(({ message, messageId }) => (
-            <CardMessage
-              isActive={false}
-              key={messageId}
-              type={'RECEIVER'}
-              onArchiver={handleSaveMessage}
-              onClick={() => handleViewMessage(messageId)}
-              message={message}
-              option="comunication"
-              hasAccess={hasAccess}
-            />
-          ))}
-        </div>
+        <>
+          <TableMail
+            data={comunicationQuery.data?.listMessage}
+            total={comunicationQuery.data?.total}
+            columns={columns}
+            getPagination={getMessagesPagination}
+            isLoading={comunicationQuery.isFetching}
+          />
+        </>
       </div>
       <Outlet />
       {isNewMessage && (
         <CardRegisterProcedureGeneral
-          onClosing={handleNewMessage}
+          onClosing={handleMessage}
           onSave={handleSaveMessage}
           type={'comunication'}
         />

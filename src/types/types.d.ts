@@ -894,6 +894,7 @@ export interface PayMailNumeration {
   mailList: MailType[];
   total: number;
 }
+
 export interface ReceptionMailNumeration {
   mailList: Reception[];
   total: number;

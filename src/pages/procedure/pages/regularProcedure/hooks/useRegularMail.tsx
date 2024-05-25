@@ -70,7 +70,6 @@ const useRegularMail = () => {
     const { value, name } = target;
     value ? searchParams.set(name, value) : searchParams.delete(name);
     setSearchParams(searchParams);
-    if (typeMail === 'RECEPTION') return;
   };
 
   const getMessagesPagination = async ({

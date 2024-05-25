@@ -76,7 +76,9 @@ const FormRegisterProcedure = ({
     control,
     trigger,
     formState: { errors },
-  } = useForm<MessageSendType>({ defaultValues: initValues });
+  } = useForm<MessageSendType>({
+    defaultValues: { ...initValues, description: initValueEditor },
+  });
 
   useEffect(() => {
     getContacs();
@@ -217,7 +219,7 @@ const FormRegisterProcedure = ({
     };
   };
 
-  const handleInputChange = (event: string) => setValue('description', event);
+  const handleInputChange = (value: string) => setValue('description', value);
 
   const onSubmit: SubmitHandler<MessageSendType> = async data => {
     const secondaryReceiver =

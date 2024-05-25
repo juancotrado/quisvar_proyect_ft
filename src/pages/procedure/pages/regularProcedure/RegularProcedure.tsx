@@ -270,7 +270,7 @@ const RegularProcedure = () => {
                     placeholder="Oficina"
                     data={offices}
                     onChange={handleFilter}
-                    name="office"
+                    name="officeId"
                     extractValue={({ officeId }) => officeId}
                     renderTextField={({ office }) => office.name}
                   />

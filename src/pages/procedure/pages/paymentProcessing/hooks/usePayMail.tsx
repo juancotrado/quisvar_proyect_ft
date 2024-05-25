@@ -46,7 +46,7 @@ const usePayMail = () => {
   const typeMail = searchParams.get('type') ?? '';
   const status = searchParams.get('status') ?? '';
   const typeMessage = searchParams.get('typeMessage') ?? '';
-  const office = searchParams.get('office') ?? '';
+  const office = searchParams.get('officeId') ?? '';
   const onHolding = searchParams.get('onHolding') ?? '';
 
   const payMailQuery = useQuery({

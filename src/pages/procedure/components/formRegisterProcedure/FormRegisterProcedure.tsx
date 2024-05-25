@@ -228,15 +228,16 @@ const FormRegisterProcedure = ({
     const blobData = await getHtmlPdfBlob(htmlString, 'a4');
 
     const isArea = data.receiver?.value.includes('area');
-    if (!htmlString || !data.receiver) return;
+    if (!htmlString || (!data.receiver && type !== 'comunication')) return;
     const values = {
       ...data,
       secondaryReceiver,
-      receiverId: !isArea ? data.receiver.id : undefined,
-      officeId: isArea ? data.receiver.id : undefined,
+      receiverId: !isArea ? data.receiver?.id : undefined,
+      officeId: isArea ? data.receiver?.id : undefined,
       title: watch('title'),
       description: htmlString,
     };
+
     submit({ values, fileUploadFiles, mainFile: blobData });
   };
   const showCardReport = () => {

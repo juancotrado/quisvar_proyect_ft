@@ -17,6 +17,8 @@ const CardRegisterProcedureGeneral = ({
   onSave,
   type,
 }: CardRegisterProcedureGeneralProps) => {
+  const typeProcedure = TYPE_PROCEDURE[type];
+
   const onSubmit = async (data: ProcedureSubmit) => {
     const { fileUploadFiles, values, mainFile } = data;
     const formData = new FormData();
@@ -30,7 +32,6 @@ const CardRegisterProcedureGeneral = ({
     onClosing();
   };
 
-  const typeProcedure = TYPE_PROCEDURE[type];
   return (
     <div className="inbox-send-container-main">
       <div className="imnbox-title">

@@ -31,7 +31,6 @@ import {
   GenerateOrderService,
 } from './views';
 import { HEADER_OPTION, SPRING } from './models';
-import { Resizable } from 're-resizable';
 import { FormRegisterProcedure } from '../../../../components';
 import { isOpenConfirmAction$ } from '../../../../../../services/sharingSubject';
 import { ProcedureMoreInfo } from '../../../../views/procedureMoreInfo';
@@ -181,17 +180,7 @@ export const MessagePage = () => {
   const { firstName, lastName } = message.userInit.user.profile;
 
   return (
-    <Resizable
-      enable={{
-        top: false,
-        right: true,
-        bottom: false,
-        left: true,
-      }}
-      maxWidth={'60%'}
-      minWidth={'40%'}
-      className={`message-page-container `}
-    >
+    <div className={`message-page-container `}>
       {!isReception && message.status !== 'ARCHIVADO' && (
         <>
           {message.status === 'PAGADO' && (
@@ -325,6 +314,6 @@ export const MessagePage = () => {
         status={TYPE_STATUS[message.status]}
         userInitSender={firstName + ' ' + lastName}
       />
-    </Resizable>
+    </div>
   );
 };

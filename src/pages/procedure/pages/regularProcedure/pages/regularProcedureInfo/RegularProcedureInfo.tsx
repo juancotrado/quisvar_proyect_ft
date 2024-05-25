@@ -5,7 +5,6 @@ import { useEffect, useState } from 'react';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { IconAction, LoaderForComponent } from '../../../../../../components';
 import { SnackbarUtilities } from '../../../../../../utils';
-import { Resizable } from 're-resizable';
 import { TYPE_STATUS_REGULAR_PROCEDURE } from '../../../paymentProcessing/models';
 import { FormRegisterProcedure } from '../../../../components';
 import { useSelector } from 'react-redux';
@@ -81,17 +80,7 @@ const RegularProcedureInfo = () => {
 
   const initialSender = message.initialSender.user;
   return (
-    <Resizable
-      enable={{
-        top: false,
-        right: true,
-        bottom: false,
-        left: true,
-      }}
-      maxWidth={'60%'}
-      minWidth={'40%'}
-      className="message-page-container"
-    >
+    <div className="message-page-container">
       {mainReceiver && (
         <div className="regularProcedureInfo message-page-contain--right">
           {mainReceiver && (
@@ -130,7 +119,7 @@ const RegularProcedureInfo = () => {
           initialSender.profile.firstName + ' ' + initialSender.profile.lastName
         }
       />
-    </Resizable>
+    </div>
   );
 };
 

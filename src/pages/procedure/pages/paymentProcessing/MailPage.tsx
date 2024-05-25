@@ -1,7 +1,12 @@
 import { useState } from 'react';
 import './mailPage.css';
 import { MessageType } from '../../../../types';
-import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
+import {
+  Outlet,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import {
   SnackbarUtilities,
   getFullName,
@@ -30,11 +35,12 @@ import { LabelStatus } from '../../components';
 import { usePayMail } from './hooks';
 import { Reception } from '../../models';
 import { TYPE_STATUS } from './models';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 
 export const MailPage = () => {
   const navigate = useNavigate();
   const { hasAccess } = useRole('MOD', 'tramites', 'tramite-de-pago');
-
+  const { paymessageId } = useParams();
   const [searchParams] = useSearchParams();
   const { offices } = useSelector((state: RootState) => state.userSession);
 
@@ -206,132 +212,145 @@ export const MailPage = () => {
 
   return (
     <>
-      <div className="mail-main-master-container">
-        <div className={`message-container-header`}>
-          <div className="message-options-filter">
-            <div className="message-header-option">
-              {optionsMailHeader
-                .slice(0, isAccessReception ? 4 : 3)
-                .map(({ funcion, iconOff, iconOn, text, isActive }) => (
-                  <HeaderOptionBtn
-                    key={text}
-                    iconOff={iconOff}
-                    iconOn={iconOn}
-                    text={text}
-                    isActive={isActive}
-                    onClick={funcion}
-                    width={10}
+      <PanelGroup direction="horizontal">
+        <Panel defaultSize={isNewMessage ? 70 : 100} order={1}>
+          <div className="mail-main-master-container">
+            <div className={`message-container-header`}>
+              <div className="message-options-filter">
+                <div className="message-header-option">
+                  {optionsMailHeader
+                    .slice(0, isAccessReception ? 4 : 3)
+                    .map(({ funcion, iconOff, iconOn, text, isActive }) => (
+                      <HeaderOptionBtn
+                        key={text}
+                        iconOff={iconOff}
+                        iconOn={iconOn}
+                        text={text}
+                        isActive={isActive}
+                        onClick={funcion}
+                        width={10}
+                      />
+                    ))}
+                </div>
+                <div className="mail-main-options-container">
+                  <span className="mail-main-options-title-filter">
+                    <img
+                      className="mail-mail-options-title-filter-img"
+                      src="/svg/filter.svg"
+                    />
+                    Filtrar
+                  </span>
+                  {status !== 'ARCHIVADO' && (
+                    <Select
+                      value={status}
+                      data={listStatusMsg}
+                      placeholder="Estado"
+                      onChange={handleFilter}
+                      name="status"
+                      extractValue={({ id }) => id}
+                      renderTextField={({ label }) => label}
+                      styleVariant="tertiary"
+                    />
+                  )}
+                  <Select
+                    value={typeMessage}
+                    styleVariant="tertiary"
+                    placeholder="Documento"
+                    data={listTypeMsg}
+                    onChange={handleFilter}
+                    name="typeMessage"
+                    extractValue={({ id }) => id}
+                    renderTextField={({ id }) => id}
                   />
-                ))}
-            </div>
-            <div className="mail-main-options-container">
-              <span className="mail-main-options-title-filter">
-                <img
-                  className="mail-mail-options-title-filter-img"
-                  src="/svg/filter.svg"
-                />
-                Filtrar
-              </span>
-              {status !== 'ARCHIVADO' && (
-                <Select
-                  value={status}
-                  data={listStatusMsg}
-                  placeholder="Estado"
-                  onChange={handleFilter}
-                  name="status"
-                  extractValue={({ id }) => id}
-                  renderTextField={({ label }) => label}
-                  styleVariant="tertiary"
-                />
-              )}
-              <Select
-                value={typeMessage}
-                styleVariant="tertiary"
-                placeholder="Documento"
-                data={listTypeMsg}
-                onChange={handleFilter}
-                name="typeMessage"
-                extractValue={({ id }) => id}
-                renderTextField={({ id }) => id}
-              />
 
-              <Select
-                value={office}
-                styleVariant="tertiary"
-                placeholder="Oficina"
-                data={offices}
-                onChange={handleFilter}
-                name="office"
-                extractValue={({ officeId }) => officeId}
-                renderTextField={({ office }) => office.name}
-              />
-              {typeMail === 'RECEPTION' && (
-                <Select
-                  value={onHolding}
-                  styleVariant="tertiary"
-                  placeholder="Condición"
-                  data={holdingOptions}
-                  onChange={handleFilter}
-                  name="onHolding"
-                  extractValue={({ id }) => id}
-                  renderTextField={({ label }) => label}
+                  <Select
+                    value={office}
+                    styleVariant="tertiary"
+                    placeholder="Oficina"
+                    data={offices}
+                    onChange={handleFilter}
+                    name="office"
+                    extractValue={({ officeId }) => officeId}
+                    renderTextField={({ office }) => office.name}
+                  />
+                  {typeMail === 'RECEPTION' && (
+                    <Select
+                      value={onHolding}
+                      styleVariant="tertiary"
+                      placeholder="Condición"
+                      data={holdingOptions}
+                      onChange={handleFilter}
+                      name="onHolding"
+                      extractValue={({ id }) => id}
+                      renderTextField={({ label }) => label}
+                    />
+                  )}
+                  <IconAction
+                    icon="refresh"
+                    onClick={payMailQuery.refetch}
+                    position="none"
+                  />
+                </div>
+                <Button
+                  onClick={handleNewMessage}
+                  icon="plus-dark"
+                  text="Nuevo Trámite"
+                  styleButton={3}
                 />
-              )}
-              <IconAction
-                icon="refresh"
-                onClick={payMailQuery.refetch}
-                position="none"
-              />
+              </div>
             </div>
-            <Button
-              onClick={handleNewMessage}
-              icon="plus-dark"
-              text="Nuevo Trámite"
-              styleButton={3}
-            />
+            {typeMail !== 'RECEPTION' ? (
+              <>
+                <div className="mail-options">
+                  {selectData && selectData?.length > 0 && (
+                    <IconAction
+                      icon="bx_cabinet"
+                      text="Archivar"
+                      onClick={handleArchive}
+                    />
+                  )}
+                </div>
+                <TableMail
+                  key={typeMail}
+                  data={payMailQuery.data?.listMessage as MessageType[]}
+                  total={payMailQuery.data?.total}
+                  columns={columns}
+                  rowSelectionData={
+                    typeMail === 'ARCHIVER' ? null : setSelectData
+                  }
+                  getPagination={getMessagesPagination}
+                  isLoading={payMailQuery.isFetching}
+                />
+              </>
+            ) : (
+              <ReceptionView
+                type="payProcedure"
+                totalMail={payMailQuery.data?.total}
+                searchParams={searchParams}
+                onSave={payMailQuery.refetch}
+                receptionMail={payMailQuery.data?.listMessage as Reception[]}
+                getMessagesPagination={getMessagesPagination}
+                isLoading={payMailQuery.isFetching}
+              />
+            )}
           </div>
-        </div>
-        {typeMail !== 'RECEPTION' ? (
-          <>
-            <div className="mail-options">
-              {selectData && selectData?.length > 0 && (
-                <IconAction
-                  icon="bx_cabinet"
-                  text="Archivar"
-                  onClick={handleArchive}
-                />
-              )}
-            </div>
-            <TableMail
-              key={typeMail}
-              data={payMailQuery.data?.listMessage as MessageType[]}
-              total={payMailQuery.data?.total}
-              columns={columns}
-              rowSelectionData={typeMail === 'ARCHIVER' ? null : setSelectData}
-              getPagination={getMessagesPagination}
-              isLoading={payMailQuery.isFetching}
-            />
-          </>
-        ) : (
-          <ReceptionView
-            type="payProcedure"
-            totalMail={payMailQuery.data?.total}
-            searchParams={searchParams}
-            onSave={payMailQuery.refetch}
-            receptionMail={payMailQuery.data?.listMessage as Reception[]}
-            getMessagesPagination={getMessagesPagination}
-            isLoading={payMailQuery.isFetching}
-          />
+        </Panel>
+        <PanelResizeHandle className="resizable" />
+        {!isNewMessage && paymessageId && (
+          <Panel defaultSize={30} order={2}>
+            <Outlet />
+          </Panel>
         )}
-      </div>
-      <Outlet />
+        {isNewMessage && (
+          <Panel defaultSize={30} order={2}>
+            <CardRegisterMessage
+              onClosing={handleCloseMessage}
+              onSave={handleSaveMessage}
+            />
+          </Panel>
+        )}
+      </PanelGroup>
       <CardGenerateReport />
-      {isNewMessage && (
-        <CardRegisterMessage
-          onClosing={handleCloseMessage}
-          onSave={handleSaveMessage}
-        />
-      )}
     </>
   );
 };

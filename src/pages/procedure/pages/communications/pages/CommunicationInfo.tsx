@@ -10,7 +10,7 @@ import { isOpenViewHtmlToPdf$ } from '../../../../../services/sharingSubject';
 import { ChipFileDownLoadProcedure } from '../../../components';
 import { useHtmlToPdf } from '../../../../../hooks';
 import { ChipFileMessage } from '../../paymentProcessing/components';
-import { Resizable } from 're-resizable';
+
 import { formatDateTimeUtc } from '../../../../../utils/dayjsSpanish';
 
 const CommunicationInfo = () => {
@@ -68,17 +68,7 @@ const CommunicationInfo = () => {
     },
   ];
   return (
-    <Resizable
-      enable={{
-        top: false,
-        right: true,
-        bottom: false,
-        left: true,
-      }}
-      maxWidth={'60%'}
-      minWidth={'40%'}
-      className="communicationInfo-page-contain"
-    >
+    <div className="communicationInfo-page-contain">
       <div className="message-header-content">
         <div className="message-header-content-options ">
           <Button
@@ -158,7 +148,7 @@ const CommunicationInfo = () => {
           </div>
         )}
       </div>
-    </Resizable>
+    </div>
   );
 };
 

@@ -8,7 +8,12 @@ import {
 } from '../../../../components';
 import { CardRegisterProcedureGeneral } from '../../views';
 import { LabelStatus } from '../../components';
-import { Outlet, useNavigate, useSearchParams } from 'react-router-dom';
+import {
+  Outlet,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from 'react-router-dom';
 import { useState } from 'react';
 import { useRole } from '../../../../hooks';
 import { ReceptionView } from '../../views/reception';
@@ -29,11 +34,13 @@ import { createColumnHelper } from '@tanstack/react-table';
 import { MessageType } from '../../../../types';
 import { formatDateTimeUtc } from '../../../../utils/dayjsSpanish';
 import { TYPE_STATUS_REGULAR_PROCEDURE } from '../paymentProcessing/models';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 
 const RegularProcedure = () => {
   const { offices } = useSelector((state: RootState) => state.userSession);
   const [isNewMessage, setIsNewMessage] = useState(false);
   const [searchParams] = useSearchParams();
+  const { messageId } = useParams();
 
   const navigate = useNavigate();
   const { hasAccess } = useRole('MOD', 'tramites', 'tramite-regular');
@@ -203,134 +210,151 @@ const RegularProcedure = () => {
     }),
   ];
 
+  console.log('messageId', messageId);
   return (
     <>
-      <div className="mail-main-master-container">
-        <div className={`message-container-header`}>
-          <div className="message-options-filter">
-            <div className="message-header-option">
-              {optionsMailHeader.map(
-                ({ funcion, id, iconOff, iconOn, text, isActive }) => (
-                  <HeaderOptionBtn
-                    key={id}
-                    iconOff={iconOff}
-                    iconOn={iconOn}
-                    text={text}
-                    isActive={isActive}
-                    onClick={funcion}
-                    width={10}
+      <PanelGroup direction="horizontal">
+        <Panel defaultSize={isNewMessage ? 70 : 100} order={1}>
+          <div className="mail-main-master-container">
+            <div className={`message-container-header`}>
+              <div className="message-options-filter">
+                <div className="message-header-option">
+                  {optionsMailHeader.map(
+                    ({ funcion, id, iconOff, iconOn, text, isActive }) => (
+                      <HeaderOptionBtn
+                        key={id}
+                        iconOff={iconOff}
+                        iconOn={iconOn}
+                        text={text}
+                        isActive={isActive}
+                        onClick={funcion}
+                        width={10}
+                      />
+                    )
+                  )}
+                </div>
+                <div className="mail-main-options-container">
+                  <span className="mail-main-options-title-filter">
+                    <img
+                      className="mail-mail-options-title-filter-img"
+                      src="/svg/filter.svg"
+                    />
+                    Filtrar
+                  </span>
+                  {status !== 'ARCHIVADO' && (
+                    <Select
+                      value={status}
+                      data={listStatusMsg}
+                      placeholder="Estado"
+                      onChange={handleFilter}
+                      name="status"
+                      extractValue={({ id }) => id}
+                      renderTextField={({ label }) => label}
+                      styleVariant="tertiary"
+                    />
+                  )}
+                  <Select
+                    value={typeMessage}
+                    styleVariant="tertiary"
+                    placeholder="Documento"
+                    data={listTypeMsg}
+                    onChange={handleFilter}
+                    name="typeMessage"
+                    extractValue={({ id }) => id}
+                    renderTextField={({ id }) => id}
                   />
-                )
-              )}
-            </div>
-            <div className="mail-main-options-container">
-              <span className="mail-main-options-title-filter">
-                <img
-                  className="mail-mail-options-title-filter-img"
-                  src="/svg/filter.svg"
-                />
-                Filtrar
-              </span>
-              {status !== 'ARCHIVADO' && (
-                <Select
-                  value={status}
-                  data={listStatusMsg}
-                  placeholder="Estado"
-                  onChange={handleFilter}
-                  name="status"
-                  extractValue={({ id }) => id}
-                  renderTextField={({ label }) => label}
-                  styleVariant="tertiary"
-                />
-              )}
-              <Select
-                value={typeMessage}
-                styleVariant="tertiary"
-                placeholder="Documento"
-                data={listTypeMsg}
-                onChange={handleFilter}
-                name="typeMessage"
-                extractValue={({ id }) => id}
-                renderTextField={({ id }) => id}
-              />
 
-              <Select
-                value={office}
-                styleVariant="tertiary"
-                placeholder="Oficina"
-                data={offices}
-                onChange={handleFilter}
-                name="office"
-                extractValue={({ officeId }) => officeId}
-                renderTextField={({ office }) => office.name}
-              />
-              {typeMail === 'RECEPTION' && (
-                <Select
-                  value={onHolding}
-                  styleVariant="tertiary"
-                  placeholder="Condición"
-                  data={holdingOptions}
-                  onChange={handleFilter}
-                  name="onHolding"
-                  extractValue={({ id }) => id}
-                  renderTextField={({ label }) => label}
+                  <Select
+                    value={office}
+                    styleVariant="tertiary"
+                    placeholder="Oficina"
+                    data={offices}
+                    onChange={handleFilter}
+                    name="office"
+                    extractValue={({ officeId }) => officeId}
+                    renderTextField={({ office }) => office.name}
+                  />
+                  {typeMail === 'RECEPTION' && (
+                    <Select
+                      value={onHolding}
+                      styleVariant="tertiary"
+                      placeholder="Condición"
+                      data={holdingOptions}
+                      onChange={handleFilter}
+                      name="onHolding"
+                      extractValue={({ id }) => id}
+                      renderTextField={({ label }) => label}
+                    />
+                  )}
+                  <IconAction
+                    icon="refresh"
+                    onClick={regularMailQuery.refetch}
+                    position="none"
+                  />
+                </div>
+                <Button
+                  onClick={handleMessage}
+                  icon="plus-dark"
+                  text="Nuevo Trámite"
+                  styleButton={3}
                 />
-              )}
-              <IconAction
-                icon="refresh"
-                onClick={regularMailQuery.refetch}
-                position="none"
-              />
+              </div>
             </div>
-            <Button
-              onClick={handleMessage}
-              icon="plus-dark"
-              text="Nuevo Trámite"
-              styleButton={3}
-            />
+            {typeMail !== 'RECEPTION' ? (
+              <>
+                <div className="mail-options">
+                  {selectData && selectData?.length > 0 && (
+                    <IconAction
+                      icon="bx_cabinet"
+                      text="Archivar"
+                      onClick={handleArchive}
+                    />
+                  )}
+                </div>
+                <TableMail
+                  key={typeMail}
+                  data={regularMailQuery.data?.listMessage as MessageType[]}
+                  total={regularMailQuery.data?.total}
+                  columns={columns}
+                  rowSelectionData={
+                    typeMail === 'ARCHIVER' ? null : setSelectData
+                  }
+                  getPagination={getMessagesPagination}
+                  isLoading={regularMailQuery.isFetching}
+                />
+              </>
+            ) : (
+              <ReceptionView
+                type="regularProcedure"
+                totalMail={regularMailQuery.data?.total}
+                searchParams={searchParams}
+                onSave={regularMailQuery.refetch}
+                receptionMail={
+                  regularMailQuery.data?.listMessage as Reception[]
+                }
+                getMessagesPagination={getMessagesPagination}
+                isLoading={regularMailQuery.isFetching}
+              />
+            )}
           </div>
-        </div>
-        {typeMail !== 'RECEPTION' ? (
-          <>
-            <div className="mail-options">
-              {selectData && selectData?.length > 0 && (
-                <IconAction
-                  icon="bx_cabinet"
-                  text="Archivar"
-                  onClick={handleArchive}
-                />
-              )}
-            </div>
-            <TableMail
-              key={typeMail}
-              data={regularMailQuery.data?.listMessage as MessageType[]}
-              total={regularMailQuery.data?.total}
-              columns={columns}
-              rowSelectionData={typeMail === 'ARCHIVER' ? null : setSelectData}
-              getPagination={getMessagesPagination}
-              isLoading={regularMailQuery.isFetching}
-            />
-          </>
-        ) : (
-          <ReceptionView
-            type="regularProcedure"
-            totalMail={regularMailQuery.data?.total}
-            searchParams={searchParams}
-            onSave={regularMailQuery.refetch}
-            receptionMail={regularMailQuery.data?.listMessage as Reception[]}
-            getMessagesPagination={getMessagesPagination}
-            isLoading={regularMailQuery.isFetching}
-          />
+        </Panel>
+        <PanelResizeHandle className="resizable" />
+        {!isNewMessage && messageId && (
+          <Panel defaultSize={30} order={2}>
+            <Outlet />
+          </Panel>
         )}
-      </div>
-      <Outlet />
-      {isNewMessage && (
-        <CardRegisterProcedureGeneral
-          onClosing={handleMessage}
-          onSave={handleSaveMessage}
-          type={'regularProcedure'}
-        />
-      )}
+
+        {isNewMessage && (
+          <Panel defaultSize={30} order={2}>
+            <CardRegisterProcedureGeneral
+              onClosing={handleMessage}
+              onSave={handleSaveMessage}
+              type={'regularProcedure'}
+            />
+          </Panel>
+        )}
+      </PanelGroup>
     </>
   );
 };

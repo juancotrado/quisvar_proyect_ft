@@ -7,7 +7,7 @@ import {
 import './communications.css';
 import { useSelectReceiver } from '../../hooks';
 import { CardRegisterProcedureGeneral } from '../../views';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate, useParams } from 'react-router-dom';
 import { useRole } from '../../../../hooks';
 import useComunication from './hooks/useComunication';
 import { useState } from 'react';
@@ -16,10 +16,12 @@ import { TableMail } from '../../components/tableMail';
 import { createColumnHelper } from '@tanstack/react-table';
 import { getFullName, listTypeMsg } from '../../../../utils';
 import { formatDateTimeUtc } from '../../../../utils/dayjsSpanish';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 
 const Communications = () => {
   const navigate = useNavigate();
   const [isNewMessage, setIsNewMessage] = useState(false);
+  const { messageId } = useParams();
 
   const handleMessage = () => setIsNewMessage(!isNewMessage);
 
@@ -77,80 +79,89 @@ const Communications = () => {
     handleMessage();
   };
   return (
-    <>
-      <div className="mail-main-master-container">
-        <div className="message-container-header">
-          <div className="message-options-filter">
-            <div className="message-header-option">
-              {optionsMailHeader.map(
-                ({ funcion, id, iconOff, iconOn, text, isActive }) => (
-                  <HeaderOptionBtn
-                    key={id}
-                    iconOff={iconOff}
-                    iconOn={iconOn}
-                    text={text}
-                    isActive={isActive}
-                    onClick={funcion}
-                    width={10}
+    <PanelGroup direction="horizontal">
+      <Panel defaultSize={isNewMessage ? 70 : 100} order={1}>
+        <div className="mail-main-master-container">
+          <div className="message-container-header">
+            <div className="message-options-filter">
+              <div className="message-header-option">
+                {optionsMailHeader.map(
+                  ({ funcion, id, iconOff, iconOn, text, isActive }) => (
+                    <HeaderOptionBtn
+                      key={id}
+                      iconOff={iconOff}
+                      iconOn={iconOn}
+                      text={text}
+                      isActive={isActive}
+                      onClick={funcion}
+                      width={10}
+                    />
+                  )
+                )}
+              </div>
+              <div className="mail-main-options-container">
+                <span className="mail-main-options-title-filter">
+                  <img
+                    className="mail-mail-options-title-filter-img"
+                    src="/svg/filter.svg"
                   />
-                )
+                  Filtrar
+                </span>
+
+                <Select
+                  value={typeMessage}
+                  styleVariant="tertiary"
+                  placeholder="Documento"
+                  data={listTypeMsg}
+                  onChange={handleFilter}
+                  name="typeMessage"
+                  extractValue={({ id }) => id}
+                  renderTextField={({ id }) => id}
+                />
+
+                <IconAction
+                  icon="refresh"
+                  onClick={comunicationQuery.refetch}
+                  position="none"
+                />
+              </div>
+              {hasAccess && (
+                <Button
+                  onClick={handleMessage}
+                  icon="plus-dark"
+                  text="Nuevo Trámite"
+                  styleButton={3}
+                />
               )}
             </div>
-            <div className="mail-main-options-container">
-              <span className="mail-main-options-title-filter">
-                <img
-                  className="mail-mail-options-title-filter-img"
-                  src="/svg/filter.svg"
-                />
-                Filtrar
-              </span>
-
-              <Select
-                value={typeMessage}
-                styleVariant="tertiary"
-                placeholder="Documento"
-                data={listTypeMsg}
-                onChange={handleFilter}
-                name="typeMessage"
-                extractValue={({ id }) => id}
-                renderTextField={({ id }) => id}
-              />
-
-              <IconAction
-                icon="refresh"
-                onClick={comunicationQuery.refetch}
-                position="none"
-              />
-            </div>
-            {hasAccess && (
-              <Button
-                onClick={handleMessage}
-                icon="plus-dark"
-                text="Nuevo Trámite"
-                styleButton={3}
-              />
-            )}
           </div>
+          <>
+            <TableMail
+              data={comunicationQuery.data?.listMessage}
+              total={comunicationQuery.data?.total}
+              columns={columns}
+              getPagination={getMessagesPagination}
+              isLoading={comunicationQuery.isFetching}
+            />
+          </>
         </div>
-        <>
-          <TableMail
-            data={comunicationQuery.data?.listMessage}
-            total={comunicationQuery.data?.total}
-            columns={columns}
-            getPagination={getMessagesPagination}
-            isLoading={comunicationQuery.isFetching}
-          />
-        </>
-      </div>
-      <Outlet />
-      {isNewMessage && (
-        <CardRegisterProcedureGeneral
-          onClosing={handleMessage}
-          onSave={handleSaveMessage}
-          type={'comunication'}
-        />
+      </Panel>
+      <PanelResizeHandle className="resizable" />
+      {!isNewMessage && messageId && (
+        <Panel defaultSize={30} order={2}>
+          <Outlet />
+        </Panel>
       )}
-    </>
+      {isNewMessage && (
+        <Panel defaultSize={30} order={2}>
+          <CardRegisterProcedureGeneral
+            onClosing={handleMessage}
+            onSave={handleSaveMessage}
+            type={'comunication'}
+          />
+        </Panel>
+      )}
+    </PanelGroup>
   );
 };
 

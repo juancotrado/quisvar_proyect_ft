@@ -49,7 +49,7 @@ export const axiosInterceptor = () => {
       hideLoader(res.config.headers?.noLoader);
       return res;
     },
-    err => {
+    async err => {
       if (err instanceof AxiosError) {
         const { response, config } = err;
         hideLoader(config?.headers?.noLoader);
@@ -57,13 +57,18 @@ export const axiosInterceptor = () => {
           if (err.code !== 'ERR_CANCELED') SnackbarUtilities.error(err.message);
           return Promise.reject(err);
         }
-        if (response.data.error.name === 'JsonWebTokenError') {
+        if (response.data?.error?.name === 'JsonWebTokenError') {
           localStorage.removeItem('token');
           localStorage.removeItem('arrChecked');
           errorToken$.setSubject = true;
           return;
         }
-        SnackbarUtilities.error(response.data.message);
+        let message = response.data?.message;
+        if (response.data instanceof Blob) {
+          const data = JSON.parse(await response.data.text());
+          message = data.message;
+        }
+        SnackbarUtilities.error(message);
         return Promise.reject(err);
       }
     }

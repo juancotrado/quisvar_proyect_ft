@@ -53,14 +53,15 @@ export const ExperienceInformation = ({
 
   const onSubmitData: SubmitHandler<AreaSpecialtyName> = async body => {
     const data = {
-      specialtyName: body.specialtyName.label,
       specialistId: Number(infoId),
     };
-    axiosInstance.post('/areaSpecialtyList', data).then(() => {
-      setOpenAddSpeciality(false);
-      reset({});
-      onSave?.();
-    });
+    axiosInstance
+      .post(`/areaSpecialtyList/${body.specialtyName.id}`, data)
+      .then(() => {
+        setOpenAddSpeciality(false);
+        reset({});
+        onSave?.();
+      });
   };
 
   const toggleDetailExperience = (experienceID: number) => {
@@ -118,7 +119,7 @@ export const ExperienceInformation = ({
           experiences.map((experience, idx) => {
             const res = sumAllExperience(experience.areaSpecialtyName);
             return (
-              <div className="smi-container" key={experience.specialtyName}>
+              <div className="smi-container" key={experience.id}>
                 <div
                   className={`smi-items ${
                     experienceSelected !== idx
@@ -129,7 +130,7 @@ export const ExperienceInformation = ({
                 >
                   <div className="smi-specialty-name">
                     <h3>Especialidad: </h3>
-                    <h4>{experience.specialtyName}</h4>
+                    <h4>{experience.specialtyName[0].listSpecialty.name}</h4>
                   </div>
                   <div className="smi-specialty-name">
                     <h3>Años de experiencia: </h3>

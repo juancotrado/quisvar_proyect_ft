@@ -1200,7 +1200,11 @@ export type TrainingSpecialty = {
 };
 export type Experience = {
   id: number;
-  specialtyName: string;
+  specialtyName: {
+    listSpecialty: {
+      name: string;
+    };
+  }[];
   areaSpecialtyName: AreaSpecialty[];
 };
 export type Training = {
@@ -1303,6 +1307,7 @@ export interface Roles {
 }
 
 export interface OptionSelect {
+  id: number;
   value: string;
   label: string;
 }

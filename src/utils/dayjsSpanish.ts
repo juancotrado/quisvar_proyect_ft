@@ -31,6 +31,11 @@ export const formatDateUtc = (date?: ConfigType, separator: string = '/') => {
   return validDate.format(`DD${separator}MM${separator}YYYY`);
 };
 
+export const formatDateDefault = (date?: ConfigType, format?: string) => {
+  const validDate = transformValidDate(date);
+  return validDate.format(format);
+};
+
 // Returns date in "9/5/2024" format
 export const formatDateNoZeroUtc = (
   date?: ConfigType,

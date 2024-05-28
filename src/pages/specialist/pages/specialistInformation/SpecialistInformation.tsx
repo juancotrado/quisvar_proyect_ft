@@ -14,9 +14,11 @@ import { URL, axiosInstance } from '../../../../services/axiosInstance';
 import {
   isOpenAddExperience$,
   isOpenAddTraining$,
+  isOpenCardSpecialist$,
 } from '../../../../services/sharingSubject';
 import { ExperienceInformation, TrainingInformation } from './components';
 import { CardAddExperience, CardAddTraining } from './views';
+import { CardSpecialist } from '../../views';
 
 export const SpecialistInformation = () => {
   const { infoId } = useParams();
@@ -98,6 +100,12 @@ export const SpecialistInformation = () => {
       data,
     };
   };
+  const handleEditInfo = (specialist?: Specialists) => {
+    isOpenCardSpecialist$.setSubject = {
+      isOpen: true,
+      data: specialist,
+    };
+  };
   return (
     <>
       <div className="specialist-experience">
@@ -131,9 +139,13 @@ export const SpecialistInformation = () => {
               <img
                 src="/svg/pencil-line.svg"
                 className="specialist-info-icon"
+                onClick={e => {
+                  e.stopPropagation();
+                  handleEditInfo(data);
+                }}
               />
               <span className="specialist-icon-cv">
-                <a href={`${URL}/file-user/cv/${data?.cv}`} target="_blank">
+                <a href={`${URL}/file-user/cv/${data?.cvFile}`} target="_blank">
                   <img
                     src="/svg/download.svg"
                     className="specialist-info-icon"
@@ -155,7 +167,7 @@ export const SpecialistInformation = () => {
           </div>
           <div className="specialist-info-rows">
             <h3>Colegiatura:</h3>
-            <h3>{data?.CIP}</h3>
+            <h3>{data?.tuition}</h3>
           </div>
           <div className="specialist-info-rows">
             <h3>Correo:</h3>

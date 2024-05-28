@@ -51,7 +51,7 @@ export const validateRepeatPassword = (value: string, password: string) => {
 export const validateDNI = (value: string) => {
   const message = validateOnlyNumbers(value);
   if (typeof message === 'string') return message;
-  return value.length !== 8 ? 'Ingresar un dni' : true;
+  return value.length !== 8 ? 'Ingresar un dni valido' : true;
 };
 export const validateRuc = (value: string) => {
   if (!value) return true;

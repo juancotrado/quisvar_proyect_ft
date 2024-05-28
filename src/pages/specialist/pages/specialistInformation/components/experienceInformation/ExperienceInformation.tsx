@@ -130,7 +130,7 @@ export const ExperienceInformation = ({
                 >
                   <div className="smi-specialty-name">
                     <h3>Especialidad: </h3>
-                    <h4>{experience.specialtyName[0].listSpecialty.name}</h4>
+                    <h4>{experience.listSpecialities.name}</h4>
                   </div>
                   <div className="smi-specialty-name">
                     <h3>Años de experiencia: </h3>

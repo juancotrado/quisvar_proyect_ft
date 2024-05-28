@@ -73,6 +73,20 @@ export const PROJECT_STATUS = [
     color: 'Yellow',
   },
 ];
+export const TUITION = [
+  {
+    id: 0,
+    value: 'CIP',
+  },
+  {
+    id: 1,
+    value: 'CAP',
+  },
+  {
+    id: 2,
+    value: 'CCP',
+  },
+];
 export const DEGREE_DATA = [
   {
     id: 0,

@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Input, Button, Aside } from '../../components';
 import { isOpenCardSpecialist$ } from '../../services/sharingSubject';
 import './specialist.css';
-import { SpecialistList } from '../../types';
+import { SpecialistList, Specialists } from '../../types';
 import { axiosInstance } from '../../services/axiosInstance';
 import { getIconDefault } from '../../utils';
 import { NavLink, Outlet } from 'react-router-dom';
@@ -48,6 +48,7 @@ export const Specialist = () => {
     if (!value) getSpecialists();
     apiSubjectRef.current.next(value);
   };
+
   return (
     <div className="specialist">
       <Aside>

@@ -1158,6 +1158,7 @@ export type SpecialistProject = {
   projectId: number;
   project: ProjectType;
 };
+type Tuition = 'CAP' | 'CIP' | 'CCP';
 export type Specialists = {
   id: number;
   dni: string;
@@ -1166,10 +1167,12 @@ export type Specialists = {
   phone: string;
   career: string;
   degree: string;
-  agreement: FileList | null;
-  cv: FileList | null;
+  agreementFile: FileList | null;
+  cvFile: FileList | null;
   price: string;
-  CIP: string;
+  tuition: Tuition;
+  inscriptionDate: Date;
+  inscription: string;
   email: string;
   // projects: ProjectType
   projects: SpecialistProject[];
@@ -1200,11 +1203,9 @@ export type TrainingSpecialty = {
 };
 export type Experience = {
   id: number;
-  specialtyName: {
-    listSpecialty: {
-      name: string;
-    };
-  }[];
+  listSpecialities: {
+    name: string;
+  };
   areaSpecialtyName: AreaSpecialty[];
 };
 export type Training = {
@@ -1307,7 +1308,7 @@ export interface Roles {
 }
 
 export interface OptionSelect {
-  id: number;
+  id?: number;
   value: string;
   label: string;
 }

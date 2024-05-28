@@ -5,7 +5,11 @@ import './moreInfo.css';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
 import { toggle$ } from '../../../../../../../../services/sharingSubject';
-import { excelSimpleReport, formatMoney } from '../../../../../../../../utils';
+import {
+  downloadBlob,
+  excelSimpleReport,
+  formatMoney,
+} from '../../../../../../../../utils';
 import { MoreInfoUsers } from '..';
 import { useArchiver } from '../../../../../../../../hooks';
 import { FloatingText } from '../../../../../../../../components';
@@ -69,6 +73,25 @@ export const MoreInfo = ({ data }: MoreInfoProps) => {
   const handleArchiverOptions = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     setShowArchiverOption(!showArchiverOption);
+  };
+  const handleMergePdf = async () => {
+    const url = type == 'stages' ? '/merge-pdf-stage/' : '/merge-pdf-levels/';
+    const res = await axiosInstance.get('/download' + url + data.id, {
+      responseType: 'blob',
+    });
+    const filename = data.name + '.pdf';
+    downloadBlob(res.data, filename);
+  };
+  const handleCompressPdf = async (type_d: 'pdf' | 'nopdf' | 'all') => {
+    const url = type == 'stages' ? '/stage-compress-pdfs/' : '/compress-pdfs/';
+    const res = await axiosInstance.get(
+      '/download' + url + data.id + '?type=' + type_d,
+      {
+        responseType: 'blob',
+      }
+    );
+    const filename = data.name + '.rar';
+    downloadBlob(res.data, filename);
   };
   return (
     <>
@@ -165,7 +188,7 @@ export const MoreInfo = ({ data }: MoreInfoProps) => {
             <div className="moreInfo-details-contain moreInfo-details-absolute">
               <div
                 className="moreInfo-detail"
-                onClick={handleArchiver}
+                onClick={() => handleCompressPdf('all')}
                 title={'Comprimir'}
               >
                 <figure className="moreInfo-detail-icon">
@@ -173,24 +196,40 @@ export const MoreInfo = ({ data }: MoreInfoProps) => {
                 </figure>
                 <span className="moreInfo-detail-info">Comprimir</span>
               </div>
-              <div className="moreInfo-detail" title={'Comprimir PDFs'}>
+              <div
+                className="moreInfo-detail"
+                onClick={() => handleCompressPdf('pdf')}
+                title={'Comprimir PDFs'}
+              >
                 <figure className="moreInfo-detail-icon">
                   <img src="/svg/zip-pdf.svg" alt="W3Schools" />
                 </figure>
                 <span className="moreInfo-detail-info">
-                  Comprimir <br /> PDF
+                  Comprimirga <br /> PDF
                 </span>
               </div>
               <div
                 className="moreInfo-detail"
                 title={'Comprimir Editables'}
-                onClick={handleArchiverEdit}
+                onClick={() => handleCompressPdf('nopdf')}
               >
                 <figure className="moreInfo-detail-icon">
                   <img src="/svg/zip-edit.svg" alt="W3Schools" />
                 </figure>
                 <span className="moreInfo-detail-info">
                   Comprimir <br /> Editables
+                </span>
+              </div>
+              <div
+                className="moreInfo-detail"
+                onClick={handleMergePdf}
+                title={'Unir PDFs'}
+              >
+                <figure className="moreInfo-detail-icon">
+                  <img src="/svg/merge-pdf.svg" alt="W3Schools" />
+                </figure>
+                <span className="moreInfo-detail-info">
+                  Unir <br /> PDFs
                 </span>
               </div>
             </div>

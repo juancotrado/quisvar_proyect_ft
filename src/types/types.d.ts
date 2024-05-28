@@ -1174,7 +1174,6 @@ export type Specialists = {
   inscriptionDate: Date;
   inscription: string;
   email: string;
-  // projects: ProjectType
   projects: SpecialistProject[];
 };
 export type SpecialistList = {

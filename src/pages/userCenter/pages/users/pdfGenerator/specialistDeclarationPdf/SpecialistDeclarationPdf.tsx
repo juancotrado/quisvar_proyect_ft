@@ -4,13 +4,14 @@ import {
   formatDateDefault,
   formatFullDateUtc,
 } from '../../../../../../utils/dayjsSpanish';
+import { Tuition } from '../../../../../../types';
 
 interface Specialist {
   firstName: string;
   lastName: string;
   dni: string;
   career: string;
-  tuition: 'CIP' | 'CAP';
+  tuition: Tuition;
   inscription: string;
   inscriptionDate: Date;
   speciality: string;
@@ -26,6 +27,7 @@ interface Specialist {
 enum COLLEGE_SPECIALIST {
   CIP = 'COLEGIO DE INGENIEROS DEL PERU',
   CAP = 'COLEGIO DE ARQUITECTOS DEL PERU',
+  CCP = 'COLEGIO DE CONTADORES DEL PERU',
 }
 
 interface SpecialistDeclarationPdfProps {

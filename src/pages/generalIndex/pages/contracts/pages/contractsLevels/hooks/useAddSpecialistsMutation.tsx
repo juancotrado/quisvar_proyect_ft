@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { axiosInstance } from '../../../../../../../services/axiosInstance';
 import { Specialists } from '../../../../../../../types';
 import { ContractSpecialties } from '../../../models/type.contracts';
-import { SnackbarUtilities } from '../../../../../../../utils';
+import { SnackbarUtilities, sleep } from '../../../../../../../utils';
 
 interface SpecialistsExtends extends Specialists {
   contractSpecialtiesId: number;
@@ -15,8 +15,6 @@ const addSpecialists = async (data: SpecialistsExtends) => {
     contractSpecialtiesId,
     specialistsId: id,
   };
-  // await sleep(6);
-  // throw new Error('Parameter is not a number!');
   const res = await axiosInstance.put('/contract/specialties', body, {
     headers: {
       noLoader: true,

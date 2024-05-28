@@ -1,14 +1,17 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { AdvancedSelect, IconAction } from '../../../../../../../../components';
 import { ContractSpecialties } from '../../../../models/type.contracts';
 import './listProfessionalItem.css';
 import { SingleValue } from 'react-select';
-import { axiosInstance } from '../../../../../../../../services/axiosInstance';
 import { Specialists } from '../../../../../../../../types';
 import {
   useAddSpecialistsMutation,
   useDeleteSpecialtiesMutation,
 } from '../../hooks';
+import { isOpenViewPdf$ } from '../../../../../../../../services/sharingSubject';
+import { SpecialistDeclarationPdf } from '../../../../../../../userCenter/pages/users/pdfGenerator/specialistDeclarationPdf';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../../../../../../../store';
 
 interface ListProfessionalItemProps {
   contractSpecialty: ContractSpecialties;
@@ -26,6 +29,7 @@ const ListProfessionalItem = ({
     id: contractSpecialtiesId,
     contratcId,
   } = contractSpecialty;
+  const contract = useSelector((state: RootState) => state.contract);
 
   const addSpecialistsMutation = useAddSpecialistsMutation();
   const deleteSpecialtiesMutation = useDeleteSpecialtiesMutation();
@@ -41,6 +45,22 @@ const ListProfessionalItem = ({
   const handleDeleteSpecialty = async () =>
     deleteSpecialtiesMutation.mutate({ contractSpecialtiesId, contratcId });
 
+  const handleViewPdf = () => {
+    if (!specialists || !contract) return;
+    const newSpecialists = {
+      ...specialists,
+      speciality: listSpecialties.name,
+      nameContract: contract.name,
+      corporation: contract.company.name,
+      projectName: contract.projectName,
+      cui: contract.cui,
+    };
+    isOpenViewPdf$.setSubject = {
+      fileNamePdf: specialists.firstName + ' ' + specialists.lastName,
+      pdfComponentFunction: SpecialistDeclarationPdf({ data: newSpecialists }),
+      isOpen: true,
+    };
+  };
   return (
     <div className="listProfessionalItem">
       <div className="listProfessionalItem-main">
@@ -88,6 +108,7 @@ const ListProfessionalItem = ({
           position="none"
           classNameText="listProfessionalItem-text-icon"
           text="Declaracio jurada"
+          onClick={handleViewPdf}
         />
         <IconAction
           icon="trash-gray"

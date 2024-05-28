@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { axiosInstance } from '../../../../../../../services/axiosInstance';
 import { ContractSpecialties } from '../../../models/type.contracts';
-import { SnackbarUtilities } from '../../../../../../../utils';
+import { SnackbarUtilities, sleep } from '../../../../../../../utils';
 
 const deleteSpecialties = async (data: {
   contractSpecialtiesId: number;
@@ -26,6 +26,10 @@ const useDeleteSpecialtiesMutation = () => {
     mutationFn: deleteSpecialties,
     onMutate: data => {
       const { contractSpecialtiesId, contratcId } = data;
+      const prevData = queryClient.getQueryData<ContractSpecialties[]>([
+        'listProfessional',
+        contratcId,
+      ]);
       queryClient.setQueryData<ContractSpecialties[]>(
         ['listProfessional', contratcId],
         oldData => {
@@ -37,10 +41,6 @@ const useDeleteSpecialtiesMutation = () => {
           }
         }
       );
-      const prevData = queryClient.getQueryData<ContractSpecialties[]>([
-        'listProfessional',
-        contratcId,
-      ]);
       return { prevData };
     },
 
@@ -50,13 +50,8 @@ const useDeleteSpecialtiesMutation = () => {
         ['listProfessional', contratcId],
         context?.prevData
       );
-      SnackbarUtilities.error('Error al agregar especialidad');
+      SnackbarUtilities.error('Error al eliminar especialidad');
     },
-    // onSettled: (_data, _error, variables) => {
-    //   queryClient.invalidateQueries({
-    //     queryKey: ['listProfessional', variables.contratcId],
-    //   });
-    // },
   });
   return mutation;
 };

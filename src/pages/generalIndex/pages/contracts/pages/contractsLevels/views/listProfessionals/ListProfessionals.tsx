@@ -32,7 +32,10 @@ const ListProfessionals = ({ idContract }: ListProfessionalsProp) => {
   const handleSave = () => {
     listProfessionalQuery.refetch();
   };
-
+  const handleReport = () => {
+    //   if (!contracts) return;
+    //   excelContractReport(contracts);
+  };
   return (
     <div className="listProfessionals">
       {listProfessionalQuery.isFetching && (
@@ -42,7 +45,11 @@ const ListProfessionals = ({ idContract }: ListProfessionalsProp) => {
       )}
       <div className="listProfessionals-header">
         <h3 className="listProfessionals-header-title">Especialistas</h3>
-        <IconAction icon="excel-icon" text="Cuadro de profesionales" />
+        <IconAction
+          icon="excel-icon"
+          text="Cuadro de profesionales"
+          onClick={handleReport}
+        />
       </div>
       <div className="listProfessionals-main">
         {listProfessionalQuery.data?.map(contractSpecialty => (

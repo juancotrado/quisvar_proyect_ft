@@ -3,7 +3,7 @@ import { exportExcel } from '../../../../../utils';
 import { Contract } from '../../../../../types';
 
 const excelProfessionalContract = async (contracts: Contract[]) => {
-  const response = await fetch('/templates/report_template_contract_V2.xlsx');
+  const response = await fetch('/templates/professionalContract.xlsx');
   const buffer = await response.arrayBuffer();
   const workbook = new ExcelJS.Workbook();
   await workbook.xlsx.load(buffer);

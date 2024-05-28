@@ -10,8 +10,6 @@ close-add-card.content-area {
   border-bottom: 2px solid var(--color-secondary);
   padding: 0.4rem;
   background-color: var(--color-menu);
-  /* width: 100%; */
-  /* border-radius: var(--radius-input) var(--radius-input) 0 0; */
 }
 
 .close-add-card {
@@ -40,11 +38,11 @@ close-add-card.content-area {
 }
 
 .switch-status-label {
-  /* font-size: var(--size-label); */
   text-transform: uppercase;
 }
 
 .card-register-contract {
+  padding: 0.5rem;
   background-color: white;
   display: flex;
   flex-direction: column;

@@ -330,3 +330,11 @@ export const htmlToPdf = (
 
 export const getFullName = (user?: UserProfile) =>
   user ? `${user.profile.firstName} ${user.profile.lastName}` : '---';
+
+export const sleep = (seconds: number): Promise<boolean> => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(true);
+    }, seconds * 1000);
+  });
+};

@@ -1171,7 +1171,6 @@ export type Specialists = {
   price: string;
   CIP: string;
   email: string;
-  // projects: ProjectType
   projects: SpecialistProject[];
 };
 export type SpecialistList = {

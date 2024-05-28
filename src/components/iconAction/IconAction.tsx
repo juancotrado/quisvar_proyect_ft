@@ -4,6 +4,7 @@ import './iconAction.css';
 interface IconActionProps {
   onClick?: () => void;
   className?: string;
+  classNameText?: string;
   left?: number;
   size?: number;
   right?: number;
@@ -30,6 +31,7 @@ const IconAction = ({
   zIndex,
   shadow,
   text,
+  classNameText,
 }: IconActionProps) => {
   const style: CSSProperties = {
     cursor: 'pointer',
@@ -68,13 +70,14 @@ const IconAction = ({
 
   return text ? (
     <div
-      className="iconAction-container"
+      className={`iconAction-container `}
       onClick={e => {
         e.stopPropagation();
         onClick?.();
       }}
     >
-      {Icon} {text}
+      {Icon}
+      <span className={`${classNameText}`}>{text}</span>
     </div>
   ) : (
     Icon

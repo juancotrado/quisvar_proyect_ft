@@ -7,6 +7,7 @@ import {
 } from '../../../../../../../../services/axiosInstance';
 import { ChangeEvent } from 'react';
 import { UploadFileInput } from '../../../../../../../../components';
+import { ListProfessionals } from '../../views/listProfessionals';
 
 interface DropdownLevelContractProps {
   level: ContractIndexData;
@@ -56,17 +57,23 @@ export const DropdownLevelContract = ({
       className={`${!firstLevel && 'DropdownLevelContract-dropdown-content'}`}
     >
       <ul className={`${!firstLevel && 'DropdownLevelContract-dropdown-sub'}`}>
-        {level.hasFile ? (
-          <div className="DropdownLevelContract-upload-file">
-            {level.hasFile === 'no' && level.id !== '2.3' && (
-              <UploadFileInput
-                name="Cargar documento"
-                subName="O arrastre y suelte el archivo aquí"
-                accept="application/pdf"
-                onChange={handleUploadFile}
-              />
+        {level.hasFile !== undefined ? (
+          <>
+            {level.id === '2.4' ? (
+              <ListProfessionals idContract={idContract} />
+            ) : (
+              <div className="DropdownLevelContract-upload-file">
+                {level.hasFile === 'no' && level.id !== '2.3' && (
+                  <UploadFileInput
+                    name="Cargar documento"
+                    subName="O arrastre y suelte el archivo aquí"
+                    accept="application/pdf"
+                    onChange={handleUploadFile}
+                  />
+                )}
+              </div>
             )}
-          </div>
+          </>
         ) : (
           level?.nextLevel?.map(subLevel => (
             <li key={subLevel.id}>

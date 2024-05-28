@@ -96,7 +96,7 @@ export const Contracts = () => {
           height: '100%',
         }}
         //  className="contracts-sidebar"
-        className={`contracts-sidebar ${
+        className={`contracts-resizable ${
           isSidebarHidden ? 'sidebar-hidden' : ''
         }`}
         enable={{
@@ -106,67 +106,56 @@ export const Contracts = () => {
           left: false,
         }}
       >
-        <h2
-          className={`contracts-sidebar-tilte ${
-            isSidebarHidden ? 'display-hidden' : ''
-          }`}
-        >
-          14.CONTRATOS EN ACTIVIDAD
-        </h2>
-        <IconAction icon="file-excel" onClick={handleReport} />
-        <div
-          className={`${
-            isSidebarHidden ? 'display-hidden' : 'contract-filters-contain'
-          }`}
-        >
-          <Select
-            value={filterContract.status}
-            name="status"
-            data={STATUS_CONTRACT}
-            extractValue={({ key }) => key}
-            renderTextField={({ name }) => name}
-            placeholder="Estado"
-            styleVariant="tertiary"
-            onChange={handleFilterStatus}
-          />
-          <Select
-            name="date"
-            data={YEAR_DATA}
-            extractValue={({ year }) => year}
-            renderTextField={({ year }) => year}
-            placeholder="Año"
-            styleVariant="tertiary"
-            onChange={handleFilterValues}
-          />
-          <Select
-            name="type"
-            data={CONTRACT_TYPE}
-            extractValue={({ key }) => key}
-            renderTextField={({ name }) => name}
-            placeholder="Tipo"
-            styleVariant="tertiary"
-            onChange={handleFilterValues}
-          />
-        </div>
-        <div className="contracts-sidebar-main">
-          {contracts?.map(agreement => (
-            <SidebarContractCard
-              key={agreement.id}
-              contract={agreement}
-              onSave={getContracts}
+        <div className="contracts-sidebar">
+          <h2 className={`contracts-sidebar-tilte`}>
+            14.CONTRATOS EN ACTIVIDAD
+          </h2>
+          <IconAction icon="file-excel" onClick={handleReport} />
+          <div className={`contract-filters-contain`}>
+            <Select
+              value={filterContract.status}
+              name="status"
+              data={STATUS_CONTRACT}
+              extractValue={({ key }) => key}
+              renderTextField={({ name }) => name}
+              placeholder="Estado"
+              styleVariant="tertiary"
+              onChange={handleFilterStatus}
             />
-          ))}
-        </div>
-        <div
-          className={`contracts-add-content ${
-            isSidebarHidden ? 'display-hidden' : ''
-          }`}
-          onClick={addContract}
-        >
-          <span className="contracts-add-span">Añadir Contrato</span>
-          <figure className="contracts-sideba-figure">
-            <img src="/svg/plus.svg" alt="W3Schools" />
-          </figure>
+            <Select
+              name="date"
+              data={YEAR_DATA}
+              extractValue={({ year }) => year}
+              renderTextField={({ year }) => year}
+              placeholder="Año"
+              styleVariant="tertiary"
+              onChange={handleFilterValues}
+            />
+            <Select
+              name="type"
+              data={CONTRACT_TYPE}
+              extractValue={({ key }) => key}
+              renderTextField={({ name }) => name}
+              placeholder="Tipo"
+              styleVariant="tertiary"
+              onChange={handleFilterValues}
+            />
+          </div>
+          <div className="contracts-sidebar-main">
+            {contracts?.map(agreement => (
+              <SidebarContractCard
+                key={agreement.id}
+                contract={agreement}
+                onSave={getContracts}
+              />
+            ))}
+          </div>
+          <div className={`contracts-add-content `} onClick={addContract}>
+            <span className="contracts-add-span">Añadir Contrato</span>
+            <figure className="contracts-sideba-figure">
+              <img src="/svg/plus.svg" alt="W3Schools" />
+            </figure>
+          </div>
         </div>
       </Resizable>
       <div className="button-sidebar">

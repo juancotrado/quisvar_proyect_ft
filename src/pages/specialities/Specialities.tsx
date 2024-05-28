@@ -56,7 +56,7 @@ export const Specialities = () => {
           width: 300,
           height: '100%',
         }}
-        className={`sidebarSpeciality ${
+        className={`sidebarSpeciality-resizable ${
           isSidebarHidden ? 'sidebar-hidden' : ''
         }`}
         enable={{
@@ -66,30 +66,32 @@ export const Specialities = () => {
           left: false,
         }}
       >
-        {sectors ? (
-          <>
-            <Select
-              label="Año de Especialidad:"
-              required={true}
-              name="typeSpeciality"
-              data={YEAR_DATA}
-              onChange={handleFilterForYear}
-              extractValue={({ year }) => year}
-              renderTextField={({ year }) => year}
-            />
-            <DropDownSidebarSpeciality
-              data={{
-                id: 0,
-                name: '',
-                sectors,
-              }}
-              onSave={getSpecialities}
-            />
-          </>
-        ) : (
-          <LoaderForComponent />
-        )}
-        <CardRegisterProject onSave={getSpecialities} />
+        <div className="sidebarSpeciality">
+          {sectors ? (
+            <>
+              <Select
+                label="Año de Especialidad:"
+                required={true}
+                name="typeSpeciality"
+                data={YEAR_DATA}
+                onChange={handleFilterForYear}
+                extractValue={({ year }) => year}
+                renderTextField={({ year }) => year}
+              />
+              <DropDownSidebarSpeciality
+                data={{
+                  id: 0,
+                  name: '',
+                  sectors,
+                }}
+                onSave={getSpecialities}
+              />
+            </>
+          ) : (
+            <LoaderForComponent />
+          )}
+          <CardRegisterProject onSave={getSpecialities} />
+        </div>
       </Resizable>
       <div className="button-sidebar">
         <button className="button-icon" onClick={toggleSidebarVisibility}>

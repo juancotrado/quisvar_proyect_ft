@@ -3,6 +3,11 @@
   display: flex;
   background-color: #fff;
 }
+.contracts-resizable {
+  max-width: 100%;
+  transition: max-width 1.4s ease;
+  overflow: hidden;
+}
 .contracts-sidebar {
   position: relative;
   display: flex;
@@ -21,8 +26,8 @@
   font-style: normal;
   font-weight: 500;
   line-height: 150%;
-  padding: 0 1.5rem;
-  position: relative;
+  /* padding: 0 1.5rem; */
+  /* position: relative; */
 }
 .contract-filters-contain {
   display: grid;

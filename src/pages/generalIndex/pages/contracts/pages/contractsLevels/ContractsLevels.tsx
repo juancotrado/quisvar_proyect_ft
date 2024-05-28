@@ -13,6 +13,7 @@ import {
   isOpenViewPdf$,
 } from '../../../../../../services/sharingSubject';
 import { ContractPhasePdf } from '../../pdfGenerator';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 
 export const ContractsLevels = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -86,24 +87,29 @@ export const ContractsLevels = () => {
     };
   };
   return contract ? (
-    <>
-      <div className="contractsLevels-main-level">
-        <h3 className="contractsLevels-level-title">{contract.name}</h3>
-        <IconAction icon="Info" onClick={handleInfo} size={1.4} />
+    <PanelGroup direction="horizontal">
+      <Panel defaultSize={60} order={1}>
+        <div className="contractsLevels-main-level">
+          <h3 className="contractsLevels-level-title">{contract.name}</h3>
+          <IconAction icon="Info" onClick={handleInfo} size={1.4} />
 
-        <div className="contractsLevels-level-contain">
-          <DropdownLevelContract
-            level={getLevelData(contract)}
-            idContract={contract.id}
-            editFileContractIndex={editFileContractIndex}
-            handleReportPdf={handleReportPdf}
-          />
+          <div className="contractsLevels-level-contain">
+            <DropdownLevelContract
+              level={getLevelData(contract)}
+              idContract={contract.id}
+              editFileContractIndex={editFileContractIndex}
+              handleReportPdf={handleReportPdf}
+            />
+          </div>
         </div>
-      </div>
-      <div className="contractsLevels-main-info">
-        <Outlet />
-      </div>
-    </>
+      </Panel>
+      <PanelResizeHandle className="resizable" />
+      <Panel defaultSize={40} order={2}>
+        <div className="contractsLevels-main-info">
+          <Outlet />
+        </div>
+      </Panel>
+    </PanelGroup>
   ) : (
     <div className="contractsLevels-select-empty">
       <h1>Seleccione un Contrato</h1>

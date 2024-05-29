@@ -36,6 +36,7 @@ const ContractRowSchedule = ({
       <div className="detailsContracts-row-schedule" style={style}>
         {Object.values(data).map(({ value }) => (
           <span
+            key={value}
             className={`${
               isHeader
                 ? 'contractRowSchedule-text-title'

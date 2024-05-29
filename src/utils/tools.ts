@@ -1,5 +1,7 @@
 import html2pdf, { Html2PdfOptions } from 'html2pdf.js';
 import { DEGREE_DATA } from '../pages/userCenter/pages/users/models';
+import ordinalNumber from './json/ordinalNumber.json';
+
 import {
   Degree,
   Feedback,
@@ -337,4 +339,20 @@ export const sleep = (seconds: number): Promise<boolean> => {
       resolve(true);
     }, seconds * 1000);
   });
+};
+
+export const transformNomenclature = (nomenclature: string) => {
+  const nomenclatureSplit = nomenclature.split('-');
+
+  const nomenclatureMapping = nomenclatureSplit.map((nom, i) => {
+    if (i === 0) return 'ADJUDICACIÓN SIMPLIFICADA';
+    if (nomenclatureSplit.length - 1 === i)
+      return (
+        ordinalNumber[nom as keyof typeof ordinalNumber].toUpperCase() +
+        ' CONVOCATORIA'
+      );
+    return nom;
+  });
+
+  return nomenclatureMapping.join(' ');
 };

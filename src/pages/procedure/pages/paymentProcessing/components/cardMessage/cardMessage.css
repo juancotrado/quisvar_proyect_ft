@@ -56,14 +56,6 @@
   height: 2rem;
 }
 
-.card-status-span {
-  letter-spacing: 0.0175rem;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  width: 100%;
-}
-
 .message-isOpen {
   background-color: #fff;
 }

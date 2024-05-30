@@ -18,14 +18,14 @@ const RegularProcedureInfo = () => {
   const [message, setMessage] = useState<MessageType | null>();
   const [isProvied, setIsProvied] = useState(false);
 
-  const { regularMailQuery } = useRegularMail();
+  const { regularMailQuery, searchParams } = useRegularMail();
   const { id: userSessionId } = useSelector(
     (state: RootState) => state.userSession
   );
   const handleProvied = () => setIsProvied(!isProvied);
 
   const handleClose = () => {
-    navigate('/tramites/tramite-regular');
+    navigate('/tramites/tramite-regular?' + searchParams);
   };
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const RegularProcedureInfo = () => {
 
   const handleSaveRegister = () => {
     regularMailQuery.refetch();
-    navigate('/tramites/tramite-regular');
+    navigate('/tramites/tramite-regular?' + searchParams);
   };
   const onSubmit = async (data: ProcedureSubmit) => {
     const { fileUploadFiles, values, mainFile } = data;

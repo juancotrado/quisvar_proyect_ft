@@ -90,6 +90,7 @@ const useRegularMail = () => {
     typeMessage,
     office,
     onHolding,
+    searchParams,
   };
 };
 

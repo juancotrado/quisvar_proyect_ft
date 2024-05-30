@@ -17,6 +17,7 @@ import {
 import {
   Button,
   CardGenerateReport,
+  FloatingText,
   HeaderOptionBtn,
   IconAction,
   IndeterminateCheckbox,
@@ -168,6 +169,11 @@ export const MailPage = () => {
       : []),
     columnHelper.accessor('header', {
       header: () => 'Asunto',
+      cell: ({ getValue }) => (
+        <FloatingText text={getValue()} yPos={10}>
+          <div className="text-ellipsis">{getValue()}</div>
+        </FloatingText>
+      ),
     }),
     columnHelper.accessor('status', {
       header: () => 'Estado',
@@ -213,7 +219,7 @@ export const MailPage = () => {
   return (
     <>
       <PanelGroup direction="horizontal">
-        <Panel defaultSize={isNewMessage ? 70 : 100} order={1}>
+        <Panel defaultSize={isNewMessage || paymessageId ? 60 : 100} order={1}>
           <div className="mail-main-master-container">
             <div className={`message-container-header`}>
               <div className="message-options-filter">
@@ -337,12 +343,12 @@ export const MailPage = () => {
         </Panel>
         <PanelResizeHandle className="resizable" />
         {!isNewMessage && paymessageId && (
-          <Panel defaultSize={30} order={2}>
+          <Panel defaultSize={40} order={2}>
             <Outlet />
           </Panel>
         )}
         {isNewMessage && (
-          <Panel defaultSize={30} order={2}>
+          <Panel defaultSize={40} order={2}>
             <CardRegisterMessage
               onClosing={handleCloseMessage}
               onSave={handleSaveMessage}

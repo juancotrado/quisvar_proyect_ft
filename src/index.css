@@ -259,3 +259,9 @@ legend {
   width: 1px;
   background-color: #bbbbbbbd;
 }
+
+.text-ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

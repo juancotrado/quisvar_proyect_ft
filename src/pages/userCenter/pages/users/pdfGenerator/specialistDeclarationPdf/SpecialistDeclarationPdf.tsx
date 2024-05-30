@@ -13,7 +13,7 @@ interface Specialist {
   career: string;
   tuition: Tuition;
   inscription: string;
-  inscriptionDate: Date;
+  inscriptionDate: string;
   speciality: string;
   //---------------------
   nameContract: string;

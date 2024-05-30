@@ -1173,7 +1173,7 @@ export type Specialists = {
   cvFile: FileList | null;
   price: string;
   tuition: Tuition;
-  inscriptionDate: Date;
+  inscriptionDate: Date | string;
   inscription: string;
   email: string;
   projects: SpecialistProject[];

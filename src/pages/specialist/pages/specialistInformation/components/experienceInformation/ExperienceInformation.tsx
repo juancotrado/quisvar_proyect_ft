@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
-import { AdvancedSelectCrud } from '../../../../../../components';
+import { AdvancedSelectCrud, DotsRight } from '../../../../../../components';
 import {
   AreaSpecialty,
   AreaSpecialtyName,
   Experience,
+  Option,
 } from '../../../../../../types';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
@@ -18,6 +19,8 @@ import { CardEditSpecialties } from '../../views/cardEditSpecialties';
 import { isOpenCardOffice$ } from '../../../../../../services/sharingSubject';
 // import { OfficeSelect } from '../../../../../procedure/models';
 import { SpecialtiesSelect } from '../../../../../userCenter/pages/users/models';
+import './experienceInformation.css';
+import { ContextMenuTrigger } from 'rctx-contextmenu';
 
 interface ExperienceProps {
   experiences?: Experience[];
@@ -110,7 +113,9 @@ export const ExperienceInformation = ({
       },
     };
   };
-
+  const handleDeleteSpecialty = (id: number) => {
+    axiosInstance.delete(`/areaSpecialtyList/${id}`).then(() => onSave?.());
+  };
   return (
     <>
       <span className="specialist-info-title">Especialidades</span>
@@ -118,35 +123,52 @@ export const ExperienceInformation = ({
         {experiences &&
           experiences.map((experience, idx) => {
             const res = sumAllExperience(experience.areaSpecialtyName);
+            const optionsData: Option[] = [
+              {
+                name: 'Eliminar',
+                type: 'button',
+                icon: 'trash-red',
+                function: () => handleDeleteSpecialty(experience.id),
+              },
+            ];
             return (
-              <div className="smi-container" key={experience.id}>
-                <div
-                  className={`smi-items ${
-                    experienceSelected !== idx
-                      ? 'smi-unselected'
-                      : 'smi-selected'
-                  }`}
-                  onClick={() => toggleDetailExperience(idx)}
+              <div key={experience.id}>
+                <ContextMenuTrigger
+                  id={`ei-${experience.id}`}
+                  className="smi-container"
                 >
-                  <div className="smi-specialty-name">
-                    <h3>Especialidad: </h3>
-                    <h4>{experience.listSpecialities.name}</h4>
+                  <div
+                    className={`smi-items ${
+                      experienceSelected !== idx
+                        ? 'smi-unselected'
+                        : 'smi-selected'
+                    }`}
+                    onClick={() => toggleDetailExperience(idx)}
+                  >
+                    <div className="smi-specialty-name">
+                      <h3>Especialidad: </h3>
+                      <h4>{experience.listSpecialities.name}</h4>
+                    </div>
+                    <div className="smi-specialty-name">
+                      <h3>Años de experiencia: </h3>
+                      <h4>{`${res.totalYears} año(s) y ${res.totalMonths} mes(es)`}</h4>
+                    </div>
+                    <img src="/svg/down.svg" alt="" style={{ width: '20px' }} />
                   </div>
-                  <div className="smi-specialty-name">
-                    <h3>Años de experiencia: </h3>
-                    <h4>{`${res.totalYears} año(s) y ${res.totalMonths} mes(es)`}</h4>
-                  </div>
-                  <img src="/svg/down.svg" alt="" style={{ width: '20px' }} />
-                </div>
-                {experienceSelected === idx && (
-                  <ExperienceTable
-                    datos={experience.areaSpecialtyName}
-                    id={experience.id}
-                    handleFuntion={handleAddExperience}
-                    handleEdit={handleEditExperience}
-                    handleDelete={handleDelete}
-                  />
-                )}
+                  {experienceSelected === idx && (
+                    <ExperienceTable
+                      datos={experience.areaSpecialtyName}
+                      id={experience.id}
+                      handleFuntion={handleAddExperience}
+                      handleEdit={handleEditExperience}
+                      handleDelete={handleDelete}
+                    />
+                  )}
+                </ContextMenuTrigger>
+                <DotsRight
+                  data={optionsData}
+                  idContext={`ei-${experience.id}`}
+                />
               </div>
             );
           })}
@@ -161,10 +183,7 @@ export const ExperienceInformation = ({
             </div>
           ) : (
             specialties && (
-              <form
-                onSubmit={handleSubmit(onSubmitData)}
-                className="projectAddLevel-form"
-              >
+              <form onSubmit={handleSubmit(onSubmitData)} className="ei-select">
                 <AdvancedSelectCrud
                   control={control}
                   options={specialties}

@@ -18,7 +18,7 @@ import {
 } from '../../../../services/sharingSubject';
 import { ExperienceInformation, TrainingInformation } from './components';
 import { CardAddExperience, CardAddTraining } from './views';
-import { CardSpecialist } from '../../views';
+// import { CardSpecialist } from '../../views';
 
 export const SpecialistInformation = () => {
   const { infoId } = useParams();
@@ -56,7 +56,7 @@ export const SpecialistInformation = () => {
     return () => {
       setProjectSelected(null);
     };
-  }, [getExperience, getSpecialist, getTraining]);
+  }, [getExperience, getSpecialist, getTraining, infoId]);
 
   // const getDate = (value: string) => {
   //   const date = formatDate(new Date(value), {
@@ -104,6 +104,7 @@ export const SpecialistInformation = () => {
     isOpenCardSpecialist$.setSubject = {
       isOpen: true,
       data: specialist,
+      function: () => getSpecialist(),
     };
   };
   return (

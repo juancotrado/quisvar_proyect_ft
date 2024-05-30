@@ -15,6 +15,8 @@ import {
 import { axiosInstance } from '../../../../services/axiosInstance';
 import { DEGREE_DATA, TUITION } from '../../../userCenter/pages/users/models';
 import {
+  SnackbarUtilities,
+  capitalizeText,
   validateDNI,
   validateOnlyNumbers,
   validateWhiteSpace,
@@ -22,9 +24,13 @@ import {
 type CardSpecialistProps = {
   onSave?: () => void;
 };
+
+let apply: null | Function = null;
 const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [data, setData] = useState<Specialists | undefined>(undefined);
+  const [dataSpecialist, setDataSpecialist] = useState<Specialists | undefined>(
+    undefined
+  );
   const [professions, setProfessions] = useState<Profession[] | null>(null);
   const handleIsOpen = useRef<Subscription>(new Subscription());
   const {
@@ -32,21 +38,28 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
     handleSubmit,
     // setValue,
     reset,
-    // watch,
+    watch,
     formState: { errors },
   } = useForm<Specialists>();
   useEffect(() => {
     getProfession();
-    if (data) {
-      reset(data);
-    } else {
-      reset({});
-    }
-  }, [data, reset]);
+    return reset({});
+  }, [dataSpecialist, reset]);
+  const formattedDate = (value: string | Date | undefined) => {
+    const parts = (value as string)?.split('T');
+    return parts[0];
+  };
   useEffect(() => {
     handleIsOpen.current = isOpenCardSpecialist$.getSubject.subscribe(value => {
       setIsOpen(value.isOpen);
-      setData(value.data);
+      setDataSpecialist(value.data);
+      if (value.function) apply = value.function;
+      if (value.data) {
+        reset({
+          ...value.data,
+          inscriptionDate: formattedDate(value.data?.inscriptionDate),
+        });
+      }
     });
     return () => {
       handleIsOpen.current.unsubscribe();
@@ -55,9 +68,16 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
 
   const getProfession = () => {
     // if (data) setValue('career', data.label);
-    axiosInstance.get(`/profession`).then(res => {
-      setProfessions(res.data);
-    });
+
+    axiosInstance
+      .get(`/profession`, {
+        headers: {
+          noLoader: true,
+        },
+      })
+      .then(res => {
+        setProfessions(res.data);
+      });
   };
   const closeFunctions = () => {
     reset({});
@@ -65,49 +85,96 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
     // onSave?.();
   };
   const onSubmit: SubmitHandler<Specialists> = async data => {
-    const fileCv = data.cvFile?.[0] as File;
-    const fileAgreement = data.agreementFile?.[0] as File;
-    const formData = new FormData();
-    formData.append('dni', data.dni);
-    formData.append('firstName', data.firstName);
-    formData.append('lastName', data.lastName);
-    formData.append('phone', data.phone);
-    formData.append('career', data.career);
-    formData.append('degree', data.degree);
-    formData.append('fileAgreement', fileAgreement);
-    formData.append('fileCv', fileCv);
-    formData.append('price', '3000');
-    formData.append('tuition', data.tuition);
-    formData.append('email', data.email);
-    formData.append('inscription', data.inscription);
-    formData.append('inscriptionDate', data.inscriptionDate.toString());
-    const headers = {
-      'Content-type': 'multipart/form-data',
-    };
-    axiosInstance.post(`/specialists`, formData, { headers }).then(() => {
-      closeFunctions();
-      onSave?.();
-    });
-    // const newData = {
-    //     dni: data.dni,
-    //     firstName: data.firstName,
-    //     lastName: data.lastName,
-    //     phone: data.phone,
-    //     career: data.career,
-    //     degree: data.degree,
-    //     agreement: "",
-    //     cv: "",
-    //     price: data.price,
-    // }
-    // axiosInstance.post(`/specialists/`, newData).then(closeFunctions);
+    const cvFile = data.cvFile?.[0] as File;
+    const agreementFile = data.agreementFile?.[0] as File;
+
+    if (!dataSpecialist) {
+      const formData = new FormData();
+      formData.append('dni', data.dni);
+      formData.append('firstName', data.firstName);
+      formData.append('lastName', data.lastName);
+      formData.append('phone', data.phone);
+      formData.append('career', data.career);
+      formData.append('degree', data.degree);
+      formData.append('agreementFile', agreementFile);
+      formData.append('cvFile', cvFile);
+      formData.append('price', '3000');
+      formData.append('tuition', data.tuition);
+      formData.append('email', data.email);
+      formData.append('inscription', data.inscription);
+      formData.append('inscriptionDate', data.inscriptionDate.toString());
+      const headers = {
+        'Content-type': 'multipart/form-data',
+      };
+      axiosInstance.post(`/specialists`, formData, { headers }).then(() => {
+        closeFunctions();
+        onSave?.();
+      });
+    } else {
+      const newData = {
+        dni: data.dni,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        phone: data.phone,
+        career: data.career,
+        degree: data.degree,
+        price: data.price,
+        tuition: data.tuition,
+        inscriptionDate: data.inscriptionDate.toString(),
+        inscription: data.inscription,
+        email: data.email,
+      };
+      axiosInstance
+        .patch(`/specialists/${dataSpecialist.id}`, newData)
+        .then(() => {
+          closeFunctions();
+          onSave?.();
+          apply?.();
+        });
+    }
+  };
+  const searchUserForDNI = () => {
+    const { dni } = watch();
+    if (dni.length !== 8)
+      return SnackbarUtilities.warning(
+        'Asegurese de escribir los 8 digitos del DNI'
+      );
+    axiosInstance
+      .get(
+        `https://apiperu.dev/api/dni/${dni}?api_token=9a12c65ca41f46f89a08a564be455a611d07d54069b3454766309d35bcc35511`
+      )
+      .then(res => {
+        if (!res.data.success) return SnackbarUtilities.error(res.data.message);
+        const { apellido_paterno, apellido_materno, nombres } = res.data.data;
+        reset({
+          firstName: capitalizeText(nombres),
+          lastName: `${capitalizeText(apellido_paterno)} ${capitalizeText(
+            apellido_materno
+          )}`,
+        });
+      });
   };
   return (
     <Modal size={50} isOpenProp={isOpen}>
       <form onSubmit={handleSubmit(onSubmit)} className="card-specialist">
         <CloseIcon onClick={() => closeFunctions()} />
-        <h2>Registrar nuevo especialista</h2>
+        <h2>
+          {dataSpecialist ? 'Editar Datos' : 'Registrar nuevo especialista'}
+        </h2>
 
         <div className="specialist-col">
+          <Input
+            styleInput={4}
+            {...register('dni', {
+              required: true,
+              validate: validateDNI,
+            })}
+            placeholder="N°"
+            label="DNI"
+            errors={errors}
+            type="number"
+            handleSearch={!watch('id') ? searchUserForDNI : false}
+          />
           <Input
             styleInput={4}
             label="Nombres"
@@ -125,13 +192,6 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
         </div>
 
         <div className="specialist-col">
-          <Input
-            styleInput={4}
-            label="DNI"
-            {...register('dni', { required: true, validate: validateDNI })}
-            name="dni"
-            errors={errors}
-          />
           <Select
             label="Grado:"
             {...register('degree', {
@@ -191,7 +251,6 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
             styleInput={4}
             label="Celular"
             {...register('phone', {
-              required: true,
               validate: validateOnlyNumbers,
             })}
             name="phone"
@@ -202,7 +261,7 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
           <Input
             styleInput={4}
             label="Correo"
-            {...register('email', { required: true })}
+            {...register('email')}
             name="email"
             errors={errors}
           />
@@ -213,7 +272,7 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
             errors={errors}
           /> */}
         </div>
-        <div className="specialist-col">
+        {/* <div className="specialist-col">
           <Input
             styleInput={4}
             label="Curriculum Vitae"
@@ -230,9 +289,9 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
             name="agreementFile"
             errors={errors}
           />
-        </div>
+        </div> */}
         <Button
-          text={data ? 'Actualizar' : 'Guardar'}
+          text={dataSpecialist ? 'Actualizar' : 'Guardar'}
           type="submit"
           styleButton={4}
         />

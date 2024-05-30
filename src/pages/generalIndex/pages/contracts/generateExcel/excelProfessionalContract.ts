@@ -81,10 +81,9 @@ const excelProfessionalContract = async ({
   wk.getCell('B4').value = transformNomenclature(contract.name);
   wk.getCell('B5').value = contract.projectName;
   wk.getCell('B3').value = contract.municipality;
-  wk.getCell('B2').value = contract?.consortium?.name
-    ? 'CONSORCIO '
-    : '' +
-      (contract?.consortium?.name || contract?.company?.name).toUpperCase();
+  wk.getCell('B2').value =
+    (contract?.consortium?.name ? 'CONSORCIO ' : '') +
+    (contract?.consortium?.name || contract?.company?.name).toUpperCase();
 
   let rowNumberWk = 8;
 

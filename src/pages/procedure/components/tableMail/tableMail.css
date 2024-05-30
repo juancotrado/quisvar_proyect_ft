@@ -28,6 +28,7 @@
 }
 
 .tableMail-body-item {
+  max-width: 20rem;
   font-size: 0.73rem;
   font-style: normal;
   padding: 0 0.2rem;
@@ -55,8 +56,8 @@
   overflow: auto;
 }
 
-/* Set a fixed scrollable wrapper */
 .tableWrap {
+  /* Set a fixed scrollable wrapper */
   max-height: 100%;
   overflow: auto;
 }

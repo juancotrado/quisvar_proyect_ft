@@ -78,6 +78,7 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
             consortiumId,
             type,
             amount,
+            municipality,
           } = contract;
           reset({
             id,
@@ -94,6 +95,7 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
             contractNumber,
             type,
             amount,
+            municipality,
             idCoorp: companyId
               ? 'companyId-' + companyId
               : 'consortiumId-' + consortiumId,
@@ -101,6 +103,7 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
         } else {
           reset({
             contractNumber: 'Contrato N° 00',
+            municipality: 'Municipalidad de ',
           });
         }
       }
@@ -109,10 +112,7 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
       handleIsOpen.current.unsubscribe();
     };
   }, [reset, setJurisdictionSelectData]);
-  // const getContract = (contractId) => {
-  //   if (!contractId) return;
-  //   dispatch(getContractThunks(contractId));
-  // };
+
   useEffect(() => {
     getSpecialists();
   }, []);
@@ -173,6 +173,16 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
               name="projectShortName"
               type="text"
               placeholder="Nombre Corto del Proyecto "
+              errors={errors}
+            />
+            <Input
+              label="Municipalidad:"
+              {...register('municipality', {
+                validate: { validateWhiteSpace, validateCorrectTyping },
+              })}
+              name="municipality"
+              type="text"
+              placeholder="Municipalidad"
               errors={errors}
             />
           </div>

@@ -9,7 +9,11 @@ import {
 import { SnackbarUtilities, getFullName } from '../../../../utils';
 import { useState } from 'react';
 import { createColumnHelper } from '@tanstack/react-table';
-import { IconAction, IndeterminateCheckbox } from '../../../../components';
+import {
+  FloatingText,
+  IconAction,
+  IndeterminateCheckbox,
+} from '../../../../components';
 import { formatDateTimeUtc } from '../../../../utils/dayjsSpanish';
 import { TableMail } from '../../components/tableMail';
 import { LabelStatus } from '../../components';
@@ -78,6 +82,11 @@ const ReceptionView = ({
     ),
     columnHelper.accessor('header', {
       header: () => 'Asunto',
+      cell: ({ getValue }) => (
+        <FloatingText text={getValue()} yPos={10}>
+          <div className="text-ellipsis">{getValue()}</div>
+        </FloatingText>
+      ),
     }),
     columnHelper.accessor('status', {
       header: () => 'Estado',
@@ -94,7 +103,7 @@ const ReceptionView = ({
 
     columnHelper.accessor('office', {
       id: 'office-sender',
-      header: 'Remitente/Dependencia actual',
+      header: 'Remitente/Dependencia',
       cell: ({ getValue, row: { original } }) => {
         const userReceiver = original.users.find(
           user => user.type === 'SENDER'
@@ -104,7 +113,7 @@ const ReceptionView = ({
     }),
     columnHelper.accessor('office', {
       id: 'office-receiver',
-      header: 'Destinatario/Dependencia actual',
+      header: 'Destinatario/Dependencia',
       cell: ({ getValue, row: { original } }) => {
         const userReceiver = original.users.find(
           user => user.type === 'RECEIVER'

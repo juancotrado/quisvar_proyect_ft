@@ -8,28 +8,22 @@ import {
   useAddSpecialistsMutation,
   useDeleteSpecialtiesMutation,
 } from '../../hooks';
-import { isOpenViewPdf$ } from '../../../../../../../../services/sharingSubject';
-import { SpecialistDeclarationPdf } from '../../../../../../../userCenter/pages/users/pdfGenerator/specialistDeclarationPdf';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../../../../../store';
 
 interface ListProfessionalItemProps {
   contractSpecialty: ContractSpecialties;
-  onSave?: () => void;
+  handleViewPdf: (specialists: Specialists, specialityName: string) => void;
 }
 
 const ListProfessionalItem = ({
   contractSpecialty,
-  onSave,
+  handleViewPdf,
 }: ListProfessionalItemProps) => {
-  console.log('contractSpecialty', contractSpecialty);
   const {
     listSpecialties,
     specialists,
     id: contractSpecialtiesId,
     contratcId,
   } = contractSpecialty;
-  const contract = useSelector((state: RootState) => state.contract);
 
   const addSpecialistsMutation = useAddSpecialistsMutation();
   const deleteSpecialtiesMutation = useDeleteSpecialtiesMutation();
@@ -45,21 +39,8 @@ const ListProfessionalItem = ({
   const handleDeleteSpecialty = async () =>
     deleteSpecialtiesMutation.mutate({ contractSpecialtiesId, contratcId });
 
-  const handleViewPdf = () => {
-    if (!specialists || !contract) return;
-    const newSpecialists = {
-      ...specialists,
-      speciality: listSpecialties.name,
-      nameContract: contract.name,
-      corporation: contract.company.name,
-      projectName: contract.projectName,
-      cui: contract.cui,
-    };
-    isOpenViewPdf$.setSubject = {
-      fileNamePdf: specialists.firstName + ' ' + specialists.lastName,
-      pdfComponentFunction: SpecialistDeclarationPdf({ data: newSpecialists }),
-      isOpen: true,
-    };
+  const pressPdf = () => {
+    if (specialists) handleViewPdf(specialists, listSpecialties.name);
   };
   return (
     <div className="listProfessionalItem">
@@ -107,8 +88,8 @@ const ListProfessionalItem = ({
           icon="pdf-red"
           position="none"
           classNameText="listProfessionalItem-text-icon"
-          text="Declaracio jurada"
-          onClick={handleViewPdf}
+          text="Declaración jurada"
+          onClick={pressPdf}
         />
         <IconAction
           icon="trash-gray"

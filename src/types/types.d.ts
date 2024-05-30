@@ -377,6 +377,7 @@ export interface ContractForm {
   contractNumber: string;
   projectName: string;
   department: string;
+  municipality: string;
   province: string;
   district: string;
   type: ContractType;
@@ -404,7 +405,7 @@ interface Contract extends ContractForm {
   companyId: number | null;
   consortiumId: number | null;
   consortium: ConsortiumType;
-  company: CompanyType;
+  company: Companies;
   isIndependent: boolean;
   details: string | null;
   phases: string;
@@ -728,6 +729,7 @@ export type ConsortiumType = {
   manager: string;
   name: string;
   companies: SubCompany[];
+  img: string;
 };
 export interface ConsortiumTypeForm extends ConsortiumType {
   img: FileList;

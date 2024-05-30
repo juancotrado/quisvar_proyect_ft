@@ -1,5 +1,6 @@
 import {
   Button,
+  FloatingText,
   HeaderOptionBtn,
   IconAction,
   Select,
@@ -52,6 +53,11 @@ const Communications = () => {
 
     columnHelper.accessor('header', {
       header: () => 'Asunto',
+      cell: ({ getValue }) => (
+        <FloatingText text={getValue()} yPos={10}>
+          <div className="text-ellipsis">{getValue()}</div>
+        </FloatingText>
+      ),
     }),
     columnHelper.accessor('updatedAt', {
       header: 'Fecha de envio',

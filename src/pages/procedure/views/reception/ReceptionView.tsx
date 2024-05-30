@@ -104,11 +104,11 @@ const ReceptionView = ({
     columnHelper.accessor('office', {
       id: 'office-sender',
       header: 'Remitente/Dependencia',
-      cell: ({ getValue, row: { original } }) => {
+      cell: ({ row: { original } }) => {
         const userReceiver = original.users.find(
           user => user.type === 'SENDER'
         )?.user;
-        return getValue()?.name || getFullName(userReceiver);
+        return getFullName(userReceiver);
       },
     }),
     columnHelper.accessor('office', {

@@ -152,8 +152,7 @@ const RegularProcedure = () => {
             ({ users }) => users.find(user => user.type === 'SENDER')?.user,
             {
               id: 'sender',
-              cell: ({ getValue, row: { original } }) =>
-                original.office?.name || getFullName(getValue()),
+              cell: ({ getValue }) => getFullName(getValue()),
               header: () => 'Remitente',
               enableHiding: true,
             }
@@ -166,8 +165,7 @@ const RegularProcedure = () => {
             ({ users }) => users.find(user => user.type === 'RECEIVER')?.user,
             {
               id: 'receiver',
-              cell: ({ getValue, row: { original } }) =>
-                original.office?.name || getFullName(getValue()),
+              cell: ({ getValue }) => getFullName(getValue()),
               header: () => 'Destinatario',
             }
           ),

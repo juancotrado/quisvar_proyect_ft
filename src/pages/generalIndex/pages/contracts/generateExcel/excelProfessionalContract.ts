@@ -24,7 +24,7 @@ const excelProfessionalContract = async ({
   await workbook.xlsx.load(buffer);
   const wk2 = workbook.getWorksheet('Hoja2');
 
-  const contractSpecialitiesRerverse = [...contractSpecialities];
+  const contractSpecialitiesRerverse = [...contractSpecialities].reverse();
   if (!wk2) return;
 
   wk2.getCell('B3').value = contract.projectName;

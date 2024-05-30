@@ -101,7 +101,7 @@ export const MessagePage = () => {
     navigate('/tramites/tramite-de-pago');
   };
 
-  const isUserInitMessage = userSessionId === message.userInit.userId;
+  const isUserInitMessage = userSessionId === message.userInit?.userId;
 
   const handleOptionSelect = (option: 'continue' | 'finish') =>
     setProcedureOption(option);
@@ -177,7 +177,7 @@ export const MessagePage = () => {
 
     return contacts;
   };
-  const { firstName, lastName } = message.userInit.user.profile;
+  const { firstName, lastName } = message.userInit?.user.profile;
 
   return (
     <div className={`message-page-container `}>

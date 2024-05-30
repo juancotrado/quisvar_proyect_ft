@@ -193,7 +193,7 @@ const RegularProcedure = () => {
         />
       ),
     }),
-    columnHelper.accessor(({ userInit }) => userInit.user, {
+    columnHelper.accessor(({ userInit }) => userInit?.user, {
       header: 'Tramitante',
       cell: ({ getValue }) => getFullName(getValue()),
     }),

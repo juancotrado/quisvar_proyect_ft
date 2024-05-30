@@ -63,7 +63,7 @@ const GenerateOrderService = ({
   };
 
   const getData = () => {
-    const { profile, ruc, address } = message.userInit.user;
+    const { profile, ruc, address } = message.userInit?.user;
     const { company, ...formData } = watch();
     const dataServiceOrder = {
       ...formData,

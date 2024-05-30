@@ -66,6 +66,7 @@ export interface ViewRegisterUser extends OpenModal {
 }
 export interface CardSpecialistProps extends OpenModal {
   data?: Specialists;
+  function?: () => void;
 }
 export interface OpenConfirmAction extends OpenModal {
   function: () => void;

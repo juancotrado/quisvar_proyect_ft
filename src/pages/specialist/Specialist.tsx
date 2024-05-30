@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Input, Button, Aside } from '../../components';
 import { isOpenCardSpecialist$ } from '../../services/sharingSubject';
 import './specialist.css';
-import { SpecialistList, Specialists } from '../../types';
+import { SpecialistList } from '../../types';
 import { axiosInstance } from '../../services/axiosInstance';
 import { getIconDefault } from '../../utils';
 import { NavLink, Outlet } from 'react-router-dom';
@@ -18,7 +18,6 @@ export const Specialist = () => {
   }, []);
   const getSpecialists = () => {
     axiosInstance.get('/specialists').then(item => setSpecialist(item.data));
-    axiosInstance.get('/listSpecialties').then(item => console.log(item.data));
   };
   const handleAddSpecilist = () => {
     isOpenCardSpecialist$.setSubject = {
@@ -73,7 +72,9 @@ export const Specialist = () => {
         {specialist &&
           specialist.map(item => (
             <NavLink
-              className="specialist-items"
+              className={({ isActive }) =>
+                `specialist-items  ${isActive && 'contract-selected'} `
+              }
               key={item.id}
               to={`informacion/${item.id}`}
             >

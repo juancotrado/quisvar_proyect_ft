@@ -88,7 +88,7 @@ const ListProfessionalItem = ({
           icon="pdf-red"
           position="none"
           classNameText="listProfessionalItem-text-icon"
-          text="Declaracio jurada"
+          text="Declaración jurada"
           onClick={pressPdf}
         />
         <IconAction

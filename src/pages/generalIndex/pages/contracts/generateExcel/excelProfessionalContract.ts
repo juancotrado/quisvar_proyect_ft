@@ -24,17 +24,22 @@ const excelProfessionalContract = async ({
   await workbook.xlsx.load(buffer);
   const wk2 = workbook.getWorksheet('Hoja2');
 
+  const contractSpecialitiesRerverse = [...contractSpecialities];
   if (!wk2) return;
 
   wk2.getCell('B3').value = contract.projectName;
   wk2.getCell('B2').value = transformNomenclature(contract.name);
   let rowNumberWk2 = 6;
 
-  contractSpecialities?.forEach(({ listSpecialties, specialists }) => {
+  contractSpecialitiesRerverse.forEach(({ listSpecialties, specialists }) => {
     const row = wk2.insertRow(rowNumberWk2, [
       null,
       listSpecialties.name,
-      (specialists?.firstName + ' ' + specialists?.lastName).toUpperCase(),
+      (
+        (specialists?.firstName ?? '') +
+        ' ' +
+        (specialists?.lastName ?? '')
+      ).toUpperCase(),
       0,
       null,
       null,
@@ -76,18 +81,23 @@ const excelProfessionalContract = async ({
   wk.getCell('B4').value = transformNomenclature(contract.name);
   wk.getCell('B5').value = contract.projectName;
   wk.getCell('B3').value = contract.municipality;
-  wk.getCell('B2').value =
-    'CONSORCIO ' +
-    (contract?.consortium?.name || contract?.company?.name).toUpperCase();
+  wk.getCell('B2').value = contract?.consortium?.name
+    ? 'CONSORCIO '
+    : '' +
+      (contract?.consortium?.name || contract?.company?.name).toUpperCase();
 
   let rowNumberWk = 8;
 
-  contractSpecialities?.forEach(({ listSpecialties, specialists }) => {
+  contractSpecialitiesRerverse.forEach(({ listSpecialties, specialists }) => {
     const row = wk.insertRow(rowNumberWk, [
       null,
       listSpecialties.name,
-      (specialists?.firstName + ' ' + specialists?.lastName).toUpperCase(),
-      specialists?.tuition + ': ' + specialists?.inscription,
+      (
+        (specialists?.firstName ?? '') +
+        ' ' +
+        (specialists?.lastName ?? '')
+      ).toUpperCase(),
+      (specialists?.tuition ?? '') + ': ' + (specialists?.inscription ?? ''),
     ]);
     row.height = 22.5;
     fontExcelStyle({
@@ -119,7 +129,7 @@ const excelProfessionalContract = async ({
     size: 12,
     name: 'Calibri',
   };
-  exportExcel('project-report', workbook);
+  exportExcel('Lista de profesionales - planilla', workbook);
 };
 
 export { excelProfessionalContract };

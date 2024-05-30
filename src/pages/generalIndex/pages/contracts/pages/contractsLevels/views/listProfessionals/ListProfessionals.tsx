@@ -40,14 +40,11 @@ const ListProfessionals = ({ idContract }: ListProfessionalsProp) => {
   const handleViewPdf = (specialists: Specialists, specialityName: string) => {
     if (!specialists || !contract) return;
     const { company, consortium } = contract;
-    // const { img: imgConsortium } = contract?.consortium;
     const srcImage = `${URL}/images/img/${
       company?.img
         ? `companies/${company?.img}`
         : `consortium/${consortium?.img}`
     }`;
-
-    console.log('srcImage', srcImage);
     const newSpecialists = {
       ...specialists,
       speciality: specialityName,
@@ -59,7 +56,11 @@ const ListProfessionals = ({ idContract }: ListProfessionalsProp) => {
       srcImage,
     };
     isOpenViewPdf$.setSubject = {
-      fileNamePdf: specialists.firstName + ' ' + specialists.lastName,
+      fileNamePdf:
+        'Declaración jurada - ' +
+        specialists.firstName +
+        ' ' +
+        specialists.lastName,
       pdfComponentFunction: SpecialistDeclarationPdf({ data: newSpecialists }),
       isOpen: true,
     };

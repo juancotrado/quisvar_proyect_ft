@@ -949,6 +949,7 @@ export interface MessageType {
   filesPay: {
     files: fileMesage[];
   }[];
+  beforeOffice: string;
   office: Office;
   files?: fileMesage[];
   status: MessageStatus;

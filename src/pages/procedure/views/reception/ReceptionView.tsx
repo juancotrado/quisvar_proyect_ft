@@ -103,7 +103,7 @@ const ReceptionView = ({
 
     columnHelper.accessor('office', {
       id: 'office-sender',
-      header: 'Remitente/Dependencia',
+      header: 'Dependencia previa',
       cell: ({ row: { original } }) => {
         const userReceiver = original.users.find(
           user => user.type === 'SENDER'
@@ -113,7 +113,7 @@ const ReceptionView = ({
     }),
     columnHelper.accessor('office', {
       id: 'office-receiver',
-      header: 'Destinatario/Dependencia',
+      header: 'Dependencia actual',
       cell: ({ getValue, row: { original } }) => {
         const userReceiver = original.users.find(
           user => user.type === 'RECEIVER'

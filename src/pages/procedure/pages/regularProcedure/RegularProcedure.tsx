@@ -149,12 +149,14 @@ const RegularProcedure = () => {
     ...(typeMail !== 'SENDER'
       ? [
           columnHelper.accessor(
-            ({ users }) => users.find(user => user.type === 'SENDER')?.user,
+            ({ users }) =>
+              users.find(user => user.type === 'SENDER' && user.role === 'MAIN')
+                ?.user,
             {
               id: 'sender',
-              cell: ({ getValue }) => getFullName(getValue()),
+              cell: ({ getValue, row: { original } }) =>
+                original.beforeOffice || getFullName(getValue()),
               header: () => 'Remitente',
-              enableHiding: true,
             }
           ),
         ]
@@ -162,11 +164,15 @@ const RegularProcedure = () => {
     ...(typeMail !== 'RECEIVER'
       ? [
           columnHelper.accessor(
-            ({ users }) => users.find(user => user.type === 'RECEIVER')?.user,
+            ({ users }) =>
+              users.find(
+                user => user.type === 'RECEIVER' && user.role === 'MAIN'
+              )?.user,
             {
               id: 'receiver',
-              cell: ({ getValue }) => getFullName(getValue()),
-              header: () => 'Destinatario',
+              cell: ({ getValue, row: { original } }) =>
+                original.office?.name || getFullName(getValue()),
+              header: () => 'Dependencia actual',
             }
           ),
         ]

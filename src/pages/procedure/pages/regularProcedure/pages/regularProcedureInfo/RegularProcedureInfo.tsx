@@ -58,13 +58,13 @@ const RegularProcedureInfo = () => {
   };
   const onSubmit = async (data: ProcedureSubmit) => {
     const { fileUploadFiles, values, mainFile } = data;
-    const { header, receiverId, title, description } = values;
+    const { header, receiverId, title, description, officeId } = values;
     const formData = new FormData();
     fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
     formData.append('mainProcedure', mainFile, values.title + '.pdf');
     formData.append(
       'data',
-      JSON.stringify({ header, receiverId, title, description })
+      JSON.stringify({ header, receiverId, title, description, officeId })
     );
     axiosInstance
       .post(`/mail/${messageId}/reply?status=PENDIENTE`, formData)

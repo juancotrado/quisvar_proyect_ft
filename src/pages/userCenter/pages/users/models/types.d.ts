@@ -14,13 +14,13 @@ export interface ContractUser {
   numberContract: number;
 }
 export interface OfficeSelect {
-  id: numnber;
+  id: number;
   label: string;
   quantity?: number;
   value: string;
 }
 export interface SpecialtiesSelect {
-  id: numnber;
+  id: number;
   label: string;
   value: string;
 }

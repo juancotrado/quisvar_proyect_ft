@@ -288,9 +288,16 @@ const InvoicePdf = ({ dataXml, company }: InvoicePdfProps) => {
           </View>
         </View>
         <View style={styles.footer}>
-          <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
+          <View
+            style={{
+              flexDirection: 'row',
+              gap: 5,
+              alignItems: 'center',
+              width: '40%',
+            }}
+          >
             <Image src={ubi} style={{ height: 12, width: 10 }} />
-            <Text style={{ ...styles.textSmallGray, width: '40%' }}>
+            <Text style={{ ...styles.textSmallGray }}>
               {
                 dataXml['cac:SellerSupplierParty']['cac:Party'][
                   'cac:PostalAddress'
@@ -303,6 +310,7 @@ const InvoicePdf = ({ dataXml, company }: InvoicePdfProps) => {
               flexDirection: 'row',
               gap: 5,
               alignItems: 'center',
+              width: '25%',
             }}
           >
             <Image src={phone} style={{ height: 10 }} />
@@ -313,6 +321,7 @@ const InvoicePdf = ({ dataXml, company }: InvoicePdfProps) => {
               flexDirection: 'row',
               gap: 5,
               alignItems: 'center',
+              width: '25%',
             }}
           >
             <Image src={email} style={{ height: 10 }} />

@@ -109,7 +109,7 @@ export const CustomizableInvoice = () => {
             type="color"
             onChange={handleChangeData}
             name="color"
-            disabled={!company || companySelectQuery.isFetching}
+            disabled={!company}
             value={company?.color || '#fff'}
           />
         </div>
@@ -118,12 +118,14 @@ export const CustomizableInvoice = () => {
             label="Celular:"
             onChange={handleChangeData}
             value={company?.phone || ''}
+            disabled={!company}
             placeholder="celular"
             name="phone"
           />
           <Input
             onChange={handleChangeData}
             label="Correo:"
+            disabled={!company}
             value={company?.email || ''}
             placeholder="correo electronico"
             name="email"

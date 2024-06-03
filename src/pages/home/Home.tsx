@@ -157,7 +157,7 @@ export const Home = () => {
         size={2}
         onClick={() => setIsExpanded(!isExpanded)}
       />
-      {isExpanded && <CardMoreOptions isExpanded={isExpanded} />}
+      {isExpanded && <CardMoreOptions />}
       <h1 className="home-title">
         {profile.gender === 'F' ? (
           <>

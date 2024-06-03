@@ -107,7 +107,6 @@ export const styles = StyleSheet.create({
   textSmallGray: {
     fontSize: 10,
     fontFamily: 'Arial Narrow',
-    textAlign: 'justify',
     color: '#606060',
   },
   textBold: {

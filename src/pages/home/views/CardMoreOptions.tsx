@@ -2,10 +2,7 @@ import { useNavigate } from 'react-router-dom';
 import './cardMoreOptions.css';
 import { motion } from 'framer-motion';
 
-interface CardMoreOptionsProps {
-  isExpanded: boolean;
-}
-const CardMoreOptions = ({ isExpanded }: CardMoreOptionsProps) => {
+const CardMoreOptions = () => {
   const navigate = useNavigate();
   const options = [
     {

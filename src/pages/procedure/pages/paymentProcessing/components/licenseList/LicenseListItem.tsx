@@ -6,7 +6,7 @@ import { licenseList } from '../../../../../../types';
 import './LicenseListItem.css';
 import { formatDate } from '../../../../../../utils';
 import ButtonDelete from '../../../../../../components/button/ButtonDelete';
-import { Button } from '../../../../../../components';
+import { Button, DefaultUserImage } from '../../../../../../components';
 import { SocketContext } from '../../../../../../context';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../store';
@@ -17,7 +17,10 @@ type license = {
   editData?: () => void;
   onSave?: () => void;
 };
-
+interface NameParts {
+  firstName: string;
+  lastName: string;
+}
 export const LicenseListItem = ({
   isEmployee,
   data,
@@ -32,6 +35,7 @@ export const LicenseListItem = ({
   const { id } = useSelector((state: RootState) => state.userSession);
   const userName = users.find(user => data.usersId === user.id);
   const supervisorName = users.find(user => data.supervisorId === user.id);
+
   const handleFeedback = (e: React.FocusEvent<HTMLInputElement>) => {
     setFeedback(e.target.value);
   };
@@ -60,6 +64,20 @@ export const LicenseListItem = ({
     });
     return value ? res : '---';
   };
+  const splitFullName = (fullName: string): NameParts => {
+    const words = fullName.trim().split(/\s+/);
+
+    if (words.length === 1) {
+      return { firstName: words[0], lastName: '' };
+    } else if (words.length === 2) {
+      return { firstName: words[0], lastName: words[1] };
+    } else {
+      const firstName = words.slice(0, words.length - 2).join(' ');
+      const lastName = words.slice(words.length - 2).join(' ');
+      return { firstName, lastName };
+    }
+  };
+
   return (
     <div
       className={`license-item-content ${
@@ -86,7 +104,17 @@ export const LicenseListItem = ({
         style={{ justifyContent: 'center' }}
         title={data.supervisorId ? supervisorName?.name : '---'}
       >
-        {data.supervisorId ? supervisorName?.name : '---'}
+        {supervisorName ? (
+          <DefaultUserImage
+            user={{
+              firstName: splitFullName(supervisorName.name).firstName,
+              lastName: splitFullName(supervisorName.name).lastName,
+              dni: `000000${supervisorName.id}`,
+            }}
+          />
+        ) : (
+          '---'
+        )}
       </div>
       <div
         className="license-header-items"

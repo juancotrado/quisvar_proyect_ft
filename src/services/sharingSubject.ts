@@ -9,6 +9,7 @@ import {
   CardViewProps,
   CardWorkStationProps,
   OpenAssignCard,
+  OpenCardFiles,
   OpenConfirmAction,
   OpenEspecialistExperienceDescription,
   OpenEspecialistTrainingDescription,
@@ -38,7 +39,7 @@ export const isOpenCardCompany$ = new SubjectManager<OpenWithId>();
 export const isOpenCardConsortium$ = new SubjectManager<OpenWithId>();
 export const isOpenCardSpecialist$ = new SubjectManager<CardSpecialistProps>();
 export const isOpenCardViewPdf$ = new SubjectManager<CardViewProps>();
-export const isOpenCardFiles$ = new SubjectManager<boolean>();
+export const isOpenCardFiles$ = new SubjectManager<OpenCardFiles>();
 export const isOpenAddExperience$ =
   new SubjectManager<OpenEspecialistExperienceDescription>();
 export const isOpenAddTraining$ =

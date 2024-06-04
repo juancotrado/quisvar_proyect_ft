@@ -11,8 +11,10 @@ import { motion } from 'framer-motion';
 import { getIconDefault } from '../../utils';
 import { getUserSession } from '../../store/slices/userSession.slice';
 import { MenuMoreInfo } from '../../types';
+import { QueryClient } from '@tanstack/react-query';
 
 const Sidebar = () => {
+  const queryClient = new QueryClient();
   const { stageId, taskId } = useParams();
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
@@ -77,6 +79,7 @@ const Sidebar = () => {
   };
 
   const handleLogout = () => {
+    queryClient.clear();
     localStorage.removeItem('token');
     localStorage.removeItem('arrChecked');
     socket.disconnect();

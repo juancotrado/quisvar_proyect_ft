@@ -1,16 +1,21 @@
-import { useState } from 'react';
 import { GeneralFile } from '../types';
 import { axiosInstance } from '../services/axiosInstance';
+import { useQuery } from '@tanstack/react-query';
 
+const getGeneralFiles = async () => {
+  const res = await axiosInstance.get<GeneralFile[]>('/files/generalFiles', {
+    headers: {
+      noLoader: true,
+    },
+  });
+  return res.data;
+};
 const useDirectives = () => {
-  const [generalFiles, setGeneralFiles] = useState<GeneralFile[] | null>(null);
-  const getGeneralFiles = async () => {
-    await axiosInstance.get('/files/generalFiles').then(res => {
-      setGeneralFiles(res.data);
-    });
-  };
-
-  return { generalFiles, getGeneralFiles };
+  const directivesQuery = useQuery({
+    queryKey: ['generalFiles'],
+    queryFn: getGeneralFiles,
+  });
+  return directivesQuery;
 };
 
 export default useDirectives;

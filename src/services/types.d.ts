@@ -60,6 +60,9 @@ export interface CardLicenseProps extends OpenModal {
   type?: string;
   data?: licenseList;
 }
+export interface OpenCardFiles extends OpenModal {
+  isAdmin?: boolean;
+}
 export interface ViewRegisterUser extends OpenModal {
   user?: User;
   roles: RoleForm[];

@@ -265,3 +265,13 @@ legend {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+.card-register {
+  background-color: white;
+  display: flex;
+  padding: 0.2rem;
+  flex-direction: column;
+  gap: 1rem;
+  border: 2rem solid #fff;
+  border-radius: var(--radius-button);
+}

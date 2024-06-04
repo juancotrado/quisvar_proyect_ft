@@ -62,7 +62,7 @@ const CardObservations = () => {
       <CloseIcon onClick={closeFunctions} />
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="card-register-project"
+        className="card-register"
         autoComplete="off"
       >
         <h2>Observaciones</h2>

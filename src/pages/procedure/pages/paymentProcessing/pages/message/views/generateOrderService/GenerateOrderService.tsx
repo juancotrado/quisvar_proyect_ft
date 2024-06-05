@@ -89,7 +89,7 @@ const GenerateOrderService = ({
       isOpen: true,
     };
   };
-  console.log(watch('company')?.orderQuantity);
+  const hasRuc = !!getData().ruc.length;
   return (
     <div className="generateOrderService">
       <h2 className="generateOrderService-title">
@@ -153,6 +153,7 @@ const GenerateOrderService = ({
             placeholder="Monto"
             name="amount"
             type="number"
+            step={3}
           />
           <Select
             label="Tipo de pago:"
@@ -189,7 +190,13 @@ const GenerateOrderService = ({
             type="text"
           />
         )}
-        <Button className={`messagePage-btn-submit`} text="Enviar Formulario" />
+        {!hasRuc && <span style={{ color: 'red' }}>Usuario sin ruc</span>}
+
+        <Button
+          className={`messagePage-btn-submit`}
+          text="Enviar Formulario"
+          disabled={hasRuc}
+        />
       </form>
       <div className="generateOrderService-previews-btns">
         <Button

@@ -75,7 +75,6 @@ function tableMail<T extends objectTable>({
     rowSelectionData(dataSelection);
   }, [rowSelection]);
 
-  console.log('table', table.getRowModel().rows);
   return (
     <>
       <div className="table-container">

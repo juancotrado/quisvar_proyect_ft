@@ -33,9 +33,11 @@ const RegularProcedureInfo = () => {
   }, [messageId]);
 
   const getMessage = () => {
-    axiosInstance.get<MessageType>(`/mail/${messageId}`).then(({ data }) => {
-      setMessage(data);
-    });
+    axiosInstance
+      .get<MessageType>(`/mail/${messageId}`, { params: searchParams })
+      .then(({ data }) => {
+        setMessage(data);
+      });
   };
   if (!message)
     return (

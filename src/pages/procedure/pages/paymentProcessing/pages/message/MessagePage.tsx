@@ -58,9 +58,11 @@ export const MessagePage = () => {
   //----------------------------------------------------------------------------
   const getMessage = useCallback(
     (id: string) => {
-      axiosInstance.get(`/paymail/${id}`).then(res => {
-        setMessage(res.data);
-      });
+      axiosInstance
+        .get(`/paymail/${id}`, { params: searchParams })
+        .then(res => {
+          setMessage(res.data);
+        });
     },
     [userSessionId]
   );
@@ -100,8 +102,11 @@ export const MessagePage = () => {
     payMailQuery.refetch();
     navigate('/tramites/tramite-de-pago');
   };
-
-  const isUserInitMessage = userSessionId === message.userInit?.userId;
+  //---------------------------------------------------------------------
+  const officeId = searchParams.get('officeId');
+  //---------------------------------------------------------------------
+  const isUserInitMessage =
+    userSessionId === message.userInit?.userId && !officeId;
 
   const handleOptionSelect = (option: 'continue' | 'finish') =>
     setProcedureOption(option);

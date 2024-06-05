@@ -6,8 +6,10 @@ import { axiosInstance } from '../../../../../../../../services/axiosInstance';
 import { CardSubtaskDone, CardSubtaskHold, CardSubtaskProcess } from './views';
 import { SocketContext } from '../../../../../../../../context';
 import { LoaderForComponent } from '../../../../../../../../components';
-
-export const Task = () => {
+interface TaskProps {
+  optionBack?: boolean;
+}
+export const Task = ({ optionBack }: TaskProps) => {
   const [task, setTask] = useState<SubTask | null>(null);
   const socket = useContext(SocketContext);
 
@@ -40,9 +42,13 @@ export const Task = () => {
 
   const navigate = useNavigate();
   const goBack = () => {
-    navigate(
-      `/especialidades/proyecto/${projectId}/etapa/${stageId}/presupuestos`
-    );
+    if (optionBack) {
+      navigate(`/grupos/resumen/tareas`);
+    } else {
+      navigate(
+        `/especialidades/proyecto/${projectId}/etapa/${stageId}/presupuestos`
+      );
+    }
   };
   if (!task)
     return (

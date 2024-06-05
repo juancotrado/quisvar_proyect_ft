@@ -45,6 +45,7 @@ import {
   RegularProcedureInfo,
   RecoveryPassword,
   TaskBasics,
+  GroupTaskFilter,
 } from '../pages';
 import { ProtectedRole, ProtectedRoute } from '../guards';
 import { NavigationSubMenu } from '.';
@@ -153,6 +154,12 @@ const Navigation = () => {
                   path="resumen/reuniones"
                   element={<GroupMeetingFilter />}
                 ></Route>
+                <Route path="resumen/tareas" element={<GroupTaskFilter />}>
+                  <Route
+                    path="tarea/:taskId"
+                    element={<Task optionBack={true} />}
+                  />
+                </Route>
                 <Route
                   path="resumen/asistencias"
                   element={<GroupAttendanceFilter />}

@@ -198,10 +198,10 @@ const Navigation = () => {
                 element={<NotificationsList />}
               />
             </Route>
+            <Route path="/factura" element={<CustomizableInvoice />} />
           </Route>
           <Route path="/mis-tareas" element={<ListPersonalTask />} />
           <Route path="/reportes" element={<CommingSoon />} />
-          <Route path="/factura" element={<CustomizableInvoice />} />
           <Route path="/*" element={<NotFound />} />
         </Routes>
       </HashRouter>

@@ -1133,6 +1133,9 @@ export interface Companies {
   id: number;
   name: string;
   ruc: string;
+  color: string;
+  phone: string;
+  email: string;
   manager: string;
   address: string;
   departure: string;
@@ -1330,4 +1333,8 @@ export interface DataLicense {
 export interface PaginationTable {
   pageIndex: number;
   pageSize: number;
+}
+export interface CompaniesSelect extends Companies {
+  value: string;
+  label: string;
 }

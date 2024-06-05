@@ -93,7 +93,7 @@ const CardRegisterSubTask = () => {
     <Modal size={50} isOpenProp={isOpenModal}>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="card-register-project"
+        className="card-register"
         autoComplete="off"
       >
         <div className="subtask-head-title">

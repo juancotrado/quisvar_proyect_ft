@@ -31,8 +31,9 @@ const ListProfessionals = ({ idContract }: ListProfessionalsProp) => {
   const contract = useSelector((state: RootState) => state.contract);
 
   const handleSelectOption = async (option: SingleValue<SpecialtiesSelect>) => {
+    if (!option?.id) return;
     specialtiesSelectMutation.mutate({
-      listSpecialtiesId: option?.id,
+      listSpecialtiesId: option.id,
       contratcId: idContract,
     });
   };

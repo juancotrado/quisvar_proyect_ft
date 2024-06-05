@@ -15,6 +15,7 @@ import { SocketProvider } from '../../context/SocketContex';
 import { Subscription } from 'rxjs';
 import './protecdRoute.css';
 import { getAllServices } from '../../store/thunks/getAllInitServices..thunks';
+import { CardOpenFile } from '../../pages/userCenter/pages/users/views';
 
 export const ProtectedRoute = () => {
   const dispatch: AppDispatch = useDispatch();
@@ -53,6 +54,7 @@ export const ProtectedRoute = () => {
         <ViewPdf />
         <ViewHtmlToPdf />
         <ConfirmAction />
+        <CardOpenFile />
       </div>
     </SocketProvider>
   );

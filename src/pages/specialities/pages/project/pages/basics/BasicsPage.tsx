@@ -15,9 +15,9 @@ import {
 import { PDFDownloadLink } from '@react-pdf/renderer';
 import { GenerateIndexPdf } from '../budgets/pdfgenerator';
 import { COST_DATA, FILTER_OPTIONS } from '../budgets/models';
-import { MoreInfo, StatusText } from '../budgets/components';
+import { MoreInfo, StatusText } from '../../components';
 import { CardRegisterSubTask } from '../budgets/views';
-import { DropdownLevelBasics } from '../budgets/components/dropdownLevel/DropdownLevelBasics';
+import { DropdownLevelBasics } from '../../components/dropdownLevel/DropdownLevelBasics';
 
 export const BasicsPage = () => {
   const { stageId } = useParams();
@@ -29,35 +29,21 @@ export const BasicsPage = () => {
   const [levels, setlevels] = useState<Level | null>(null);
   const [openFilter, setOpenFilter] = useState(false);
   const socket = useContext(SocketContext);
-  const getLevels = useCallback(() => {
-    axiosInstance
-      .get(`/stages/${stageId}`, {
-        headers: { noLoader: true },
-      })
-      .then(async res => {
-        if (stageId) {
-          socket.emit('join', `project-${stageId}`);
-          const resBasic = await axiosInstance.get(`/basiclevels/${stageId}`, {
-            headers: { noLoader: true },
-          });
-          setlevels({
-            ...res.data,
-            stagesId: +stageId,
-            nextLevel: resBasic.data,
-          });
-        }
-      });
+
+  const getLevels = useCallback(async () => {
+    const resBasic = await axiosInstance.get(`/stages/basics/${stageId}`, {
+      headers: { noLoader: true },
+    });
+    setlevels(resBasic.data);
   }, [socket, stageId]);
+
   useEffect(() => {
     getLevels();
   }, [getLevels, stageId]);
+
   useEffect(() => {
     socket.on('server:update-project', () => {
       if (stageId) {
-        // axiosInstance.get(`/basiclevels/${stageId}`).then(res => {
-        //   setlevels({ ...Level, nextLevel: res.data });
-        // });
-
         getLevelsForSocket();
       }
     });
@@ -69,12 +55,6 @@ export const BasicsPage = () => {
   const getLevelsForSocket = () => {
     axiosInstance.get(`/stages/${stageId}`).then(async res => {
       const resBasic = await axiosInstance.get(`/basiclevels/${stageId}`);
-
-      // socket.emit('client:update-project', {
-      //   ...res.data,
-      //   stagesId: stageId,
-      //   nextLevel: resBasic.data,
-      // });
       setlevels({
         ...res.data,
         stagesId: stageId,
@@ -82,6 +62,7 @@ export const BasicsPage = () => {
       });
     });
   };
+
   const levelFilter = (value: StatusType | '') => {
     setStatus(value);
     axiosInstance
@@ -96,6 +77,7 @@ export const BasicsPage = () => {
         }
       });
   };
+
   const levelFilterForDegree = (value: DegreType) => {
     setDegree(value);
     axiosInstance

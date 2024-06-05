@@ -4,49 +4,49 @@ import { useEffect, useRef, useState } from 'react';
 import { isOpenCardFiles$ } from '../../../../../../services/sharingSubject';
 import { Subscription } from 'rxjs';
 import { URL } from '../../../../../../services/axiosInstance';
-import { GeneralFile } from '../../../../../../types';
-import { formatDate } from '../../../../../../utils';
 import {
   ButtonDelete,
   CloseIcon,
+  LoaderOnly,
   Modal,
   UploadFile,
 } from '../../../../../../components';
+import { useDirectives } from '../../../../../../hooks';
+import { formatDateTimeWeekdayUtc } from '../../../../../../utils/dayjsSpanish';
 
-interface CardOpenFileProps {
-  generalFiles: GeneralFile[];
-  getGeneralFiles?: () => void;
-}
+const CardOpenFile = () => {
+  const directivesQuery = useDirectives();
 
-const CardOpenFile = ({ generalFiles, getGeneralFiles }: CardOpenFileProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const handleIsOpen = useRef<Subscription>(new Subscription());
 
-  const closeFunctions = () => {
-    setIsOpen(false);
+  const getGeneralFiles = () => {
+    directivesQuery.refetch();
   };
+  const closeFunctions = () => setIsOpen(false);
+
   useEffect(() => {
-    handleIsOpen.current = isOpenCardFiles$.getSubject.subscribe(value =>
-      setIsOpen(value)
+    handleIsOpen.current = isOpenCardFiles$.getSubject.subscribe(
+      ({ isOpen, isAdmin = false }) => {
+        setIsOpen(isOpen);
+        setIsAdmin(isAdmin);
+      }
     );
-    return () => {
-      handleIsOpen.current.unsubscribe();
-    };
+    return () => handleIsOpen.current.unsubscribe();
   }, []);
-  const formatedDate = (date: string) =>
-    formatDate(new Date(date), {
-      day: 'numeric',
-      weekday: 'long',
-      month: 'long',
-      year: 'numeric',
-    });
 
   return (
     <Modal size={50} isOpenProp={isOpen}>
       <div className="card-register-users">
         <CloseIcon onClick={closeFunctions} />
         <h1>Directivas</h1>
-        {getGeneralFiles && (
+        {directivesQuery.isFetching && (
+          <div className="cardFile-loader">
+            <LoaderOnly />
+          </div>
+        )}
+        {isAdmin && (
           <div className="col-input card-open-file-main">
             <div className="card-open-file-contain">
               <UploadFile
@@ -61,38 +61,37 @@ const CardOpenFile = ({ generalFiles, getGeneralFiles }: CardOpenFileProps) => {
         )}
 
         <div className="card-open-files-contain">
-          {generalFiles &&
-            generalFiles.map(file => (
-              <div key={file.id} className="subtaskFile-contain">
-                <a
-                  href={`${URL}/${file.dir}`}
-                  target="_blank"
-                  className="subtaskFile-anchor"
-                  download={true}
-                >
-                  <img
-                    src="/svg/file-download.svg"
-                    alt="W3Schools"
-                    className="subtaskFile-icon"
-                  />
-                  <div className="card-openfile-info">
-                    <span className="card-openfile-name">{file.name}</span>
-                    <span className="card-openfile-date">
-                      {formatedDate(file.createdAt)}
-                    </span>
-                  </div>
-                </a>
+          {directivesQuery.data?.map(file => (
+            <div key={file.id} className="subtaskFile-contain">
+              <a
+                href={`${URL}/${file.dir}`}
+                target="_blank"
+                className="subtaskFile-anchor"
+                download={true}
+              >
+                <img
+                  src="/svg/file-download.svg"
+                  alt="W3Schools"
+                  className="subtaskFile-icon"
+                />
+                <div className="card-openfile-info">
+                  <span className="card-openfile-name">{file.name}</span>
+                  <span className="card-openfile-date">
+                    {formatDateTimeWeekdayUtc(file.createdAt)}
+                  </span>
+                </div>
+              </a>
 
-                {getGeneralFiles && (
-                  <ButtonDelete
-                    icon="trash-red"
-                    onSave={getGeneralFiles}
-                    url={`/files/generalFiles/${file.id}`}
-                    className="subtaskFile-btn-delete"
-                  />
-                )}
-              </div>
-            ))}
+              {isAdmin && (
+                <ButtonDelete
+                  icon="trash-red"
+                  onSave={getGeneralFiles}
+                  url={`/files/generalFiles/${file.id}`}
+                  className="subtaskFile-btn-delete"
+                />
+              )}
+            </div>
+          ))}
         </div>
       </div>
     </Modal>

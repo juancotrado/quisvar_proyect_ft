@@ -14,7 +14,7 @@ import {
   LoaderForComponent,
   Select,
 } from '../../../../../../components';
-import { DropdownLevel, MoreInfo, StatusText } from './components';
+import { DropdownLevel, MoreInfo, StatusText } from '../../components';
 import { COST_DATA, FILTER_OPTIONS } from './models';
 import { GenerateDetailedIndexPdf, GenerateIndexPdf } from './pdfgenerator';
 import { CardRegisterSubTask } from './views';

@@ -6,10 +6,9 @@ import { useCallback, useEffect, useState } from 'react';
 import { axiosInstance } from '../../services/axiosInstance';
 import { licenseList } from '../../types';
 import { formatDate } from '../../utils';
-import { Button } from '../../components';
-import { useDirectives } from '../../hooks';
+import { Button, IconAction } from '../../components';
 import { isOpenCardFiles$ } from '../../services/sharingSubject';
-import { CardOpenFile } from '../userCenter/pages/users/views';
+import CardMoreOptions from './views/CardMoreOptions';
 const GMT = 5 * 60 * 60 * 1000;
 type LicenseRes = {
   licenses: licenseList[];
@@ -18,9 +17,9 @@ type LicenseRes = {
 export const Home = () => {
   const { id, profile } = useSelector((state: RootState) => state.userSession);
   const [licenseData, setLicenseData] = useState<licenseList>();
+  const [isExpanded, setIsExpanded] = useState(false);
   const [viewCard, setViewCard] = useState<boolean>(false);
   const [disabledBtn, setDisabledBtn] = useState<boolean>(true);
-  const { generalFiles, getGeneralFiles } = useDirectives();
 
   const navigate = useNavigate();
   const handleNavigateToAreas = () => navigate('/especialidades');
@@ -37,36 +36,42 @@ export const Home = () => {
   const viewLicense = useCallback(() => {
     const now = new Date();
     const early = 2 * 60 * 60 * 1000;
-    axiosInstance.get<LicenseRes>(`/license/employee/${id}`).then(res => {
-      const untilDate = new Date(
-        new Date(res.data.licenses[0].untilDate).getTime() + GMT
-      );
-      const timer = now.getTime() > untilDate.getTime() - early;
-      if (
-        res.data.licenses[0]?.status === 'ACTIVO' &&
-        !res.data.licenses[0].fine
-      ) {
-        setLicenseData(res.data.licenses[0]);
-        setViewCard(true);
-      }
-      if (
-        res.data.licenses[0]?.status === 'ACTIVO' &&
-        timer &&
-        !res.data.licenses[0].fine
-      ) {
-        setLicenseData(res.data.licenses[0]);
-        setViewCard(true);
-        setDisabledBtn(false);
-      }
-      if (
-        res.data.licenses[0]?.status === 'INACTIVO' &&
-        !res.data.licenses[0].fine
-      ) {
-        setLicenseData(res.data.licenses[0]);
-        setViewCard(true);
-        setDisabledBtn(false);
-      }
-    });
+    axiosInstance
+      .get<LicenseRes>(`/license/employee/${id}`, {
+        headers: {
+          noLoader: true,
+        },
+      })
+      .then(res => {
+        const untilDate = new Date(
+          new Date(res.data.licenses[0].untilDate).getTime() + GMT
+        );
+        const timer = now.getTime() > untilDate.getTime() - early;
+        if (
+          res.data.licenses[0]?.status === 'ACTIVO' &&
+          !res.data.licenses[0].fine
+        ) {
+          setLicenseData(res.data.licenses[0]);
+          setViewCard(true);
+        }
+        if (
+          res.data.licenses[0]?.status === 'ACTIVO' &&
+          timer &&
+          !res.data.licenses[0].fine
+        ) {
+          setLicenseData(res.data.licenses[0]);
+          setViewCard(true);
+          setDisabledBtn(false);
+        }
+        if (
+          res.data.licenses[0]?.status === 'INACTIVO' &&
+          !res.data.licenses[0].fine
+        ) {
+          setLicenseData(res.data.licenses[0]);
+          setViewCard(true);
+          setDisabledBtn(false);
+        }
+      });
   }, [id]);
   useEffect(() => {
     if (licenseData && !licenseData.fine) {
@@ -87,7 +92,6 @@ export const Home = () => {
   useEffect(() => {
     if (id !== 0) {
       viewLicense();
-      getGeneralFiles();
     }
   }, [id, viewLicense]);
   const getDate = (value: string) => {
@@ -140,10 +144,18 @@ export const Home = () => {
       });
   };
   const handleOpenCardFiles = () => {
-    isOpenCardFiles$.setSubject = true;
+    isOpenCardFiles$.setSubject = {
+      isOpen: true,
+    };
   };
   return (
     <div className="home">
+      <IconAction
+        icon="more-options"
+        size={2}
+        onClick={() => setIsExpanded(!isExpanded)}
+      />
+      {isExpanded && <CardMoreOptions />}
       <h1 className="home-title">
         {profile.gender === 'F' ? (
           <>
@@ -213,7 +225,6 @@ export const Home = () => {
           </button>
         </div>
       )}
-      {generalFiles && <CardOpenFile generalFiles={generalFiles} />}
     </div>
   );
 };

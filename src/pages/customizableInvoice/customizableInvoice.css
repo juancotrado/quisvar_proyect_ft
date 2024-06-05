@@ -11,6 +11,8 @@
 .customizableInvoice-file-container {
   display: grid;
   gap: 0.8rem;
+  max-width: 35rem;
+  width: 100%;
 }
 
 .customizableInvoice-title {
@@ -20,6 +22,12 @@
   font-style: normal;
   font-weight: 800;
   line-height: normal;
+}
+.customizableInvoice-color-container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
 }
 
 .customizableInvoice-subtitle {
@@ -46,14 +54,18 @@
 }
 
 .customizableInvoice-btn-send {
+  cursor: pointer;
   padding: 1.5rem 3rem;
   border-radius: 0.45rem;
   background-color: var(--color-primary);
-
   color: #fff;
   text-align: center;
   font-size: 1.5rem;
   font-style: normal;
   font-weight: 700;
   line-height: 1.25rem;
+}
+.customizableInvoice-btn-send:disabled {
+  cursor: no-drop;
+  background-color: var(--color-gray);
 }

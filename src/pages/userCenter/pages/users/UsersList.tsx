@@ -89,7 +89,10 @@ const UsersList = () => {
     isOpenCardGenerateReport$.setSubject = true;
   };
   const handleOpenCardFiles = () => {
-    isOpenCardFiles$.setSubject = true;
+    isOpenCardFiles$.setSubject = {
+      isOpen: true,
+      isAdmin: true,
+    };
   };
   const handleOpenAddEquipment = (isOpen: boolean, data?: WorkStation) => {
     isOpenCardAddEquipment$.setSubject = {
@@ -186,12 +189,6 @@ const UsersList = () => {
       <CardAddEquipment onSave={getWorkStations} />
       <CardAssign onSave={getWorkStations} />
       <CardGenerateReport employeeId={printReportId} />
-      {generalFiles && (
-        <CardOpenFile
-          generalFiles={generalFiles}
-          getGeneralFiles={getGeneralFiles}
-        />
-      )}
       <CardViewDocs />
       <CardRegisterUser onSave={getUsers} generalFiles={generalFiles} />
     </div>

@@ -198,6 +198,19 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
             />
           </div>
           <div className="col-input">
+            {companies && (
+              <Select
+                label="Empresa o Consorcio :"
+                {...register('idCoorp')}
+                name="idCoorp"
+                data={companies}
+                extractValue={({ newId }) => newId}
+                renderTextField={({ name }) => name}
+                errors={errors}
+              />
+            )}
+          </div>
+          <div className="col-input">
             <Input
               label="Nomenclatura:"
               {...register('name', {
@@ -218,17 +231,7 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
               placeholder="CUI"
               errors={errors}
             />
-            {companies && (
-              <Select
-                label="Empresa o Consorcio :"
-                {...register('idCoorp')}
-                name="idCoorp"
-                data={companies}
-                extractValue={({ newId }) => newId}
-                renderTextField={({ name }) => name}
-                errors={errors}
-              />
-            )}
+
             <Input
               label="Monto:"
               {...register('amount', {

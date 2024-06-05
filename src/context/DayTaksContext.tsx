@@ -16,7 +16,7 @@ interface DayTaskContextType {
 }
 
 const INITIAL_VALUES: DayTask = {
-  isEdit: true,
+  isEdit: false,
 };
 
 export const DayTaskContext = createContext<DayTaskContextType>({

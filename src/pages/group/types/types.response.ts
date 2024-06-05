@@ -86,3 +86,31 @@ export interface Days {
     tasks: DutyTasks[];
   }[];
 }
+// interface Profile {
+//   firstName: string;
+//   lastName: string;
+//   dni: string;
+//   description: string | null;
+// }
+
+interface User {
+  firstName: string;
+  lastName: string;
+}
+
+interface Task {
+  name: string;
+  status: string;
+  updatedAt: Date;
+  days: number;
+  user: User;
+  stage: string;
+  project: string;
+  subTask: string;
+}
+
+export interface DayTasks {
+  day: string;
+  date: string;
+  tasks: Task[];
+}

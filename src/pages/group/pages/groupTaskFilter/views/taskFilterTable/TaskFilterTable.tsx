@@ -1,0 +1,58 @@
+import { NavLink } from 'react-router-dom';
+import { DayTasks } from '../../../../types';
+import './taskFilterTable.css';
+import { StatusText } from '../../../../../specialities/pages/project/components';
+import { StatusType } from '../../../../../../types';
+import {
+  formatDateTimeUtc,
+  formatDayMonthTimeUtc,
+} from '../../../../../../utils/dayjsSpanish';
+interface TaskFilterProps {
+  data: DayTasks;
+}
+const TaskFilterTable = ({ data }: TaskFilterProps) => {
+  return (
+    <div className="tft-main">
+      <div className="tft-sticky">
+        <h1 className="tft-title">
+          {data?.day + ' ' + formatDayMonthTimeUtc(data.date)}
+        </h1>
+        <div className="tft-header">
+          <h2 className="tft-htitle">ULTIMA MODIFICACION</h2>
+          <h2 className="tft-htitle">PROYECTO</h2>
+          <h2 className="tft-htitle">ETAPA</h2>
+          <h2 className="tft-htitle">TAREA</h2>
+          <h2 className="tft-htitle">USUARIO</h2>
+          <h2 className="tft-htitle">DIAS</h2>
+          <h2 className="tft-htitle">ESTADO</h2>
+        </div>
+      </div>
+      {data.tasks &&
+        data.tasks.map((task, index) => (
+          <NavLink
+            className={({ isActive }) =>
+              `tft-body pointer ${isActive && 'levelSubtask-content-active'}`
+            }
+            key={index}
+            to={`tarea/${task.subTask}`}
+          >
+            <h2 className="tft-htitle">{formatDateTimeUtc(task.updatedAt)}</h2>
+            <h2 className="tft-htitle">{task.project}</h2>
+            <h2 className="tft-htitle">{task.stage}</h2>
+            <h2 className="tft-htitle">{task.name}</h2>
+            <h2 className="tft-htitle">
+              {task.user
+                ? task.user.firstName + ' ' + task.user.lastName
+                : 'No asignado'}
+            </h2>
+            <h2 className="tft-htitle">{task.days}</h2>
+            <h2 className="tft-htitle">
+              <StatusText status={task.status as StatusType} />
+            </h2>
+          </NavLink>
+        ))}
+    </div>
+  );
+};
+
+export default TaskFilterTable;

@@ -12,3 +12,9 @@ export type ProjectList = {
   cui: string;
   projectName?: string;
 };
+export type Nav = {
+  to: string;
+  imgSrc: string;
+  imgAlt: string;
+  title: string;
+};

@@ -4,3 +4,4 @@ export * from './groupDaily';
 export * from './groupMeetingFilter';
 export * from './groupProjects';
 export * from './groupWeekend';
+export * from './groupTaskFilter';

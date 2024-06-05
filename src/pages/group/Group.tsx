@@ -13,6 +13,7 @@ import {
 } from '@dnd-kit/core';
 import { SortableContext, arrayMove } from '@dnd-kit/sortable';
 import { createPortal } from 'react-dom';
+import { navItemsMeetings, navItemsReports } from './models';
 // type Ids = {
 //   id: number;
 // };
@@ -72,7 +73,9 @@ export const Group = () => {
     <div className="gr-container">
       <Aside>
         <h1 className="gr-title">REUNIONES</h1>
-        <GroupMeetingBar />
+        <GroupMeetingBar itemOptions={navItemsMeetings} />
+        <h1 className="gr-title">REPORTES</h1>
+        <GroupMeetingBar itemOptions={navItemsReports} />
         <h1 className="gr-title">GRUPOS</h1>
         <DndContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
           <SortableContext items={itemsId ? itemsId : []} disabled={!editOrder}>

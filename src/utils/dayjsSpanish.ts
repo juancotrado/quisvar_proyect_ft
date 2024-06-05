@@ -51,7 +51,7 @@ export const formatDateTimeUtc = (
   separator: string = '/'
 ) => {
   const validDate = transformValidDate(date);
-  return validDate.format(`DD${separator}MM${separator}YYYY h:mm:ss A`);
+  return validDate.format(`DD${separator}MM${separator}YYYY h:mm A`);
 };
 
 // Returns date in "9/5/2024 7:18 PM" format
@@ -79,6 +79,11 @@ export const formatShortDateUtc = (date?: ConfigType) => {
 export const formatFullDateTimeUtc = (date?: ConfigType) => {
   const validDate = transformValidDate(date);
   return validDate.format('D [de] MMMM [de] YYYY h:mm A');
+};
+// Returns date and time in "15 de mayo" format
+export const formatDayMonthTimeUtc = (date?: ConfigType) => {
+  const validDate = transformValidDate(date);
+  return validDate.format('DD [de] MMMM');
 };
 
 // Returns date and time in "15 de may. de 2024 7:18 PM" format

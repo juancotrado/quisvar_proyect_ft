@@ -190,9 +190,11 @@ export const MessagePage = () => {
         <>
           {message.status === 'PAGADO' && (
             <div className="message-page-contain message-page-contain--right">
-              <div className="message-page-finish">
-                <h2>Tramite Finalizado</h2>
-              </div>
+              <CardRegisterVoucherDenyOrAccept
+                message={message}
+                onSave={handleSaveRegister}
+                viewBotton={false}
+              />
             </div>
           )}
           {(mainReceiver || mainReceiverFinish) &&

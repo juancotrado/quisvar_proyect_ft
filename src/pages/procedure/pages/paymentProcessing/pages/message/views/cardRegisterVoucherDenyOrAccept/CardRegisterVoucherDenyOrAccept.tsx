@@ -6,10 +6,12 @@ import './cardRegisterVoucherDenyOrAccept.css';
 
 interface CardRegisterVoucherDenyOrAcceptProps {
   message: MessageType;
+  viewBotton?: boolean;
   onSave?: () => void;
 }
 const CardRegisterVoucherDenyOrAccept = ({
   message,
+  viewBotton = true,
   onSave,
 }: CardRegisterVoucherDenyOrAcceptProps) => {
   const handleDenyOrAccept = async (type: 'PAGADO' | 'FINALIZADO') => {
@@ -54,22 +56,24 @@ const CardRegisterVoucherDenyOrAccept = ({
           ))}
         </>
       )}
-      <div className="CardRegisterVoucherDenyOrAccept-btns">
-        <Button
-          text="Aceptar"
-          className="messagePage-btn-submit"
-          icon="check-white"
-          imageStyle="CardRegisterVoucherDenyOrAccept-icon"
-          onClick={() => handleDenyOrAccept('PAGADO')}
-        />
-        <Button
-          text="Denegar"
-          className="messagePage-btn-submit  btn-submit--red"
-          imageStyle="CardRegisterVoucherDenyOrAccept-icon"
-          icon="close-white"
-          onClick={() => handleDenyOrAccept('FINALIZADO')}
-        />
-      </div>
+      {viewBotton && (
+        <div className="CardRegisterVoucherDenyOrAccept-btns">
+          <Button
+            text="Aceptar"
+            className="messagePage-btn-submit"
+            icon="check-white"
+            imageStyle="CardRegisterVoucherDenyOrAccept-icon"
+            onClick={() => handleDenyOrAccept('PAGADO')}
+          />
+          <Button
+            text="Denegar"
+            className="messagePage-btn-submit  btn-submit--red"
+            imageStyle="CardRegisterVoucherDenyOrAccept-icon"
+            icon="close-white"
+            onClick={() => handleDenyOrAccept('FINALIZADO')}
+          />
+        </div>
+      )}
     </div>
   );
 };

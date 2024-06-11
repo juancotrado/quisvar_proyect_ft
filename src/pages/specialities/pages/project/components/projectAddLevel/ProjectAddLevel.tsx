@@ -101,7 +101,7 @@ export const ProjectAddLevel = ({ data, onSave }: ProjectAddLevelProps) => {
     (isOpenCardRegisteTask$.setSubject = {
       isOpen: true,
       levelId: data.id,
-      typeTask: 'subtasks',
+      option: 'budget',
     });
 
   const typeImgFolder =

@@ -30,11 +30,15 @@ export const OPTION_PROJECT = {
     addTask: 'client:add-task-basic',
     editTask: 'client:edit-task-basic',
     deleteTask: 'client:delete-task-basic',
+    dupplicateTask: 'client:duplicate-task-basic',
+    addUppeOrLowerTask: 'client:upper-or-lower-task-basic',
   },
-  normal: {
+  budget: {
     modalTask: 'subtasks' as TypeTask,
-    addTask: 'client:add-task-normal',
-    editTask: 'client:edit-task-normal',
-    deleteTask: 'client:delete-task-normal',
+    addTask: 'client:add-task-budget',
+    editTask: 'client:edit-task-budget',
+    deleteTask: 'client:delete-task-budget',
+    dupplicateTask: 'client:duplicate-task-budget',
+    addUppeOrLowerTask: 'client:upper-or-lower-task-budget',
   },
 };

@@ -524,7 +524,7 @@ type StatusType =
 type AddTask = 'upper' | 'lower';
 
 export type TypeTask = 'subtasks' | 'basictasks';
-export type OptionProject = 'basic' | 'normal';
+export type OptionProject = 'basic' | 'budget';
 export interface SubtaskIncludes extends SubTask {
   Levels: {
     stages: {

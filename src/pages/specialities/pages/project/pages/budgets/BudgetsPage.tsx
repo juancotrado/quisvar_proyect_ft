@@ -68,6 +68,16 @@ export const BudgetsPage = () => {
       abortController.abort();
     };
   }, [getLevels, stageId]);
+
+  useEffect(() => {
+    if (!stageId) return;
+    socket.on('server:budget-load-stage', (data: Level) => {
+      setlevels({ ...data, stagesId: +stageId });
+    });
+    return () => {
+      socket.off('server:budget-load-stage');
+    };
+  }, [socket]);
   useEffect(() => {
     const abortController = new AbortController();
     const { signal } = abortController;

@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 import { Level } from '../../../../../../types';
 import './dropdownLevel.css';
 import { RootState } from '../../../../../../store';
-import { ProjectAddLevel, LevelSubtask, ProjectLevel } from '..';
+import { ProjectAddLevel, ProjectLevel, LevelSubtaskGeneral } from '..';
 
 interface DropdownLevel {
   level: Level;
@@ -27,7 +27,7 @@ export const DropdownLevel = ({ level, onSave }: DropdownLevel) => {
         }
       >
         {existSubtask ? (
-          <LevelSubtask onSave={onSave} level={level} />
+          <LevelSubtaskGeneral level={level} option="budget" />
         ) : (
           <>
             {level?.nextLevel?.map(subLevel => (

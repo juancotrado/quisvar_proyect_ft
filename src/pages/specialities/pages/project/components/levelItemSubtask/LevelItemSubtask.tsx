@@ -45,7 +45,7 @@ const LevelItemSubtask = ({
       levelId,
       task: subtask,
       type,
-      typeTask: 'subtasks',
+      option: 'budget',
     };
   };
   const handleDeleteTask = (id: number) => {
@@ -58,7 +58,7 @@ const LevelItemSubtask = ({
       isOpen: true,
       levelId,
       task: subtask,
-      typeTask: 'subtasks',
+      option: 'budget',
     };
   };
 

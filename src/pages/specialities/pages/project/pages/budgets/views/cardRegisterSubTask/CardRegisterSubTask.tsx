@@ -63,19 +63,25 @@ const CardRegisterSubTask = () => {
   }, [reset, setValue]);
 
   const onSubmit: SubmitHandler<SubTaskForm> = data => {
-    const { type, id, option, ...resData } = data;
+    const { type, option, ...resData } = data;
     const body = { ...resData, stageId };
     loader$.setSubject = true;
-    if (id) {
+    if (body.id) {
       if (type) {
         // axiosInstance
         //   .post(`${typeTask}/${id}/${stageId}?type=${type}`, resData)
         //   .then(res => {
-        //     socket.emit('client:update-project', res.data);
+        //     socket.emit('client:update-project', res.data, type);
         //   });
+        socket.emit(
+          OPTION_PROJECT[option].addUppeOrLowerTask,
+          body,
+          type,
+          () => {
+            loader$.setSubject = false;
+          }
+        );
       } else {
-        // axiosInstance.patch(`/${typeTask}/${id}`, body).then(res => {
-        // });
         socket.emit(OPTION_PROJECT[option].editTask, body, () => {
           loader$.setSubject = false;
         });
@@ -100,7 +106,7 @@ const CardRegisterSubTask = () => {
 
   const closeFunctions = () => {
     setIsOpenModal(false);
-    reset({});
+    reset({ id: null });
   };
 
   return (

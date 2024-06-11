@@ -109,7 +109,7 @@ export const ProjectAddLevelBasics = ({ data }: ProjectAddLevelBasics) => {
     (isOpenCardRegisteTask$.setSubject = {
       isOpen: true,
       levelId: data.id,
-      option: 'normal',
+      option: 'basic',
     });
 
   const typeImgFolder =

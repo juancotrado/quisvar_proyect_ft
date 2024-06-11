@@ -8,9 +8,10 @@ import { LevelItemSubtaskGeneral } from '../levelItemSubtask';
 interface LevelSutaskProps {
   option: OptionProject;
   level: Level;
-  onSave?: () => void;
 }
-const LevelSubtaskGeneral = ({ level, onSave, option }: LevelSutaskProps) => {
+const LevelSubtaskGeneral = ({ level, option }: LevelSutaskProps) => {
+  console.log({ option });
+
   const { id: userSessionId } = useSelector(
     (state: RootState) => state.userSession
   );
@@ -58,7 +59,6 @@ const LevelSubtaskGeneral = ({ level, onSave, option }: LevelSutaskProps) => {
           levelId={levelId}
           modAuthArea={modAuthArea}
           subtask={subtask}
-          onSave={onSave}
         />
       ))}
 

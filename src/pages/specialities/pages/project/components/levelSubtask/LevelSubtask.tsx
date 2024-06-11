@@ -24,7 +24,7 @@ export const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
     isOpenCardRegisteTask$.setSubject = {
       isOpen: true,
       levelId,
-      typeTask: 'subtasks',
+      option: 'budget',
     };
   };
 

@@ -31,7 +31,7 @@ export const DropdownLevelBasics = ({ level, onSave }: DropdownLevelBasics) => {
         }
       >
         {existSubtask ? (
-          <LevelSubtaskGeneral onSave={onSave} level={level} option="basic" />
+          <LevelSubtaskGeneral level={level} option="basic" />
         ) : (
           <>
             {level?.nextLevel?.map(subLevel => (

@@ -1,6 +1,5 @@
 import { NavLink, useParams } from 'react-router-dom';
 import { OptionProject, SubTask } from '../../../../../../types';
-import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import { KeyboardEvent, useContext, useState } from 'react';
 import { DayTaskContext, SocketContext } from '../../../../../../context';
@@ -23,14 +22,12 @@ interface LevelItemSubtaskProps {
   levelId: number;
   modAuthArea: boolean;
   option: OptionProject;
-  onSave?: () => void;
 }
 
 const LevelItemSubtaskGeneral = ({
   subtask,
   levelId,
   modAuthArea,
-  onSave,
   option,
 }: LevelItemSubtaskProps) => {
   const { dayTask } = useContext(DayTaskContext);
@@ -70,10 +67,18 @@ const LevelItemSubtaskGeneral = ({
   const handleDuplicateTask = (subtask: SubTask) => {
     const body = {
       name: `${subtask.name}(${Date.now()})`,
+      stageId,
+      id: subtask.id,
     };
-    axiosInstance
-      .post(`/duplicates/subtask/${subtask.id}`, body)
-      .then(() => onSave?.());
+    // axiosInstance
+    //   .post(`/duplicates/subtask/${subtask.id}`, body)
+    //   .then(() => onSave?.());
+
+    // const name = `${subtask.name}(${Date.now()})`;
+    loader$.setSubject = true;
+    socket.emit(OPTION_PROJECT[option].dupplicateTask, body, () => {
+      loader$.setSubject = false;
+    });
   };
   const handleOpenButtonDelete = (id: number) => {
     isOpenButtonDelete$.setSubject = {

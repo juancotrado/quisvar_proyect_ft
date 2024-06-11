@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useContext, useState } from 'react';
 import { Level, Option } from '../../../../../../types';
 import './projectLevel.css';
 import { DotsRight, Input, DropDownSimple } from '../../../../../../components';
@@ -8,27 +8,31 @@ import {
   validateCorrectTyping,
   validateWhiteSpace,
 } from '../../../../../../utils';
-import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../../../store';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import { useListUsers } from '../../../../../../hooks';
-import { isOpenButtonDelete$ } from '../../../../../../services/sharingSubject';
+import {
+  isOpenButtonDelete$,
+  loader$,
+} from '../../../../../../services/sharingSubject';
 import { OptionLevel } from '../../pages/budgets/models/types';
 import { OPTION_LEVEL_TEXT } from '../../pages/budgets/models';
+import { SocketContext } from '../../../../../../context';
+import { MoreInfo } from '../moreInfo';
+import { handleArchiver, handleMergePdfs } from '../../models/servicesProject';
+import { TypeArchiver } from '../../models/types';
 
 interface ProjectLevelBasicsProps {
   data: Level;
-  onSave?: () => void;
 }
 interface DataForm {
   name: string;
   userId?: number;
 }
-export const ProjectLevelBasics = ({
-  data,
-  onSave,
-}: ProjectLevelBasicsProps) => {
+export const ProjectLevelBasics = ({ data }: ProjectLevelBasicsProps) => {
+  const socket = useContext(SocketContext);
+
   const {
     handleSubmit,
     register,
@@ -49,29 +53,29 @@ export const ProjectLevelBasics = ({
   const [idCoordinator, setIdCoordinator] = useState<number | null>(null);
 
   const onSubmitData: SubmitHandler<DataForm> = async body => {
-    if (openOptionLevel === 'duplicate') {
-      handleDuplicate(body.name);
-    }
-
-    if (openOptionLevel === 'lowerAdd') {
-      handleAddLevelToUpperOrDown('lower', body.name);
-    }
-
-    if (openOptionLevel === 'upperAdd') {
-      handleAddLevelToUpperOrDown('upper', body.name);
-    }
-    if (openOptionLevel === 'edit') {
-      if (data.userId) body = { ...body, userId: idCoordinator ?? data.userId };
-      await axiosInstance.put(`basiclevels/${data.id}`, body);
-      onSave?.();
+    switch (openOptionLevel) {
+      case 'lowerAdd':
+        handleAddLevelToUpperOrDown('lower', body.name);
+        break;
+      case 'upperAdd':
+        handleAddLevelToUpperOrDown('upper', body.name);
+        break;
+      case 'duplicate':
+        handleDuplicate(body.name);
+        break;
+      case 'edit':
+        handleEdit(body);
+        break;
     }
     resetValues();
   };
   const handleDeleteLevel = () => {
-    axiosInstance.delete(`basiclevels/${data.id}`).then(() => {
-      onSave?.();
-      resetValues();
-    });
+    loader$.setSubject = true;
+    socket.emit(
+      'client:delete-level',
+      data.id,
+      () => (loader$.setSubject = false)
+    );
   };
 
   const handleOpenButtonDelete = () => {
@@ -86,12 +90,20 @@ export const ProjectLevelBasics = ({
     handleOpenEdit(null);
   };
   const handleDuplicate = (name: string) => {
-    const body = {
-      name,
-    };
-    axiosInstance
-      .post(`/duplicates/level/${data.id}`, body)
-      .then(() => onSave?.());
+    loader$.setSubject = true;
+    socket.emit('client:duplicates-level', data.id, name, () => {
+      loader$.setSubject = false;
+    });
+  };
+  const handleEdit = (body: DataForm) => {
+    if (data.userId) body = { ...body, userId: idCoordinator ?? data.userId };
+    loader$.setSubject = true;
+    socket.emit(
+      'client:edit-level',
+      data.id,
+      body,
+      () => (loader$.setSubject = false)
+    );
   };
 
   const handleAddLevelToUpperOrDown = (
@@ -101,9 +113,10 @@ export const ProjectLevelBasics = ({
     const body = {
       name,
     };
-    axiosInstance
-      .post(`/basiclevels/${data.id}?type=${type}`, body)
-      .then(() => onSave?.());
+    loader$.setSubject = true;
+    socket.emit('client:upper-or-lower-level', data.id, body, type, () => {
+      loader$.setSubject = false;
+    });
   };
 
   const handleCheck = ({ target }: ChangeEvent<HTMLInputElement>) => {
@@ -165,6 +178,33 @@ export const ProjectLevelBasics = ({
   const arrCheckedLevel: string[] = JSON.parse(
     localStorage.getItem('arrCheckedLevel') ?? '[]'
   );
+
+  const handleArchiverLevel = (type: TypeArchiver) =>
+    handleArchiver(type, data.id, data.name, 'level');
+
+  const archiverOptions = [
+    {
+      name: 'Comprimir',
+      fn: () => handleArchiverLevel('all'),
+      icon: 'zip-normal',
+    },
+    {
+      name: 'Comprimir PDF',
+      fn: () => handleArchiverLevel('pdf'),
+      icon: 'zip-pdf',
+    },
+    {
+      name: 'Comprimir Editables',
+      fn: () => handleArchiverLevel('nopdf'),
+      icon: 'zip-edit',
+    },
+    {
+      name: 'Unir PDFs',
+      fn: () => handleMergePdfs('level', data.id, data.name),
+      icon: 'merge-pdf',
+    },
+  ];
+
   return (
     <div
       className={`projectLevel-sub-list-item  ${
@@ -255,11 +295,11 @@ export const ProjectLevelBasics = ({
           </div>
         </ContextMenuTrigger>
       </div>
-      {/* {modAuthProject && (
-        <div className="projectLevel-contain-right">
-          <MoreInfo data={data} />
-        </div>
-      )} */}
+      {/* {modAuthProject && ( */}
+      <div className="projectLevel-contain-right">
+        <MoreInfo {...{ data, archiverOptions }} />
+      </div>
+      {/* )} */}
       {openOptionLevel && (
         <p className="projectLevel-option-info">
           {OPTION_LEVEL_TEXT[openOptionLevel]}:

@@ -18,6 +18,8 @@ import { COST_DATA, FILTER_OPTIONS } from '../budgets/models';
 import { MoreInfo, StatusText } from '../../components';
 import { CardRegisterSubTask } from '../budgets/views';
 import { DropdownLevelBasics } from '../../components/dropdownLevel/DropdownLevelBasics';
+import { handleArchiver, handleMergePdfs } from '../../models/servicesProject';
+import { TypeArchiver } from '../../models/types';
 
 export const BasicsPage = () => {
   const { stageId } = useParams();
@@ -34,34 +36,49 @@ export const BasicsPage = () => {
     const resBasic = await axiosInstance.get(`/stages/basics/${stageId}`, {
       headers: { noLoader: true },
     });
-    setlevels(resBasic.data);
+    if (!stageId) return;
+    setlevels({ ...resBasic.data, stagesId: +stageId });
   }, [socket, stageId]);
 
   useEffect(() => {
-    getLevels();
-  }, [getLevels, stageId]);
-
-  useEffect(() => {
-    socket.on('server:update-project', () => {
-      if (stageId) {
-        getLevelsForSocket();
-      }
+    if (!stageId) return;
+    socket.on('server:load-stage', (data: Level) => {
+      setlevels({ ...data, stagesId: +stageId });
     });
     return () => {
-      socket.off('server:update-project');
+      socket.off('server:load-stage');
     };
-  }, [socket, stageId]);
+  }, [socket]);
 
-  const getLevelsForSocket = () => {
-    axiosInstance.get(`/stages/${stageId}`).then(async res => {
-      const resBasic = await axiosInstance.get(`/basiclevels/${stageId}`);
-      setlevels({
-        ...res.data,
-        stagesId: stageId,
-        nextLevel: resBasic.data,
-      });
+  // useEffect(() => {
+  //   socket.on('server:update-project', () => {
+  //     if (stageId) {
+  //       getLevelsForSocket();
+  //     }
+  //   });
+  //   return () => {
+  //     socket.off('server:update-project');
+  //   };
+  // }, [socket, stageId]);
+
+  useEffect(() => {
+    if (!stageId) return;
+    socket.emit('client:get-stage', +stageId, (data: Level) => {
+      socket.emit('join', `basic-${stageId}`);
+      setlevels({ ...data, stagesId: +stageId });
     });
-  };
+  }, [socket]);
+
+  // const getLevelsForSocket = () => {
+  //   axiosInstance.get(`/stages/${stageId}`).then(async res => {
+  //     const resBasic = await axiosInstance.get(`/basiclevels/${stageId}`);
+  //     setlevels({
+  //       ...res.data,
+  //       stagesId: stageId,
+  //       nextLevel: resBasic.data,
+  //     });
+  //   });
+  // };
 
   const levelFilter = (value: StatusType | '') => {
     setStatus(value);
@@ -97,8 +114,36 @@ export const BasicsPage = () => {
     setOpenFilter(false);
     levelFilter('');
   };
-
   if (!levels) return <LoaderForComponent />;
+
+  const handleArchiverStage = (type: TypeArchiver) => {
+    handleArchiver(type, levels.id, levels.projectName ?? 'unknow', 'stage');
+  };
+
+  const archiverOptions = [
+    {
+      name: 'Comprimir',
+      fn: () => handleArchiverStage('all'),
+      icon: 'zip-normal',
+    },
+    {
+      name: 'Comprimir PDF',
+      fn: () => handleArchiverStage('pdf'),
+      icon: 'zip-pdf',
+    },
+    {
+      name: 'Comprimir Editables',
+      fn: () => handleArchiverStage('nopdf'),
+      icon: 'zip-edit',
+    },
+    {
+      name: 'Unir PDFs',
+      fn: () =>
+        handleMergePdfs('stage', levels.id, levels.projectName ?? 'unknow'),
+      icon: 'merge-pdf',
+    },
+  ];
+
   return (
     <>
       <div className="budgetsPage-filter-contain">
@@ -169,23 +214,22 @@ export const BasicsPage = () => {
           />
         </div>
       </div>
-      <div className="budgetsPage-title-contain">
-        <div className="budgetsPage-contain-left">
-          <figure className="budgetsPage-figure">
-            <img src="/svg/engineering.svg" alt="W3Schools" />
-          </figure>
-          <h4 className="budgetsPage-title">{levels?.projectName}</h4>
-        </div>
-        {levels && modAuthProject && (
-          <div className="budgetsPage-contain-right">
-            <MoreInfo data={levels} />
-          </div>
-        )}
-      </div>
+
       <div className="budgetsPage-contain">
-        {levels && (
-          <DropdownLevelBasics level={levels} onSave={getLevelsForSocket} />
-        )}
+        <div className="budgetsPage-title-contain">
+          <div className="budgetsPage-contain-left">
+            <figure className="budgetsPage-figure">
+              <img src="/svg/engineering.svg" alt="W3Schools" />
+            </figure>
+            <h4 className="budgetsPage-title">{levels?.projectName}</h4>
+          </div>
+          {levels && modAuthProject && (
+            <div className="budgetsPage-contain-right">
+              <MoreInfo data={levels} archiverOptions={archiverOptions} />
+            </div>
+          )}
+        </div>
+        {levels && <DropdownLevelBasics level={levels} onSave={getLevels} />}
       </div>
 
       <Outlet />

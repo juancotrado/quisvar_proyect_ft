@@ -8,9 +8,11 @@ import {
 } from '../../../../../../../../components';
 import './cardRegisterSubTask.css';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { axiosInstance } from '../../../../../../../../services/axiosInstance';
 import { SocketContext } from '../../../../../../../../context';
-import { isOpenCardRegisteTask$ } from '../../../../../../../../services/sharingSubject';
+import {
+  isOpenCardRegisteTask$,
+  loader$,
+} from '../../../../../../../../services/sharingSubject';
 import { Subscription } from 'rxjs';
 import { useParams } from 'react-router-dom';
 import {
@@ -19,6 +21,7 @@ import {
   validateOnlyDecimals,
 } from '../../../../../../../../utils';
 import { SubTaskForm } from '../../models';
+import { OPTION_PROJECT } from '../../../../models';
 
 const CardRegisterSubTask = () => {
   const {
@@ -39,19 +42,19 @@ const CardRegisterSubTask = () => {
   useEffect(() => {
     handleIsOpen.current = isOpenCardRegisteTask$.getSubject.subscribe(data => {
       setIsOpenModal(data.isOpen);
-      const { task, type, typeTask } = data;
+      const { task, type, option } = data;
       if (task) {
         reset({
           id: task.id,
           description: task.description,
           days: task.days,
           name: task.name,
-          typeTask,
+          option,
         });
-        if (type) reset({ ...watch(), type, typeTask });
+        if (type) reset({ ...watch(), type, option });
       } else {
         setLevelId(data.levelId);
-        reset({ ...watch(), typeTask });
+        reset({ ...watch(), option });
       }
     });
     return () => {
@@ -60,26 +63,37 @@ const CardRegisterSubTask = () => {
   }, [reset, setValue]);
 
   const onSubmit: SubmitHandler<SubTaskForm> = data => {
-    const { type, id, typeTask, ...resData } = data;
+    const { type, id, option, ...resData } = data;
     const body = { ...resData, stageId };
+    loader$.setSubject = true;
     if (id) {
       if (type) {
-        axiosInstance
-          .post(`${typeTask}/${id}/${stageId}?type=${type}`, resData)
-          .then(res => {
-            socket.emit('client:update-project', res.data);
-          });
+        // axiosInstance
+        //   .post(`${typeTask}/${id}/${stageId}?type=${type}`, resData)
+        //   .then(res => {
+        //     socket.emit('client:update-project', res.data);
+        //   });
       } else {
-        axiosInstance.patch(`/${typeTask}/${id}`, body).then(res => {
-          socket.emit('client:update-project', res.data);
+        // axiosInstance.patch(`/${typeTask}/${id}`, body).then(res => {
+        // });
+        socket.emit(OPTION_PROJECT[option].editTask, body, () => {
+          loader$.setSubject = false;
         });
       }
     } else {
-      axiosInstance
-        .post(`/${typeTask}`, { ...body, levels_Id: levelId })
-        .then(res => {
-          socket.emit('client:update-project', res.data);
-        });
+      socket.emit(
+        OPTION_PROJECT[option].addTask,
+        { ...body, levels_Id: levelId },
+        () => {
+          loader$.setSubject = false;
+        }
+      );
+
+      // axiosInstance
+      //   .post(`/${typeTask}`, { ...body, levels_Id: levelId })
+      //   .then(res => {
+      //     socket.emit('client:update-project', res.data);
+      //   });
     }
     closeFunctions();
   };

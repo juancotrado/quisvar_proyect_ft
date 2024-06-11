@@ -19,6 +19,11 @@ import { COST_DATA, FILTER_OPTIONS } from './models';
 import { GenerateDetailedIndexPdf, GenerateIndexPdf } from './pdfgenerator';
 import { CardRegisterSubTask } from './views';
 import { getIdsSubTasksRecursive } from '../../utils/tools';
+import {
+  handleCompressPdf,
+  handleMergePdf,
+} from '../../models/servicesProject';
+import { TypeArchiver } from '../../models/types';
 
 export const BudgetsPage = () => {
   const { stageId } = useParams();
@@ -121,6 +126,31 @@ export const BudgetsPage = () => {
   };
 
   if (!levels) return <LoaderForComponent />;
+  const handleCompresStage = (type: TypeArchiver) =>
+    handleCompressPdf(type, 'stage', levels.id, levels.name);
+
+  const archiverOptions = [
+    {
+      name: 'Comprimir',
+      fn: () => handleCompresStage('all'),
+      icon: 'zip-normal',
+    },
+    {
+      name: 'Comprimir PDF',
+      fn: () => handleCompresStage('pdf'),
+      icon: 'zip-pdf',
+    },
+    {
+      name: 'Comprimir Editables',
+      fn: () => handleCompresStage('nopdf'),
+      icon: 'zip-edit',
+    },
+    {
+      name: 'Unir PDFs',
+      fn: () => handleMergePdf('level', levels.id, levels.name),
+      icon: 'merge-pdf',
+    },
+  ];
   return (
     <>
       <div className="budgetsPage-filter-contain">
@@ -198,20 +228,21 @@ export const BudgetsPage = () => {
           />
         </div>
       </div>
-      <div className="budgetsPage-title-contain">
-        <div className="budgetsPage-contain-left">
-          <figure className="budgetsPage-figure">
-            <img src="/svg/engineering.svg" alt="W3Schools" />
-          </figure>
-          <h4 className="budgetsPage-title">{levels?.projectName}</h4>
-        </div>
-        {levels && modAuthProject && (
-          <div className="budgetsPage-contain-right">
-            <MoreInfo data={levels} />
+
+      <div className="budgetsPage-contain ">
+        <div className="budgetsPage-title-contain">
+          <div className="budgetsPage-contain-left">
+            <figure className="budgetsPage-figure">
+              <img src="/svg/engineering.svg" alt="W3Schools" />
+            </figure>
+            <h4 className="budgetsPage-title">{levels?.projectName}</h4>
           </div>
-        )}
-      </div>
-      <div className="budgetsPage-contain">
+          {levels && modAuthProject && (
+            <div className="budgetsPage-contain-right">
+              <MoreInfo data={levels} archiverOptions={archiverOptions} />
+            </div>
+          )}
+        </div>
         {levels && <DropdownLevel level={levels} onSave={getLevelsForSocket} />}
       </div>
 

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import './projectAddLevel.css';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
@@ -11,11 +11,14 @@ import {
   validateWhiteSpace,
   SnackbarUtilities,
 } from '../../../../../../utils';
-import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { Level } from '../../../../../../types';
-import { isOpenCardRegisteTask$ } from '../../../../../../services/sharingSubject';
+import {
+  isOpenCardRegisteTask$,
+  loader$,
+} from '../../../../../../services/sharingSubject';
 import { useListUsers } from '../../../../../../hooks';
 import colors from '../../../../../../utils/json/colors.json';
+import { SocketContext } from '../../../../../../context';
 
 interface DataForm {
   rootId: number;
@@ -34,13 +37,11 @@ const typeNumber = {
 };
 interface ProjectAddLevelBasics {
   data: Level;
-  onSave?: () => void;
 }
 type AddLevel = 'folder' | 'area';
-export const ProjectAddLevelBasics = ({
-  data,
-  onSave,
-}: ProjectAddLevelBasics) => {
+export const ProjectAddLevelBasics = ({ data }: ProjectAddLevelBasics) => {
+  const socket = useContext(SocketContext);
+
   const { users: modedators } = useListUsers('MOD');
   const [idCoordinator, setIdCoordinator] = useState<number | null>(null);
   const [addLevel, setAddLevel] = useState<AddLevel | null>(null);
@@ -91,8 +92,12 @@ export const ProjectAddLevelBasics = ({
     // } else {
     body = { ...body, typeItem: level === 0 ? rootTypeItem : body.typeItem };
     // }
-    await axiosInstance.post('basiclevels', body);
-    onSave?.();
+    // await axiosInstance.post('basiclevels', body);
+    // onSave?.()
+
+    loader$.setSubject = true;
+    socket.emit('client:add-level', body, () => (loader$.setSubject = false));
+
     handleHideForm();
   };
   useEffect(() => {
@@ -104,7 +109,7 @@ export const ProjectAddLevelBasics = ({
     (isOpenCardRegisteTask$.setSubject = {
       isOpen: true,
       levelId: data.id,
-      typeTask: 'basictasks',
+      option: 'normal',
     });
 
   const typeImgFolder =

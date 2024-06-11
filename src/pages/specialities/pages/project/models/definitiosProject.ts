@@ -1,3 +1,5 @@
+import { TypeTask } from '../../../../../types';
+
 export const PROJECT_OPTIONS = [
   {
     id: 1,
@@ -21,3 +23,18 @@ export const PROJECT_OPTIONS = [
     navigation: 'basicos',
   },
 ];
+
+export const OPTION_PROJECT = {
+  basic: {
+    modalTask: 'basictasks' as TypeTask,
+    addTask: 'client:add-task-basic',
+    editTask: 'client:edit-task-basic',
+    deleteTask: 'client:delete-task-basic',
+  },
+  normal: {
+    modalTask: 'subtasks' as TypeTask,
+    addTask: 'client:add-task-normal',
+    editTask: 'client:edit-task-normal',
+    deleteTask: 'client:delete-task-normal',
+  },
+};

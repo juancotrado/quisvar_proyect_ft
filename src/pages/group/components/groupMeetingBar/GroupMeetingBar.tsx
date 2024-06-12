@@ -13,14 +13,14 @@ const GroupMeetingBar = ({ itemOptions }: GroupOptions) => {
             key={index}
             to={item.to}
             className={({ isActive }) =>
-              `gr-sidebar-data ${isActive ? 'contract-selected' : ''}`
+              `gmb-sidebar-data ${isActive ? 'contract-selected' : ''}`
             }
           >
-            <figure className="gr-sidebar-figure">
+            <figure className="gmb-sidebar-figure">
               <img src={item.imgSrc} alt={item.imgAlt} style={{ width: 18 }} />
             </figure>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <h4 className="gr-sidebar-name">{item.title}</h4>
+              <h4 className="gmb-sidebar-name">{item.title}</h4>
             </div>
           </NavLink>
         ))}

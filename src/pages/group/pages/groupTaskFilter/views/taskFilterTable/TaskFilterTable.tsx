@@ -7,10 +7,21 @@ import {
   formatDateTimeUtc,
   formatDayMonthTimeUtc,
 } from '../../../../../../utils/dayjsSpanish';
+import { useDispatch } from 'react-redux';
+import { setModAuthProject } from '../../../../../../store/slices/modAuthProject.slice';
+import { useEffect } from 'react';
 interface TaskFilterProps {
   data: DayTasks;
 }
 const TaskFilterTable = ({ data }: TaskFilterProps) => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(setModAuthProject(true));
+    return () => {
+      dispatch(setModAuthProject(false));
+    };
+  }, [data]);
+
   return (
     <div className="tft-main">
       <div className="tft-sticky">

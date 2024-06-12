@@ -43,26 +43,24 @@ const GroupListBar = ({ group, onSave, editOrder }: GroupListBarProps) => {
     transition,
   };
   if (isDragging) {
-    return (
-      <div ref={setNodeRef} style={style} className=" gr-sidebar-data xd"></div>
-    );
+    return <div ref={setNodeRef} style={style} className="gl-dragging"></div>;
   }
   return (
-    <ContextMenuTrigger id={`gr-sidebar-${group.id}`} key={group.id}>
+    <ContextMenuTrigger id={`gl-sidebar-${group.id}`} key={group.id}>
       {!edit ? (
         <NavLink
           to={`${
             editOrder ? '' : `contenido/${group.id}/GRUPO-${group.gNumber}`
           }`}
           className={({ isActive }) =>
-            `gr-sidebar-data  ${isActive && 'contract-selected'} `
+            `gl-sidebar-data  ${isActive && 'contract-selected'} `
           }
           ref={setNodeRef}
           style={style}
           {...attributes}
           {...listeners}
         >
-          <figure className="gr-sidebar-figure">
+          <figure className="gl-sidebar-figure">
             <img
               src="/svg/dashicons_groups.svg"
               alt="W3Schools"
@@ -70,12 +68,12 @@ const GroupListBar = ({ group, onSave, editOrder }: GroupListBarProps) => {
             />
           </figure>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
-            <h4 className="gr-sidebar-name">GRUPO {group.gNumber}</h4>
-            <h5 className="gr-sidebar-cui">{group.name}</h5>
+            <h4 className="gl-sidebar-name">GRUPO {group.gNumber}</h4>
+            <h5 className="gl-sidebar-cui">{group.name}</h5>
           </div>
 
           {!editOrder && (
-            <DotsRight data={dataDots} idContext={`gr-sidebar-${group.id}`} />
+            <DotsRight data={dataDots} idContext={`gl-sidebar-${group.id}`} />
           )}
         </NavLink>
       ) : (

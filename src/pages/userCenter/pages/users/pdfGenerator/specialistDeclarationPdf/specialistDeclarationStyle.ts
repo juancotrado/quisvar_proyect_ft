@@ -12,24 +12,23 @@ export const styles = StyleSheet.create({
     gap: 4,
   },
 
-  headerContainer: {
+  header: {
     paddingTop: 5,
     position: 'absolute',
+    top: 0,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    gap: 20,
+    height: 50,
     paddingHorizontal: 40,
-    alignItems: 'center',
     left: 0,
     right: 0,
   },
+  logo: {
+    height: '100%',
+  },
   headerTitle: {
-    marginTop: 20,
-    width: '100%',
     letterSpacing: 1,
     fontSize: 8,
-    minHeight: 30,
-    fontWeight: 'extrabold',
     color: '#525659',
     fontFamily: 'Arial Narrow Bold',
   },

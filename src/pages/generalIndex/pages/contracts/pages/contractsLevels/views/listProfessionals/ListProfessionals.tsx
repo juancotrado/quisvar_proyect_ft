@@ -50,7 +50,6 @@ const ListProfessionals = ({ idContract }: ListProfessionalsProp) => {
       ...specialists,
       speciality: specialityName,
       nameContract: contract.name,
-      corporation: contract.company.name,
       projectName: contract.projectName,
       municipio: contract.municipality,
       cui: contract.cui,

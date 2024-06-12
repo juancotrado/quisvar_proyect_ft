@@ -17,7 +17,6 @@ interface Specialist {
   speciality: string;
   //---------------------
   nameContract: string;
-  corporation: string;
   projectName: string;
   cui: string;
   municipio?: string;
@@ -40,17 +39,15 @@ const SpecialistDeclarationPdf = ({ data }: SpecialistDeclarationPdfProps) => {
   return (
     <Document>
       <Page size="A4" style={styles.page}>
-        <View style={styles.headerContainer}>
-          {data.srcImage && (
-            <Image src={data.srcImage} style={{ height: 50 }} />
-          )}
-          <View style={styles.headerTitle}>
-            {data.municipio && <Text>{data.municipio} </Text>}
-            <Text>ADJUDICACION SIMPLIFICADA N° {data.nameContract}</Text>
-          </View>
-          {data.srcImage && (
-            <Image src={data.srcImage} style={{ height: 50 }} />
-          )}
+        <View style={styles.header}>
+          <div style={{ flexDirection: 'row', alignItems: 'center', gap: 5 }}>
+            {data.srcImage && <Image src={data.srcImage} style={styles.logo} />}
+            <View style={styles.headerTitle}>
+              {data.municipio && <Text>{data.municipio} </Text>}
+              <Text>ADJUDICACION SIMPLIFICADA N° {data.nameContract}</Text>
+            </View>
+          </div>
+          {data.srcImage && <Image src={data.srcImage} style={styles.logo} />}
         </View>
         <View
           style={{
@@ -133,7 +130,6 @@ SpecialistDeclarationPdf.defaultProps = {
     inscriptionDate: new Date('2018/01/19'),
     speciality: 'JEFE DE PROYECTO',
     nameContract: '02-2023-MDC/CS-1',
-    corporation: 'SAN ANTONIO CONSORCIO',
     projectName:
       'MEJORAMIENTO Y AMPLIACION DE LOS SERVICIOS DE SALUD DEL ESTABLECIMIENTO DE SALUD CONDURIRI, DEL DISTRITO DE CONDURIRI - PROVINCIA DE EL COLLAO - DEPARTAMENTO DE PUNO',
     cui: '2455435',

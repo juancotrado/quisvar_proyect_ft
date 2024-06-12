@@ -3,7 +3,12 @@
   gap: 0.275rem;
   height: 100%;
 }
-
+.gr-drag-content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
 .gr-list {
   display: flex;
   min-width: 10rem;
@@ -21,7 +26,6 @@
   font-size: 18px;
   padding: 0 0.8rem;
 }
-
 .gr-content {
   background-color: white;
   width: 100%;
@@ -32,9 +36,24 @@
   font-size: 0.7rem;
   border-radius: 5px;
   color: var(--color-primary);
+  margin: 0 4rem;
   /* height: 100%; */
 }
-.gr-order {
+.gr-btn-order {
+  margin: 0 4rem;
+}
+.gr-order-action {
   display: flex;
   gap: 0.5rem;
+  justify-content: center;
+}
+.gr-btn-cancel {
+  background-color: red;
+  color: white;
+  border: 1px solid red;
+}
+.gr-btn-save {
+  background-color: var(--color-primary);
+  color: white;
+  border: 1px solid var(--color-primary);
 }

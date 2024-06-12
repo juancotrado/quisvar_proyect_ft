@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import './group.css';
 import { axiosInstance } from '../../services/axiosInstance';
 import { Group as GroupData } from '../../types';
@@ -14,32 +14,24 @@ import {
 import { SortableContext, arrayMove } from '@dnd-kit/sortable';
 import { createPortal } from 'react-dom';
 import { navItemsMeetings, navItemsReports } from './models';
-// type Ids = {
-//   id: number;
-// };
+
 export const Group = () => {
   const [groups, setGroups] = useState<GroupData[]>();
-  const [itemsId, setItemsId] = useState<number[]>();
+  const [initial, setInitial] = useState<GroupData[]>();
+  const itemsId = useMemo(() => groups?.map(item => item.id), [groups]);
   const [activeElem, setActiveElem] = useState<GroupData | null>(null);
   const [add, setAdd] = useState<boolean>(false);
   const [editOrder, setEditOrder] = useState<boolean>(false);
   const getgroups = useCallback(() => {
     axiosInstance.get<GroupData[]>('/groups/all').then(res => {
       setGroups(res.data);
+      setInitial(res.data);
     });
   }, []);
 
   useEffect(() => {
     getgroups();
-  }, [getgroups]);
-  useEffect(() => {
-    if (groups && groups.length > 0) {
-      const items = groups.map(item => item.id);
-      setItemsId(items);
-    } else {
-      setItemsId([]);
-    }
-  }, [groups]);
+  }, []);
 
   const onDragStart = (event: DragStartEvent) => {
     if (event.active.data.current?.type === 'Group')
@@ -69,6 +61,10 @@ export const Group = () => {
       setEditOrder(false);
     });
   };
+  const handleCancel = () => {
+    setEditOrder(false);
+    setGroups(initial);
+  };
   return (
     <div className="gr-container">
       <Aside>
@@ -78,17 +74,22 @@ export const Group = () => {
         <GroupMeetingBar itemOptions={navItemsReports} />
         <h1 className="gr-title">GRUPOS</h1>
         <DndContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
-          <SortableContext items={itemsId ? itemsId : []} disabled={!editOrder}>
-            {groups &&
-              groups.map((group, _index) => (
-                <GroupListBar
-                  group={group}
-                  key={group.id}
-                  onSave={getgroups}
-                  editOrder={editOrder}
-                />
-              ))}
-          </SortableContext>
+          <div className="gr-drag-content">
+            <SortableContext
+              items={itemsId ? itemsId : []}
+              disabled={!editOrder}
+            >
+              {groups &&
+                groups.map((group, _index) => (
+                  <GroupListBar
+                    group={group}
+                    key={group.id}
+                    onSave={getgroups}
+                    editOrder={editOrder}
+                  />
+                ))}
+            </SortableContext>
+          </div>
           {createPortal(
             <DragOverlay>
               {activeElem && <GroupListBar group={activeElem} />}
@@ -103,11 +104,20 @@ export const Group = () => {
                 type="button"
                 onClick={() => setEditOrder(true)}
                 text="Editar Orden"
+                className="gr-btn-order"
               />
             ) : (
-              <div className="gr-order">
-                <Button onClick={() => setEditOrder(false)} text="Cancelar" />
-                <Button onClick={handleOrder} text="Guardar" />
+              <div className="gr-order-action">
+                <Button
+                  onClick={handleCancel}
+                  text="Cancelar"
+                  className="gr-btn-cancel"
+                />
+                <Button
+                  onClick={handleOrder}
+                  text="Guardar"
+                  className="gr-btn-save"
+                />
               </div>
             )}
 

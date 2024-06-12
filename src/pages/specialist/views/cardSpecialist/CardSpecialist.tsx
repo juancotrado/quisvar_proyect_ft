@@ -21,6 +21,7 @@ import {
   validateOnlyNumbers,
   validateWhiteSpace,
 } from '../../../../utils';
+import { useNavigate } from 'react-router-dom';
 type CardSpecialistProps = {
   onSave?: () => void;
 };
@@ -28,6 +29,7 @@ type CardSpecialistProps = {
 let apply: null | Function = null;
 const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
   const [dataSpecialist, setDataSpecialist] = useState<Specialists | undefined>(
     undefined
   );
@@ -107,8 +109,12 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
         'Content-type': 'multipart/form-data',
       };
       axiosInstance.post(`/specialists`, formData, { headers }).then(() => {
-        closeFunctions();
+        closeFunctions?.();
         onSave?.();
+        reset({
+          firstName: '',
+          lastName: '',
+        });
       });
     } else {
       const newData = {
@@ -127,9 +133,10 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
       axiosInstance
         .patch(`/specialists/${dataSpecialist.id}`, newData)
         .then(() => {
-          closeFunctions();
+          closeFunctions?.();
           onSave?.();
           apply?.();
+          navigate(`informacion/${dataSpecialist.id}`);
         });
     }
   };
@@ -173,7 +180,7 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
             label="DNI"
             errors={errors}
             type="number"
-            handleSearch={!watch('id') ? searchUserForDNI : false}
+            handleSearch={searchUserForDNI}
           />
           <Input
             styleInput={4}

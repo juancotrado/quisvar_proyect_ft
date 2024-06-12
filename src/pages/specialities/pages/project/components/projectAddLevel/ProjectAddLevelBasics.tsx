@@ -165,7 +165,7 @@ export const ProjectAddLevelBasics = ({ data }: ProjectAddLevelBasics) => {
                   <option value="NUM">NUM</option>
                 </select>
                 <span className="projectAddLevel-item-info">
-                  {data.item}
+                  {data.item}.
                   <span className="projectAddLevel-item-info-type">
                     {watch('typeItem') ? typeNumber[watch('typeItem')] : 1}
                   </span>

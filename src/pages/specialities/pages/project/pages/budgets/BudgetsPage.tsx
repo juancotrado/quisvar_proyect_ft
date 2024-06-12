@@ -51,7 +51,6 @@ export const BudgetsPage = () => {
             const levels = { ...res.data, stagesId: +stageId };
             setlevels(levels);
             const idsLevel = getIdsSubTasksRecursive(levels);
-            console.log('idsLevel', idsLevel);
             setDayTaksRef?.(idsLevel);
           }
         });
@@ -72,6 +71,8 @@ export const BudgetsPage = () => {
     if (!stageId) return;
     socket.on('server:budget-load-stage', (data: Level) => {
       setlevels({ ...data, stagesId: +stageId });
+      const idsLevel = getIdsSubTasksRecursive(data);
+      setDayTaksRef?.(idsLevel);
     });
     return () => {
       socket.off('server:budget-load-stage');
@@ -88,7 +89,11 @@ export const BudgetsPage = () => {
 
   useEffect(() => {
     socket.on('server:update-project', (Level: Level) => {
-      if (stageId) setlevels(Level);
+      if (stageId) {
+        setlevels(Level);
+        const idsLevel = getIdsSubTasksRecursive(Level);
+        setDayTaksRef?.(idsLevel);
+      }
     });
     return () => {
       socket.off('server:update-project');

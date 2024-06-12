@@ -40,6 +40,8 @@ export const BasicsPage = () => {
   useEffect(() => {
     if (!stageId) return;
     socket.on('server:load-stage', (data: Level) => {
+      const idsLevel = getIdsSubTasksRecursive(data);
+      setDayTaksRef?.(idsLevel);
       setlevels({ ...data, stagesId: +stageId });
     });
     return () => {

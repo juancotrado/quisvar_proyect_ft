@@ -1,4 +1,4 @@
-import { ChangeEvent, FocusEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, FocusEvent, useRef, useState } from 'react';
 import xml2js from 'xml2js';
 import { CompaniesSelect, InvoiceXML } from '../../types';
 import './customizableInvoice.css';

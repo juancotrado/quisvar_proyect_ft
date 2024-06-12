@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { axiosInstance } from '../../../../../../../services/axiosInstance';
 import { Specialists } from '../../../../../../../types';
 import { ContractSpecialties } from '../../../models/type.contracts';
-import { SnackbarUtilities, sleep } from '../../../../../../../utils';
+import { SnackbarUtilities } from '../../../../../../../utils';
 
 interface SpecialistsExtends extends Specialists {
   contractSpecialtiesId: number;

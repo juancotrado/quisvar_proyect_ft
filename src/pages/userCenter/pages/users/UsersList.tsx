@@ -23,7 +23,6 @@ import { Equipment, UserInfo } from './components';
 import {
   CardAddEquipment,
   CardAssign,
-  CardOpenFile,
   CardRegisterUser,
   CardViewDocs,
 } from './views';

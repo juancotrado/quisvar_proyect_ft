@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import { useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { ProjectContext } from '../../../../../../context';
 import { IconActionExtend } from '../../../../../../components';

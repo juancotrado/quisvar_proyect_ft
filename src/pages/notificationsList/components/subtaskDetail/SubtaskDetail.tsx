@@ -29,17 +29,17 @@ const SubtaskDetail = ({ subtask }: SubtaskDetail) => {
   const handleNavigate = () => {
     const { indexTask, task, task_lvl_2, task_lvl_3, id } = subtask;
     if (indexTask) {
-      navigateLocation(indexTask.workArea.id, indexTask.id, id, 'indextask');
+      navigateLocation(indexTask.workArea.id, indexTask.id, id, 'basictasks');
     }
     if (task) {
-      navigateLocation(task.indexTask.workArea.id, task.id, id, 'task');
+      navigateLocation(task.indexTask.workArea.id, task.id, id, 'basictasks');
     }
     if (task_lvl_2) {
       navigateLocation(
         task_lvl_2.task.indexTask.workArea.id,
         task_lvl_2.id,
         id,
-        'task2'
+        'subtasks'
       );
     }
     if (task_lvl_3) {
@@ -47,7 +47,7 @@ const SubtaskDetail = ({ subtask }: SubtaskDetail) => {
         task_lvl_3.task_2.task.indexTask.workArea.id,
         task_lvl_3.id,
         id,
-        'task3'
+        'subtasks'
       );
     }
   };

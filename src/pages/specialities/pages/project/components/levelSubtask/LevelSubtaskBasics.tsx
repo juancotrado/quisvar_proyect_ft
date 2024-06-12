@@ -42,7 +42,7 @@ export const LevelSubtaskBasics = ({
     isOpenCardRegisteTask$.setSubject = {
       isOpen: true,
       levelId: id,
-      typeTask: 'basictasks',
+      option: 'basic',
     };
   };
   const handleAddTaskToUpperOrDown = (
@@ -54,7 +54,7 @@ export const LevelSubtaskBasics = ({
       levelId: id,
       task: subtask,
       type,
-      typeTask: 'basictasks',
+      option: 'basic',
     };
   };
   const handleDeleteTask = (id: number) => {
@@ -67,7 +67,7 @@ export const LevelSubtaskBasics = ({
       isOpen: true,
       levelId: id,
       task: subtask,
-      typeTask: 'basictasks',
+      option: 'basic',
     };
   };
 

@@ -3,7 +3,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { axiosInstance } from '../../../../../../../services/axiosInstance';
 import { ContractSpecialties } from '../../../models/type.contracts';
-import { SnackbarUtilities, sleep } from '../../../../../../../utils';
+import { SnackbarUtilities } from '../../../../../../../utils';
 
 const deleteSpecialties = async (data: {
   contractSpecialtiesId: number;

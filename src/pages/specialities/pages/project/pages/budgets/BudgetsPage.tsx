@@ -28,7 +28,7 @@ import { DaysTaskEdit } from '../../components/daysTaskEdit';
 
 export const BudgetsPage = () => {
   const { stageId } = useParams();
-  const { handleIsEditDayTask, setDayTaksRef } = useContext(ProjectContext);
+  const { setDayTaksRef } = useContext(ProjectContext);
 
   const modAuthProject = useSelector(
     (state: RootState) => state.modAuthProject

@@ -3,6 +3,8 @@ import { Level } from '../../../../../../types';
 import './dropdownLevel.css';
 import { RootState } from '../../../../../../store';
 import { ProjectAddLevel, ProjectLevel, LevelSubtaskGeneral } from '..';
+import { ProjectContext } from '../../../../../../context';
+import { useContext } from 'react';
 
 interface DropdownLevel {
   level: Level;
@@ -13,6 +15,8 @@ export const DropdownLevel = ({ level, onSave }: DropdownLevel) => {
   const modAuthProject = useSelector(
     (state: RootState) => state.modAuthProject
   );
+  const { dayTask } = useContext(ProjectContext);
+
   const userSessionId = useSelector((state: RootState) => state.userSession.id);
 
   const modAuthArea = modAuthProject || userSessionId === level.userId;
@@ -43,7 +47,9 @@ export const DropdownLevel = ({ level, onSave }: DropdownLevel) => {
                 <DropdownLevel level={subLevel} onSave={onSave} />
               </li>
             ))}
-            {modAuthArea && <ProjectAddLevel data={level} onSave={onSave} />}
+            {modAuthArea && !dayTask.isEdit && (
+              <ProjectAddLevel data={level} onSave={onSave} />
+            )}
           </>
         )}
       </ul>

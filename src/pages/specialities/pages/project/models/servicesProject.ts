@@ -65,7 +65,7 @@ export const handleMergePdfs = async (
   const query = {
     createFiles: 'true',
     type: 'UPLOADS',
-    createCover: 'false',
+    createCover: 'true',
   };
   const params = new URLSearchParams(query);
   const res = await axiosInstance.get(

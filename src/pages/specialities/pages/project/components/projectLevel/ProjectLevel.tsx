@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useContext, useState } from 'react';
 import { Level, Option } from '../../../../../../types';
 import './projectLevel.css';
 import { DotsRight, Input, DropDownSimple } from '../../../../../../components';
@@ -21,6 +21,7 @@ import {
   handleCompressPdf,
   handleMergePdf,
 } from '../../models/servicesProject';
+import { ProjectContext } from '../../../../../../context';
 
 interface ProjectLevelProps {
   data: Level;
@@ -37,6 +38,8 @@ export const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
     reset,
     formState: { errors },
   } = useForm<DataForm>();
+  const { dayTask } = useContext(ProjectContext);
+
   const modAuthProject = useSelector(
     (state: RootState) => state.modAuthProject
   );
@@ -219,6 +222,11 @@ export const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
                 !modAuthProject && 'projectLevel-width-normal'
               }`}
               onChange={handleCheck}
+              {...(dayTask.isEdit
+                ? {
+                    checked: data.total > 0,
+                  }
+                : {})}
               defaultChecked={arrCheckedLevel.includes(String(data.id))}
             />
             {/* <div className="projectLevel-contain"> */}

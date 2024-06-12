@@ -18,7 +18,7 @@ import {
 } from '../../../../../../services/sharingSubject';
 import { useListUsers } from '../../../../../../hooks';
 import colors from '../../../../../../utils/json/colors.json';
-import { SocketContext } from '../../../../../../context';
+import { ProjectContext, SocketContext } from '../../../../../../context';
 
 interface DataForm {
   rootId: number;

@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from 'react';
 import { Outlet, useParams } from 'react-router-dom';
-import { DayTaskContext, SocketContext } from '../../../../../../context';
+import { ProjectContext, SocketContext } from '../../../../../../context';
 import { DegreType, Level, StatusType } from '../../../../../../types';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { motion } from 'framer-motion';
@@ -24,13 +24,12 @@ import {
   handleMergePdf,
 } from '../../models/servicesProject';
 import { TypeArchiver } from '../../models/types';
+import { DaysTaskEdit } from '../../components/daysTaskEdit';
 
 export const BudgetsPage = () => {
   const { stageId } = useParams();
-  const { handleIsEditDayTask, setDayTaksRef, dayTask } =
-    useContext(DayTaskContext);
+  const { handleIsEditDayTask, setDayTaksRef } = useContext(ProjectContext);
 
-  console.log('asdasd', dayTask);
   const modAuthProject = useSelector(
     (state: RootState) => state.modAuthProject
   );
@@ -196,13 +195,7 @@ export const BudgetsPage = () => {
             <img src="/svg/filter.svg" />
             Filtrar
           </span>
-          <span
-            className="budgetsPage-filter-icon"
-            onClick={handleIsEditDayTask}
-          >
-            <img src="/svg/filter.svg" />
-            Edtar tareas ss
-          </span>
+
           {openFilter && (
             <motion.div
               initial={{ opacity: 0 }}
@@ -224,6 +217,7 @@ export const BudgetsPage = () => {
               />
             </motion.div>
           )}
+          <DaysTaskEdit />
         </div>
         <div className="budgetsPage-filter-select">
           <Select

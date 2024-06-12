@@ -2,8 +2,14 @@ import { NavLink, useParams } from 'react-router-dom';
 import { SubTask } from '../../../../../../types';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
-import { KeyboardEvent, useContext, useState } from 'react';
-import { DayTaskContext, SocketContext } from '../../../../../../context';
+import {
+  ChangeEvent,
+  KeyboardEvent,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+import { ProjectContext, SocketContext } from '../../../../../../context';
 import { StatusText } from '..';
 import {
   DefaultUserImage,
@@ -29,7 +35,7 @@ const LevelItemSubtask = ({
   modAuthArea,
   onSave,
 }: LevelItemSubtaskProps) => {
-  const { dayTask } = useContext(DayTaskContext);
+  const { dayTask } = useContext(ProjectContext);
 
   const [inputDay, setInputDay] = useState(String(subtask.days));
   const socket = useContext(SocketContext);
@@ -88,14 +94,17 @@ const LevelItemSubtask = ({
       day => day.pos === valueSum + pos
     );
     nextRef?.ref.current?.select();
-    // console.log('value', nextRef?.ref.current?.value.length);
-    // nextRef?.ref.current?.focus();
-    // nextRef?.ref.current?.setSelectionRange(
-    //   0,
-    //   nextRef?.ref.current?.value.length
-    // );
-    // nextRef?.ref.current?.addEventListener('focus', e => e.target?.select());
   };
+
+  const onChangeDay = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    const { value } = target;
+    setInputDay(value);
+  };
+
+  useEffect(() => {
+    setInputDay(String(subtask.days));
+  }, [dayTask.isEdit]);
+
   return (
     <div className="levelSubtask-context-menu" key={subtask.id}>
       <ContextMenuTrigger id={`levelSubtask-${subtask.id}`}>
@@ -125,14 +134,7 @@ const LevelItemSubtask = ({
                 <div className="projectLevel-input-name">
                   {dayTask.refs && (
                     <Input
-                      // {...register('days', {
-                      //   validate: { validateOnlyNumbers },
-                      //   // valueAsNumber: true,
-
-                      //   // value: "asdasd",
-                      //   value: 'asdsa',
-                      // })}
-                      onChange={e => setInputDay(e.target.value)}
+                      onChange={onChangeDay}
                       style={{
                         textAlign: 'center',
                       }}
@@ -140,8 +142,6 @@ const LevelItemSubtask = ({
                       onKeyDown={pressKeydown}
                       name="days"
                       styleInput={3}
-                      // onFocus={e => e.target.select()}
-                      // selectTextOnFocus={true}
                       autoComplete="off"
                       ref={dayTask.refs[subtask.id].ref}
                     />

@@ -7,17 +7,19 @@ import {
   ProjectLevelBasics,
   LevelSubtaskGeneral,
 } from '..';
+import { ProjectContext } from '../../../../../../context';
+import { useContext } from 'react';
 
 interface DropdownLevelBasics {
   level: Level;
-  onSave?: () => void;
 }
 
-export const DropdownLevelBasics = ({ level, onSave }: DropdownLevelBasics) => {
+export const DropdownLevelBasics = ({ level }: DropdownLevelBasics) => {
   const modAuthProject = useSelector(
     (state: RootState) => state.modAuthProject
   );
   const userSessionId = useSelector((state: RootState) => state.userSession.id);
+  const { cover, dayTask } = useContext(ProjectContext);
 
   const modAuthArea = modAuthProject || userSessionId === level.userId;
   const firstLevel = !level.level;
@@ -44,10 +46,13 @@ export const DropdownLevelBasics = ({ level, onSave }: DropdownLevelBasics) => {
                 }
               >
                 <ProjectLevelBasics data={subLevel} />
-                <DropdownLevelBasics level={subLevel} onSave={onSave} />
+
+                <DropdownLevelBasics level={subLevel} />
               </li>
             ))}
-            {modAuthArea && <ProjectAddLevelBasics data={level} />}
+            {modAuthArea && !cover.isEdit && !dayTask.isEdit && (
+              <ProjectAddLevelBasics data={level} />
+            )}
           </>
         )}
       </ul>

@@ -16,6 +16,8 @@ interface IconActionProps {
   zIndex?: number;
   shadow?: boolean;
   text?: string;
+  fontWeight?: string;
+  colorText?: string;
 }
 const IconAction = ({
   onClick,
@@ -32,6 +34,8 @@ const IconAction = ({
   shadow,
   text,
   classNameText,
+  colorText,
+  fontWeight,
 }: IconActionProps) => {
   const style: CSSProperties = {
     cursor: 'pointer',
@@ -45,9 +49,13 @@ const IconAction = ({
     bottom: `${bottom}rem`,
     zIndex,
   };
+  const styleText: CSSProperties = {
+    fontWeight,
+    color: colorText,
+  };
   const Icon = (
     <figure
-      className={`${
+      className={`icon-figure ${
         position !== 'none' && !text && 'iconAction'
       } ${className} ${iconTwo && 'iconAction-hover'}`}
       style={style}
@@ -77,7 +85,9 @@ const IconAction = ({
       }}
     >
       {Icon}
-      <span className={`${classNameText}`}>{text}</span>
+      <span className={`${classNameText}`} style={styleText}>
+        {text}
+      </span>
     </div>
   ) : (
     Icon

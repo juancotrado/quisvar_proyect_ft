@@ -581,6 +581,7 @@ export interface Level {
   subTasks: SubTask[];
   userId: number;
   projectName?: string;
+  cover: boolean;
   nextLevel?: Level[];
   percentage: number;
   total: number;

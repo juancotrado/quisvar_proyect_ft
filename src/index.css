@@ -275,3 +275,9 @@ legend {
   border: 2rem solid #fff;
   border-radius: var(--radius-button);
 }
+.no-select {
+  user-select: none; /* Desactiva la selección de texto en navegadores modernos */
+  -webkit-user-select: none; /* Desactiva la selección de texto en navegadores basados en WebKit */
+  -moz-user-select: none; /* Desactiva la selección de texto en navegadores Firefox */
+  -ms-user-select: none; /* Desactiva la selección de texto en Internet Explorer y Edge */
+}

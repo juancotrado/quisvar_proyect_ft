@@ -1,7 +1,12 @@
-import { ChangeEvent, useContext, useState } from 'react';
+import { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { Level, Option } from '../../../../../../types';
 import './projectLevel.css';
-import { DotsRight, Input, DropDownSimple } from '../../../../../../components';
+import {
+  DotsRight,
+  Input,
+  DropDownSimple,
+  IconAction,
+} from '../../../../../../components';
 import colors from '../../../../../../utils/json/colors.json';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import {
@@ -18,7 +23,7 @@ import {
 } from '../../../../../../services/sharingSubject';
 import { OptionLevel } from '../../pages/budgets/models/types';
 import { OPTION_LEVEL_TEXT } from '../../pages/budgets/models';
-import { SocketContext } from '../../../../../../context';
+import { ProjectContext, SocketContext } from '../../../../../../context';
 import { MoreInfo } from '../moreInfo';
 import { handleArchiver, handleMergePdfs } from '../../models/servicesProject';
 import { TypeArchiver } from '../../models/types';
@@ -32,7 +37,7 @@ interface DataForm {
 }
 export const ProjectLevelBasics = ({ data }: ProjectLevelBasicsProps) => {
   const socket = useContext(SocketContext);
-
+  const { cover, addCoverBody, dayTask } = useContext(ProjectContext);
   const {
     handleSubmit,
     register,
@@ -42,6 +47,8 @@ export const ProjectLevelBasics = ({ data }: ProjectLevelBasicsProps) => {
   const modAuthProject = useSelector(
     (state: RootState) => state.modAuthProject
   );
+
+  const [coverValue, setCoverValue] = useState(data.cover);
   const [openOptionLevel, setOpenOptionLevel] = useState<OptionLevel>(null);
   const handleCloseEdit = () => setOpenOptionLevel(null);
   const handleOpenEdit = (option: OptionLevel) => {
@@ -205,6 +212,15 @@ export const ProjectLevelBasics = ({ data }: ProjectLevelBasicsProps) => {
     },
   ];
 
+  const handleCover = () => {
+    setCoverValue(!coverValue);
+    addCoverBody({ cover: !coverValue, id: data.id });
+  };
+
+  useEffect(() => {
+    setCoverValue(data.cover);
+  }, [cover.isEdit]);
+
   return (
     <div
       className={`projectLevel-sub-list-item  ${
@@ -214,6 +230,15 @@ export const ProjectLevelBasics = ({ data }: ProjectLevelBasicsProps) => {
       } ${data.isProject && 'dropdownLevel-Project'}`}
       style={style}
     >
+      {cover.isEdit && (
+        <IconAction
+          icon={coverValue ? 'check_circle_select' : 'check_circle'}
+          size={1.5}
+          left={0}
+          position="none"
+          onClick={handleCover}
+        />
+      )}
       <div className="projectLevel-contain">
         {modAuthProject && (
           <DotsRight
@@ -230,6 +255,16 @@ export const ProjectLevelBasics = ({ data }: ProjectLevelBasicsProps) => {
                 !modAuthProject && 'projectLevel-width-normal'
               }`}
               onChange={handleCheck}
+              {...(cover.isEdit
+                ? {
+                    checked: data.subTasks ? false : cover.isEdit,
+                  }
+                : {})}
+              {...(dayTask.isEdit
+                ? {
+                    checked: data.total > 0,
+                  }
+                : {})}
               defaultChecked={arrCheckedLevel.includes(String(data.id))}
             />
             {/* <div className="projectLevel-contain"> */}

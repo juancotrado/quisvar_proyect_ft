@@ -2,8 +2,8 @@ import { useSelector } from 'react-redux';
 import { Outlet, useParams } from 'react-router-dom';
 import { RootState } from '../../../../../../store';
 import { motion } from 'framer-motion';
-import { useCallback, useContext, useEffect, useState } from 'react';
-import { SocketContext } from '../../../../../../context';
+import { useContext, useEffect, useState } from 'react';
+import { ProjectContext, SocketContext } from '../../../../../../context';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { DegreType, Level, StatusType } from '../../../../../../types';
 import {
@@ -20,9 +20,14 @@ import { CardRegisterSubTask } from '../budgets/views';
 import { DropdownLevelBasics } from '../../components/dropdownLevel/DropdownLevelBasics';
 import { handleArchiver, handleMergePdfs } from '../../models/servicesProject';
 import { TypeArchiver } from '../../models/types';
+import { getIdsSubTasksRecursive } from '../../utils/tools';
+import { DaysTaskEdit } from '../../components/daysTaskEdit';
+import { CoverEdit } from '../../components/coverEdit';
 
 export const BasicsPage = () => {
   const { stageId } = useParams();
+  const { handleIsEditDayTask, setDayTaksRef } = useContext(ProjectContext);
+
   const modAuthProject = useSelector(
     (state: RootState) => state.modAuthProject
   );
@@ -31,14 +36,6 @@ export const BasicsPage = () => {
   const [levels, setlevels] = useState<Level | null>(null);
   const [openFilter, setOpenFilter] = useState(false);
   const socket = useContext(SocketContext);
-
-  const getLevels = useCallback(async () => {
-    const resBasic = await axiosInstance.get(`/stages/basics/${stageId}`, {
-      headers: { noLoader: true },
-    });
-    if (!stageId) return;
-    setlevels({ ...resBasic.data, stagesId: +stageId });
-  }, [socket, stageId]);
 
   useEffect(() => {
     if (!stageId) return;
@@ -50,21 +47,12 @@ export const BasicsPage = () => {
     };
   }, [socket]);
 
-  // useEffect(() => {
-  //   socket.on('server:update-project', () => {
-  //     if (stageId) {
-  //       getLevelsForSocket();
-  //     }
-  //   });
-  //   return () => {
-  //     socket.off('server:update-project');
-  //   };
-  // }, [socket, stageId]);
-
   useEffect(() => {
     if (!stageId) return;
     socket.emit('client:get-stage', +stageId, (data: Level) => {
       socket.emit('join', `basic-${stageId}`);
+      const idsLevel = getIdsSubTasksRecursive(data);
+      setDayTaksRef?.(idsLevel);
       setlevels({ ...data, stagesId: +stageId });
     });
   }, [socket]);
@@ -200,6 +188,16 @@ export const BasicsPage = () => {
               />
             </motion.div>
           )}
+          <span
+            className="budgetsPage-filter-icon"
+            onClick={handleIsEditDayTask}
+          >
+            <img src="/svg/filter.svg" />
+            Editar tareas
+          </span>
+
+          <DaysTaskEdit />
+          <CoverEdit />
         </div>
         <div className="budgetsPage-filter-select">
           <Select
@@ -229,7 +227,7 @@ export const BasicsPage = () => {
             </div>
           )}
         </div>
-        {levels && <DropdownLevelBasics level={levels} onSave={getLevels} />}
+        {levels && <DropdownLevelBasics level={levels} />}
       </div>
 
       <Outlet />

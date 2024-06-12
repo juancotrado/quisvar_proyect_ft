@@ -4,13 +4,15 @@ import { isOpenCardRegisteTask$ } from '../../../../../../services/sharingSubjec
 import { RootState } from '../../../../../../store';
 import { useSelector } from 'react-redux';
 import { LevelItemSubtaskGeneral } from '../levelItemSubtask';
+import { useContext } from 'react';
+import { ProjectContext } from '../../../../../../context';
 
 interface LevelSutaskProps {
   option: OptionProject;
   level: Level;
 }
 const LevelSubtaskGeneral = ({ level, option }: LevelSutaskProps) => {
-  console.log({ option });
+  const { dayTask } = useContext(ProjectContext);
 
   const { id: userSessionId } = useSelector(
     (state: RootState) => state.userSession
@@ -62,7 +64,7 @@ const LevelSubtaskGeneral = ({ level, option }: LevelSutaskProps) => {
         />
       ))}
 
-      {modAuthArea && (
+      {modAuthArea && !dayTask.isEdit && (
         <div className="levelSubtask-add" onClick={handleAddTask}>
           <span className="levelSubtask-plus">+</span> Agregar tarea
         </div>

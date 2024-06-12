@@ -1,8 +1,14 @@
 import { NavLink, useParams } from 'react-router-dom';
 import { OptionProject, SubTask } from '../../../../../../types';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
-import { KeyboardEvent, useContext, useState } from 'react';
-import { DayTaskContext, SocketContext } from '../../../../../../context';
+import {
+  ChangeEvent,
+  KeyboardEvent,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+import { ProjectContext, SocketContext } from '../../../../../../context';
 import { StatusText } from '..';
 import {
   DefaultUserImage,
@@ -30,7 +36,8 @@ const LevelItemSubtaskGeneral = ({
   modAuthArea,
   option,
 }: LevelItemSubtaskProps) => {
-  const { dayTask } = useContext(DayTaskContext);
+  const { dayTask, addDayTaskBody, handleSaveDaysTask } =
+    useContext(ProjectContext);
 
   const [inputDay, setInputDay] = useState(String(subtask.days));
   const socket = useContext(SocketContext);
@@ -70,11 +77,6 @@ const LevelItemSubtaskGeneral = ({
       stageId,
       id: subtask.id,
     };
-    // axiosInstance
-    //   .post(`/duplicates/subtask/${subtask.id}`, body)
-    //   .then(() => onSave?.());
-
-    // const name = `${subtask.name}(${Date.now()})`;
     loader$.setSubject = true;
     socket.emit(OPTION_PROJECT[option].dupplicateTask, body, () => {
       loader$.setSubject = false;
@@ -89,6 +91,12 @@ const LevelItemSubtaskGeneral = ({
 
   const pressKeydown = (e: KeyboardEvent<HTMLInputElement>) => {
     if (!dayTask.refs) return;
+
+    if (e.key === 'ArrowUp' || e.key === 'ArrowDown') e.preventDefault();
+    if (e.key === 'Enter') {
+      handleSaveDaysTask(stageId);
+      return;
+    }
     const { pos } = dayTask.refs[subtask.id];
     let valueSum = 0;
     if (e.key === 'ArrowUp') valueSum = -1;
@@ -98,14 +106,16 @@ const LevelItemSubtaskGeneral = ({
       day => day.pos === valueSum + pos
     );
     nextRef?.ref.current?.select();
-    // console.log('value', nextRef?.ref.current?.value.length);
-    // nextRef?.ref.current?.focus();
-    // nextRef?.ref.current?.setSelectionRange(
-    //   0,
-    //   nextRef?.ref.current?.value.length
-    // );
-    // nextRef?.ref.current?.addEventListener('focus', e => e.target?.select());
   };
+  const onChangeDay = ({ target }: ChangeEvent<HTMLInputElement>) => {
+    const { value } = target;
+    addDayTaskBody?.({ days: +value, id: subtask.id });
+    setInputDay(value);
+  };
+  useEffect(() => {
+    setInputDay(String(subtask.days));
+  }, [dayTask.isEdit]);
+
   return (
     <div className="levelSubtask-context-menu" key={subtask.id}>
       <ContextMenuTrigger id={`levelSubtask-${subtask.id}`}>
@@ -135,23 +145,15 @@ const LevelItemSubtaskGeneral = ({
                 <div className="projectLevel-input-name">
                   {dayTask.refs && (
                     <Input
-                      // {...register('days', {
-                      //   validate: { validateOnlyNumbers },
-                      //   // valueAsNumber: true,
-
-                      //   // value: "asdasd",
-                      //   value: 'asdsa',
-                      // })}
-                      onChange={e => setInputDay(e.target.value)}
+                      onChange={onChangeDay}
                       style={{
                         textAlign: 'center',
                       }}
+                      type="number"
                       value={inputDay}
                       onKeyDown={pressKeydown}
                       name="days"
                       styleInput={3}
-                      // onFocus={e => e.target.select()}
-                      // selectTextOnFocus={true}
                       autoComplete="off"
                       ref={dayTask.refs[subtask.id].ref}
                     />

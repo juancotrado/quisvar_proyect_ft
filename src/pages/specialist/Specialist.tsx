@@ -1,17 +1,19 @@
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { Input, Button, Aside } from '../../components';
+import { Input, Button, Aside, DotsRight } from '../../components';
 import { isOpenCardSpecialist$ } from '../../services/sharingSubject';
 import './specialist.css';
-import { SpecialistList } from '../../types';
+import { Option, SpecialistList } from '../../types';
 import { axiosInstance } from '../../services/axiosInstance';
 import { getIconDefault } from '../../utils';
-import { NavLink, Outlet } from 'react-router-dom';
+import { NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { Subject, debounceTime, switchMap } from 'rxjs';
 import { CardSpecialist } from './views';
+import { ContextMenuTrigger } from 'rctx-contextmenu';
 
 export const Specialist = () => {
   const [specialist, setSpecialist] = useState<SpecialistList[]>();
   const [searchTerm, setSearchTerm] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     getSpecialists();
@@ -47,7 +49,12 @@ export const Specialist = () => {
     if (!value) getSpecialists();
     apiSubjectRef.current.next(value);
   };
-
+  const handleDelete = (id: number) => {
+    axiosInstance.delete(`specialists/delete/${id}`).then(() => {
+      getSpecialists();
+      navigate(`/especialistas`);
+    });
+  };
   return (
     <div className="specialist">
       <Aside>
@@ -70,27 +77,44 @@ export const Specialist = () => {
           />
         </div>
         {specialist &&
-          specialist.map(item => (
-            <NavLink
-              className={({ isActive }) =>
-                `specialist-items  ${isActive && 'contract-selected'} `
-              }
-              key={item.id}
-              to={`informacion/${item.id}`}
-            >
-              <img
-                src={getIconDefault(item.lastName)}
-                alt=""
-                className="specialist-item-user-img"
-              />
-              <div className="specialist-items-content">
-                <h3 className="specialist-item-name">
-                  {item.firstName + ' ' + item.lastName}
-                </h3>
-                <h3 className="specialist-item-dni">DNI: {item.dni}</h3>
-              </div>
-            </NavLink>
-          ))}
+          specialist.map(item => {
+            const dataDots: Option[] = [
+              {
+                name: 'Eliminar',
+                type: 'button',
+                icon: 'trash-red',
+                function: () => handleDelete(item.id),
+              },
+            ];
+            return (
+              <ContextMenuTrigger id={`sp-sidebar-${item.id}`} key={item.id}>
+                <NavLink
+                  className={({ isActive }) =>
+                    `specialist-items  ${isActive && 'contract-selected'} `
+                  }
+                  key={item.id}
+                  to={`informacion/${item.id}`}
+                >
+                  <img
+                    src={getIconDefault(item.lastName)}
+                    alt=""
+                    className="specialist-item-user-img"
+                  />
+                  <div className="specialist-items-content">
+                    <h3 className="specialist-item-name">
+                      {item.firstName + ' ' + item.lastName}
+                    </h3>
+                    <h3 className="specialist-item-dni">DNI: {item.dni}</h3>
+                  </div>
+
+                  <DotsRight
+                    data={dataDots}
+                    idContext={`sp-sidebar-${item.id}`}
+                  />
+                </NavLink>
+              </ContextMenuTrigger>
+            );
+          })}
       </Aside>
 
       <section className="specialist-info">

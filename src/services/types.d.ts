@@ -5,10 +5,12 @@ import {
   Contract,
   Equipment,
   OfficeClass,
+  OptionProject,
   Profession,
   Specialists,
   SubTask,
   TrainingSpecialty,
+  TypeTask,
   User,
   WorkStation,
   licenseList,
@@ -48,7 +50,7 @@ export interface CardRegisteTask extends OpenModal {
   levelId: number | null;
   task?: SubTask;
   type?: AddTask;
-  typeTask: 'subtasks' | 'basictasks';
+  option: OptionProject;
 }
 export interface CardViewProps extends OpenModal {
   data: AttendanceRange[];

@@ -523,7 +523,8 @@ type StatusType =
 
 type AddTask = 'upper' | 'lower';
 
-export type TypeTask = 'task' | 'indextask' | 'task2' | 'task3';
+export type TypeTask = 'subtasks' | 'basictasks';
+export type OptionProject = 'basic' | 'budget';
 export interface SubtaskIncludes extends SubTask {
   Levels: {
     stages: {
@@ -558,6 +559,11 @@ export interface AreaForm {
   name: string;
 }
 
+export interface ArchiverOptions {
+  name: string;
+  fn: () => void;
+  icon: string;
+}
 export interface Level {
   id: number;
   item: string;

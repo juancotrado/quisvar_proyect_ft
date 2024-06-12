@@ -17,6 +17,10 @@ import { isOpenButtonDelete$ } from '../../../../../../services/sharingSubject';
 import { MoreInfo } from '..';
 import { OptionLevel } from '../../pages/budgets/models/types';
 import { OPTION_LEVEL_TEXT } from '../../pages/budgets/models';
+import {
+  handleCompressPdf,
+  handleMergePdf,
+} from '../../models/servicesProject';
 
 interface ProjectLevelProps {
   data: Level;
@@ -163,6 +167,33 @@ export const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
   const arrCheckedLevel: string[] = JSON.parse(
     localStorage.getItem('arrCheckedLevel') ?? '[]'
   );
+
+  const handleCompresLevel = (type: 'pdf' | 'nopdf' | 'all') =>
+    handleCompressPdf(type, 'level', data.id, data.name);
+
+  const archiverOptions = [
+    {
+      name: 'Comprimir',
+      fn: () => handleCompresLevel('all'),
+      icon: 'zip-normal',
+    },
+    {
+      name: 'Comprimir PDF',
+      fn: () => handleCompresLevel('pdf'),
+      icon: 'zip-pdf',
+    },
+    {
+      name: 'Comprimir Editables',
+      fn: () => handleCompresLevel('nopdf'),
+      icon: 'zip-edit',
+    },
+    {
+      name: 'Unir PDFs',
+      fn: () => handleMergePdf('level', data.id, data.name),
+      icon: 'merge-pdf',
+    },
+  ];
+
   return (
     <div
       className={`projectLevel-sub-list-item  ${
@@ -255,7 +286,7 @@ export const ProjectLevel = ({ data, onSave }: ProjectLevelProps) => {
       </div>
       {modAuthProject && (
         <div className="projectLevel-contain-right">
-          <MoreInfo data={data} />
+          <MoreInfo {...{ archiverOptions, data }} />
         </div>
       )}
       {openOptionLevel && (

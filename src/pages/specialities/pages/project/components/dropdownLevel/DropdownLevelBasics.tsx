@@ -5,7 +5,7 @@ import { RootState } from '../../../../../../store';
 import {
   ProjectAddLevelBasics,
   ProjectLevelBasics,
-  LevelSubtaskBasics,
+  LevelSubtaskGeneral,
 } from '..';
 
 interface DropdownLevelBasics {
@@ -31,7 +31,7 @@ export const DropdownLevelBasics = ({ level, onSave }: DropdownLevelBasics) => {
         }
       >
         {existSubtask ? (
-          <LevelSubtaskBasics onSave={onSave} level={level} />
+          <LevelSubtaskGeneral level={level} option="basic" />
         ) : (
           <>
             {level?.nextLevel?.map(subLevel => (
@@ -43,13 +43,11 @@ export const DropdownLevelBasics = ({ level, onSave }: DropdownLevelBasics) => {
                     : 'dropdownLevel-dropdown-sub-list'
                 }
               >
-                <ProjectLevelBasics data={subLevel} onSave={onSave} />
+                <ProjectLevelBasics data={subLevel} />
                 <DropdownLevelBasics level={subLevel} onSave={onSave} />
               </li>
             ))}
-            {modAuthArea && (
-              <ProjectAddLevelBasics data={level} onSave={onSave} />
-            )}
+            {modAuthArea && <ProjectAddLevelBasics data={level} />}
           </>
         )}
       </ul>

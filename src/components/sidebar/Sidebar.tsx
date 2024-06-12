@@ -1,20 +1,21 @@
 import './sidebar.css';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useContext, useEffect, useRef, useState, MouseEvent } from 'react';
 import { Subscription } from 'rxjs';
-import { toggle$ } from '../../services/sharingSubject';
+import { loader$, toggle$ } from '../../services/sharingSubject';
 import { SocketContext } from '../../context';
 import { CardEditInformation, ChipItem, Menu } from '..';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../../store';
 import { motion } from 'framer-motion';
-import { getIconDefault } from '../../utils';
+import { SnackbarUtilities, getIconDefault } from '../../utils';
 import { getUserSession } from '../../store/slices/userSession.slice';
 import { MenuMoreInfo } from '../../types';
 import { QueryClient } from '@tanstack/react-query';
 
 const Sidebar = () => {
   const queryClient = new QueryClient();
+  const location = useLocation();
   const { stageId, taskId } = useParams();
   const dispatch: AppDispatch = useDispatch();
   const navigate = useNavigate();
@@ -40,7 +41,8 @@ const Sidebar = () => {
   useEffect(() => {
     socket.io.on('reconnect', () => {
       if (stageId) {
-        socket.emit('join', `project-${stageId}`);
+        const isBasic = location.pathname.includes('basicos');
+        socket.emit('join', `${isBasic ? 'basic' : 'project'}-${stageId}`);
       }
       if (taskId) {
         socket.emit('join', `task-${taskId}`);
@@ -50,6 +52,25 @@ const Sidebar = () => {
       }
     });
   }, []);
+
+  useEffect(() => {
+    socket.on('connect_error', error => {
+      SnackbarUtilities.error(error.message);
+    });
+    return () => {
+      socket.off('connect_error');
+    };
+  }, [socket]);
+
+  useEffect(() => {
+    socket.on('server:error', (message: string) => {
+      loader$.setSubject = false;
+      SnackbarUtilities.error(message);
+    });
+    return () => {
+      socket.off('server:error');
+    };
+  }, [socket]);
 
   useEffect(() => {
     if (role) {

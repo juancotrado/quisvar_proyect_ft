@@ -1,4 +1,4 @@
-import { AddTask, StatusType } from '../../../../../../../types';
+import { AddTask, OptionProject, StatusType } from '../../../../../../../types';
 
 export type SubTaskForm = {
   id: number | null;
@@ -6,7 +6,7 @@ export type SubTaskForm = {
   description?: string;
   days: number;
   type?: AddTask;
-  typeTask: 'basictasks' | 'subtasks';
+  option: OptionProject;
 };
 
 export const OPTION_LEVEL_TEXT = {

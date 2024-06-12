@@ -49,11 +49,20 @@
   justify-content: space-between;
   align-items: center;
   padding: 7px 13px 0;
+  position: sticky;
+  top: 0;
+  background-color: #fff;
+  z-index: 1;
 }
-
+.budgetsPage-contain::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
 .budgetsPage-contain-left {
+  width: 100%;
   display: flex;
   gap: 1rem;
+  padding: 0 0 0 1rem;
 }
 
 .budgetsPage-figure {
@@ -70,11 +79,12 @@
 }
 
 .budgetsPage-contain-right {
-  max-width: 56rem;
+  min-width: 56rem;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  background-color: #fff;
 }
 
 .budgetsPage-contain {

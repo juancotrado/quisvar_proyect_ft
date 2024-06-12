@@ -1,23 +1,23 @@
 import { useParams } from 'react-router-dom';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
-import { InfoDataReport, Level } from '../../../../../../types';
+import {
+  ArchiverOptions,
+  InfoDataReport,
+  Level,
+} from '../../../../../../types';
 import './moreInfo.css';
 import { MouseEvent, useEffect, useRef, useState } from 'react';
 import { Subscription } from 'rxjs';
 import { toggle$ } from '../../../../../../services/sharingSubject';
-import {
-  downloadBlob,
-  excelSimpleReport,
-  formatMoney,
-} from '../../../../../../utils';
+import { excelSimpleReport, formatMoney } from '../../../../../../utils';
 import { MoreInfoUsers } from '..';
-import { useArchiver } from '../../../../../../hooks';
 import { FloatingText } from '../../../../../../components';
 import { formatDateWeekdayUtc } from '../../../../../../utils/dayjsSpanish';
 interface MoreInfoProps {
   data: Level;
+  archiverOptions: ArchiverOptions[];
 }
-export const MoreInfo = ({ data }: MoreInfoProps) => {
+export const MoreInfo = ({ data, archiverOptions }: MoreInfoProps) => {
   const { stageId } = useParams();
   const [showArchiverOption, setShowArchiverOption] = useState(false);
   const [showUsers, setShowUsers] = useState(false);
@@ -57,42 +57,13 @@ export const MoreInfo = ({ data }: MoreInfoProps) => {
       excelSimpleReport(data, infoData, 'areas');
     });
   };
-  const type = data.projectName ? 'stages' : 'levels';
-  const { handleArchiver } = useArchiver(
-    data.id,
-    type,
-    data.projectName ?? data.name
-  );
-  const { handleArchiver: handleArchiverEdit } = useArchiver(
-    data.id,
-    type,
-    data.projectName ?? data.name,
-    'editables'
-  );
+
   const handleViewUsers = () => setShowUsers(!showUsers);
   const handleArchiverOptions = (e: MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
     setShowArchiverOption(!showArchiverOption);
   };
-  const handleMergePdf = async () => {
-    const url = type == 'stages' ? '/merge-pdf-stage/' : '/merge-pdf-levels/';
-    const res = await axiosInstance.get('/download' + url + data.id, {
-      responseType: 'blob',
-    });
-    const filename = data.name + '.pdf';
-    downloadBlob(res.data, filename);
-  };
-  const handleCompressPdf = async (type_d: 'pdf' | 'nopdf' | 'all') => {
-    const url = type == 'stages' ? '/stage-compress-pdfs/' : '/compress-pdfs/';
-    const res = await axiosInstance.get(
-      '/download' + url + data.id + '?type=' + type_d,
-      {
-        responseType: 'blob',
-      }
-    );
-    const filename = data.name + '.rar';
-    downloadBlob(res.data, filename);
-  };
+
   return (
     <>
       <div className="moreInfo-currency-contain">
@@ -186,52 +157,19 @@ export const MoreInfo = ({ data }: MoreInfoProps) => {
         >
           {showArchiverOption && (
             <div className="moreInfo-details-contain moreInfo-details-absolute">
-              <div
-                className="moreInfo-detail"
-                onClick={() => handleCompressPdf('all')}
-                title={'Comprimir'}
-              >
-                <figure className="moreInfo-detail-icon">
-                  <img src="/svg/zip-normal.svg" alt="W3Schools" />
-                </figure>
-                <span className="moreInfo-detail-info">Comprimir</span>
-              </div>
-              <div
-                className="moreInfo-detail"
-                onClick={() => handleCompressPdf('pdf')}
-                title={'Comprimir PDFs'}
-              >
-                <figure className="moreInfo-detail-icon">
-                  <img src="/svg/zip-pdf.svg" alt="W3Schools" />
-                </figure>
-                <span className="moreInfo-detail-info">
-                  Comprimirga <br /> PDF
-                </span>
-              </div>
-              <div
-                className="moreInfo-detail"
-                title={'Comprimir Editables'}
-                onClick={() => handleCompressPdf('nopdf')}
-              >
-                <figure className="moreInfo-detail-icon">
-                  <img src="/svg/zip-edit.svg" alt="W3Schools" />
-                </figure>
-                <span className="moreInfo-detail-info">
-                  Comprimir <br /> Editables
-                </span>
-              </div>
-              <div
-                className="moreInfo-detail"
-                onClick={handleMergePdf}
-                title={'Unir PDFs'}
-              >
-                <figure className="moreInfo-detail-icon">
-                  <img src="/svg/merge-pdf.svg" alt="W3Schools" />
-                </figure>
-                <span className="moreInfo-detail-info">
-                  Unir <br /> PDFs
-                </span>
-              </div>
+              {archiverOptions.map(({ fn, icon, name }) => (
+                <div
+                  key={icon}
+                  className="moreInfo-detail"
+                  onClick={fn}
+                  title={name}
+                >
+                  <figure className="moreInfo-detail-icon">
+                    <img src={`/svg/${icon}.svg`} alt="W3Schools" />
+                  </figure>
+                  <span className="moreInfo-detail-info">{name}</span>
+                </div>
+              ))}
             </div>
           )}
           <div className="moreInfo-detail-container">

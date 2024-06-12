@@ -1,15 +1,17 @@
-import { Level } from '../../../../../../types';
+import { Level, OptionProject } from '../../../../../../types';
 import './levelSubtask.css';
 import { isOpenCardRegisteTask$ } from '../../../../../../services/sharingSubject';
 import { RootState } from '../../../../../../store';
 import { useSelector } from 'react-redux';
-import { LevelItemSubtask } from '../levelItemSubtask';
+import { LevelItemSubtaskGeneral } from '../levelItemSubtask';
 
 interface LevelSutaskProps {
+  option: OptionProject;
   level: Level;
-  onSave?: () => void;
 }
-export const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
+const LevelSubtaskGeneral = ({ level, option }: LevelSutaskProps) => {
+  console.log({ option });
+
   const { id: userSessionId } = useSelector(
     (state: RootState) => state.userSession
   );
@@ -24,7 +26,7 @@ export const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
     isOpenCardRegisteTask$.setSubject = {
       isOpen: true,
       levelId,
-      option: 'budget',
+      option,
     };
   };
 
@@ -51,12 +53,12 @@ export const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
         </div>
       </div>
       {subTasks?.map(subtask => (
-        <LevelItemSubtask
+        <LevelItemSubtaskGeneral
+          option={option}
           key={subtask.id}
           levelId={levelId}
           modAuthArea={modAuthArea}
           subtask={subtask}
-          onSave={onSave}
         />
       ))}
 
@@ -69,4 +71,4 @@ export const LevelSubtask = ({ level, onSave }: LevelSutaskProps) => {
   );
 };
 
-export default LevelSubtask;
+export default LevelSubtaskGeneral;

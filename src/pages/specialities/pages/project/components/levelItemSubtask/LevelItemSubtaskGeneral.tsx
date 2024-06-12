@@ -1,6 +1,5 @@
 import { NavLink, useParams } from 'react-router-dom';
-import { SubTask } from '../../../../../../types';
-import { axiosInstance } from '../../../../../../services/axiosInstance';
+import { OptionProject, SubTask } from '../../../../../../types';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 import { KeyboardEvent, useContext, useState } from 'react';
 import { DayTaskContext, SocketContext } from '../../../../../../context';
@@ -14,20 +13,22 @@ import {
 import {
   isOpenButtonDelete$,
   isOpenCardRegisteTask$,
+  loader$,
 } from '../../../../../../services/sharingSubject';
+import { OPTION_PROJECT } from '../../models';
 
 interface LevelItemSubtaskProps {
   subtask: SubTask;
   levelId: number;
   modAuthArea: boolean;
-  onSave?: () => void;
+  option: OptionProject;
 }
 
-const LevelItemSubtask = ({
+const LevelItemSubtaskGeneral = ({
   subtask,
   levelId,
   modAuthArea,
-  onSave,
+  option,
 }: LevelItemSubtaskProps) => {
   const { dayTask } = useContext(DayTaskContext);
 
@@ -45,12 +46,13 @@ const LevelItemSubtask = ({
       levelId,
       task: subtask,
       type,
-      option: 'budget',
+      option,
     };
   };
   const handleDeleteTask = (id: number) => {
-    axiosInstance.delete(`subtasks/${id}/${stageId}`).then(res => {
-      socket.emit('client:update-project', res.data);
+    loader$.setSubject = true;
+    socket.emit(OPTION_PROJECT[option].deleteTask, { id, stageId }, () => {
+      loader$.setSubject = false;
     });
   };
   const handleEditTask = (subtask: SubTask) => {
@@ -58,17 +60,25 @@ const LevelItemSubtask = ({
       isOpen: true,
       levelId,
       task: subtask,
-      option: 'budget',
+      option,
     };
   };
 
   const handleDuplicateTask = (subtask: SubTask) => {
     const body = {
       name: `${subtask.name}(${Date.now()})`,
+      stageId,
+      id: subtask.id,
     };
-    axiosInstance
-      .post(`/duplicates/subtask/${subtask.id}`, body)
-      .then(() => onSave?.());
+    // axiosInstance
+    //   .post(`/duplicates/subtask/${subtask.id}`, body)
+    //   .then(() => onSave?.());
+
+    // const name = `${subtask.name}(${Date.now()})`;
+    loader$.setSubject = true;
+    socket.emit(OPTION_PROJECT[option].dupplicateTask, body, () => {
+      loader$.setSubject = false;
+    });
   };
   const handleOpenButtonDelete = (id: number) => {
     isOpenButtonDelete$.setSubject = {
@@ -224,4 +234,4 @@ const LevelItemSubtask = ({
   );
 };
 
-export default LevelItemSubtask;
+export default LevelItemSubtaskGeneral;

@@ -1,4 +1,4 @@
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import { Input, Button, Aside, DotsRight } from '../../components';
 import { isOpenCardSpecialist$ } from '../../services/sharingSubject';
 import './specialist.css';
@@ -6,13 +6,14 @@ import { Option, SpecialistList } from '../../types';
 import { axiosInstance } from '../../services/axiosInstance';
 import { getIconDefault } from '../../utils';
 import { NavLink, Outlet, useNavigate } from 'react-router-dom';
-import { Subject, debounceTime, switchMap } from 'rxjs';
+// import { Subject, debounceTime, switchMap } from 'rxjs';
 import { CardSpecialist } from './views';
 import { ContextMenuTrigger } from 'rctx-contextmenu';
 
 export const Specialist = () => {
   const [specialist, setSpecialist] = useState<SpecialistList[]>();
   const [searchTerm, setSearchTerm] = useState('');
+  // const [debouncedSearchTerm] = useDebounce(searchTerm, 100);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -26,28 +27,41 @@ export const Specialist = () => {
       isOpen: true,
     };
   };
-  const apiSubjectRef = useRef(new Subject());
-  useEffect(() => {
-    const subscription = apiSubjectRef.current
-      .pipe(
-        debounceTime(500),
-        switchMap(dni => {
-          return axiosInstance.get(`specialists/dni/${dni}`);
-        })
-      )
-      .subscribe(response => {
-        setSpecialist(response.data);
-      });
+  const filterList: SpecialistList[] | undefined = useMemo(() => {
+    if (!specialist) return [];
 
-    return () => {
-      subscription.unsubscribe();
-    };
-  }, []);
+    return specialist.filter(
+      person =>
+        (person.dni &&
+          person.dni.toLowerCase().startsWith(searchTerm.toLowerCase())) ||
+        (person.firstName &&
+          person.firstName.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (person.lastName &&
+          person.lastName.toLowerCase().includes(searchTerm.toLowerCase()))
+    );
+  }, [searchTerm, specialist]);
+  // const apiSubjectRef = useRef(new Subject());
+  // useEffect(() => {
+  //   const subscription = apiSubjectRef.current
+  //     .pipe(
+  //       debounceTime(500),
+  //       switchMap(dni => {
+  //         return axiosInstance.get(`specialists/dni/${dni}`);
+  //       })
+  //     )
+  //     .subscribe(response => {
+  //       setSpecialist(response.data);
+  //     });
+
+  //   return () => {
+  //     subscription.unsubscribe();
+  //   };
+  // }, []);
   const handleSearch = (event: ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target;
     setSearchTerm(value);
-    if (!value) getSpecialists();
-    apiSubjectRef.current.next(value);
+    // if (!value) getSpecialists();
+    // apiSubjectRef.current.next(value);
   };
   const handleDelete = (id: number) => {
     axiosInstance.delete(`specialists/delete/${id}`).then(() => {
@@ -69,15 +83,15 @@ export const Specialist = () => {
 
         <div className="search-box">
           <Input
-            placeholder="Buscar por DNI"
+            placeholder="Buscar por DNI o Nombre"
             className="specialist-search-input"
             onChange={handleSearch}
             value={searchTerm}
             styleInput={4}
           />
         </div>
-        {specialist &&
-          specialist.map(item => {
+        {filterList &&
+          filterList.map(item => {
             const dataDots: Option[] = [
               {
                 name: 'Eliminar',

@@ -190,14 +190,6 @@ export const BasicsPage = () => {
               />
             </motion.div>
           )}
-          <span
-            className="budgetsPage-filter-icon"
-            onClick={handleIsEditDayTask}
-          >
-            <img src="/svg/filter.svg" />
-            Editar tareas
-          </span>
-
           <DaysTaskEdit />
           <CoverEdit />
         </div>

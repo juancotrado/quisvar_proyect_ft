@@ -57,3 +57,8 @@
   color: white;
   border: 1px solid var(--color-primary);
 }
+.gr-toggle-area {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}

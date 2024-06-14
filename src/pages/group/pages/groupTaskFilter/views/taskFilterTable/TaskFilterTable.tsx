@@ -3,6 +3,7 @@ import { DayTasks } from '../../../../types';
 import './taskFilterTable.css';
 import { StatusText } from '../../../../../specialities/pages/project/components';
 import { StatusType } from '../../../../../../types';
+// const URL = window.location.origin;
 import {
   formatDateTimeUtc,
   formatDayMonthTimeUtc,
@@ -50,7 +51,9 @@ const TaskFilterTable = ({ data }: TaskFilterProps) => {
             <h2 className="tft-htitle">{formatDateTimeUtc(task.updatedAt)}</h2>
             <h2 className="tft-htitle">{task.project}</h2>
             <h2 className="tft-htitle">{task.stage}</h2>
-            <h2 className="tft-htitle">{task.name}</h2>
+            <h2 className="tft-htitle" style={{ textAlign: 'left' }}>
+              {task.item + ' ' + task.name}
+            </h2>
             <h2 className="tft-htitle">
               {task.user
                 ? task.user.firstName + ' ' + task.user.lastName

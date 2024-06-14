@@ -17,6 +17,16 @@
   top: 0;
   background-color: white;
 }
+.tft-left {
+  text-align: left;
+}
+.tft-anchor {
+  text-decoration: none;
+  color: var(--color-secondary);
+  position: relative;
+  z-index: 10;
+  cursor: cell;
+}
 .tft-header {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 2fr 1fr 0.5fr 0.7fr;

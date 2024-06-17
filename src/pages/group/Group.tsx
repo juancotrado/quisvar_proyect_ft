@@ -4,7 +4,7 @@ import { axiosInstance } from '../../services/axiosInstance';
 import { Group as GroupData } from '../../types';
 import { Outlet } from 'react-router-dom';
 import { GroupBtnAdd, GroupListBar, GroupMeetingBar } from './components';
-import { Aside, Button } from '../../components';
+import { Aside, Button, CustomSwitch } from '../../components';
 import {
   DndContext,
   DragEndEvent,
@@ -21,6 +21,7 @@ export const Group = () => {
   const itemsId = useMemo(() => groups?.map(item => item.id), [groups]);
   const [activeElem, setActiveElem] = useState<GroupData | null>(null);
   const [add, setAdd] = useState<boolean>(false);
+  // const [isSwitched, setIsSwitched] = useState<boolean>(false);
   const [editOrder, setEditOrder] = useState<boolean>(false);
   const getgroups = useCallback(() => {
     axiosInstance.get<GroupData[]>('/groups/all').then(res => {
@@ -51,19 +52,16 @@ export const Group = () => {
     });
   };
   const handleOrder = () => {
-    const data = groups?.map(group => {
-      return {
-        id: group.id,
-      };
-    });
+    if (groups === initial) return;
+    const data = groups?.map(({ id }) => ({ id }));
     axiosInstance.put('/groups/order', data).then(() => {
       getgroups();
-      setEditOrder(false);
     });
   };
-  const handleCancel = () => {
-    setEditOrder(false);
-    setGroups(initial);
+  const handleChange = () => {
+    if (editOrder) {
+      handleOrder();
+    }
   };
   return (
     <div className="gr-container">
@@ -72,7 +70,17 @@ export const Group = () => {
         <GroupMeetingBar itemOptions={navItemsMeetings} />
         <h1 className="gr-title">REPORTES</h1>
         <GroupMeetingBar itemOptions={navItemsReports} />
-        <h1 className="gr-title">GRUPOS</h1>
+        <div className="gr-toggle-area">
+          <h1 className="gr-title">GRUPOS</h1>
+          {!add && (
+            <CustomSwitch
+              isToggle={editOrder}
+              onToggle={handleChange}
+              onClick={() => setEditOrder(!editOrder)}
+              disabled={add}
+            />
+          )}
+        </div>
         <DndContext onDragStart={onDragStart} onDragEnd={onDragEnd}>
           <div className="gr-drag-content">
             <SortableContext
@@ -98,39 +106,14 @@ export const Group = () => {
           )}
         </DndContext>
         {!add ? (
-          <>
-            {!editOrder ? (
-              <Button
-                type="button"
-                onClick={() => setEditOrder(true)}
-                text="Editar Orden"
-                className="gr-btn-order"
-                variant="outline"
-              />
-            ) : (
-              <div className="gr-order-action">
-                <Button
-                  onClick={handleCancel}
-                  color="error"
-                  text="Cancelar"
-                  variant="outline"
-                />
-                <Button
-                  onClick={handleOrder}
-                  text="Guardar"
-                  variant="outline"
-                />
-              </div>
-            )}
-
-            <Button
-              text="Agregar"
-              icon="plus"
-              className="gr-btn-add"
-              onClick={() => setAdd(true)}
-              variant="outline"
-            />
-          </>
+          <Button
+            text="Agregar"
+            icon="plus"
+            variant="outline"
+            position="center"
+            onClick={() => setAdd(true)}
+            disabled={editOrder}
+          />
         ) : (
           <GroupBtnAdd
             setBtnActive={() => setAdd(!add)}

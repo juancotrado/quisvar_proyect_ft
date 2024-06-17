@@ -105,8 +105,11 @@ interface Task {
   days: number;
   user: User;
   stage: string;
+  stageId: number;
   project: string;
+  projectId: number;
   subTask: string;
+  item: string;
 }
 
 export interface DayTasks {

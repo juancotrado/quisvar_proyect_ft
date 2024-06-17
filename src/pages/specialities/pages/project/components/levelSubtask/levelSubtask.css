@@ -19,6 +19,11 @@
 
 .levelSubtask-context-menu {
   width: 100%;
+  height: 30px;
+}
+.levelSubtask-drag {
+  width: 100%;
+  height: 30px;
 }
 
 .pointer {

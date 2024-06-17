@@ -129,7 +129,15 @@ const CarRegisterSwornDeclaration = ({
         document={<SwornDeclarationPdf data={swornDeclarationData} />}
         fileName={`Declaracion-Jurada1.pdf`}
       >
-        <Button icon="preview-pdf" text="Declaración jurada" styleButton={2} />
+        <Button
+          icon="preview-pdf"
+          text="Declaración jurada"
+          style={{ fontWeight: 500, width: '100%' }}
+          borderRadius={3}
+          color="grayLigth"
+          textColor="grayTertiary"
+          borderColor="graySecondary"
+        />
       </PDFDownloadLink>
     </div>
   );

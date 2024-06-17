@@ -138,7 +138,8 @@ const SidebarSpecialityAddLvl = ({
           <Button
             type="button"
             icon={'plus'}
-            className="sidebarSpecialityAddLvl-btn"
+            iconSize={0.5}
+            variant="ghost"
             whileHover={{ rotate: 90 }}
             whileTap={{ scale: 1.1 }}
           />

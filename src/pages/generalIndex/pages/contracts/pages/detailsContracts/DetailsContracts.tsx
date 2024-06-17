@@ -283,8 +283,10 @@ export const DetailsContracts = () => {
           </h5>
           {contractPhase === 'convocationPhase' && (
             <Button
-              className="detailsContracts-btn detailsContracts-btn-red"
               text="Reintentar"
+              color="grayLigth"
+              borderColor="black"
+              textColor="black"
               icon="refresh"
               onClick={handleDelete}
             />
@@ -303,7 +305,9 @@ export const DetailsContracts = () => {
                 </p>
               )}
               <Button
-                className="detailsContracts-btn detailsContracts-btn-red"
+                color="grayLigth"
+                borderColor="black"
+                textColor="black"
                 text={viewTableEjecution ? 'Editar' : 'Ver Tabla'}
                 onClick={handleViewEjecution}
               />

@@ -89,6 +89,19 @@ const GenerateOrderService = ({
       isOpen: true,
     };
   };
+
+  const viewPdfBtns = [
+    {
+      icon: 'preview-pdf',
+      text: 'Orden de Servicio',
+      fn: () => handleClickPdf('orderServices'),
+    },
+    {
+      icon: 'preview-pdf',
+      text: 'Recibo de Pago',
+      fn: () => handleClickPdf('paymentReceipt'),
+    },
+  ];
   const hasRuc = !!getData().ruc.length;
   return (
     <div className="generateOrderService">
@@ -199,19 +212,17 @@ const GenerateOrderService = ({
         />
       </form>
       <div className="generateOrderService-previews-btns">
-        <Button
-          icon="preview-pdf"
-          text="Orden de Servicio"
-          styleButton={2}
-          onClick={() => handleClickPdf('orderServices')}
-        />
-
-        <Button
-          icon="preview-pdf"
-          text="Recibo de Pago"
-          styleButton={2}
-          onClick={() => handleClickPdf('paymentReceipt')}
-        />
+        {viewPdfBtns.map(({ fn, icon, text }) => (
+          <Button
+            icon={icon}
+            text={text}
+            style={{ fontWeight: 500, width: '100%' }}
+            color="grayLigth"
+            textColor="grayTertiary"
+            borderColor="graySecondary"
+            onClick={fn}
+          />
+        ))}
       </div>
     </div>
   );

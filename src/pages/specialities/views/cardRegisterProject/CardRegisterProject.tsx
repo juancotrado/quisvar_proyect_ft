@@ -1,6 +1,6 @@
 import {
   Button,
-  CloseIcon,
+  IconAction,
   Input,
   Modal,
   TextArea,
@@ -110,12 +110,13 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
   };
   return (
     <Modal size={50} isOpenProp={isOpenModal}>
-      <CloseIcon onClick={closeFunctions} />
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="card-register"
         autoComplete="off"
       >
+        <IconAction icon="close" onClick={closeFunctions} />
+
         <h2>
           {watch('isDuplicate') ? 'DUPLICAR PROYECTO' : 'REGISTRAR PROYECTO'}
         </h2>
@@ -186,11 +187,10 @@ const CardRegisterProject = ({ onSave }: CardRegisterProjectProps) => {
             />
           </div>
         </div>
-
         <Button
           type="submit"
           text={`${watch('id') ? 'Duplicar' : 'Registrar'}`}
-          styleButton={4}
+          position="center"
         />
       </form>
     </Modal>

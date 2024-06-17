@@ -111,9 +111,8 @@ export const Group = () => {
               <div className="gr-order-action">
                 <Button
                   onClick={handleCancel}
+                  color="error"
                   text="Cancelar"
-                  className="gr-btn-cancel"
-                  colorText="white"
                   variant="outline"
                 />
                 <Button

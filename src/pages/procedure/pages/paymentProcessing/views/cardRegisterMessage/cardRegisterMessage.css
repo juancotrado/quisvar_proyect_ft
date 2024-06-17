@@ -30,7 +30,7 @@
   color: #000;
   justify-content: space-between;
   align-items: center;
-  background-color: #c2e7ff;
+  background-color: var(--color-quinary);
   padding: 0 0.5rem;
 }
 
@@ -74,7 +74,7 @@
 
 .inbox-copy-button {
   border-radius: 0.75rem;
-  background: #c2e7ff;
+  background: var();
   border: 0;
   color: #6e6e6e;
   text-wrap: nowrap;

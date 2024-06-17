@@ -1348,3 +1348,4 @@ export interface CompaniesSelect extends Companies {
 
 export type Variant = 'solid' | 'outline' | 'ghost' | 'link';
 export type Size = 'xs' | 'sm' | 'md' | 'lg';
+export interface ButtonType {}

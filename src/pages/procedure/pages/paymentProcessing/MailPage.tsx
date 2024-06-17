@@ -305,7 +305,8 @@ export const MailPage = () => {
                   onClick={handleNewMessage}
                   icon="plus-dark"
                   text="Nuevo Trámite"
-                  styleButton={3}
+                  color="quinary"
+                  textColor="secondary"
                 />
               </div>
             </div>

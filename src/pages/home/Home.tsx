@@ -191,11 +191,7 @@ export const Home = () => {
         </button>
       </div>
 
-      <Button
-        text="Ver Directivas"
-        className="userList-btn"
-        onClick={handleOpenCardFiles}
-      />
+      <Button text="Ver Directivas" onClick={handleOpenCardFiles} />
       {viewCard && licenseData && (
         <div className="home-license-card">
           <h2>Licencia activa</h2>

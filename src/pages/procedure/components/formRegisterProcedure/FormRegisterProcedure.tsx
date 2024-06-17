@@ -434,7 +434,7 @@ const FormRegisterProcedure = ({
 
       <DocumentProcedure getFilesList={files => setFileUploadFiles(files)} />
       <div className="formRegister-btns">
-        <Button type="submit" text="Enviar" styleButton={4} />
+        <Button type="submit" text="Enviar" position="right" />
         {handleFinish && (
           <Button
             type="button"

@@ -140,7 +140,8 @@ export const Consortium = () => {
               text="Empresa"
               icon="plus"
               whileTap={{ scale: 0.9 }}
-              styleButton={3}
+              color="quinary"
+              textColor="secondary"
               onClick={() => id && handleOpenCard(+id)}
             />
           </div>

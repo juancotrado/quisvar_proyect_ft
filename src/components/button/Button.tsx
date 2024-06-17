@@ -1,9 +1,12 @@
-import { color, motion } from 'framer-motion';
+import { motion } from 'framer-motion';
 import type { HTMLMotionProps } from 'framer-motion';
 import './button.css';
 import { STYLE_BUTTON } from './buttonDefinitions';
 import { CSSProperties } from 'react';
-import { Size, Variant } from '../../types';
+import { ButtonType, Size, Variant } from '../../types';
+import { ColorKeys, COLOR_CSS } from '../../utils/cssData';
+
+type Position = 'center' | 'left' | 'right';
 interface ButtonProps extends HTMLMotionProps<'button'> {
   text?: string;
   icon?: string;
@@ -13,8 +16,14 @@ interface ButtonProps extends HTMLMotionProps<'button'> {
   variant?: Variant;
   leftIcon?: JSX.Element;
   rightIcon?: JSX.Element;
-  colorText?: string;
+  textColor?: ColorKeys;
+  borderColor?: ColorKeys;
   size?: Size;
+  buttonType?: ButtonType;
+  color?: ColorKeys;
+  style?: CSSProperties;
+  position?: Position;
+  borderRadius?: number;
 }
 export const Button = ({
   className,
@@ -23,12 +32,17 @@ export const Button = ({
   icon,
   iconSize = 1,
   disabled,
+  borderRadius,
   styleButton = 4,
   size = 'xs',
   leftIcon: LeftIcon,
   rightIcon: RightIcon,
-  colorText,
+  color = 'primary',
+  textColor,
+  borderColor,
+  position,
   variant = 'solid',
+  style,
   ...otherProps
 }: ButtonProps) => {
   const styleIcon: CSSProperties = {
@@ -47,13 +61,66 @@ export const Button = ({
         return { padding: '1.5rem', fontsize: '1.125rem' };
     }
   };
+
+  const getVarianStyles = (variant: Variant): CSSProperties => {
+    const backgroundColor = COLOR_CSS[color];
+    const txtColor = textColor
+      ? COLOR_CSS[textColor]
+      : variant == 'solid'
+      ? 'white'
+      : COLOR_CSS[color];
+
+    const brdColor = borderColor ? COLOR_CSS[borderColor] : COLOR_CSS[color];
+
+    switch (variant) {
+      case 'solid':
+        return {
+          backgroundColor,
+          color: txtColor,
+          borderColor: brdColor,
+        };
+      case 'outline':
+        return {
+          backgroundColor: 'transparent',
+          color: txtColor,
+          borderColor: brdColor,
+        };
+      case 'ghost':
+        return {
+          backgroundColor: 'transparent',
+          border: 'none',
+          color: txtColor,
+        };
+      case 'link':
+        return {
+          backgroundColor: 'transparent',
+          border: 'none',
+          color: txtColor,
+          textDecoration: 'underline',
+        };
+    }
+  };
+  const getPositionStyles = (position?: Position): CSSProperties => {
+    switch (position) {
+      case 'center':
+        return { marginInline: 'auto' };
+      case 'left':
+        return { marginInlineEnd: 'auto' };
+      case 'right':
+        return { marginInlineStart: 'auto' };
+      default:
+        return {};
+    }
+  };
   const buttonStyles: CSSProperties = {
     padding: !!text ? getSizeStyles(size).padding : '',
     fontSize: getSizeStyles(size).fontsize,
+    borderRadius,
+    ...getPositionStyles(position),
+    ...getVarianStyles(variant),
+    ...style,
   };
-  if (colorText) {
-    buttonStyles.color = colorText;
-  }
+
   const motionProps = !disabled
     ? {
         whileHover: { scale: 1.01 },
@@ -61,11 +128,12 @@ export const Button = ({
       }
     : {};
 
-  return (
+  //
+  const Button = () => (
     <motion.button
       {...motionProps}
       disabled={disabled}
-      className={`${className} button-${variant} btn-common ${STYLE_BUTTON[styleButton]}  `}
+      className={`${className}  btn-common ${STYLE_BUTTON[styleButton]}  `}
       style={buttonStyles}
       {...otherProps}
     >
@@ -79,6 +147,13 @@ export const Button = ({
       {text}
       {!!RightIcon && RightIcon}
     </motion.button>
+  );
+  return position ? (
+    <div style={{ width: '100%' }}>
+      <Button />
+    </div>
+  ) : (
+    <Button />
   );
 };
 

@@ -61,6 +61,7 @@ export const Company = () => {
             icon="plus-dark"
             onClick={() => (!swap ? handleAddCompany() : handleAddConsortium())}
             className="specialist-add-btn"
+            variant="outline"
           />
         </div>
         <div className="search-box">

@@ -115,7 +115,7 @@ const CardEditInformation = ({ isOpen, onClose }: CardEditInformationProps) => {
               icon="close"
               className="controls-btn card-edit-btn-close-modal"
               iconSize={1.3}
-              styleButton={0}
+              variant="ghost"
               type="button"
             />
             <div className="card-edit-header-info">
@@ -142,6 +142,7 @@ const CardEditInformation = ({ isOpen, onClose }: CardEditInformationProps) => {
                     text="Consultar Estado"
                     className="controls-btn"
                     onClick={handleGetSignInformation}
+                    variant="outline"
                   />
                 )}
               </div>
@@ -155,11 +156,13 @@ const CardEditInformation = ({ isOpen, onClose }: CardEditInformationProps) => {
                           text={viewSign ? 'CERRAR' : 'DESENCRIPTAR Y VER'}
                           className="controls-btn"
                           onClick={handleViewSign}
+                          variant="outline"
                         />
                         <Button
                           type="button"
                           text="ELIMINAR"
                           onClick={handleRemoveSign}
+                          variant="outline"
                           className="controls-btn controls-btn-red"
                         />
                       </div>

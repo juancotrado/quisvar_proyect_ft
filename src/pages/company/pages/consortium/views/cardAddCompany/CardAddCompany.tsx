@@ -111,6 +111,7 @@ const CardAddCompany = ({ onSave }: CardAddGroupProps) => {
             className="btn-area"
             whileTap={{ scale: 0.9 }}
             type="submit"
+            variant="outline"
           />
         </div>
       </form>

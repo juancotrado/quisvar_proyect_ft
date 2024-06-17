@@ -135,9 +135,18 @@ const UsersList = () => {
               }`}
               onClick={() => setIsArchived(!isArchived)}
             />
-            <Button text="Equipos" />
-            <Button text="Ver Directivas" onClick={handleOpenCardFiles} />
-            <Button text="Agregar" icon="plus" onClick={addUser} />
+            <Button text="Equipos" variant="outline" />
+            <Button
+              text="Ver Directivas"
+              onClick={handleOpenCardFiles}
+              variant="outline"
+            />
+            <Button
+              text="Agregar"
+              icon="plus"
+              variant="outline"
+              onClick={addUser}
+            />
           </div>
         </div>
         <div className="header-container-list header-grid-row">
@@ -169,8 +178,8 @@ const UsersList = () => {
           <Button
             text="Agregar Equipo"
             icon="plus"
-            className="userList-btn"
             onClick={() => handleOpenAddEquipment(true)}
+            variant="outline"
           />
         </div>
         {workStations &&

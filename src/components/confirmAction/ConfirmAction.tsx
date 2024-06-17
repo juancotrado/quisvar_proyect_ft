@@ -33,12 +33,14 @@ const ConfirmAction = () => {
             text="Cancelar"
             onClick={() => setIsAlertOpen(false)}
             className="modal-btn-cancel"
+            variant="outline"
           />
           {customFuction && (
             <Button
               text="Confirmar"
               onClick={handleConfirm}
               className="modal-btn-confirm"
+              variant="outline"
             />
           )}
         </div>

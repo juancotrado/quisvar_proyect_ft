@@ -105,6 +105,7 @@ export const Group = () => {
                 onClick={() => setEditOrder(true)}
                 text="Editar Orden"
                 className="gr-btn-order"
+                variant="outline"
               />
             ) : (
               <div className="gr-order-action">
@@ -112,11 +113,13 @@ export const Group = () => {
                   onClick={handleCancel}
                   text="Cancelar"
                   className="gr-btn-cancel"
+                  colorText="white"
+                  variant="outline"
                 />
                 <Button
                   onClick={handleOrder}
                   text="Guardar"
-                  className="gr-btn-save"
+                  variant="outline"
                 />
               </div>
             )}
@@ -126,6 +129,7 @@ export const Group = () => {
               icon="plus"
               className="gr-btn-add"
               onClick={() => setAdd(true)}
+              variant="outline"
             />
           </>
         ) : (

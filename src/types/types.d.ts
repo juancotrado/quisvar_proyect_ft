@@ -1345,3 +1345,6 @@ export interface CompaniesSelect extends Companies {
   value: string;
   label: string;
 }
+
+export type Variant = 'solid' | 'outline' | 'ghost' | 'link';
+export type Size = 'xs' | 'sm' | 'md' | 'lg';

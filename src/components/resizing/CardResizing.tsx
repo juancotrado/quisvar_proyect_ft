@@ -146,18 +146,21 @@ const CardResizing = ({ onSave }: CardResizingProps) => {
             text="RECORTAR Y GUARDAR"
             type="button"
             onClick={showCroppedImage}
+            variant="outline"
           />
           <Button
             className="controls-btn"
             text="DESCARGAR"
             type="button"
             onClick={downloadCroppedImage}
+            variant="outline"
           />
           <Button
             className="controls-btn controls-btn-red"
             text="CANCELAR"
             type="button"
             onClick={handleRemoveImageSrc}
+            variant="outline"
           />
         </div>
       )}

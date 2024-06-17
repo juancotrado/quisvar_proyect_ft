@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { User } from '../../../../../../types';
 import { ContractUser, PROFESSIONAL_SERVICE_LEVEL_DATA } from '../../models';
 import { downloadBlob } from '../../../../../../utils';
+import { FaBeer } from 'react-icons/fa';
 
 interface CardGenerateContractProps {
   user: User;
@@ -79,7 +80,12 @@ const CardGenerateContract = ({ user }: CardGenerateContractProps) => {
         styleInput={2}
       />
 
-      <Button icon="preview-pdf" text="Generar Contrato" styleButton={2} />
+      <Button
+        // icon="preview-pdf"
+        text="Generar Contrato"
+        styleButton={4}
+        variant="outline"
+      />
     </form>
   );
 };

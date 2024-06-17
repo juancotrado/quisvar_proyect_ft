@@ -285,6 +285,7 @@ export const Attendance = () => {
                   className="attendance-add-btn"
                   // icon="plus"
                   text="Añadir Nueva Lista"
+                  variant="outline"
                 />
               )}
           </div>
@@ -299,11 +300,7 @@ export const Attendance = () => {
                     onClick={callNotification}
                     className="attendance-btn-notify"
                   />
-                  <Button
-                    text="Guardar Lista"
-                    onClick={generateAttendance}
-                    className="attendance-btn-save"
-                  />
+                  <Button text="Guardar Lista" onClick={generateAttendance} />
                 </div>
               )}
               <div className="attendance-card-container" ref={componentRef}>
@@ -367,6 +364,7 @@ export const Attendance = () => {
                       className="attendance-btn-link"
                       imageStyle="attendance-btn-link-image"
                       disabled={callLists?.[0].users.length === 0}
+                      variant="outline"
                     />
 
                     <Button
@@ -375,6 +373,7 @@ export const Attendance = () => {
                       onClick={() => genarteReportDaily('excel')}
                       className="attendance-btn-link"
                       imageStyle="attendance-btn-link-image"
+                      variant="outline"
                     />
                   </div>
                 </div>
@@ -409,6 +408,7 @@ export const Attendance = () => {
                       icon="report-pdf-icon"
                       className="attendance-btn-link"
                       imageStyle="attendance-btn-link-image"
+                      variant="outline"
                     />
                     <Button
                       text="Reporte en Excel"
@@ -416,6 +416,7 @@ export const Attendance = () => {
                       icon="report-excel-icon"
                       className="attendance-btn-link"
                       imageStyle="attendance-btn-link-image"
+                      variant="outline"
                     />
                   </div>
                 </div>

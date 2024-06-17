@@ -85,8 +85,14 @@ const CardRecoveryPassword = ({ onClose }: CardRecoveryPasswordProps) => {
           onClick={handleClose}
           className="bg-btn-close"
           type="button"
+          variant="outline"
         />
-        <Button text="GUARDAR" className="bg-inverse" type="submit" />
+        <Button
+          text="GUARDAR"
+          className="bg-inverse"
+          type="submit"
+          variant="outline"
+        />
       </div>
     </form>
   );

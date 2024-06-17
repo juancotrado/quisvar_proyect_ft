@@ -147,7 +147,12 @@ const CardConsortium = ({ onSave }: CardConsortiumProps) => {
             type="file"
           />
         )}
-        <Button text="Guardar" type="submit" className="btn-area" />
+        <Button
+          text="Guardar"
+          type="submit"
+          className="btn-area"
+          variant="outline"
+        />
       </form>
     </Modal>
   );

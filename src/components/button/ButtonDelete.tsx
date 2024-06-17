@@ -43,7 +43,6 @@ const ButtonDelete = ({
   const [customFuction, setCustomFuction] = useState<(() => void) | null>(null);
   const [password, setPassword] = useState<string>('');
   const handleCloseButton = () => {
-
     setAskPassword(false);
     setIsAlertOpen(!isAlertOpen);
   };
@@ -52,7 +51,7 @@ const ButtonDelete = ({
     e.stopPropagation();
     setAskPassword(false);
     setIsAlertOpen(true);
-  }
+  };
   const handleSendDelete = async () => {
     if (customOnClick) {
       customOnClick();
@@ -98,8 +97,9 @@ const ButtonDelete = ({
     <>
       <motion.button
         onClick={handleDelete}
-        className={`${className} btn-main  btn-delete ${notIsVisible && 'btn-hiden'
-          }`}
+        className={`${className} btn-main  btn-delete ${
+          notIsVisible && 'btn-hiden'
+        }`}
         type={type}
         {...otherProps}
       >
@@ -107,8 +107,9 @@ const ButtonDelete = ({
           <img
             src={`/svg/${icon}.svg`}
             alt={`${icon}`}
-            className={`${text ? 'btn-main-text' : 'btn-main-img'
-              } ${imageStyle} `}
+            className={`${
+              text ? 'btn-main-text' : 'btn-main-img'
+            } ${imageStyle} `}
           />
         )}
         {text}
@@ -133,18 +134,21 @@ const ButtonDelete = ({
               {!askPassword ? (
                 <>
                   <img src="/svg/trashdark.svg" className="alert-modal-trash" />
-                  <h3>{`¿Estas seguro que deseas eliminar este registro${fileName && ', ' + fileName
-                    }?`}</h3>
+                  <h3>{`¿Estas seguro que deseas eliminar este registro${
+                    fileName && ', ' + fileName
+                  }?`}</h3>
                   <div className="container-btn">
                     <Button
                       text="No, cancelar"
                       onClick={handleCloseButton}
                       className="btn-alert "
+                      variant="outline"
                     />
                     <Button
                       className=" btn-alert  btn-delete"
                       text="Si, estoy seguro"
                       type="button"
+                      variant="outline"
                       onClick={
                         passwordRequired
                           ? () => setAskPassword(true)
@@ -171,11 +175,13 @@ const ButtonDelete = ({
                       text="Cancelar"
                       onClick={handleCloseButton}
                       className="modal-btn-cancel"
+                      variant="outline"
                     />
                     <Button
                       text="Confirmar"
                       onClick={handleVerifyPassword}
                       className="modal-btn-confirm"
+                      variant="outline"
                     />
                   </div>
                 </form>

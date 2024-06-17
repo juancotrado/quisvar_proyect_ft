@@ -1,60 +1,85 @@
-import { motion } from 'framer-motion';
+import { color, motion } from 'framer-motion';
 import type { HTMLMotionProps } from 'framer-motion';
 import './button.css';
 import { STYLE_BUTTON } from './buttonDefinitions';
 import { CSSProperties } from 'react';
+import { Size, Variant } from '../../types';
 interface ButtonProps extends HTMLMotionProps<'button'> {
   text?: string;
-  type?: 'button' | 'submit' | 'reset';
   icon?: string;
   imageStyle?: string;
   styleButton?: number;
-  onClick: (e: React.MouseEvent<HTMLElement>) => void;
   iconSize?: number;
+  variant?: Variant;
+  leftIcon?: JSX.Element;
+  rightIcon?: JSX.Element;
+  colorText?: string;
+  size?: Size;
 }
 export const Button = ({
   className,
   text,
-  onClick,
-  type,
   imageStyle = '',
   icon,
   iconSize = 1,
   disabled,
-  styleButton = 1,
+  styleButton = 4,
+  size = 'xs',
+  leftIcon: LeftIcon,
+  rightIcon: RightIcon,
+  colorText,
+  variant = 'solid',
   ...otherProps
 }: ButtonProps) => {
   const styleIcon: CSSProperties = {
     width: `${iconSize}rem`,
   };
+
+  const getSizeStyles = (size: Size) => {
+    switch (size) {
+      case 'xs':
+        return { padding: '0.5rem', fontsize: '0.75rem' };
+      case 'sm':
+        return { padding: '0.75rem', fontsize: '0.875rem' };
+      case 'md':
+        return { padding: '1rem', fontsize: '1rem' };
+      case 'lg':
+        return { padding: '1.5rem', fontsize: '1.125rem' };
+    }
+  };
+  const buttonStyles: CSSProperties = {
+    padding: !!text ? getSizeStyles(size).padding : '',
+    fontSize: getSizeStyles(size).fontsize,
+  };
+  if (colorText) {
+    buttonStyles.color = colorText;
+  }
+  const motionProps = !disabled
+    ? {
+        whileHover: { scale: 1.01 },
+        whileTap: { scale: 1 },
+      }
+    : {};
+
   return (
     <motion.button
-      whileHover={{ scale: 1.02 }}
+      {...motionProps}
       disabled={disabled}
-      whileTap={{ scale: 0.99 }}
-      onClick={onClick}
-      className={`${STYLE_BUTTON[styleButton]} ${className} ${
-        disabled && 'btn-disabled'
-      }`}
-      type={type}
+      className={`${className} button-${variant} btn-common ${STYLE_BUTTON[styleButton]}  `}
+      style={buttonStyles}
       {...otherProps}
     >
       {icon && (
         <figure className={`${imageStyle} `} style={styleIcon}>
-          <img
-            src={`/svg/${icon}.svg`}
-            style={{ height: '100%', width: '100%' }}
-          />
+          <img src={`/svg/${icon}.svg`} />
         </figure>
       )}
+
+      {!!LeftIcon && LeftIcon}
       {text}
+      {!!RightIcon && RightIcon}
     </motion.button>
   );
-};
-
-Button.defaultProps = {
-  icon: null,
-  onClick: null,
 };
 
 export default Button;

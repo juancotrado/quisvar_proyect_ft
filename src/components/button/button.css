@@ -1,16 +1,5 @@
-.btn-main {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.35rem;
-  border: 1px solid var(--color-primary);
-  color: var(--color-primary);
-  border-radius: 0.5rem;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background-color 0.5s ease;
-  transition: color 0.5s ease;
-}
+/* .button-solid {
+} */
 
 .btn-main-img {
   height: 60%;
@@ -37,23 +26,6 @@
 
 .btn-disabled {
   cursor: not-allowed;
-}
-
-.btn-send {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  padding: 0.35rem;
-  border: 1px solid var(--color-primary);
-  cursor: pointer;
-  font-weight: 600;
-  min-width: 8rem;
-  border-radius: 0.5rem;
-  background-color: var(--color-primary);
-  color: white;
-  justify-content: center;
-  margin: auto;
-  transition: color ease 0.5s, background-color ease 0.5s;
 }
 
 .alert-modal-main {
@@ -123,32 +95,85 @@
   align-items: center;
 }
 
-.btn-main-style-2 {
+.btn-common {
   display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.35rem;
+  cursor: pointer;
+  font-weight: 600;
+  justify-content: center;
+  border-radius: 0.3rem; /* El valor más común */
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
+/* Estilos específicos para .btn-main */
+.btn-main {
+  border: 1px solid var(--color-primary);
+  color: var(--color-primary);
+  border-radius: 0.5rem;
+}
+
+/* Estilos específicos para .btn-main-style-2 */
+.btn-main-style-2 {
   justify-content: center;
   width: 100%;
   gap: 0.625rem;
   border-radius: 0.3125rem;
   border: 1px solid #d4d4d4;
-  background: #f7f7f7;
+  background-color: #f7f7f7;
   padding: 0.5rem 0.625rem;
   color: #5c5c5c;
   font-size: 0.75rem;
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  cursor: pointer;
 }
+
+/* Estilos específicos para .btn-new-message */
 .btn-new-message {
-  display: flex;
-  gap: 1rem;
-  padding: 0.35rem;
-  cursor: pointer;
-  font-weight: 600;
   background-color: #c2e7ff;
   color: var(--color-secondary);
-  min-width: 10rem;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.3rem;
+  border-radius: 0.3rem; /* Sobrescribir si es necesario */
+}
+/* .btn-new-message .button-outline{
+
+} */
+
+/* Estilos específicos para .btn-send */
+.btn-send {
+  border: 1px solid var(--color-primary);
+  background-color: var(--color-primary);
+  color: white;
+  border-radius: 0.5rem; /* Sobrescribir si es necesario */
+  margin: auto;
+}
+
+.button-outline {
+  background-color: transparent;
+}
+.btn-send.button-outline {
+  color: var(--color-primary);
+}
+
+.button-ghost {
+  background-color: transparent;
+  border: none;
+}
+.btn-send.button-ghost {
+  color: var(--color-primary);
+}
+.button-link {
+  background-color: transparent;
+  border: none;
+}
+.btn-send.button-link {
+  color: var(--color-primary);
+}
+.button-link:hover {
+  text-decoration: underline;
+}
+
+.btn-common:disabled {
+  cursor: not-allowed;
 }

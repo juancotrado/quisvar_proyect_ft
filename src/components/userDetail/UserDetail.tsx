@@ -40,6 +40,7 @@ const UserDetail = ({ user, index, onClick }: UserDetailProps) => {
             icon="pencil"
             className="project-edit-icon"
             onClick={onClick}
+            variant="ghost"
           />
           <ButtonDelete
             icon="trash"

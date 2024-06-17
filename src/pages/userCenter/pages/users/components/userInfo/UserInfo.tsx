@@ -124,20 +124,18 @@ const UserInfo = ({ user, index, onPrint, roles }: UserInfoProps) => {
           className="role-btn"
           icon="folder-icon"
           onClick={handleViewDocs}
+          variant="ghost"
         />
       </div>
       <div className="col-span actions-container">
         {/* {roleLimit && ( */}
         <>
-          <Button icon="pencil" className="role-btn-big" onClick={editUser} />
-          {/* <ButtonDelete
-              icon="trash"
-              disabled={user.id === userSession.id}
-              url={`/users/${user.id}`}
-              className="role-delete-icon"
-              onSave={getUsers}
-              passwordRequired
-            /> */}
+          <Button
+            icon="pencil"
+            className="role-btn-big"
+            onClick={editUser}
+            variant="ghost"
+          />
         </>
         {/* )} */}
       </div>
@@ -146,6 +144,7 @@ const UserInfo = ({ user, index, onPrint, roles }: UserInfoProps) => {
           className="role-btn-big"
           icon="print-report"
           onClick={onPrint}
+          variant="ghost"
         />
       </div>
     </div>

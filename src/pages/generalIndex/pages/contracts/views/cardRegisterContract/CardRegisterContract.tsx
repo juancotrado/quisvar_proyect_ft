@@ -145,12 +145,12 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
   };
   return (
     <Modal size={50} isOpenProp={isOpenModal}>
-      <CloseIcon onClick={closeFunctions} />
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="card-register-contract"
+        className="card-register"
         autoComplete="off"
       >
+        <CloseIcon onClick={closeFunctions} />
         <h2>{watch('id') ? 'ACTUALIZAR CONTRATO' : 'REGISTRAR CONTRATO'}</h2>
         <hr />
         <div className="card-register-project-container-details">
@@ -321,7 +321,7 @@ export const CardRegisterContract = ({ onSave }: CardRegisterContractProps) => {
         <Button
           type="submit"
           text={`${watch('id') ? 'Actualizar' : 'Registrar'}`}
-          styleButton={4}
+          position="center"
         />
       </form>
     </Modal>

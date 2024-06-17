@@ -36,7 +36,6 @@ const RolesAndPermissions = () => {
         <Button
           text={`${!isAddNewRole ? 'Agregar nuevo rol' : 'Cancelar'}`}
           className="margin-none"
-          styleButton={4}
           icon={`${!isAddNewRole ? 'close-white' : 'minus'}`}
           imageStyle="rolesAndPermissions-icon-style"
           onClick={handleAddNewRole}

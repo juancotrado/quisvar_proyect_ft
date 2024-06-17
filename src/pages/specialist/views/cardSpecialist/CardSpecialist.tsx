@@ -300,7 +300,6 @@ const CardSpecialist = ({ onSave }: CardSpecialistProps) => {
         <Button
           text={dataSpecialist ? 'Actualizar' : 'Guardar'}
           type="submit"
-          styleButton={4}
         />
       </form>
     </Modal>

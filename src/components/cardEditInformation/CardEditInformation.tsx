@@ -187,15 +187,9 @@ const CardEditInformation = ({ isOpen, onClose }: CardEditInformationProps) => {
               <Button
                 text="Cambiar contraseña"
                 onClick={handleOpenRecovery}
-                styleButton={4}
                 type="button"
               />
-              <Button
-                text="GUARDAR"
-                styleButton={4}
-                className="bg-inverse"
-                type="submit"
-              />
+              <Button text="GUARDAR" className="bg-inverse" type="submit" />
             </div>
           </form>
           {isOpenRecovery && (

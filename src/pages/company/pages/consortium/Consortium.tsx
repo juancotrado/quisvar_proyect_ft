@@ -97,7 +97,6 @@ export const Consortium = () => {
                 <Button
                   text="Editar"
                   whileTap={{ scale: 0.9 }}
-                  styleButton={4}
                   onClick={() => id && handleOpenCard(+id)}
                 />
               </div>
@@ -140,7 +139,7 @@ export const Consortium = () => {
               text="Empresa"
               icon="plus"
               whileTap={{ scale: 0.9 }}
-              color="quinary"
+              color="lightPrimary"
               textColor="secondary"
               onClick={() => id && handleOpenCard(+id)}
             />

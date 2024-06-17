@@ -82,11 +82,7 @@ const CardAddOffice = ({ onSave }: CardAddOfficeProps) => {
             type="text"
           />
         </div>
-        <Button
-          text={watch('id') ? 'GUARDAR' : 'CREAR'}
-          type="submit"
-          styleButton={4}
-        />
+        <Button text={watch('id') ? 'GUARDAR' : 'CREAR'} type="submit" />
       </form>
     </Modal>
   );

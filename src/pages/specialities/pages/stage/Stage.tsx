@@ -60,7 +60,7 @@ export const Stage = () => {
                 {!btnActive ? (
                   <Button
                     icon="add"
-                    className="stage-header-add-btn"
+                    color="grayLigth"
                     onClick={handleBtnActive}
                   />
                 ) : (

@@ -285,8 +285,8 @@ export const DetailsContracts = () => {
             <Button
               text="Reintentar"
               color="grayLigth"
-              borderColor="black"
-              textColor="black"
+              borderColor="dark"
+              textColor="dark"
               icon="refresh"
               onClick={handleDelete}
             />
@@ -306,8 +306,8 @@ export const DetailsContracts = () => {
               )}
               <Button
                 color="grayLigth"
-                borderColor="black"
-                textColor="black"
+                borderColor="dark"
+                textColor="dark"
                 text={viewTableEjecution ? 'Editar' : 'Ver Tabla'}
                 onClick={handleViewEjecution}
               />

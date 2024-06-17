@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import type { HTMLMotionProps } from 'framer-motion';
 import './button.css';
-import { STYLE_BUTTON } from './buttonDefinitions';
 import { CSSProperties } from 'react';
 import { ButtonType, Size, Variant } from '../../types';
 import { ColorKeys, COLOR_CSS } from '../../utils/cssData';
@@ -11,7 +10,6 @@ interface ButtonProps extends HTMLMotionProps<'button'> {
   text?: string;
   icon?: string;
   imageStyle?: string;
-  styleButton?: number;
   iconSize?: number;
   variant?: Variant;
   leftIcon?: JSX.Element;
@@ -24,6 +22,7 @@ interface ButtonProps extends HTMLMotionProps<'button'> {
   style?: CSSProperties;
   position?: Position;
   borderRadius?: number;
+  full?: boolean;
 }
 export const Button = ({
   className,
@@ -33,12 +32,12 @@ export const Button = ({
   iconSize = 1,
   disabled,
   borderRadius,
-  styleButton = 4,
   size = 'xs',
   leftIcon: LeftIcon,
   rightIcon: RightIcon,
   color = 'primary',
   textColor,
+  full,
   borderColor,
   position,
   variant = 'solid',
@@ -116,6 +115,7 @@ export const Button = ({
     padding: !!text ? getSizeStyles(size).padding : '',
     fontSize: getSizeStyles(size).fontsize,
     borderRadius,
+    width: full ? '100%' : 'auto',
     ...getPositionStyles(position),
     ...getVarianStyles(variant),
     ...style,
@@ -133,7 +133,7 @@ export const Button = ({
     <motion.button
       {...motionProps}
       disabled={disabled}
-      className={`${className}  btn-common ${STYLE_BUTTON[styleButton]}  `}
+      className={`${className} button-${variant}  btn-common btn-send`}
       style={buttonStyles}
       {...otherProps}
     >

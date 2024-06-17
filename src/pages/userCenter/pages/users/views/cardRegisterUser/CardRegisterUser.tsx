@@ -242,311 +242,308 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
 
   return (
     <Modal size={50} isOpenProp={isOpen}>
-      <div className="card-register">
-        <form onSubmit={handleSubmit(onSubmit)} className="card-register-users">
-          <CloseIcon onClick={closeFunctions} />
-          <h1>
-            {userId ? 'EDITAR DATOS DE USUARIO' : 'REGISTRO DE NUEVO USUARIO'}
-          </h1>
-          <fieldset>
-            <legend className="card-register-title-info">
-              Datos de Personales
-            </legend>
-            <div className="card-register-content">
+      <form onSubmit={handleSubmit(onSubmit)} className="card-register-users">
+        <CloseIcon onClick={closeFunctions} />
+        <h1>
+          {userId ? 'EDITAR DATOS DE USUARIO' : 'REGISTRO DE NUEVO USUARIO'}
+        </h1>
+        <fieldset>
+          <legend className="card-register-title-info">
+            Datos de Personales
+          </legend>
+          <div className="card-register-content">
+            <div className="col-input">
+              <Input
+                {...register('dni', {
+                  required: true,
+                  validate: validateDNI,
+                })}
+                placeholder="N°"
+                label="DNI"
+                errors={errors}
+                type="number"
+                handleSearch={!watch('id') ? searchUserForDNI : false}
+              />
+              <Input
+                {...register('firstName', { required: true })}
+                placeholder="Nombres"
+                label="Nombres:"
+                errors={errors}
+              />
+              <Input
+                {...register('lastName', { required: true })}
+                placeholder="Apellidos"
+                errors={errors}
+                label="Apellidos:"
+                autoComplete="on"
+              />
+              <Select
+                label="Género:"
+                {...register('gender', {
+                  validate: { validateWhiteSpace },
+                })}
+                name="gender"
+                data={GENDER}
+                extractValue={({ abrv }) => abrv}
+                renderTextField={({ value }) => value}
+                errors={errors}
+              />
+            </div>
+            {!userId && (
               <div className="col-input">
                 <Input
-                  {...register('dni', {
+                  {...register('password', {
                     required: true,
-                    validate: validateDNI,
                   })}
-                  placeholder="N°"
-                  label="DNI"
+                  name="password"
                   errors={errors}
-                  type="number"
-                  handleSearch={!watch('id') ? searchUserForDNI : false}
-                />
-                <Input
-                  {...register('firstName', { required: true })}
-                  placeholder="Nombres"
-                  label="Nombres:"
-                  errors={errors}
-                />
-                <Input
-                  {...register('lastName', { required: true })}
-                  placeholder="Apellidos"
-                  errors={errors}
-                  label="Apellidos:"
-                  autoComplete="on"
-                />
-                <Select
-                  label="Género:"
-                  {...register('gender', {
-                    validate: { validateWhiteSpace },
-                  })}
-                  name="gender"
-                  data={GENDER}
-                  extractValue={({ abrv }) => abrv}
-                  renderTextField={({ value }) => value}
-                  errors={errors}
-                />
-              </div>
-              {!userId && (
-                <div className="col-input">
-                  <Input
-                    {...register('password', {
-                      required: true,
-                    })}
-                    name="password"
-                    errors={errors}
-                    placeholder="Contraseña"
-                    type="password"
-                    autoComplete="new-password"
-                    label="Contraseña:"
-                  />
-
-                  <Input
-                    {...register('confirmPassword', {
-                      required: true,
-                      validate: val =>
-                        validateRepeatPassword(val, watch('password')),
-                    })}
-                    name="confirmPassword"
-                    errors={errors}
-                    placeholder="Confirmar contraseña"
-                    type="password"
-                    autoComplete="new-password"
-                    label="Confirmar contraseña:"
-                  />
-                </div>
-              )}
-              <div className="col-input">
-                <Input
-                  {...register('email', {
-                    required: true,
-                    validate: validateEmail,
-                  })}
-                  errors={errors}
-                  placeholder="Correo"
-                  label="Correo:"
-                  name="email"
-                />
-                <Input
-                  {...register('address', { required: true })}
-                  name="address"
-                  placeholder="Dirección"
-                  label="Dirección:"
-                  errors={errors}
-                />
-                <Input
-                  {...register('phone', {
-                    validate: validateOnlyNumbers,
-                  })}
-                  placeholder="Celular"
-                  label="Celular:"
-                  type="number"
-                  errors={errors}
+                  placeholder="Contraseña"
+                  type="password"
+                  autoComplete="new-password"
+                  label="Contraseña:"
                 />
 
                 <Input
-                  {...register('room')}
-                  placeholder="Cuarto:"
-                  label="Cuarto:"
-                  type="text"
+                  {...register('confirmPassword', {
+                    required: true,
+                    validate: val =>
+                      validateRepeatPassword(val, watch('password')),
+                  })}
+                  name="confirmPassword"
+                  errors={errors}
+                  placeholder="Confirmar contraseña"
+                  type="password"
+                  autoComplete="new-password"
+                  label="Confirmar contraseña:"
                 />
               </div>
-              <div className="col-input">
-                <Select
-                  label="Departamento:"
-                  {...register('department', {
-                    validate: { validateWhiteSpace },
-                    onChange: handleGetProvinces,
-                  })}
-                  name="department"
-                  data={departaments}
-                  extractValue={({ nombre_ubigeo }) => nombre_ubigeo}
-                  renderTextField={({ nombre_ubigeo }) => nombre_ubigeo}
-                  errors={errors}
-                />
-                <Select
-                  label="Provincia:"
-                  {...register('province', {
-                    validate: { validateWhiteSpace },
-                    onChange: handleGetDistricts,
-                  })}
-                  name="province"
-                  data={provinces}
-                  extractValue={({ nombre_ubigeo }) => nombre_ubigeo}
-                  renderTextField={({ nombre_ubigeo }) => nombre_ubigeo}
-                  errors={errors}
-                />
-                <Select
-                  label="Distrito:"
-                  {...register('district', {
-                    validate: { validateWhiteSpace },
-                  })}
-                  name="district"
-                  data={districts}
-                  extractValue={({ nombre_ubigeo }) => nombre_ubigeo}
-                  renderTextField={({ nombre_ubigeo }) => nombre_ubigeo}
-                  errors={errors}
-                />
-                <Input
-                  {...register('userPc')}
-                  placeholder="Usuario(00)"
-                  type="text"
-                  errors={errors}
-                  label="Usuario(00):"
-                />
-              </div>
-              {offices && (
+            )}
+            <div className="col-input">
+              <Input
+                {...register('email', {
+                  required: true,
+                  validate: validateEmail,
+                })}
+                errors={errors}
+                placeholder="Correo"
+                label="Correo:"
+                name="email"
+              />
+              <Input
+                {...register('address', { required: true })}
+                name="address"
+                placeholder="Dirección"
+                label="Dirección:"
+                errors={errors}
+              />
+              <Input
+                {...register('phone', {
+                  validate: validateOnlyNumbers,
+                })}
+                placeholder="Celular"
+                label="Celular:"
+                type="number"
+                errors={errors}
+              />
+
+              <Input
+                {...register('room')}
+                placeholder="Cuarto:"
+                label="Cuarto:"
+                type="text"
+              />
+            </div>
+            <div className="col-input">
+              <Select
+                label="Departamento:"
+                {...register('department', {
+                  validate: { validateWhiteSpace },
+                  onChange: handleGetProvinces,
+                })}
+                name="department"
+                data={departaments}
+                extractValue={({ nombre_ubigeo }) => nombre_ubigeo}
+                renderTextField={({ nombre_ubigeo }) => nombre_ubigeo}
+                errors={errors}
+              />
+              <Select
+                label="Provincia:"
+                {...register('province', {
+                  validate: { validateWhiteSpace },
+                  onChange: handleGetDistricts,
+                })}
+                name="province"
+                data={provinces}
+                extractValue={({ nombre_ubigeo }) => nombre_ubigeo}
+                renderTextField={({ nombre_ubigeo }) => nombre_ubigeo}
+                errors={errors}
+              />
+              <Select
+                label="Distrito:"
+                {...register('district', {
+                  validate: { validateWhiteSpace },
+                })}
+                name="district"
+                data={districts}
+                extractValue={({ nombre_ubigeo }) => nombre_ubigeo}
+                renderTextField={({ nombre_ubigeo }) => nombre_ubigeo}
+                errors={errors}
+              />
+              <Input
+                {...register('userPc')}
+                placeholder="Usuario(00)"
+                type="text"
+                errors={errors}
+                label="Usuario(00):"
+              />
+            </div>
+            {offices && (
+              <AdvancedSelectCrud
+                defaultValue={watch('offices')}
+                control={control}
+                name="offices"
+                options={offices}
+                errors={errors}
+                styleVariant="primary"
+                label="Oficina:"
+                isMulti
+                onCreateOption={handleCreateOffice}
+                onEditOption={handleEditOffice}
+                onSave={getOffices}
+                urlDelete={'/office'}
+              />
+            )}
+            <div className="col-input">
+              {professions && (
                 <AdvancedSelectCrud
-                  defaultValue={watch('offices')}
                   control={control}
-                  name="offices"
-                  options={offices}
+                  name="job"
+                  options={professions}
                   errors={errors}
                   styleVariant="primary"
-                  label="Oficina:"
-                  isMulti
-                  onCreateOption={handleCreateOffice}
-                  onEditOption={handleEditOffice}
-                  onSave={getOffices}
-                  urlDelete={'/office'}
+                  label="Profesión:"
+                  onCreateOption={handleCreateProfession}
+                  onEditOption={handleEditProfession}
+                  onSave={getProfession}
+                  urlDelete={'/profession'}
                 />
               )}
-              <div className="col-input">
-                {professions && (
-                  <AdvancedSelectCrud
-                    control={control}
-                    name="job"
-                    options={professions}
-                    errors={errors}
-                    styleVariant="primary"
-                    label="Profesión:"
-                    onCreateOption={handleCreateProfession}
-                    onEditOption={handleEditProfession}
-                    onSave={getProfession}
-                    urlDelete={'/profession'}
-                  />
-                )}
-                {roles && (
-                  <Select
-                    label="Rol:"
-                    {...register('roleId', {
-                      validate: { validateWhiteSpace },
-                      valueAsNumber: true,
-                    })}
-                    extractValue={({ id }) => id}
-                    renderTextField={({ name }) => name}
-                    data={roles}
-                    errors={errors}
-                  />
-                )}
+              {roles && (
                 <Select
-                  label="Grado:"
-                  {...register('degree', {
+                  label="Rol:"
+                  {...register('roleId', {
                     validate: { validateWhiteSpace },
+                    valueAsNumber: true,
                   })}
-                  name="degree"
-                  data={DEGREE_DATA}
-                  extractValue={({ value }) => value}
-                  renderTextField={({ value }) => value}
+                  extractValue={({ id }) => id}
+                  renderTextField={({ name }) => name}
+                  data={roles}
                   errors={errors}
                 />
-              </div>
-              <div className="col-input">
-                <Input
-                  {...register('ruc', {
-                    validate: { validateRuc },
-                  })}
-                  placeholder="ruc"
-                  type="number"
-                  errors={errors}
-                  label="RUC:"
-                />
-                <Input
-                  {...register('description', {})}
-                  placeholder="cargo"
-                  type="text"
-                  errors={errors}
-                  label="Cargo:"
-                />
-              </div>
-              {!userId && (
-                <div className="col-input">
-                  <Input
-                    type="file"
-                    label="CV:"
-                    placeholder="cv"
-                    {...register('cv', { required: !!userData })}
-                    errors={errors}
-                  />
-                  <Input
-                    type="file"
-                    label="Declaracion Jurada:"
-                    placeholder="declaration"
-                    {...register('declaration', { required: !!userData })}
-                    errors={errors}
-                  />
-                </div>
               )}
+              <Select
+                label="Grado:"
+                {...register('degree', {
+                  validate: { validateWhiteSpace },
+                })}
+                name="degree"
+                data={DEGREE_DATA}
+                extractValue={({ value }) => value}
+                renderTextField={({ value }) => value}
+                errors={errors}
+              />
             </div>
-          </fieldset>
-          <fieldset>
-            <legend className="card-register-title-info">
-              Datos de Referencia
-            </legend>
-            <div className="card-register-content">
+            <div className="col-input">
+              <Input
+                {...register('ruc', {
+                  validate: { validateRuc },
+                })}
+                placeholder="ruc"
+                type="number"
+                errors={errors}
+                label="RUC:"
+              />
+              <Input
+                {...register('description', {})}
+                placeholder="cargo"
+                type="text"
+                errors={errors}
+                label="Cargo:"
+              />
+            </div>
+            {!userId && (
               <div className="col-input">
                 <Input
-                  {...register('firstNameRef')}
-                  placeholder="Nombres"
-                  label="Nombres:"
+                  type="file"
+                  label="CV:"
+                  placeholder="cv"
+                  {...register('cv', { required: !!userData })}
                   errors={errors}
                 />
                 <Input
-                  {...register('lastNameRef')}
-                  placeholder="Apellidos"
-                  errors={errors}
-                  label="Apellidos:"
-                />
-              </div>
-              <div className="col-input">
-                <Input
-                  {...register('addressRef')}
-                  placeholder="Dirección"
-                  label="Dirección:"
-                  errors={errors}
-                />
-                <Input
-                  {...register('phoneRef', {
-                    validate: validateOnlyNumbers,
-                  })}
-                  placeholder="Celular"
-                  label="Celular:"
-                  type="number"
+                  type="file"
+                  label="Declaracion Jurada:"
+                  placeholder="declaration"
+                  {...register('declaration', { required: !!userData })}
                   errors={errors}
                 />
               </div>
-            </div>
-          </fieldset>
-          <div className="btn-build">
-            <Button
-              text={userId ? 'GUARDAR' : 'CREAR'}
-              whileTap={{ scale: 0.9 }}
-              styleButton={4}
-              type="submit"
-            />
+            )}
           </div>
-        </form>
-        {roles && (
-          <CarRegisterSwornDeclaration
-            generalFiles={generalFiles}
-            userData={userData}
-            roles={roles}
+        </fieldset>
+        <fieldset>
+          <legend className="card-register-title-info">
+            Datos de Referencia
+          </legend>
+          <div className="card-register-content">
+            <div className="col-input">
+              <Input
+                {...register('firstNameRef')}
+                placeholder="Nombres"
+                label="Nombres:"
+                errors={errors}
+              />
+              <Input
+                {...register('lastNameRef')}
+                placeholder="Apellidos"
+                errors={errors}
+                label="Apellidos:"
+              />
+            </div>
+            <div className="col-input">
+              <Input
+                {...register('addressRef')}
+                placeholder="Dirección"
+                label="Dirección:"
+                errors={errors}
+              />
+              <Input
+                {...register('phoneRef', {
+                  validate: validateOnlyNumbers,
+                })}
+                placeholder="Celular"
+                label="Celular:"
+                type="number"
+                errors={errors}
+              />
+            </div>
+          </div>
+        </fieldset>
+        <div className="btn-build">
+          <Button
+            text={userId ? 'GUARDAR' : 'CREAR'}
+            whileTap={{ scale: 0.9 }}
+            type="submit"
           />
-        )}
-      </div>
+        </div>
+      </form>
+      {roles && (
+        <CarRegisterSwornDeclaration
+          generalFiles={generalFiles}
+          userData={userData}
+          roles={roles}
+        />
+      )}
       <CardAddProfession onSave={getProfession} />
       <CardAddOffice onSave={getOffices} />
     </Modal>

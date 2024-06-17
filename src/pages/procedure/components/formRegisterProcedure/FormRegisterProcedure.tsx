@@ -441,7 +441,6 @@ const FormRegisterProcedure = ({
             style={{ backgroundColor: 'red', borderColor: 'red' }}
             text="Finalizar tramite"
             onClick={handleFinish}
-            styleButton={4}
           />
         )}
       </div>

@@ -1,9 +1,10 @@
 :root {
   --color-primary: #0e9cd8;
+  --color-ligth-primary: #c2e7ff;
   --color-secondary: #001b69;
+  --color-ligth-secondary: #e9edf8;
   --color-tertiary: #203881;
   --color-quaternay: #27419a;
-  --color-quinary: #c2e7ff;
   --color-gray: #8b8b8b;
   --color-gray-secondary: #d4d4d4;
   --color-gray-tertiary: #5c5c5c;
@@ -272,7 +273,7 @@ legend {
 .card-register {
   background-color: white;
   display: flex;
-  padding: 0.2rem;
+  padding: 2.5rem;
   flex-direction: column;
   gap: 1rem;
   border-radius: 0.4rem;

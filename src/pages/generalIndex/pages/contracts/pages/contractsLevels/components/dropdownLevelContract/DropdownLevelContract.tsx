@@ -8,7 +8,7 @@ import {
 import { ChangeEvent } from 'react';
 import { UploadFileInput } from '../../../../../../../../components';
 import { ListProfessionals } from '../../views/listProfessionals';
-
+import { PiFilePdfFill } from 'react-icons/pi';
 interface DropdownLevelContractProps {
   level: ContractIndexData;
   idContract: number;
@@ -109,9 +109,10 @@ export const DropdownLevelContract = ({
                         className="DropdownLevelContract-file-container-anchor"
                         onClick={handleReportPdf}
                       >
-                        <figure className="DropdownLevelContract-figure">
+                        {/* <figure className="DropdownLevelContract-figure">
                           <img src="/svg/pdf-red.svg" alt="W3Schools" />
-                        </figure>
+                        </figure> */}
+                        <PiFilePdfFill color="red" size={20} />
                         <span className="DropdownLevelContract-file-container-name">
                           Ver pdf
                         </span>

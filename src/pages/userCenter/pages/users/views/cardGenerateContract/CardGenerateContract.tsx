@@ -83,7 +83,6 @@ const CardGenerateContract = ({ user }: CardGenerateContractProps) => {
       <Button
         // icon="preview-pdf"
         text="Generar Contrato"
-        styleButton={4}
         variant="outline"
       />
     </form>

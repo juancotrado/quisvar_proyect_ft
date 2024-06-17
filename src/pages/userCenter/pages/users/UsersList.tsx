@@ -130,9 +130,9 @@ const UsersList = () => {
           <div className="userList-options-right">
             <Button
               text={`${isArchived ? 'Ver archivados' : 'Ver en actividad'}`}
-              className={`${
-                isArchived ? 'btn-filter-unavailable' : 'btn-filter-available'
-              }`}
+              color={isArchived ? 'grayLigth' : 'pass'}
+              borderColor={isArchived ? 'gray' : 'success'}
+              textColor={isArchived ? 'gray' : 'success'}
               onClick={() => setIsArchived(!isArchived)}
             />
             <Button text="Equipos" variant="outline" />

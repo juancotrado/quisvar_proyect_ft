@@ -81,7 +81,7 @@ const CardObservations = () => {
           />
         </div>
 
-        <Button type="submit" text={`Guardar`} styleButton={4} />
+        <Button type="submit" text={`Guardar`} />
       </form>
     </Modal>
   );

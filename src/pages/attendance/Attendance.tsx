@@ -361,19 +361,19 @@ export const Attendance = () => {
                       icon="report-pdf-icon"
                       text="Vista Previa"
                       onClick={() => genarteReportDaily('pdf')}
-                      className="attendance-btn-link"
-                      imageStyle="attendance-btn-link-image"
+                      color="secondary"
                       disabled={callLists?.[0].users.length === 0}
                       variant="outline"
+                      full
                     />
 
                     <Button
                       text="Descargar Excel"
                       icon="report-excel-icon"
                       onClick={() => genarteReportDaily('excel')}
-                      className="attendance-btn-link"
-                      imageStyle="attendance-btn-link-image"
+                      color="secondary"
                       variant="outline"
+                      full
                     />
                   </div>
                 </div>
@@ -406,17 +406,19 @@ export const Attendance = () => {
                       text="Vista Previa"
                       onClick={() => genarteReportRange('pdf')}
                       icon="report-pdf-icon"
-                      className="attendance-btn-link"
-                      imageStyle="attendance-btn-link-image"
+                      color="secondary"
                       variant="outline"
+                      borderRadius={3}
+                      full
                     />
                     <Button
                       text="Reporte en Excel"
                       onClick={() => genarteReportRange('excel')}
                       icon="report-excel-icon"
-                      className="attendance-btn-link"
-                      imageStyle="attendance-btn-link-image"
+                      color="secondary"
                       variant="outline"
+                      borderRadius={3}
+                      full
                     />
                   </div>
                 </div>

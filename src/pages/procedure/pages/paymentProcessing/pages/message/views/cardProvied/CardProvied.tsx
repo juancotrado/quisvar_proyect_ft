@@ -189,15 +189,10 @@ const CardProvied = ({ type, message, onSave }: CardProviedProps) => {
           type="button"
           text="Previsualizar"
           icon="eyes-blue"
-          styleButton={1}
+          variant="outline"
           onClick={handlePreview}
         />
-        <Button
-          type="submit"
-          text="Enviar"
-          styleButton={4}
-          style={{ margin: 0 }}
-        />
+        <Button type="submit" text="Enviar" style={{ margin: 0 }} />
       </div>
     </form>
   );

@@ -250,7 +250,7 @@ const CardLicense = ({ onSave }: CardLicenseProps) => {
         ) : (
           <TextArea {...register('reason')} name="reason" />
         )}
-        <Button type="submit" text="Enviar" styleButton={4} />
+        <Button type="submit" text="Enviar" />
       </form>
     </Modal>
   );

@@ -260,7 +260,7 @@ const CardCompany = ({ onSave }: CardCompanyProps) => {
         </div>
         <Button
           text="Guardar"
-          color="quinary"
+          color="lightPrimary"
           textColor="secondary"
           type="submit"
           className="btn-area"

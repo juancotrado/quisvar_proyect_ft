@@ -128,7 +128,7 @@ const CardGenerateReport = ({ employeeId }: CardGenerateReportProps) => {
           placeholder="Titulo del Informe"
           errors={errors}
         />
-        <Button type="submit" text="Generar" styleButton={4} />
+        <Button type="submit" text="Generar" />
       </form>
     </Modal>
   );

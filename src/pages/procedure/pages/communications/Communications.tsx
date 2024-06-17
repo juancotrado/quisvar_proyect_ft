@@ -136,7 +136,7 @@ const Communications = () => {
                   onClick={handleMessage}
                   icon="plus-dark"
                   text="Nuevo Trámite"
-                  color="quinary"
+                  color="lightPrimary"
                   textColor="secondary"
                 />
               )}

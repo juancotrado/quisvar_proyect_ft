@@ -275,7 +275,6 @@ export const MessagePage = () => {
                             {hasAccess && !isReply && (
                               <Button
                                 onClick={handleArchiver}
-                                styleButton={2}
                                 type="button"
                                 text="Archivar Tramite"
                               />

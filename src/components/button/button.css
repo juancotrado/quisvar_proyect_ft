@@ -24,6 +24,10 @@
   border: 2px solid var(--color-unresolved);
 }
 
+.button-link:hover {
+  text-decoration: underline;
+}
+
 .btn-disabled {
   cursor: not-allowed;
 }
@@ -142,7 +146,7 @@
   border: 1px solid var(--color-primary);
   background-color: var(--color-primary);
   color: white;
-  border-radius: 0.5rem; /* Sobrescribir si es necesario */
+  border-radius: 0.3rem; /* Sobrescribir si es necesario */
 }
 
 .btn-common:disabled {

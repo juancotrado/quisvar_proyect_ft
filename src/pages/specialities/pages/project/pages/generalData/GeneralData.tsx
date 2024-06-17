@@ -224,7 +224,7 @@ const GeneralData = () => {
             <CostTable mount={+watch('bachelorCost')} text="Bachiller" />
             <CostTable mount={+watch('professionalCost')} text="Titulado" />
           </div>
-          {modAuth && <Button type="submit" text={`Guardar`} styleButton={4} />}
+          {modAuth && <Button type="submit" text={`Guardar`} />}
         </form>
       )}
     </div>

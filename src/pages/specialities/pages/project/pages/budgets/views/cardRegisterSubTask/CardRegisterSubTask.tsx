@@ -152,7 +152,7 @@ const CardRegisterSubTask = () => {
           />
         </div>
 
-        <Button text="Guardar" type="submit" styleButton={4} />
+        <Button text="Guardar" type="submit" position="center" />
       </form>
     </Modal>
   );

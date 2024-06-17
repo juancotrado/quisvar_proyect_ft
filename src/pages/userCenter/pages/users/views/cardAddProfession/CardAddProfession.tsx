@@ -115,11 +115,7 @@ const CardAddProfession = ({ onSave }: CardAddProfessionProps) => {
           />
         </div>
 
-        <Button
-          text={watch('value') ? 'GUARDAR' : 'CREAR'}
-          type="submit"
-          styleButton={4}
-        />
+        <Button text={watch('value') ? 'GUARDAR' : 'CREAR'} type="submit" />
       </form>
     </Modal>
   );

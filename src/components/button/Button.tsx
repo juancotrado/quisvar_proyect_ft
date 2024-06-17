@@ -95,7 +95,6 @@ export const Button = ({
           backgroundColor: 'transparent',
           border: 'none',
           color: txtColor,
-          textDecoration: 'underline',
         };
     }
   };

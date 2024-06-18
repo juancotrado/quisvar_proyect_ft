@@ -8,7 +8,8 @@ dayjsSpanish.extend(utcPlugin);
 const transformValidDate = (date?: ConfigType) => {
   const isValid = dayjsSpanish(date).isValid();
   if (!date || !isValid) return dayjsSpanish();
-  return date.toString().includes('GMT')
+  return date.toString().includes('GMT') ||
+    date.toString().includes('T00:00:00.000Z')
     ? dayjsSpanish.utc(date)
     : dayjsSpanish(date);
 };

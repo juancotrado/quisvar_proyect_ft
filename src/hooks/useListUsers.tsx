@@ -33,6 +33,7 @@ const useListUsers = (
           degree: profile.degree,
           position: profile.description,
           job: profile.job,
+          dni: profile.dni,
           ...props,
         }))) ||
     [];

@@ -1,11 +1,15 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import './taks.css';
+import './task.css';
 import { useContext, useEffect, useState } from 'react';
 import { SubTask } from '../../../../../../types';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
-import { CardSubtaskDone, CardSubtaskHold, CardSubtaskProcess } from './View';
+import {
+  CardSubtaskDone,
+  CardSubtaskHoldGeneral,
+  CardSubtaskProcess,
+} from './View';
 import { SocketContext } from '../../../../../../context';
-import { LoaderForComponent } from '../../../../../../components';
+import { IconAction, LoaderForComponent } from '../../../../../../components';
 interface TaskProps {
   optionBack?: boolean;
 }
@@ -59,18 +63,9 @@ export const Task = ({ optionBack }: TaskProps) => {
   const { status } = task;
   return (
     <div className="task">
-      <figure className="close-add-card" onClick={goBack}>
-        <img src="/svg/close.svg" alt="pencil" />
-      </figure>
-      <div className="task-header">
-        <h4 className="task-header-title">
-          Título de la tarea:
-          <span className="task-header-title-span">
-            {task.item} {task.name}
-          </span>
-        </h4>
-      </div>
-      {status === 'UNRESOLVED' && <CardSubtaskHold subTask={task} />}
+      <IconAction icon="close" onClick={goBack} size={0.8} top={0} />
+
+      {status === 'UNRESOLVED' && <CardSubtaskHoldGeneral task={task} />}
       {(status === 'PROCESS' ||
         status === 'INREVIEW' ||
         status === 'DENIED') && <CardSubtaskProcess subTask={task} />}

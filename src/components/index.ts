@@ -42,3 +42,4 @@ export * from './inputErrorInfo';
 export * from './indeterminateCheckbox';
 export * from './loaderOnly';
 export * from './customSwitch';
+export * from './iconProfile';

@@ -3,19 +3,19 @@ import {
   URL,
   axiosInstance,
 } from '../../../../../../../../services/axiosInstance';
-import { FileType, Files } from '../../../../../../../../types';
+import { FileType, TaskFile } from '../../../../../../../../types';
 import { SocketContext } from '../../../../../../../../context';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../../../../../../store';
+// import { useSelector } from 'react-redux';
+// import { RootState } from '../../../../../../../../store';
 import './SubtaskFile.css';
 import { Button } from '../../../../../../../../components';
 import { normalizeFileName } from '../../../../../../../../utils';
 interface SubtaskFileProps {
-  files: Files[];
+  files: TaskFile;
   typeFile?: FileType;
   showDeleteBtn?: boolean;
   className?: string;
-  showDeleteBtnByUserAuth?: boolean;
+  // showDeleteBtnByUserAuth?: boolean;
 }
 
 const iconForExtension = {
@@ -27,14 +27,14 @@ const iconForExtension = {
 };
 const SubtaskFile = ({
   files,
-  typeFile,
+  typeFile = 'MODEL',
   showDeleteBtn,
   className,
-  showDeleteBtnByUserAuth,
-}: SubtaskFileProps) => {
-  const { id: userSessionId } = useSelector(
-    (state: RootState) => state.userSession
-  );
+}: // showDeleteBtnByUserAuth,
+SubtaskFileProps) => {
+  // const { id: userSessionId } = useSelector(
+  //   (state: RootState) => state.userSession
+  // );
   const socket = useContext(SocketContext);
 
   const deleteFile = (id: number) => {
@@ -59,41 +59,34 @@ const SubtaskFile = ({
   };
   return (
     <div className={` subtaskFile ${className}`}>
-      {files
-        ?.filter(({ type }) =>
-          !typeFile
-            ? ['REVIEW', 'UPLOADS', 'EDITABLES'].includes(type)
-            : type === typeFile
-        )
-        .map(file => (
-          <div key={file.id} className="subtaskFile-contain">
-            <a
-              href={`${URL}/${normalizeUrlFile(file.dir)}/${file.name}`}
-              target="_blank"
-              className="subtaskFile-anchor"
-              download={true}
-              title={file.name}
-            >
-              <img
-                src={`/svg/${getIcon(file.name)}.svg`}
-                alt="W3Schools"
-                className="subtaskFile-icon"
-              />
-              <span className="subtaskFile-name">
-                {normalizeFileName(file.name)}
-              </span>
-            </a>
-            {(showDeleteBtnByUserAuth
-              ? userSessionId === file.userId
-              : showDeleteBtn) && (
-              <Button
-                icon="trash-red"
-                onClick={() => deleteFile(file.id)}
-                className="subtaskFile-btn-delete"
-              />
-            )}
-          </div>
-        ))}
+      {files[typeFile]?.map(file => (
+        <div key={file.id} className="subtaskFile-contain">
+          <a
+            href={`${URL}/${normalizeUrlFile(file.dir)}/${file.name}`}
+            target="_blank"
+            className="subtaskFile-anchor"
+            download={true}
+            title={file.name}
+          >
+            <img
+              src={`/svg/${getIcon(file.name)}.svg`}
+              alt="W3Schools"
+              className="subtaskFile-icon"
+            />
+            <span className="subtaskFile-name">
+              {normalizeFileName(file.name)}
+            </span>
+          </a>
+          {showDeleteBtn && (
+            <Button
+              icon="trash-red"
+              onClick={() => deleteFile(file.id)}
+              variant="ghost"
+              iconSize={0.8}
+            />
+          )}
+        </div>
+      ))}
     </div>
   );
 };

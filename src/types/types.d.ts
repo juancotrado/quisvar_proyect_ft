@@ -1,4 +1,5 @@
 import { OfficeSelect, Reception } from '../pages/procedure/models';
+import { TaskStatus } from '../pages/specialities/pages/project/models';
 
 export interface SpecialityType {
   id: number;
@@ -452,9 +453,11 @@ export type TypeFileUser =
 //   id: number;
 //   name: string;
 // }
+
+export type TaskFile = { MODEL: Files[]; UPLOADS: Files[]; REVIEW: Files[] };
 export interface SubTask {
   id: number;
-  status: StatusType;
+  status: TaskStatus;
   name: string;
   item?: string;
   feedBacks: Feedback[];
@@ -463,7 +466,7 @@ export interface SubTask {
   untilDate?: string;
   price: string;
   days: number;
-  files: Files[];
+  files: TaskFile;
   createdAt?: Date;
   updatedAt?: Date;
   taskId: number;
@@ -1323,6 +1326,10 @@ export interface OptionSelect {
   id?: number;
   value: string;
   label: string;
+}
+
+export interface OptionUserExtend extends OptionSelect {
+  dni: string;
 }
 
 export type StylesVariant = 'primary' | 'secondary' | 'tertiary';

@@ -1,0 +1,41 @@
+.taskCardSelect {
+  width: 80%;
+  display: flex;
+  align-items: flex-start;
+  gap: 3.125rem;
+  /* flex-wrap: wrap; */
+}
+
+@media (max-width: 1250px) {
+  .taskCardSelect {
+    width: 100%;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+}
+.taskCardSelect-label {
+  position: relative;
+  top: 0.74rem;
+  color: #757575;
+  font-size: 0.75rem;
+  font-weight: 400;
+}
+.taskCardSelect-contain {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.3125rem;
+}
+.taskCardSelect-assign {
+  position: relative;
+  left: 1rem;
+  color: var(--color-link);
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  letter-spacing: 0.02rem;
+}
+.taskCardSelect-select {
+  width: 100%;
+}

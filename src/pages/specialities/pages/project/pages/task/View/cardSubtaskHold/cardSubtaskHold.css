@@ -1,7 +1,6 @@
 .cardSubtaskHold {
   background-color: white;
   width: 100%;
-  /*falta calcular*/
   border-radius: var(--radius-input);
   flex-wrap: wrap;
   gap: 5px;

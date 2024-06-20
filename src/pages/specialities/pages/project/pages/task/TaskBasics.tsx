@@ -1,10 +1,11 @@
 import { useNavigate, useParams } from 'react-router-dom';
-import './taks.css';
+import './task.css';
 import { useContext, useEffect, useState } from 'react';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import { SocketContext } from '../../../../../../context';
-import { LoaderForComponent } from '../../../../../../components';
+import { IconAction, LoaderForComponent } from '../../../../../../components';
 import { SubTask } from '../../../../../../types';
+import { CardSubtaskHoldGeneral } from './View';
 
 export const TaskBasics = () => {
   const [task, setTask] = useState<SubTask | null>(null);
@@ -17,21 +18,20 @@ export const TaskBasics = () => {
   }, [taskId]);
 
   useEffect(() => {
-    socket.on('server:update-subTask', (newSubTask: SubTask) => {
-      setTask(newSubTask);
+    socket.on('server:load-basic-task', (task: SubTask) => {
+      setTask(task);
     });
     return () => {
-      socket.off('server:update-subTask');
+      socket.off('server:load-basic-task');
     };
   }, [socket]);
 
-  const getTask = () => {
-    axiosInstance
-      .get(`/basictasks/${taskId}`, { headers: { noLoader: true } })
-      .then(res => {
-        setTask(res.data);
-        socket.emit('join', `task-${taskId}`);
-      });
+  const getTask = async () => {
+    const res = await axiosInstance.get<SubTask>(`/basictasks/${taskId}`, {
+      headers: { noLoader: true },
+    });
+    setTask(res.data);
+    socket.emit('join', `basic-task-${taskId}`);
   };
 
   const navigate = useNavigate();
@@ -46,22 +46,13 @@ export const TaskBasics = () => {
         <LoaderForComponent />
       </div>
     );
-  //const { status } = task;
+  const { status } = task;
   return (
     <div className="task">
-      <figure className="close-add-card" onClick={goBack}>
-        <img src="/svg/close.svg" alt="pencil" />
-      </figure>
-      <div className="task-header">
-        <h4 className="task-header-title">
-          Título de la tarea:
-          <span className="task-header-title-span">
-            {task.item} {task.name}
-          </span>
-        </h4>
-      </div>
-      {/* {status === 'UNRESOLVED' && <CardSubtaskHold subTask={task} />}
-      {(status === 'PROCESS' ||
+      <IconAction icon="close" onClick={goBack} size={0.8} top={0} />
+
+      {status === 'UNRESOLVED' && <CardSubtaskHoldGeneral task={task} />}
+      {/* {(status === 'PROCESS' ||
         status === 'INREVIEW' ||
         status === 'DENIED') && <CardSubtaskProcess subTask={task} />}
       {(status === 'DONE' || status === 'LIQUIDATION') && (

@@ -4,6 +4,11 @@
   overflow-x: auto;
   width: 100%;
   overflow-x: auto;
+  padding-bottom: 0.3rem;
+}
+.subtaskFile::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
 }
 
 .subtaskFile-contain {
@@ -12,7 +17,7 @@
   justify-content: space-between;
   align-items: center;
   gap: 0.5rem;
-  padding: 0.2rem;
+  padding: 0.2rem 0.5rem;
   border-radius: 0.39675rem;
   background-color: #f5f5f5;
 }

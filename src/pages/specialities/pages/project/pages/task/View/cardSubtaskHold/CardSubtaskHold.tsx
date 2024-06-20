@@ -48,7 +48,7 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
 
   const handleAddUserByTask = () => {
     if (!addBtn) return;
-    if (!subTask.files?.length)
+    if (!subTask.files?.MODEL.length)
       return SnackbarUtilities.warning(
         'Asegurese de subir los archivos modelos antes'
       );
@@ -80,7 +80,7 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
             </h4>
 
             <div className="cardSubtask-files-content">
-              <SubtaskUploadFiles id={subTask.id} type="MODEL" />
+              <SubtaskUploadFiles taskId={subTask.id} type="MODEL" />
             </div>
             <SubtaskFile
               files={subTask.files}
@@ -156,7 +156,7 @@ const CardSubtaskHold = ({ subTask }: CardSubtaskHold) => {
             subtaskId={subTask.id}
             subtaskStatus={status}
             isDisabled={addBtn}
-            files={subTask.files}
+            files={subTask.files.REVIEW}
             text="ASIGNARME"
             className={`cardSubtask-add-btn cardSubtask-asig-btn  ${
               addBtn && 'cardSubtask-btn-disabled'

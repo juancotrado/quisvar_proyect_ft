@@ -60,7 +60,7 @@ const SpecialistDeclarationPdf = ({ data }: SpecialistDeclarationPdfProps) => {
         <Text style={styles.paragraph}>
           Yo,{' '}
           <Text style={styles.stroke}>
-            {data.firstName} {data.lastName}
+            {data.firstName.toUpperCase()} {data.lastName.toUpperCase()}
           </Text>
           , con <Text style={styles.stroke}>DNI N° {data.dni}</Text> con título
           profesional de <Text style={styles.stroke}>{data.career}</Text>,
@@ -71,15 +71,15 @@ const SpecialistDeclarationPdf = ({ data }: SpecialistDeclarationPdfProps) => {
         </Text>
         <Text style={styles.paragraph}>
           <Text style={styles.stroke}>DECLARO BAJO JURAMENTO </Text>
-          que mi persona participa como personal clave{' '}
-          <Text style={styles.stroke}>({data.speciality})</Text> en el proceso
-          de selección de la{' '}
+          que mi persona participa como{' '}
+          <Text style={styles.stroke}>{data.speciality}</Text> en la elaboración
+          del Expediente Técnico del proyecto denominado:{' '}
           <Text style={styles.stroke}>
-            ADJUDICACION SIMPLIFICADA N° {data.nameContract}
-          </Text>{' '}
-          para la elaboración del expediente técnico denominado{' '}
+            "{data.projectName}" con CUI {data.cui},{' '}
+          </Text>
+          del proceso de selección de la{' '}
           <Text style={styles.stroke}>
-            "{data.projectName}" con CUI {data.cui}.{' '}
+            ADJUDICACION SIMPLIFICADA N° {data.nameContract}.
           </Text>
         </Text>
         <Text style={styles.paragraph}>

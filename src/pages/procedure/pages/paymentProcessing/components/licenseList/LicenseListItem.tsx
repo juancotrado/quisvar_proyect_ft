@@ -116,6 +116,9 @@ export const LicenseListItem = ({
           '---'
         )}
       </div>
+      <div className="license-header-items">
+        {data.type === 'SALIDA' ? 'S' : 'L'}
+      </div>
       <div
         className="license-header-items"
         style={{ justifyContent: 'center' }}

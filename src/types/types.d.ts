@@ -1155,7 +1155,7 @@ export interface Companies {
   orderQuantity: number;
 }
 export interface CompaniesForm extends Companies {
-  img: FileList;
+  img: FileList | undefined;
 }
 export interface MenuMoreInfo {
   id: number;

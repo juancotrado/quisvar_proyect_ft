@@ -21,6 +21,21 @@ import {
 type CardCompanyProps = {
   onSave?: () => void;
 };
+const initial: CompaniesForm = {
+  img: undefined,
+  id: 0,
+  name: '',
+  ruc: '',
+  color: '',
+  phone: '',
+  email: '',
+  manager: '',
+  address: '',
+  departure: '',
+  CCI: '',
+  description: '',
+  orderQuantity: 0,
+};
 const CardCompany = ({ onSave }: CardCompanyProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState<Companies>();
@@ -41,9 +56,9 @@ const CardCompany = ({ onSave }: CardCompanyProps) => {
   };
 
   const closeFunctions = () => {
+    reset(initial);
     setHasId(undefined);
     setIsOpen(false);
-    reset({});
     // onSave?.();
   };
   useEffect(() => {
@@ -109,6 +124,7 @@ const CardCompany = ({ onSave }: CardCompanyProps) => {
       });
     }
   };
+
   useEffect(() => {
     if (hasId) getCompany();
   }, [hasId]);

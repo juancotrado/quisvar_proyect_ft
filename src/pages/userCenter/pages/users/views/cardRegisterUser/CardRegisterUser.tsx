@@ -263,7 +263,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
                   label="DNI"
                   errors={errors}
                   type="number"
-                  handleSearch={!watch('id') ? searchUserForDNI : false}
+                  handleSearch={searchUserForDNI}
                 />
                 <Input
                   {...register('firstName', { required: true })}

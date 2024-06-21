@@ -16,7 +16,7 @@ interface InputTextProps<FormData extends FieldValues>
   errorPosY?: number;
   errorRelative?: boolean;
   handleSearch?: (() => void) | boolean;
-  styleInput?: number;
+  styleInput?: keyof typeof STYLE_INPUT;
 }
 
 const InputText = <FormData extends FieldValues>(

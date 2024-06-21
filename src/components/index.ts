@@ -41,3 +41,4 @@ export * from './aside';
 export * from './inputErrorInfo';
 export * from './indeterminateCheckbox';
 export * from './loaderOnly';
+export * from './resizableIcon';

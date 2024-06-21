@@ -17,8 +17,10 @@
   background-color: #d6e5ff79;
 }
 .SidebarContractCard-sidebar-figure {
-  width: 1rem;
+  min-width: 1rem;
+  aspect-ratio: 1;
 }
+
 .SidebarContractCard-sidebar-name {
   overflow: hidden;
   color: #000;
@@ -48,4 +50,11 @@
   bottom: 0;
   margin: auto;
   right: 1rem;
+}
+
+.SidebarContractCard-text-contain {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
 }

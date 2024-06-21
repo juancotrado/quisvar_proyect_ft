@@ -25,3 +25,19 @@
 .search-box {
   padding: 0 0.8rem;
 }
+.company-items {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0.31rem 1.25rem;
+  cursor: pointer;
+  text-decoration: none;
+  color: black;
+}
+.company-item-user-img {
+  height: 2.6875rem;
+}
+
+.company-items:hover {
+  background-color: var(--color-menu);
+}

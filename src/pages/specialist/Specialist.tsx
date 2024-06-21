@@ -77,7 +77,7 @@ export const Specialist = () => {
           <Button
             icon="plus-dark"
             onClick={handleAddSpecilist}
-            className="specialist-add-btn"
+            variant="ghost"
           />
         </div>
 

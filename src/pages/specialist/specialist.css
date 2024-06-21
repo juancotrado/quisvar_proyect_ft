@@ -64,7 +64,6 @@
 
 .specialist-items {
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
   gap: 0.62rem;
   padding: 0.31rem 1.25rem;

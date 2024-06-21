@@ -54,7 +54,7 @@
 .sidebarSpeciality-resizable {
   overflow: hidden;
   max-width: 100%;
-  transition: max-width 2.5s ease, padding 0.5s ease;
+  transition: max-width 1.2s ease, padding 0.5s ease;
 }
 .sidebarSpeciality {
   position: relative;
@@ -118,42 +118,7 @@
   left: 0;
 }
 
-.button-sidebar {
-  position: relative;
-  min-height: 100%;
-  display: flex;
-  margin-left: -0.275rem;
-}
-
-.button-icon {
-  max-height: 20px;
-  margin-top: auto;
-  margin-bottom: auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: gray;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  border-top-right-radius: 8px;
-  border-bottom-right-radius: 8px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
 .button-icon:hover {
   background-color: blue;
   transition: background-color 0.3s;
-}
-.icon {
-  max-width: 15px;
-  transform: rotate(180deg);
-  transition: transform 0.5s ease;
-  stroke: white;
-  fill: white;
-  stroke-width: 15;
-}
-.icon-invert {
-  transform: rotate(0deg);
-  transition: transform 0.5s ease;
 }

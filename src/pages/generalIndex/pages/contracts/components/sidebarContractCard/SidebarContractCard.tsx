@@ -80,7 +80,10 @@ export const SidebarContractCard = ({
         <figure className="SidebarContractCard-sidebar-figure">
           <img src="/svg/contracts-icon.svg" alt="W3Schools" />
         </figure>
-        <div>
+        <div className="SidebarContractCard-text-contain">
+          <h5 className="SidebarContractCard-sidebar-cui ">
+            {contract.projectShortName}
+          </h5>
           <h4 className="SidebarContractCard-sidebar-name">
             {contract.contractNumber}
           </h4>

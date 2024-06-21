@@ -5,7 +5,7 @@
 }
 .contracts-resizable {
   max-width: 100%;
-  transition: max-width 1.4s ease;
+  transition: max-width 500ms ease;
   overflow: hidden;
 }
 .contracts-sidebar {
@@ -17,9 +17,11 @@
   gap: 1rem;
   background-color: var(--color-primarylight);
   padding: 1.5rem 0.5rem;
-  transition: max-width 2.5s ease, padding 0.3s ease;
 }
 
+.contracts-collapse {
+  max-width: 0;
+}
 .contracts-sidebar-tilte {
   color: var(--color-secondary);
   font-size: 1rem;

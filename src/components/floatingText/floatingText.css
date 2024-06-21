@@ -10,4 +10,5 @@
   box-shadow: -2px 2px 3px 0px rgba(0, 0, 0, 0.15);
   color: white;
   z-index: 2;
+  line-height: 0.8rem;
 }

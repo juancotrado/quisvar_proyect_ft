@@ -86,12 +86,12 @@
   position: absolute;
   margin-right: 0.4rem;
   cursor: pointer;
+  right: 0;
 }
 
 .input-option {
   width: 100%;
   display: flex;
-  flex-direction: row-reverse;
   align-items: center;
 }
 

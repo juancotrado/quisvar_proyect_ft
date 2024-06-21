@@ -37,30 +37,27 @@ export const CompanyInformation = () => {
       <div className="company-experience"></div>
       <div className="company-data">
         <div className="company-main-info">
-          <div className=" company-main-img-center">
-            <span className="company-main-img">
-              <img
-                className="company-img-size"
-                src={
-                  data?.img
-                    ? `${URL}/images/img/companies/${data.img}`
-                    : '/svg/user_icon.svg'
-                }
-              />
+          <div className="company-icons-area">
+            <img
+              src="/svg/pencil-line.svg"
+              className="company-info-icon"
+              onClick={() => handleAddCompany(data?.id)}
+            />
+            <span className="company-icon-cv">
+              <img src="/svg/download.svg" className="company-info-icon" />
+              <h4>CV</h4>
             </span>
           </div>
+          <figure className=" company-main-figure">
+            <img
+              src={
+                data?.img
+                  ? `${URL}/images/img/companies/${data.img}`
+                  : '/svg/user_icon.svg'
+              }
+            />
+          </figure>
           <div className="company-info-text">
-            <div className="company-icons-area">
-              <img
-                src="/svg/pencil-line.svg"
-                className="company-info-icon"
-                onClick={() => handleAddCompany(data?.id)}
-              />
-              <span className="company-icon-cv">
-                <img src="/svg/download.svg" className="company-info-icon" />
-                <h4>CV</h4>
-              </span>
-            </div>
             <h1 className="company-info-name">{data?.name}</h1>
             <h3>{data?.manager}</h3>
           </div>

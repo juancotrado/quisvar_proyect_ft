@@ -7,6 +7,7 @@ interface FloatingTextProps {
   text: string;
   xPos?: number;
   yPos?: number;
+  textSize?: number;
 }
 const FloatingText = ({
   children,
@@ -15,12 +16,15 @@ const FloatingText = ({
   text,
   xPos = 0,
   yPos = 0,
+  textSize = 0.7,
 }: FloatingTextProps) => {
   const [message, setMenssage] = useState(false);
   const showMessage = () => setMenssage(true);
   const hiddenMessage = () => setMenssage(false);
-  const styleText = {
+
+  const styleText: CSSProperties = {
     transform: `translate(${xPos}px,${yPos}px)`,
+    fontSize: `${textSize}rem`,
   };
   return (
     <div

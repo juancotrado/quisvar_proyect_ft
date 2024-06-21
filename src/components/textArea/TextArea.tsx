@@ -12,7 +12,7 @@ interface TextAreaProps<FormData extends FieldValues>
   errorPosX?: number;
   errorPosY?: number;
   errorRelative?: boolean;
-  styleInput?: number;
+  styleInput?: keyof typeof STYLE_INPUT;
 }
 const TextArea = <FormData extends FieldValues>(
   {

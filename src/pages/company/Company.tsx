@@ -92,7 +92,7 @@ export const Company = () => {
                     id={`company-${item.id}`}
                   >
                     <NavLink
-                      className="specialist-items"
+                      className="company-items"
                       to={`informacion/${item.id}`}
                     >
                       <img
@@ -102,12 +102,9 @@ export const Company = () => {
                             : '/svg/user_icon.svg'
                         }
                         alt=""
-                        className="specialist-item-user-img"
+                        className="company-item-user-img"
                       />
-                      <div className="specialist-items-content">
-                        <h3 className="specialist-item-name">{item.name}</h3>
-                        <h3 className="specialist-item-dni">RUC: {item.ruc}</h3>
-                      </div>
+                      <h3 className="specialist-item-dni">RUC: {item.ruc}</h3>
                     </NavLink>
                   </ContextMenuTrigger>
                   <DotsRight

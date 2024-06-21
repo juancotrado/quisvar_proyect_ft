@@ -175,6 +175,7 @@ const CardRegisterUser = ({ onSave, generalFiles }: CardRegisterUserProps) => {
         if (!res.data.success) return SnackbarUtilities.error(res.data.message);
         const { apellido_paterno, apellido_materno, nombres } = res.data.data;
         reset({
+          ...watch(),
           firstName: capitalizeText(nombres),
           lastName: `${capitalizeText(apellido_paterno)} ${capitalizeText(
             apellido_materno

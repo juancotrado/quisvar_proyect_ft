@@ -43,3 +43,4 @@ export * from './indeterminateCheckbox';
 export * from './loaderOnly';
 export * from './customSwitch';
 export * from './iconProfile';
+export * from './resizableIcon';

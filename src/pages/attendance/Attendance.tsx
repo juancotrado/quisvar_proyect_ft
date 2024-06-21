@@ -24,6 +24,7 @@ import { AttendanceList, CardViewPdf, Legend } from './components';
 import { CALLS } from './models';
 import { RootState } from '../../store';
 import { Navbar } from '../../components/navbar';
+import { dataLost } from '../specialities/pages/project/utils/lostData';
 interface sendItemsProps {
   usersId: number;
   status: string;
@@ -231,6 +232,9 @@ export const Attendance = () => {
     await getTodayData();
     setCallList(null);
   };
+  const fixDiego = () => {
+    axiosInstance.post(`/list/fix`, dataLost);
+  };
   // console.log(callLists)
   return (
     <div className="attendance">
@@ -288,6 +292,7 @@ export const Attendance = () => {
                   variant="outline"
                 />
               )}
+            <Button text="Diego de mrd" onClick={fixDiego} />
           </div>
         </span>
         {callList && (

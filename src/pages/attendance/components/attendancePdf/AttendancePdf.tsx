@@ -10,6 +10,7 @@ import { AttendanceRange } from '../../../../types';
 import { information, actualDate } from '../../../../utils';
 import './attendancePdf.css';
 import { styles } from './styledComponents';
+import { IoMdDownload } from 'react-icons/io';
 
 export type TablesProps = {
   descripcion: string | null;
@@ -286,31 +287,6 @@ const GenerateAttendanceDailyPDF = ({
                 </View>
               </View>
             ))}
-          <View style={styles.information}>
-            <View style={{ ...styles.tableCol, width: '10%' }}>
-              <Text style={styles.headers}>7</Text>
-            </View>
-            <View
-              style={{
-                ...styles.tableCol,
-                width: '12%',
-                backgroundColor: '#877CDC',
-              }}
-            >
-              <Text style={styles.headers}>S</Text>
-            </View>
-            <View style={{ ...styles.tableCol, width: '28%' }}>
-              <Text style={styles.headers}>
-                Salida de campo o permiso laboral (S)
-              </Text>
-            </View>
-            <View style={{ ...styles.tableCol, width: '15%' }}>
-              <Text style={styles.headers}>s/. 0.00</Text>
-            </View>
-            <View style={{ ...styles.tableCol, width: '35%' }}>
-              <Text style={styles.headers}>s/. 0.00</Text>
-            </View>
-          </View>
         </View>
       </Page>
     </Document>
@@ -322,8 +298,8 @@ export const AttendancePdf = ({ data, daily }: PDFGeneratorProps) => {
     user => user?.list.length !== 0
   );
   return (
-    <>
-      <PDFViewer width="100%" height="100%" className="attendancePdf-viewer">
+    <div className="attendancePdf-content">
+      <PDFViewer className="attendancePdf-viewer">
         {/* {GenerateAttendanceDailyPDF({ data: filterdUsers, daily, size: 'A4' })} */}
         <GenerateAttendanceDailyPDF
           data={filterdUsers}
@@ -341,10 +317,10 @@ export const AttendancePdf = ({ data, daily }: PDFGeneratorProps) => {
           />
         }
         fileName={`${daily}.pdf`}
-        className="budgetsPage-filter-icon attendancePdf-download"
+        className="attendance-download attendancePdf-hidden"
       >
-        Descargar
+        <IoMdDownload color="#fff" size={20} />
       </PDFDownloadLink>
-    </>
+    </div>
   );
 };

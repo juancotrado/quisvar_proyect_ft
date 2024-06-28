@@ -47,6 +47,7 @@ const orderCalls = [
   'vigesimoprimero llamado',
   'vigesimosegundo llamado',
 ];
+
 const GenerateAttendanceDailyPDF = ({
   data,
   daily,
@@ -58,7 +59,7 @@ const GenerateAttendanceDailyPDF = ({
     data[0].list.length <= 6
       ? orderCalls.slice(0, 6)
       : orderCalls.slice(0, maxAttendance);
-  // console.log(initialCalls)
+
   const getStatus = (data: AttendanceRange) => {
     const mapStates = {
       PUNTUAL: 'P',
@@ -71,7 +72,6 @@ const GenerateAttendanceDailyPDF = ({
     };
 
     const orderedStatus: string[] = [];
-    // console.log(data.list);
     initialCalls.forEach(call => {
       const estadoEncontrado = data.list.find(item => item.list.title === call);
       if (estadoEncontrado) {
@@ -85,21 +85,115 @@ const GenerateAttendanceDailyPDF = ({
 
     return orderedStatus;
   };
-  // const getTimers = (data: AttendanceRange) => {
-  //   const orderedTimers: string[] = [];
 
-  //   orderCalls.forEach(call => {
-  //     const estadoEncontrado = data.list.find(item => item.list.title === call);
+  const renderRows = (data: AttendanceRange[], startIndex: number) => {
+    return data.slice(startIndex, startIndex + 41).map((value, index) => {
+      const attendances = getStatus(value);
+      const getColor = (status: string) => {
+        if (status === 'P') return '#87E4BD';
+        if (status === 'T') return '#FFE17F';
+        if (status === 'F') return '#F8C5C5';
+        if (status === 'G') return '#F19191';
+        if (status === 'M') return '#D2595B';
+        if (status === 'L') return '#83A8F0';
+        if (status === 'S') return '#877cdc';
+      };
+      return (
+        <View key={value.id} style={styles.tableRow}>
+          <View style={{ ...styles.tableCol, width: '5%' }}>
+            <Text style={styles.headers}>{index + 1 + startIndex}</Text>
+          </View>
+          <View style={{ ...styles.tableCol, width: '7%' }}>
+            <Text style={styles.headers}>{value.profile.room ?? '---'}</Text>
+          </View>
+          <View style={{ ...styles.tableCol, width: '22%' }}>
+            <Text
+              style={{
+                ...styles.headers,
+                textAlign: 'left',
+                marginHorizontal: 5,
+              }}
+            >
+              {value.profile.lastName + ' ' + value.profile.firstName}
+            </Text>
+          </View>
+          <View style={{ ...styles.tableCol, width: '10%' }}>
+            <Text style={styles.headers}>{value.profile.dni}</Text>
+          </View>
+          <View style={{ ...styles.tableCol, width: '10%' }}>
+            <Text style={styles.headers}>{value.profile.phone}</Text>
+          </View>
+          <View style={{ ...styles.attendance, width: '46%' }}>
+            {attendances.map((attendance, index) => (
+              <Text
+                style={{
+                  ...styles.attendanceItem,
+                  backgroundColor: getColor(attendance),
+                }}
+                key={index}
+              >
+                {attendance}
+              </Text>
+            ))}
+          </View>
+        </View>
+      );
+    });
+  };
 
-  //     if (estadoEncontrado) {
-  //       orderedTimers.push(estadoEncontrado.list.timer);
-  //     }
-  //   });
+  const renderHeader = () => (
+    <View style={styles.table}>
+      <View style={styles.tableRow}>
+        <View style={{ ...styles.tableCol, width: '5%' }}>
+          <Text style={styles.headers}>N°</Text>
+        </View>
+        <View style={{ ...styles.tableCol, width: '7%' }}>
+          <Text style={{ ...styles.headers, fontSize: '6px' }}>CUARTOS</Text>
+        </View>
+        <View style={{ ...styles.tableCol, width: '22%' }}>
+          <Text style={styles.headers}>APELLIDOS Y NOMBRES</Text>
+        </View>
+        <View style={{ ...styles.tableCol, width: '10%' }}>
+          <Text style={styles.headers}>DNI</Text>
+        </View>
+        <View style={{ ...styles.tableCol, width: '10%' }}>
+          <Text style={styles.headers}>CELULAR</Text>
+        </View>
+        <View style={{ ...styles.tableCol, width: '46%' }}>
+          <Text style={styles.headers}>ASISTENCIAS</Text>
+        </View>
+      </View>
+      <View style={styles.tableRow}>
+        <View style={{ ...styles.tableCol, width: '54%' }}>
+          <Text style={styles.headers}></Text>
+        </View>
+        <View style={{ ...styles.attendance, width: '46%' }}>
+          {initialCalls.map((_, index) => (
+            <Text style={{ ...styles.attendanceItem }} key={index}>
+              {index + 1}
+            </Text>
+          ))}
+        </View>
+      </View>
+    </View>
+  );
 
-  //   return orderedTimers;
-  // };
+  const renderRecursive: any = (
+    data: AttendanceRange[],
+    startIndex: number
+  ) => {
+    if (startIndex >= data.length) return null;
 
-  // console.log(data[0].list.length);
+    return (
+      <View style={styles.tableRender}>
+        {renderHeader()}
+        {renderRows(data, startIndex)}
+        {data.length > startIndex + 41 && (
+          <>{renderRecursive(data, startIndex + 42)}</>
+        )}
+      </View>
+    );
+  };
 
   return (
     <Document>
@@ -107,13 +201,6 @@ const GenerateAttendanceDailyPDF = ({
         size={size ?? 'A4'}
         style={size === 'A4' ? styles.page : styles.pageA5}
       >
-        {/* <View style={styles.table}>
-        <View style={{ ...styles.title, width: '100%' }}>
-          <Text style={styles.headers}>
-            LISTA DE ASISTENCIA DEL {value?.daily}
-          </Text>
-        </View>
-      </View> */}
         <View
           style={{
             width: '100%',
@@ -127,120 +214,20 @@ const GenerateAttendanceDailyPDF = ({
         >
           <Text>LISTA DE ASISTENCIA DEL {actualDate(daily)}</Text>
         </View>
-        <View style={styles.table}>
-          <View style={styles.tableRow}>
-            <View style={{ ...styles.tableCol, width: '5%' }}>
-              <Text style={styles.headers}>N°</Text>
-            </View>
-            <View style={{ ...styles.tableCol, width: '7%' }}>
-              <Text style={{ ...styles.headers, fontSize: '6px' }}>
-                CUARTOS
-              </Text>
-            </View>
-            <View style={{ ...styles.tableCol, width: '22%' }}>
-              <Text style={styles.headers}>APELLIDOS Y NOMBRES</Text>
-            </View>
-            <View style={{ ...styles.tableCol, width: '10%' }}>
-              <Text style={styles.headers}>DNI</Text>
-            </View>
-            <View style={{ ...styles.tableCol, width: '10%' }}>
-              <Text style={styles.headers}>CELULAR</Text>
-            </View>
-            {/* <View style={{ ...styles.tableCol, width: '8%' }}>
-              <Text style={styles.headers}>EQUIPO</Text>
-            </View> */}
-            {/* <View style={{ ...styles.tableCol, width: '10%' }}>
-              <Text style={styles.headers}>USUARIO</Text>
-            </View> */}
-            <View style={{ ...styles.tableCol, width: '46%' }}>
-              <Text style={styles.headers}>ASISTENCIAS</Text>
-            </View>
-          </View>
-          <View style={styles.tableRow}>
-            <View style={{ ...styles.tableCol, width: '54%' }}>
-              <Text style={styles.headers}></Text>
-            </View>
-            {/* <View style={{ ...styles.attendance, width: '28%' }}>
-              {orderCalls.map((_, index) => {
-                const timer = getTimers(data[0]);
-                return (
-                  <View style={{ ...styles.attendanceItem }} key={index}>
-                    <Text style={styles.headers}>{timer[index]}</Text>
-                  </View>
-                );
-              })}
-            </View> */}
-            <View style={{ ...styles.attendance, width: '46%' }}>
-              {initialCalls.map((_, index) => {
-                return (
-                  <View style={{ ...styles.attendanceItem }} key={index}>
-                    <Text style={styles.headers}>{index + 1}</Text>
-                  </View>
-                );
-              })}
-            </View>
-          </View>
-          {data &&
-            data.map((value, index) => {
-              const attendances = getStatus(value);
-              const getColor = (status: string) => {
-                if (status === 'P') return '#87E4BD';
-                if (status === 'T') return '#FFE17F';
-                if (status === 'F') return '#F8C5C5';
-                if (status === 'G') return '#F19191';
-                if (status === 'M') return '#D2595B';
-                if (status === 'L') return '#83A8F0';
-                if (status === 'S') return '#877cdc';
-              };
-              return (
-                <View key={value.id} style={styles.tableRow}>
-                  <View style={{ ...styles.tableCol, width: '5%' }}>
-                    <Text style={styles.headers}>{index + 1}</Text>
-                  </View>
-                  <View style={{ ...styles.tableCol, width: '7%' }}>
-                    <Text style={styles.headers}>
-                      {value.profile.room ?? '---'}
-                    </Text>
-                  </View>
-                  <View style={{ ...styles.tableCol, width: '22%' }}>
-                    <Text
-                      style={{
-                        ...styles.headers,
-                        textAlign: 'left',
-                        marginHorizontal: 5,
-                      }}
-                    >
-                      {value.profile.lastName + ' ' + value.profile.firstName}
-                    </Text>
-                  </View>
-                  <View style={{ ...styles.tableCol, width: '10%' }}>
-                    <Text style={styles.headers}>{value.profile.dni}</Text>
-                  </View>
-                  <View style={{ ...styles.tableCol, width: '10%' }}>
-                    <Text style={styles.headers}>{value.profile.phone}</Text>
-                  </View>
 
-                  <View style={{ ...styles.attendance, width: '46%' }}>
-                    {attendances &&
-                      attendances.map((attendance, index) => {
-                        return (
-                          <Text
-                            style={{
-                              ...styles.attendanceItem,
-                              backgroundColor: getColor(attendance),
-                            }}
-                            key={index}
-                          >
-                            {attendance}
-                          </Text>
-                        );
-                      })}
-                  </View>
-                </View>
-              );
-            })}
-        </View>
-        <View style={{ ...styles.table, marginTop: 10, width: '60%' }}>
+        <View style={styles.father}>{renderRecursive(data, 0)}</View>
+        {data.length >= 34 && data.length < 41 && (
+          <View style={{ height: `${(41 - data.length) * 18}px` }}></View>
+        )}
+        <View
+          style={{
+            ...styles.table,
+            marginTop: 10,
+            width: '60%',
+            borderTopWidth: 1,
+            borderLeftWidth: 1,
+          }}
+        >
           <View style={styles.information}>
             <View style={{ ...styles.tableCol, width: '10%' }}>
               <Text style={styles.headers}>N°</Text>
@@ -256,37 +243,35 @@ const GenerateAttendanceDailyPDF = ({
             </View>
             <View style={{ ...styles.tableCol, width: '35%' }}>
               <Text style={{ ...styles.headers, textAlign: 'center' }}>
-                {' '}
                 MULTA COORDINADORES Y GERENTE
               </Text>
             </View>
           </View>
-          {information &&
-            information.map(info => (
-              <View key={info.item} style={styles.information}>
-                <View style={{ ...styles.tableCol, width: '10%' }}>
-                  <Text style={styles.headers}>{info.item}</Text>
-                </View>
-                <View
-                  style={{
-                    ...styles.tableCol,
-                    width: '12%',
-                    backgroundColor: info.color,
-                  }}
-                >
-                  <Text style={styles.headers}>{info.simbolo}</Text>
-                </View>
-                <View style={{ ...styles.tableCol, width: '28%' }}>
-                  <Text style={styles.headers}>{info.descripcion}</Text>
-                </View>
-                <View style={{ ...styles.tableCol, width: '15%' }}>
-                  <Text style={styles.headers}>{info.multa}</Text>
-                </View>
-                <View style={{ ...styles.tableCol, width: '35%' }}>
-                  <Text style={styles.headers}>{info.gerente}</Text>
-                </View>
+          {information.map(info => (
+            <View key={info.item} style={styles.information}>
+              <View style={{ ...styles.tableCol, width: '10%' }}>
+                <Text style={styles.headers}>{info.item}</Text>
               </View>
-            ))}
+              <View
+                style={{
+                  ...styles.tableCol,
+                  width: '12%',
+                  backgroundColor: info.color,
+                }}
+              >
+                <Text style={styles.headers}>{info.simbolo}</Text>
+              </View>
+              <View style={{ ...styles.tableCol, width: '28%' }}>
+                <Text style={styles.headers}>{info.descripcion}</Text>
+              </View>
+              <View style={{ ...styles.tableCol, width: '15%' }}>
+                <Text style={styles.headers}>{info.multa}</Text>
+              </View>
+              <View style={{ ...styles.tableCol, width: '35%' }}>
+                <Text style={styles.headers}>{info.gerente}</Text>
+              </View>
+            </View>
+          ))}
         </View>
       </Page>
     </Document>
@@ -294,24 +279,22 @@ const GenerateAttendanceDailyPDF = ({
 };
 
 export const AttendancePdf = ({ data, daily }: PDFGeneratorProps) => {
-  const filterdUsers: AttendanceRange[] = data.filter(
+  const filteredUsers: AttendanceRange[] = data.filter(
     user => user?.list.length !== 0
   );
   return (
     <div className="attendancePdf-content">
       <PDFViewer className="attendancePdf-viewer">
-        {/* {GenerateAttendanceDailyPDF({ data: filterdUsers, daily, size: 'A4' })} */}
         <GenerateAttendanceDailyPDF
-          data={filterdUsers}
+          data={filteredUsers}
           daily={daily}
           size="A4"
         />
       </PDFViewer>
-
       <PDFDownloadLink
         document={
           <GenerateAttendanceDailyPDF
-            data={filterdUsers}
+            data={filteredUsers}
             daily={daily}
             size="A4"
           />

@@ -878,14 +878,14 @@ export interface AttendanceRange {
     name: string;
     workStationId: number;
     workStation: WorkStation;
-  };
+  } | null;
   profile: {
     firstName: string;
     lastName: string;
     dni: string;
     phone: string;
-    room: string;
-    userPc: string;
+    room: string | null;
+    userPc: string | null;
   };
   list: userAttendance[];
 }

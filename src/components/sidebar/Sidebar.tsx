@@ -55,6 +55,10 @@ const Sidebar = () => {
 
   useEffect(() => {
     socket.on('connect_error', error => {
+      if (error.message === 'xhr poll error') {
+        SnackbarUtilities.warning('Reconectando...');
+        return;
+      }
       SnackbarUtilities.error(error.message);
     });
     return () => {

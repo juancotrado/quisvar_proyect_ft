@@ -1,4 +1,5 @@
 import { AddTask, OptionProject, StatusType } from '../../../../../../../types';
+import { TaskStatus } from '../../../models';
 
 export type SubTaskForm = {
   id: number | null;
@@ -43,11 +44,12 @@ export const FILTER_OPTIONS: StatusType[] = [
   'LIQUIDATION',
 ];
 
-export const STATUS_TEXT = {
+export const STATUS_TEXT: Record<TaskStatus, string> = {
   UNRESOLVED: 'POR HACER',
   PROCESS: 'HACIENDO',
   INREVIEW: 'EN REVISIÓN',
   DENIED: 'POR CORREGIR',
+  REVIEWED: 'REVISADO',
   DONE: 'HECHO',
   LIQUIDATION: 'LIQUIDADO',
 };

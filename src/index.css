@@ -16,6 +16,7 @@
   --color-done: #14804a;
   --color-liquidation: #4f5aed;
   --color-asigned: #aa5b00;
+  --color-danger-soft: #ee7a10;
   --color-correction: #2264e5;
   --color-review: #5a6376;
   --color-primarylight: #f4f7fc;
@@ -253,11 +254,16 @@ legend {
   font-size: var(--size-label);
   height: 1.6rem;
 }
-.input-disabled:not([type='radio']) {
+
+.input-disabled-1:disabled:not([type='radio']) {
   color: var(--color-primary);
   cursor: not-allowed;
-  background-color: var(--color-menu);
+  background-color: var(--color-gray-ligth);
   box-shadow: 0px 2px 0px 0px var(--color-primary);
+}
+.input-disabled-2:disabled:not([type='radio']) {
+  cursor: not-allowed;
+  background-color: var(--color-gray-ligth);
 }
 
 .resizable {
@@ -284,4 +290,9 @@ legend {
   -webkit-user-select: none; /* Desactiva la selección de texto en navegadores basados en WebKit */
   -moz-user-select: none; /* Desactiva la selección de texto en navegadores Firefox */
   -ms-user-select: none; /* Desactiva la selección de texto en Internet Explorer y Edge */
+}
+
+.scroll-slim::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
 }

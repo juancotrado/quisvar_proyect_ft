@@ -1,8 +1,8 @@
 import './statusText.css';
-import { StatusType } from '../../../../../../types/types';
 import { STATUS_TEXT } from '../../pages/budgets/models';
+import { TaskStatus } from '../../models';
 interface StatusTextProps {
-  status: StatusType;
+  status: TaskStatus;
   onClick?: () => void;
 }
 

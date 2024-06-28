@@ -44,8 +44,7 @@ const TaskCardUpload = ({
   const contetFile = [
     task?.files ? (
       <SubtaskFile
-        files={task.files}
-        typeFile={typeFile}
+        files={task.files[typeFile]}
         showDeleteBtn={hasPermissions}
       />
     ) : null,

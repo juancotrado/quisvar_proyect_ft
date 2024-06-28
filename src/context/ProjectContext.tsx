@@ -72,10 +72,10 @@ export const ProjectProvider = ({ children }: SocketProviderProps) => {
 
   const handleSaveDaysTask = useCallback(
     (stageId?: string) => {
-      const socketEmit: { [key: string]: string } = {
+      const socketEmit = {
         basicos: 'client:update-task-days-basic',
         presupuestos: 'client:update-task-days-budget',
-      };
+      } as const;
       if (!stageId) return;
       if (dayTaskBody.length === 0) return handleIsEditDayTask();
 

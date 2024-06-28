@@ -17,6 +17,7 @@ interface InputTextProps<FormData extends FieldValues>
   errorRelative?: boolean;
   handleSearch?: (() => void) | boolean;
   styleInput?: keyof typeof STYLE_INPUT;
+  styleInputDisabled?: number;
 }
 
 const InputText = <FormData extends FieldValues>(
@@ -34,6 +35,7 @@ const InputText = <FormData extends FieldValues>(
     handleSearch,
     styleInput = 2,
     className,
+    styleInputDisabled = 1,
     ...props
   }: InputTextProps<FormData>,
   ref: ForwardedRef<HTMLInputElement>
@@ -60,11 +62,11 @@ const InputText = <FormData extends FieldValues>(
         <input
           name={name}
           id={name}
-          className={` ${STYLE_INPUT[styleInput]} ${
+          className={`${className} ${STYLE_INPUT[styleInput]} ${
             errors && name && errors[name] && 'input-area-error'
-          } ${disabled && 'input-disabled'} ${
+          } ${disabled && 'input-disabled-' + styleInputDisabled} ${
             (type == 'password' || handleSearch) && 'input-pading-right'
-          } ${className}`}
+          } `}
           disabled={disabled}
           ref={ref}
           type={typeAux}

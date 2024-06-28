@@ -6,3 +6,6 @@ export * from './subtaskUploadFiles';
 export * from './subtaskUsers';
 export * from './subtasksMoreInfo';
 export * from './subtasksShippingHistory';
+export * from './taskInputPercentage';
+export * from './taskHistoryItem';
+export * from './taskStatusFeedback';

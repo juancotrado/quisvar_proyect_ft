@@ -29,13 +29,19 @@
 }
 
 .DENIED {
-  color: var(--color-correction);
-  background-color: var(--color-bg-correction);
+  /* color: var(--color-correction);
+  background-color: var(--color-bg-correction); */
+  color: var(--color-asigned);
+  background-color: var(--color-bg-asigned);
 }
 
 .DONE {
   color: var(--color-done);
   background-color: var(--color-bg-done);
+}
+.REVIEWED {
+  color: var(--color-liquidation);
+  background-color: var(--color-bg-liquidation);
 }
 
 .LIQUIDATION {

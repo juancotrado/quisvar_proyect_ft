@@ -12,6 +12,7 @@ interface TaskCardSelectProps<OptionValues extends OptionUserExtend> {
   label?: string;
   options: OptionValues[];
   viewAssigned?: boolean;
+  idDefaultValue?: number | null;
   onAssigned?: () => void;
   isDisabled?: boolean;
   onChange?: (value: OptionValues | null) => void;
@@ -22,10 +23,10 @@ function TaskCardSelect<OptionValues extends OptionUserExtend>({
   onAssigned,
   isDisabled = false,
   viewAssigned = false,
+  idDefaultValue,
   onChange,
 }: TaskCardSelectProps<OptionValues>) {
   const handleSelectOption = (option: SingleValue<OptionValues>) => {
-    console.log(option);
     if (!option) {
       return onChange?.(null);
     }
@@ -43,17 +44,33 @@ function TaskCardSelect<OptionValues extends OptionUserExtend>({
             Option: OptionUserSelect<OptionValues>,
             Control: ControlUser,
           }}
+          defaultValue={options.find(el => el.id === idDefaultValue)}
           isDisabled={isDisabled}
           onChange={handleSelectOption}
           placeholder="Sin asignar..."
           className="taskCardSelect-select"
           styles={{
-            control: baseStyles => ({
+            control: (baseStyles, state) => ({
               ...baseStyles,
               borderColor: 'transparent',
               fontSize: '0.875rem',
               fontWeight: '500',
               paddingLeft: 10,
+              backgroundColor: state.isDisabled
+                ? 'white'
+                : baseStyles.backgroundColor,
+            }),
+            singleValue: (provided, state) => ({
+              ...provided,
+              color: state.isDisabled ? 'black' : provided.color,
+              fontSize: ' 0.875rem',
+              fontWeight: '400',
+              lineHeight: '150%',
+              letterSpacing: '0.01313rem',
+            }),
+            indicatorsContainer: (provided, state) => ({
+              ...provided,
+              display: state.isDisabled ? 'none' : provided.display,
             }),
             placeholder: provided => ({
               ...provided,

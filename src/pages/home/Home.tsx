@@ -10,6 +10,7 @@ import { Button, IconAction } from '../../components';
 import { isOpenCardFiles$ } from '../../services/sharingSubject';
 import CardMoreOptions from './views/CardMoreOptions';
 import { PiFilePdfFill } from 'react-icons/pi';
+import { CardOpenFile } from '../userCenter/pages/users/views';
 
 const GMT = 5 * 60 * 60 * 1000;
 type LicenseRes = {
@@ -223,6 +224,7 @@ export const Home = () => {
           </button>
         </div>
       )}
+      <CardOpenFile />
     </div>
   );
 };

@@ -2,6 +2,7 @@ import { Outlet } from 'react-router-dom';
 import './userCenter.css';
 import { HEADER_USER_MODEL } from './models/userModelDef';
 import { Navbar } from '../../components/navbar';
+import { CardOpenFile } from './pages/users/views';
 
 const UserCenter = () => {
   return (
@@ -10,6 +11,7 @@ const UserCenter = () => {
       <div className="user-content ">
         <Outlet />
       </div>
+      <CardOpenFile />
     </div>
   );
 };

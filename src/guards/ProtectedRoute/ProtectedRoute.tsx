@@ -54,7 +54,6 @@ export const ProtectedRoute = () => {
         <ViewPdf />
         <ViewHtmlToPdf />
         <ConfirmAction />
-        <CardOpenFile />
       </div>
     </SocketProvider>
   );

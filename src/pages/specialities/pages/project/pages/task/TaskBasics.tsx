@@ -15,6 +15,9 @@ export const TaskBasics = () => {
 
   useEffect(() => {
     getTask();
+    return () => {
+      setTask(null);
+    };
   }, [taskId]);
 
   useEffect(() => {
@@ -51,7 +54,7 @@ export const TaskBasics = () => {
     <div className="task">
       <IconAction icon="close" onClick={goBack} size={0.8} top={0} />
 
-      {status === 'UNRESOLVED' && <CardSubtaskHoldGeneral task={task} />}
+      {<CardSubtaskHoldGeneral task={task} />}
       {/* {(status === 'PROCESS' ||
         status === 'INREVIEW' ||
         status === 'DENIED') && <CardSubtaskProcess subTask={task} />}

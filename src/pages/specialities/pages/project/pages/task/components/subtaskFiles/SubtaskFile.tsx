@@ -3,16 +3,17 @@ import {
   URL,
   axiosInstance,
 } from '../../../../../../../../services/axiosInstance';
-import { FileType, TaskFile } from '../../../../../../../../types';
+import { FileTask, Files } from '../../../../../../../../types';
 import { SocketContext } from '../../../../../../../../context';
 // import { useSelector } from 'react-redux';
 // import { RootState } from '../../../../../../../../store';
 import './SubtaskFile.css';
 import { Button } from '../../../../../../../../components';
-import { normalizeFileName } from '../../../../../../../../utils';
+import { downloadHref, normalizeFileName } from '../../../../../../../../utils';
+import TaskFileTemplate from './TaskFileTemplate';
 interface SubtaskFileProps {
-  files: TaskFile;
-  typeFile?: FileType;
+  files: FileTask[];
+  // typeFile?: FileType;
   showDeleteBtn?: boolean;
   className?: string;
   // showDeleteBtnByUserAuth?: boolean;
@@ -27,7 +28,7 @@ const iconForExtension = {
 };
 const SubtaskFile = ({
   files,
-  typeFile = 'MODEL',
+  // typeFile = 'MODEL',
   showDeleteBtn,
   className,
 }: // showDeleteBtnByUserAuth,
@@ -57,35 +58,23 @@ SubtaskFileProps) => {
     const getExtencion = iconForExtension[ext as keyof typeof iconForExtension];
     return getExtencion || 'file-download';
   };
+
+  const handleLink = (file: FileTask) => {
+    const urlFile = `${URL}/${normalizeUrlFile(file.dir)}/${file.name}`;
+    downloadHref(urlFile, file.name, true);
+  };
+
   return (
     <div className={` subtaskFile ${className}`}>
-      {files[typeFile]?.map(file => (
-        <div key={file.id} className="subtaskFile-contain">
-          <a
-            href={`${URL}/${normalizeUrlFile(file.dir)}/${file.name}`}
-            target="_blank"
-            className="subtaskFile-anchor"
-            download={true}
-            title={file.name}
-          >
-            <img
-              src={`/svg/${getIcon(file.name)}.svg`}
-              alt="W3Schools"
-              className="subtaskFile-icon"
-            />
-            <span className="subtaskFile-name">
-              {normalizeFileName(file.name)}
-            </span>
-          </a>
-          {showDeleteBtn && (
-            <Button
-              icon="trash-red"
-              onClick={() => deleteFile(file.id)}
-              variant="ghost"
-              iconSize={0.8}
-            />
-          )}
-        </div>
+      {files?.map(file => (
+        <TaskFileTemplate
+          name={file.originalname}
+          key={file.id}
+          onDeleteFile={() => deleteFile(file.id)}
+          onClick={() => handleLink(file)}
+          icon={getIcon(file.name)}
+          showDeleteBtn={showDeleteBtn}
+        />
       ))}
     </div>
   );

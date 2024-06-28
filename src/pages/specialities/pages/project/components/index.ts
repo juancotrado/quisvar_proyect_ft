@@ -9,4 +9,4 @@ export * from './taskCard';
 export * from './taskCardHeader';
 export * from './taskCardInfo';
 export * from './taskCardSelect';
-export * from './TaskCardUpload';
+export * from './taskCardUpload';

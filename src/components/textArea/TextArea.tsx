@@ -38,11 +38,12 @@ const TextArea = <FormData extends FieldValues>(
       )}
       <textarea
         ref={ref}
-        {...props}
         name={name}
+        disabled={disabled}
         className={`${className} ${STYLE_INPUT[styleInput]} ${
           disabled && 'input-disabled'
         } `}
+        {...props}
       />
       {name && errors && errors[name] && (
         <InputErrorInfo

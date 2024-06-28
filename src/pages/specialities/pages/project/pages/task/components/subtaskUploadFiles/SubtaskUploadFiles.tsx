@@ -6,6 +6,7 @@ import { FileType, OptionProject } from '../../../../../../../../types';
 import { MdPostAdd } from 'react-icons/md';
 import { COLOR_CSS } from '../../../../../../../../utils/cssData';
 import { OPTION_PROJECT } from '../../../../models';
+import { loader$ } from '../../../../../../../../services/sharingSubject';
 
 interface SubtaskUploadFilesProps {
   type: FileType;
@@ -28,9 +29,14 @@ const SubtaskUploadFiles = ({
 
   const style: CSSProperties = { height };
   const handleFileChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files as unknown as File[];
-    if (!files) return;
-    if (type === 'REVIEW' && addFiles) return addFiles(files);
+    if (!e.target.files) return;
+    const files = e.target.files;
+    if (type === 'REVIEW' && addFiles) {
+      const newFiles = Array.from(files);
+      addFiles(newFiles);
+      e.target.value = '';
+      return;
+    }
     const formdata = new FormData();
     for (const file of files) {
       formdata.append('files', file);
@@ -39,12 +45,16 @@ const SubtaskUploadFiles = ({
       status: type,
     };
     const params = new URLSearchParams(query);
+    e.target.value = '';
     axiosInstance
       .post(`${OPTION_PROJECT[optionProject].uploadFile}/${taskId}`, formdata, {
         params,
       })
       .then(() => {
-        socket.emit(OPTION_PROJECT[optionProject].loadTask, taskId);
+        loader$.setSubject = true;
+        socket.emit(OPTION_PROJECT[optionProject].loadTask, taskId, () => {
+          loader$.setSubject = false;
+        });
       });
   };
 

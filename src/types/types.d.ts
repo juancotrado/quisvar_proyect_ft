@@ -1,5 +1,8 @@
 import { OfficeSelect, Reception } from '../pages/procedure/models';
-import { TaskStatus } from '../pages/specialities/pages/project/models';
+import {
+  FeedbackType,
+  TaskStatus,
+} from '../pages/specialities/pages/project/models';
 
 export interface SpecialityType {
   id: number;
@@ -189,6 +192,7 @@ export interface TaskCreateType {
 }
 
 export type Users = {
+  id: number;
   percentage: number;
   assignedAt: Date;
   untilDate: Date;
@@ -196,6 +200,7 @@ export type Users = {
   status: boolean;
 };
 
+export type UsersTask = { ACTIVE: Users[] };
 export interface FileInfo {
   lastModified?: number; // Optional due to browser-specific behavior
   lastModifiedDate?: Date; // Optional due to browser-specific behavior
@@ -475,11 +480,33 @@ export interface SubTask {
     userId: number;
     stages: StageSubtask;
   };
-  task_2_Id: number;
-  task_3_Id: number;
-  users: Users[];
+  users: UsersTask;
+  mods: User[];
   assignedAt?: string;
   createdAt?: Date;
+  lastFeedback: Feedback;
+}
+
+export interface Feedback {
+  id: number;
+  comment: string;
+  author: string;
+  reviewer: string;
+  type: FeedbackType;
+  status: boolean;
+  createdAt: Date;
+  updatedAt: Date;
+  percentage: number;
+  subTasksId: number;
+  files: FileTask[];
+}
+
+export interface FileTask {
+  id: number;
+  dir: string;
+  name: string;
+  type: string;
+  originalname: string;
 }
 
 interface CoorpEntity {
@@ -554,7 +581,6 @@ interface Files {
   userId: number;
   dir: string;
   type: FileType;
-  subTasksId: number;
 }
 export interface AreaForm {
   projectId: number;

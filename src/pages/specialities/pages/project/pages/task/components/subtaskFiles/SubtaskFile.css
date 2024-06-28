@@ -13,6 +13,7 @@
 
 .subtaskFile-contain {
   position: relative;
+  cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;

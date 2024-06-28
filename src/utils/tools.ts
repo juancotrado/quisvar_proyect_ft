@@ -287,9 +287,16 @@ export const downloadBlob = (blobFile: Blob, name: string) => {
   downloadHref(editedUrl, name);
 };
 
-export const downloadHref = (url: string, name: string) => {
+export const downloadHref = (
+  url: string,
+  name: string,
+  isTargetBlank: boolean = false
+) => {
   const link = document.createElement('a');
   link.href = url;
+  if (isTargetBlank) {
+    link.target = '_blank';
+  }
   link.download = name;
   link.click();
   URL.revokeObjectURL(url);

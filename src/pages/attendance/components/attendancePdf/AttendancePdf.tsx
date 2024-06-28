@@ -189,7 +189,7 @@ const GenerateAttendanceDailyPDF = ({
         {renderHeader()}
         {renderRows(data, startIndex)}
         {data.length > startIndex + 41 && (
-          <>{renderRecursive(data, startIndex + 42)}</>
+          <>{renderRecursive(data, startIndex + 41)}</>
         )}
       </View>
     );

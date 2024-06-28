@@ -190,12 +190,16 @@ const GenerateOrderService = ({
             type="text"
           />
         )}
-        {!hasRuc && <span style={{ color: 'red' }}>Usuario sin ruc</span>}
+        {!hasRuc && (
+          <span style={{ color: 'red', fontSize: '1rem' }}>
+            Usuario sin ruc
+          </span>
+        )}
 
         <Button
           className={`messagePage-btn-submit`}
           text="Enviar Formulario"
-          disabled={hasRuc}
+          disabled={!hasRuc}
         />
       </form>
       <div className="generateOrderService-previews-btns">

@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import './task.css';
 import { useContext, useEffect, useState } from 'react';
 import { axiosInstance } from '../../../../../../services/axiosInstance';
@@ -8,10 +8,11 @@ import { SubTask } from '../../../../../../types';
 import { CardSubtaskHoldGeneral } from './View';
 
 export const TaskBasics = () => {
-  const [task, setTask] = useState<SubTask | null>(null);
   const socket = useContext(SocketContext);
-
-  const { taskId, stageId, projectId } = useParams();
+  const { taskId } = useParams();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [task, setTask] = useState<SubTask | null>(null);
 
   useEffect(() => {
     getTask();
@@ -37,11 +38,10 @@ export const TaskBasics = () => {
     socket.emit('join', `basic-task-${taskId}`);
   };
 
-  const navigate = useNavigate();
   const goBack = () => {
-    navigate(
-      `/especialidades/proyecto/${projectId}/etapa/${stageId}/presupuestos`
-    );
+    const currentPath = location.pathname;
+    const newPath = currentPath.replace(/\/tarea\/\d+$/, '');
+    navigate(newPath);
   };
   if (!task)
     return (
@@ -49,18 +49,10 @@ export const TaskBasics = () => {
         <LoaderForComponent />
       </div>
     );
-  const { status } = task;
   return (
     <div className="task">
       <IconAction icon="close" onClick={goBack} size={0.8} top={0} />
-
       {<CardSubtaskHoldGeneral task={task} />}
-      {/* {(status === 'PROCESS' ||
-        status === 'INREVIEW' ||
-        status === 'DENIED') && <CardSubtaskProcess subTask={task} />}
-      {(status === 'DONE' || status === 'LIQUIDATION') && (
-        <CardSubtaskDone subTask={task} />
-      )} */}
     </div>
   );
 };

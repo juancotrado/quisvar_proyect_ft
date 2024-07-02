@@ -56,8 +56,12 @@ const CardSubtaskHoldGeneral = ({ task }: CardSubtaskHoldGeneral) => {
     }
   }, [task?.lastFeedback?.percentage]);
 
-  const { onAssignUser, assignedUser, onChangeAssignedUser } =
-    useAssignUserTask(task.id);
+  const {
+    onAssignUser,
+    assignedUser,
+    onChangeAssignedUser,
+    onChangeModerator,
+  } = useAssignUserTask(task.id);
 
   const { feedback, onChangeFeedBack, reviewTask } = useReviewTask({
     task,
@@ -161,7 +165,11 @@ const CardSubtaskHoldGeneral = ({ task }: CardSubtaskHoldGeneral) => {
                       label="Evaluador:  "
                       options={userOption}
                       onChange={option =>
-                        onAssignUser(option ? option.id : 0, 'evaluatorId')
+                        onChangeModerator(
+                          option ? option.id : 0,
+                          'evaluatorId',
+                          modInCharge?.id
+                        )
                       }
                       isDisabled={
                         !hasPermission(TaskPermission.ASSIGN_EVALUATOR_TASK)

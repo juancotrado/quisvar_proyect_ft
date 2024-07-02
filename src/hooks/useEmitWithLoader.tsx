@@ -23,7 +23,7 @@ const useEmitWithLoader = () => {
     },
     [socket]
   );
-  return { emitWithLoader };
+  return { emitWithLoader, socket };
 };
 
 export default useEmitWithLoader;

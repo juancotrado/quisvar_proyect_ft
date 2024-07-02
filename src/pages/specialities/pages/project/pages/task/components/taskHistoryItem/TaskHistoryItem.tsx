@@ -4,7 +4,7 @@ import { _date } from '../../../../../../../../utils';
 import dayjsSpanish from '../../../../../../../../utils/dayjsSpanish';
 import { PiPaperPlaneRightBold } from 'react-icons/pi';
 import './taskHistoryItem.css';
-import { IoCheckmarkSharp } from 'react-icons/io5';
+import { IoCheckmarkSharp, IoClose } from 'react-icons/io5';
 
 import { SubtaskFile } from '../subtaskFiles';
 import { TaskStatusFeedback } from '../taskStatusFeedback';
@@ -35,7 +35,12 @@ const TaskHistoryItem = ({
   comment = '',
   status,
 }: TaskHistoryItemProps) => {
-  const Icon = mode === 'technical' ? PiPaperPlaneRightBold : IoCheckmarkSharp;
+  const Icon =
+    mode === 'technical'
+      ? PiPaperPlaneRightBold
+      : status === FeedbackType.REJECTED
+      ? IoClose
+      : IoCheckmarkSharp;
   return (
     <div className={`taskHistoryItem ${className}`}>
       <div className="taskHistoryItem-info">

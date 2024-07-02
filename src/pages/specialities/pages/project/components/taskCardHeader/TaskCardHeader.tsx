@@ -6,8 +6,19 @@ import { PiClockCounterClockwiseBold } from 'react-icons/pi';
 
 import { TaskPermission } from '../../models';
 import { PiClipboardTextBold } from 'react-icons/pi';
+import { useEmitWithLoader } from '../../../../../../hooks';
+import { isOpenButtonDelete$ } from '../../../../../../services/sharingSubject';
 const TaskCardHeader = () => {
   const { task, hasPermission, handleViewHistory } = useContext(TaskContext);
+  const { emitWithLoader } = useEmitWithLoader();
+
+  const restoreTask = () => {
+    // emitWithLoader('client:restore-basic-task', task.id);
+    isOpenButtonDelete$.setSubject = {
+      isOpen: true,
+      function: () => emitWithLoader('client:restore-basic-task', task.id),
+    };
+  };
 
   return (
     <div className="TaskCardHeader">
@@ -29,6 +40,7 @@ const TaskCardHeader = () => {
             color={COLOR_CSS.danger}
             size={21}
             cursor={'pointer'}
+            onClick={restoreTask}
           />
         )}
       </div>

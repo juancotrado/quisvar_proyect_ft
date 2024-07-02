@@ -87,7 +87,7 @@ const ButtonDelete = ({
   useEffect(() => {
     handleIsOpen.current = isOpenButtonDelete$.getSubject.subscribe(value => {
       setIsAlertOpen(value.isOpen);
-      setCustomFuction(value.function);
+      setCustomFuction(() => value.function);
     });
     return () => {
       handleIsOpen.current.unsubscribe();
@@ -141,12 +141,12 @@ const ButtonDelete = ({
                     <Button
                       text="No, cancelar"
                       onClick={handleCloseButton}
-                      className="btn-alert "
+                      color="secondary"
                       variant="outline"
                     />
                     <Button
-                      className=" btn-alert  btn-delete"
                       text="Si, estoy seguro"
+                      color="danger"
                       type="button"
                       variant="outline"
                       onClick={

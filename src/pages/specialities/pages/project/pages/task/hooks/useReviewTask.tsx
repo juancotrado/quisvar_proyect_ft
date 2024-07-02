@@ -2,6 +2,7 @@ import React, { ChangeEvent, useState } from 'react';
 import { FeedbackType } from '../../../models';
 import { useEmitWithLoader } from '../../../../../../../hooks';
 import { SubTask } from '../../../../../../../types';
+import { useParams } from 'react-router-dom';
 
 interface useReviewTaskProps {
   percentage: number;
@@ -10,7 +11,8 @@ interface useReviewTaskProps {
 
 const useReviewTask = ({ percentage, task }: useReviewTaskProps) => {
   const [feedback, setFeedback] = useState('');
-  const { emitWithLoader } = useEmitWithLoader();
+  const { emitWithLoader, socket } = useEmitWithLoader();
+  const { stageId } = useParams();
 
   const onChangeFeedBack = ({ target }: ChangeEvent<HTMLTextAreaElement>) => {
     setFeedback(target.value);
@@ -26,7 +28,8 @@ const useReviewTask = ({ percentage, task }: useReviewTaskProps) => {
       id: lastFeedback.id,
     };
 
-    emitWithLoader('client:review-basic-task', task.id, body);
+    await emitWithLoader('client:review-basic-task', task.id, body);
+    socket.emit('client:load-stage', stageId);
     setFeedback('');
   };
   return { reviewTask, feedback, onChangeFeedBack };

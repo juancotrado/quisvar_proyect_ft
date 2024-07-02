@@ -165,8 +165,8 @@ const GenerateOrderService = ({
             errors={errors}
             placeholder="Monto"
             name="amount"
-            type="number"
-            step={3}
+            // type="number"
+            // step={3}
           />
           <Select
             label="Tipo de pago:"
@@ -208,7 +208,7 @@ const GenerateOrderService = ({
         <Button
           className={`messagePage-btn-submit`}
           text="Enviar Formulario"
-          disabled={hasRuc}
+          disabled={!hasRuc}
         />
       </form>
       <div className="generateOrderService-previews-btns">

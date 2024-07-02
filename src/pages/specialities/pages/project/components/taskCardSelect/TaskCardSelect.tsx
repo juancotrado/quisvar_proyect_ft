@@ -47,6 +47,7 @@ function TaskCardSelect<OptionValues extends OptionUserExtend>({
           defaultValue={options.find(el => el.id === idDefaultValue)}
           isDisabled={isDisabled}
           onChange={handleSelectOption}
+          menuPosition={'fixed'}
           placeholder="Sin asignar..."
           className="taskCardSelect-select"
           styles={{

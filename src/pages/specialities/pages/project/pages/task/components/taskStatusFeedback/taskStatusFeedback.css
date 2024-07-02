@@ -10,7 +10,7 @@
   border-radius: 0.48075rem;
 }
 .taskStatusFeedback-REJECTED {
-  background: var(--color-danger-soft);
+  background: var(--color-unresolved);
 }
 .taskStatusFeedback-ACCEPTED {
   background: var(--color-correction);

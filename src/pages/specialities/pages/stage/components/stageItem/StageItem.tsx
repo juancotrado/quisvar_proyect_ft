@@ -60,7 +60,7 @@ const StageItem = ({ stage, i, getStages }: StageItemProps) => {
   const handleOpenButtonDelete = () => {
     isOpenButtonDelete$.setSubject = {
       isOpen: true,
-      function: () => handleDeleteLevel,
+      function: handleDeleteLevel,
     };
   };
   const options: Option[] = [

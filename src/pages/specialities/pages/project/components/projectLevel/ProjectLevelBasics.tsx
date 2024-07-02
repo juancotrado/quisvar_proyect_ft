@@ -88,7 +88,7 @@ export const ProjectLevelBasics = ({ data }: ProjectLevelBasicsProps) => {
   const handleOpenButtonDelete = () => {
     isOpenButtonDelete$.setSubject = {
       isOpen: true,
-      function: () => handleDeleteLevel,
+      function: handleDeleteLevel,
     };
   };
   const deleteUser = () => setIdCoordinator(null);

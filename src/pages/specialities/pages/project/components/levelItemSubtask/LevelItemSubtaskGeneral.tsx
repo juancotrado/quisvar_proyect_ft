@@ -85,7 +85,7 @@ const LevelItemSubtaskGeneral = ({
   const handleOpenButtonDelete = (id: number) => {
     isOpenButtonDelete$.setSubject = {
       isOpen: true,
-      function: () => () => handleDeleteTask(id),
+      function: () => handleDeleteTask(id),
     };
   };
 

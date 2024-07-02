@@ -1,6 +1,7 @@
-import React, { useContext, useState } from 'react';
+import { useState } from 'react';
 import { axiosInstance } from '../../../../../../../services/axiosInstance';
-import { SocketContext } from '../../../../../../../context';
+import { useParams } from 'react-router-dom';
+import { useEmitWithLoader } from '../../../../../../../hooks';
 
 interface useSendToReviewProps {
   taskId: number;
@@ -8,8 +9,8 @@ interface useSendToReviewProps {
 }
 
 const useSendToReview = ({ percentage, taskId }: useSendToReviewProps) => {
-  const socket = useContext(SocketContext);
-
+  const { emitWithLoader, socket } = useEmitWithLoader();
+  const { stageId } = useParams();
   const [reviewFiles, setReviewFiles] = useState<File[]>([]);
   const sendToReview = async () => {
     const formdata = new FormData();
@@ -17,7 +18,8 @@ const useSendToReview = ({ percentage, taskId }: useSendToReviewProps) => {
     formdata.append('percentage', String(percentage));
     await axiosInstance.post(`/feedbacks/basic-task/${taskId}`, formdata);
     setReviewFiles([]);
-    socket.emit('client:load-basic-task', taskId);
+    emitWithLoader('client:load-basic-task', taskId);
+    socket.emit('client:load-stage', stageId);
   };
   return { sendToReview, setReviewFiles, reviewFiles };
 };

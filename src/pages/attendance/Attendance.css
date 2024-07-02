@@ -296,7 +296,7 @@
   }
 
   .attendance-header {
-    grid-template-columns: 2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr;
+    grid-template-columns: 2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr 0.2fr;
   }
 
   .attendance-call-status {

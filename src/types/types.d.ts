@@ -851,6 +851,7 @@ export interface ListAttendance {
   id: number;
   title: string;
   timer: string;
+  position: number;
   users: userList[];
 }
 export interface userAttendance {

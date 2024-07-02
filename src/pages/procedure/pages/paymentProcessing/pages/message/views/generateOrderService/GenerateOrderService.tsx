@@ -7,7 +7,10 @@ import {
   AdvancedSelect,
 } from '../../../../../../../../components';
 import './generateOrderService.css';
-import { validateWhiteSpace } from '../../../../../../../../utils';
+import {
+  validateWhiteSpace,
+  validateOnlyDecimals,
+} from '../../../../../../../../utils';
 import {
   Companies,
   CompanySelect,
@@ -125,13 +128,12 @@ const GenerateOrderService = ({
           <Input
             label="Numero de orden:"
             {...register('ordenNumber', {
-              validate: { validateWhiteSpace },
+              validate: { validateWhiteSpace, validateOnlyDecimals },
               valueAsNumber: true,
             })}
             errors={errors}
             placeholder="N° Orden"
             name="ordenNumber"
-            type="number"
           />
         </div>
         <TextArea
@@ -152,8 +154,6 @@ const GenerateOrderService = ({
             errors={errors}
             placeholder="Monto"
             name="amount"
-            type="number"
-            step={3}
           />
           <Select
             label="Tipo de pago:"
@@ -190,12 +190,16 @@ const GenerateOrderService = ({
             type="text"
           />
         )}
-        {!hasRuc && <span style={{ color: 'red' }}>Usuario sin ruc</span>}
+        {!hasRuc && (
+          <span style={{ color: 'red', fontSize: '1rem' }}>
+            Usuario sin ruc
+          </span>
+        )}
 
         <Button
           className={`messagePage-btn-submit`}
           text="Enviar Formulario"
-          disabled={hasRuc}
+          disabled={!hasRuc}
         />
       </form>
       <div className="generateOrderService-previews-btns">

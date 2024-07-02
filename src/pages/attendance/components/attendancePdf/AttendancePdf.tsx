@@ -10,7 +10,6 @@ import { AttendanceRange } from '../../../../types';
 import { information, actualDate } from '../../../../utils';
 import './attendancePdf.css';
 import { styles } from './styledComponents';
-import { IoMdDownload } from 'react-icons/io';
 
 export type TablesProps = {
   descripcion: string | null;
@@ -262,7 +261,11 @@ const GenerateAttendanceDailyPDF = ({
                 <Text style={styles.headers}>{info.simbolo}</Text>
               </View>
               <View style={{ ...styles.tableCol, width: '28%' }}>
-                <Text style={styles.headers}>{info.descripcion}</Text>
+                <Text
+                  style={{ ...styles.headers, textAlign: 'left', width: '90%' }}
+                >
+                  {info.descripcion}
+                </Text>
               </View>
               <View style={{ ...styles.tableCol, width: '15%' }}>
                 <Text style={styles.headers}>{info.multa}</Text>
@@ -302,7 +305,7 @@ export const AttendancePdf = ({ data, daily }: PDFGeneratorProps) => {
         fileName={`${daily}.pdf`}
         className="attendance-download attendancePdf-hidden"
       >
-        <IoMdDownload color="#fff" size={20} />
+        <p>Descargar pdf</p>
       </PDFDownloadLink>
     </div>
   );

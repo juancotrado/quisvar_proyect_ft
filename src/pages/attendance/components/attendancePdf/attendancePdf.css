@@ -4,15 +4,18 @@
 
 .attendance-download {
   position: absolute;
-  right: 90px;
-  top: 13px;
-  border-radius: 50%;
+  right: calc(50% - 75px);
+  width: 100%;
+  top: -30px;
   background-color: #323639;
-  width: 35px;
-  height: 35px;
+  width: 150px;
+  height: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+.attendance-download p {
+  color: white;
 }
 .attendance-download:hover {
   background-color: #424649;
@@ -45,7 +48,7 @@
   .attendance-download {
     position: absolute;
     top: 50%;
-    left: 50%;
+    left: calc(50% - 75px);
     /* position: absolute;
     right: 90px;
     top: 33px;

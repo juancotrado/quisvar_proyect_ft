@@ -55,6 +55,7 @@ export interface CardRegisteTask extends OpenModal {
 export interface CardViewProps extends OpenModal {
   data: AttendanceRange[];
   daily?: string;
+  position?: number;
   rangeDate?: { startDate: string; endDate: string };
   typeReport: 'range' | 'daily';
 }

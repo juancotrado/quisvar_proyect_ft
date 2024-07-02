@@ -10,6 +10,7 @@ import { AttendanceRange } from '../../../../types';
 import { information, actualDate } from '../../../../utils';
 import './attendancePdf.css';
 import { styles } from './styledComponents';
+import { formatMonth } from '../../../../utils/dayjsSpanish';
 
 export type TablesProps = {
   descripcion: string | null;
@@ -20,6 +21,7 @@ interface PDFGeneratorProps {
   data: AttendanceRange[];
   daily?: string;
   size?: 'A4' | 'A5';
+  position?: number;
 }
 
 const orderCalls = [
@@ -51,6 +53,7 @@ const GenerateAttendanceDailyPDF = ({
   data,
   daily,
   size,
+  position,
 }: PDFGeneratorProps) => {
   const totalAttendance = data.map(user => user.list.length);
   const maxAttendance = Math.max(...totalAttendance);
@@ -211,7 +214,10 @@ const GenerateAttendanceDailyPDF = ({
             textTransform: 'uppercase',
           }}
         >
-          <Text>LISTA DE ASISTENCIA DEL {actualDate(daily)}</Text>
+          <Text>
+            LISTA DE ASISTENCIA Nº {position?.toString().padStart(3, '0')} -{' '}
+            {formatMonth(daily)} ({actualDate(daily)})
+          </Text>
         </View>
 
         <View style={styles.father}>{renderRecursive(data, 0)}</View>
@@ -281,7 +287,7 @@ const GenerateAttendanceDailyPDF = ({
   );
 };
 
-export const AttendancePdf = ({ data, daily }: PDFGeneratorProps) => {
+export const AttendancePdf = ({ data, daily, position }: PDFGeneratorProps) => {
   const filteredUsers: AttendanceRange[] = data.filter(
     user => user?.list.length !== 0
   );
@@ -292,6 +298,7 @@ export const AttendancePdf = ({ data, daily }: PDFGeneratorProps) => {
           data={filteredUsers}
           daily={daily}
           size="A4"
+          position={position}
         />
       </PDFViewer>
       <PDFDownloadLink
@@ -300,9 +307,14 @@ export const AttendancePdf = ({ data, daily }: PDFGeneratorProps) => {
             data={filteredUsers}
             daily={daily}
             size="A4"
+            position={position}
           />
         }
-        fileName={`${daily}.pdf`}
+        fileName={`LISTA DE ASISTENCIA Nº ${position
+          ?.toString()
+          .padStart(3, '0')} - ${formatMonth(
+          daily
+        ).toUpperCase()} (${actualDate(daily)}).pdf`}
         className="attendance-download attendancePdf-hidden"
       >
         <p>Descargar pdf</p>

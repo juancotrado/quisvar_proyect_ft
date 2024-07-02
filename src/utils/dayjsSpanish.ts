@@ -110,6 +110,11 @@ export const formatDateTimeWeekdayUtc = (date?: ConfigType) => {
   const validDate = transformValidDate(date);
   return validDate.format('dddd, D [de] MMMM [de] YYYY h:mm A');
 };
+// Returns date, weekday, and time in "mayo" format
+export const formatMonth = (date?: ConfigType) => {
+  const validDate = transformValidDate(date);
+  return validDate.format('MMMM');
+};
 
 // Returns date, abbreviated weekday, and time in "mié., 15 de may. de 2024 16:19" format
 export const formatShortDateTimeWeekdayUtc = (date?: ConfigType) => {

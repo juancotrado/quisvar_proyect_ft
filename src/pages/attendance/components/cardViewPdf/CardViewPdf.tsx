@@ -10,6 +10,7 @@ export const CardViewPdf = () => {
   //   const filterdUsers = exportPDF.filter(user => user.list.length !== 0);
   const [isOpen, setIsOpen] = useState(false);
   const [data, setData] = useState<AttendanceRange[] | null>(null);
+  const [position, setPosition] = useState<number>();
   const [daily, setDaily] = useState<string>();
   const [typeReport, setTypeReport] = useState<'range' | 'daily' | null>(null);
   const [rangeDate, setRangeDate] = useState({
@@ -23,7 +24,7 @@ export const CardViewPdf = () => {
       setIsOpen(value.isOpen);
       setData(value.data);
       setTypeReport(value.typeReport);
-
+      setPosition(value.position);
       if (value.daily) setDaily(value.daily);
       if (value.rangeDate) setRangeDate(value.rangeDate);
     });
@@ -40,7 +41,7 @@ export const CardViewPdf = () => {
       <div className="card-view-main">
         <CloseIcon onClick={closeFunctions} />
         {data && typeReport === 'daily' && (
-          <AttendancePdf data={data} daily={daily} />
+          <AttendancePdf data={data} daily={daily} position={position} />
         )}
         {data && typeReport === 'range' && (
           <AttendanceRangePdf data={data} rangeDate={rangeDate} />

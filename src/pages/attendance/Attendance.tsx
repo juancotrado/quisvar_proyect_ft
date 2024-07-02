@@ -196,7 +196,7 @@ export const Attendance = () => {
     });
   };
 
-  const genarteReportDaily = async (type: 'pdf' | 'excel') => {
+  const reportDaily = async (type: 'pdf' | 'excel', position?: number) => {
     // if (sendItems.length !== users?.length) {
     //   return SnackbarUtilities.error('Upps, No guardaste la lista');
     // }
@@ -212,6 +212,7 @@ export const Attendance = () => {
         isOpen: true,
         data: newData,
         daily: date,
+        position,
         typeReport: 'daily',
       };
       return;
@@ -363,7 +364,7 @@ export const Attendance = () => {
                     <Button
                       icon="report-pdf-icon"
                       text="Vista Previa"
-                      onClick={() => genarteReportDaily('pdf')}
+                      onClick={() => reportDaily('pdf', callList.position)}
                       className="attendance-btn-link"
                       imageStyle="attendance-btn-link-image"
                       disabled={callLists?.[0].users.length === 0}
@@ -372,7 +373,7 @@ export const Attendance = () => {
                     <Button
                       text="Descargar Excel"
                       icon="report-excel-icon"
-                      onClick={() => genarteReportDaily('excel')}
+                      onClick={() => reportDaily('excel')}
                       className="attendance-btn-link"
                       imageStyle="attendance-btn-link-image"
                     />

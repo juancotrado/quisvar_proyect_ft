@@ -137,6 +137,10 @@ export const MailPage = () => {
           }),
         ]
       : []),
+    columnHelper.accessor('createdAt', {
+      header: 'Fecha de inicio',
+      cell: ({ getValue }) => formatDateTimeUtc(getValue()),
+    }),
     columnHelper.accessor('title', {
       header: () => 'Documento',
     }),
@@ -192,7 +196,7 @@ export const MailPage = () => {
       cell: ({ getValue }) => getFullName(getValue()),
     }),
     columnHelper.accessor('updatedAt', {
-      header: 'Fecha de envio',
+      header: 'Ultima modificación',
       cell: ({ getValue }) => formatDateTimeUtc(getValue()),
     }),
     columnHelper.accessor('id', {

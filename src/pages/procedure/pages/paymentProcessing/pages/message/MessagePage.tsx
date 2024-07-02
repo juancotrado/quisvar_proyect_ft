@@ -8,6 +8,7 @@ import {
 import { axiosInstance } from '../../../../../../services/axiosInstance';
 import {
   MessageSendType,
+  MessageStatus,
   MessageType,
   ProcedureSubmit,
 } from '../../../../../../types';
@@ -135,6 +136,28 @@ export const MessagePage = () => {
       });
   };
 
+  const onCorrectMessage = async (data: ProcedureSubmit) => {
+    const { fileUploadFiles, values, mainFile } = data;
+    const body = { ...values };
+
+    const formData = new FormData();
+    fileUploadFiles.forEach(_file => formData.append('fileMail', _file));
+    formData.append('mainProcedure', mainFile, values.title + '.pdf');
+    formData.append('data', JSON.stringify(body));
+    await axiosInstance.put(`/paymail/${paymessageId}`, formData);
+    SnackbarUtilities.success('Tramite enviado');
+    handleSaveRegister();
+  };
+
+  const onDeclineMessage = (data: ProcedureSubmit, type: MessageStatus) => {
+    if (type === 'RECHAZADO') {
+      onSubmit(data);
+    }
+    if (type === 'OBSERVADO') {
+      onCorrectMessage(data);
+    }
+  };
+
   const getInitValuesForForm = (): MessageSendType => {
     const { header, title, type } = message;
 
@@ -186,6 +209,10 @@ export const MessagePage = () => {
 
   return (
     <div className={`message-page-container `}>
+      {message.status === 'OBSERVADO' && (
+        <IconAction icon="close" onClick={handleClose} />
+      )}
+
       {!isReception && message.status !== 'ARCHIVADO' && (
         <>
           {message.status === 'PAGADO' && (
@@ -201,8 +228,9 @@ export const MessagePage = () => {
             message.status !== 'PAGADO' && (
               <div className="message-page-contain message-page-contain--right">
                 {hasAccess &&
-                  message.status !== 'FINALIZADO' &&
-                  message.status !== 'POR_PAGAR' && (
+                  !['FINALIZADO', 'POR_PAGAR', 'OBSERVADO'].includes(
+                    message.status
+                  ) && (
                     <div className="message-header-content-options  ">
                       {HEADER_OPTION.map(({ procedureOpt, text }) => (
                         <ButtonHeader
@@ -294,15 +322,18 @@ export const MessagePage = () => {
                           onSave={handleSaveRegister}
                         />
                       )}
-                      {isUserInitMessage && message.status === 'RECHAZADO' && (
-                        <FormRegisterProcedure
-                          type={'payProcedure'}
-                          submit={data => onSubmit(data)}
-                          showAddUser={false}
-                          initValues={getInitValuesForForm()}
-                          initValueEditor={transformDescriptionValues()}
-                        />
-                      )}
+                      {isUserInitMessage &&
+                        ['RECHAZADO', 'OBSERVADO'].includes(message.status) && (
+                          <FormRegisterProcedure
+                            type={'payProcedure'}
+                            submit={data =>
+                              onDeclineMessage(data, message.status)
+                            }
+                            showAddUser={message.status === 'OBSERVADO'}
+                            initValues={getInitValuesForForm()}
+                            initValueEditor={transformDescriptionValues()}
+                          />
+                        )}
                     </>
                   )
                 ) : (
@@ -315,12 +346,14 @@ export const MessagePage = () => {
             )}
         </>
       )}
-      <ProcedureMoreInfo
-        handleClose={handleClose}
-        message={message}
-        status={TYPE_STATUS[message.status]}
-        userInitSender={firstName + ' ' + lastName}
-      />
+      {!['OBSERVADO'].includes(message.status) && (
+        <ProcedureMoreInfo
+          handleClose={handleClose}
+          message={message}
+          status={TYPE_STATUS[message.status]}
+          userInitSender={firstName + ' ' + lastName}
+        />
+      )}
     </div>
   );
 };

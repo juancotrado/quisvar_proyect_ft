@@ -10,6 +10,7 @@ import { SnackbarUtilities, getFullName } from '../../../../utils';
 import { useState } from 'react';
 import { createColumnHelper } from '@tanstack/react-table';
 import {
+  Button,
   FloatingText,
   IconAction,
   IndeterminateCheckbox,
@@ -18,7 +19,7 @@ import { formatDateTimeUtc } from '../../../../utils/dayjsSpanish';
 import { TableMail } from '../../components/tableMail';
 import { LabelStatus } from '../../components';
 import { PaginationTable } from '../../../../types';
-
+import { IoClose } from 'react-icons/io5';
 interface ReceptionViewProps {
   searchParams: URLSearchParams;
   type: TypeProcedure;
@@ -70,6 +71,10 @@ const ReceptionView = ({
 
   const columns = [
     ...(!(searchParams.get('onHolding') === 'true') ? [] : columnPagination),
+    columnHelper.accessor('createdAt', {
+      header: 'Fecha de inicio',
+      cell: ({ getValue }) => formatDateTimeUtc(getValue()),
+    }),
     columnHelper.accessor('title', {
       header: () => 'Documento',
     }),
@@ -122,7 +127,7 @@ const ReceptionView = ({
       },
     }),
     columnHelper.accessor('updatedAt', {
-      header: 'Fecha de envio',
+      header: 'Ultima modificación',
       cell: ({ getValue }) => formatDateTimeUtc(getValue()),
     }),
     columnHelper.accessor('id', {
@@ -140,14 +145,19 @@ const ReceptionView = ({
     }),
   ];
 
-  const handleApprove = () => {
+  const handleSelect = (typeSelect: 'holding' | 'decline') => {
     if (!selectData) return;
+
+    const fn: Record<'holding' | 'decline', () => void> = {
+      holding: () => SnackbarUtilities.success('Tramite aprobado exitosamente'),
+      decline: () => SnackbarUtilities.success('Tramite rechazado'),
+    };
     const ids = selectData.map(el => el.id);
     const body = { ids };
     axiosInstance
-      .put(`${TYPE_PROCEDURE[type].provied}/holding`, body)
+      .put(`${TYPE_PROCEDURE[type].provied}/${typeSelect}`, body)
       .then(() => {
-        SnackbarUtilities.success('Tramite aprobado exitosamente');
+        fn[typeSelect]();
         onSave();
       });
   };
@@ -156,11 +166,18 @@ const ReceptionView = ({
     <>
       <div className="mail-options">
         {selectData && selectData.length > 0 && (
-          <IconAction
-            icon="check-black-blue"
-            text="Aprobar"
-            onClick={handleApprove}
-          />
+          <div style={{ display: 'flex', gap: '1rem' }}>
+            <IconAction
+              icon="check-black-blue"
+              text="Aprobar"
+              onClick={() => handleSelect('holding')}
+            />
+            <IconAction
+              IconComponent={<IoClose size={19} color={'red'} />}
+              text="Rechazado"
+              onClick={() => handleSelect('decline')}
+            />
+          </div>
         )}
       </div>
       <TableMail

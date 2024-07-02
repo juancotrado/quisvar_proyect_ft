@@ -935,7 +935,8 @@ export type MessageStatus =
   | 'GUARDADO'
   | 'POR_PAGAR'
   | 'PAGADO'
-  | 'PENDIENTE';
+  | 'PENDIENTE'
+  | 'OBSERVADO';
 
 export type MessageTypeImbox =
   | 'INFORME'

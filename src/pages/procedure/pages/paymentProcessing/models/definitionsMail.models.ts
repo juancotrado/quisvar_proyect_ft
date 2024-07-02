@@ -9,6 +9,7 @@ export const TYPE_STATUS: Record<MessageStatus, string> = {
   GUARDADO: 'GUARDADO',
   POR_PAGAR: 'POR_PAGAR',
   PAGADO: 'PAGADO',
+  OBSERVADO: 'OBSERVADO',
 };
 export const TYPE_STATUS_REGULAR_PROCEDURE: Record<MessageStatus, string> = {
   ...TYPE_STATUS,

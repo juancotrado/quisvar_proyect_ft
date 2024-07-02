@@ -202,7 +202,7 @@ const RegularProcedure = () => {
       cell: ({ getValue }) => getFullName(getValue()),
     }),
     columnHelper.accessor('updatedAt', {
-      header: 'Fecha de envio',
+      header: 'Ultima modificación',
       cell: ({ getValue }) => formatDateTimeUtc(getValue()),
     }),
     columnHelper.accessor('id', {

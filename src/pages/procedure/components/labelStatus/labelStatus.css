@@ -26,6 +26,10 @@
   background-color: var(--color-bg-unresolved);
   color: var(--color-unresolved);
 }
+.status-OBSERVADO {
+  background-color: var(--color-bg-unresolved);
+  color: var(--color-unresolved);
+}
 .status-FINALIZADO {
   background-color: var(--color-bg-done);
   color: var(--color-done);

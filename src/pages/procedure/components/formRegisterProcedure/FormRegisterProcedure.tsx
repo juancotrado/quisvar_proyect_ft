@@ -94,12 +94,16 @@ const FormRegisterProcedure = ({
     axiosInstance.get<Office[]>(url).then(res => {
       const contacts = res.data
         .map(el => {
-          const users = el.users.map(({ user }) => ({
-            value: 'user-' + user.id,
-            label: user.profile.firstName + ' ' + user.profile.lastName,
-            ...user,
-          }));
-          secondaryContacts.push(...users);
+          const users = el.users.map(({ user }) => {
+            const newUser = {
+              value: 'user-' + user.id,
+              label: user.profile.firstName + ' ' + user.profile.lastName,
+              isDisabled: false,
+              ...user,
+            };
+            secondaryContacts.push(newUser);
+            return { ...newUser, isDisabled: type === 'payProcedure' };
+          });
           const area = {
             value: 'area-' + el.id,
             id: el.id,

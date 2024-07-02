@@ -10,7 +10,7 @@ interface IconActionProps {
   right?: number;
   bottom?: number;
   top?: number;
-  icon: string;
+  icon?: string;
   iconTwo?: string;
   position?: 'none' | 'auto';
   zIndex?: number;
@@ -18,6 +18,7 @@ interface IconActionProps {
   text?: string;
   fontWeight?: string;
   colorText?: string;
+  IconComponent?: JSX.Element;
 }
 const IconAction = ({
   onClick,
@@ -36,6 +37,7 @@ const IconAction = ({
   classNameText,
   colorText,
   fontWeight,
+  IconComponent,
 }: IconActionProps) => {
   const style: CSSProperties = {
     cursor: 'pointer',
@@ -84,7 +86,7 @@ const IconAction = ({
         onClick?.();
       }}
     >
-      {Icon}
+      {IconComponent || Icon}
       <span className={`${classNameText}`} style={styleText}>
         {text}
       </span>

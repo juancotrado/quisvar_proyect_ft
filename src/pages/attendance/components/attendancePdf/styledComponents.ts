@@ -54,15 +54,35 @@ export const styles = StyleSheet.create({
     borderTopWidth: 0,
   },
   table: {
+    // width: 'auto',
+    // borderStyle: 'solid',
+    // borderWidth: 1,
+    // borderRightWidth: 0,
+    // borderBottomWidth: 0,
+
+    borderLeftWidth: 0,
+  },
+  father: {
     width: 'auto',
     borderStyle: 'solid',
     borderWidth: 1,
     borderRightWidth: 0,
     borderBottomWidth: 0,
+    borderTopWidth: 0,
+  },
+  tableRender: {
+    // width: 'auto',
+    // borderStyle: 'solid',
+    // borderWidth: 1,
+    // borderRightWidth: 0,
+    // borderBottomWidth: 0,
+    borderTopWidth: 1,
+    borderLeftWidth: 0,
   },
   tableRow: {
     margin: 'auto',
     flexDirection: 'row',
+    height: '18px',
   },
   tableCol: {
     borderStyle: 'solid',

@@ -20,6 +20,7 @@ export const LicenseListHeader = ({ isEmployee, refresh }: license) => {
       </div>
       {!isEmployee && <div className="license-header-items">solicitante</div>}
       <div className="license-header-items">Revisado por</div>
+      <div className="license-header-items">Tipo</div>
       <div
         className="license-header-items"
         style={{ justifyContent: 'center' }}

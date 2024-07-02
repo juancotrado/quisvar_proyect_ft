@@ -32,7 +32,7 @@
   width: 100%;
   /* height: 3.7rem; */
   background-color: #fff;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   /* border-radius: 0.3rem; */
   /* border-bottom: 0.15rem solid var(--color-quaternay);  */
   padding: 0 10px;
@@ -52,4 +52,25 @@
 }
 .legend-margin {
   margin-left: 1rem;
+}
+.legend-p {
+  background-color: var(--color-list-p);
+}
+.legend-t {
+  background-color: var(--color-list-t);
+}
+.legend-f {
+  background-color: var(--color-list-f);
+}
+.legend-g {
+  background-color: var(--color-list-g);
+}
+.legend-m {
+  background-color: var(--color-list-m);
+}
+.legend-l {
+  background-color: var(--color-list-l);
+}
+.legend-s {
+  background-color: var(--color-list-s);
 }

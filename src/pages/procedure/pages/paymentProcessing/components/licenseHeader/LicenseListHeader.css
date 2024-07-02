@@ -10,11 +10,11 @@
 }
 
 .license-admin {
-  grid-template-columns: 0.5fr 1fr 1fr 1.4fr 2fr 1fr 1.2fr 1.2fr 1.2fr 2fr 1fr;
+  grid-template-columns: 0.5fr 1fr 1fr 0.5fr 1.4fr 2fr 1fr 1.2fr 1.2fr 1.2fr 2fr 1fr;
 }
 
 .license-employee {
-  grid-template-columns: 0.5fr 1fr 1fr 1fr 1fr 1.5fr 1.5fr 1.5fr 1.5fr 1fr;
+  grid-template-columns: 0.5fr 1fr 0.5fr 1fr 1fr 1fr 1.5fr 1.5fr 1.5fr 1.5fr 1fr;
 }
 
 .license-header-items {

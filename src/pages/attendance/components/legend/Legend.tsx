@@ -44,6 +44,13 @@ const Legend = () => {
       multa: 'S/. 0.00',
       multaAdmin: 'S/. 0.00',
     },
+    {
+      item: 7,
+      simbolo: 'S',
+      descripcion: 'Salidas de campo (S)',
+      multa: 'S/. 0.00',
+      multaAdmin: 'S/. 0.00',
+    },
   ];
   return (
     <div className="legend-container">
@@ -66,12 +73,13 @@ const Legend = () => {
           <div className="legend-col legend-place">{item.item}</div>
           <div
             className={`legend-col legend-place 
-                ${item.simbolo === 'P' && 'attendanceList-p'}
-                ${item.simbolo === 'T' && 'attendanceList-t'}
-                ${item.simbolo === 'F' && 'attendanceList-f'}
-                ${item.simbolo === 'G' && 'attendanceList-g'}
-                ${item.simbolo === 'M' && 'attendanceList-m'}
-                ${item.simbolo === 'L' && 'attendanceList-l'}
+                ${item.simbolo === 'P' && 'legend-p'}
+                ${item.simbolo === 'T' && 'legend-t'}
+                ${item.simbolo === 'F' && 'legend-f'}
+                ${item.simbolo === 'G' && 'legend-g'}
+                ${item.simbolo === 'M' && 'legend-m'}
+                ${item.simbolo === 'L' && 'legend-l'}
+                ${item.simbolo === 'S' && 'legend-s'}
                 `}
           >
             {item.simbolo}

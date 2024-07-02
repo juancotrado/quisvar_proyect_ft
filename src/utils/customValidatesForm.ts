@@ -59,8 +59,8 @@ export const validateRuc = (value: string) => {
   if (typeof message === 'string') return message;
   return value.length !== 11 ? 'Ingresar un ruc valido' : true;
 };
-export const validateJPGExtension = (value: FileList) => {
-  const [file] = value;
+export const validateJPGExtension = (value: FileList | undefined) => {
+  const [file] = value as FileList;
   if (!file) return true; // puede que se tenga imagen o no
   const regex = /\.(jpg|jpeg|png|gif)$/i;
   return !regex.test(file.name) ? 'Ingrese un archivo .jpg' : true;
